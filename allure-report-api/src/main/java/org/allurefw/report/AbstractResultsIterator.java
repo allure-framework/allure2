@@ -19,6 +19,7 @@ import static java.nio.file.Files.newDirectoryStream;
  * @author Dmitry Baev charlie@yandex-team.ru
  *         Date: 08.10.15
  */
+//TODO remove all shitty list files methods
 public abstract class AbstractResultsIterator<T> implements Iterator<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractResultsIterator.class);

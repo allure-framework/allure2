@@ -26,6 +26,7 @@
             <artifactId>allure-model</artifactId>
         </dependency>
 
+        <!-- Guice -->
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
@@ -34,6 +35,14 @@
             <groupId>com.google.inject.extensions</groupId>
             <artifactId>guice-multibindings</artifactId>
         </dependency>
+
+        <!-- Commons -->
+        <dependency>
+            <groupId>org.pegdown</groupId>
+            <artifactId>pegdown</artifactId>
+        </dependency>
+
+        <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>

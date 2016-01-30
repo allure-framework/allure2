@@ -1,7 +1,7 @@
 package org.allurefw.report.allure1;
 
+import com.google.common.collect.ImmutableSet;
 import org.allurefw.report.TestCase;
-import ru.yandex.qatools.allure.model.TestCaseResult;
 import ru.yandex.qatools.allure.model.TestSuiteResult;
 
 import java.util.Iterator;
@@ -13,10 +13,12 @@ import java.util.NoSuchElementException;
  */
 public class TestCaseResultIterator implements Iterator<TestCase> {
 
-    private final Iterator<TestCaseResult> iterator;
+    private final Iterator<TestSuiteResult> testSuites;
 
-    public TestCaseResultIterator(TestSuiteResult testSuite) {
-        this.iterator = testSuite.getTestCases().iterator();
+    private Iterator<TestCase> current = ImmutableSet.<TestCase>of().iterator();
+
+    public TestCaseResultIterator(Iterator<TestSuiteResult> testSuites) {
+        this.testSuites = testSuites;
     }
 
     /**
@@ -24,7 +26,16 @@ public class TestCaseResultIterator implements Iterator<TestCase> {
      */
     @Override
     public boolean hasNext() {
-        return iterator.hasNext();
+        if (current.hasNext()) {
+            return true;
+        }
+
+        if (!testSuites.hasNext()) {
+            return false;
+        }
+
+        current = new TestCaseResultIterator2(testSuites.next());
+        return hasNext();
     }
 
     /**
@@ -36,9 +47,7 @@ public class TestCaseResultIterator implements Iterator<TestCase> {
             throw new NoSuchElementException();
         }
 
-        TestCaseResult result = iterator.next();
-
-        return new TestCase().withName(result.getName());
+        return current.next();
     }
 
     /**
