@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:ns="urn:report.allurefw.org"
+            targetNamespace="urn:report.allurefw.org">
+
+    <xsd:element name="test-case" type="ns:test-case"/>
+    <xsd:complexType name="test-case">
+        <xsd:all>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="time" type="ns:Time"/>
+            <xsd:element name="status" type="ns:Status"/>
+            <xsd:element name="failure" type="ns:Failure" minOccurs="0"/>
+            <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="descriptionHtml" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="steps" type="ns:Steps" minOccurs="0"/>
+            <xsd:element name="attachments" type="ns:Attachments" minOccurs="0"/>
+            <xsd:element name="labels" type="ns:Labels" minOccurs="0"/>
+            <xsd:element name="parameters" type="ns:Parameters" minOccurs="0"/>
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:element name="time" type="ns:Time"/>
+    <xsd:complexType name="Time">
+        <xsd:attribute name="start" type="xsd:long" default="0"/>
+        <xsd:attribute name="stop" type="xsd:long" default="0"/>
+        <xsd:attribute name="duration" type="xsd:long" default="0"/>
+    </xsd:complexType>
+
+    <xsd:element name="failure" type="ns:Failure"/>
+    <xsd:complexType name="Failure">
+        <xsd:all>
+            <xsd:element name="message" type="xsd:string"/>
+            <xsd:element name="trace" type="xsd:string"/>
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:element name="step" type="ns:Step"/>
+    <xsd:complexType name="Step">
+        <xsd:all>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="status" type="ns:Status"/>
+            <xsd:element name="failure" type="ns:Failure" minOccurs="0"/>
+            <xsd:element name="steps" type="ns:Steps" minOccurs="0"/>
+            <xsd:element name="attachments" type="ns:Attachments" minOccurs="0"/>
+            <xsd:element name="parameters" type="ns:Parameters" minOccurs="0"/>
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:element name="attachment" type="ns:Attachment"/>
+    <xsd:complexType name="Attachment">
+        <xsd:all>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="source" type="xsd:string"/>
+            <xsd:element name="type" type="xsd:string"/>
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:element name="parameter" type="ns:Parameter"/>
+    <xsd:complexType name="Parameter">
+        <xsd:attribute name="name" type="xsd:string" use="required"/>
+        <xsd:attribute name="value" type="xsd:string" use="required"/>
+    </xsd:complexType>
+
+    <!-- Wrappers, not actually a classes -->
+    <xsd:complexType name="Steps">
+        <xsd:sequence>
+            <xsd:element name="step" type="ns:Step" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="Attachments">
+        <xsd:sequence>
+            <xsd:element name="attachment" type="ns:Attachment" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="Labels">
+        <xsd:sequence>
+            <xsd:element name="label" type="ns:Label" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="Parameters">
+        <xsd:sequence>
+            <xsd:element name="parameter" type="ns:Parameter" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- Status from Allure model -->
+    <xsd:complexType name="Status"/>
+    <xsd:complexType name="Label"/>
+
+</xsd:schema>

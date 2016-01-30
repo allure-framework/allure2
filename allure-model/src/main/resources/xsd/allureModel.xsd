@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:ns="urn:allurefw.org"
+            targetNamespace="urn:allurefw.org">
+
+    <xsd:element name="label" type="ns:Label"/>
+    <xsd:complexType name="Label">
+        <xsd:attribute name="name" type="xsd:string" use="required"/>
+        <xsd:attribute name="value" type="xsd:string" use="required"/>
+    </xsd:complexType>
+    
+    <xsd:simpleType name="Status">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="failed"/>
+            <xsd:enumeration value="broken"/>
+            <xsd:enumeration value="passed"/>
+            <xsd:enumeration value="canceled"/>
+            <xsd:enumeration value="pending"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="SeverityLevel">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="blocker"/>
+            <xsd:enumeration value="critical"/>
+            <xsd:enumeration value="normal"/>
+            <xsd:enumeration value="minor"/>
+            <xsd:enumeration value="trivial"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <!-- Reserved label names -->
+    <xsd:simpleType name="LabelName">
+        <xsd:restriction base="xsd:string">
+            <!-- Test -->
+            <xsd:enumeration value="severity"/>
+            <xsd:enumeration value="issue"/>
+            <xsd:enumeration value="testId"/>
+
+            <!-- Suite -->
+            <xsd:enumeration value="suite"/>
+
+            <!-- BDD -->
+            <xsd:enumeration value="feature"/>
+            <xsd:enumeration value="story"/>
+
+            <!-- Info  -->
+            <xsd:enumeration value="host"/>
+            <xsd:enumeration value="thread"/>
+            <xsd:enumeration value="language"/>
+            <xsd:enumeration value="framework"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+</xsd:schema>

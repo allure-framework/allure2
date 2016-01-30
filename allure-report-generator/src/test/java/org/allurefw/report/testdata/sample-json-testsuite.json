@@ -1,0 +1,30 @@
+{
+  "name": "other.PassingTest",
+  "start": 1412949538848,
+  "stop": 1412949560045,
+  "version": "1.4.4-SNAPSHOT",
+  "testCases": [
+    {
+      "name": "testPassed",
+      "start": 1412949529363,
+      "stop": 1412949549730,
+      "status": "PASSED",
+      "labels": [
+        {
+          "name": "issue",
+          "value": "JIRA-15"
+        },
+        {
+          "name": "testId",
+          "value": "TMS-1"
+        }
+      ]
+    }
+  ],
+  "labels": [
+    {
+      "name": "story",
+      "value": "SuccessStory"
+    }
+  ]
+}
