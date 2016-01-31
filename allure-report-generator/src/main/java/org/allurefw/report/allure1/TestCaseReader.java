@@ -7,12 +7,13 @@ import org.allurefw.report.Parameter;
 import org.allurefw.report.Step;
 import org.allurefw.report.TestCase;
 import org.allurefw.report.Time;
-import org.allurefw.report.io.AbstractTestCaseGroupIterator;
+import org.allurefw.report.io.AbstractTestCaseReader;
 import ru.yandex.qatools.allure.model.DescriptionType;
 import ru.yandex.qatools.allure.model.ParameterKind;
 import ru.yandex.qatools.allure.model.TestCaseResult;
 import ru.yandex.qatools.allure.model.TestSuiteResult;
 
+import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,16 +22,23 @@ import static org.allurefw.report.ReportApiUtils.processMarkdown;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
- *         Date: 08.10.15
+ *         Date: 31.01.16
  */
-public class TestSuiteIterator
-        extends AbstractTestCaseGroupIterator<TestSuiteResult, TestCaseResult> {
+public class TestCaseReader extends AbstractTestCaseReader<TestSuiteResult, TestCaseResult> {
 
     /**
      * {@inheritDoc}
      */
-    public TestSuiteIterator(TestSuiteResult testSuite) {
-        super(testSuite);
+    public TestCaseReader(Path[] resultDirectories) {
+        super(resultDirectories);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Iterator<TestSuiteResult> read(Path... resultDirectories) {
+        return new Allure1ResultIterator(resultDirectories);
     }
 
     /**
@@ -115,5 +123,4 @@ public class TestSuiteIterator
             return Status.CANCELED;
         }
     }
-
 }

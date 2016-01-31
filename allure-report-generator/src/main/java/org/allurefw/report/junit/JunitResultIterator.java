@@ -1,19 +1,17 @@
 package org.allurefw.report.junit;
 
-import org.allurefw.report.io.AbstractResultsIterator;
+import org.allurefw.report.io.AbstractResultsReaderIterator;
 import ru.yandex.qatools.allure.BadXmlCharacterFilterReader;
 
 import javax.xml.bind.JAXB;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import static ru.yandex.qatools.allure.AllureConstants.TEST_SUITE_XML_FILE_GLOB;
-
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
  *         Date: 08.10.15
  */
-public class JunitResultIterator extends AbstractResultsIterator<Testsuite> {
+public class JunitResultIterator extends AbstractResultsReaderIterator<Testsuite> {
 
     /**
      * Creates an instance of iterator.
