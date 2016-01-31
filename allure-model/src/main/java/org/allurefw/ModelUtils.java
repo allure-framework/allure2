@@ -1,5 +1,9 @@
 package org.allurefw;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import static org.allurefw.LabelName.FEATURE;
 import static org.allurefw.LabelName.FRAMEWORK;
 import static org.allurefw.LabelName.HOST;
@@ -26,6 +30,24 @@ public final class ModelUtils {
 
     public static String getVersion() {
         return VERSION;
+    }
+
+    public static Optional<String> getLabel(List<Label> labels, LabelName name) {
+        return labels.stream()
+                .filter(label -> isTheSame(label, name))
+                .map(Label::getValue)
+                .findFirst();
+    }
+
+    public static List<String> getLabels(List<Label> labels, LabelName name) {
+        return labels.stream()
+                .filter(label -> isTheSame(label, name))
+                .map(Label::getValue)
+                .collect(Collectors.toList());
+    }
+
+    public static boolean isTheSame(Label label, LabelName name) {
+        return name.value().equals(label.getName());
     }
 
     /**

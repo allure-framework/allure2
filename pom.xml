@@ -73,8 +73,14 @@
                             <arg>-Xxew</arg>
                             <arg>-Xxew:instantiate lazy</arg>
                             <arg>-Xfluent-api</arg>
+                            <arg>-Xinheritance</arg>
                         </args>
                         <plugins>
+                            <plugin>
+                                <groupId>org.jvnet.jaxb2_commons</groupId>
+                                <artifactId>jaxb2-basics</artifactId>
+                                <version>0.9.4</version>
+                            </plugin>
                             <plugin>
                                 <groupId>com.github.jaxb-xew-plugin</groupId>
                                 <artifactId>jaxb-xew-plugin</artifactId>

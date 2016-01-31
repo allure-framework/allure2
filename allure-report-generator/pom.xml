@@ -11,6 +11,15 @@
 
     <artifactId>allure-report-generator</artifactId>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
 
         <!-- There is should be only this dependency, actually -->

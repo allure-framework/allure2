@@ -22,5 +22,6 @@ public class BootstrapModule extends AbstractModule {
         bind(Path[].class).annotatedWith(ResultDirectories.class).toInstance(inputDirectories);
 
         Multibinder.newSetBinder(binder(), TestCaseProvider.class);
+        Multibinder.newSetBinder(binder(), TestCaseProcessor.class);
     }
 }

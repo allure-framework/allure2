@@ -72,11 +72,7 @@ public class TestCaseIterator extends AbstractTestCaseIterator<TestSuiteResult, 
                     .withTrace(source.getFailure().getStackTrace())
             );
         }
-        dest.setTime(new Time()
-                .withStart(source.getStart())
-                .withStop(source.getStop())
-                .withDuration(source.getStop() - source.getStart())
-        );
+        dest.setTime(source.getStart(), source.getStop());
         dest.setParameters(source.getParameters().stream()
                 .filter(parameter -> ParameterKind.ARGUMENT.equals(parameter.getKind()))
                 .map(parameter -> new Parameter()

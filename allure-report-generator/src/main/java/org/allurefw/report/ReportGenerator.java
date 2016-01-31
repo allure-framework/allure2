@@ -3,6 +3,7 @@ package org.allurefw.report;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.allurefw.report.allure1.Allure1Module;
+import org.allurefw.report.behaviors.BehaviorsModule;
 import org.allurefw.report.junit.JunitModule;
 
 import java.nio.file.Path;
@@ -16,11 +17,11 @@ public class ReportGenerator {
     private final Injector injector;
 
     public ReportGenerator(Path... inputs) {
-        BootstrapModule bootstrap = new BootstrapModule(inputs);
         injector = Guice.createInjector(
-                bootstrap,
+                new BootstrapModule(inputs),
                 new Allure1Module(),
-                new JunitModule()
+                new JunitModule(),
+                new BehaviorsModule()
         );
     }
 
