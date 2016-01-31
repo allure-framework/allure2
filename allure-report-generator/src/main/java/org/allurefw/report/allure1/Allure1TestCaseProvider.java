@@ -23,6 +23,6 @@ public class Allure1TestCaseProvider implements TestCaseProvider {
 
     @Override
     public Iterator<TestCase> iterator() {
-        return new TestCaseIterator(resultDirectories).iterator();
+        return new TestCaseIterator(resultDirectories);
     }
 }
