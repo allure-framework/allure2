@@ -3,6 +3,7 @@ package org.allurefw.report.entity;
 import org.allurefw.report.Step;
 import org.allurefw.report.Summary;
 
+import javax.xml.bind.annotation.XmlElement;
 import java.util.function.BinaryOperator;
 
 /**
@@ -15,6 +16,7 @@ public interface WithSummary extends WithSteps, WithAttachments {
             .withSteps(first.getSteps() + second.getSteps())
             .withAttachments(first.getAttachments() + second.getAttachments());
 
+    @XmlElement
     default Summary getSummary() {
         Summary current = new Summary()
                 .withSteps((long) getSteps().size())

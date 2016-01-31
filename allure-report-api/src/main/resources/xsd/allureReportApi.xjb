@@ -24,6 +24,8 @@
         <inheritance:implements>org.allurefw.report.entity.WithSteps</inheritance:implements>
         <inheritance:implements>org.allurefw.report.entity.WithAttachments</inheritance:implements>
         <inheritance:implements>org.allurefw.report.entity.WithLabels</inheritance:implements>
+        <inheritance:implements>org.allurefw.report.entity.WithFailure</inheritance:implements>
+
         <inheritance:implements>org.allurefw.report.entity.WithSummary</inheritance:implements>
         <inheritance:implements>org.allurefw.report.entity.WithTestCaseInfo</inheritance:implements>
     </jaxb:bindings>
@@ -34,6 +36,8 @@
         <inheritance:implements>org.allurefw.report.entity.WithStatus</inheritance:implements>
         <inheritance:implements>org.allurefw.report.entity.WithSteps</inheritance:implements>
         <inheritance:implements>org.allurefw.report.entity.WithAttachments</inheritance:implements>
+        <inheritance:implements>org.allurefw.report.entity.WithFailure</inheritance:implements>
+
         <inheritance:implements>org.allurefw.report.entity.WithSummary</inheritance:implements>
     </jaxb:bindings>
 </jaxb:bindings>

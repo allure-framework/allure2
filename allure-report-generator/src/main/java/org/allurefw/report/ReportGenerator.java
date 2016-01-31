@@ -26,6 +26,6 @@ public class ReportGenerator {
     }
 
     public void generate(Path output) {
-        injector.getInstance(Lifecycle.class).generate();
+        injector.getInstance(Lifecycle.class).generate(output);
     }
 }

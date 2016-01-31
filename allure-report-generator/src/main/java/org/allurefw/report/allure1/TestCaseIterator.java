@@ -2,7 +2,6 @@ package org.allurefw.report.allure1;
 
 import org.allurefw.Status;
 import org.allurefw.report.Attachment;
-import org.allurefw.report.Failure;
 import org.allurefw.report.Parameter;
 import org.allurefw.report.Step;
 import org.allurefw.report.TestCase;
@@ -67,9 +66,9 @@ public class TestCaseIterator extends AbstractTestCaseIterator<TestSuiteResult, 
         }
 
         if (source.getFailure() != null) {
-            dest.setFailure(new Failure()
-                    .withMessage(source.getFailure().getMessage())
-                    .withTrace(source.getFailure().getStackTrace())
+            dest.setFailure(
+                    source.getFailure().getMessage(),
+                    source.getFailure().getStackTrace()
             );
         }
         dest.setTime(source.getStart(), source.getStop());
