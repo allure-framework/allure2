@@ -10,6 +10,7 @@
 
     <modules>
         <module>allure-model</module>
+        <module>junit-model</module>
         <module>allure-report-api</module>
         <module>allure-report-generator</module>
     </modules>
@@ -106,6 +107,11 @@
             <dependency>
                 <groupId>org.allurefw</groupId>
                 <artifactId>allure-report-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.allurefw</groupId>
+                <artifactId>junit-model</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

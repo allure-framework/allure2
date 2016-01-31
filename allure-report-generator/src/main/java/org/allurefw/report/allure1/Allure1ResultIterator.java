@@ -1,6 +1,6 @@
 package org.allurefw.report.allure1;
 
-import org.allurefw.report.AbstractResultsIterator;
+import org.allurefw.report.io.AbstractResultsIterator;
 import ru.yandex.qatools.allure.BadXmlCharacterFilterReader;
 import ru.yandex.qatools.allure.model.TestSuiteResult;
 
@@ -14,12 +14,12 @@ import static ru.yandex.qatools.allure.AllureConstants.TEST_SUITE_XML_FILE_GLOB;
  * @author Dmitry Baev charlie@yandex-team.ru
  *         Date: 08.10.15
  */
-public class XmlTestSuiteResultIterator extends AbstractResultsIterator<TestSuiteResult> {
+public class Allure1ResultIterator extends AbstractResultsIterator<TestSuiteResult> {
 
     /**
      * Creates an instance of iterator.
      */
-    public XmlTestSuiteResultIterator(Path... resultDirectories) {
+    public Allure1ResultIterator(Path... resultDirectories) {
         super(resultDirectories);
     }
 

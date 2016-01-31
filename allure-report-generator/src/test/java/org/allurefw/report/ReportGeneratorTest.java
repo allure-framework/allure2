@@ -17,8 +17,16 @@ public class ReportGeneratorTest {
     public TemporaryFolder folder = new TemporaryFolder();
 
     @Test
-    public void shouldGenerate() throws Exception {
-        Path input = Paths.get("/Users/charlie/IdeaProjects/allure-report/allure-report-generator/src/test/java/org/allurefw/report/testdata");
+    public void shouldGenerateAllure1() throws Exception {
+        Path input = Paths.get("/Users/charlie/IdeaProjects/allure-report/allure-report-generator/src/test/java/org/allurefw/report/allure1data");
+        Path output = folder.newFolder().toPath();
+
+        new ReportGenerator(input).generate(output);
+    }
+
+    @Test
+    public void shouldGenerateJunit() throws Exception {
+        Path input = Paths.get("/Users/charlie/IdeaProjects/allure-report/allure-report-generator/src/test/java/org/allurefw/report/junitdata");
         Path output = folder.newFolder().toPath();
 
         new ReportGenerator(input).generate(output);

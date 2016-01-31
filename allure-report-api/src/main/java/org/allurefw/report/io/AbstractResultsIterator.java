@@ -1,4 +1,4 @@
-package org.allurefw.report;
+package org.allurefw.report.io;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +56,7 @@ public abstract class AbstractResultsIterator<T> implements Iterator<T> {
             LOGGER.warn(String.format("Could not read <%s> file", next.toAbsolutePath().toString()), e);
             return next();
         } finally {
+            //TODO remove this debug logging
             System.out.println(getClass() + ": read file " + next);
         }
     }

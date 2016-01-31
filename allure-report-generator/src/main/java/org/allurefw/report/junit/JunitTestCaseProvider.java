@@ -1,4 +1,4 @@
-package org.allurefw.report.allure1;
+package org.allurefw.report.junit;
 
 import org.allurefw.report.ResultDirectories;
 import org.allurefw.report.TestCase;
@@ -10,21 +10,21 @@ import java.util.Iterator;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
- *         Date: 30.01.16
+ *         Date: 31.01.16
  */
-public class Allure1TestCaseProvider implements TestCaseProvider {
+public class JunitTestCaseProvider implements TestCaseProvider {
 
     private final Path[] resultDirectories;
 
     @Inject
-    public Allure1TestCaseProvider(@ResultDirectories Path[] resultDirectories) {
+    public JunitTestCaseProvider(@ResultDirectories Path[] resultDirectories) {
         this.resultDirectories = resultDirectories;
     }
 
     @Override
     public Iterator<TestCase> iterator() {
         return new TestSuitesIterator(
-                new Allure1ResultIterator(resultDirectories)
+                new JunitResultIterator(resultDirectories)
         );
     }
 }

@@ -1,8 +1,7 @@
-package org.allurefw.report.allure1;
+package org.allurefw.report.io;
 
 import com.google.common.collect.ImmutableSet;
 import org.allurefw.report.TestCase;
-import ru.yandex.qatools.allure.model.TestSuiteResult;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -11,14 +10,14 @@ import java.util.NoSuchElementException;
  * @author Dmitry Baev charlie@yandex-team.ru
  *         Date: 08.10.15
  */
-public class TestCaseResultIterator implements Iterator<TestCase> {
+public abstract class AbstractTestCaseGroupsIterator<T, S> implements Iterator<TestCase> {
 
-    private final Iterator<TestSuiteResult> testSuites;
+    private final Iterator<T> groups;
 
     private Iterator<TestCase> current = ImmutableSet.<TestCase>of().iterator();
 
-    public TestCaseResultIterator(Iterator<TestSuiteResult> testSuites) {
-        this.testSuites = testSuites;
+    public AbstractTestCaseGroupsIterator(Iterator<T> groups) {
+        this.groups = groups;
     }
 
     /**
@@ -30,11 +29,11 @@ public class TestCaseResultIterator implements Iterator<TestCase> {
             return true;
         }
 
-        if (!testSuites.hasNext()) {
+        if (!groups.hasNext()) {
             return false;
         }
 
-        current = new TestCaseResultIterator2(testSuites.next());
+        current = groupIterator(groups.next());
         return hasNext();
     }
 
@@ -50,11 +49,6 @@ public class TestCaseResultIterator implements Iterator<TestCase> {
         return current.next();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void remove() {
-        throw new UnsupportedOperationException();
-    }
+    protected abstract AbstractTestCaseGroupIterator<T, S> groupIterator(T group);
+
 }
