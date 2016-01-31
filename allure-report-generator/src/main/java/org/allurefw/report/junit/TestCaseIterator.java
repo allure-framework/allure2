@@ -4,7 +4,7 @@ import org.allurefw.Status;
 import org.allurefw.report.Failure;
 import org.allurefw.report.TestCase;
 import org.allurefw.report.Time;
-import org.allurefw.report.io.AbstractTestCaseReader;
+import org.allurefw.report.io.AbstractTestCaseIterator;
 
 import java.math.BigDecimal;
 import java.nio.file.Path;
@@ -14,12 +14,12 @@ import java.util.Iterator;
  * @author Dmitry Baev charlie@yandex-team.ru
  *         Date: 31.01.16
  */
-public class TestCaseReader extends AbstractTestCaseReader<Testsuite, Testsuite.Testcase> {
+public class TestCaseIterator extends AbstractTestCaseIterator<Testsuite, Testsuite.Testcase> {
 
     /**
      * {@inheritDoc}
      */
-    public TestCaseReader(Path[] resultDirectories) {
+    public TestCaseIterator(Path[] resultDirectories) {
         super(resultDirectories);
     }
 
@@ -27,7 +27,7 @@ public class TestCaseReader extends AbstractTestCaseReader<Testsuite, Testsuite.
      * {@inheritDoc}
      */
     @Override
-    protected Iterator<Testsuite> read(Path... resultDirectories) {
+    protected Iterator<Testsuite> createReader(Path... resultDirectories) {
         return new JunitResultIterator(resultDirectories);
     }
 

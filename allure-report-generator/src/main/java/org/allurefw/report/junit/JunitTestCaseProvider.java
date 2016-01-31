@@ -23,6 +23,6 @@ public class JunitTestCaseProvider implements TestCaseProvider {
 
     @Override
     public Iterator<TestCase> iterator() {
-        return new TestCaseReader(resultDirectories).iterator();
+        return new TestCaseIterator(resultDirectories).iterator();
     }
 }

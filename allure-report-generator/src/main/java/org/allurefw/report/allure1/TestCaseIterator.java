@@ -7,7 +7,7 @@ import org.allurefw.report.Parameter;
 import org.allurefw.report.Step;
 import org.allurefw.report.TestCase;
 import org.allurefw.report.Time;
-import org.allurefw.report.io.AbstractTestCaseReader;
+import org.allurefw.report.io.AbstractTestCaseIterator;
 import ru.yandex.qatools.allure.model.DescriptionType;
 import ru.yandex.qatools.allure.model.ParameterKind;
 import ru.yandex.qatools.allure.model.TestCaseResult;
@@ -24,12 +24,12 @@ import static org.allurefw.report.ReportApiUtils.processMarkdown;
  * @author Dmitry Baev charlie@yandex-team.ru
  *         Date: 31.01.16
  */
-public class TestCaseReader extends AbstractTestCaseReader<TestSuiteResult, TestCaseResult> {
+public class TestCaseIterator extends AbstractTestCaseIterator<TestSuiteResult, TestCaseResult> {
 
     /**
      * {@inheritDoc}
      */
-    public TestCaseReader(Path[] resultDirectories) {
+    public TestCaseIterator(Path[] resultDirectories) {
         super(resultDirectories);
     }
 
@@ -37,7 +37,7 @@ public class TestCaseReader extends AbstractTestCaseReader<TestSuiteResult, Test
      * {@inheritDoc}
      */
     @Override
-    protected Iterator<TestSuiteResult> read(Path... resultDirectories) {
+    protected Iterator<TestSuiteResult> createReader(Path... resultDirectories) {
         return new Allure1ResultIterator(resultDirectories);
     }
 
