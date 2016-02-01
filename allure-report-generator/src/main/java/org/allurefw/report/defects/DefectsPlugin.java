@@ -7,7 +7,6 @@ import org.allurefw.report.DefectsData;
 import org.allurefw.report.TestCaseProcessor;
 import org.allurefw.report.entity.Failure;
 import org.allurefw.report.entity.TestCase;
-import sun.plugin.dom.exception.InvalidStateException;
 
 import java.util.List;
 
@@ -55,7 +54,7 @@ public class DefectsPlugin implements TestCaseProcessor {
             case BROKEN:
                 return data.getTestDefects();
             default:
-                throw new InvalidStateException("Defects are supported only " +
+                throw new IllegalStateException("Defects are supported only " +
                         "for failed and broken tests");
         }
     }
