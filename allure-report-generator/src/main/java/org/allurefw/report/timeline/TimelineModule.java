@@ -1,41 +1,41 @@
-package org.allurefw.report.behaviors;
+package org.allurefw.report.timeline;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.multibindings.Multibinder;
-import org.allurefw.report.BehaviorData;
 import org.allurefw.report.ReportDataProvider;
 import org.allurefw.report.TestCaseProcessor;
+import org.allurefw.report.TimelineData;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
- *         Date: 31.01.16
+ *         Date: 01.02.16
  */
-public class BehaviorsModule extends AbstractModule {
+public class TimelineModule extends AbstractModule {
 
     @Override
     protected void configure() {
         Multibinder.newSetBinder(binder(), TestCaseProcessor.class)
-                .addBinding().to(BehaviorsPlugin.class);
+                .addBinding().to(TimelinePlugin.class);
 
         Multibinder.newSetBinder(binder(), ReportDataProvider.class)
-                .addBinding().to(BehaviorsDataProvider.class);
+                .addBinding().to(TimelineDataProvider.class);
     }
 
     @Provides
     @Singleton
-    protected BehaviorData getData() {
-        return new BehaviorData();
+    protected TimelineData getData() {
+        return new TimelineData();
     }
 
-    public static class BehaviorsDataProvider implements ReportDataProvider {
+    public static class TimelineDataProvider implements ReportDataProvider {
 
-        protected final BehaviorData data;
+        protected final TimelineData data;
 
         @Inject
-        protected BehaviorsDataProvider(BehaviorData data) {
+        protected TimelineDataProvider(TimelineData data) {
             this.data = data;
         }
 
@@ -46,7 +46,7 @@ public class BehaviorsModule extends AbstractModule {
 
         @Override
         public String getFileName() {
-            return "behaviors.json";
+            return "timeline.json";
         }
     }
 }

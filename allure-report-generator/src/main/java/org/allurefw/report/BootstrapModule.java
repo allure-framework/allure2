@@ -23,5 +23,6 @@ public class BootstrapModule extends AbstractModule {
 
         Multibinder.newSetBinder(binder(), TestCaseProvider.class);
         Multibinder.newSetBinder(binder(), TestCaseProcessor.class);
+        Multibinder.newSetBinder(binder(), ReportDataProvider.class);
     }
 }

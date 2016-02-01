@@ -3,6 +3,7 @@ package org.allurefw.report.behaviors;
 import org.allurefw.LabelName;
 import org.allurefw.report.BehaviorData;
 import org.allurefw.report.Feature;
+import org.allurefw.report.ReportApiUtils;
 import org.allurefw.report.Story;
 import org.allurefw.report.TestCase;
 import org.allurefw.report.TestCaseProcessor;
@@ -30,7 +31,7 @@ public class BehaviorsPlugin implements TestCaseProcessor {
                     .filter(featureName::equals)
                     .findAny()
                     .orElseGet(() -> {
-                        Feature newOne = new Feature().withTitle(featureName);
+                        Feature newOne = new Feature().withName(featureName);
                         data.getFeatures().add(newOne);
                         return newOne;
                     });
@@ -40,7 +41,8 @@ public class BehaviorsPlugin implements TestCaseProcessor {
                         .filter(storyName::equals)
                         .findAny()
                         .orElseGet(() -> {
-                            Story newOne = new Story().withTitle(storyName);
+                            Story newOne = new Story().withName(storyName)
+                                    .withUid(ReportApiUtils.generateUid());
                             feature.getStories().add(newOne);
                             return newOne;
                         });

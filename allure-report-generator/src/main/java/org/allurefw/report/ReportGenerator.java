@@ -5,6 +5,7 @@ import com.google.inject.Injector;
 import org.allurefw.report.allure1.Allure1Module;
 import org.allurefw.report.behaviors.BehaviorsModule;
 import org.allurefw.report.junit.JunitModule;
+import org.allurefw.report.timeline.TimelineModule;
 
 import java.nio.file.Path;
 
@@ -21,7 +22,8 @@ public class ReportGenerator {
                 new BootstrapModule(inputs),
                 new Allure1Module(),
                 new JunitModule(),
-                new BehaviorsModule()
+                new BehaviorsModule(),
+                new TimelineModule()
         );
     }
 

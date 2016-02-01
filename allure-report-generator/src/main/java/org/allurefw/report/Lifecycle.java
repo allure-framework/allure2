@@ -27,7 +27,7 @@ public class Lifecycle {
     protected Set<TestCaseProcessor> processors;
 
     @Inject
-    protected BehaviorData behaviorData;
+    protected Set<ReportDataProvider> dataProviders;
 
     public void generate(Path output) {
         boolean findAnyResults = false;
@@ -46,7 +46,9 @@ public class Lifecycle {
             System.out.println("Could not find any results");
         }
 
-        write(output, "behaviour.json", behaviorData);
+        for (ReportDataProvider provider : dataProviders) {
+            write(output, provider.getFileName(), provider.provide());
+        }
     }
 
     private void write(Path outputDir, String fileName, Object object) {
