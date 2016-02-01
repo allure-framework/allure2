@@ -63,7 +63,7 @@ public abstract class AbstractTestCaseIterator<T, S> implements Iterator<TestCas
     /**
      * Convert external test case to {@link TestCase}
      */
-    protected abstract TestCase convert(S source);
+    protected abstract TestCase convert(S source, T group);
 
     /**
      * Internal test case iterator inside the groups file.
@@ -72,7 +72,10 @@ public abstract class AbstractTestCaseIterator<T, S> implements Iterator<TestCas
 
         protected final Iterator<S> iterator;
 
+        protected final T group;
+
         public TestCaseGroupIterator(T group) {
+            this.group = group;
             this.iterator = extract(group);
         }
 
@@ -94,7 +97,7 @@ public abstract class AbstractTestCaseIterator<T, S> implements Iterator<TestCas
             }
 
             S result = iterator.next();
-            return convert(result);
+            return convert(result, group);
         }
     }
 }

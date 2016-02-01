@@ -1,5 +1,6 @@
 package org.allurefw.report.allure1;
 
+import org.allurefw.ModelUtils;
 import org.allurefw.Status;
 import org.allurefw.report.entity.Attachment;
 import org.allurefw.report.entity.Parameter;
@@ -53,7 +54,7 @@ public class TestCaseIterator extends AbstractTestCaseIterator<TestSuiteResult, 
      * {@inheritDoc}
      */
     @Override
-    protected TestCase convert(TestCaseResult source) {
+    protected TestCase convert(TestCaseResult source, TestSuiteResult group) {
         TestCase dest = new TestCase();
         dest.setUid(generateUid());
         dest.setName(source.getTitle() != null ? source.getTitle() : source.getName());
@@ -83,6 +84,7 @@ public class TestCaseIterator extends AbstractTestCaseIterator<TestSuiteResult, 
         );
         dest.setSteps(convertSteps(source.getSteps()));
         dest.setAttachments(convertAttachments(source.getAttachments()));
+        dest.getLabels().add(ModelUtils.createSuiteLabel(group.getName()));
         return dest;
     }
 

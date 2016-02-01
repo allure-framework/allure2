@@ -1,5 +1,7 @@
 package org.allurefw.report.junit;
 
+import org.allurefw.LabelName;
+import org.allurefw.ModelUtils;
 import org.allurefw.Status;
 import org.allurefw.report.entity.Failure;
 import org.allurefw.report.entity.TestCase;
@@ -45,7 +47,7 @@ public class TestCaseIterator extends AbstractTestCaseIterator<Testsuite, Testsu
      * {@inheritDoc}
      */
     @Override
-    protected TestCase convert(Testsuite.Testcase source) {
+    protected TestCase convert(Testsuite.Testcase source, Testsuite group) {
         TestCase dest = new TestCase();
         dest.setUid(generateUid());
         dest.setName(source.getName());
@@ -54,6 +56,7 @@ public class TestCaseIterator extends AbstractTestCaseIterator<Testsuite, Testsu
         );
         dest.setStatus(getStatus(source));
         dest.setFailure(getFailure(source));
+        dest.getLabels().add(ModelUtils.createSuiteLabel(group.getName()));
         return dest;
     }
 

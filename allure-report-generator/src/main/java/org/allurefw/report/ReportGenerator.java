@@ -7,6 +7,7 @@ import org.allurefw.report.behaviors.BehaviorsModule;
 import org.allurefw.report.config.ConfigModule;
 import org.allurefw.report.junit.JunitModule;
 import org.allurefw.report.timeline.TimelineModule;
+import org.allurefw.report.xunit.XunitModule;
 
 import java.nio.file.Path;
 
@@ -20,10 +21,14 @@ public class ReportGenerator {
 
     public ReportGenerator(Path... inputs) {
         injector = Guice.createInjector(
+//                Core
                 new BootstrapModule(inputs),
                 new ConfigModule(),
+//                Readers
                 new Allure1Module(),
                 new JunitModule(),
+//                Tabs
+                new XunitModule(),
                 new BehaviorsModule(),
                 new TimelineModule()
         );
