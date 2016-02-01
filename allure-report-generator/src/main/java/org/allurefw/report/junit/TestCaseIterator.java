@@ -10,6 +10,8 @@ import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.util.Iterator;
 
+import static org.allurefw.report.ReportApiUtils.generateUid;
+
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
  *         Date: 31.01.16
@@ -45,6 +47,7 @@ public class TestCaseIterator extends AbstractTestCaseIterator<Testsuite, Testsu
     @Override
     protected TestCase convert(Testsuite.Testcase source) {
         TestCase dest = new TestCase();
+        dest.setUid(generateUid());
         dest.setName(source.getName());
         dest.setTime(new Time()
                 .withDuration(source.getTime().multiply(new BigDecimal(1000)).longValue())

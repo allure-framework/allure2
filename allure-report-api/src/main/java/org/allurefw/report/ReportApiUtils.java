@@ -6,9 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,7 +25,17 @@ public final class ReportApiUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReportApiUtils.class);
 
+    public static final Integer RADIX = 16;
+    public static final int UID_RANDOM_BYTES_COUNT = 8;
+
     ReportApiUtils() {
+    }
+
+    public static String generateUid() {
+        SecureRandom rand = new SecureRandom();
+        byte[] randomBytes = new byte[UID_RANDOM_BYTES_COUNT];
+        rand.nextBytes(randomBytes);
+        return new BigInteger(1, randomBytes).toString(RADIX);
     }
 
     //TODO think about markdown
@@ -35,6 +47,7 @@ public final class ReportApiUtils {
     }
 
     //TODO think about this file utils
+
     /**
      * The safe wrapper for {@link #listFilesSafe(String, Path...)}
      */

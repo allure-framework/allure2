@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.allurefw.report.ReportApiUtils.generateUid;
 import static org.allurefw.report.ReportApiUtils.processMarkdown;
 
 /**
@@ -54,6 +55,7 @@ public class TestCaseIterator extends AbstractTestCaseIterator<TestSuiteResult, 
     @Override
     protected TestCase convert(TestCaseResult source) {
         TestCase dest = new TestCase();
+        dest.setUid(generateUid());
         dest.setName(source.getTitle() != null ? source.getTitle() : source.getName());
         dest.setStatus(convertStatus(source.getStatus()));
 

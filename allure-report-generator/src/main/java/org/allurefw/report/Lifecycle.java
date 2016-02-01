@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import com.google.inject.Inject;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,21 +23,37 @@ public class Lifecycle {
     @Inject
     protected Set<TestCaseProvider> providers;
 
+    @Inject
+    protected Set<TestCaseProcessor> processors;
+
+    @Inject
+    protected BehaviorData behaviorData;
+
     public void generate(Path output) {
         boolean findAnyResults = false;
         for (TestCaseProvider provider : providers) {
-            System.out.println("Found provider " + provider.getClass());
             for (TestCase testCase : provider) {
                 findAnyResults = true;
-                try (OutputStream stream = Files.newOutputStream(output.resolve(UUID.randomUUID().toString() + ".json"))) {
-                    getMapper().writeValue(stream, testCase);
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
+
+                for (TestCaseProcessor processor : processors) {
+                    processor.process(testCase);
                 }
+
+                write(output, UUID.randomUUID() + ".json", testCase);
             }
         }
         if (!findAnyResults) {
             System.out.println("Could not find any results");
+        }
+
+        write(output, "behaviour.json", behaviorData);
+    }
+
+    private void write(Path outputDir, String fileName, Object object) {
+        try (OutputStream stream = Files.newOutputStream(outputDir.resolve(fileName))) {
+            getMapper().writeValue(stream, object);
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
         }
     }
 

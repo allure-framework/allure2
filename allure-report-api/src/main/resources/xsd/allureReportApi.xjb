@@ -26,6 +26,7 @@
         <inheritance:implements>org.allurefw.report.entity.WithLabels</inheritance:implements>
         <inheritance:implements>org.allurefw.report.entity.WithFailure</inheritance:implements>
 
+        <inheritance:implements>org.allurefw.report.entity.WithUid</inheritance:implements>
         <inheritance:implements>org.allurefw.report.entity.WithSummary</inheritance:implements>
         <inheritance:implements>org.allurefw.report.entity.WithTestCaseInfo</inheritance:implements>
     </jaxb:bindings>
