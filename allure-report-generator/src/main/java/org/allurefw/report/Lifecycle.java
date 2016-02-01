@@ -36,12 +36,15 @@ public class Lifecycle {
                 findAnyResults = true;
 
                 for (TestCaseProcessor processor : processors) {
+                    //todo we should copy test case at first
                     processor.process(testCase);
                 }
 
                 write(output, UUID.randomUUID() + ".json", testCase);
             }
         }
+
+        //todo use property to configure
         if (!findAnyResults) {
             System.out.println("Could not find any results");
         }

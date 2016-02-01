@@ -24,6 +24,7 @@ public class BehaviorsModule extends AbstractModule {
                 .addBinding().to(BehaviorsDataProvider.class);
     }
 
+    //TODO read the data from file if needed
     @Provides
     @Singleton
     protected BehaviorData getData() {
