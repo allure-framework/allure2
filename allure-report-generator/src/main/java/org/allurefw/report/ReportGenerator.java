@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.allurefw.report.allure1.Allure1Module;
 import org.allurefw.report.behaviors.BehaviorsModule;
+import org.allurefw.report.config.ConfigModule;
 import org.allurefw.report.junit.JunitModule;
 import org.allurefw.report.timeline.TimelineModule;
 
@@ -20,6 +21,7 @@ public class ReportGenerator {
     public ReportGenerator(Path... inputs) {
         injector = Guice.createInjector(
                 new BootstrapModule(inputs),
+                new ConfigModule(),
                 new Allure1Module(),
                 new JunitModule(),
                 new BehaviorsModule(),

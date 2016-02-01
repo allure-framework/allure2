@@ -30,6 +30,9 @@ public class Lifecycle {
     @Inject
     protected Set<ReportDataProvider> dataProviders;
 
+    @Inject
+    protected ReportConfig config;
+
     public void generate(Path output) {
         boolean findAnyResults = false;
         for (TestCaseProvider provider : providers) {
@@ -45,8 +48,7 @@ public class Lifecycle {
             }
         }
 
-        //todo use property to configure
-        if (!findAnyResults) {
+        if (!findAnyResults && config.isFailIfNoResultsFound()) {
             System.out.println("Could not find any results");
         }
 

@@ -41,6 +41,10 @@
             <groupId>org.pegdown</groupId>
             <artifactId>pegdown</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ru.qatools.commons</groupId>
+            <artifactId>properties</artifactId>
+        </dependency>
 
         <!-- Jackson -->
         <dependency>
