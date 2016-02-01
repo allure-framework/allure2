@@ -23,7 +23,7 @@ public class TimelinePlugin implements TestCaseProcessor {
         String threadName = testCase.findOne(LabelName.THREAD).orElse("Default thread");
 
         Host host = data.getHosts().stream()
-                .filter(hostName::equals)
+                .filter(item -> hostName.equals(item.getName()))
                 .findAny()
                 .orElseGet(() -> {
                     Host newOne = new Host().withName(hostName);
@@ -32,7 +32,7 @@ public class TimelinePlugin implements TestCaseProcessor {
                 });
 
         Thread thread = host.getThreads().stream()
-                .filter(threadName::equals)
+                .filter(item -> threadName.equals(item.getName()))
                 .findAny()
                 .orElseGet(() -> {
                     Thread newOne = new Thread().withName(threadName);

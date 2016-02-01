@@ -28,7 +28,7 @@ public class BehaviorsPlugin implements TestCaseProcessor {
 
         features.forEach(featureName -> {
             Feature feature = data.getFeatures().stream()
-                    .filter(featureName::equals)
+                    .filter(item -> featureName.equals(item.getName()))
                     .findAny()
                     .orElseGet(() -> {
                         Feature newOne = new Feature().withName(featureName);
@@ -38,7 +38,7 @@ public class BehaviorsPlugin implements TestCaseProcessor {
 
             stories.forEach(storyName -> {
                 Story story = feature.getStories().stream()
-                        .filter(storyName::equals)
+                        .filter(item -> storyName.equals(item.getName()))
                         .findAny()
                         .orElseGet(() -> {
                             Story newOne = new Story().withName(storyName)

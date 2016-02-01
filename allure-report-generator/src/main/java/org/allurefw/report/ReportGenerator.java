@@ -5,6 +5,7 @@ import com.google.inject.Injector;
 import org.allurefw.report.allure1.Allure1Module;
 import org.allurefw.report.behaviors.BehaviorsModule;
 import org.allurefw.report.config.ConfigModule;
+import org.allurefw.report.defects.DefectsModule;
 import org.allurefw.report.junit.JunitModule;
 import org.allurefw.report.timeline.TimelineModule;
 import org.allurefw.report.xunit.XunitModule;
@@ -28,6 +29,7 @@ public class ReportGenerator {
                 new Allure1Module(),
                 new JunitModule(),
 //                Tabs
+                new DefectsModule(),
                 new XunitModule(),
                 new BehaviorsModule(),
                 new TimelineModule()

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:ns="urn:report.allurefw.org"
+            targetNamespace="urn:report.allurefw.org">
+
+    <xsd:include schemaLocation="allure_report-data.xsd"/>
+
+    <xsd:element name="defects-data" type="ns:DefectsData"/>
+    <xsd:complexType name="DefectsData">
+        <xsd:sequence>
+            <xsd:element name="productDefects" minOccurs="0">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="defect" type="ns:Defect" minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="testDefects" minOccurs="0">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="defect" type="ns:Defect" minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="Defect">
+        <xsd:all>
+            <xsd:element name="uid" type="xsd:string"/>
+            <xsd:element name="message" type="xsd:string"/>
+            <xsd:element name="test-cases" minOccurs="0">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="test-case" type="ns:TestCaseInfo" minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:all>
+    </xsd:complexType>
+</xsd:schema>

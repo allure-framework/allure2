@@ -24,7 +24,7 @@ public class XunitPlugin implements TestCaseProcessor {
                 .orElse("Default suite");
 
         TestSuite testSuite = data.getTestSuites().stream()
-                .filter(suiteName::equals)
+                .filter(item -> suiteName.equals(item.getName()))
                 .findAny()
                 .orElseGet(() -> {
                     TestSuite newOne = new TestSuite().withName(suiteName).withUid(generateUid());
