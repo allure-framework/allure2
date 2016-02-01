@@ -1,11 +1,11 @@
 package org.allurefw.report.allure1;
 
 import org.allurefw.Status;
-import org.allurefw.report.Attachment;
-import org.allurefw.report.Parameter;
-import org.allurefw.report.Step;
-import org.allurefw.report.TestCase;
-import org.allurefw.report.Time;
+import org.allurefw.report.entity.Attachment;
+import org.allurefw.report.entity.Parameter;
+import org.allurefw.report.entity.Step;
+import org.allurefw.report.entity.TestCase;
+import org.allurefw.report.entity.Time;
 import org.allurefw.report.io.AbstractTestCaseIterator;
 import ru.yandex.qatools.allure.model.DescriptionType;
 import ru.yandex.qatools.allure.model.ParameterKind;

@@ -1,8 +1,5 @@
 package org.allurefw.report.entity;
 
-import org.allurefw.report.Step;
-import org.allurefw.report.Summary;
-
 import javax.xml.bind.annotation.XmlElement;
 import java.util.function.BinaryOperator;
 

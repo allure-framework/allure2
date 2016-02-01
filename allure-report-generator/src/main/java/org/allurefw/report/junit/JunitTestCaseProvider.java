@@ -1,8 +1,8 @@
 package org.allurefw.report.junit;
 
 import org.allurefw.report.ResultDirectories;
-import org.allurefw.report.TestCase;
 import org.allurefw.report.TestCaseProvider;
+import org.allurefw.report.entity.TestCase;
 
 import javax.inject.Inject;
 import java.nio.file.Path;

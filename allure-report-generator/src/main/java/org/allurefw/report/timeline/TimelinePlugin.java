@@ -3,10 +3,10 @@ package org.allurefw.report.timeline;
 import com.google.inject.Inject;
 import org.allurefw.LabelName;
 import org.allurefw.report.Host;
-import org.allurefw.report.TestCase;
 import org.allurefw.report.TestCaseProcessor;
 import org.allurefw.report.Thread;
 import org.allurefw.report.TimelineData;
+import org.allurefw.report.entity.TestCase;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru

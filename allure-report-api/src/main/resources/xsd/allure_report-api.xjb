@@ -6,7 +6,7 @@
                xsi:schemaLocation="http://java.sun.com/xml/ns/jaxb http://java.sun.com/xml/ns/jaxb/bindingschema_2_1.xsd"
                xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
                jaxb:extensionBindingPrefixes="xjc annox"
-               schemaLocation="allureReportApi.xsd"
+               schemaLocation="allure_report-api.xsd"
                jaxb:version="2.1">
 
     <jaxb:bindings node="//xsd:complexType[@name='Status']">

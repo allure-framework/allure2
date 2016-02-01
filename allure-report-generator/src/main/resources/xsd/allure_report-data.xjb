@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jaxb:bindings xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-               schemaLocation="reportData.xsd"
+               schemaLocation="allure_report-data.xsd"
                jaxb:version="2.1">
 
     <jaxb:bindings node="//xsd:complexType[@name='Time']">
-        <jaxb:class ref="org.allurefw.report.Time"/>
+        <jaxb:class ref="org.allurefw.report.entity.Time"/>
     </jaxb:bindings>
 
     <jaxb:bindings node="//xsd:complexType[@name='TestCaseInfo']">
-        <jaxb:class ref="org.allurefw.report.TestCaseInfo"/>
+        <jaxb:class ref="org.allurefw.report.entity.TestCaseInfo"/>
     </jaxb:bindings>
 
     <jaxb:bindings node="//xsd:complexType[@name='Status']">
-        <jaxb:class ref="org.allurefw.report.Status"/>
+        <jaxb:class ref="org.allurefw.report.entity.Status"/>
     </jaxb:bindings>
 
     <jaxb:bindings node="//xsd:complexType[@name='Failure']">
-        <jaxb:class ref="org.allurefw.report.Failure"/>
+        <jaxb:class ref="org.allurefw.report.entity.Failure"/>
     </jaxb:bindings>
 
 </jaxb:bindings>

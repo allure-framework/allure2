@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            xmlns:ns="urn:report.allurefw.org"
             targetNamespace="urn:report.allurefw.org">
-
-    <xsd:complexType name="TestCasesInfo">
-        <xsd:sequence>
-            <xsd:element name="test-case" type="ns:TestCaseInfo" minOccurs="0" maxOccurs="unbounded"/>
-        </xsd:sequence>
-    </xsd:complexType>
 
     <xsd:complexType name="TestCaseInfo"/>
     <xsd:complexType name="Time"/>

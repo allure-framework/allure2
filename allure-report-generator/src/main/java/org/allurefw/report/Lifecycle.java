@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import com.google.inject.Inject;
+import org.allurefw.report.entity.TestCase;
 
 import java.io.IOException;
 import java.io.OutputStream;

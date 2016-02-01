@@ -1,9 +1,9 @@
 package org.allurefw.report.junit;
 
 import org.allurefw.Status;
-import org.allurefw.report.Failure;
-import org.allurefw.report.TestCase;
-import org.allurefw.report.Time;
+import org.allurefw.report.entity.Failure;
+import org.allurefw.report.entity.TestCase;
+import org.allurefw.report.entity.Time;
 import org.allurefw.report.io.AbstractTestCaseIterator;
 
 import java.math.BigDecimal;

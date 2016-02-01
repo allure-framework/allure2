@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            xmlns:ns="urn:report.allurefw.org"
-            targetNamespace="urn:report.allurefw.org">
+            xmlns:ns="urn:entity.report.allurefw.org"
+            targetNamespace="urn:entity.report.allurefw.org">
 
     <xsd:element name="test-case-info" type="ns:TestCaseInfo"/>
     <xsd:complexType name="TestCaseInfo">

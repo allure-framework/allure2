@@ -1,7 +1,7 @@
 package org.allurefw.report.io;
 
 import com.google.common.collect.ImmutableSet;
-import org.allurefw.report.TestCase;
+import org.allurefw.report.entity.TestCase;
 
 import java.nio.file.Path;
 import java.util.Iterator;

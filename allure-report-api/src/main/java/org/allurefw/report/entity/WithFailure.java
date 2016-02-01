@@ -1,7 +1,5 @@
 package org.allurefw.report.entity;
 
-import org.allurefw.report.Failure;
-
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
  *         Date: 31.01.16

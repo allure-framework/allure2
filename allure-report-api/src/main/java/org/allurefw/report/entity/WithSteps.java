@@ -1,7 +1,5 @@
 package org.allurefw.report.entity;
 
-import org.allurefw.report.Step;
-
 import java.util.List;
 
 /**

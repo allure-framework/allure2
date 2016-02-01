@@ -1,7 +1,6 @@
 package org.allurefw.report.entity;
 
 import org.allurefw.Status;
-import org.allurefw.report.Statistic;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru

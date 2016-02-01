@@ -5,8 +5,8 @@ import org.allurefw.report.BehaviorData;
 import org.allurefw.report.Feature;
 import org.allurefw.report.ReportApiUtils;
 import org.allurefw.report.Story;
-import org.allurefw.report.TestCase;
 import org.allurefw.report.TestCaseProcessor;
+import org.allurefw.report.entity.TestCase;
 
 import javax.inject.Inject;
 import java.util.Set;
