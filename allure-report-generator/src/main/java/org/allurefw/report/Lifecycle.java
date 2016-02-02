@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.UUID;
 
@@ -28,7 +29,10 @@ public class Lifecycle {
     protected Set<TestCaseProcessor> processors;
 
     @Inject
-    protected Set<ReportDataProvider> dataProviders;
+    protected Set<ReportDataProvider> datas;
+
+    @Inject
+    protected Set<WidgetDataProvider> widgets;
 
     @Inject
     protected ReportConfig config;
@@ -52,9 +56,16 @@ public class Lifecycle {
             System.out.println("Could not find any results");
         }
 
-        for (ReportDataProvider provider : dataProviders) {
-            write(output, provider.getFileName(), provider.provide());
-        }
+        datas.forEach(provider -> write(output, provider.getFileName(), provider.provide()));
+
+        HashMap<String, Object> results = widgets.stream()
+                .collect(
+                        HashMap::new,
+                        (map, provider) -> map.put(provider.getWidgetId(), provider.provide()),
+                        HashMap::putAll
+                );
+
+        write(output, "widgets.json", results);
     }
 
     private void write(Path outputDir, String fileName, Object object) {

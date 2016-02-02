@@ -1,6 +1,5 @@
 package org.allurefw.report.junit;
 
-import org.allurefw.LabelName;
 import org.allurefw.ModelUtils;
 import org.allurefw.Status;
 import org.allurefw.report.entity.Failure;

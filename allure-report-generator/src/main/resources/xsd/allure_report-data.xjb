@@ -20,4 +20,8 @@
         <jaxb:class ref="org.allurefw.report.entity.Failure"/>
     </jaxb:bindings>
 
+    <jaxb:bindings node="//xsd:complexType[@name='Statistic']">
+        <jaxb:class ref="org.allurefw.report.entity.Statistic"/>
+    </jaxb:bindings>
+
 </jaxb:bindings>

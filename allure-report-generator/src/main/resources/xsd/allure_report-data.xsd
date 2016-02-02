@@ -7,4 +7,5 @@
     <xsd:complexType name="Time"/>
     <xsd:complexType name="Status"/>
     <xsd:complexType name="Failure"/>
+    <xsd:complexType name="Statistic"/>
 </xsd:schema>

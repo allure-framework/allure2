@@ -35,4 +35,13 @@
             </xsd:element>
         </xsd:all>
     </xsd:complexType>
+
+    <xsd:element name="x-unit-widget-data" type="ns:XunitWidgetData"/>
+    <xsd:complexType name="XunitWidgetData">
+        <xsd:sequence>
+            <xsd:element name="uid" type="xsd:string"/>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="statistic" type="ns:Statistic"/>
+        </xsd:sequence>
+    </xsd:complexType>
 </xsd:schema>

@@ -7,7 +7,11 @@ import com.google.inject.Singleton;
 import com.google.inject.multibindings.Multibinder;
 import org.allurefw.report.ReportDataProvider;
 import org.allurefw.report.TestCaseProcessor;
+import org.allurefw.report.WidgetDataProvider;
 import org.allurefw.report.XunitData;
+import org.allurefw.report.XunitWidgetData;
+
+import java.util.stream.Collectors;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
@@ -21,7 +25,10 @@ public class XunitModule extends AbstractModule {
                 .addBinding().to(XunitPlugin.class);
 
         Multibinder.newSetBinder(binder(), ReportDataProvider.class)
-                .addBinding().to(XunitDataProvider.class);
+                .addBinding().to(XunitReportDataProvider.class);
+
+        Multibinder.newSetBinder(binder(), WidgetDataProvider.class)
+                .addBinding().to(XunitWidgetDataProvider.class);
     }
 
     @Provides
@@ -30,12 +37,12 @@ public class XunitModule extends AbstractModule {
         return new XunitData();
     }
 
-    public static class XunitDataProvider implements ReportDataProvider {
+    public static class XunitReportDataProvider implements ReportDataProvider {
 
         protected final XunitData data;
 
         @Inject
-        protected XunitDataProvider(XunitData data) {
+        protected XunitReportDataProvider(XunitData data) {
             this.data = data;
         }
 
@@ -47,6 +54,32 @@ public class XunitModule extends AbstractModule {
         @Override
         public String getFileName() {
             return "xunit.json";
+        }
+    }
+
+    public static class XunitWidgetDataProvider implements WidgetDataProvider {
+
+        protected final XunitData data;
+
+        @Inject
+        protected XunitWidgetDataProvider(XunitData data) {
+            this.data = data;
+        }
+
+        @Override
+        public Object provide() {
+            return data.getTestSuites().stream()
+                    .sorted()
+                    .limit(10)
+                    .map(testSuite -> new XunitWidgetData()
+                            .withUid(testSuite.getUid())
+                            .withName(testSuite.getName()))
+                    .collect(Collectors.toList());
+        }
+
+        @Override
+        public String getWidgetId() {
+            return "xunit";
         }
     }
 }
