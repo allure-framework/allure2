@@ -9,17 +9,17 @@
     <xsd:element name="defects-data" type="ns:DefectsData"/>
     <xsd:complexType name="DefectsData">
         <xsd:sequence>
-            <xsd:element name="productDefects" minOccurs="0">
+            <xsd:element name="product-defects" minOccurs="0">
                 <xsd:complexType>
                     <xsd:sequence>
-                        <xsd:element name="defect" type="ns:Defect" minOccurs="0" maxOccurs="unbounded"/>
+                        <xsd:element name="product-defect" type="ns:Defect" minOccurs="0" maxOccurs="unbounded"/>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
-            <xsd:element name="testDefects" minOccurs="0">
+            <xsd:element name="test-defects" minOccurs="0">
                 <xsd:complexType>
                     <xsd:sequence>
-                        <xsd:element name="defect" type="ns:Defect" minOccurs="0" maxOccurs="unbounded"/>
+                        <xsd:element name="test-defect" type="ns:Defect" minOccurs="0" maxOccurs="unbounded"/>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>

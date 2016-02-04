@@ -1,6 +1,7 @@
 package org.allurefw.report;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -14,7 +15,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
@@ -48,7 +48,7 @@ public class Lifecycle {
                     processor.process(testCase);
                 }
 
-                write(output, UUID.randomUUID() + ".json", testCase);
+                write(output, testCase.getUid() + "-testcase.json", testCase);
             }
         }
 
@@ -78,6 +78,7 @@ public class Lifecycle {
 
     private ObjectMapper getMapper() {
         return new ObjectMapper()
+                .configure(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME, true)
                 .setAnnotationIntrospector(new JaxbAnnotationIntrospector(TypeFactory.defaultInstance()))
                 .enable(SerializationFeature.INDENT_OUTPUT)
                 .setSerializationInclusion(JsonInclude.Include.NON_NULL);

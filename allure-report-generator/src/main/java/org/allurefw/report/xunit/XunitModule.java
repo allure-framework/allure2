@@ -69,7 +69,6 @@ public class XunitModule extends AbstractModule {
         @Override
         public Object provide() {
             return data.getTestSuites().stream()
-                    .sorted()
                     .limit(10)
                     .map(testSuite -> new XunitWidgetData()
                             .withUid(testSuite.getUid())

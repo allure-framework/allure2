@@ -4,6 +4,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -21,7 +22,9 @@ public class ReportGeneratorTest {
         Path input = Paths.get("/Users/charlie/IdeaProjects/allure-report/allure-report-generator/src/test/java/org/allurefw/report/allure1data");
         Path output = folder.newFolder().toPath();
 
-        new ReportGenerator(input).generate(output);
+        Path report = Paths.get("/Users/charlie/IdeaProjects/allure-report/allure-report-generator/target/report");
+        Files.createDirectories(report);
+        new ReportGenerator(input).generate(report);
     }
 
     @Test
