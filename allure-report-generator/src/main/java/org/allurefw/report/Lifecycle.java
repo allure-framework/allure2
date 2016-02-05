@@ -53,7 +53,7 @@ public class Lifecycle {
                     processor.process(testCase);
                 }
 
-                write(output, testCase.getUid() + "-testcase.json", testCase);
+                write(output.resolve("testcases"), testCase.getUid() + ".json", testCase);
             }
         }
 
@@ -74,8 +74,9 @@ public class Lifecycle {
 
         attachments.findAll().forEach(file -> {
             Path source = Paths.get(file.getPath());
-            Path target = output.resolve(file.getUid() + "-attachment." + file.getFileExtension());
+            Path target = output.resolve("attachments").resolve(file.getUid() + "." + file.getFileExtension());
             try {
+                Files.createDirectories(target.getParent());
                 Files.copy(source, target);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -84,6 +85,10 @@ public class Lifecycle {
     }
 
     private void write(Path outputDir, String fileName, Object object) {
+        try {
+            Files.createDirectories(outputDir);
+        } catch (IOException ignored) {
+        }
         try (OutputStream stream = Files.newOutputStream(outputDir.resolve(fileName))) {
             getMapper().writeValue(stream, object);
         } catch (IOException e) {
