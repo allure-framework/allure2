@@ -103,6 +103,8 @@ public class TestCaseIterator extends AbstractTestCaseIterator<TestSuiteResult, 
                 .collect(Collectors.toList());
     }
 
+    //TODO replace source with uid; in general we need to set the source to "uid.ext"
+    //TODO add uid to attachments
     protected List<Attachment> convertAttachments(
             List<ru.yandex.qatools.allure.model.Attachment> attachments) {
         return attachments.stream()
