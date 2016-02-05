@@ -91,6 +91,13 @@
         <xsd:attribute name="steps" type="xsd:long" default="0"/>
     </xsd:complexType>
 
+    <xsd:element name="attachment-file" type="ns:AttachmentFile"/>
+    <xsd:complexType name="AttachmentFile">
+        <xsd:attribute name="uid" type="xsd:string" use="required"/>
+        <xsd:attribute name="path" type="xsd:string" use="required"/>
+        <xsd:attribute name="size" type="xsd:long" use="required"/>
+    </xsd:complexType>
+
     <!-- Wrappers, not actually a classes -->
     <xsd:complexType name="Steps">
         <xsd:sequence>

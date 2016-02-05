@@ -3,6 +3,7 @@ package org.allurefw.report;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.allurefw.report.allure1.Allure1Module;
+import org.allurefw.report.attachments.AttachmentsModule;
 import org.allurefw.report.behaviors.BehaviorsModule;
 import org.allurefw.report.config.ConfigModule;
 import org.allurefw.report.defects.DefectsModule;
@@ -26,6 +27,7 @@ public class ReportGenerator {
 //                Core
                 new BootstrapModule(inputs),
                 new ConfigModule(),
+                new AttachmentsModule(),
 //                Readers
                 new Allure1Module(),
                 new JunitModule(),

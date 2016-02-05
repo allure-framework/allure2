@@ -3,6 +3,7 @@ package org.allurefw.report.allure1;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 import com.google.inject.multibindings.Multibinder;
+import org.allurefw.report.AttachmentFileProvider;
 import org.allurefw.report.TestCaseProvider;
 
 /**
@@ -15,5 +16,8 @@ public class Allure1Module extends AbstractModule {
     protected void configure() {
         Multibinder.newSetBinder(binder(), TestCaseProvider.class)
                 .addBinding().to(Allure1TestCaseProvider.class).in(Scopes.SINGLETON);
+
+        Multibinder.newSetBinder(binder(), AttachmentFileProvider.class)
+                .addBinding().to(Allure1AttachmentsProvider.class).in(Scopes.SINGLETON);
     }
 }

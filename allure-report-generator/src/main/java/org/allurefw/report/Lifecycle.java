@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -37,7 +38,11 @@ public class Lifecycle {
     @Inject
     protected ReportConfig config;
 
+    @Inject
+    protected AttachmentFilesIndex attachments;
+
     public void generate(Path output) {
+
         boolean findAnyResults = false;
         for (TestCaseProvider provider : providers) {
             for (TestCase testCase : provider) {
@@ -66,6 +71,16 @@ public class Lifecycle {
                 );
 
         write(output, "widgets.json", results);
+
+        attachments.findAll().forEach(file -> {
+            Path source = Paths.get(file.getPath());
+            Path target = output.resolve(file.getUid() + "-attachment." + file.getFileExtension());
+            try {
+                Files.copy(source, target);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void write(Path outputDir, String fileName, Object object) {
