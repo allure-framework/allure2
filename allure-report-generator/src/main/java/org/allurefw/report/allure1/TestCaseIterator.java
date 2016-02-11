@@ -91,16 +91,20 @@ public class TestCaseIterator extends AbstractTestCaseIterator<TestSuiteResult, 
     protected List<Step> convertSteps(
             List<ru.yandex.qatools.allure.model.Step> steps) {
         return steps.stream()
-                .map(s -> new Step()
-                        .withName(s.getTitle())
-                        .withTime(new Time()
-                                .withStart(s.getStart())
-                                .withStop(s.getStop())
-                                .withDuration(s.getStop() - s.getStart()))
-                        .withStatus(convertStatus(s.getStatus()))
-                        .withSteps(convertSteps(s.getSteps()))
-                        .withAttachments(convertAttachments(s.getAttachments())))
+                .map(this::convertStep)
                 .collect(Collectors.toList());
+    }
+
+    protected Step convertStep(ru.yandex.qatools.allure.model.Step s) {
+        return new Step()
+                .withName(s.getTitle())
+                .withTime(new Time()
+                        .withStart(s.getStart())
+                        .withStop(s.getStop())
+                        .withDuration(s.getStop() - s.getStart()))
+                .withStatus(convertStatus(s.getStatus()))
+                .withSteps(convertSteps(s.getSteps()))
+                .withAttachments(convertAttachments(s.getAttachments()));
     }
 
     //TODO replace source with uid; in general we need to set the source to "uid.ext"
