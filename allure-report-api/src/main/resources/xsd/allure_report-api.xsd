@@ -4,6 +4,14 @@
             xmlns:ns="urn:entity.report.allurefw.org"
             targetNamespace="urn:entity.report.allurefw.org">
 
+    <xsd:element name="test-suite-info" type="ns:TestSuiteInfo"/>
+    <xsd:complexType name="TestSuiteInfo">
+        <xsd:all>
+            <xsd:element name="uid" type="xsd:string"/>
+            <xsd:element name="name" type="xsd:string"/>
+        </xsd:all>
+    </xsd:complexType>
+
     <xsd:element name="test-case-info" type="ns:TestCaseInfo"/>
     <xsd:complexType name="TestCaseInfo">
         <xsd:all>
