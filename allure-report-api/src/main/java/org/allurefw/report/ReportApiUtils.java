@@ -17,6 +17,7 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 
 import static java.nio.file.Files.newDirectoryStream;
 import static org.apache.tika.mime.MimeTypes.getDefaultMimeTypes;
@@ -43,6 +44,24 @@ public final class ReportApiUtils {
         byte[] randomBytes = new byte[UID_RANDOM_BYTES_COUNT];
         rand.nextBytes(randomBytes);
         return new BigInteger(1, randomBytes).toString(RADIX);
+    }
+
+    public static Properties loadProperties(String fileName, Path... directories) {
+        Properties properties = new Properties();
+
+        for (Path path : directories) {
+            Path env = path.resolve(fileName);
+            if (Files.notExists(env)) {
+                continue;
+            }
+            try (InputStream stream = Files.newInputStream(env)) {
+                properties.load(stream);
+            } catch (IOException e) {
+                LOGGER.debug("Could not read properties from file " + path, e);
+            }
+        }
+
+        return properties;
     }
 
     //TODO think about markdown

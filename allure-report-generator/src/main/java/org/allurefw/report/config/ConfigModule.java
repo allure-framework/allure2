@@ -4,7 +4,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import org.allurefw.report.ReportConfig;
-import org.allurefw.report.ResultDirectories;
+import org.allurefw.report.ResultsDirectories;
 import ru.qatools.properties.PropertyLoader;
 
 import java.nio.file.Path;
@@ -22,7 +22,7 @@ public class ConfigModule extends AbstractModule {
 
     @Provides
     @Singleton
-    protected ReportConfig index(@ResultDirectories Path... inputDirectories) {
+    protected ReportConfig index(@ResultsDirectories Path... inputDirectories) {
         return PropertyLoader.newInstance().withPropertyProvider(
                 new AllurePropertyProvider(inputDirectories)
         ).populate(ReportConfig.class);

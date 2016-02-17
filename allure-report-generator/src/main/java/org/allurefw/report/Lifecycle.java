@@ -35,7 +35,7 @@ public class Lifecycle {
     protected ReportConfig config;
 
     @Inject
-    @ResultDirectories
+    @ResultsDirectories
     protected Path[] resultsDirectories;
 
     @Inject

@@ -20,7 +20,7 @@ public class BootstrapModule extends AbstractModule {
     @Override
     protected void configure() {
         //TODO we kinda need to hide this from plugins I guess
-        bind(Path[].class).annotatedWith(ResultDirectories.class).toInstance(inputDirectories);
+        bind(Path[].class).annotatedWith(ResultsDirectories.class).toInstance(inputDirectories);
 
         Multibinder.newSetBinder(binder(), ResultsProcessor.class);
 
