@@ -1,9 +1,0 @@
-1) TestCaseProvider
-
-2) TestCaseProcessor
-2') TestCasePreparer
-
-3) WidgetDataProvider
-4) ReportDataProvider
-
-5) FaceProvider (All together)
