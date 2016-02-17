@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.Set;
 
 /**
@@ -70,24 +69,14 @@ public class Lifecycle {
         }
 
         if (!findAnyResults && config.isFailIfNoResultsFound()) {
-            System.out.println("Could not find any results");
+            throw new ReportGenerationException("Could not find any results");
         }
 
         //write data
         datas.forEach(provider -> writer.write(output, provider.getFileName(), provider.provide()));
 
-        writer.write(output, "widgets.json", getWidgetsData());
-
         Path attachmentsDir = output.resolve("attachments");
         manager.getAttachments().forEach((path, attachment) ->
                 writer.write(attachmentsDir, attachment.getSource(), path));
-    }
-
-    protected HashMap<String, Object> getWidgetsData() {
-        return widgets.stream().collect(
-                HashMap::new,
-                (map, provider) -> map.put(provider.getWidgetId(), provider.provide()),
-                HashMap::putAll
-        );
     }
 }

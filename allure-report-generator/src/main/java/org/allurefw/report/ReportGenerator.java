@@ -11,6 +11,7 @@ import org.allurefw.report.jackson.JacksonMapperModule;
 import org.allurefw.report.junit.JunitModule;
 import org.allurefw.report.results.ResultsModule;
 import org.allurefw.report.timeline.TimelineModule;
+import org.allurefw.report.widgets.WidgetsModule;
 import org.allurefw.report.writer.WriterModule;
 import org.allurefw.report.xunit.XunitModule;
 
@@ -32,6 +33,7 @@ public class ReportGenerator {
                 new ResultsModule(),
                 new JacksonMapperModule(),
                 new WriterModule(),
+                new WidgetsModule(),
 //                Readers
                 new Allure1Module(),
                 new JunitModule(),

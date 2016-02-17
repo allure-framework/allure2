@@ -29,8 +29,16 @@ public class DefaultWriter implements Writer {
 
     @Override
     public void write(Path outputDirectory, String fileName, Object object) {
+        try {
+            Files.createDirectories(outputDirectory);
+        } catch (IOException e) {
+            LOGGER.error("Couldn't create output directory {}: {}", outputDirectory, e);
+            return;
+        }
+
         Path dest = outputDirectory.resolve(fileName);
         try (OutputStream stream = new BufferedOutputStream(Files.newOutputStream(dest))) {
+            Files.createDirectories(dest.getParent());
             mapper.writeValue(stream, object);
         } catch (IOException e) {
             LOGGER.warn("Couldn't write {} to {}: {}", object.getClass(), dest, e);
@@ -41,7 +49,7 @@ public class DefaultWriter implements Writer {
     public void write(Path outputDirectory, String fileName, Path source) {
         Path dest = outputDirectory.resolve(fileName);
         try {
-            Files.createDirectories(outputDirectory);
+            Files.createDirectories(dest.getParent());
             Files.copy(source, dest);
         } catch (IOException e) {
             LOGGER.error("Couldn't copy file {} to {}: {}", source, dest, e);
