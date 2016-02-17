@@ -41,8 +41,4 @@
 
         <inheritance:implements>org.allurefw.report.entity.WithSummary</inheritance:implements>
     </jaxb:bindings>
-
-    <jaxb:bindings node="//xsd:complexType[@name='AttachmentFile']">
-        <inheritance:implements>org.allurefw.report.entity.WithFileName</inheritance:implements>
-    </jaxb:bindings>
 </jaxb:bindings>

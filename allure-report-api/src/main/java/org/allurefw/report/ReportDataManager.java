@@ -2,6 +2,8 @@ package org.allurefw.report;
 
 import org.allurefw.Label;
 import org.allurefw.LabelName;
+import org.allurefw.report.entity.Attachment;
+import org.allurefw.report.entity.AttachmentFile;
 import org.allurefw.report.entity.TestCase;
 
 import java.nio.file.Path;
@@ -80,7 +82,16 @@ public interface ReportDataManager {
      * such attachment in report data directory.
      *
      * @param path the path to file to add to the report.
-     * @return the file name to access such attachment in the report data directory.
+     * @param type the mime-type of attachment.
+     * @return the {@link AttachmentFile}. The source of attachmentFile helps to access
+     * such attachment in the report data directory.
      */
-    String addAttachment(Path path);
+    Attachment addAttachment(Path path, String type);
+
+    /**
+     * Shortcut for {@link #addAttachment(Path, String)}
+     */
+    default Attachment addAttachment(Path path) {
+        return addAttachment(path, null);
+    }
 }

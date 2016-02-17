@@ -28,7 +28,6 @@
     </build>
 
     <dependencies>
-
         <!-- There is should be only this dependency, actually -->
         <dependency>
             <groupId>org.allurefw</groupId>

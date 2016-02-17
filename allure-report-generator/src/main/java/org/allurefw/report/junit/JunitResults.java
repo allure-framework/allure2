@@ -45,13 +45,7 @@ public class JunitResults implements Results {
             Path attachmentFile = resultDirectory.resolve(testSuite.getName() + ".txt");
             Optional<Attachment> log = Optional.of(attachmentFile)
                     .filter(Files::exists)
-                    .map(manager::addAttachment)
-                    .map(source -> new Attachment()
-                            .withUid(generateUid())
-                            .withName("Test log")
-                            .withSource(source)
-                            .withType("text/plain")
-                    );
+                    .map(manager::addAttachment);
 
             for (Testsuite.Testcase testCaseRow : testSuite.getTestcase()) {
                 TestCase testCase = convert(testCaseRow);

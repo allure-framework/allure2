@@ -38,6 +38,10 @@
 
         <!-- Commons -->
         <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-core</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.pegdown</groupId>
             <artifactId>pegdown</artifactId>
         </dependency>

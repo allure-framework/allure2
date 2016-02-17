@@ -1,11 +1,14 @@
 package org.allurefw.report;
 
+import org.apache.tika.metadata.Metadata;
 import org.pegdown.Extensions;
 import org.pegdown.PegDownProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -16,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static java.nio.file.Files.newDirectoryStream;
+import static org.apache.tika.mime.MimeTypes.getDefaultMimeTypes;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
@@ -25,7 +29,10 @@ public final class ReportApiUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReportApiUtils.class);
 
+    private static final Metadata METADATA = new Metadata();
+
     public static final Integer RADIX = 16;
+
     public static final int UID_RANDOM_BYTES_COUNT = 8;
 
     ReportApiUtils() {
@@ -44,6 +51,24 @@ public final class ReportApiUtils {
     public static String processMarkdown(String rawText) {
         return new PegDownProcessor(Extensions.ALL + Extensions.SUPPRESS_ALL_HTML)
                 .markdownToHtml(rawText);
+    }
+
+    public static String getExtensionByMimeType(String type) {
+        try {
+            return getDefaultMimeTypes().forName(type).getExtension();
+        } catch (Exception e) {
+            LOGGER.warn("Can't detect extension for MIME-type {} {}", type, e);
+            return "";
+        }
+    }
+
+    public static String probeContentType(Path path) {
+        try (InputStream stream = new BufferedInputStream(Files.newInputStream(path))) {
+            return getDefaultMimeTypes().detect(stream, METADATA).toString();
+        } catch (IOException e) {
+            LOGGER.warn("Couldn't detect the mime-type of attachment {} {}", path, e);
+            return "unknown";
+        }
     }
 
     //TODO think about this file utils

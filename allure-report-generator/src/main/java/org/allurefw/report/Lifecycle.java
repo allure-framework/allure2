@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -83,12 +82,12 @@ public class Lifecycle {
 
         write(output, "widgets.json", results);
 
-        manager.getAttachments().forEach(file -> {
-            Path source = Paths.get(file.getPath());
-            Path target = output.resolve("attachments").resolve(file.getUid() + "." + file.getFileExtension());
+
+        manager.getAttachments().forEach((path, attachment) -> {
+            Path target = output.resolve("attachments").resolve(attachment.getSource());
             try {
                 Files.createDirectories(target.getParent());
-                Files.copy(source, target);
+                Files.copy(path, target);
             } catch (IOException e) {
                 e.printStackTrace();
             }

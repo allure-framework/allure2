@@ -129,12 +129,10 @@ public class Allure1Results implements Results {
 
     protected Attachment convert(Path resultDirectory,
                                  ru.yandex.qatools.allure.model.Attachment attachment) {
-        String destSource = manager.addAttachment(resultDirectory.resolve(attachment.getSource()));
-        return new Attachment()
-                .withUid(generateUid())
-                .withSource(destSource)
-                .withName(attachment.getTitle())
-                .withType(attachment.getType());
+        return manager.addAttachment(
+                resultDirectory.resolve(attachment.getSource()),
+                attachment.getType()
+        ).withName(attachment.getTitle());
     }
 
     protected Status convert(ru.yandex.qatools.allure.model.Status status) {
