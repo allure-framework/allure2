@@ -22,8 +22,11 @@ public class BootstrapModule extends AbstractModule {
         //TODO we kinda need to hide this from plugins I guess
         bind(Path[].class).annotatedWith(ResultDirectories.class).toInstance(inputDirectories);
 
-        Multibinder.newSetBinder(binder(), Results.class);
+        Multibinder.newSetBinder(binder(), ResultsProcessor.class);
+
+        Multibinder.newSetBinder(binder(), TestCasePreparer.class);
         Multibinder.newSetBinder(binder(), TestCaseProcessor.class);
+
         Multibinder.newSetBinder(binder(), ReportDataProvider.class);
         Multibinder.newSetBinder(binder(), WidgetDataProvider.class);
     }

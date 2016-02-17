@@ -7,9 +7,11 @@ import org.allurefw.report.behaviors.BehaviorsModule;
 import org.allurefw.report.config.ConfigModule;
 import org.allurefw.report.defects.DefectsModule;
 import org.allurefw.report.graph.GraphModule;
+import org.allurefw.report.jackson.JacksonMapperModule;
 import org.allurefw.report.junit.JunitModule;
 import org.allurefw.report.results.ResultsModule;
 import org.allurefw.report.timeline.TimelineModule;
+import org.allurefw.report.writer.WriterModule;
 import org.allurefw.report.xunit.XunitModule;
 
 import java.nio.file.Path;
@@ -28,6 +30,8 @@ public class ReportGenerator {
                 new BootstrapModule(inputs),
                 new ConfigModule(),
                 new ResultsModule(),
+                new JacksonMapperModule(),
+                new WriterModule(),
 //                Readers
                 new Allure1Module(),
                 new JunitModule(),

@@ -4,7 +4,7 @@ import org.allurefw.Label;
 import org.allurefw.ModelUtils;
 import org.allurefw.Status;
 import org.allurefw.report.ReportDataManager;
-import org.allurefw.report.Results;
+import org.allurefw.report.ResultsProcessor;
 import org.allurefw.report.entity.Attachment;
 import org.allurefw.report.entity.Failure;
 import org.allurefw.report.entity.TestCase;
@@ -26,7 +26,7 @@ import static org.allurefw.report.ReportApiUtils.listFilesSafe;
  * @author Dmitry Baev charlie@yandex-team.ru
  *         Date: 14.02.16
  */
-public class JunitResults implements Results {
+public class JunitResults implements ResultsProcessor {
 
     private ReportDataManager manager;
 

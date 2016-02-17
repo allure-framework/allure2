@@ -4,7 +4,7 @@ import org.allurefw.Label;
 import org.allurefw.ModelUtils;
 import org.allurefw.Status;
 import org.allurefw.report.ReportDataManager;
-import org.allurefw.report.Results;
+import org.allurefw.report.ResultsProcessor;
 import org.allurefw.report.entity.Attachment;
 import org.allurefw.report.entity.Parameter;
 import org.allurefw.report.entity.Step;
@@ -26,14 +26,13 @@ import java.util.stream.Collectors;
 
 import static org.allurefw.report.ReportApiUtils.generateUid;
 import static org.allurefw.report.ReportApiUtils.listFilesSafe;
-import static org.allurefw.report.ReportApiUtils.processMarkdown;
 import static ru.yandex.qatools.allure.AllureConstants.TEST_SUITE_XML_FILE_GLOB;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
  *         Date: 14.02.16
  */
-public class Allure1Results implements Results {
+public class Allure1Results implements ResultsProcessor {
 
     private ReportDataManager manager;
 
@@ -72,11 +71,11 @@ public class Allure1Results implements Results {
         dest.setStatus(convert(source.getStatus()));
 
         if (Objects.nonNull(source.getDescription())) {
-            dest.setDescription(source.getDescription().getValue());
-            dest.setDescriptionHtml(source.getDescription().getType() == DescriptionType.HTML
-                    ? source.getDescription().getValue()
-                    : processMarkdown(source.getDescription().getValue())
-            );
+            if (DescriptionType.HTML.equals(source.getDescription().getType())) {
+                dest.setDescriptionHtml(source.getDescription().getValue());
+            } else {
+                dest.setDescription(source.getDescription().getValue());
+            }
         }
 
         if (Objects.nonNull(source.getFailure())) {
