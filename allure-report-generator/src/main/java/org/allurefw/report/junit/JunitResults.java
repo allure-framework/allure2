@@ -1,78 +1,76 @@
 package org.allurefw.report.junit;
 
-import com.google.inject.Inject;
+import org.allurefw.Label;
 import org.allurefw.ModelUtils;
 import org.allurefw.Status;
-import org.allurefw.report.ResultDirectories;
+import org.allurefw.report.ReportDataManager;
+import org.allurefw.report.Results;
+import org.allurefw.report.entity.Attachment;
 import org.allurefw.report.entity.Failure;
 import org.allurefw.report.entity.TestCase;
-import org.allurefw.report.entity.TestSuiteInfo;
 import org.allurefw.report.entity.Time;
 import ru.yandex.qatools.allure.BadXmlCharacterFilterReader;
 
 import javax.xml.bind.JAXB;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.allurefw.report.ReportApiUtils.generateUid;
 import static org.allurefw.report.ReportApiUtils.listFilesSafe;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
- *         Date: 11.02.16
+ *         Date: 14.02.16
  */
-public class JunitResults {
+public class JunitResults implements Results {
 
-    private final Path[] resultDirectories;
+    private ReportDataManager manager;
 
-    private final List<Path> files;
+    @Override
+    public void process(Path resultDirectory) {
+        List<Path> results = listFilesSafe("TEST-*.xml", resultDirectory);
 
-    private final List<Testsuite> testSuites;
+        for (Path result : results) {
+            Optional<Testsuite> unmarshal = unmarshal(result);
+            if (!unmarshal.isPresent()) {
+                continue;
+            }
 
-    @Inject
-    public JunitResults(@ResultDirectories Path[] resultDirectories) {
-        this.resultDirectories = resultDirectories;
-        this.files = listFilesSafe("TEST-*.xml", this.resultDirectories);
-        this.testSuites = files.stream()
-                .map(this::unmarshal)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toList());
+            Testsuite testSuite = unmarshal.get();
+            Label suiteLabel = ModelUtils.createSuiteLabel(testSuite.getName());
+            Path attachmentFile = resultDirectory.resolve(testSuite.getName() + ".txt");
+            Optional<Attachment> log = Optional.of(attachmentFile)
+                    .filter(Files::exists)
+                    .map(manager::addAttachment)
+                    .map(source -> new Attachment()
+                            .withUid(generateUid())
+                            .withName("Test log")
+                            .withSource(source)
+                            .withType("text/plain")
+                    );
+
+            for (Testsuite.Testcase testCaseRow : testSuite.getTestcase()) {
+                TestCase testCase = convert(testCaseRow);
+
+                if (log.isPresent()) {
+                    testCase.getAttachments().add(log.get());
+                }
+                testCase.getLabels().add(suiteLabel);
+                manager.addTestCase(testCase);
+            }
+        }
     }
 
-    //TODO filename for file in data? Should be the same as in TestCase in attachments
-    public List<Path> getAttachments() {
-        return testSuites.stream()
-                .map(Testsuite::getName)
-                .map(name -> name + ".txt")
-                .flatMap(name -> listFilesSafe(name, resultDirectories).stream())
-                .collect(Collectors.toList());
+    @Override
+    public void setReportDataManager(ReportDataManager manager) {
+        this.manager = manager;
     }
 
-    public List<TestCase> getTestCases() {
-        Function<Testsuite, Stream<TestCase>> mapper = testSuite ->
-                testSuite.getTestcase().stream().map(testCase -> convert(testCase, testSuite));
-
-        return testSuites.stream()
-                .flatMap(mapper)
-                .collect(Collectors.toList());
-    }
-
-    public List<TestSuiteInfo> getTestSuites() {
-        return testSuites.stream()
-                .map(suite -> new TestSuiteInfo()
-                        .withName(suite.getName())
-                        .withUid(generateUid()))
-                .collect(Collectors.toList());
-    }
-
-    protected TestCase convert(Testsuite.Testcase source, Testsuite group) {
+    protected TestCase convert(Testsuite.Testcase source) {
         TestCase dest = new TestCase();
         dest.setUid(generateUid());
         dest.setName(source.getName());
@@ -81,7 +79,6 @@ public class JunitResults {
         );
         dest.setStatus(getStatus(source));
         dest.setFailure(getFailure(source));
-        dest.getLabels().add(ModelUtils.createSuiteLabel(group.getName()));
         return dest;
     }
 

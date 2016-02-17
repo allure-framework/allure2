@@ -22,7 +22,7 @@ public class ReportGeneratorTest {
         Path input = Paths.get("/Users/charlie/IdeaProjects/allure-report/allure-report-generator/src/test/java/org/allurefw/report/allure1data");
         Path output = folder.newFolder().toPath();
 
-        Path report = Paths.get("/Users/charlie/IdeaProjects/allure-report/allure-report-generator/target/report");
+        Path report = Paths.get("/Users/charlie/IdeaProjects/allure-report/allure-report-generator/target/allure1-report");
         Files.createDirectories(report);
         new ReportGenerator(input).generate(report);
     }
@@ -32,6 +32,7 @@ public class ReportGeneratorTest {
         Path input = Paths.get("/Users/charlie/IdeaProjects/allure-report/allure-report-generator/src/test/java/org/allurefw/report/junitdata");
         Path output = folder.newFolder().toPath();
 
-        new ReportGenerator(input).generate(output);
+        Path report = Paths.get("/Users/charlie/IdeaProjects/allure-report/allure-report-generator/target/junit-report");
+        new ReportGenerator(input).generate(report);
     }
 }

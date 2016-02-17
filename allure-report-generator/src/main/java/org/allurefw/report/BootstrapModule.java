@@ -19,12 +19,12 @@ public class BootstrapModule extends AbstractModule {
 
     @Override
     protected void configure() {
+        //TODO we kinda need to hide this from plugins I guess
         bind(Path[].class).annotatedWith(ResultDirectories.class).toInstance(inputDirectories);
 
-        Multibinder.newSetBinder(binder(), TestCaseProvider.class);
+        Multibinder.newSetBinder(binder(), Results.class);
         Multibinder.newSetBinder(binder(), TestCaseProcessor.class);
         Multibinder.newSetBinder(binder(), ReportDataProvider.class);
         Multibinder.newSetBinder(binder(), WidgetDataProvider.class);
-        Multibinder.newSetBinder(binder(), AttachmentFileProvider.class);
     }
 }

@@ -24,7 +24,7 @@ import java.util.Set;
 public class Lifecycle {
 
     @Inject
-    protected Set<TestCaseProvider> providers;
+    protected Set<Results> results;
 
     @Inject
     protected Set<TestCaseProcessor> processors;
@@ -39,22 +39,33 @@ public class Lifecycle {
     protected ReportConfig config;
 
     @Inject
-    protected AttachmentFilesIndex attachments;
+    @ResultDirectories
+    protected Path[] resultsDirectories;
+
+    @Inject
+    protected DefaultReportDataManager manager;
 
     public void generate(Path output) {
+        //TODO read the data
+        for (Results result : results) {
+            result.setReportDataManager(manager);
 
-        boolean findAnyResults = false;
-        for (TestCaseProvider provider : providers) {
-            for (TestCase testCase : provider) {
-                findAnyResults = true;
-
-                for (TestCaseProcessor processor : processors) {
-                    //todo we should copy test case at first
-                    processor.process(testCase);
-                }
-
-                write(output.resolve("testcases"), testCase.getUid() + ".json", testCase);
+            for (Path path : resultsDirectories) {
+                result.process(path);
             }
+        }
+
+        //TODO process the data
+        boolean findAnyResults = false;
+        for (TestCase testCase : manager.getTestCases()) {
+            findAnyResults = true;
+
+            for (TestCaseProcessor processor : processors) {
+                //todo we should copy test case at first
+                processor.process(testCase);
+            }
+
+            write(output.resolve("testcases"), testCase.getUid() + ".json", testCase);
         }
 
         if (!findAnyResults && config.isFailIfNoResultsFound()) {
@@ -72,7 +83,7 @@ public class Lifecycle {
 
         write(output, "widgets.json", results);
 
-        attachments.findAll().forEach(file -> {
+        manager.getAttachments().forEach(file -> {
             Path source = Paths.get(file.getPath());
             Path target = output.resolve("attachments").resolve(file.getUid() + "." + file.getFileExtension());
             try {

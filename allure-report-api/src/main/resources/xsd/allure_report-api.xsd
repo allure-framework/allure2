@@ -4,6 +4,16 @@
             xmlns:ns="urn:entity.report.allurefw.org"
             targetNamespace="urn:entity.report.allurefw.org">
 
+    <xsd:element name="group-info" type="ns:GroupInfo"/>
+    <xsd:complexType name="GroupInfo">
+        <xsd:all>
+            <xsd:element name="id" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="descriptionHtml" type="xsd:string" minOccurs="0"/>
+        </xsd:all>
+    </xsd:complexType>
+
+    <!--TODO think about the difference between test suite info and test case info.-->
     <xsd:element name="test-suite-info" type="ns:TestSuiteInfo"/>
     <xsd:complexType name="TestSuiteInfo">
         <xsd:all>
@@ -70,6 +80,7 @@
     <xsd:element name="attachment" type="ns:Attachment"/>
     <xsd:complexType name="Attachment">
         <xsd:all>
+            <xsd:element name="uid" type="xsd:string"/>
             <xsd:element name="name" type="xsd:string"/>
             <xsd:element name="source" type="xsd:string"/>
             <xsd:element name="type" type="xsd:string"/>
@@ -99,6 +110,7 @@
         <xsd:attribute name="steps" type="xsd:long" default="0"/>
     </xsd:complexType>
 
+    <!--TODO remove this shit-->
     <xsd:element name="attachment-file" type="ns:AttachmentFile"/>
     <xsd:complexType name="AttachmentFile">
         <xsd:attribute name="uid" type="xsd:string" use="required"/>
