@@ -29,7 +29,10 @@ public class EnvironmentModule extends AbstractModule {
     @Provides
     @Singleton
     public Environment provide(@ResultsDirectories Path... resultsDirectories) {
-        Properties properties = loadProperties("environment.properties", resultsDirectories);
+        Properties defaults = new Properties();
+        //TODO is there the right place for the defaults?
+        defaults.put("allure.test.run.name", "Allure Test Pack");
+        Properties properties = loadProperties(defaults, "environment.properties", resultsDirectories);
         Map<String, String> map = new HashMap<>(Maps.fromProperties(properties));
         String id = map.remove("allure.test.run.id");
         String name = map.remove("allure.test.run.name");

@@ -46,9 +46,7 @@ public final class ReportApiUtils {
         return new BigInteger(1, randomBytes).toString(RADIX);
     }
 
-    public static Properties loadProperties(String fileName, Path... directories) {
-        Properties properties = new Properties();
-
+    public static Properties loadProperties(Properties properties, String fileName, Path... directories) {
         for (Path path : directories) {
             Path env = path.resolve(fileName);
             if (Files.notExists(env)) {
