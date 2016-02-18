@@ -95,7 +95,14 @@ public class Allure1Results implements ResultsProcessor {
         );
         dest.setSteps(convertSteps(resultDirectory, source.getSteps()));
         dest.setAttachments(convertAttachments(resultDirectory, source.getAttachments()));
+        dest.setLabels(convertLabels(source.getLabels()));
         return dest;
+    }
+
+    protected List<Label> convertLabels(List<ru.yandex.qatools.allure.model.Label> labels) {
+        return labels.stream()
+                .map(label -> new Label().withName(label.getName()).withValue(label.getValue()))
+                .collect(Collectors.toList());
     }
 
     protected List<Step> convertSteps(
