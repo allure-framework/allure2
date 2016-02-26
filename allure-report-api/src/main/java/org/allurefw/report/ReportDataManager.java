@@ -1,14 +1,13 @@
 package org.allurefw.report;
 
-import org.allurefw.Label;
 import org.allurefw.LabelName;
 import org.allurefw.report.entity.Attachment;
 import org.allurefw.report.entity.AttachmentFile;
+import org.allurefw.report.entity.GroupInfo;
 import org.allurefw.report.entity.TestCase;
 
 import java.nio.file.Path;
 import java.util.Collections;
-import java.util.Map;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
@@ -34,47 +33,18 @@ public interface ReportDataManager {
     }
 
     /**
-     * Enrich the grouping with properties.
+     * Adds a new group info.
      *
-     * @param groupType  the type of group to enrich. An example <code>suite</code>.
-     * @param groupName  the name of group to enrich. An example <code>MyTest</code>.
-     * @param properties the properties to add to group.
+     * @param groupType the type of the group, an example <code>suite</code>.
+     * @param groupInfo the group info to add.
      */
-    void enrichGroup(String groupType, String groupName, Map<String, String> properties);
+    void addGroupInfo(String groupType, GroupInfo groupInfo);
 
     /**
-     * Shortcut for {@link #enrichGroup(String, String, Map)}
+     * Shortcut for {@link #addGroupInfo(String, GroupInfo)}
      */
-    default void enrichGroup(String groupingName, String groupName, String key, String value) {
-        enrichGroup(groupingName, groupName, Collections.singletonMap(key, value));
-    }
-
-    /**
-     * Shortcut for {@link #enrichGroup(String, String, Map)}
-     */
-    default void enrichGroup(LabelName groupType, String groupName, Map<String, String> properties) {
-        enrichGroup(groupType.value(), groupName, properties);
-    }
-
-    /**
-     * Shortcut for {@link #enrichGroup(String, String, String, String)}
-     */
-    default void enrichGroup(LabelName groupType, String groupName, String key, String value) {
-        enrichGroup(groupType.value(), groupName, key, value);
-    }
-
-    /**
-     * Shortcut for {@link #enrichGroup(String, String, String, String)}
-     */
-    default void enrichGroup(Label groupLabel, String key, String value) {
-        enrichGroup(groupLabel.getName(), groupLabel.getValue(), key, value);
-    }
-
-    /**
-     * Shortcut for {@link #enrichGroup(String, String, Map)}
-     */
-    default void enrichGroup(Label groupLabel, String key, Map<String, String> properties) {
-        enrichGroup(groupLabel.getName(), groupLabel.getValue(), properties);
+    default void addGroupInfo(LabelName groupType, GroupInfo groupInfo) {
+        addGroupInfo(groupType.value(), groupInfo);
     }
 
     /**
@@ -94,4 +64,5 @@ public interface ReportDataManager {
     default Attachment addAttachment(Path path) {
         return addAttachment(path, null);
     }
+
 }

@@ -10,4 +10,6 @@ public interface WithStatus {
 
     Status getStatus();
 
+    void setStatus(Status status);
+
 }

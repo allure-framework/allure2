@@ -124,6 +124,13 @@ public final class ModelUtils {
      * Create label with given {@link LabelName} and value.
      */
     public static Label createLabel(LabelName name, String value) {
-        return new Label().withName(name.value()).withValue(value);
+        return createLabel(name.value(), value);
+    }
+
+    /**
+     * Create label with given name and value.
+     */
+    public static Label createLabel(String name, String value) {
+        return new Label().withName(name).withValue(value);
     }
 }

@@ -15,6 +15,8 @@ public interface WithLabels {
 
     List<Label> getLabels();
 
+    void setLabels(List<Label> labels);
+
     default List<String> findAll(LabelName name) {
         return getLabels().stream()
                 .filter(label -> name.value().equals(label.getName()))

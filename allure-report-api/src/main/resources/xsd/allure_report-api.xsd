@@ -32,6 +32,17 @@
         </xsd:all>
     </xsd:complexType>
 
+    <xsd:element name="group-info" type="ns:GroupInfo"/>
+    <xsd:complexType name="GroupInfo">
+        <xsd:all>
+            <xsd:element name="uid" type="xsd:string"/>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="descriptionHtml" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="links" type="ns:Links" minOccurs="0"/>
+        </xsd:all>
+    </xsd:complexType>
+
     <xsd:element name="link" type="ns:Link"/>
     <xsd:complexType name="Link">
         <xsd:attribute name="name" type="xsd:string"/>

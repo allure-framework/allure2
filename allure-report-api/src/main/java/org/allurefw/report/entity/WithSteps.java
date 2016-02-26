@@ -10,4 +10,6 @@ public interface WithSteps {
 
     List<Step> getSteps();
 
+    void setSteps(List<Step> steps);
+
 }

@@ -1,17 +1,23 @@
 package org.allurefw.report.allure1;
 
-import org.allurefw.Label;
-import org.allurefw.ModelUtils;
+import org.allurefw.LabelName;
 import org.allurefw.Status;
 import org.allurefw.report.ReportDataManager;
 import org.allurefw.report.ResultsProcessor;
 import org.allurefw.report.entity.Attachment;
+import org.allurefw.report.entity.GroupInfo;
 import org.allurefw.report.entity.Parameter;
 import org.allurefw.report.entity.Step;
 import org.allurefw.report.entity.TestCase;
 import org.allurefw.report.entity.Time;
+import org.allurefw.report.entity.WithDescription;
+import org.allurefw.report.entity.WithFailure;
+import org.allurefw.report.entity.WithLabels;
 import ru.yandex.qatools.allure.BadXmlCharacterFilterReader;
+import ru.yandex.qatools.allure.model.Description;
 import ru.yandex.qatools.allure.model.DescriptionType;
+import ru.yandex.qatools.allure.model.Failure;
+import ru.yandex.qatools.allure.model.Label;
 import ru.yandex.qatools.allure.model.ParameterKind;
 import ru.yandex.qatools.allure.model.TestCaseResult;
 import ru.yandex.qatools.allure.model.TestSuiteResult;
@@ -24,6 +30,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static org.allurefw.ModelUtils.createLabel;
+import static org.allurefw.ModelUtils.createSuiteLabel;
+import static org.allurefw.Status.BROKEN;
+import static org.allurefw.Status.CANCELED;
+import static org.allurefw.Status.FAILED;
+import static org.allurefw.Status.PASSED;
+import static org.allurefw.Status.PENDING;
 import static org.allurefw.report.ReportApiUtils.generateUid;
 import static org.allurefw.report.ReportApiUtils.listFilesSafe;
 import static ru.yandex.qatools.allure.AllureConstants.TEST_SUITE_XML_FILE_GLOB;
@@ -47,12 +60,14 @@ public class Allure1Results implements ResultsProcessor {
             }
 
             TestSuiteResult testSuite = unmarshal.get();
-            Label suiteLabel = ModelUtils.createSuiteLabel(testSuite.getName());
-            manager.enrichGroup(suiteLabel, "description", "YAHOO");
+
+            GroupInfo group = new GroupInfo().withName(testSuite.getName());
+            convertDescription(group, testSuite.getDescription());
+            manager.addGroupInfo(LabelName.SUITE, group);
 
             for (TestCaseResult testCaseRow : testSuite.getTestCases()) {
                 TestCase testCase = convert(testCaseRow, resultDirectory);
-                testCase.getLabels().add(suiteLabel);
+                testCase.getLabels().add(createSuiteLabel(testSuite.getName()));
 
                 manager.addTestCase(testCase);
             }
@@ -68,22 +83,7 @@ public class Allure1Results implements ResultsProcessor {
         TestCase dest = new TestCase();
         dest.setUid(generateUid());
         dest.setName(source.getTitle() != null ? source.getTitle() : source.getName());
-        dest.setStatus(convert(source.getStatus()));
-
-        if (Objects.nonNull(source.getDescription())) {
-            if (DescriptionType.HTML.equals(source.getDescription().getType())) {
-                dest.setDescriptionHtml(source.getDescription().getValue());
-            } else {
-                dest.setDescription(source.getDescription().getValue());
-            }
-        }
-
-        if (Objects.nonNull(source.getFailure())) {
-            dest.setFailure(
-                    source.getFailure().getMessage(),
-                    source.getFailure().getStackTrace()
-            );
-        }
+        dest.setStatus(convertStatus(source.getStatus()));
 
         dest.setTime(source.getStart(), source.getStop());
         dest.setParameters(source.getParameters().stream()
@@ -95,14 +95,40 @@ public class Allure1Results implements ResultsProcessor {
         );
         dest.setSteps(convertSteps(resultDirectory, source.getSteps()));
         dest.setAttachments(convertAttachments(resultDirectory, source.getAttachments()));
-        dest.setLabels(convertLabels(source.getLabels()));
+
+        convertDescription(dest, source.getDescription());
+        convertFailure(dest, source.getFailure());
+        convertLabels(dest, source.getLabels());
+
         return dest;
     }
 
-    protected List<Label> convertLabels(List<ru.yandex.qatools.allure.model.Label> labels) {
-        return labels.stream()
-                .map(label -> new Label().withName(label.getName()).withValue(label.getValue()))
-                .collect(Collectors.toList());
+    protected void convertDescription(WithDescription dest, Description source) {
+        if (Objects.nonNull(source)) {
+            if (DescriptionType.HTML.equals(source.getType())) {
+                dest.setDescriptionHtml(source.getValue());
+            } else {
+                dest.setDescription(source.getValue());
+            }
+        }
+    }
+
+    protected void convertFailure(WithFailure dest, Failure source) {
+        if (Objects.nonNull(source)) {
+            dest.setFailure(
+                    source.getMessage(),
+                    source.getStackTrace()
+            );
+        }
+    }
+
+    protected void convertLabels(WithLabels dest, List<Label> labels) {
+        if (Objects.nonNull(labels)) {
+            dest.setLabels(labels.stream()
+                    .map(label -> createLabel(label.getName(), label.getValue()))
+                    .collect(Collectors.toList())
+            );
+        }
     }
 
     protected List<Step> convertSteps(
@@ -121,7 +147,7 @@ public class Allure1Results implements ResultsProcessor {
                         .withStart(s.getStart())
                         .withStop(s.getStop())
                         .withDuration(s.getStop() - s.getStart()))
-                .withStatus(convert(s.getStatus()))
+                .withStatus(convertStatus(s.getStatus()))
                 .withSteps(convertSteps(resultDirectory, s.getSteps()))
                 .withAttachments(convertAttachments(resultDirectory, s.getAttachments()));
     }
@@ -141,12 +167,19 @@ public class Allure1Results implements ResultsProcessor {
         ).withName(attachment.getTitle());
     }
 
-    protected Status convert(ru.yandex.qatools.allure.model.Status status) {
-        try {
-            return Status.fromValue(status.value());
-        } catch (Exception ignored) {
-            //convert skipped to canceled
-            return Status.CANCELED;
+    protected Status convertStatus(ru.yandex.qatools.allure.model.Status status) {
+        switch (status) {
+            case FAILED:
+                return FAILED;
+            case BROKEN:
+                return BROKEN;
+            case PASSED:
+                return PASSED;
+            case CANCELED:
+            case SKIPPED:
+                return CANCELED;
+            default:
+                return PENDING;
         }
     }
 

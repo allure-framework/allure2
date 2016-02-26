@@ -29,9 +29,6 @@ public class Lifecycle {
     protected Set<ReportDataProvider> datas;
 
     @Inject
-    protected Set<WidgetDataProvider> widgets;
-
-    @Inject
     protected ReportConfig config;
 
     @Inject

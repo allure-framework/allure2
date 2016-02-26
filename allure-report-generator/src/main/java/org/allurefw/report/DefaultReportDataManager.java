@@ -3,6 +3,7 @@ package org.allurefw.report;
 import com.google.common.collect.Iterables;
 import com.google.common.io.Files;
 import org.allurefw.report.entity.Attachment;
+import org.allurefw.report.entity.GroupInfo;
 import org.allurefw.report.entity.TestCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,8 @@ public class DefaultReportDataManager implements ReportDataManager {
 
     private Iterable<TestCase> testCases = Collections.emptyList();
 
+    private Map<String, Map<String, GroupInfo>> groups = new HashMap<>();
+
     private Map<Path, Attachment> attachments = new HashMap<>();
 
     @Override
@@ -35,8 +38,9 @@ public class DefaultReportDataManager implements ReportDataManager {
     }
 
     @Override
-    public void enrichGroup(String groupType, String groupName, Map<String, String> properties) {
-
+    public void addGroupInfo(String groupType, GroupInfo groupInfo) {
+        groups.putIfAbsent(groupType, new HashMap<>());
+        groups.get(groupType).put(groupInfo.getName(), groupInfo);
     }
 
     @Override
