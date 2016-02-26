@@ -3,16 +3,18 @@ package org.allurefw.report;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.allurefw.report.allure1.Allure1Module;
+import org.allurefw.report.attachments.AttachmentsModule;
 import org.allurefw.report.behaviors.BehaviorsModule;
 import org.allurefw.report.config.ConfigModule;
 import org.allurefw.report.defects.DefectsModule;
 import org.allurefw.report.environment.EnvironmentModule;
 import org.allurefw.report.graph.GraphModule;
+import org.allurefw.report.groups.GroupsModule;
 import org.allurefw.report.issue.IssueModule;
 import org.allurefw.report.jackson.JacksonMapperModule;
 import org.allurefw.report.junit.JunitModule;
 import org.allurefw.report.report.ReportModule;
-import org.allurefw.report.results.ResultsModule;
+import org.allurefw.report.testcases.TestCasesModule;
 import org.allurefw.report.timeline.TimelineModule;
 import org.allurefw.report.tms.TmsModule;
 import org.allurefw.report.widgets.WidgetsModule;
@@ -34,12 +36,14 @@ public class ReportGenerator {
 //                Core
                 new BootstrapModule(inputs),
                 new ConfigModule(),
-                new ResultsModule(),
                 new JacksonMapperModule(),
                 new WriterModule(),
                 new WidgetsModule(),
                 new ReportModule(),
                 new EnvironmentModule(),
+                new TestCasesModule(),
+                new GroupsModule(),
+                new AttachmentsModule(),
 //                Readers
                 new Allure1Module(),
                 new JunitModule(),
