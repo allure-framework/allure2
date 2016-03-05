@@ -4,7 +4,7 @@ package org.allurefw.report;
  * @author Dmitry Baev charlie@yandex-team.ru
  *         Date: 22.10.13
  *         <p/>
- *         Signals that an attempt to generate the report in specified directory has failed.
+ *         Signals that an attempt to generate the reportData in specified directory has failed.
  */
 public class ReportGenerationException extends RuntimeException {
 

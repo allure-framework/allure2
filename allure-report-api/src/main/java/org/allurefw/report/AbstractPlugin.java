@@ -6,7 +6,7 @@ import com.google.inject.multibindings.MapBinder;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
@@ -17,48 +17,76 @@ public abstract class AbstractPlugin extends AbstractModule {
     private final Plugin pluginAnnotation = getClass().getAnnotation(Plugin.class);
 
     /**
-     * Shortcut for {@link #aggregator(String, Serializable, Class)}.
-     */
-    public final <T extends Serializable> void aggregator(
-            T identity, Class<? extends Aggregator<T>> aggregatorClass) {
-        aggregator(getFileName(), identity, aggregatorClass);
-    }
-
-    /**
      * Register the test case aggregator.
      */
-    public final <T extends Serializable> void aggregator(
-            String fileName, T identity, Class<? extends Aggregator<T>> aggregatorClass) {
-        aggregator(fileName, identity).to(aggregatorClass);
-    }
-
-    /**
-     * Shortcut for {@link #aggregator(String, Serializable, Supplier)}
-     */
-    public final <T extends Serializable> void aggregator(
-            T identity, Supplier<? extends Aggregator<T>> supplier) {
-        aggregator(getFileName(), identity, supplier);
-    }
-
-    /**
-     * Register the test case aggregator.
-     */
-    public final <T extends Serializable> void aggregator(
-            String fileName, T identity, Supplier<? extends Aggregator<T>> supplier) {
-        aggregator(fileName, identity).toProvider(supplier::get);
+    protected final <T> void aggregator(T identity, Aggregator<T> aggregator) {
+        aggregator(identity).toProvider(() -> aggregator);
     }
 
     /**
      * Get the aggregator binder.
      */
-    protected <T extends Serializable> LinkedBindingBuilder<Aggregator> aggregator(
-            String fileName, T identity) {
-
-        MapBinder.newMapBinder(binder(), String.class, ReportData.class)
-                .addBinding(fileName).toInstance(() -> identity);
-
-        return MapBinder.newMapBinder(binder(), Serializable.class, Aggregator.class)
+    protected <T> LinkedBindingBuilder<Aggregator> aggregator(T identity) {
+        return MapBinder.newMapBinder(binder(), Object.class, Aggregator.class)
                 .addBinding(identity);
+    }
+
+    /**
+     * Shortcut for {@link #widgetData(String, Object, Function)}
+     */
+    protected <T extends Serializable> void widgetData(T identity) {
+        widgetData(identity, Function.identity());
+    }
+
+    /**
+     * Shortcut for {@link #widgetData(String, Object, Function)}
+     */
+    protected <T> void widgetData(T identity, Function<T, Serializable> function) {
+        widgetData(getPluginName(), identity, function);
+    }
+
+    /**
+     * Add the widget data.
+     */
+    protected <T> void widgetData(String widgetName, T identity, Function<T, Serializable> function) {
+        widgetDataBuilder(widgetName).toProvider(() -> function.apply(identity));
+    }
+
+    /**
+     * Add the widget data.
+     */
+    protected <T> LinkedBindingBuilder<Object> widgetDataBuilder(String widgetName) {
+        return MapBinder.newMapBinder(binder(), String.class, Object.class, WidgetData.class)
+                .addBinding(widgetName);
+    }
+
+    /**
+     * Shortcut for {@link #reportData(Object, Function)}
+     */
+    protected <T extends Serializable> void reportData(T identity) {
+        reportData(identity, Function.identity());
+    }
+
+    /**
+     * Shortcut for {@link #reportData(String, Object, Function)}
+     */
+    protected <T> void reportData(T identity, Function<T, Serializable> function) {
+        reportData(getFileName(), identity, function);
+    }
+
+    /**
+     * Add the report data.
+     */
+    protected <T> void reportData(String fileName, T identity, Function<T, Serializable> function) {
+        reportDataBuilder(fileName).toProvider(() -> function.apply(identity));
+    }
+
+    /**
+     * Add the report data.
+     */
+    protected <T> LinkedBindingBuilder<Object> reportDataBuilder(String fileName) {
+        return MapBinder.newMapBinder(binder(), String.class, Object.class, ReportData.class)
+                .addBinding(fileName);
     }
 
     /**

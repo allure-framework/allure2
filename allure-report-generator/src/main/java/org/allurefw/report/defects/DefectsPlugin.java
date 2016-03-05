@@ -24,7 +24,10 @@ public class DefectsPlugin extends AbstractPlugin {
 
     @Override
     protected void configure() {
-        aggregator(new DefectsData(), () -> this::aggregate);
+        DefectsData defectsData = new DefectsData();
+
+        aggregator(defectsData, this::aggregate);
+        reportData(defectsData);
     }
 
     protected void aggregate(DefectsData identity, TestCase testCase) {

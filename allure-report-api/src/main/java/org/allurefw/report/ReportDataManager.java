@@ -24,9 +24,9 @@ public interface ReportDataManager {
     void addTestCases(Iterable<TestCase> testCases);
 
     /**
-     * Adds given test case to the report.
+     * Adds given test case to the reportData.
      *
-     * @param testCase the test case to add to the report.
+     * @param testCase the test case to add to the reportData.
      */
     default void addTestCase(TestCase testCase) {
         addTestCases(Collections.singletonList(testCase));
@@ -48,13 +48,13 @@ public interface ReportDataManager {
     }
 
     /**
-     * Adds given attachment to the report and return the file name of
-     * such attachment in report data directory.
+     * Adds given attachment to the reportData and return the file name of
+     * such attachment in reportData data directory.
      *
-     * @param path the path to file to add to the report.
+     * @param path the path to file to add to the reportData.
      * @param type the mime-type of attachment.
      * @return the {@link AttachmentFile}. The source of attachmentFile helps to access
-     * such attachment in the report data directory.
+     * such attachment in the reportData data directory.
      */
     Attachment addAttachment(Path path, String type);
 

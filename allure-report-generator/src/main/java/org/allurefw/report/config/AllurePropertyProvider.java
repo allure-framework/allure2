@@ -33,7 +33,7 @@ public class AllurePropertyProvider extends SystemPropertyProvider {
     }
 
     /**
-     * Load properties from all report.properties files in {@link #inputDirectories}.
+     * Load properties from all reportData.properties files in {@link #inputDirectories}.
      * <p/>
      * {@inheritDoc}
      */

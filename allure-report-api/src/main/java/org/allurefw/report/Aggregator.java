@@ -2,13 +2,11 @@ package org.allurefw.report;
 
 import org.allurefw.report.entity.TestCase;
 
-import java.io.Serializable;
-
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
  *         Date: 04.03.16
  */
-public interface Aggregator<T extends Serializable> {
+public interface Aggregator<T> {
 
     /**
      * an associative, non-interfering, stateless function for

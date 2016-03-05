@@ -24,7 +24,6 @@ public class BootstrapModule extends AbstractModule {
         bind(Path[].class).annotatedWith(ResultsDirectories.class).toInstance(inputDirectories);
 
         MapBinder.newMapBinder(binder(), String.class, Aggregator.class);
-        MapBinder.newMapBinder(binder(), String.class, ReportData.class);
 
         Multibinder.newSetBinder(binder(), ResultsProcessor.class);
 

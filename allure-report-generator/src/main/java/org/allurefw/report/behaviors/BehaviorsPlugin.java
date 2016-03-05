@@ -23,7 +23,10 @@ public class BehaviorsPlugin extends AbstractPlugin {
 
     @Override
     protected void configure() {
-        aggregator(new BehaviorData(), () -> this::aggregate);
+        BehaviorData behaviorData = new BehaviorData();
+
+        aggregator(behaviorData, this::aggregate);
+        reportData(behaviorData);
     }
 
     protected void aggregate(BehaviorData identity, TestCase testCase) {

@@ -15,11 +15,11 @@ import org.allurefw.report.jackson.JacksonMapperModule;
 import org.allurefw.report.junit.JunitModule;
 import org.allurefw.report.report.ReportModule;
 import org.allurefw.report.testcases.TestCasesModule;
-import org.allurefw.report.timeline.TimelineModule;
+import org.allurefw.report.timeline.TimelinePlugin;
 import org.allurefw.report.tms.TmsModule;
 import org.allurefw.report.widgets.WidgetsModule;
 import org.allurefw.report.writer.WriterModule;
-import org.allurefw.report.xunit.XunitModule;
+import org.allurefw.report.xunit.XunitPlugin;
 
 import java.nio.file.Path;
 
@@ -49,9 +49,9 @@ public class ReportGenerator {
                 new JunitModule(),
 //                Tabs
                 new DefectsPlugin(),
-                new XunitModule(),
+                new XunitPlugin(),
                 new BehaviorsPlugin(),
-                new TimelineModule(),
+                new TimelinePlugin(),
                 new GraphPlugin(),
 //                Others
                 new IssueModule(),
