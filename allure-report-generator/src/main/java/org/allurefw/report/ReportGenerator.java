@@ -2,13 +2,13 @@ package org.allurefw.report;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import org.allurefw.report.allure1.Allure1Module;
-import org.allurefw.report.attachments.AttachmentsModule;
-import org.allurefw.report.behaviors.BehaviorsModule;
-import org.allurefw.report.config.ConfigModule;
-import org.allurefw.report.defects.DefectsModule;
+import org.allurefw.report.allure1.Allure1Plugin;
+import org.allurefw.report.attachments.AttachmentsPlugin;
+import org.allurefw.report.behaviors.BehaviorsPlugin;
+import org.allurefw.report.config.ConfigPlugin;
+import org.allurefw.report.defects.DefectsPlugin;
 import org.allurefw.report.environment.EnvironmentModule;
-import org.allurefw.report.graph.GraphModule;
+import org.allurefw.report.graph.GraphPlugin;
 import org.allurefw.report.groups.GroupsModule;
 import org.allurefw.report.issue.IssueModule;
 import org.allurefw.report.jackson.JacksonMapperModule;
@@ -35,7 +35,7 @@ public class ReportGenerator {
         injector = Guice.createInjector(
 //                Core
                 new BootstrapModule(inputs),
-                new ConfigModule(),
+                new ConfigPlugin(),
                 new JacksonMapperModule(),
                 new WriterModule(),
                 new WidgetsModule(),
@@ -43,16 +43,16 @@ public class ReportGenerator {
                 new EnvironmentModule(),
                 new TestCasesModule(),
                 new GroupsModule(),
-                new AttachmentsModule(),
+                new AttachmentsPlugin(),
 //                Readers
-                new Allure1Module(),
+                new Allure1Plugin(),
                 new JunitModule(),
 //                Tabs
-                new DefectsModule(),
+                new DefectsPlugin(),
                 new XunitModule(),
-                new BehaviorsModule(),
+                new BehaviorsPlugin(),
                 new TimelineModule(),
-                new GraphModule(),
+                new GraphPlugin(),
 //                Others
                 new IssueModule(),
                 new TmsModule()

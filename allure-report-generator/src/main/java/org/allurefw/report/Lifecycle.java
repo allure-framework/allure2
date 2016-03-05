@@ -5,7 +5,9 @@ import org.allurefw.report.entity.TestCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
 import java.nio.file.Path;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -27,6 +29,12 @@ public class Lifecycle {
 
     @Inject
     protected Set<ReportDataProvider> datas;
+
+    @Inject
+    protected Map<Serializable, Aggregator> aggregators;
+
+    @Inject
+    protected Map<String, Serializable> reportData;
 
     @Inject
     protected ReportConfig config;
@@ -60,6 +68,10 @@ public class Lifecycle {
 
             preparers.forEach(preparer -> preparer.prepare(testCase));
             //TODO don't forget to copy test case
+
+            //noinspection unchecked
+            aggregators.forEach((identity, aggregator) -> aggregator.aggregate(identity, testCase));
+
             processors.forEach(processor -> processor.process(testCase));
 
             writer.write(testCasesDir, testCase.getSource(), testCase);
@@ -71,6 +83,7 @@ public class Lifecycle {
 
         //write data
         datas.forEach(provider -> writer.write(output, provider.getFileName(), provider.provide()));
+        reportData.forEach((fileName, data) -> writer.write(output, fileName, data));
 
         Path attachmentsDir = output.resolve("attachments");
         manager.getAttachments().forEach((path, attachment) ->

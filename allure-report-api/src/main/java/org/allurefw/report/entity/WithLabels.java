@@ -5,6 +5,7 @@ import org.allurefw.LabelName;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -17,11 +18,15 @@ public interface WithLabels {
 
     void setLabels(List<Label> labels);
 
-    default List<String> findAll(LabelName name) {
+    default <T> T findAll(LabelName name, Collector<String, ?, T> collector) {
         return getLabels().stream()
                 .filter(label -> name.value().equals(label.getName()))
                 .map(Label::getValue)
-                .collect(Collectors.toList());
+                .collect(collector);
+    }
+
+    default List<String> findAll(LabelName name) {
+        return findAll(name, Collectors.toList());
     }
 
     default Optional<String> findOne(LabelName name) {

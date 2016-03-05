@@ -1,21 +1,23 @@
 package org.allurefw.report.graph;
 
-import com.google.inject.Inject;
+import org.allurefw.report.AbstractPlugin;
+import org.allurefw.report.Aggregator;
 import org.allurefw.report.GraphData;
-import org.allurefw.report.TestCaseProcessor;
-import org.allurefw.report.entity.TestCase;
+import org.allurefw.report.Plugin;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
  *         Date: 01.02.16
  */
-public class GraphPlugin implements TestCaseProcessor {
-
-    @Inject
-    protected GraphData data;
+@Plugin(name = "graph")
+public class GraphPlugin extends AbstractPlugin {
 
     @Override
-    public void process(TestCase testCase) {
-        data.getTestCases().add(testCase.toInfo());
+    protected void configure() {
+        aggregator(new GraphData(), this::getAggregator);
+    }
+
+    protected Aggregator<GraphData> getAggregator() {
+        return (identity, testCase) -> identity.getTestCases().add(testCase.toInfo());
     }
 }
