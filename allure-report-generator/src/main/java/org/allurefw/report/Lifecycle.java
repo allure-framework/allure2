@@ -5,10 +5,11 @@ import org.allurefw.report.entity.TestCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Serializable;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
@@ -22,19 +23,17 @@ public class Lifecycle {
     protected Set<ResultsProcessor> results;
 
     @Inject
-    protected Set<TestCaseProcessor> processors;
-
-    @Inject
     protected Set<TestCasePreparer> preparers;
 
     @Inject
-    protected Set<ReportDataProvider> datas;
+    protected Map<Object, Aggregator> aggregators;
 
     @Inject
-    protected Map<Serializable, Aggregator> aggregators;
+    protected Set<DataCollector> collectors;
 
     @Inject
-    protected Map<String, Serializable> reportData;
+    @ReportData
+    protected Map<String, Object> reportData;
 
     @Inject
     protected ReportConfig config;
@@ -63,6 +62,11 @@ public class Lifecycle {
         Path testCasesDir = output.resolve("test-cases");
 
         boolean findAnyResults = false;
+
+
+        Map<DataCollector, Object> reportData = new HashMap<>();
+        collectors.forEach(collector -> reportData.put(collector, collector.supplier().get()));
+
         for (TestCase testCase : manager.getTestCases()) {
             findAnyResults = true;
 
@@ -70,9 +74,11 @@ public class Lifecycle {
             //TODO don't forget to copy test case
 
             //noinspection unchecked
-            aggregators.forEach((identity, aggregator) -> aggregator.aggregate(identity, testCase));
+            reportData.forEach((collector, identity)
+                    -> collector.accumulator().accept(identity, testCase));
 
-            processors.forEach(processor -> processor.process(testCase));
+            //noinspection unchecked
+            aggregators.forEach((identity, aggregator) -> aggregator.aggregate(identity, testCase));
 
             writer.write(testCasesDir, testCase.getSource(), testCase);
         }
@@ -82,11 +88,11 @@ public class Lifecycle {
         }
 
         //write data
-        datas.forEach(provider -> writer.write(output, provider.getFileName(), provider.provide()));
-        reportData.forEach((fileName, data) -> writer.write(output, fileName, data));
+//        reportData.forEach((fileName, data) -> writer.write(output, fileName, data));
 
         Path attachmentsDir = output.resolve("attachments");
         manager.getAttachments().forEach((path, attachment) ->
                 writer.write(attachmentsDir, attachment.getSource(), path));
     }
+
 }

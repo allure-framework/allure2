@@ -13,6 +13,7 @@
         <module>junit-model</module>
         <module>allure-report-api</module>
         <module>allure-report-generator</module>
+        <module>allure-camel</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -115,6 +116,13 @@
                 <artifactId>allure-report-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.allurefw</groupId>
+                <artifactId>allure-report-generator</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+
             <dependency>
                 <groupId>org.allurefw</groupId>
                 <artifactId>junit-model</artifactId>

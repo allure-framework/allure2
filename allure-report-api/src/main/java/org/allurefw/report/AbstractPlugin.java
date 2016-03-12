@@ -3,6 +3,7 @@ package org.allurefw.report;
 import com.google.inject.AbstractModule;
 import com.google.inject.binder.LinkedBindingBuilder;
 import com.google.inject.multibindings.MapBinder;
+import com.google.inject.multibindings.Multibinder;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -15,6 +16,34 @@ import java.util.function.Function;
 public abstract class AbstractPlugin extends AbstractModule {
 
     private final Plugin pluginAnnotation = getClass().getAnnotation(Plugin.class);
+
+    protected <T> void addAggregator(String name, Class<? extends Aggregator<T>> aggregatorClass) {
+        MapBinder.newMapBinder(binder(), String.class, Aggregator.class)
+                .addBinding(name).to(aggregatorClass);
+    }
+
+    protected <T> CollectorBuilder<T> using(Class<? extends DataCollector<T>> collectorClass) {
+        Multibinder.newSetBinder(binder(), DataCollector.class)
+                .addBinding().to(collectorClass);
+
+        return new CollectorBuilder<>();
+    }
+
+    public class CollectorBuilder<T> {
+
+        public CollectorBuilder<T> addReportData(String fileName) {
+            return addReportData(fileName, t -> t);
+        }
+
+        public CollectorBuilder<T> addReportData(String fileName, Function<T, Object> converter) {
+            return this;
+        }
+
+        public CollectorBuilder<T> addWidget(String widgetName, Function<T, Object> converter) {
+            return this;
+        }
+    }
+
 
     /**
      * Register the test case aggregator.
@@ -29,6 +58,20 @@ public abstract class AbstractPlugin extends AbstractModule {
     protected <T> LinkedBindingBuilder<Aggregator> aggregator(T identity) {
         return MapBinder.newMapBinder(binder(), Object.class, Aggregator.class)
                 .addBinding(identity);
+    }
+
+    /**
+     * Get the aggregator binder.
+     */
+    protected MapBinder<Object, Aggregator> aggregators() {
+        return MapBinder.newMapBinder(binder(), Object.class, Aggregator.class);
+    }
+
+    /**
+     * Get the widgets data binder.
+     */
+    protected MapBinder<String, Object> widgets() {
+        return MapBinder.newMapBinder(binder(), String.class, Object.class, WidgetData.class);
     }
 
     /**

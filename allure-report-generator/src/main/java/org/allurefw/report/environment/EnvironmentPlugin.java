@@ -19,7 +19,7 @@ import static org.allurefw.report.ReportApiUtils.loadProperties;
  * @author Dmitry Baev charlie@yandex-team.ru
  *         Date: 17.02.16
  */
-public class EnvironmentModule extends AbstractModule {
+public class EnvironmentPlugin extends AbstractModule {
 
     @Override
     protected void configure() {

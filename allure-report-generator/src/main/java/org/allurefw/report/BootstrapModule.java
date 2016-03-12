@@ -4,6 +4,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.MapBinder;
 import com.google.inject.multibindings.Multibinder;
 
+import java.io.Serializable;
 import java.nio.file.Path;
 
 /**
@@ -23,14 +24,12 @@ public class BootstrapModule extends AbstractModule {
         //TODO we kinda need to hide this from plugins I guess
         bind(Path[].class).annotatedWith(ResultsDirectories.class).toInstance(inputDirectories);
 
-        MapBinder.newMapBinder(binder(), String.class, Aggregator.class);
+        MapBinder.newMapBinder(binder(), Object.class, Aggregator.class);
+        MapBinder.newMapBinder(binder(), String.class, Object.class, WidgetData.class);
+        MapBinder.newMapBinder(binder(), String.class, Object.class, ReportData.class);
 
         Multibinder.newSetBinder(binder(), ResultsProcessor.class);
 
         Multibinder.newSetBinder(binder(), TestCasePreparer.class);
-        Multibinder.newSetBinder(binder(), TestCaseProcessor.class);
-
-        Multibinder.newSetBinder(binder(), ReportDataProvider.class);
-        Multibinder.newSetBinder(binder(), WidgetDataProvider.class);
     }
 }

@@ -23,5 +23,4 @@ public interface WithTime {
                 .withDuration(duration)
         );
     }
-
 }

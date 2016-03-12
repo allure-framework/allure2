@@ -1,4 +1,4 @@
-package org.allurefw.report.report;
+package org.allurefw.report.widgets;
 
 import org.allurefw.report.AbstractPlugin;
 import org.allurefw.report.Plugin;
@@ -7,11 +7,11 @@ import org.allurefw.report.Plugin;
  * @author Dmitry Baev charlie@yandex-team.ru
  *         Date: 17.02.16
  */
-@Plugin(name = "report-info")
-public class ReportModule extends AbstractPlugin {
+@Plugin(name = "widget-support")
+public class WidgetsPlugin extends AbstractPlugin {
 
     @Override
     protected void configure() {
-        reportDataBuilder("report.json").toProvider(ReportInfoDataProvider.class);
+        reportDataBuilder("widgets.json").toProvider(WidgetsDataProvider.class);
     }
 }

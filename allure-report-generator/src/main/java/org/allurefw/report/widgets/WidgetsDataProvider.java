@@ -1,36 +1,26 @@
 package org.allurefw.report.widgets;
 
 import com.google.inject.Inject;
-import org.allurefw.report.ReportDataProvider;
-import org.allurefw.report.WidgetDataProvider;
+import com.google.inject.Provider;
+import org.allurefw.report.WidgetData;
 
-import java.util.HashMap;
-import java.util.Set;
+import java.util.Map;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
  *         Date: 17.02.16
  */
-public class WidgetsDataProvider implements ReportDataProvider {
+public class WidgetsDataProvider implements Provider<Object> {
 
-    protected final Set<WidgetDataProvider> widgets;
+    protected final Map<String, Object> widgetData;
 
     @Inject
-    public WidgetsDataProvider(Set<WidgetDataProvider> widgets) {
-        this.widgets = widgets;
+    public WidgetsDataProvider(@WidgetData Map<String, Object> widgetData) {
+        this.widgetData = widgetData;
     }
 
     @Override
-    public Object provide() {
-        return widgets.stream().collect(
-                HashMap::new,
-                (map, provider) -> map.put(provider.getWidgetId(), provider.provide()),
-                HashMap::putAll
-        );
-    }
-
-    @Override
-    public String getFileName() {
-        return "widgets.json";
+    public Object get() {
+        return widgetData;
     }
 }
