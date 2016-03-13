@@ -1,6 +1,5 @@
 package org.allurefw.report.behaviors;
 
-import org.allurefw.LabelName;
 import org.allurefw.report.AbstractPlugin;
 import org.allurefw.report.BehaviorData;
 import org.allurefw.report.Feature;
@@ -8,6 +7,7 @@ import org.allurefw.report.Plugin;
 import org.allurefw.report.PluginScope;
 import org.allurefw.report.ReportApiUtils;
 import org.allurefw.report.Story;
+import org.allurefw.report.entity.LabelName;
 import org.allurefw.report.entity.TestCase;
 
 import java.util.Collections;

@@ -1,9 +1,9 @@
 package org.allurefw.report.issue;
 
 import com.google.inject.Inject;
-import org.allurefw.LabelName;
 import org.allurefw.report.ReportConfig;
 import org.allurefw.report.TestCasePreparer;
+import org.allurefw.report.entity.LabelName;
 import org.allurefw.report.entity.Link;
 import org.allurefw.report.entity.TestCase;
 

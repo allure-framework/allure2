@@ -1,11 +1,11 @@
 package org.allurefw.report.timeline;
 
-import org.allurefw.LabelName;
 import org.allurefw.report.AbstractPlugin;
 import org.allurefw.report.Host;
 import org.allurefw.report.Plugin;
 import org.allurefw.report.Thread;
 import org.allurefw.report.TimelineData;
+import org.allurefw.report.entity.LabelName;
 import org.allurefw.report.entity.TestCase;
 
 /**

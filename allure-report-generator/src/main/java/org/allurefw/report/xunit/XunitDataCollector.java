@@ -1,9 +1,9 @@
 package org.allurefw.report.xunit;
 
-import org.allurefw.LabelName;
 import org.allurefw.report.DataCollector;
 import org.allurefw.report.TestSuite;
 import org.allurefw.report.XunitData;
+import org.allurefw.report.entity.LabelName;
 import org.allurefw.report.entity.TestCase;
 
 import java.util.function.BiConsumer;

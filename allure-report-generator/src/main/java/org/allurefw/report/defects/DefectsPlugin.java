@@ -1,19 +1,19 @@
 package org.allurefw.report.defects;
 
-import org.allurefw.Status;
 import org.allurefw.report.AbstractPlugin;
 import org.allurefw.report.Defect;
 import org.allurefw.report.DefectsData;
 import org.allurefw.report.Plugin;
 import org.allurefw.report.PluginScope;
 import org.allurefw.report.entity.Failure;
+import org.allurefw.report.entity.Status;
 import org.allurefw.report.entity.TestCase;
 
 import java.util.List;
 
-import static org.allurefw.Status.BROKEN;
-import static org.allurefw.Status.FAILED;
 import static org.allurefw.report.ReportApiUtils.generateUid;
+import static org.allurefw.report.entity.Status.BROKEN;
+import static org.allurefw.report.entity.Status.FAILED;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru

@@ -1,12 +1,12 @@
 package org.allurefw.report.junit;
 
-import org.allurefw.Label;
-import org.allurefw.ModelUtils;
-import org.allurefw.Status;
+import org.allurefw.report.ModelUtils;
 import org.allurefw.report.ReportDataManager;
 import org.allurefw.report.ResultsProcessor;
 import org.allurefw.report.entity.Attachment;
 import org.allurefw.report.entity.Failure;
+import org.allurefw.report.entity.Label;
+import org.allurefw.report.entity.Status;
 import org.allurefw.report.entity.TestCase;
 import org.allurefw.report.entity.Time;
 import ru.yandex.qatools.allure.BadXmlCharacterFilterReader;

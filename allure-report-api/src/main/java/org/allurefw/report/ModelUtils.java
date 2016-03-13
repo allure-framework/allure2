@@ -1,19 +1,23 @@
-package org.allurefw;
+package org.allurefw.report;
+
+import org.allurefw.report.entity.Label;
+import org.allurefw.report.entity.LabelName;
+import org.allurefw.report.entity.SeverityLevel;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.allurefw.LabelName.FEATURE;
-import static org.allurefw.LabelName.FRAMEWORK;
-import static org.allurefw.LabelName.HOST;
-import static org.allurefw.LabelName.ISSUE;
-import static org.allurefw.LabelName.LANGUAGE;
-import static org.allurefw.LabelName.SEVERITY;
-import static org.allurefw.LabelName.STORY;
-import static org.allurefw.LabelName.SUITE;
-import static org.allurefw.LabelName.TEST_ID;
-import static org.allurefw.LabelName.THREAD;
+import static org.allurefw.report.entity.LabelName.FEATURE;
+import static org.allurefw.report.entity.LabelName.FRAMEWORK;
+import static org.allurefw.report.entity.LabelName.HOST;
+import static org.allurefw.report.entity.LabelName.ISSUE;
+import static org.allurefw.report.entity.LabelName.LANGUAGE;
+import static org.allurefw.report.entity.LabelName.SEVERITY;
+import static org.allurefw.report.entity.LabelName.STORY;
+import static org.allurefw.report.entity.LabelName.SUITE;
+import static org.allurefw.report.entity.LabelName.TEST_ID;
+import static org.allurefw.report.entity.LabelName.THREAD;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru

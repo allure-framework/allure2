@@ -1,8 +1,5 @@
 package org.allurefw.report.entity;
 
-import org.allurefw.Label;
-import org.allurefw.LabelName;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collector;

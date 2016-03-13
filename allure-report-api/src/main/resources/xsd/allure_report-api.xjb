@@ -9,14 +9,6 @@
                schemaLocation="allure_report-api.xsd"
                jaxb:version="2.1">
 
-    <jaxb:bindings node="//xsd:complexType[@name='Status']">
-        <jaxb:class ref="org.allurefw.Status"/>
-    </jaxb:bindings>
-
-    <jaxb:bindings node="//xsd:complexType[@name='Label']">
-        <jaxb:class ref="org.allurefw.Label"/>
-    </jaxb:bindings>
-
     <jaxb:bindings node="//xsd:complexType[@name='GroupInfo']">
         <inheritance:implements>org.allurefw.report.entity.WithName</inheritance:implements>
         <inheritance:implements>org.allurefw.report.entity.WithDescription</inheritance:implements>

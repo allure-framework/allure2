@@ -9,7 +9,6 @@
     <version>2.0-SNAPSHOT</version>
 
     <modules>
-        <module>allure-model</module>
         <module>junit-model</module>
         <module>allure-report-api</module>
         <module>allure-report-generator</module>
@@ -106,11 +105,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.allurefw</groupId>
-                <artifactId>allure-model</artifactId>
-                <version>${project.version}</version>
-            </dependency>
             <dependency>
                 <groupId>org.allurefw</groupId>
                 <artifactId>allure-report-api</artifactId>

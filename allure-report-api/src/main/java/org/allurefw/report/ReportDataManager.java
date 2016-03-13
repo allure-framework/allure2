@@ -1,9 +1,9 @@
 package org.allurefw.report;
 
-import org.allurefw.LabelName;
 import org.allurefw.report.entity.Attachment;
 import org.allurefw.report.entity.AttachmentFile;
 import org.allurefw.report.entity.GroupInfo;
+import org.allurefw.report.entity.LabelName;
 import org.allurefw.report.entity.TestCase;
 
 import java.nio.file.Path;

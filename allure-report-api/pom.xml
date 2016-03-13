@@ -21,11 +21,6 @@
     </build>
 
     <dependencies>
-        <dependency>
-            <groupId>org.allurefw</groupId>
-            <artifactId>allure-model</artifactId>
-        </dependency>
-
         <!-- Guice -->
         <dependency>
             <groupId>com.google.inject</groupId>

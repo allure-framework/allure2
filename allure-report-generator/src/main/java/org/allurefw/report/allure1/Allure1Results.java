@@ -1,12 +1,12 @@
 package org.allurefw.report.allure1;
 
-import org.allurefw.LabelName;
-import org.allurefw.Status;
 import org.allurefw.report.ReportDataManager;
 import org.allurefw.report.ResultsProcessor;
 import org.allurefw.report.entity.Attachment;
 import org.allurefw.report.entity.GroupInfo;
+import org.allurefw.report.entity.LabelName;
 import org.allurefw.report.entity.Parameter;
+import org.allurefw.report.entity.Status;
 import org.allurefw.report.entity.Step;
 import org.allurefw.report.entity.TestCase;
 import org.allurefw.report.entity.Time;
@@ -30,15 +30,15 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.allurefw.ModelUtils.createLabel;
-import static org.allurefw.ModelUtils.createSuiteLabel;
-import static org.allurefw.Status.BROKEN;
-import static org.allurefw.Status.CANCELED;
-import static org.allurefw.Status.FAILED;
-import static org.allurefw.Status.PASSED;
-import static org.allurefw.Status.PENDING;
+import static org.allurefw.report.ModelUtils.createLabel;
+import static org.allurefw.report.ModelUtils.createSuiteLabel;
 import static org.allurefw.report.ReportApiUtils.generateUid;
 import static org.allurefw.report.ReportApiUtils.listFilesSafe;
+import static org.allurefw.report.entity.Status.BROKEN;
+import static org.allurefw.report.entity.Status.CANCELED;
+import static org.allurefw.report.entity.Status.FAILED;
+import static org.allurefw.report.entity.Status.PASSED;
+import static org.allurefw.report.entity.Status.PENDING;
 import static ru.yandex.qatools.allure.AllureConstants.TEST_SUITE_XML_FILE_GLOB;
 
 /**
