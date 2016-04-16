@@ -13,8 +13,7 @@ public class DefectsPlugin extends AbstractPlugin {
 
     @Override
     protected void configure() {
-        use(DefectsAggregator.class)
-                .asAggregator()
+        aggregator(DefectsAggregator.class)
                 .toReportData("defects.json");
 
     }

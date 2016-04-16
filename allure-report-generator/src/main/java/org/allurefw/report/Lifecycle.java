@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
@@ -25,8 +26,16 @@ public class Lifecycle {
     protected Map<String, Aggregator> aggregators;
 
     @Inject
-    @FileNamesMap
-    protected Map<String, String> fileNames;
+    @ReportFilesNamesMap
+    protected Map<String, String> filesNames;
+
+    @Inject
+    @WidgetsNamesMap
+    protected Map<String, String> widgetsNames;
+
+    @Inject
+    @WidgetDataConverter
+    protected Map<String, Function> converters;
 
     @Inject
     protected ReportConfig config;
@@ -73,14 +82,26 @@ public class Lifecycle {
         }
         LOGGER.debug("Writing stage started...");
 
+        Map<String, Object> widgets = new HashMap<>();
         data.forEach((uid, object) -> {
-            String fileName = fileNames.getOrDefault(uid, uid + "-unknown");
-            writer.write(output, fileName, object);
+            if (filesNames.containsKey(uid)) {
+                String fileName = filesNames.get(uid);
+                writer.write(output, fileName, object);
+            }
+            if (widgetsNames.containsKey(uid)) {
+                String widgetName = widgetsNames.get(uid);
+                Function converter = converters.getOrDefault(uid, Function.identity());
+                //noinspection unchecked
+                widgets.put(widgetName, converter.apply(object));
+            }
         });
+
+        writer.write(output, "widgets.json", widgets);
 
         Path attachmentsDir = output.resolve("attachments");
         manager.getAttachments().forEach((path, attachment) ->
-                writer.write(attachmentsDir, attachment.getSource(), path));
+                writer.write(attachmentsDir, attachment.getSource(), path)
+        );
     }
 
 }

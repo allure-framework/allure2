@@ -5,6 +5,7 @@ import com.google.inject.multibindings.MapBinder;
 
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Function;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
@@ -14,82 +15,18 @@ public abstract class AbstractPlugin extends AbstractModule {
 
     private final Plugin pluginAnnotation = getClass().getAnnotation(Plugin.class);
 
-    public BindBuilder use(Class<?> clazz) {
-        return new BindBuilder(clazz);
+    public <T> AggregatorBuilder<T> aggregator(Class<? extends Aggregator<T>> aggregatorClass) {
+        String uid = UUID.randomUUID().toString();
+        MapBinder.newMapBinder(binder(), String.class, Aggregator.class)
+                .addBinding(uid).to(aggregatorClass);
+
+        return new AggregatorBuilder<>(uid);
     }
 
-    public class BindBuilder {
-
-        private Class<?> clazz;
-
-        public BindBuilder(Class<?> clazz) {
-            this.clazz = clazz;
-        }
-
-        public void asSource() {
-        }
-
-        public AggregatorBuilder asAggregator() {
-            //noinspection unchecked
-            Class<? extends Aggregator> aggregatorClass = (Class<? extends Aggregator>) this.clazz;
-            String uid = UUID.randomUUID().toString();
-            MapBinder.newMapBinder(binder(), String.class, Aggregator.class)
-                    .addBinding(uid).to(aggregatorClass);
-
-            return new AggregatorBuilder(aggregatorClass, uid);
-        }
-
-        public ProcessorBuilder asProcessor() {
-            //noinspection unchecked
-            Class<? extends Processor> processorClass = (Class<? extends Processor>) this.clazz;
-            bind(Processor.class).to(processorClass);
-            return new ProcessorBuilder();
-        }
-
-    }
-
-    public class AggregatorBuilder {
-
-        private Class<? extends Aggregator> clazz;
-
-        private String uid;
-
-        public AggregatorBuilder(Class<? extends Aggregator> clazz, String uid) {
-            this.clazz = clazz;
-            this.uid = uid;
-        }
-
-        public AggregatorBuilder toReportData(String fileName) {
-            MapBinder.newMapBinder(binder(), String.class, String.class, FileNamesMap.class)
-                    .addBinding(uid).toInstance(fileName);
-
-            return this;
-        }
-
-        public AggregatorBuilder toWidget(String widgetName) {
-            return this;
-        }
-
-        public AggregatorBuilder to(Class<? extends Endpoint> endpoint) {
-            return this;
-        }
-
-    }
-
-    public class ProcessorBuilder {
-
-        public ProcessorBuilder toReportData(String fileName) {
-            return this;
-        }
-
-        public ProcessorBuilder toWidget(String widgetName) {
-            return this;
-        }
-
-        public ProcessorBuilder to(Class<? extends Endpoint> endpoint) {
-            return this;
-        }
-
+    public <T> void processor(Class<? extends Processor> processorClass) {
+        String uid = UUID.randomUUID().toString();
+        MapBinder.newMapBinder(binder(), String.class, Processor.class)
+                .addBinding(uid).to(processorClass);
     }
 
     /**
@@ -106,5 +43,33 @@ public abstract class AbstractPlugin extends AbstractModule {
     public final PluginScope getPluginScope() {
         Objects.requireNonNull(pluginAnnotation);
         return pluginAnnotation.scope();
+    }
+
+    public class AggregatorBuilder<T> {
+
+        private String uid;
+
+        public AggregatorBuilder(String uid) {
+            this.uid = uid;
+        }
+
+        public AggregatorBuilder<T> toReportData(String fileName) {
+            MapBinder.newMapBinder(binder(), String.class, String.class, ReportFilesNamesMap.class)
+                    .addBinding(uid).toInstance(fileName);
+
+            return this;
+        }
+
+        public AggregatorBuilder<T> toWidget(String widgetName) {
+            MapBinder.newMapBinder(binder(), String.class, String.class, WidgetsNamesMap.class)
+                    .addBinding(uid).toInstance(widgetName);
+            return this;
+        }
+
+        public AggregatorBuilder<T> toWidget(String widgetName, Function<T, Object> dataConverter) {
+            MapBinder.newMapBinder(binder(), String.class, Function.class, WidgetDataConverter.class)
+                    .addBinding(uid).toInstance(dataConverter);
+            return toWidget(widgetName);
+        }
     }
 }
