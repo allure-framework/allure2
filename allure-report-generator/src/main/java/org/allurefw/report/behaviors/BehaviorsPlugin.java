@@ -25,8 +25,8 @@ public class BehaviorsPlugin extends AbstractPlugin {
     protected void configure() {
         BehaviorData behaviorData = new BehaviorData();
 
-        aggregator(behaviorData, this::aggregate);
-        reportData(behaviorData);
+//        aggregator(behaviorData, this::aggregate);
+//        reportData(behaviorData);
     }
 
     protected void aggregate(BehaviorData identity, TestCase testCase) {

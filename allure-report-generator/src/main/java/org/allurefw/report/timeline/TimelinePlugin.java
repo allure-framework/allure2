@@ -19,8 +19,8 @@ public class TimelinePlugin extends AbstractPlugin {
     protected void configure() {
         TimelineData timelineData = new TimelineData();
 
-        aggregator(timelineData, this::aggregate);
-        reportData(timelineData);
+//        aggregator(timelineData, this::aggregate);
+//        reportData(timelineData);
     }
 
     protected void aggregate(TimelineData identity, TestCase testCase) {

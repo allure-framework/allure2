@@ -16,8 +16,8 @@ public class GraphPlugin extends AbstractPlugin {
     protected void configure() {
         GraphData graphData = new GraphData();
 
-        aggregator(graphData, this::aggregate);
-        reportData(graphData);
+//        aggregator(graphData, this::aggregate);
+//        reportData(graphData);
     }
 
     protected void aggregate(GraphData identity, TestCase testCase) {

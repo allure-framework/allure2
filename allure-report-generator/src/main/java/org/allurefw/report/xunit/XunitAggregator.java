@@ -1,5 +1,6 @@
 package org.allurefw.report.xunit;
 
+import org.allurefw.report.Aggregator;
 import org.allurefw.report.DataCollector;
 import org.allurefw.report.TestSuite;
 import org.allurefw.report.XunitData;
@@ -16,7 +17,7 @@ import static org.allurefw.report.ReportApiUtils.generateUid;
  * @author Dmitry Baev charlie@yandex-team.ru
  *         Date: 05.03.16
  */
-public class XunitDataCollector implements DataCollector<XunitData> {
+public class XunitAggregator implements Aggregator<XunitData> {
 
     @Override
     public Supplier<XunitData> supplier() {

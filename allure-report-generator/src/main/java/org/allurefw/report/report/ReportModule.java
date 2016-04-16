@@ -12,6 +12,6 @@ public class ReportModule extends AbstractPlugin {
 
     @Override
     protected void configure() {
-        reportDataBuilder("report.json").toProvider(ReportInfoDataProvider.class);
+//        reportDataBuilder("report.json").toProvider(ReportInfoDataProvider.class);
     }
 }

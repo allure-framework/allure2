@@ -12,6 +12,5 @@ public class WidgetsPlugin extends AbstractPlugin {
 
     @Override
     protected void configure() {
-        reportDataBuilder("widgets.json").toProvider(WidgetsDataProvider.class);
     }
 }

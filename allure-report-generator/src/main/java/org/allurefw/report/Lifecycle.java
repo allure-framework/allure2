@@ -9,7 +9,6 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
@@ -23,17 +22,11 @@ public class Lifecycle {
     protected Set<ResultsProcessor> results;
 
     @Inject
-    protected Set<TestCasePreparer> preparers;
+    protected Map<String, Aggregator> aggregators;
 
     @Inject
-    protected Map<Object, Aggregator> aggregators;
-
-    @Inject
-    protected Set<DataCollector> collectors;
-
-    @Inject
-    @ReportData
-    protected Map<String, Object> reportData;
+    @FileNamesMap
+    protected Map<String, String> fileNames;
 
     @Inject
     protected ReportConfig config;
@@ -49,7 +42,7 @@ public class Lifecycle {
     protected Writer writer;
 
     public void generate(Path output) {
-        //read the data
+        LOGGER.debug("Reading stage started...");
         for (ResultsProcessor result : results) {
             result.setReportDataManager(manager);
 
@@ -58,37 +51,32 @@ public class Lifecycle {
             }
         }
 
-        //process the data
+        LOGGER.debug("Process stage started...");
         Path testCasesDir = output.resolve("test-cases");
 
         boolean findAnyResults = false;
 
-
-        Map<DataCollector, Object> reportData = new HashMap<>();
-        collectors.forEach(collector -> reportData.put(collector, collector.supplier().get()));
-
+        Map<String, Object> data = new HashMap<>();
         for (TestCase testCase : manager.getTestCases()) {
             findAnyResults = true;
 
-            preparers.forEach(preparer -> preparer.prepare(testCase));
-            //TODO don't forget to copy test case
-
-            //noinspection unchecked
-            reportData.forEach((collector, identity)
-                    -> collector.accumulator().accept(identity, testCase));
-
-            //noinspection unchecked
-            aggregators.forEach((identity, aggregator) -> aggregator.aggregate(identity, testCase));
-
             writer.write(testCasesDir, testCase.getSource(), testCase);
+            aggregators.forEach((uid, aggregator) -> {
+                Object value = data.computeIfAbsent(uid, key -> aggregator.supplier().get());
+                //noinspection unchecked
+                aggregator.accumulator().accept(value, testCase);
+            });
         }
 
         if (!findAnyResults && config.isFailIfNoResultsFound()) {
             throw new ReportGenerationException("Could not find any results");
         }
+        LOGGER.debug("Writing stage started...");
 
-        //write data
-//        reportData.forEach((fileName, data) -> writer.write(output, fileName, data));
+        data.forEach((uid, object) -> {
+            String fileName = fileNames.getOrDefault(uid, uid + "-unknown");
+            writer.write(output, fileName, object);
+        });
 
         Path attachmentsDir = output.resolve("attachments");
         manager.getAttachments().forEach((path, attachment) ->

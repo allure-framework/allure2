@@ -16,11 +16,13 @@ public class XunitPlugin extends AbstractPlugin {
 
     @Override
     protected void configure() {
-        using(XunitDataCollector.class)
-                .addReportData("xunit")
-                .addWidget("xunit", this::widget);
+        use(XunitAggregator.class)
+                .asAggregator()
+                .toReportData("xunit.json")
+                .toWidget("xunit");
     }
 
+    //TODO
     protected Object widget(XunitData identity) {
         return identity.getTestSuites().stream()
                 .limit(10)

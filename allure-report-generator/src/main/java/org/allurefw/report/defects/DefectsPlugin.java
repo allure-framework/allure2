@@ -26,8 +26,8 @@ public class DefectsPlugin extends AbstractPlugin {
     protected void configure() {
         DefectsData defectsData = new DefectsData();
 
-        aggregator(defectsData, this::aggregate);
-        reportData(defectsData);
+//        aggregator(defectsData, this::aggregate);
+//        reportData(defectsData);
     }
 
     protected void aggregate(DefectsData identity, TestCase testCase) {

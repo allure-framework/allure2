@@ -24,9 +24,11 @@ public class BootstrapModule extends AbstractModule {
         //TODO we kinda need to hide this from plugins I guess
         bind(Path[].class).annotatedWith(ResultsDirectories.class).toInstance(inputDirectories);
 
-        MapBinder.newMapBinder(binder(), Object.class, Aggregator.class);
+
+        MapBinder.newMapBinder(binder(), String.class, Aggregator.class);
+        MapBinder.newMapBinder(binder(), String.class, String.class, FileNamesMap.class);
+
         MapBinder.newMapBinder(binder(), String.class, Object.class, WidgetData.class);
-        MapBinder.newMapBinder(binder(), String.class, Object.class, ReportData.class);
 
         Multibinder.newSetBinder(binder(), ResultsProcessor.class);
 
