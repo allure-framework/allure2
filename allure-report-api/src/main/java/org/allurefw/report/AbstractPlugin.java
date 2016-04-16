@@ -1,7 +1,6 @@
 package org.allurefw.report;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Key;
 import com.google.inject.multibindings.MapBinder;
 
 import java.util.Objects;
@@ -33,7 +32,6 @@ public abstract class AbstractPlugin extends AbstractModule {
         public AggregatorBuilder asAggregator() {
             //noinspection unchecked
             Class<? extends Aggregator> aggregatorClass = (Class<? extends Aggregator>) this.clazz;
-            bind(Aggregator.class).to(aggregatorClass);
             String uid = UUID.randomUUID().toString();
             MapBinder.newMapBinder(binder(), String.class, Aggregator.class)
                     .addBinding(uid).to(aggregatorClass);

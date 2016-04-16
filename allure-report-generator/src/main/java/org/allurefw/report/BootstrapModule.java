@@ -4,7 +4,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.MapBinder;
 import com.google.inject.multibindings.Multibinder;
 
-import java.io.Serializable;
 import java.nio.file.Path;
 
 /**
@@ -23,7 +22,6 @@ public class BootstrapModule extends AbstractModule {
     protected void configure() {
         //TODO we kinda need to hide this from plugins I guess
         bind(Path[].class).annotatedWith(ResultsDirectories.class).toInstance(inputDirectories);
-
 
         MapBinder.newMapBinder(binder(), String.class, Aggregator.class);
         MapBinder.newMapBinder(binder(), String.class, String.class, FileNamesMap.class);

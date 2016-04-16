@@ -1,7 +1,6 @@
 package org.allurefw.report.xunit;
 
 import org.allurefw.report.Aggregator;
-import org.allurefw.report.DataCollector;
 import org.allurefw.report.TestSuite;
 import org.allurefw.report.XunitData;
 import org.allurefw.report.entity.LabelName;
@@ -25,6 +24,11 @@ public class XunitAggregator implements Aggregator<XunitData> {
     }
 
     @Override
+    public BinaryOperator<XunitData> combiner() {
+        return (left, right) -> left.withTestSuites(right.getTestSuites());
+    }
+
+    @Override
     public BiConsumer<XunitData, TestCase> accumulator() {
         return (xunit, testCase) -> {
             String suiteName = testCase.findOne(LabelName.SUITE)
@@ -40,14 +44,6 @@ public class XunitAggregator implements Aggregator<XunitData> {
                     });
 
             testSuite.getTestCases().add(testCase.toInfo());
-        };
-    }
-
-    @Override
-    public BinaryOperator<XunitData> combiner() {
-        return (left, right) -> {
-            left.getTestSuites().addAll(right.getTestSuites());
-            return left;
         };
     }
 }
