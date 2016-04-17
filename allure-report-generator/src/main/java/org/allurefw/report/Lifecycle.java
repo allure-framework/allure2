@@ -68,7 +68,8 @@ public class Lifecycle {
         }
 
         LOGGER.debug("Process stage started...");
-        Path testCasesDir = output.resolve("test-cases");
+        Path dataDir = output.resolve("data");
+        Path testCasesDir = dataDir.resolve("test-cases");
 
         boolean findAnyResults = false;
 
@@ -93,7 +94,7 @@ public class Lifecycle {
         data.forEach((uid, object) -> {
             if (filesNames.containsKey(uid)) {
                 String fileName = filesNames.get(uid);
-                writer.write(output, fileName, object);
+                writer.write(dataDir, fileName, object);
             }
             if (widgetsNames.containsKey(uid)) {
                 String widgetName = widgetsNames.get(uid);
@@ -103,9 +104,9 @@ public class Lifecycle {
             }
         });
 
-        writer.write(output, "widgets.json", widgets);
+        writer.write(dataDir, "widgets.json", widgets);
 
-        Path attachmentsDir = output.resolve("attachments");
+        Path attachmentsDir = dataDir.resolve("attachments");
         manager.getAttachments().forEach((path, attachment) ->
                 writer.write(attachmentsDir, attachment.getSource(), path)
         );

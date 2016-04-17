@@ -8,7 +8,6 @@ import freemarker.template.TemplateException;
 import org.allurefw.report.Writer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.yandex.qatools.allure.AllureException;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
@@ -37,10 +36,7 @@ public class DefaultWriter implements Writer {
 
     @Override
     public void write(Path outputDirectory, String fileName, Object object) {
-        try {
-            Files.createDirectories(outputDirectory);
-        } catch (IOException e) {
-            LOGGER.error("Couldn't create output directory {}: {}", outputDirectory, e);
+        if (createDirectories(outputDirectory)) {
             return;
         }
 
@@ -55,6 +51,10 @@ public class DefaultWriter implements Writer {
 
     @Override
     public void write(Path outputDirectory, String fileName, Path source) {
+        if (createDirectories(outputDirectory)) {
+            return;
+        }
+
         Path dest = outputDirectory.resolve(fileName);
         try {
             Files.createDirectories(dest.getParent());
@@ -68,6 +68,10 @@ public class DefaultWriter implements Writer {
     public void writeIndexHtml(Path outputDirectory, Set<String> pluginNames) {
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_23);
         cfg.setClassLoaderForTemplateLoading(getClass().getClassLoader(), "tpl");
+
+        if (createDirectories(outputDirectory)) {
+            return;
+        }
         Path indexHtml = outputDirectory.resolve("index.html");
         try (BufferedWriter writer = Files.newBufferedWriter(indexHtml)) {
             Template template = cfg.getTemplate("index.html.ftl");
@@ -75,7 +79,18 @@ public class DefaultWriter implements Writer {
             dataModel.put("plugins", pluginNames);
             template.process(dataModel, writer);
         } catch (IOException | TemplateException e) {
-            throw new AllureException("Could not read index.html.ftl", e);
+            LOGGER.error("Could't process index file", e);
         }
     }
+
+    private boolean createDirectories(Path outputDirectory) {
+        try {
+            Files.createDirectories(outputDirectory);
+        } catch (IOException e) {
+            LOGGER.error("Couldn't create output directory {}: {}", outputDirectory, e);
+            return true;
+        }
+        return false;
+    }
+
 }

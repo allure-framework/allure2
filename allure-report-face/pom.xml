@@ -26,7 +26,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>1.2.1</version>
+                <version>1.4.0</version>
             </plugin>
         </plugins>
     </build>
@@ -91,6 +91,92 @@
                                 </configuration>
                             </execution>
                         </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>dev</id>
+            <properties>
+                <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+                <allure.report.directory>${project.build.directory}/allure-report</allure.report.directory>
+            </properties>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.allurefw</groupId>
+                    <artifactId>allure-report-generator</artifactId>
+                    <version>${project.version}</version>
+                </dependency>
+            </dependencies>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-allure-model-test-resources</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${allure.results.directory}</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>
+                                                ${project.parent.basedir}/allure-report-generator/src/test/java/org/allurefw/report/allure1data
+                                            </directory>
+                                            <filtering>false</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>java</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <mainClass>org.allurefw.report.DummyReportGenerator</mainClass>
+                            <arguments>
+                                <argument>${allure.results.directory}</argument>
+                                <argument>${allure.report.directory}</argument>
+                            </arguments>
+                            <systemProperties>
+                                <property>
+                                    <key>allure.issues.tracker.pattern</key>
+                                    <value>http://example.org/issues/%s</value>
+                                </property>
+                                <property>
+                                    <key>allure.tests.management.pattern</key>
+                                    <value>http://example.org/tests/%s</value>
+                                </property>
+                            </systemProperties>
+                            <additionalClasspathElements>
+                                <classpathElement>
+                                    ${settings.localRepository}/org/slf4j/slf4j-simple/1.7.12/slf4j-simple-1.7.12.jar
+                                </classpathElement>
+                            </additionalClasspathElements>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.slf4j</groupId>
+                                <artifactId>slf4j-simple</artifactId>
+                                <version>1.7.12</version>
+                            </dependency>
+                        </dependencies>
                     </plugin>
                 </plugins>
             </build>
