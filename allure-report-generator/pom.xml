@@ -28,10 +28,14 @@
     </build>
 
     <dependencies>
-        <!-- There is should be only this dependency, actually -->
+        <!-- There is should be only this dependencies, actually -->
         <dependency>
             <groupId>org.allurefw</groupId>
             <artifactId>allure-report-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
         </dependency>
 
         <!-- This will be moved to separate plugins -->

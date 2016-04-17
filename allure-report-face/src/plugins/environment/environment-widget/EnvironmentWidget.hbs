@@ -1,0 +1,20 @@
+<h2 class="widget__title">
+    Environment
+</h2>
+<div class="table  table_hover widget__table">
+    {{#each items}}
+        <div class="{{b "table" "row"}}" disabled>
+            <div class="{{b "table" "col"}} long-line">
+                {{key}}
+            </div>
+            <div class="{{b "table" "col"}} long-line">
+                {{linky value}}
+            </div>
+        </div>
+    {{/each}}
+    {{#if overLimit}}
+        <a class="{{b "table" "row"}} clickable environment-widget__expand">
+            <div class="{{b "table" "col" center=true}}">Show all environment variables</div>
+        </a>
+    {{/if}}
+</div>

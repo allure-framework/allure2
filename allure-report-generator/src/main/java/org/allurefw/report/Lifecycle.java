@@ -50,7 +50,14 @@ public class Lifecycle {
     @Inject
     protected Writer writer;
 
+    @Inject
+    @PluginNames
+    protected Set<String> pluginNames;
+
     public void generate(Path output) {
+        LOGGER.debug("Write index.html...");
+        writer.writeIndexHtml(output, pluginNames);
+
         LOGGER.debug("Reading stage started...");
         for (ResultsProcessor result : results) {
             result.setReportDataManager(manager);

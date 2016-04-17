@@ -1,0 +1,164 @@
+@import "../../variables.css";
+
+$sidebar-full-width: 160px;
+$sidebar-collapsed: 30px;
+
+.side-nav {
+  width: $sidebar-full-width;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  transition: width 0.3s;
+  & > * {
+    width: $sidebar-full-width;
+  }
+  &__head {
+    margin: $gap-size 0;
+    padding-bottom: $gap-size;
+    border-bottom: 1px solid $border-accent-color;
+  }
+  &__brand {
+    color: $text-color;
+    text-decoration: none;
+  }
+  &__brand {
+    display: block;
+    font-size: 20px;
+    line-height: 40px;
+    font-weight: bold;
+    background: url('allure-logo.png') no-repeat 10px center;
+    padding-left: 50px;
+    margin-bottom: 10px;
+  }
+  &__menu {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }
+  &__footer {
+    margin-top: auto;
+    margin-bottom: $gap-size;
+  }
+  &__item {
+    display: block;
+    font-size: 16px;
+  }
+  &__link, &__collapse {
+    display: block;
+    color: $text-muted-color;
+    text-decoration: none;
+    transition: color 0.1s ease-in;
+    padding: 0.8em 0;
+    &_active {
+      color: $text-color;
+    }
+    &:hover {
+      color: $text-color;
+    }
+  }
+  &__icon {
+    font-size: 22px;
+    line-height: 24px;
+    vertical-align: middle;
+    transition: top 0.3s ease-in;
+    margin: 0 5px;
+  }
+  &__report {
+    display: none;
+  }
+  &__info {
+    line-height: 1.3;
+    position: relative;
+    &:after {
+      position: absolute;
+      content: ' ';
+      left: 0;
+      right: 0;
+      background: linear-gradient(to left, $body-bg, color($body-bg a(0)));
+      transition: right 0.3s;
+    }
+    dt {
+      color: $text-muted-color;
+    }
+    dd {
+      margin-left: 0;
+      margin-bottom: 0.5em;
+    }
+  }
+  &__flag {
+    display: inline-block;
+    width: 16px;
+    height: 12px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    top: -2px;
+    vertical-align: middle;
+    &_lang_en {
+      background-image: url(~flag-icon-css/flags/4x3/gb.svg);
+    }
+    &_lang_ru {
+      background-image: url(~flag-icon-css/flags/4x3/ru.svg);
+    }
+    &_lang_ptbr {
+      background-image: url(~flag-icon-css/flags/4x3/br.svg);
+    }
+  }
+  &__language {
+    display: block;
+    width: 100%;
+  }
+  &__language-small {
+    display: none;
+    text-transform: capitalize;
+    padding: 0 5px;
+    text-overflow: '.';
+    max-width: 30px;
+  }
+  &__collapse {
+    cursor: pointer;
+    .side-nav__icon {
+      position: relative;
+      top: -1px;
+      transition: transform 0.1s;
+    }
+  }
+  &_collapsed {
+    overflow: hidden;
+    width: $sidebar-collapsed;
+    .side-nav__brand {
+      width: 30px;
+      height: 30px;
+      background-size: contain;
+      background-position: 0;
+    }
+    .side-nav__icon {
+      margin: 0;
+      overflow: hidden;
+      display: block;
+      width: $sidebar-collapsed;
+      text-align: center;
+    }
+    .side-nav__language {
+      display: none;
+    }
+    .side-nav__language-small {
+      display: block;
+    }
+    .side-nav__collapse .side-nav__icon {
+      transform: rotate(180deg);
+    }
+    .side-nav__text {
+      display: none;
+    }
+    .side-nav__report {
+      display: inline-block;
+      margin-top: 1em;
+    }
+    .side-nav__info:after {
+      top: 0;
+      bottom: 0;
+      right: calc($sidebar-full-width - $sidebar-collapsed);
+    }
+  }
+}

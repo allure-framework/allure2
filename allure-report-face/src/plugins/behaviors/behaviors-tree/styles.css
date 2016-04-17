@@ -1,0 +1,39 @@
+@import "../../../variables.css";
+
+.behaviors-list {
+  &__title {
+    flex: none;
+    width: 30%;
+  }
+  &__total {
+    flex: none;
+    width: 100px;
+  }
+  &__feature-title {
+    position: relative;
+    &:before {
+      content: ' ';
+      display: inline-block;
+      vertical-align: middle;
+      transition: transform 0.1s;
+      background: url(../../../components/steps/arrow.svg) center no-repeat;
+      width: 14px;
+      height: 14px;
+    }
+  }
+  &__story {
+    display: none;
+    padding-left: calc(2 * $gap-size);
+  }
+  &__feature-row {
+    cursor: pointer;
+  }
+  &__feature-row_expanded {
+    .behaviors-list__feature-title:before {
+      transform: rotate(90deg);
+    }
+    & ~ .behaviors-list__story {
+      display: flex;
+    }
+  }
+}

@@ -1,0 +1,23 @@
+<h3 class="steps__title">Steps</h3>
+<div class="step">
+    <div class="{{b "step" "title"}}">
+        <span class="step__arrow"></span>
+        <span class="step__time">
+            [{{time time.start}}]
+        </span>
+        Test started
+    </div>
+</div>
+{{> steps-list steps=steps baseUrl=baseUrl}}
+<div class="step">
+    <div class="{{b "step" "title"}}">
+        <span class="step__arrow"></span>
+        <span class="step__time">
+            [{{time time.start}}]
+        </span>
+        Test finished with status: {{status}}
+    </div>
+</div>
+{{#each attachments}}
+    {{> ../../blocks/attachment-row/attachment-row . baseUrl=../baseUrl}}
+{{/each}}

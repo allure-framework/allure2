@@ -1,0 +1,34 @@
+@import "../../variables.css";
+
+.status-toggle {
+  &__button {
+    white-space: nowrap;
+    &::before {
+      position: relative;
+      top: -1px;
+      margin-right: 0.3em;
+      vertical-align: middle;
+      content: ' ';
+      display: inline-block;
+      height: 1em;
+      width: 1em;
+      border-radius: 2px;
+
+    }
+    &_status_PASSED::before {
+      background: $color-passed;
+    }
+    &_status_CANCELED::before {
+      background: $color-canceled;
+    }
+    &_status_PENDING::before {
+      background: $color-pending;
+    }
+    &_status_FAILED::before {
+      background: $color-failed;
+    }
+    &_status_BROKEN::before {
+      background: $color-broken;
+    }
+  }
+}

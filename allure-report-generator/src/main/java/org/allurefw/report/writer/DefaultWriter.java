@@ -2,15 +2,23 @@ package org.allurefw.report.writer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import org.allurefw.report.Writer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.yandex.qatools.allure.AllureException;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
@@ -53,6 +61,21 @@ public class DefaultWriter implements Writer {
             Files.copy(source, dest);
         } catch (IOException e) {
             LOGGER.error("Couldn't copy file {} to {}: {}", source, dest, e);
+        }
+    }
+
+    @Override
+    public void writeIndexHtml(Path outputDirectory, Set<String> pluginNames) {
+        Configuration cfg = new Configuration(Configuration.VERSION_2_3_23);
+        cfg.setClassLoaderForTemplateLoading(getClass().getClassLoader(), "tpl");
+        Path indexHtml = outputDirectory.resolve("index.html");
+        try (BufferedWriter writer = Files.newBufferedWriter(indexHtml)) {
+            Template template = cfg.getTemplate("index.html.ftl");
+            Map<String, Object> dataModel = new HashMap<>();
+            dataModel.put("plugins", pluginNames);
+            template.process(dataModel, writer);
+        } catch (IOException | TemplateException e) {
+            throw new AllureException("Could not read index.html.ftl", e);
         }
     }
 }

@@ -1,0 +1,31 @@
+<a class="pane__overlay" href="#{{baseUrl}}"></a>
+<h2 class="pane__title {{b "testsuites-list" "title"}}">
+    xUnit results
+    <span class="testsuites-list__statuses"></span>
+</h2>
+
+<div class="{{b "table" hover=true}} testsuites-list__table">
+    <div class="{{b "table" "head"}}">
+        {{> ../../../blocks/table/sortable-col field="title" title="Title" class=(b "testsuites-list" "name")}}
+        {{> ../../../blocks/table/sortable-col field="time.duration" title="Duration"}}
+        {{> ../../../blocks/table/sortable-col field="statistic.failed" title="Failed"}}
+        {{> ../../../blocks/table/sortable-col field="statistic.broken" title="Broken"}}
+        {{> ../../../blocks/table/sortable-col field="statistic.canceled" title="Canceled"}}
+        {{> ../../../blocks/table/sortable-col field="statistic.pending" title="Pending"}}
+        {{> ../../../blocks/table/sortable-col field="statistic.total" title="Total"}}
+    </div>
+    <div class="{{b "table" "row" summary=true}}" disabled>
+        <div class="{{b "table" "col"}} {{b "testsuites-list" "name"}} long-line">
+            Total {{suites.length}} suites
+        </div>
+        {{> suite-table-row}}
+    </div>
+    {{#each suites}}
+        <a class="{{b "table" "row"}}" data-uid="{{uid}}" href="#{{../baseUrl}}/{{uid}}">
+            <div class="{{b "table" "col"}} {{b "testsuites-list" "name"}} long-line">
+                {{title}}
+            </div>
+            {{> suite-table-row}}
+        </a>
+    {{/each}}
+</div>

@@ -1,0 +1,19 @@
+@import "./variables.css";
+
+@define-mixin status-bg {
+  &_status_PASSED {
+    background: $color-passed;
+  }
+  &_status_CANCELED {
+    background: $color-canceled;
+  }
+  &_status_PENDING {
+    background: $color-pending;
+  }
+  &_status_FAILED {
+    background: $color-failed;
+  }
+  &_status_BROKEN {
+    background: $color-broken;
+  }
+}

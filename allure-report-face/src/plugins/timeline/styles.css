@@ -1,0 +1,14 @@
+@import "../../variables.css";
+
+.timeline {
+  padding: $gap-size;
+  &__item:hover {
+    opacity: 0.7;
+  }
+  &__host {
+    font-size: 18px;
+  }
+  &__host-bg {
+    fill: $heading-bg;
+  }
+}

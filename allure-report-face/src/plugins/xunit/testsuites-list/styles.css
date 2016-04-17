@@ -1,0 +1,11 @@
+.testsuites-list {
+  &__title {
+    overflow: hidden;
+  }
+  &__name {
+    flex: 3;
+  }
+  &__statuses {
+    float: right;
+  }
+}

@@ -1,0 +1,7 @@
+@import "../../variables.css";
+
+.overview-widget {
+  &__bar {
+    margin-top: $gap-size;
+  }
+}

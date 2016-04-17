@@ -1,0 +1,24 @@
+<a class="pane__overlay" href="#defects"></a>
+{{#each defectTypes}}
+    <h2 class="pane__title {{b "defects-list" "title" status=status}}">
+        {{t (concat "defects." title)}}
+        <span class="defects-list__count">{{t 'defects.STATISTIC' postProcess='interval' count=defects.length}}</span>
+    </h2>
+    <div class="{{b "table" hover=true}} defects-list__table">
+        <div class="{{b "table" "head"}}">
+            <div class="{{b "table" "col" right=true sortable=true sorted=(sort-class "testCases.length" ../sorting)}} {{b "defects-list" "count-col"}}"
+                data-sort="testCases.length">
+                <span>{{t "defects.COUNT"}}</span>
+            </div>
+            {{> ../../../blocks/table/sortable-col field="failure.message" title=(t "defects.DEFECT") sorting=../sorting}}
+        </div>
+        {{#each defects}}
+            <a class="{{b "table" "row"}}" data-uid={{uid}} href="#defects/{{uid}}">
+                <div class="{{b "table" "col" right=true}} {{b "defects-list" "count-col"}}">
+                    <span class="label label_status_{{../status}}">{{testCases.length}}</span>
+                </div>
+                <div class="{{b "table" "col"}} long-line">{{failure.message}}</div>
+            </a>
+        {{/each}}
+    </div>
+{{/each}}

@@ -1,0 +1,21 @@
+.row {
+  display: flex;
+  &_stretch {
+    align-items: stretch;
+  }
+  .col {
+    padding: 0 1em;
+    &:first-child {
+      padding-left: 0;
+    }
+    &:last-child {
+      padding-right: 0;
+    }
+  }
+  .col_flex {
+    flex: 1;
+  }
+  .col_1 {
+    width: 8.3333333%;
+  }
+}

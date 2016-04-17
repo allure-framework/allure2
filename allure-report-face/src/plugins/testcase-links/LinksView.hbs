@@ -1,0 +1,14 @@
+{{#if hasLinks}}
+    <h3 class="pane__section-title">Links</h3>
+    {{#if testId}}
+        <span class="testcase-link">
+            <span class="fa fa-database"></span>
+            <a class="link" href="{{testId.url}}" target="_blank">{{testId.name}}</a></span>
+    {{/if}}
+    {{#each issues}}
+        <span class="testcase-link">
+            <span class="fa fa-bug"></span>
+            <a class="link" href="{{this.url}}" target="_blank">{{name}}</a></span>
+    {{/each}}
+
+{{/if}}

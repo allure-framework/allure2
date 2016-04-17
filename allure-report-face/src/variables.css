@@ -1,0 +1,31 @@
+$brand-blue: #0044bb;
+$brand-red: #ff0000;
+
+$color-passed: #3bbd25;
+$color-failed: #ff0000;
+$color-broken: #ffa924;
+$color-canceled: #999999;
+$color-pending: #d35ebe;
+
+$background-passed: #a6e19d;
+$background-failed: #ffaca6;
+$background-broken: #ffd99d;
+$background-canceled: #cccccc;
+$background-pending: #ecb7e2;
+
+$header-bg: #fff;
+$heading-bg: #f6f5f3;
+$body-bg: #f3f2ee;
+
+$border-color: #eee;
+$border-accent-color: #ccc;
+
+$hover-color: #e4edfe;
+$selected-color: #ffeca0;
+
+$text-color: #000;
+$text-muted-color: #999;
+
+$gap-size: 15px;
+
+$small-screen: 1000px;

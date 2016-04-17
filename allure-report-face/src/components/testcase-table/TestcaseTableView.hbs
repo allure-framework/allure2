@@ -1,0 +1,23 @@
+<div class="pane__section">
+    <h3 class="testcase-table__title">{{totalCount}} test cases</h3>
+    <div class="testcase-table__statuses"></div>
+</div>
+<div class="{{b "table" hover=true}} testcase-table__table">
+    <div class="{{b "table" "head"}}">
+        <div class="{{b "table" "col" right=true sortable=true sorted=(sort-class "index" sorting)}} {{b "testcase-table" "index"}}"
+            data-sort="index">#</div>
+        {{> ../../blocks/table/sortable-col field="name" title="Title" class=(b "testcase-table" "name")}}
+        {{> ../../blocks/table/sortable-col field="time.duration" title="Duration"}}
+        <div class="{{b "table" "col"}}">Status</div>
+    </div>
+    {{#each testCases}}
+        <a class="{{b "table" "row" active=(eq uid ../currentCase)}}" data-uid="{{uid}}" href="#{{../baseUrl}}/{{uid}}">
+            <div class="{{b "table" "col" right=true}} {{b "testcase-table" "index"}}">{{index}}</div>
+            <div class="{{b "table" "col"}} {{b "testcase-table" "name"}} long-line">{{name}}</div>
+            <div class="{{b "table" "col"}}">{{duration time.duration}}</div>
+            <div class="{{b "table" "col"}}">
+                <span class="label label_status_{{status}}">{{status}}</span>
+            </div>
+        </a>
+    {{/each}}
+</div>

@@ -1,0 +1,73 @@
+{
+  "TEST_RUN": "Execução do teste",
+  "STARTED_AT": "Inicio {{date}} às {{time}}",
+  "Title": "Titulo",
+  "Duration": "Duração",
+  "Status": "Status",
+  "Count": "Total",
+  "Defect": "Erro",
+  "FAILED": "FALHOU",
+  "BROKEN": "QUEBRADO",
+  "CANCELED": "CANCELADO",
+  "PENDING": "PENDENTE",
+  "PASSED": "PASSOU",
+  "Failed": "Falhou",
+  "Broken": "Quebrado",
+  "Canceled": "Cancelado",
+  "Pending": "Pendente",
+  "Passed": "Passou",
+  "Total": "Total {{statistic}}",
+  "failed": "falhou {{statistic}}",
+  "broken": "quebrou {{statistic}}",
+  "canceled": "cancelado(s) {{statistic}}",
+  "pending": "pendente(s) {{statistic}}",
+  "passed": "passou {{statistic}}",
+  "BLOCKER": "BLOCKER",
+  "CRITICAL": "CRITICAL",
+  "NORMAL": "NORMAL",
+  "MINOR": "MINOR",
+  "TRIVIAL": "TRIVIAL",
+  "tooltip": {
+    "EXPAND": "Expandir",
+    "COLLAPSE": "Minimizar",
+    "CLOSE": "Fechar",
+    "ATTACHMENT_IMAGE": "Imagem anexa"
+  },
+  "index": {
+    "FEEDBACK": "FeedBack",
+    "MAIL": "E-mail",
+    "DATA_SIZE": "Tamnho dos dados:",
+    "GENERATED": "Gerado em:",
+    "VERSION": "Versão:",
+    "COLLAPSE": "Fechar",
+    "OVERVIEW": "Visão geral"
+  },
+  "overview": {
+    "TOP": "Top erros",
+    "ALL": "Mostrar todos",
+    "TOTAL": "total"
+  },
+  "attachment": {
+    "ATTACHMENT": "Anexo",
+    "NOT_FOUND": "Anexo não encontrado"
+  },
+  "list": {
+    "TEST_CASES": "Test cases ({{amount}} total{{visible == amount ? ')' : ', '+visible+' shown)'}}",
+    "MORE": "Mostrar mais"
+  },
+  "testcase": {
+    "TESTCASE": "Testcase",
+    "SEVERITY": "Severidade: {{severity}}",
+    "ISSUES": "Issues:",
+    "TEST_ID": "ID do teste:",
+    "TEST_PASSED": "O teste passou!",
+    "RAW": "Raw",
+    "STACKTRACE": "Stacktrace",
+    "SUBSTEPS": "{substeps, plural, one{# sub-step} other{# sub-steps}}",
+    "ATTACHMENTS": "{attachments, plural, one{# anexo} other{# anexos}}",
+    "PARAMETERS": "Parametros"
+  },
+  "total": {
+    "TITLE": "Total"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "TEST_RUN": "Test run",
+  "STARTED_AT": "Started {{date}} at {{time}}",
+  "Title": "Title",
+  "Duration": "Duration",
+  "Status": "Status",
+  "Count": "Count",
+  "Defect": "Defect",
+  "FAILED": "FAILED",
+  "BROKEN": "BROKEN",
+  "CANCELED": "CANCELED",
+  "PENDING": "PENDING",
+  "PASSED": "PASSED",
+  "Failed": "Failed",
+  "Broken": "Broken",
+  "Canceled": "Canceled",
+  "Pending": "Pending",
+  "Passed": "Passed",
+  "Total": "Total {{statistic}}",
+  "failed": "failed {{statistic}}",
+  "broken": "broken {{statistic}}",
+  "canceled": "canceled {{statistic}}",
+  "pending": "pending {{statistic}}",
+  "passed": "passed {{statistic}}",
+  "BLOCKER": "BLOCKER",
+  "CRITICAL": "CRITICAL",
+  "NORMAL": "NORMAL",
+  "MINOR": "MINOR",
+  "TRIVIAL": "TRIVIAL",
+  "tooltip": {
+    "EXPAND": "Expand",
+    "COLLAPSE": "Collapse",
+    "CLOSE": "Close",
+    "ATTACHMENT_IMAGE": "Attachment image"
+  },
+  "index": {
+    "FEEDBACK": "Provide Feedback",
+    "MAIL": "Mail list",
+    "DATA_SIZE": "Data size:",
+    "GENERATED": "Generated in:",
+    "VERSION": "Version:",
+    "COLLAPSE": "Collapse",
+    "OVERVIEW": "Overview"
+  },
+  "overview": {
+    "TOP": "Top defects",
+    "ALL": "Show all",
+    "TOTAL": "total"
+  },
+  "attachment": {
+    "ATTACHMENT": "Attachment",
+    "NOT_FOUND": "Attachment not found"
+  },
+  "list": {
+    "TEST_CASES": "Test cases ({{amount}} total{{visible == amount ? ')' : ', '+visible+' shown)'}}",
+    "MORE": "Show more"
+  },
+  "testcase": {
+    "TESTCASE": "Testcase",
+    "SEVERITY": "Severity: {{severity}}",
+    "ISSUES": "Issues:",
+    "TEST_ID": "Test ID:",
+    "TEST_PASSED": "The test has passed!",
+    "RAW": "Raw",
+    "STACKTRACE": "Stacktrace",
+    "SUBSTEPS": "{substeps, plural, one{# sub-step} other{# sub-steps}}",
+    "ATTACHMENTS": "{attachments, plural, one{# attachment} other{# attachments}}",
+    "PARAMETERS": "Parameters"
+  },
+  "total": {
+    "TITLE": "Total"
+  }
+}

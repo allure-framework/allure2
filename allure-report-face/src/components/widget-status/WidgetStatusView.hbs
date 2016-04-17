@@ -1,0 +1,21 @@
+<h2 class="widget__title">
+    {{title}}
+    <span class="widget__subtitle">{{totalCount}} items total</span>
+</h2>
+<div class="table table_hover widget__table">
+    {{#each items}}
+        <{{../rowTag}} class="table__row" href="#{{../baseUrl}}/{{uid}}">
+            <div class="table__col">{{title}}</div>
+            <div class="table__col">
+                {{status-bar statistic}}
+            </div>
+        </{{../rowTag}}>
+    {{/each}}
+    {{#if (gt totalCount items.length)}}
+        <a class="table__row" href="#{{baseUrl}}">
+            <div class="table__col table__col_center">
+                {{showAllText}}
+            </div>
+        </a>
+    {{/if}}
+</div>

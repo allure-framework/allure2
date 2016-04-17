@@ -1,0 +1,47 @@
+@import "../../variables.css";
+
+.steps {
+  &__title {
+    margin: $gap-size $gap-size 0.3em;
+  }
+}
+
+.step {
+  line-height: 1.5;
+  &__arrow {
+    left: 7px;
+    top: 10px;
+    position: absolute;
+    visibility: hidden;
+    width: 14px;
+    height: 14px;
+    background: url(arrow.svg) center no-repeat;
+    transition: transform 0.1s;
+    .step__title_has-content > & {
+      visibility: visible;
+    }
+  }
+  &__title {
+    position: relative;
+    padding: 7px $gap-size 7px 25px;
+    cursor: pointer;
+  }
+  &__time {
+    color: $text-muted-color
+  }
+  &__content {
+    margin-left: 30px;
+    display: none;
+  }
+  &:hover {
+    & > .step__title {
+      background: $hover-color;
+    }
+  }
+  &__title_expanded .step__arrow {
+    transform: rotate(90deg);
+  }
+  &__title_expanded + &__content {
+    display: block;
+  }
+}

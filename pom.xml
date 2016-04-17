@@ -12,7 +12,7 @@
         <module>junit-model</module>
         <module>allure-report-api</module>
         <module>allure-report-generator</module>
-        <module>allure-camel</module>
+        <module>allure-report-face</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -180,6 +180,11 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>19.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>2.3.23</version>
             </dependency>
 
             <!--Jackson dependencies for serialize to JSON-->

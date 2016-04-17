@@ -1,6 +1,7 @@
 package org.allurefw.report;
 
 import java.nio.file.Path;
+import java.util.Set;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
@@ -12,4 +13,5 @@ public interface Writer {
 
     void write(Path outputDirectory, String fileName, Path source);
 
+    void writeIndexHtml(Path outputDirectory, Set<String> pluginNames);
 }

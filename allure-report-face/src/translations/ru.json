@@ -1,0 +1,73 @@
+{
+  "TEST_RUN": "Тестовый прогон",
+  "STARTED_AT": "Старт {{date}} в {{time}}",
+  "Title": "Название",
+  "Duration": "Длительность",
+  "Status": "Статус",
+  "Count": "Кол-во",
+  "Defect": "Дефект",
+  "FAILED": "ПРОВАЛЕНО",
+  "BROKEN": "СЛОМАНО",
+  "CANCELED": "ОТМЕНЕНО",
+  "PENDING": "ПРОПУЩЕНО",
+  "PASSED": "УСПЕШНО",
+  "Failed": "Провалено",
+  "Broken": "Сломано",
+  "Canceled": "Отменено",
+  "Pending": "Пропущено",
+  "Passed": "Успешно",
+  "Total": "Всего {{statistic}}",
+  "failed": "провалено {{statistic}}",
+  "broken": "сломано {{statistic}}",
+  "canceled": "отменено {{statistic}}",
+  "pending": "пропущено {{statistic}}",
+  "passed": "успешно {{statistic}}",
+  "BLOCKER": "БЛОКИРУЮЩАЯ",
+  "CRITICAL": "КРИТИЧНАЯ",
+  "NORMAL": "НОРМАЛЬНАЯ",
+  "MINOR": "НЕЗНАЧИТЕЛЬНАЯ",
+  "TRIVIAL": "ТРИВИАЛЬНАЯ",
+  "tooltip": {
+    "EXPAND": "Развернуть",
+    "COLLAPSE": "Свернуть",
+    "CLOSE": "Закрыть",
+    "ATTACHMENT_IMAGE": "Изображение"
+  },
+  "index": {
+    "FEEDBACK": "Обратная связь",
+    "MAIL": "Написать письмо",
+    "GENERATED": "Сформировано за:",
+    "VERSION": "Версия:",
+    "DATA_SIZE": "Объем данных:",
+    "COLLAPSE": "Свернуть",
+    "OVERVIEW": "Обзор"
+  },
+  "overview": {
+    "TOP": "TOP дефекты",
+    "ALL": "Показать все",
+    "TOTAL": "всего"
+  },
+  "attachment": {
+    "ATTACHMENT": "Приложение",
+    "NOT_FOUND": "Приложение не найдено"
+  },
+  "list": {
+    "TEST_CASES": "Тестовые случаи ({{amount}} всего{{visible == amount ? ')' : ', '+visible+' отображено)'}}",
+    "MORE": "Показать еще"
+  },
+  "testcase": {
+    "TESTCASE": "Тестовый сценарий",
+    "SEVERITY": "Серьезность: {{severity}}",
+    "ISSUES": "Задачи",
+    "TEST_ID": "ID теста:",
+    "TEST_PASSED": "Тест пройден успешно!",
+    "RAW": "Исходник",
+    "STACKTRACE": "Трассировка",
+    "SUBSTEPS": "{substeps, plural, one{# подшаг} few{# подшага} other{# подшагов}}",
+    "ATTACHMENTS": "{attachments, plural, one{# приложение} few{# приложения} other{# приложений}}",
+    "PARAMETERS": "Параметры"
+  },
+  "total": {
+    "TITLE": "Итого"
+  }
+}

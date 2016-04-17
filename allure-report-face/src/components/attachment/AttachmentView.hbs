@@ -1,0 +1,44 @@
+<h2 class="pane__title attachment__title">
+    <a href="data/{{attachment.source}}" class="link" target="_blank">
+        <span class="{{fileicon attachment.type}}"></span>
+        {{attachment.title}}
+    </a>
+    <span class="pane__controls">
+        <a class="fa fa-expand pane__expand" data-tooltip="Expand" href="#{{route.baseUrl}}/{{attachment.uid}}?expanded=true"></a>
+        <a class="fa fa-compress pane__collapse" data-tooltip="Collapse" href="#{{route.baseUrl}}/{{attachment.uid}}"></a>
+        <a class="fa fa-close" data-tooltip="Close" href="#{{route.baseUrl}}"></a>
+    </span>
+</h2>
+
+{{#if (eq type "code")}}
+    <div class="pane__section">
+        <pre class="attachment__code">{{content}}</pre>
+    </div>
+{{else if (eq type "text")}}
+    <div class="pane__section">
+        <pre class="attachment__code">{{content}}</pre>
+    </div>
+{{else if (eq type "csv")}}
+    <table class="table attachment__table">
+        <tbody>
+        {{#each content}}
+            <tr>
+                {{#each .}}
+                    <td>{{.}}</td>
+                {{/each}}
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+{{else if (eq type "image")}}
+    <div class="pane__section attachment__image-container">
+        <img class="attachment__image" src="{{sourceUrl}}"/>
+    </div>
+{{else if (eq type "svg")}}
+    <div class="pane__section">
+        <object class="attachment__embed" type="image/svg+xml" data="{{sourceUrl}}">Your browser does not support SVG</object>
+    </div>
+{{else}}
+    <iframe class="attachment__iframe" frameborder="0" src="{{sourceUrl}}"></iframe>
+{{/if}}
+

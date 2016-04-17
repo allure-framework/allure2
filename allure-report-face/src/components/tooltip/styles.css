@@ -1,0 +1,32 @@
+$tooltip-bg: rgba(50, 50, 50, 0.8);
+$tooltip-color: #fff;
+
+.tooltip {
+  position: absolute;
+  background: $tooltip-bg;
+  color: $tooltip-color;
+  text-align: center;
+  padding: 0 8px;
+  line-height: 24px;
+  font-size: 12px;
+  z-index: 5;
+  &:before {
+    content: ' ';
+    position: absolute;
+    border: 8px solid transparent;
+  }
+  &_position_right:before {
+    border-right-color: $tooltip-bg;
+    top: 4px;
+    left: -16px;
+  }
+  &_position_bottom:before {
+    border-bottom-color: $tooltip-bg;
+    top: -16px;
+    left: 50%;
+    margin-left: -8px;
+  }
+  &_position_center {
+    pointer-events: none;
+  }
+}

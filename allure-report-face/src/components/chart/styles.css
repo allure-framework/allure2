@@ -1,0 +1,67 @@
+@import "../../variables.css";
+
+.chart {
+  margin-right: $gap-size;
+  margin-bottom: $gap-size;
+  margin-top: $gap-size;
+  position: relative;
+  flex: 1;
+  &__title {
+    margin-top: 0;
+    margin-bottom: $gap-size;
+    font-size: 18px;
+  }
+  &__svg {
+    width: 100%;
+    height: 100%;
+  }
+  &__wrap {
+    width: 50%;
+    &:nth-child(2) ~ & {
+      .chart {
+        margin-top: 0;
+      }
+    }
+  }
+  &__bar {
+    fill: $brand-blue;
+  }
+  &__arc {
+    stroke: #FFF;
+    stop-opacity: 0;
+  }
+  &__fill {
+    &_status_FAILED {
+      fill: $color-failed
+    }
+    &_status_BROKEN {
+      fill: $color-broken;
+    }
+    &_status_PASSED {
+      fill: $color-passed;
+    }
+    &_status_PENDING {
+      fill: $color-pending;
+    }
+    &_status_CANCELED {
+      fill: $color-canceled;
+    }
+  }
+  &__axis {
+    path, line {
+      shape-rendering: crispEdges;
+      stroke: #000;
+      fill: none;
+    }
+  }
+}
+
+@media (max-width: $small-screen) {
+  .chart__wrap {
+    width: 100%;
+    &:nth-child(2) .chart {
+      margin-top: 0;
+    }
+  }
+}
+

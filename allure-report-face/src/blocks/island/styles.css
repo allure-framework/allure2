@@ -1,0 +1,7 @@
+@import "../../variables.css";
+
+.island {
+  background: #fff;
+  border: 1px solid $border-accent-color;
+  padding: $gap-size;
+}

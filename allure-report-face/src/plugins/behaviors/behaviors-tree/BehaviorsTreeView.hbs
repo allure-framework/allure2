@@ -1,0 +1,44 @@
+<a class="pane__overlay" href="#behaviors"></a>
+<h2 class="pane__title">
+    Features overview
+</h2>
+
+<div class="{{b "table" hover=true}}">
+    <div class="{{b "table" "head"}}">
+        {{> ../../../blocks/table/sortable-col field="title" title="Title" class="behaviors-list__title"}}
+        {{> ../../../blocks/table/sortable-col field="statistic.failed" title="Failed"}}
+        {{> ../../../blocks/table/sortable-col field="statistic.broken" title="Broken"}}
+        {{> ../../../blocks/table/sortable-col field="statistic.canceled" title="Canceled"}}
+        {{> ../../../blocks/table/sortable-col field="statistic.pending" title="Pending"}}
+        {{> ../../../blocks/table/sortable-col field="statistic.passed" title="Passed"}}
+        {{> ../../../blocks/table/sortable-col field="statistic.total" title="Total" class="behaviors-list__total"}}
+    </div>
+    {{#each features}}
+        <div class="behaviors-list__feature">
+            <div class="{{b "table" "row"}} behaviors-list__feature-row">
+                <div class="{{b "table" "col"}} behaviors-list__title behaviors-list__feature-title">
+                    {{title}}
+                </div>
+                <div class="{{b "table" "col"}}">
+                    {{status-bar statistic}}
+                </div>
+                <div class="{{b "table" "col"}} behaviors-list__total">
+                    {{statistic.total}}
+                </div>
+            </div>
+            {{#each stories}}
+                <a class="{{b "table" "row"}} behaviors-list__story" data-uid="{{uid}}" href="#behaviors/{{uid}}">
+                    <div class="{{b "table" "col"}} behaviors-list__title">
+                        {{title}}
+                    </div>
+                    <div class="{{b "table" "col"}}">
+                        {{status-bar statistic}}
+                    </div>
+                    <div class="{{b "table" "col"}} behaviors-list__total">
+                        {{statistic.total}}
+                    </div>
+                </a>
+            {{/each}}
+        </div>
+    {{/each}}
+</div>

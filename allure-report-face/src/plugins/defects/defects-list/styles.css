@@ -1,0 +1,24 @@
+@import "../../../variables.css";
+
+.defects-list {
+  &__title {
+    &_status_BROKEN {
+      border-bottom-color: $color-broken;
+    }
+    &_status_FAILED {
+      border-bottom-color: $color-failed;
+    }
+  }
+  &__count {
+    font-size: 70%;
+    font-weight: normal;
+  }
+  &__table {
+    margin-top: $gap-size;
+  }
+  &__count-col {
+    flex: none;
+    width: 5%;
+    min-width: 70px;
+  }
+}
