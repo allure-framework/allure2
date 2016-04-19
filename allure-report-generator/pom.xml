@@ -45,8 +45,9 @@
             <version>1.5.0.RC2</version>
         </dependency>
         <dependency>
-            <groupId>org.allurefw</groupId>
+            <groupId>com.github.baev</groupId>
             <artifactId>junit-model</artifactId>
+            <version>1.0</version>
         </dependency>
 
         <!-- Testing -->

@@ -16,7 +16,9 @@ export default class DefectsCollection extends Collection {
         this.allDefects = [].concat(...this.pluck('defects'));
     }
 
-    parse({defectsList}) {
-        return defectsList;
+    parse(defects) {
+        return Object.keys(defects).map(
+            key => ({type: key, defects: defects[key]})
+        );
     }
 }

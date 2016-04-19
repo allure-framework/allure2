@@ -1,5 +1,6 @@
 package org.allurefw.report.junit;
 
+import com.github.baev.junit.Testsuite;
 import org.allurefw.report.ModelUtils;
 import org.allurefw.report.ReportDataManager;
 import org.allurefw.report.ResultsProcessor;

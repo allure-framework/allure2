@@ -4,12 +4,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>ru.qatools</groupId>
+        <artifactId>opensource-parent</artifactId>
+        <version>1.2</version>
+    </parent>
+
     <groupId>org.allurefw</groupId>
     <artifactId>allure-report</artifactId>
     <version>2.0-SNAPSHOT</version>
 
     <modules>
-        <module>junit-model</module>
         <module>allure-report-api</module>
         <module>allure-report-generator</module>
         <module>allure-report-face</module>
