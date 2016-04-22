@@ -6,7 +6,7 @@
 
     <xsd:include schemaLocation="allure_report-data.xsd"/>
 
-    <xsd:element name="timeline-data" type="ns:TimelineData"/>
+    <xsd:element name="timelineData" type="ns:TimelineData"/>
     <xsd:complexType name="TimelineData">
         <xsd:sequence>
             <xsd:element name="hosts" minOccurs="0">
@@ -37,10 +37,10 @@
     <xsd:complexType name="Thread">
         <xsd:all>
             <xsd:element name="name" type="xsd:string"/>
-            <xsd:element name="test-cases" minOccurs="0">
+            <xsd:element name="testCases" minOccurs="0">
                 <xsd:complexType>
                     <xsd:sequence>
-                        <xsd:element name="test-case" type="ns:TestCaseInfo" minOccurs="0" maxOccurs="unbounded"/>
+                        <xsd:element name="testCase" type="ns:TestCaseInfo" minOccurs="0" maxOccurs="unbounded"/>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>

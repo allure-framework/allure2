@@ -6,11 +6,11 @@ import StepsView from '../steps/StepsView';
 import template from './TestcaseView.hbs';
 
 const SEVERITY_ICONS = {
-    BLOCKER: 'fa fa-exclamation-triangle',
-    CRITICAL: 'fa fa-exclamation',
-    NORMAL: 'fa fa-file-o',
-    MINOR: 'fa fa-arrow-down',
-    TRIVIAL: 'fa fa-long-arrow-down'
+    blocker: 'fa fa-exclamation-triangle',
+    critical: 'fa fa-exclamation',
+    normal: 'fa fa-file-o',
+    minor: 'fa fa-arrow-down',
+    trivial: 'fa fa-long-arrow-down'
 };
 
 @behavior('TooltipBehavior', {position: 'bottom'})
@@ -28,11 +28,11 @@ class TestcaseView extends LayoutView {
 
     onRender() {
         this.showTestcasePlugins(this.$('.testcase__content_before'), allurePlugins.testcaseBlocks.before);
-        this.steps.show(new StepsView({
-            baseUrl: this.options.baseUrl + '/' + this.model.id,
-            model: this.model
-        }));
-        this.highlightSelectedAttachment();
+        // this.steps.show(new StepsView({
+        //     baseUrl: this.options.baseUrl + '/' + this.model.id,
+        //     model: this.model
+        // }));
+        // this.highlightSelectedAttachment();
         this.showTestcasePlugins(this.$('.testcase__content_after'), allurePlugins.testcaseBlocks.after);
     }
 

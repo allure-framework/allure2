@@ -16,7 +16,7 @@
         </xsd:appinfo>
     </xsd:annotation>
 
-    <xsd:element name="test-case-info" type="ns:TestCaseInfo"/>
+    <xsd:element name="testCaseInfo" type="ns:TestCaseInfo"/>
     <xsd:complexType name="TestCaseInfo">
         <xsd:all>
             <xsd:element name="uid" type="xsd:string"/>
@@ -26,7 +26,7 @@
         </xsd:all>
     </xsd:complexType>
 
-    <xsd:element name="test-case" type="ns:TestCase"/>
+    <xsd:element name="testCase" type="ns:TestCase"/>
     <xsd:complexType name="TestCase">
         <xsd:all>
             <xsd:element name="uid" type="xsd:string"/>
@@ -44,7 +44,7 @@
         </xsd:all>
     </xsd:complexType>
 
-    <xsd:element name="group-info" type="ns:GroupInfo"/>
+    <xsd:element name="groupInfo" type="ns:GroupInfo"/>
     <xsd:complexType name="GroupInfo">
         <xsd:all>
             <xsd:element name="uid" type="xsd:string"/>

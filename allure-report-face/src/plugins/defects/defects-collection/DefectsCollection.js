@@ -18,7 +18,7 @@ export default class DefectsCollection extends Collection {
 
     parse(defects) {
         return Object.keys(defects).map(
-            key => ({type: key, defects: defects[key]})
+            key => ({type: key, defects: defects[key], status: key == 'productDefects' ? 'failed' : 'broken'})
         );
     }
 }

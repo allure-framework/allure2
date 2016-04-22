@@ -1,7 +1,7 @@
 <a class="pane__overlay" href="#{{route.baseUrl}}/{{uid}}"></a>
 <h2 class="pane__title">
     <span class="{{b 'testcase' 'severity'}}  {{severityIcon}}" data-tooltip="Severity: {{severity}}"></span>
-    {{title}}
+    {{name}}
     <span class="pane__controls">
         <a class="fa fa-expand pane__expand" data-tooltip="Expand" href="#{{route.baseUrl}}/{{uid}}?expanded=true"></a>
         <a class="fa fa-compress pane__collapse" data-tooltip="Collapse" href="#{{route.baseUrl}}/{{uid}}"></a>
@@ -19,7 +19,7 @@
                 <button class="testcase__trace-toggle button">Show trace</button>
             </div>
         </div>
-        <pre class="alert__code testcase__trace"><code>{{failure.stackTrace}}</code></pre>
+        <pre class="alert__code testcase__trace"><code>{{failure.trace}}</code></pre>
     </div>
 {{else}}
     <div class="alert alert_status_{{status}}">

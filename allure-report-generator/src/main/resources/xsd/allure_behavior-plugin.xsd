@@ -6,7 +6,7 @@
 
     <xsd:include schemaLocation="allure_report-data.xsd"/>
 
-    <xsd:element name="behavior-data" type="ns:BehaviorData"/>
+    <xsd:element name="behaviorData" type="ns:BehaviorData"/>
     <xsd:complexType name="BehaviorData">
         <xsd:sequence>
             <xsd:element name="features" minOccurs="0">
@@ -38,10 +38,10 @@
         <xsd:all>
             <xsd:element name="uid" type="xsd:string"/>
             <xsd:element name="name" type="xsd:string"/>
-            <xsd:element name="test-cases" minOccurs="0">
+            <xsd:element name="testCases" minOccurs="0">
                 <xsd:complexType>
                     <xsd:sequence>
-                        <xsd:element name="test-case" type="ns:TestCaseInfo" minOccurs="0" maxOccurs="unbounded"/>
+                        <xsd:element name="testCase" type="ns:TestCaseInfo" minOccurs="0" maxOccurs="unbounded"/>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>

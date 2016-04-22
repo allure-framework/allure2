@@ -17,12 +17,6 @@ class DefectsListView extends DataGridView {
         this.highlightItem(this.state.get('defect'));
     }
 
-    @on('click .defects-list__item')
-    onDefectClick(e) {
-        const defectId = this.$(e.currentTarget).data('uid');
-        router.to('defects/' + defectId);
-    }
-
     serializeData() {
         return {
             sorting: this.getSettings(),

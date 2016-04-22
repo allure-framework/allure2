@@ -1,13 +1,13 @@
 @import "../../variables.css";
 
 .text {
-  &_status_FAILED {
+  &_status_failed {
     color: $color-failed;
   }
-  &_status_BROKEN {
+  &_status_broken {
     color: $color-broken;
   }
-  &_status_CANCELED {
+  &_status_canceled {
     color: $color-canceled;
   }
 }

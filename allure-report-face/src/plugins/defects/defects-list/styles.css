@@ -2,10 +2,10 @@
 
 .defects-list {
   &__title {
-    &_status_BROKEN {
+    &_status_broken {
       border-bottom-color: $color-broken;
     }
-    &_status_FAILED {
+    &_status_failed {
       border-bottom-color: $color-failed;
     }
   }

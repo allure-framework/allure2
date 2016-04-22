@@ -6,20 +6,20 @@
 
     <xsd:include schemaLocation="allure_report-data.xsd"/>
 
-    <xsd:element name="defects-data" type="ns:DefectsData"/>
+    <xsd:element name="defectsData" type="ns:DefectsData"/>
     <xsd:complexType name="DefectsData">
         <xsd:sequence>
-            <xsd:element name="product-defects" minOccurs="0">
+            <xsd:element name="productDefects" minOccurs="0">
                 <xsd:complexType>
                     <xsd:sequence>
-                        <xsd:element name="product-defect" type="ns:Defect" minOccurs="0" maxOccurs="unbounded"/>
+                        <xsd:element name="productDefect" type="ns:Defect" minOccurs="0" maxOccurs="unbounded"/>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
-            <xsd:element name="test-defects" minOccurs="0">
+            <xsd:element name="testDefects" minOccurs="0">
                 <xsd:complexType>
                     <xsd:sequence>
-                        <xsd:element name="test-defect" type="ns:Defect" minOccurs="0" maxOccurs="unbounded"/>
+                        <xsd:element name="testDefect" type="ns:Defect" minOccurs="0" maxOccurs="unbounded"/>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
@@ -30,10 +30,10 @@
         <xsd:all>
             <xsd:element name="uid" type="xsd:string"/>
             <xsd:element name="message" type="xsd:string"/>
-            <xsd:element name="test-cases" minOccurs="0">
+            <xsd:element name="testCases" minOccurs="0">
                 <xsd:complexType>
                     <xsd:sequence>
-                        <xsd:element name="test-case" type="ns:TestCaseInfo" minOccurs="0" maxOccurs="unbounded"/>
+                        <xsd:element name="testCase" type="ns:TestCaseInfo" minOccurs="0" maxOccurs="unbounded"/>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>

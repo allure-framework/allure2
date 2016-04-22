@@ -67,6 +67,7 @@
     "ATTACHMENTS": "{attachments, plural, one{# attachment} other{# attachments}}",
     "PARAMETERS": "Parameters"
   },
+  "testcases": "test cases",
   "total": {
     "TITLE": "Total"
   }

@@ -6,13 +6,13 @@
 
     <xsd:include schemaLocation="allure_report-data.xsd"/>
 
-    <xsd:element name="graph-data" type="ns:GraphData"/>
+    <xsd:element name="graphData" type="ns:GraphData"/>
     <xsd:complexType name="GraphData">
         <xsd:sequence>
-            <xsd:element name="test-cases" minOccurs="0">
+            <xsd:element name="testCases" minOccurs="0">
                 <xsd:complexType>
                     <xsd:sequence>
-                        <xsd:element name="test-case" type="ns:TestCaseInfo" minOccurs="0" maxOccurs="unbounded"/>
+                        <xsd:element name="testCase" type="ns:TestCaseInfo" minOccurs="0" maxOccurs="unbounded"/>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>

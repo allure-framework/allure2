@@ -24,6 +24,6 @@ export default class TestcaseModel extends Model {
     }
 
     url() {
-        return `data/${this.id}-testcase.json`;
+        return `data/test-cases/${this.id}.json`;
     }
 }

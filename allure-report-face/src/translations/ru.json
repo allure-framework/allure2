@@ -67,6 +67,7 @@
     "ATTACHMENTS": "{attachments, plural, one{# приложение} few{# приложения} other{# приложений}}",
     "PARAMETERS": "Параметры"
   },
+  "testcases": "тест кейсов",
   "total": {
     "TITLE": "Итого"
   }

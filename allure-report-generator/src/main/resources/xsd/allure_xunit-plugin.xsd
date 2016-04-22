@@ -6,14 +6,14 @@
 
     <xsd:include schemaLocation="allure_report-data.xsd"/>
 
-    <xsd:element name="x-unit-data" type="ns:XunitData"/>
+    <xsd:element name="xUnitData" type="ns:XunitData"/>
     <xsd:complexType name="XunitData">
         <xsd:sequence>
             <xsd:element name="time" type="ns:Time"/>
-            <xsd:element name="test-suites" minOccurs="0">
+            <xsd:element name="testSuites" minOccurs="0">
                 <xsd:complexType>
                     <xsd:sequence>
-                        <xsd:element name="test-suite" type="ns:TestSuite" minOccurs="0" maxOccurs="unbounded"/>
+                        <xsd:element name="testSuite" type="ns:TestSuite" minOccurs="0" maxOccurs="unbounded"/>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
@@ -26,17 +26,17 @@
             <xsd:element name="uid" type="xsd:string"/>
             <xsd:element name="name" type="xsd:string"/>
             <xsd:element name="time" type="ns:Time"/>
-            <xsd:element name="test-cases" minOccurs="0">
+            <xsd:element name="testCases" minOccurs="0">
                 <xsd:complexType>
                     <xsd:sequence>
-                        <xsd:element name="test-case" type="ns:TestCaseInfo" minOccurs="0" maxOccurs="unbounded"/>
+                        <xsd:element name="testCase" type="ns:TestCaseInfo" minOccurs="0" maxOccurs="unbounded"/>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
         </xsd:all>
     </xsd:complexType>
 
-    <xsd:element name="x-unit-widget-data" type="ns:XunitWidgetData"/>
+    <xsd:element name="xUnitWidgetData" type="ns:XunitWidgetData"/>
     <xsd:complexType name="XunitWidgetData">
         <xsd:sequence>
             <xsd:element name="uid" type="xsd:string"/>

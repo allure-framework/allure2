@@ -11,11 +11,11 @@ export default class SettingsModel extends Model {
         },
         sidebarCollapsed: false,
         visibleStatuses: {
-            FAILED: true,
-            BROKEN: true,
-            CANCELED: true,
-            PENDING: true,
-            PASSED: true
+            failed: true,
+            broken: true,
+            canceled: true,
+            pending: true,
+            passed: true
         }
     };
 
