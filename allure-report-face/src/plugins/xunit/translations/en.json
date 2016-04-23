@@ -1,5 +1,6 @@
 {
   "xunit": {
-    "title": "xUnit results"
+    "title": "xUnit results",
+    "widgetTitle": "xUnit"
   }
 }

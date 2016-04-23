@@ -7,4 +7,4 @@ allurePlugins.addTab('behaviors', {
     route: 'behaviors(/:defectId)(/:testcaseId)(/:attachmentId)',
     onEnter: (...routeParams) => new BehaviorsLayout({routeParams})
 });
-allurePlugins.addWidget('behaviors', BehaviorsWidget);
+// allurePlugins.addWidget('behaviors', BehaviorsWidget);
