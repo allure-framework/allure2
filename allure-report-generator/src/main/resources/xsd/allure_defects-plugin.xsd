@@ -30,6 +30,7 @@
         <xsd:all>
             <xsd:element name="uid" type="xsd:string"/>
             <xsd:element name="message" type="xsd:string"/>
+            <xsd:element name="type" type="ns:DefectType"/>
             <xsd:element name="testCases" minOccurs="0">
                 <xsd:complexType>
                     <xsd:sequence>
@@ -37,6 +38,37 @@
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:simpleType name="DefectType">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="productDefect"/>
+            <xsd:enumeration value="testDefect"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:element name="defectsWidget"/>
+    <xsd:complexType name="DefectsWidget">
+        <xsd:all>
+            <xsd:element name="type" type="ns:DefectType"/>
+            <xsd:element name="totalCount" type="xsd:long"/>
+            <xsd:element name="items">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="item" type="ns:DefectsWidgetItem" minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:element name="defectsWidgetItem" type="ns:DefectsWidgetItem"/>
+    <xsd:complexType name="DefectsWidgetItem">
+        <xsd:all>
+            <xsd:element name="uid" type="xsd:string"/>
+            <xsd:element name="message" type="xsd:string"/>
+            <xsd:element name="count" type="xsd:long"/>
         </xsd:all>
     </xsd:complexType>
 </xsd:schema>

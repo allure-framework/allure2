@@ -1,12 +1,14 @@
 package org.allurefw.report.defects;
 
 import org.allurefw.report.Defect;
+import org.allurefw.report.DefectType;
 import org.allurefw.report.DefectsData;
-import org.allurefw.report.DefectsWidgetData;
+import org.allurefw.report.DefectsWidget;
+import org.allurefw.report.DefectsWidgetItem;
 import org.allurefw.report.Finalizer;
-import org.allurefw.report.entity.Status;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -17,17 +19,20 @@ public class TestDefectsWidgetFinalizer implements Finalizer<DefectsData> {
 
     @Override
     public Object finalize(DefectsData identity) {
-        return identity.getTestDefects().stream()
+        List<DefectsWidgetItem> items = identity.getTestDefects().stream()
                 .sorted(Comparator
                         .<Defect>comparingInt(value -> value.getTestCases().size())
                         .reversed()
                         .thenComparing(Defect::getMessage, Comparator.naturalOrder()))
                 .limit(10)
-                .map(defect -> new DefectsWidgetData()
+                .map(defect -> new DefectsWidgetItem()
                         .withUid(defect.getUid())
                         .withMessage(defect.getMessage())
-                        .withStatus(Status.BROKEN)
                         .withCount(defect.getTestCases().size()))
                 .collect(Collectors.toList());
+        return new DefectsWidget()
+                .withType(DefectType.TEST_DEFECT)
+                .withTotalCount(identity.getTestDefects().size())
+                .withItems(items);
     }
 }

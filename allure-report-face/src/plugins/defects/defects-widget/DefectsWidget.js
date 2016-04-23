@@ -1,3 +1,4 @@
+import '../styles.css';
 import {ItemView} from 'backbone.marionette';
 import template from './DefectsWidget.hbs';
 

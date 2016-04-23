@@ -2,9 +2,9 @@
   "defects": {
     "TITLE": "Defects",
     "productDefects": "Product defects",
-    "failed": "Product defects",
+    "productDefect": "Product defects",
     "testDefects": "Test defects",
-    "broken": "Test defects",
+    "testDefect": "Test defects",
     "STATISTIC": "(1)({{count}} defect);(2-inf)({{count}} defects);",
     "SHOW_ALL": "Show all defects",
     "COUNT": "Count",

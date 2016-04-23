@@ -1,0 +1,12 @@
+@import "../../variables.css";
+
+.label {
+  &_productDefect {
+    background: $color-failed;
+  }
+
+  &_testDefect {
+    background: $color-broken;
+  }
+}
+

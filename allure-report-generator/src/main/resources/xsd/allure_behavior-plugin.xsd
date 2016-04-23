@@ -50,14 +50,4 @@
             </xsd:element>
         </xsd:all>
     </xsd:complexType>
-
-    <xsd:element name="defectsWidgetData"/>
-    <xsd:complexType name="defectsWidgetData">
-        <xsd:all>
-            <xsd:element name="uid" type="xsd:string"/>
-            <xsd:element name="message" type="xsd:string"/>
-            <xsd:element name="count" type="xsd:long"/>
-            <xsd:element name="status" type="ns:Status"/>
-        </xsd:all>
-    </xsd:complexType>
 </xsd:schema>

@@ -2,9 +2,9 @@
   "defects": {
     "TITLE": "Erros",
     "productDefects": "Erros do produto",
-    "failed": "Erros do produto",
+    "productDefect": "Erros do produto",
     "testDefects": "Erros dos testes",
-    "broken": "Erros dos testes",
+    "testDefect": "Erros dos testes",
     "STATISTIC": "(1)({{count}} erro);(2-inf)({{count}} erros);",
     "SHOW_ALL": "Mostrar todos os erros",
     "COUNT": "Total",
