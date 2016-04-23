@@ -1,12 +1,12 @@
 <a class="pane__overlay" href="#{{baseUrl}}"></a>
 <h2 class="pane__title {{b "testsuites-list" "title"}}">
-    xUnit results
+    {{t "xunit.title"}}
     <span class="testsuites-list__statuses"></span>
 </h2>
 
 <div class="{{b "table" hover=true}} testsuites-list__table">
     <div class="{{b "table" "head"}}">
-        {{> ../../../blocks/table/sortable-col field="title" title="Title" class=(b "testsuites-list" "name")}}
+        {{> ../../../blocks/table/sortable-col field="name" title="Title" class=(b "testsuites-list" "name")}}
         {{> ../../../blocks/table/sortable-col field="time.duration" title="Duration"}}
         {{> ../../../blocks/table/sortable-col field="statistic.failed" title="Failed"}}
         {{> ../../../blocks/table/sortable-col field="statistic.broken" title="Broken"}}
@@ -23,7 +23,7 @@
     {{#each suites}}
         <a class="{{b "table" "row"}}" data-uid="{{uid}}" href="#{{../baseUrl}}/{{uid}}">
             <div class="{{b "table" "col"}} {{b "testsuites-list" "name"}} long-line">
-                {{title}}
+                {{name}}
             </div>
             {{> suite-table-row}}
         </a>

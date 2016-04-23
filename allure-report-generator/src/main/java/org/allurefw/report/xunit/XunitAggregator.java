@@ -31,6 +31,8 @@ public class XunitAggregator implements Aggregator<XunitData> {
     @Override
     public BiConsumer<XunitData, TestCase> accumulator() {
         return (xunit, testCase) -> {
+            xunit.updateStatistic(testCase);
+
             String suiteName = testCase.findOne(LabelName.SUITE)
                     .orElse("Default suite");
 
@@ -43,6 +45,7 @@ public class XunitAggregator implements Aggregator<XunitData> {
                         return newOne;
                     });
 
+            testSuite.updateStatistic(testCase);
             testSuite.getTestCases().add(testCase.toInfo());
         };
     }

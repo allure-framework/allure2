@@ -8,26 +8,15 @@ public interface WithStatistic {
 
     Statistic getStatistic();
 
-    default void update(WithStatus withStatus) {
-        Status status = withStatus.getStatus();
-        Statistic stat = getStatistic();
-        stat.setTotal(stat.getTotal() + 1);
-        switch (status) {
-            case FAILED:
-                stat.setFailed(stat.getFailed() + 1);
-                break;
-            case BROKEN:
-                stat.setBroken(stat.getBroken() + 1);
-                break;
-            case CANCELED:
-                stat.setCanceled(stat.getCanceled() + 1);
-                break;
-            case PASSED:
-                stat.setPassed(stat.getPassed() + 1);
-                break;
-            case PENDING:
-                stat.setPending(stat.getPending() + 1);
-                break;
+    void setStatistic(Statistic statistic);
+
+    default void updateStatistic(WithStatus withStatus) {
+        if (withStatus == null) {
+            return;
         }
+        if (getStatistic() == null) {
+            setStatistic(new Statistic());
+        }
+        getStatistic().update(withStatus.getStatus());
     }
 }

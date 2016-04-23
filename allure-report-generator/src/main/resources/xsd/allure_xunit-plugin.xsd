@@ -10,6 +10,7 @@
     <xsd:complexType name="XunitData">
         <xsd:sequence>
             <xsd:element name="time" type="ns:Time"/>
+            <xsd:element name="statistic" type="ns:Statistic"/>
             <xsd:element name="testSuites" minOccurs="0">
                 <xsd:complexType>
                     <xsd:sequence>
@@ -20,12 +21,13 @@
         </xsd:sequence>
     </xsd:complexType>
 
-    <xsd:element name="test-suite" type="ns:TestSuite"/>
+    <xsd:element name="testSuite" type="ns:TestSuite"/>
     <xsd:complexType name="TestSuite">
         <xsd:all>
             <xsd:element name="uid" type="xsd:string"/>
             <xsd:element name="name" type="xsd:string"/>
             <xsd:element name="time" type="ns:Time"/>
+            <xsd:element name="statistic" type="ns:Statistic"/>
             <xsd:element name="testCases" minOccurs="0">
                 <xsd:complexType>
                     <xsd:sequence>

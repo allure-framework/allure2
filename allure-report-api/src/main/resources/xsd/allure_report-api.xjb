@@ -40,4 +40,12 @@
 
         <inheritance:implements>org.allurefw.report.entity.WithSummary</inheritance:implements>
     </jaxb:bindings>
+
+    <jaxb:bindings node="//xsd:complexType[@name='Statistic']">
+        <inheritance:implements>org.allurefw.report.entity.ExtraStatisticMethods</inheritance:implements>
+    </jaxb:bindings>
+
+    <jaxb:bindings node="//xsd:complexType[@name='Time']">
+        <inheritance:implements>org.allurefw.report.entity.ExtraTimeMethods</inheritance:implements>
+    </jaxb:bindings>
 </jaxb:bindings>

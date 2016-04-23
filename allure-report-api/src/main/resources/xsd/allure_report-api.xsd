@@ -110,7 +110,6 @@
     <!-- Other entity -->
     <xsd:element name="statistic" type="ns:Statistic"/>
     <xsd:complexType name="Statistic">
-        <xsd:attribute name="total" type="xsd:long" default="0"/>
         <xsd:attribute name="passed" type="xsd:long" default="0"/>
         <xsd:attribute name="pending" type="xsd:long" default="0"/>
         <xsd:attribute name="canceled" type="xsd:long" default="0"/>

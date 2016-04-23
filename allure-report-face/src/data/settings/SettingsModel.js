@@ -30,6 +30,6 @@ export default class SettingsModel extends Model {
     save(key, val) {
         this.set(key, val);
         const json = this.toJSON();
-        window.localStorage.setItem('allureSettings', JSON.stringify(json));
+        window.localStorage.setItem('allure2Settings', JSON.stringify(json));
     }
 }
