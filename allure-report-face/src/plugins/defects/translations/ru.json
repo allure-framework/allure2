@@ -1,8 +1,8 @@
 {
   "defects": {
     "TITLE": "Дефекты",
-    "product-defects": "Дефекты продукта",
-    "test-defects": "Дефекты тестов",
+    "productDefects": "Дефекты продукта",
+    "testDefects": "Дефекты тестов",
     "STATISTIC": "(1)({{count}} дефект);(2-4)({{count}} дефекта};(5-inf)({{count}} дефектов);",
     "SHOW_ALL": "Показать все дефекты",
     "COUNT": "Кол-во",

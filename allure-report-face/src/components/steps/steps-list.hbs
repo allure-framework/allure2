@@ -6,14 +6,14 @@
                 [{{time time.start}}]
             </span>
             {{name}}
-            {{#if (eq status "FAILED")}}
-                <span class="{{b "text" status="FAILED"}} fa fa-times-circle" title="Failed step"></span>
+            {{#if (eq status "failed")}}
+                <span class="{{b "text" status="failed"}} fa fa-times-circle" title="Failed step"></span>
             {{/if}}
-            {{#if (eq status "BROKEN")}}
-                <span class="{{b "text" status="BROKEN"}} fa fa-exclamation-circle" title="Broken step"></span>
+            {{#if (eq status "broken")}}
+                <span class="{{b "text" status="broken"}} fa fa-exclamation-circle" title="Broken step"></span>
             {{/if}}
-            {{#if (eq status "SKIPPED")}}
-                <span class="{{b "text" status="CANCELED"}} fa fa-question-circle" title="Cancelled step"></span>
+            {{#if (eq status "skipped")}}
+                <span class="{{b "text" status="canceled"}} fa fa-question-circle" title="Cancelled step"></span>
             {{/if}}
         </div>
         <div class="step__content">
