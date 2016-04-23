@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -29,15 +30,14 @@ public class Lifecycle {
 
     @Inject
     @ReportFilesNamesMap
-    protected Map<String, String> filesNames;
+    protected Map<String, Set<String>> filesNamesMap;
 
     @Inject
     @WidgetsNamesMap
-    protected Map<String, String> widgetsNames;
+    protected Map<String, Set<String>> widgetsNamesMap;
 
     @Inject
-    @WidgetDataFinalizer
-    protected Map<String, Finalizer> widgetDataFinalizers;
+    protected Map<String, Finalizer> finalizers;
 
     @Inject
     protected ReportConfig config;
@@ -96,16 +96,17 @@ public class Lifecycle {
 
         Map<String, Object> widgets = new HashMap<>();
         data.forEach((uid, object) -> {
-            if (filesNames.containsKey(uid)) {
-                String fileName = filesNames.get(uid);
+            Set<String> fileNames = filesNamesMap.getOrDefault(uid, Collections.emptySet());
+            fileNames.forEach(fileName -> {
                 writer.write(dataDir, fileName, object);
-            }
-            if (widgetsNames.containsKey(uid)) {
-                String widgetName = widgetsNames.get(uid);
-                Finalizer finalizer = widgetDataFinalizers.getOrDefault(uid, Finalizer.identity());
+            });
+
+            Set<String> widgetNames = widgetsNamesMap.getOrDefault(uid, Collections.emptySet());
+            widgetNames.forEach(name -> {
+                Finalizer finalizer = finalizers.getOrDefault(name, Finalizer.identity());
                 //noinspection unchecked
-                widgets.put(widgetName, finalizer.finalize(object));
-            }
+                widgets.put(name, finalizer.finalize(object));
+            });
         });
 
         writer.write(dataDir, "widgets.json", widgets);

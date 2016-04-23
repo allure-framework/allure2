@@ -5,7 +5,6 @@ import com.google.inject.multibindings.MapBinder;
 
 import java.util.Objects;
 import java.util.UUID;
-import java.util.function.Function;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
@@ -56,20 +55,16 @@ public abstract class AbstractPlugin extends AbstractModule {
         public AggregatorBuilder<T> toReportData(String fileName) {
             MapBinder.newMapBinder(binder(), String.class, String.class, ReportFilesNamesMap.class)
                     .addBinding(uid).toInstance(fileName);
-
-            return this;
-        }
-
-        public AggregatorBuilder<T> toWidget(String widgetName) {
-            MapBinder.newMapBinder(binder(), String.class, String.class, WidgetsNamesMap.class)
-                    .addBinding(uid).toInstance(widgetName);
             return this;
         }
 
         public AggregatorBuilder<T> toWidget(String widgetName, Class<? extends Finalizer<T>> finalizerClass) {
-            MapBinder.newMapBinder(binder(), String.class, Finalizer.class, WidgetDataFinalizer.class)
-                    .addBinding(uid).to(finalizerClass);
-            return toWidget(widgetName);
+            MapBinder.newMapBinder(binder(), String.class, String.class, WidgetsNamesMap.class)
+                    .addBinding(uid).toInstance(widgetName);
+
+            MapBinder.newMapBinder(binder(), String.class, Finalizer.class)
+                    .addBinding(widgetName).to(finalizerClass);
+            return this;
         }
     }
 }

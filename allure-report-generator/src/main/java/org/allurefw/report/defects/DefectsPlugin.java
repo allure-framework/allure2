@@ -14,7 +14,9 @@ public class DefectsPlugin extends AbstractPlugin {
     @Override
     protected void configure() {
         aggregator(DefectsAggregator.class)
-                .toReportData("defects.json");
+                .toReportData("defects.json")
+                .toWidget("productDefects", ProductDefectsWidgetFinalizer.class)
+                .toWidget("testDefects", TestDefectsWidgetFinalizer.class);
 
     }
 }

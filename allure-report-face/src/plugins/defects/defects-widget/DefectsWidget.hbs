@@ -1,6 +1,6 @@
 <h2 class="widget__title">
-    Defects
-    <span class="widget__subtitle">{{t 'defects.STATISTIC' postProcess='interval' count=totalCount}} {{t 'overview.TOTAL'}}</span>
+    {{t (concat "defects." status)}}
+    <!--<span class="widget__subtitle">{{t 'defects.STATISTIC' postProcess='interval' count=totalCount}} {{t 'overview.TOTAL'}}</span>-->
 </h2>
 <div class="table table_hover widget__table">
     {{#each items}}

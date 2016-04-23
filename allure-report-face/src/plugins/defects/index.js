@@ -7,7 +7,8 @@ allurePlugins.addTab('defects', {
     route: 'defects(/:defectId)(/:testcaseId)(/:attachmentId)',
     onEnter: (...routeParams) => new DefectsLayout({routeParams})
 });
-// allurePlugins.addWidget('defects', DefectsWidget);
+allurePlugins.addWidget('productDefects', DefectsWidget);
+allurePlugins.addWidget('testDefects', DefectsWidget);
 allurePlugins.addTranslation('en', require('./translations/en.json'));
 allurePlugins.addTranslation('ru', require('./translations/ru.json'));
 allurePlugins.addTranslation('ptbr', require('./translations/ptbr.json'));
