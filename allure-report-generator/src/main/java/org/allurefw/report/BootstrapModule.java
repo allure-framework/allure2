@@ -28,6 +28,8 @@ public class BootstrapModule extends AbstractModule {
         MapBinder.newMapBinder(binder(), String.class, String.class, ReportFilesNamesMap.class);
         MapBinder.newMapBinder(binder(), String.class, String.class, WidgetsNamesMap.class);
 
+        MapBinder.newMapBinder(binder(), String.class, Finalizer.class, WidgetDataFinalizer.class);
+
         Multibinder.newSetBinder(binder(), String.class, PluginNames.class);
         Multibinder.newSetBinder(binder(), ResultsProcessor.class);
     }

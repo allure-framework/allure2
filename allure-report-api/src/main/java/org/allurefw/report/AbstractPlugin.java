@@ -66,9 +66,9 @@ public abstract class AbstractPlugin extends AbstractModule {
             return this;
         }
 
-        public AggregatorBuilder<T> toWidget(String widgetName, Function<T, Object> dataConverter) {
-            MapBinder.newMapBinder(binder(), String.class, Function.class, WidgetDataConverter.class)
-                    .addBinding(uid).toInstance(dataConverter);
+        public AggregatorBuilder<T> toWidget(String widgetName, Class<? extends Finalizer<T>> finalizerClass) {
+            MapBinder.newMapBinder(binder(), String.class, Finalizer.class, WidgetDataFinalizer.class)
+                    .addBinding(uid).to(finalizerClass);
             return toWidget(widgetName);
         }
     }

@@ -9,7 +9,6 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
@@ -37,8 +36,8 @@ public class Lifecycle {
     protected Map<String, String> widgetsNames;
 
     @Inject
-    @WidgetDataConverter
-    protected Map<String, Function> converters;
+    @WidgetDataFinalizer
+    protected Map<String, Finalizer> widgetDataFinalizers;
 
     @Inject
     protected ReportConfig config;
@@ -103,9 +102,9 @@ public class Lifecycle {
             }
             if (widgetsNames.containsKey(uid)) {
                 String widgetName = widgetsNames.get(uid);
-                Function converter = converters.getOrDefault(uid, Function.identity());
+                Finalizer finalizer = widgetDataFinalizers.getOrDefault(uid, Finalizer.identity());
                 //noinspection unchecked
-                widgets.put(widgetName, converter.apply(object));
+                widgets.put(widgetName, finalizer.finalize(object));
             }
         });
 

@@ -1,6 +1,7 @@
 package org.allurefw.report.entity;
 
 import javax.xml.bind.annotation.XmlElement;
+import java.util.Comparator;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
@@ -66,4 +67,13 @@ public interface ExtraStatisticMethods {
         setCanceled(getCanceled() + other.getCanceled());
         setPending(getPending() + other.getPending());
     }
+
+    static Comparator<Statistic> comparator() {
+        return Comparator.comparing(Statistic::getFailed)
+                .thenComparing(Statistic::getBroken)
+                .thenComparing(Statistic::getPassed)
+                .thenComparing(Statistic::getCanceled)
+                .thenComparing(Statistic::getPending);
+    }
+
 }
