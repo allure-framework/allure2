@@ -23,11 +23,11 @@ export default class StatusChart extends BaseChartView {
             stats[testcase.get('status')]++;
             return stats;
         }, {
-            FAILED: 0,
-            BROKEN: 0,
-            CANCELED: 0,
-            PENDING: 0,
-            PASSED: 0
+            failed: 0,
+            broken: 0,
+            canceled: 0,
+            pending: 0,
+            passed: 0
         });
         return Object.keys(stats).map(key => ({
             name: key,

@@ -37,17 +37,21 @@ public class BehaviorsAggregator implements Aggregator<BehaviorData> {
             Set<String> features = getLabelValues(testCase, LabelName.FEATURE, "Default feature");
             Set<String> stories = getLabelValues(testCase, LabelName.STORY, "Default story");
 
+            identity.updateStatistic(testCase);
             features.forEach(featureName -> {
                 Feature feature = identity.getFeatures().stream()
                         .filter(item -> featureName.equals(item.getName()))
                         .findAny()
                         .orElseGet(() -> newFeature(identity, featureName));
 
+                feature.updateStatistic(testCase);
                 stories.forEach(storyName -> {
                     Story story = feature.getStories().stream()
                             .filter(item -> storyName.equals(item.getName()))
                             .findAny()
                             .orElseGet(() -> newStory(feature, storyName));
+
+                    story.updateStatistic(testCase);
                     story.getTestCases().add(testCase.toInfo());
                 });
             });

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxb:bindings xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+               xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+               xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://java.sun.com/xml/ns/jaxb http://java.sun.com/xml/ns/jaxb/bindingschema_2_1.xsd"
+               xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
+               jaxb:extensionBindingPrefixes="xjc annox"
+               schemaLocation="allure_behavior-plugin.xsd"
+               jaxb:version="2.1">
+
+    <jaxb:bindings node="//xsd:complexType[@name='Feature']">
+        <inheritance:implements>org.allurefw.report.entity.WithStatistic</inheritance:implements>
+    </jaxb:bindings>
+
+    <jaxb:bindings node="//xsd:complexType[@name='Story']">
+        <inheritance:implements>org.allurefw.report.entity.WithStatistic</inheritance:implements>
+    </jaxb:bindings>
+
+    <jaxb:bindings node="//xsd:complexType[@name='BehaviorData']">
+        <inheritance:implements>org.allurefw.report.entity.WithStatistic</inheritance:implements>
+    </jaxb:bindings>
+
+</jaxb:bindings>

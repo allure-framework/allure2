@@ -7,8 +7,8 @@ const PAD_LEFT = 30;
 const PAD_TOP = 7;
 const PAD_BOTTOM = 30;
 
-const severities = ['BLOCKER', 'CRITICAL', 'NORMAL', 'MINOR', 'TRIVIAL'];
-const statuses = ['FAILED', 'BROKEN', 'CANCELED', 'PENDING', 'PASSED'];
+const severities = ['blocker', 'critical', 'normal', 'minor', 'trivial'];
+const statuses = ['failed', 'broken', 'canceled', 'pending', 'passed'];
 
 export default class SeverityChart extends BaseChartView {
 

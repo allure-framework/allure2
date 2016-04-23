@@ -31,19 +31,19 @@
     stop-opacity: 0;
   }
   &__fill {
-    &_status_FAILED {
+    &_status_failed {
       fill: $color-failed
     }
-    &_status_BROKEN {
+    &_status_broken {
       fill: $color-broken;
     }
-    &_status_PASSED {
+    &_status_passed {
       fill: $color-passed;
     }
-    &_status_PENDING {
+    &_status_pending {
       fill: $color-pending;
     }
-    &_status_CANCELED {
+    &_status_canceled {
       fill: $color-canceled;
     }
   }

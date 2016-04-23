@@ -9,6 +9,7 @@
     <xsd:element name="behaviorData" type="ns:BehaviorData"/>
     <xsd:complexType name="BehaviorData">
         <xsd:sequence>
+            <xsd:element name="statistic" type="ns:Statistic"/>
             <xsd:element name="features" minOccurs="0">
                 <xsd:complexType>
                     <xsd:sequence>
@@ -23,6 +24,7 @@
     <xsd:complexType name="Feature">
         <xsd:all>
             <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="statistic" type="ns:Statistic"/>
             <xsd:element name="stories" minOccurs="0">
                 <xsd:complexType>
                     <xsd:sequence>
@@ -38,6 +40,7 @@
         <xsd:all>
             <xsd:element name="uid" type="xsd:string"/>
             <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="statistic" type="ns:Statistic"/>
             <xsd:element name="testCases" minOccurs="0">
                 <xsd:complexType>
                     <xsd:sequence>

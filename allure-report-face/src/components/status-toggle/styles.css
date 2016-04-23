@@ -15,19 +15,19 @@
       border-radius: 2px;
 
     }
-    &_status_PASSED::before {
+    &_status_passed::before {
       background: $color-passed;
     }
-    &_status_CANCELED::before {
+    &_status_canceled::before {
       background: $color-canceled;
     }
-    &_status_PENDING::before {
+    &_status_pending::before {
       background: $color-pending;
     }
-    &_status_FAILED::before {
+    &_status_failed::before {
       background: $color-failed;
     }
-    &_status_BROKEN::before {
+    &_status_broken::before {
       background: $color-broken;
     }
   }

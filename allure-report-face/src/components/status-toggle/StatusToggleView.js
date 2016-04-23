@@ -11,7 +11,7 @@ class StatusToggleView extends ItemView {
     serializeData() {
         const statuses = settings.get('visibleStatuses');
         return {
-            statuses: ['FAILED', 'BROKEN', 'CANCELED', 'PENDING', 'PASSED'].map(status => ({
+            statuses: ['failed', 'broken', 'canceled', 'pending', 'passed'].map(status => ({
                 status,
                 active: !!statuses[status],
                 title: capitalize(status.toLowerCase())
