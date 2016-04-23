@@ -4,7 +4,7 @@ import {protoprop} from '../../decorators';
 export default class SettingsModel extends Model {
     @protoprop
     defaults = {
-        language: 'ptbr',
+        language: 'en',
         testCaseSorting: {
             field: 'index',
             order: 'asc'
@@ -21,7 +21,7 @@ export default class SettingsModel extends Model {
 
     fetch() {
         return new Promise(resolve => {
-            const settings = window.localStorage.getItem('allureSettings');
+            const settings = window.localStorage.getItem('allure2Settings');
             this.set(JSON.parse(settings));
             resolve();
         });

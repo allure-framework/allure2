@@ -26,6 +26,9 @@ public class Lifecycle {
     protected Map<String, Aggregator> aggregators;
 
     @Inject
+    protected Map<String, Processor> processors;
+
+    @Inject
     @ReportFilesNamesMap
     protected Map<String, String> filesNames;
 
@@ -76,6 +79,8 @@ public class Lifecycle {
         Map<String, Object> data = new HashMap<>();
         for (TestCase testCase : manager.getTestCases()) {
             findAnyResults = true;
+
+            processors.forEach((uid, processor) -> processor.process(testCase));
 
             writer.write(testCasesDir, testCase.getSource(), testCase);
             aggregators.forEach((uid, aggregator) -> {
