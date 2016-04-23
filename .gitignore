@@ -9,3 +9,6 @@ target
 *.classpath
 *.project
 *.pydevproject
+
+#Node
+node_modules
