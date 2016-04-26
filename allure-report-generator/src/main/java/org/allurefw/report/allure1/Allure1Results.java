@@ -142,7 +142,7 @@ public class Allure1Results implements ResultsProcessor {
     protected Step convert(Path resultDirectory,
                            ru.yandex.qatools.allure.model.Step s) {
         return new Step()
-                .withName(s.getTitle())
+                .withName(s.getTitle() == null ? s.getName() : s.getTitle())
                 .withTime(new Time()
                         .withStart(s.getStart())
                         .withStop(s.getStop())

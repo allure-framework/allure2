@@ -9,7 +9,7 @@ class LinksView extends ItemView {
 
     serializeData() {
         return {
-            links: this.model.links
+            links: this.model.get('links')
         };
     }
 }

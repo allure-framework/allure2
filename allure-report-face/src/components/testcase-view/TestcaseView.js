@@ -28,10 +28,10 @@ class TestcaseView extends LayoutView {
 
     onRender() {
         this.showTestcasePlugins(this.$('.testcase__content_before'), allurePlugins.testcaseBlocks.before);
-        // this.steps.show(new StepsView({
-        //     baseUrl: this.options.baseUrl + '/' + this.model.id,
-        //     model: this.model
-        // }));
+        this.steps.show(new StepsView({
+            baseUrl: this.options.baseUrl + '/' + this.model.id,
+            model: this.model
+        }));
         // this.highlightSelectedAttachment();
         this.showTestcasePlugins(this.$('.testcase__content_after'), allurePlugins.testcaseBlocks.after);
     }

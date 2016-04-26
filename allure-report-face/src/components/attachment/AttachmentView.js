@@ -16,7 +16,7 @@ class AttachmentView extends ItemView {
     initialize({attachment}) {
         this.attachment = attachment;
         this.type = attachmentType(this.attachment.type);
-        this.sourceUrl = 'data/' + this.attachment.source;
+        this.sourceUrl = 'data/attachments/' + this.attachment.source;
     }
 
     onRender() {
