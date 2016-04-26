@@ -26,9 +26,12 @@ $sidebar-collapsed: 30px;
     font-size: 20px;
     line-height: 40px;
     font-weight: bold;
-    background: url('allure-logo.png') no-repeat 10px center;
+    background: url('allure-logo.png') no-repeat 0 center;
     padding-left: 50px;
     margin-bottom: 10px;
+    width: 30px;
+    height: 30px;
+    background-size: contain;
   }
   &__menu {
     margin: 0;

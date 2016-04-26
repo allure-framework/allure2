@@ -2,13 +2,6 @@
     <a href="#" class="{{b 'side-nav' 'brand'}}">
         <span class="{{b 'side-nav' 'text'}}">Allure</span>
     </a>
-    <span class="{{b 'side-nav' 'text'}}">
-        {{#if report.url}}
-            <a href="{{report.url}}" class="link" target="_blank">{{report.name}}</a>
-        {{else}}
-            {{report.name}}
-        {{/if}}
-    </span>
     {{#if report.url}}
         <a class="{{b 'side-nav' 'icon'}} {{b 'side-nav' 'report'}} fa fa-file-text-o link"
            data-tooltip="Open report"
@@ -27,18 +20,6 @@
 </ul>
 <div class="side-nav__strut"></div>
 <div class="side-nav__footer">
-    <dl class="{{b 'side-nav' 'info'}}">
-        <dt>Version:</dt>
-        <dd>{{default report.version 'Unknown'}}</dd>
-        {{#if report.size}}
-            <dt>{{t 'index.DATA_SIZE'}}</dt>
-            <dd>{{filesize report.size}}</dd>
-        {{/if}}
-        {{#if report.time}}
-            <dt>{{t 'index.GENERATED'}}</dt>
-            <dd>{{duration report.time}}</dd>
-        {{/if}}
-    </dl>
     <button class="{{b 'button'}} {{b 'side-nav' 'language'}}">
         <span class="{{b 'side-nav' 'flag' lang=language.id}}"></span>
         {{language.title}}
