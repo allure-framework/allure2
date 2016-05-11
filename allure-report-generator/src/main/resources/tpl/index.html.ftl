@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Allure</title>
+    <title>Allure Report</title>
     <link rel="favicon" href="favicon.ico">
     <link rel="stylesheet" href="styles.css">
 </head>
