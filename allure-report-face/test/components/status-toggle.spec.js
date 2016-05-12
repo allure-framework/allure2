@@ -3,7 +3,7 @@ import StatusToggleView from 'components/status-toggle/StatusToggleView';
 
 describe('StatusToggle', function() {
     beforeEach(function() {
-        settings.set('visibleStatuses', {FAILED: true, BROKEN: true});
+        settings.set('visibleStatuses', {failed: true, broken: true, passed: false});
         this.view = new StatusToggleView().render();
         this.el = this.view.$el;
     });
@@ -15,11 +15,11 @@ describe('StatusToggle', function() {
     });
 
     it('should update model on click', function() {
-        const passsed = this.el.find('.status-toggle__button_status_PASSED');
+        const passsed = this.el.find('.status-toggle__button_status_passed');
         passsed.click();
-        expect(settings.get('visibleStatuses')).toEqual({FAILED: true, BROKEN: true, PASSED: true});
+        expect(settings.get('visibleStatuses')).toEqual({failed: true, broken: true, passed: true});
 
         passsed.click();
-        expect(settings.get('visibleStatuses')).toEqual({FAILED: true, BROKEN: true, PASSED: false});
+        expect(settings.get('visibleStatuses')).toEqual({failed: true, broken: true, passed: false});
     });
 });

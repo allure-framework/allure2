@@ -1,5 +1,5 @@
-<select multiple>
+<div class="button-group">
     {{#each statuses}}
-        <option data-status="{{status}}">{{title}}</option>
+        <button class="{{b 'button' active=active}} {{b 'status-toggle' 'button' status=status}}" data-status="{{status}}">{{title}}</button>
     {{/each}}
-</select>
+</div>

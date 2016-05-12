@@ -1,7 +1,5 @@
 import './styles.css';
 import DataGridView from '../../../components/data-grid/DataGridView';
-import {on} from '../../../decorators';
-import router from '../../../router';
 import template from './DefectsListView.hbs';
 
 class DefectsListView extends DataGridView {
