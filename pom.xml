@@ -18,6 +18,8 @@
         <module>allure-report-api</module>
         <module>allure-report-generator</module>
         <module>allure-report-face</module>
+        <module>allure-bundle</module>
+        <module>allure-commandline</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -95,6 +97,12 @@
                 <artifactId>allure-report-generator</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.allurefw</groupId>
+                <artifactId>allure-report-face</artifactId>
+                <version>${project.version}</version>
+                <type>war</type>
+            </dependency>
 
 
             <dependency>
@@ -135,11 +143,6 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>3.4</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.tika</groupId>
-                <artifactId>tika-core</artifactId>
-                <version>1.7</version>
             </dependency>
             <dependency>
                 <groupId>org.jvnet.jaxb2_commons</groupId>
@@ -193,6 +196,11 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-nop</artifactId>
+                <version>1.7.12</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
                 <version>1.7.12</version>
             </dependency>
 
