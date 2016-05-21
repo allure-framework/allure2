@@ -21,7 +21,7 @@
             <outputDirectory>allure.report.face/</outputDirectory>
             <scope>test</scope>
             <includes>
-                <include>ru.yandex.qatools.allure:allure-report-face</include>
+                <include>org.allurefw:allure-report-face</include>
             </includes>
             <unpack>true</unpack>
             <unpackOptions>
