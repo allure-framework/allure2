@@ -7,7 +7,9 @@ import {className} from '../../decorators';
 import allurePlugins from '../../pluginApi';
 
 const widgetTpl = (id) => `<div class="widget island" data-id="${id}">
-    <div class="widget__handle fa fa-arrows"></div>
+    <div class="widget__handle">
+        <span class="fa fa-ellipsis-v"></span> <span class="fa fa-ellipsis-v"></span>
+    </div>
     <div class="widget__body"></div>
 </div>`;
 const colTpl = `<div class="widgets-grid__col"></div>`;
@@ -42,7 +44,7 @@ class WidgetsGridView extends LayoutView {
             return col.filter(widgetName => allurePlugins.widgets[widgetName]);
         });
         Object.keys(allurePlugins.widgets).forEach(widgetName => {
-            if(storedWidgets.every(col => col.indexOf(widgetName) === -1)) {
+            if (storedWidgets.every(col => col.indexOf(widgetName) === -1)) {
                 const freeColumn = storedWidgets.reduce((smallestCol, col) =>
                     col.length < smallestCol.length ? col : smallestCol
                 );
@@ -59,10 +61,13 @@ class WidgetsGridView extends LayoutView {
     }
 
     addWidget(col, name, Widget) {
+        let data = this.model.getWidgetData(name);
+        data.set('widget', name);
+        
         const el = $(widgetTpl(name));
         col.append(el);
         this.addRegion(name, {el: el.find('.widget__body')});
-        this.getRegion(name).show(new Widget({model: this.model.getWidgetData(name)}));
+        this.getRegion(name).show(new Widget({model: data}));
     }
 }
 

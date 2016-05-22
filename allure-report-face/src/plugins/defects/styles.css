@@ -1,11 +1,11 @@
 @import "../../variables.css";
 
 .label {
-  &_productDefect {
+  &_productDefects {
     background: $color-failed;
   }
 
-  &_testDefect {
+  &_testDefects {
     background: $color-broken;
   }
 }

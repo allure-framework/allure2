@@ -5,6 +5,8 @@ import StatusToggleView from '../../../components/status-toggle/StatusToggleView
 import {region} from '../../../decorators';
 import settings from '../../../util/settings';
 import template from './TestsuitesListView.hbs';
+import {colors} from '../../../util/statuses'
+import 'jquery-sparkline';
 
 class TestsuitesListView extends DataGridView {
     template = template;
@@ -17,6 +19,10 @@ class TestsuitesListView extends DataGridView {
         this.state = state;
         this.listenTo(this.state, 'change:testsuite', (m, suite) => this.highlightItem(suite));
         this.listenTo(settings, 'change:visibleStatuses', this.render);
+    }
+
+    onDomRefresh() {
+        this.$el.find('.inlinesparkline').sparkline('html', {type: 'bar', colorMap: colors});
     }
 
     onRender() {
@@ -33,13 +39,14 @@ class TestsuitesListView extends DataGridView {
             time: this.collection.time,
             statistic: this.collection.statistic,
             suites: this.applySort(
-                this.collection.toJSON().filter(suite => {
-                    return reduce(
-                        suite.statistic,
-                        (visible, value, status) => visible || (statuses[status.toUpperCase()] && value > 0),
-                        false
-                    );
-                })
+                this.collection.toJSON()
+                    .filter(suite => {
+                        return reduce(
+                            suite.statistic,
+                            (visible, value, status) => visible || (statuses[status] && value > 0),
+                            false
+                        );
+                    })
             )
         };
     }

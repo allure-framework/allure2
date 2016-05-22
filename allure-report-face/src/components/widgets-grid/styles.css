@@ -6,7 +6,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  padding: $gap-size $gap-size 0 0;
+  padding: $gap-size $gap-size 0 $gap-size;
   max-height: 100%;
   overflow: auto;
   display: flex;
@@ -15,43 +15,5 @@
   }
   &__col + &__col {
     padding-left: $gap-size;
-  }
-}
-
-.widget {
-  margin-bottom: $gap-size;
-  position: relative;
-  &_ghost {
-    border: 1px dashed $border-accent-color;
-    box-shadow: none;
-    min-height: 50px;
-    & > * {
-      display: none;
-    }
-  }
-  &__handle {
-    display: none;
-    position: absolute;
-    font-size: 16px;
-    cursor: move;
-    right: $gap-size;
-    top: $gap-size;
-    .widget:hover & {
-      display: block;
-    }
-  }
-  &__title {
-    margin-top: 0;
-  }
-  &__subtitle {
-    color: $text-muted-color;
-    font-size: 16px;
-  }
-  &__table {
-    border-top: 1px solid $border-color;
-    margin: 0 -$gap-size;
-    .table__row:last-child {
-      border-bottom: 0;
-    }
   }
 }

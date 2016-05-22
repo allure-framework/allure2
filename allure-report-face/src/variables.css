@@ -1,10 +1,10 @@
 $brand-blue: #0044bb;
 $brand-red: #ff0000;
 
-$color-passed: #3bbd25;
-$color-failed: #ff0000;
-$color-broken: #ffa924;
-$color-canceled: #999999;
+$color-passed: #97cc64;
+$color-failed: #fd5a3e;
+$color-broken: #ffd963;
+$color-canceled: #aaa;
 $color-pending: #d35ebe;
 
 $background-passed: #a6e19d;
@@ -15,13 +15,15 @@ $background-pending: #ecb7e2;
 
 $header-bg: #fff;
 $heading-bg: #f6f5f3;
-$body-bg: #f3f2ee;
+$body-bg: #fff;
+$content-bg: #fff;
 
-$border-color: #eee;
-$border-accent-color: #ccc;
+$border-color: #ECEFF1;
+$border-accent-color: #e5e5e5;
 
 $hover-color: #e4edfe;
 $selected-color: #ffeca0;
+$summary-color: #f6f5f3;
 
 $text-color: #000;
 $text-muted-color: #999;
@@ -29,3 +31,23 @@ $text-muted-color: #999;
 $gap-size: 15px;
 
 $small-screen: 1000px;
+
+
+/*  Sidebar  **/
+
+$sidebar-full-width: 180px;
+$sidebar-collapsed: 60px;
+
+$sidebar-separator-color: #4d4d4d;
+$sidebar-active-accent-color: #64B5F6;
+$app-nav-bg: #343434;
+$sidebar-active-text-color: #fff;
+$sidebar-hover-text-color: #fff;
+$sidebar-brand-color: #fff;
+$sidebar-text-shadow-color: #000;
+
+
+/* Links */
+
+$link-color: #1976D2;
+$link-color-hover: #f00;

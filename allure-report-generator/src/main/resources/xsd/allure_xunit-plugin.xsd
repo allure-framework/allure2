@@ -41,6 +41,20 @@
     <xsd:element name="xUnitWidgetData" type="ns:XunitWidgetData"/>
     <xsd:complexType name="XunitWidgetData">
         <xsd:sequence>
+            <xsd:element name="total" type="xsd:long"/>
+            <xsd:element name="items" minOccurs="0">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="item" type="ns:XunitWidgetItem" minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:element name="xUnitWidgetItem" type="ns:XunitWidgetItem"/>
+    <xsd:complexType name="XunitWidgetItem">
+        <xsd:sequence>
             <xsd:element name="uid" type="xsd:string"/>
             <xsd:element name="name" type="xsd:string"/>
             <xsd:element name="statistic" type="ns:Statistic"/>

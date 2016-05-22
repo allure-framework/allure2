@@ -1,6 +1,6 @@
 <h2 class="widget__title">
     {{t title}}
-    <span class="widget__subtitle">{{totalCount}} items total</span>
+    <span class="widget__subtitle">{{total}} items total</span>
 </h2>
 <div class="table table_hover widget__table">
     {{#each items}}
@@ -11,7 +11,7 @@
             </div>
         </{{../rowTag}}>
     {{/each}}
-    {{#if (gt totalCount items.length)}}
+    {{#if (gt total items.length)}}
         <a class="table__row" href="#{{baseUrl}}">
             <div class="table__col table__col_center">
                 {{showAllText}}

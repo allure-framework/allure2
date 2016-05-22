@@ -2,7 +2,6 @@ import './styles.css';
 import {className, on} from '../../decorators';
 import {findWhere} from 'underscore';
 import {ItemView} from 'backbone.marionette';
-import ReportModel from '../../data/report/ReportModel';
 import TooltipView from '../tooltip/TooltipView';
 import LanguageSelectView from '../language-select/LanguageSelectView';
 import { LANGUAGES } from '../../util/translation';
@@ -14,17 +13,13 @@ import router from '../../router';
 
 @className('side-nav')
 class SideNavView extends ItemView {
-    static reportModel = new ReportModel();
-
     template = template;
 
     initialize() {
-        this.model = this.constructor.reportModel;
         this.tabs = allurePlugins.tabs.map(({tabName, icon, title}) => ({
             tabName, icon, title,
             active: this.isTabActive(tabName)
         }));
-        this.model.fetch().then(() => this.render());
         this.tooltip = new TooltipView({position: 'right'});
         this.langSelect = new LanguageSelectView();
     }
@@ -40,8 +35,7 @@ class SideNavView extends ItemView {
     serializeData() {
         return {
             language: findWhere(LANGUAGES, {id: settings.get('language')}),
-            tabs: this.tabs,
-            report: this.model.toJSON()
+            tabs: this.tabs
         };
     }
 

@@ -54,7 +54,7 @@
     }
   }
   .table__row_summary {
-    background: #f6f5f3;
+    background: $summary-color;
   }
   .table__row_active {
     background: $selected-color;

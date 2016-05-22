@@ -3,8 +3,13 @@
 $button-border-radius: 3px;
 $button-border-color: rgba(0, 0, 0, 0.2);
 $button-border-hover: rgba(0, 0, 0, 0.3);
+
 $button-bg-pressed: rgba(0, 0, 0, 0.05);
 $button-bg-checked: #e8e8e8;
+
+$button-inverse-border-color: #666666;
+$button-inverse-color: #737373;
+$button-inverse-border-hover: #737373;
 
 .button {
   padding: 0 13px;
@@ -23,6 +28,14 @@ $button-bg-checked: #e8e8e8;
   }
   &_active {
     background: $button-bg-checked;
+  }
+  &_inverse {
+    color: $button-inverse-color;
+    border-color: $button-inverse-border-color;
+    
+    &:hover {
+      border-color: $button-inverse-border-hover;
+    }
   }
 }
 

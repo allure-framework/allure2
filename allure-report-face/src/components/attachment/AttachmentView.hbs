@@ -31,12 +31,19 @@
         </tbody>
     </table>
 {{else if (eq type "image")}}
-    <div class="pane__section attachment__image-container">
-        <img class="attachment__image" src="{{sourceUrl}}"/>
+    <div class="pane__section attachment__media-container">
+        <img class="attachment__media" src="{{sourceUrl}}"/>
     </div>
 {{else if (eq type "svg")}}
     <div class="pane__section">
         <object class="attachment__embed" type="image/svg+xml" data="{{sourceUrl}}">Your browser does not support SVG</object>
+    </div>
+{{else if (eq type "video")}}
+    <div class="pane__section attachment__media-container">
+        <video class="attachment__media" controls>
+            <source src="{{sourceUrl}}" type="{{attachment.type}}">
+            Your browser does not support video tag
+        </video>
     </div>
 {{else}}
     <iframe class="attachment__iframe" frameborder="0" src="{{sourceUrl}}"></iframe>

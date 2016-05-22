@@ -1,8 +1,10 @@
+@import "../../variables.css";
+
 .link {
-  color: #44b;
+  color: $link-color;
   transition: color 0.15s ease-out;
   text-decoration: none;
   &:hover {
-    color: #e00;
+    color: $link-color-hover;
   }
 }

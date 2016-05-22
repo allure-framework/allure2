@@ -1,4 +1,9 @@
-{{#if description}}
+{{#if value}}
     <h3 class="pane__section-title">Description</h3>
-    {{{description}}}
+    {{#if (eq type "TEXT")}}
+        <p class="description__text">{{value}}</p>
+    {{/if}}
+    {{#if (eq type "MARKDOWN")}}
+        {{{value}}}
+    {{/if}}
 {{/if}}

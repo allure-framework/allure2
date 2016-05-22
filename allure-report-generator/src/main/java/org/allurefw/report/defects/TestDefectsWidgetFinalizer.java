@@ -31,7 +31,6 @@ public class TestDefectsWidgetFinalizer implements Finalizer<DefectsData> {
                         .withCount(defect.getTestCases().size()))
                 .collect(Collectors.toList());
         return new DefectsWidget()
-                .withType(DefectType.TEST_DEFECT)
                 .withTotalCount(identity.getTestDefects().size())
                 .withItems(items);
     }
