@@ -1,6 +1,6 @@
 import allurePlugins from '../../pluginApi';
 
-import OverviewWidget from '../../components/widget-overview/OverviewWidget';
+// import OverviewWidget from '../../components/widget-overview/OverviewWidget';
 import OverviewLayout from '../../layouts/overview/OverivewLayout';
 
 //allurePlugins.addWidget('total', OverviewWidget);

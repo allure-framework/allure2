@@ -5,7 +5,7 @@ import StatusToggleView from '../../../components/status-toggle/StatusToggleView
 import {region} from '../../../decorators';
 import settings from '../../../util/settings';
 import template from './TestsuitesListView.hbs';
-import {colors} from '../../../util/statuses'
+import {colors} from '../../../util/statuses';
 import 'jquery-sparkline';
 
 class TestsuitesListView extends DataGridView {
