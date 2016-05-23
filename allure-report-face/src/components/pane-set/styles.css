@@ -6,7 +6,6 @@
   left: 0;
   height: 100%;
   background: #fff;
-  box-shadow: 0 0 0 1px $border-accent-color;
   width: 50%;
   overflow-y: scroll;
   transition: left 0.3s, width 0.3s;
@@ -63,4 +62,8 @@
       display: inline;
     }
   }
+}
+
+.pane + .pane {
+  box-shadow: 0 0 3px #eee;
 }

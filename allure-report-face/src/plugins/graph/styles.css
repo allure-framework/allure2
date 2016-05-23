@@ -6,6 +6,7 @@
   align-content: flex-start;
   overflow: auto;
   height: 100vh;
+  padding-left: $gap-size;
 }
 
 .chart {

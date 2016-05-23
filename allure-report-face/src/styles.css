@@ -1,5 +1,6 @@
 @import "../node_modules/normalize-css/normalize.css";
 @import "../node_modules/highlight.js/styles/idea.css";
+@import "../node_modules/c3/c3.css";
 @import "./grid.css";
 @import "./blocks/alert/styles.css";
 @import "./blocks/attachment-row/styles.css";
@@ -10,11 +11,13 @@
 @import "./blocks/link/styles.css";
 @import "./blocks/spinner/styles.css";
 @import "./blocks/text/styles.css";
+@import "./blocks/widget/styles.css";
 @import "./variables.css";
+@import "./fonts/open-sans.css";
 
 body {
   color: $text-color;
-  font-family: -apple-system, Helvetica, Arial, sans-serif;
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
 }
 
 * {
@@ -56,6 +59,7 @@ html, body {
 }
 
 .long-line {
+  line-height: 1.5em;
   word-break: break-word;
 }
 

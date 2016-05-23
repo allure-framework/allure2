@@ -1,0 +1,69 @@
+@import "../../variables.css";
+
+.widget {
+  &__title {
+    margin-top: 0;
+    font-weight: lighter;
+    text-transform: uppercase;
+  }
+
+  &__subtitle {
+    color: $text-muted-color;
+    font-size: 16px;
+    text-transform: lowercase;
+  }
+
+  &__flex-line {
+    display: flex;
+  }
+
+  margin-bottom: $gap-size;
+  position: relative;
+
+  &_ghost {
+    border: 1px dashed $border-accent-color;
+    box-shadow: none;
+    min-height: 50px;
+    & > * {
+      display: none;
+    }
+  }
+
+  &__handle {
+    display: none;
+    position: absolute;
+    font-size: 16px;
+    cursor: move;
+    right: $gap-size;
+    top: $gap-size;
+    color: $text-muted-color;
+    .widget:hover & {
+      display: block;
+    }
+  }
+
+  &__table {
+    border-top: 1px solid $border-color;
+    margin: 0 -$gap-size;
+    .table__row:last-child {
+      border-bottom: 0;
+    }
+  }
+}
+
+.widget-content {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  flex-direction: column;
+
+  &__title {
+    font-size: 3.5em;
+  }
+  
+  &__subtitle {
+    color: $text-muted-color;
+  }
+}

@@ -29,7 +29,7 @@ class AttachmentView extends ItemView {
         }
     }
 
-    @on('click .attachment__image')
+    @on('click .attachment__media')
     onImageClick() {
         const expanded = router.getUrlParams().expanded === 'true' ? null : true;
         router.setSearch({expanded});

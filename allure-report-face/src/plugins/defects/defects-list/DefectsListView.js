@@ -1,5 +1,7 @@
 import './styles.css';
 import DataGridView from '../../../components/data-grid/DataGridView';
+import {on} from '../../../decorators';
+import router from '../../../router';
 import template from './DefectsListView.hbs';
 
 class DefectsListView extends DataGridView {
@@ -13,6 +15,12 @@ class DefectsListView extends DataGridView {
 
     onRender() {
         this.highlightItem(this.state.get('defect'));
+    }
+
+    @on('click .defects-list__item')
+    onDefectClick(e) {
+        const defectId = this.$(e.currentTarget).data('uid');
+        router.to('defects/' + defectId);
     }
 
     serializeData() {

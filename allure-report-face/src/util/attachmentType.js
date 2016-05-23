@@ -26,6 +26,10 @@ export default function typeByMime(type) {
             return 'csv';
         case 'image/svg+xml':
             return 'svg';
+        case 'video/mp4':
+        case 'video/ogg':
+        case 'video/webm':
+            return 'video';
         default:
     }
 }

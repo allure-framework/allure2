@@ -1,0 +1,34 @@
+<h2 class="{{b 'widget' 'title'}}">Report stats</h2>
+
+<div>
+    {{#if report.url}}
+        <a href="{{report.url}}" class="link" target="_blank">{{report.name}}</a>
+    {{else}}
+        {{report.name}}
+    {{/if}}
+</div>
+
+<div class="{{b 'widget' 'flex-line'}}">
+    <div class="{{b 'widget-content'}}">
+        <div class="{{b 'widget-content' 'title'}}">{{default report.version 'Latest'}}</div>
+        <div class="{{b 'widget-content' 'subtitle'}}">Allure's version</div>
+    </div>
+
+    <div class="{{b 'widget-content'}}">
+        <div class="{{b 'report-stats-widget'}}">
+            <dl class="{{b 'report-stats-widget' 'info'}}">
+                {{#if report.size}}
+                    <dt>{{t 'index.DATA_SIZE'}}</dt>
+                    <dd>{{filesize report.size}}</dd>
+                {{/if}}
+                {{#if report.time}}
+                    <dt>{{t 'index.GENERATED'}}</dt>
+                    <dd>{{duration report.time}}</dd>
+                {{/if}}
+            </dl>
+        </div>
+    </div>
+</div>
+
+
+

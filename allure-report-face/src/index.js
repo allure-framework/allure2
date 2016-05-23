@@ -8,6 +8,7 @@ import './plugins/xunit';
 import './plugins/behaviors';
 import './plugins/graph';
 import './plugins/timeline';
+import './plugins/report-stats';
 
 import './plugins/testcase-parameters';
 import './plugins/testcase-description';

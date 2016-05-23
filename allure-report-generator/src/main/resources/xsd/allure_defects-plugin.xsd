@@ -51,7 +51,6 @@
     <xsd:element name="defectsWidget"/>
     <xsd:complexType name="DefectsWidget">
         <xsd:all>
-            <xsd:element name="type" type="ns:DefectType"/>
             <xsd:element name="totalCount" type="xsd:long"/>
             <xsd:element name="items">
                 <xsd:complexType>

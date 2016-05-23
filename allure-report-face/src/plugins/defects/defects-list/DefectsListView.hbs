@@ -2,7 +2,7 @@
 {{#each defectTypes}}
     <h2 class="pane__title {{b "defects-list" "title" status=status}}">
         {{t (concat "defects." type)}}
-        <span class="defects-list__count">{{defects.length}} {{t 'overview.TOTAL'}}</span>
+        <span class="defects-list__count">{{t 'defects.STATISTIC' postProcess='interval' count=defects.length}}</span>
     </h2>
     <div class="{{b "table" hover=true}} defects-list__table">
         <div class="{{b "table" "head"}}">

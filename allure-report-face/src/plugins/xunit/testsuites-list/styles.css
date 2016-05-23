@@ -1,3 +1,11 @@
+@import "../../../variables.css";
+
+@define-mixin statused $name {
+  &_$(name) {
+    border-bottom: 3px solid $color-$(name);
+  }
+}
+
 .testsuites-list {
   &__title {
     overflow: hidden;
@@ -8,4 +16,11 @@
   &__statuses {
     float: right;
   }
+}
+
+.table__col {
+  @mixin statused failed;
+  @mixin statused broken;
+  @mixin statused canceled;
+  @mixin statused pending;
 }
