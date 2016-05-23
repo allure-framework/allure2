@@ -59,7 +59,6 @@
     "d3": "^3.5.12",
     "denodeify": "^1.2.1",
     "filesize": "^3.1.5",
-    "flag-icon-css": "^1.0.0",
     "font-awesome": "^4.5.0",
     "handlebars": "^4.0.5",
     "highlight.js": "^8.7.0",
