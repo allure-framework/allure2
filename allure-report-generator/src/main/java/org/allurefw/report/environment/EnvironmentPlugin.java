@@ -1,10 +1,11 @@
 package org.allurefw.report.environment;
 
 import com.google.common.collect.Maps;
-import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import org.allurefw.report.AbstractPlugin;
 import org.allurefw.report.Environment;
+import org.allurefw.report.Plugin;
 import org.allurefw.report.ResultsDirectories;
 
 import java.nio.file.Path;
@@ -19,11 +20,13 @@ import static org.allurefw.report.ReportApiUtils.loadProperties;
  * @author Dmitry Baev charlie@yandex-team.ru
  *         Date: 17.02.16
  */
-public class EnvironmentPlugin extends AbstractModule {
+@Plugin(name = "environment")
+public class EnvironmentPlugin extends AbstractPlugin {
 
     @Override
     protected void configure() {
-        //do nothing
+        aggregator(NoopAggregator.class)
+                .toWidget(getPluginName(), EnvironmentFinalizer.class);
     }
 
     @Provides
