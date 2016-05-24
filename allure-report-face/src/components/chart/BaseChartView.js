@@ -6,6 +6,7 @@ export default class BaseChartView extends View {
 
     constructor(options) {
         super(options);
+        this.options = options;
         this.firstRender = true;
     }
 

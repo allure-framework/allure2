@@ -14,6 +14,7 @@ public class XunitPlugin extends AbstractPlugin {
     protected void configure() {
         aggregator(XunitAggregator.class)
                 .toReportData("xunit.json")
-                .toWidget("xunit", XunitWidgetFinalizer.class);
+                .toWidget("xunit", XunitWidgetFinalizer.class)
+                .toWidget("total", TotalWidgetFinalizer.class);
     }
 }

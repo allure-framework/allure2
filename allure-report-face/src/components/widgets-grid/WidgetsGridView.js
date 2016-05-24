@@ -20,7 +20,7 @@ class WidgetsGridView extends LayoutView {
         return '';
     }
 
-    onRender() {
+    onShow() {
         this.getWidgetsArrangement().map(col => {
             return col.map(widgetName => [widgetName, allurePlugins.widgets[widgetName]]);
         }).forEach(widgetCol => {

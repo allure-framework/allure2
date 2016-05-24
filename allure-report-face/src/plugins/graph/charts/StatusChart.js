@@ -1,45 +1,40 @@
 import BaseChartView from '../../../components/chart/BaseChartView';
 import TooltipView from '../../../components/tooltip/TooltipView';
 import {on} from '../../../decorators';
+import {omit} from 'underscore';
 import d3 from 'd3';
 import escape from '../../../util/escape';
 
 const legendTpl = `<div class="chart__legend">
     ${['Failed', 'Broken', 'Canceled', 'Pending', 'Passed'].map((status) =>
-        `<p class="chart__legend-row" data-status="${status.toUpperCase()}"><span class="chart__legend-icon chart__legend-icon_status_${status.toUpperCase()}"></span> ${status}</p>`
+        `<p class="chart__legend-row" data-status="${status.toLowerCase()}"><span class="chart__legend-icon chart__legend-icon_status_${status.toLowerCase()}"></span> ${status}</p>`
     ).join('')}
 </div>`;
 
 export default class StatusChart extends BaseChartView {
 
     initialize() {
-        this.arc = d3.svg.arc().innerRadius(0);
+        this.arc = d3.svg.arc();
         this.pie = d3.layout.pie().sort(null).value(d => d.value);
         this.tooltip = new TooltipView({position: 'center'});
     }
 
     getChartData() {
-        const stats = this.collection.reduce((stats, testcase) => {
-            stats[testcase.get('status')]++;
-            return stats;
-        }, {
-            failed: 0,
-            broken: 0,
-            canceled: 0,
-            pending: 0,
-            passed: 0
-        });
+        const {total} = this.options.statistic;
+        const stats = omit(this.options.statistic, 'total');
         return Object.keys(stats).map(key => ({
-            name: key,
+            name: key.toUpperCase(),
             value: stats[key],
-            part: stats[key] / this.collection.length
+            part: stats[key] / total
         }));
     }
 
 
     setupViewport() {
         const svg = super.setupViewport();
-        this.$el.append(legendTpl);
+        if(this.options.showLegend) {
+            this.$el.append(legendTpl);
+        }
         return svg;
     }
 
@@ -47,27 +42,37 @@ export default class StatusChart extends BaseChartView {
         const data = this.getChartData();
         const width = this.$el.width();
         const radius = width / 4;
+        var leftOffset = width / 2;
+
+        if(this.options.showLegend) {
+            leftOffset -= 70;
+        }
         this.$el.height(radius * 2);
-        this.arc.outerRadius(radius);
+        this.arc.innerRadius(0.8 * radius).outerRadius(radius);
 
         this.svg = this.setupViewport();
 
         var sectors = this.svg.select('.chart__plot')
-            .attr({transform: `translate(${width / 2 - 70},${radius})`})
+            .attr({transform: `translate(${leftOffset},${radius})`})
             .selectAll('.chart__arc').data(this.pie(data))
             .enter()
             .append('path')
-            .attr('class', d => 'chart__arc chart__fill_status_' + d.data.name);
+            .attr('class', d => 'chart__arc chart__fill_status_' + d.data.name.toLowerCase());
 
         this.bindTooltip(sectors);
 
+        this.svg.select('.chart__plot').append('text')
+            .classed('chart__caption', true)
+            .attr({dy: '0.4em'})
+            .style({'font-size': radius / 3})
+            .text(this.getChartTitle());
+
         if(this.firstRender) {
             sectors.transition().duration(750).attrTween('d', d => {
-                const radiusFn = d3.interpolate(10, radius);
                 const startAngleFn = d3.interpolate(0, d.startAngle);
                 const endAngleFn = d3.interpolate(0, d.endAngle);
                 return t =>
-                    this.arc.outerRadius(radiusFn(t))({startAngle: startAngleFn(t), endAngle: endAngleFn(t)});
+                    this.arc({startAngle: startAngleFn(t), endAngle: endAngleFn(t)});
             });
         } else {
             sectors.attr('d', d => this.arc(d));
@@ -75,9 +80,18 @@ export default class StatusChart extends BaseChartView {
         super.onShow();
     }
 
+    formatNumber(number) {
+        return (Math.floor(number * 100) / 100).toString();
+    }
+
+    getChartTitle() {
+        const {passed, total} = this.options.statistic;
+        return this.formatNumber(passed / total * 100) + '%';
+    }
+
     getTooltipContent({data}) {
         return escape`
-            ${data.value} tests (${(data.part * 100).toFixed(0)}%)<br>
+            ${data.value} tests (${this.formatNumber(data.part * 100)}%)<br>
             ${data.name}
         `;
     }

@@ -11,6 +11,9 @@
     margin-bottom: $gap-size;
     font-size: 18px;
   }
+  &__caption {
+      text-anchor: middle;
+  }
   &__svg {
     width: 100%;
     height: 100%;

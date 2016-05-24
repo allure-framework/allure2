@@ -1,6 +1,5 @@
 @import "../node_modules/normalize-css/normalize.css";
 @import "../node_modules/highlight.js/styles/idea.css";
-@import "../node_modules/c3/c3.css";
 @import "./grid.css";
 @import "./blocks/alert/styles.css";
 @import "./blocks/attachment-row/styles.css";
@@ -10,6 +9,7 @@
 @import "./blocks/label/styles.css";
 @import "./blocks/link/styles.css";
 @import "./blocks/spinner/styles.css";
+@import "./blocks/splash/styles.css";
 @import "./blocks/text/styles.css";
 @import "./blocks/widget/styles.css";
 @import "./variables.css";
