@@ -1,22 +1,6 @@
 @import "../../variables.css";
 
 .widget {
-  &__title {
-    margin-top: 0;
-    font-weight: lighter;
-    text-transform: uppercase;
-  }
-
-  &__subtitle {
-    color: $text-muted-color;
-    font-size: 16px;
-    text-transform: lowercase;
-  }
-
-  &__flex-line {
-    display: flex;
-  }
-
   margin-bottom: $gap-size;
   position: relative;
 
@@ -27,6 +11,26 @@
     & > * {
       display: none;
     }
+  }
+
+  &__title {
+    margin-top: 0;
+    font-weight: lighter;
+    text-transform: uppercase;
+  }
+
+  &__subtitle {
+    color: $text-muted-color;
+    font-size: 16px;
+    text-transform: none;
+  }
+
+  &__flex-line {
+    display: flex;
+  }
+
+  &__column {
+    width: 50%;
   }
 
   &__handle {
@@ -48,22 +52,5 @@
     .table__row:last-child {
       border-bottom: 0;
     }
-  }
-}
-
-.widget-content {
-  width: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: auto;
-  flex-direction: column;
-
-  &__title {
-    font-size: 3.5em;
-  }
-  
-  &__subtitle {
-    color: $text-muted-color;
   }
 }

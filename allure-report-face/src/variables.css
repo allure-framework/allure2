@@ -3,13 +3,13 @@ $brand-red: #ff0000;
 
 $color-passed: #97cc64;
 $color-failed: #fd5a3e;
-$color-broken: #ffd963;
+$color-broken: #ffd050;
 $color-canceled: #aaa;
 $color-pending: #d35ebe;
 
 $background-passed: #a6e19d;
 $background-failed: #ffaca6;
-$background-broken: #ffd99d;
+$background-broken: #ffeca0;
 $background-canceled: #cccccc;
 $background-pending: #ecb7e2;
 
@@ -32,7 +32,6 @@ $gap-size: 15px;
 
 $small-screen: 1000px;
 
-
 /*  Sidebar  **/
 
 $sidebar-full-width: 180px;
@@ -51,3 +50,10 @@ $sidebar-text-shadow-color: #000;
 
 $link-color: #1976D2;
 $link-color-hover: #f00;
+
+/* Pane set */
+
+$pane-bg-color: #fff;
+$pane-shadow-color: #999;
+$pane-overlay-bg: rgba(240, 240, 240, 0.4);
+$pane-overlay-bg-hover: rgba(240, 240, 240, 0.2); 

@@ -28,6 +28,7 @@ describe('WidgetsGridView', function() {
             }
         });
         this.view = new WidgetsGridView({model: this.model}).render();
+        this.view.onShow();
         this.el = new PageObject(this.view.$el);
     });
 

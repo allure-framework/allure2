@@ -1,20 +1,21 @@
-<h2 class="{{b 'widget' 'title'}}">Report stats</h2>
-
-<div>
-    {{#if report.url}}
-        <a href="{{report.url}}" class="link" target="_blank">{{report.name}}</a>
-    {{else}}
-        {{report.name}}
-    {{/if}}
-</div>
+<h2 class="{{b 'widget' 'title'}}">
+    Report stats
+    <span class="{{b 'widget' 'subtitle'}}">
+        {{#if report.url}}
+            <a href="{{report.url}}" class="link" target="_blank">{{report.name}}</a>
+        {{else}}
+            {{report.name}}
+        {{/if}}
+    </span>
+</h2>
 
 <div class="{{b 'widget' 'flex-line'}}">
-    <div class="{{b 'widget-content'}}">
-        <div class="{{b 'widget-content' 'title'}}">{{default report.version 'Latest'}}</div>
-        <div class="{{b 'widget-content' 'subtitle'}}">Allure's version</div>
+    <div class="{{b 'widget' 'column'}} splash">
+        <div class="{{b 'splash' 'title'}}">{{default report.version 'Latest'}}</div>
+        <div class="{{b 'splash' 'subtitle'}}">Allure's version</div>
     </div>
 
-    <div class="{{b 'widget-content'}}">
+    <div class="{{b 'widget' 'column'}}">
         <div class="{{b 'report-stats-widget'}}">
             <dl class="{{b 'report-stats-widget' 'info'}}">
                 {{#if report.size}}
@@ -29,6 +30,3 @@
         </div>
     </div>
 </div>
-
-
-

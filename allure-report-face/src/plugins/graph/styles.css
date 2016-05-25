@@ -10,6 +10,7 @@
 }
 
 .chart {
+  padding-bottom: $gap-size;
   &__legend {
     position: absolute;
     top: 20%;
@@ -26,4 +27,10 @@
     margin-right: 5px;
     @mixin status-bg;
   }
+}
+
+.graph-widget {
+    &__chart {
+        padding: 1em 0;
+    }
 }
