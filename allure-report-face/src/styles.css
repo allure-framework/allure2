@@ -59,7 +59,6 @@ html, body {
 }
 
 .long-line {
-  line-height: 1.5em;
   word-break: break-word;
 }
 
