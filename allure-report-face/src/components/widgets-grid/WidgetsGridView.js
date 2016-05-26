@@ -8,7 +8,7 @@ import allurePlugins from '../../pluginApi';
 
 const widgetTpl = (id) => `<div class="widget island" data-id="${id}">
     <div class="widget__handle">
-        <span class="fa fa-ellipsis-v"></span> <span class="fa fa-ellipsis-v"></span>
+        <span class="draggable-icon"></span>
     </div>
     <div class="widget__body"></div>
 </div>`;

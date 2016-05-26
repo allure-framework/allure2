@@ -36,11 +36,16 @@
   &__handle {
     display: none;
     position: absolute;
-    font-size: 16px;
-    cursor: move;
     right: $gap-size;
     top: $gap-size;
     color: $text-muted-color;
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+        
     .widget:hover & {
       display: block;
     }
@@ -53,4 +58,14 @@
       border-bottom: 0;
     }
   }
+}
+
+.draggable-icon {
+  position: absolute;
+  width: 10px;
+  height: 15px;
+  right: 0;
+  
+  background-image: url("./blocks/widget/draggable.svg");
+  z-index: 1;
 }
