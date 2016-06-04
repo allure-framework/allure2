@@ -40,7 +40,6 @@
     padding: 0;
     list-style-type: none;
     transition: width 0.3s;
-    text-shadow: 1px 1px 2px $sidebar-text-shadow-color;
   }
 
   &__footer {
