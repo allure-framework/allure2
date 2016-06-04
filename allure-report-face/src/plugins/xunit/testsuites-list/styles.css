@@ -2,7 +2,7 @@
 
 @define-mixin statused $name {
   &_$(name) {
-    border-bottom: 3px solid $color-$(name);
+    border: 2px solid $color-$(name);
   }
 }
 
@@ -18,9 +18,117 @@
   }
 }
 
-.table__col {
-  @mixin statused failed;
-  @mixin statused broken;
-  @mixin statused canceled;
-  @mixin statused pending;
+.tree {
+  position: relative;
+  padding: 2em 0 0 0;
+  margin-bottom: 2em;
+  margin-left: 15px;
+
+  &::before {
+    /* this is the vertical line */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 18px;
+    height: 100%;
+    width: 1px;
+    background: $border-accent-color;
+  }
+}
+
+.tree-block {
+  position: relative;
+  width: 95%;
+  margin: 1em 0;
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  &:first-child {
+    margin-top: 0;
+  }
+  &:last-child {
+    margin-bottom: 0;
+    background: $content-bg;
+  }
+
+  &__anchor {
+    position: absolute;
+    top: 0;
+    left: -2px;
+    width: 40px;
+    height: 40px;
+    background: $content-bg;
+    border-radius: 50%;
+    border: 1px solid $border-color;
+
+    @mixin statused failed;
+    @mixin statused broken;
+    @mixin statused canceled;
+    @mixin statused pending;
+    @mixin statused passed;
+  }
+
+  &__node {
+    position: relative;
+    margin-left: 55px;
+    top: -2px;
+    background: $content-bg;
+  }
+
+  .node-content {
+    border-radius: 0.25em;
+    border: 1px solid $border-color;
+    overflow: hidden;
+    display: flex;
+
+    &:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+    
+    &::before {
+      content: ' ';
+      position: absolute;
+      top: 16px;
+      left: -5px;
+      width: 8px;
+      height: 8px;
+      background-color: $content-bg;
+      border-top: 1px solid $border-color;
+      border-left: 1px solid $border-color;
+      border-bottom: none;
+      border-right: none;
+      transform: rotate(-45deg);
+    }
+    
+    &__title {
+      padding: 1em;
+      white-space: nowrap;
+      flex: 1;
+    }
+    
+    &__stats {
+      color: $text-muted-color;
+      padding: 1em;
+      text-align: center;
+      min-width: 60px;
+      margin-right: 0;
+      white-space: nowrap;
+      border-left: 1px solid $border-color;
+    }
+  }
+}
+
+.node-stats {
+  display: block;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  left: 50%;
+  top: 55%;
+  margin-left: -12px;
+  margin-top: -12px;
 }

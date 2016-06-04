@@ -1,19 +1,15 @@
 import './styles.css';
 import DataGridView from '../../../components/data-grid/DataGridView';
 import {reduce} from 'underscore';
-import StatusToggleView from '../../../components/status-toggle/StatusToggleView';
 import {region} from '../../../decorators';
 import settings from '../../../util/settings';
 import template from './TestsuitesListView.hbs';
-import {colors} from '../../../util/statuses';
 import 'jquery-sparkline';
 
 class TestsuitesListView extends DataGridView {
     template = template;
     settingsKey = 'xUnitSettings';
 
-    @region('.testsuites-list__statuses')
-    statuses;
 
     initialize({state}) {
         this.state = state;
@@ -22,11 +18,10 @@ class TestsuitesListView extends DataGridView {
     }
 
     onDomRefresh() {
-        this.$el.find('.inlinesparkline').sparkline('html', {type: 'bar', colorMap: colors});
+        this.$el.find('.node-stats').sparkline('html', {type: 'bar', colorMap: colors});
     }
 
     onRender() {
-        this.statuses.show(new StatusToggleView());
         this.highlightItem(this.state.get('testsuite'));
     }
 
