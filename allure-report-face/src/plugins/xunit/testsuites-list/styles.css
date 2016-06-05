@@ -3,6 +3,7 @@
 @define-mixin statused $name {
   &_$(name) {
     border: 2px solid $color-$(name);
+    color: $color-$(name);
   }
 }
 
@@ -88,28 +89,42 @@
       display: table;
       clear: both;
     }
-    
-    &::before {
-      content: ' ';
-      position: absolute;
-      top: 16px;
-      left: -5px;
-      width: 8px;
-      height: 8px;
-      background-color: $content-bg;
-      border-top: 1px solid $border-color;
-      border-left: 1px solid $border-color;
-      border-bottom: none;
-      border-right: none;
-      transform: rotate(-45deg);
-    }
-    
+
     &__title {
       padding: 1em;
       white-space: nowrap;
       flex: 1;
+
+      &::before {
+        content: ' ';
+        position: absolute;
+        top: 16px;
+        left: -5px;
+        width: 8px;
+        height: 8px;
+        background-color: $content-bg;
+        border-top: 1px solid $border-color;
+        border-left: 1px solid $border-color;
+        border-bottom: none;
+        border-right: none;
+        transform: rotate(-45deg);
+      }
+
+      &_active {
+        background-color: $selected-color;
+        &::before {
+          background-color: $selected-color;
+        }
+      }
+      
+      &:hover {
+        background-color: $hover-color;
+        &::before {
+          background-color: $hover-color;
+        }
+      }
     }
-    
+
     &__stats {
       color: $text-muted-color;
       padding: 1em;
@@ -122,7 +137,7 @@
   }
 }
 
-.node-stats {
+.node-anchor {
   display: block;
   width: 24px;
   height: 24px;
@@ -131,4 +146,5 @@
   top: 55%;
   margin-left: -12px;
   margin-top: -12px;
+  text-align: center;
 }

@@ -7,7 +7,7 @@
     {{#each suites}}
         <div class="tree-block">
             <div class="tree-block__anchor">
-                  <span class="node-stats">
+                  <span class="node-stats node-anchor">
                     {{statistic.failed}},
                       {{statistic.broken}},
                       {{statistic.canceled}},
@@ -34,6 +34,7 @@
                         {{#each testCases}}
                             <div class="tree-block">
                                 <div class="tree-block__anchor tree-block__anchor_{{status}}">
+                                    <span class="node-anchor">{{status-symbol status}}</span>
                                 </div>
                                 <div class="tree-block__node">
                                     <div class="node-content">
