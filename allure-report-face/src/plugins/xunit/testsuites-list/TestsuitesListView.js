@@ -1,10 +1,10 @@
 import './styles.css';
 import DataGridView from '../../../components/data-grid/DataGridView';
 import {reduce} from 'underscore';
-import {region} from '../../../decorators';
+// import {region} from '../../../decorators';
 import settings from '../../../util/settings';
 import template from './TestsuitesListView.hbs';
-import {colors} from '../../../util/statuses'
+import {colors} from '../../../util/statuses';
 import 'jquery-sparkline';
 
 class TestsuitesListView extends DataGridView {
