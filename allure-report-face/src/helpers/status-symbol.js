@@ -1,11 +1,11 @@
 export default function (status) {
     switch (status) {
         case 'passed': 
-            return 'V';
+            return 'OK';
         case 'failed':
-            return '!';
-        case 'broken':
             return 'X';
+        case 'broken':
+            return '!';
         case 'pending':
             return '&';
         case 'canceled':

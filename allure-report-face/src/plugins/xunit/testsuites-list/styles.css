@@ -3,7 +3,8 @@
 @define-mixin statused $name {
   &_$(name) {
     border: 2px solid $color-$(name);
-    color: $color-$(name);
+    background-color: $color-$(name);
+    color: #fff;
   }
 }
 
