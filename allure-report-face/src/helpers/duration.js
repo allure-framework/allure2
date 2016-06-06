@@ -36,7 +36,7 @@ export default function(timeInt, count) {
         }))
         .reduce(({hasValue, out}, token) => {
             hasValue = hasValue || token.value > 0;
-            if(hasValue) {
+            if(token.value > 0 || (hasValue && token.suffix !== 'ms')) {
                 out.push(token);
             }
             return {hasValue, out};

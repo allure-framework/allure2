@@ -52,7 +52,7 @@ class TimelineView extends BaseChartView {
         });
 
         this.makeAxis(this.svg.select('.chart__axis_x'), {
-            tickFormat: d => duration(d, 1),
+            tickFormat: d => duration(d, 2),
             scale: this.x,
             orient: 'bottom'
         }, {
