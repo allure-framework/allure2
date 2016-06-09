@@ -7,7 +7,7 @@
     {{#each suites}}
         <div class="tree-block">
             <div class="tree-block__anchor">
-                  <span class="node-stats node-anchor">
+                <span class="node-stats node-anchor">
                     {{statistic.failed}},
                       {{statistic.broken}},
                       {{statistic.canceled}},
@@ -30,23 +30,23 @@
                 </div>
                 
                 <div class="node-inner">
-                    <div class="tree">
+                    <div class="tree tree_inner">
                         {{#each testCases}}
-                            <div class="tree-block">
-                                <div class="tree-block__anchor tree-block__anchor_{{status}}">
+                            <a class="tree-block" href="#{{../../baseUrl}}/{{uid}}">
+                                <div class="tree-block__anchor tree-block__anchor_{{status}} tree-block__anchor_last">
                                     <span class="node-anchor">{{status-symbol status}}</span>
                                 </div>
                                 <div class="tree-block__node">
-                                    <div class="node-content">
-                                        <div class="node-content__title">
-                                           <span href="#{{../../baseUrl}}/{{../uid}}/{{uid}}">{{name}}</span>
+                                    <div class="node-content node-content_last">
+                                        <div class="node-content__title" data-uid="{{uid}}">
+                                           {{name}}
                                         </div>
                                         <div class="node-content__stats">
                                             {{duration time.duration}}
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         {{/each}}
                     </div>
                 </div>

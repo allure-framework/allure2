@@ -4,8 +4,7 @@ import XUnitWidget from './XUnitWidget';
 
 allurePlugins.addTab('xUnit', {
     title: 'xUnit', icon: 'fa fa-briefcase',
-    //TODO defectId haha
-    route: 'xUnit(/:defectId)(/:testcaseId)(/:attachmentId)',
+    route: 'xUnit(/:testcaseId)(/:attachmentId)',
     onEnter: (...routeParams) => new XUnitLayout({routeParams})
 });
 allurePlugins.addWidget('xunit', XUnitWidget);

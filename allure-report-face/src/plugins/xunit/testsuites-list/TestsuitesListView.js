@@ -1,20 +1,19 @@
 import './styles.css';
-import DataGridView from '../../../components/data-grid/DataGridView';
+import {LayoutView} from 'backbone.marionette';
 import {reduce} from 'underscore';
-// import {region} from '../../../decorators';
 import settings from '../../../util/settings';
 import template from './TestsuitesListView.hbs';
 import {colors} from '../../../util/statuses';
+import {region} from '../../../decorators';
 import 'jquery-sparkline';
 
-class TestsuitesListView extends DataGridView {
+class TestsuitesListView extends LayoutView {
     template = template;
     settingsKey = 'xUnitSettings';
-
-
+    
     initialize({state}) {
         this.state = state;
-        this.listenTo(this.state, 'change:testsuite', (m, suite) => this.highlightItem(suite));
+        this.listenTo(this.state, 'change:testcase', (m, testcase) => this.highlightItem(testcase));
         this.listenTo(settings, 'change:visibleStatuses', this.render);
     }
 
@@ -23,18 +22,23 @@ class TestsuitesListView extends DataGridView {
     }
 
     onRender() {
-        this.highlightItem(this.state.get('testsuite'));
+        this.highlightItem(this.state.get('testcase'));
+    }
+
+    highlightItem(uid) {
+        this.$('[data-uid]').each((i, node) => {
+            const el = this.$(node);
+            el.toggleClass('node-content__title_active', el.data('uid') === uid);
+        });
     }
 
     serializeData() {
         const statuses = settings.get('visibleStatuses');
-        const sorting = this.getSettings();
         return {
             baseUrl: 'xUnit',
-            sorting: sorting,
             time: this.collection.time,
             statistic: this.collection.statistic,
-            suites: this.applySort(
+            suites: 
                 this.collection.toJSON()
                     .filter(suite => {
                         return reduce(
@@ -43,7 +47,6 @@ class TestsuitesListView extends DataGridView {
                             false
                         );
                     })
-            )
         };
     }
 }

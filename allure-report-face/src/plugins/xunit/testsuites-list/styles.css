@@ -4,7 +4,7 @@
   &_$(name) {
     border: 2px solid $color-$(name);
     background-color: $color-$(name);
-    color: #fff;
+    color: $body-bg;
   }
 }
 
@@ -20,12 +20,13 @@
   }
 }
 
+$tree-node-padding: 10px;
+
 .tree {
   position: relative;
-  padding: 2em 0 0 0;
-  margin-bottom: 2em;
+  padding: 15px 0 0 0;
+  margin-bottom: 15px;
   margin-left: 15px;
-
   &::before {
     /* this is the vertical line */
     content: '';
@@ -36,12 +37,23 @@
     width: 1px;
     background: $border-accent-color;
   }
+  
+  &_inner {
+    margin-left: 5px;
+  }
 }
 
 .tree-block {
   position: relative;
-  width: 95%;
   margin: 1em 0;
+  display: block;
+  text-decoration: none;
+  color: $text-color;
+
+  &:focus {
+    outline: 0;
+  }
+  
   &:after {
     content: "";
     display: table;
@@ -64,26 +76,39 @@
     background: $content-bg;
     border-radius: 50%;
     border: 1px solid $border-color;
+    z-index: 1;
 
     @mixin statused failed;
     @mixin statused broken;
     @mixin statused canceled;
     @mixin statused pending;
     @mixin statused passed;
+    
+    &_last {
+      left: 0;
+      width: 36px;
+      height: 36px;
+    }
   }
 
   &__node {
     position: relative;
-    margin-left: 55px;
-    top: -2px;
+    margin-left: 19px;
+    top: 0;
     background: $content-bg;
   }
 
   .node-content {
-    border-radius: 0.25em;
     border: 1px solid $border-color;
     overflow: hidden;
     display: flex;
+    height: 40px;
+    line-height: 40px;
+
+    &_last {
+      height: 36px;
+      line-height: 36px;
+    }
 
     &:after {
       content: "";
@@ -92,7 +117,8 @@
     }
 
     &__title {
-      padding: 1em;
+      padding-left: 25px;
+      padding-right: $tree-node-padding;
       white-space: nowrap;
       flex: 1;
 
@@ -118,7 +144,7 @@
         }
       }
       
-      &:hover {
+      &:not(.node-content__title_active):hover {
         background-color: $hover-color;
         &::before {
           background-color: $hover-color;
@@ -128,7 +154,7 @@
 
     &__stats {
       color: $text-muted-color;
-      padding: 1em;
+      padding: 0 $tree-node-padding 0;
       text-align: center;
       min-width: 60px;
       margin-right: 0;
