@@ -26,7 +26,7 @@ class TestsuitesListView extends LayoutView {
     }
 
     onDomRefresh() {
-        this.$el.find('.node-stats').sparkline('html', {type: 'bar', colorMap: colors});
+        this.$el.find('.node-stats').sparkline('html', {type: 'pie', sliceColors: colors});
     }
 
     onRender() {

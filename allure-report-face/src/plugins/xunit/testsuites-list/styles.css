@@ -2,7 +2,6 @@
 
 @define-mixin statused $name {
   &_status_$(name) {
-    border: 2px solid $color-$(name);
     background-color: $color-$(name);
     color: $body-bg;
   }
@@ -75,8 +74,6 @@ $tree-node-padding: 10px;
     left: -2px;
     width: 40px;
     height: 40px;
-    background: $content-bg;
-    border: 1px solid $border-color;
     z-index: 1;
 
     @mixin statused failed;
@@ -86,7 +83,7 @@ $tree-node-padding: 10px;
     @mixin statused passed;
 
     &_last {
-      left: 0;
+      left: 3px;
       width: 30px;
       height: 30px;
     }
@@ -100,7 +97,7 @@ $tree-node-padding: 10px;
   }
 
   .node-leaf {
-    border: 1px solid $border-color;
+    border-bottom: 1px solid $border-color;
     overflow: hidden;
     display: flex;
     height: 40px;
