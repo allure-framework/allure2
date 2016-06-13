@@ -151,17 +151,6 @@ $tree-node-padding: 10px;
         transform: rotate(-45deg);
       }
     }
-
-    &__stats {
-      display: none;
-      color: $text-muted-color;
-      padding: 0 $tree-node-padding 0;
-      text-align: center;
-      min-width: 60px;
-      margin-right: 0;
-      white-space: nowrap;
-      border-left: 1px solid $border-color;
-    }
   }
 }
 
@@ -181,4 +170,15 @@ $tree-node-padding: 10px;
   margin-left: -12px;
   margin-top: -12px;
   text-align: center;
+}
+
+.statuses-filter {
+  cursor: pointer;
+  width: 30px;
+  line-height: 30px;
+  text-align: center;
+  
+  &_active {
+    border: 1px solid $border-accent-color;
+  }
 }

@@ -1,8 +1,18 @@
 @import "../../variables.css";
 
 .status-toggle {
-  &__button {
-    white-space: nowrap;
+  z-index: 1;
+  padding: 0;
+  &__menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  &__item {
+    padding: 0.5em 0.8em;
+    border-bottom: 1px solid $border-color;
+    cursor: pointer;
+
     &::before {
       position: relative;
       top: -1px;
@@ -13,7 +23,6 @@
       height: 1em;
       width: 1em;
       border-radius: 2px;
-
     }
     &_status_passed::before {
       background: $color-passed;
@@ -29,6 +38,23 @@
     }
     &_status_broken::before {
       background: $color-broken;
+    }
+    &:hover {
+      background: $hover-color;
+    }
+    
+    &::after {
+      content: ' ';
+      display: inline-block;
+      background: url(../language-select/checkmark.svg) center no-repeat;
+      background-size: contain;
+      width: 0.8em;
+      height: 0.8em;
+      margin-right: 0.5em;
+      visibility: hidden;
+    }
+    &_active::after {
+      visibility: visible;
     }
   }
 }

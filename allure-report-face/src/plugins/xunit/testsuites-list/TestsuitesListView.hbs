@@ -1,6 +1,9 @@
 <a class="{{b 'pane' 'overlay'}}" href="#{{baseUrl}}"></a>
-<h2 class="{{b 'pane' 'title'}} {{b "testsuites-list" "title"}}">
+<h2 class="{{b 'pane' 'title'}}">
     xUnit results
+    <span class="pane__controls">
+     <a class="fa fa-filter statuses-filter"></a>
+    </span>
 </h2>
 
 <div class="tree tree_root">
@@ -9,26 +12,20 @@
             <div class="tree-block__anchor">
                 <span class="node-stats node-anchor">
                     {{statistic.failed}},
-                      {{statistic.broken}},
-                      {{statistic.canceled}},
-                      {{statistic.pending}},
-                      {{statistic.passed}}
+                    {{statistic.broken}},
+                    {{statistic.canceled}},
+                    {{statistic.pending}},
+                    {{statistic.passed}}
                 </span>
             </div>
             <div class="tree-block__node">
-                
+
                 <div class="node-leaf">
                     <div class="node-leaf__title">
                         {{name}}
                     </div>
-                    <div class="node-leaf__stats">
-                        {{statistic.total}} 
-                    </div>
-                    <div class="node-leaf__stats">
-                        {{duration time.duration}}
-                    </div>
                 </div>
-                
+
                 <div class="node-branch node-branch_collapsed">
                     <div class="tree tree_inner">
                         {{#each testCases}}
@@ -39,10 +36,7 @@
                                 <div class="tree-block__node">
                                     <div class="node-leaf node-leaf_last" data-uid="{{uid}}">
                                         <div class="node-leaf__title">
-                                           {{name}} 
-                                        </div>
-                                        <div class="node-leaf__stats">
-                                            {{duration time.duration}}
+                                            {{name}}
                                         </div>
                                     </div>
                                 </div>

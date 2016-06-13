@@ -1,30 +1,43 @@
 import './styles.css';
-import {ItemView} from 'backbone.marionette';
-import capitalize from 'underscore.string/capitalize';
-import {on} from '../../decorators';
+import {on, className} from '../../decorators';
 import settings from '../../util/settings';
 import template from './StatusToggleView.hbs';
+import PopoverView from '../popover/PopoverView';
+import {states} from '../../util/statuses';
 
-class StatusToggleView extends ItemView {
+@className('status-toggle popover')
+class StatusToggleView extends PopoverView {
     template = template;
+
+    initialize() {
+        super.initialize({position: 'bottom-left', offset: -1});
+    }
+    
+    setContent() {
+        this.$el.html(template(this.serializeData()));
+    }
+
+    show(anchor) {
+        super.show(null, anchor);
+        this.delegateEvents();
+    }
 
     serializeData() {
         const statuses = settings.get('visibleStatuses');
         return {
-            statuses: ['failed', 'broken', 'canceled', 'pending', 'passed'].map(status => ({
+            statuses: states.map(status => ({
                 status,
-                active: !!statuses[status],
-                title: capitalize(status.toLowerCase())
+                active: !!statuses[status]
             }))
         };
     }
 
-    @on('click .button')
+    @on('click .status-toggle__item')
     onCheckChange(e) {
         const el = this.$(e.currentTarget);
-        el.toggleClass('button_active');
+        el.toggleClass('status-toggle__item_active');
         const name = el.data('status');
-        const checked = el.hasClass('button_active');
+        const checked = el.hasClass('status-toggle__item_active');
         const statuses = settings.get('visibleStatuses');
         settings.save('visibleStatuses', Object.assign({}, statuses, {[name]: checked}));
     }

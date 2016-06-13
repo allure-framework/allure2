@@ -3,24 +3,17 @@ import {LayoutView} from 'backbone.marionette';
 import {reduce} from 'underscore';
 import settings from '../../../util/settings';
 import template from './TestsuitesListView.hbs';
+import StatusToggleView from '../../../components/status-toggle/StatusToggleView';
 import {colors} from '../../../util/statuses';
 import {region, on} from '../../../decorators';
 import 'jquery-sparkline';
 
 class TestsuitesListView extends LayoutView {
     template = template;
-    settingsKey = 'xUnitSettings';
-    templateHelpers = function(){
-        return {
-            foo: () => {  
-                console.log(this);
-                return this.state.get('testcase'); 
-            }
-        }
-    };
 
     initialize({state}) {
         this.state = state;
+        this.statusesSelect = new StatusToggleView();
         this.listenTo(this.state, 'change:testcase', (m, testcase) => this.highlightItem(testcase));
         this.listenTo(settings, 'change:visibleStatuses', this.render);
     }
@@ -36,6 +29,18 @@ class TestsuitesListView extends LayoutView {
     @on('click .node-leaf')
     onNodeClick(e) {
         this.$(e.currentTarget).parent().find('.node-branch').toggleClass('node-branch_collapsed');
+    }
+
+    @on('click .statuses-filter')
+    onFilterClick(e) {
+        const filter = this.$(e.currentTarget);
+        filter.toggleClass('statuses-filter_active', !this.statusesSelect.isVisible());
+        
+        if(this.statusesSelect.isVisible()) {
+            this.statusesSelect.hide();
+        } else {
+            this.statusesSelect.show(filter);
+        }
     }
 
     highlightItem(uid) {
