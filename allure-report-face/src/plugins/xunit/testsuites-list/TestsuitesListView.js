@@ -4,13 +4,21 @@ import {reduce} from 'underscore';
 import settings from '../../../util/settings';
 import template from './TestsuitesListView.hbs';
 import {colors} from '../../../util/statuses';
-import {region} from '../../../decorators';
+import {region, on} from '../../../decorators';
 import 'jquery-sparkline';
 
 class TestsuitesListView extends LayoutView {
     template = template;
     settingsKey = 'xUnitSettings';
-    
+    templateHelpers = function(){
+        return {
+            foo: () => {  
+                console.log(this);
+                return this.state.get('testcase'); 
+            }
+        }
+    };
+
     initialize({state}) {
         this.state = state;
         this.listenTo(this.state, 'change:testcase', (m, testcase) => this.highlightItem(testcase));
@@ -25,10 +33,15 @@ class TestsuitesListView extends LayoutView {
         this.highlightItem(this.state.get('testcase'));
     }
 
+    @on('click .node-leaf')
+    onNodeClick(e) {
+        this.$(e.currentTarget).parent().find('.node-branch').toggleClass('node-branch_collapsed');
+    }
+
     highlightItem(uid) {
         this.$('[data-uid]').each((i, node) => {
             const el = this.$(node);
-            el.toggleClass('node-content__title_active', el.data('uid') === uid);
+            el.toggleClass('node-leaf_active', el.data('uid') === uid);
         });
     }
 
@@ -38,15 +51,14 @@ class TestsuitesListView extends LayoutView {
             baseUrl: 'xUnit',
             time: this.collection.time,
             statistic: this.collection.statistic,
-            suites: 
-                this.collection.toJSON()
-                    .filter(suite => {
-                        return reduce(
-                            suite.statistic,
-                            (visible, value, status) => visible || (statuses[status] && value > 0),
-                            false
-                        );
-                    })
+            suites: this.collection.toJSON()
+                .filter(suite => {
+                    return reduce(
+                        suite.statistic,
+                        (visible, value, status) => visible || (statuses[status] && value > 0),
+                        false
+                    );
+                })
         };
     }
 }

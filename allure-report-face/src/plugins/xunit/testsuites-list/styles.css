@@ -1,7 +1,7 @@
 @import "../../../variables.css";
 
 @define-mixin statused $name {
-  &_$(name) {
+  &_status_$(name) {
     border: 2px solid $color-$(name);
     background-color: $color-$(name);
     color: $body-bg;
@@ -27,6 +27,7 @@ $tree-node-padding: 10px;
   padding: 15px 0 0 0;
   margin-bottom: 15px;
   margin-left: 15px;
+  margin-right: 15px;
   &::before {
     /* this is the vertical line */
     content: '';
@@ -37,9 +38,10 @@ $tree-node-padding: 10px;
     width: 1px;
     background: $border-accent-color;
   }
-  
+
   &_inner {
     margin-left: 5px;
+    margin-right: 0;
   }
 }
 
@@ -53,7 +55,7 @@ $tree-node-padding: 10px;
   &:focus {
     outline: 0;
   }
-  
+
   &:after {
     content: "";
     display: table;
@@ -74,7 +76,6 @@ $tree-node-padding: 10px;
     width: 40px;
     height: 40px;
     background: $content-bg;
-    border-radius: 50%;
     border: 1px solid $border-color;
     z-index: 1;
 
@@ -83,11 +84,11 @@ $tree-node-padding: 10px;
     @mixin statused canceled;
     @mixin statused pending;
     @mixin statused passed;
-    
+
     &_last {
       left: 0;
-      width: 36px;
-      height: 36px;
+      width: 30px;
+      height: 30px;
     }
   }
 
@@ -98,22 +99,38 @@ $tree-node-padding: 10px;
     background: $content-bg;
   }
 
-  .node-content {
+  .node-leaf {
     border: 1px solid $border-color;
     overflow: hidden;
     display: flex;
     height: 40px;
     line-height: 40px;
+    cursor: pointer;
 
     &_last {
-      height: 36px;
-      line-height: 36px;
+      height: 30px;
+      line-height: 30px;
+      border: none;
     }
 
     &:after {
       content: "";
       display: table;
       clear: both;
+    }
+
+    &_active {
+      background-color: $selected-color;
+      &::before {
+        background-color: $selected-color;
+      }
+    }
+
+    &:not(.node-leaf_active):hover {
+      background-color: $hover-color;
+      &::before {
+        background-color: $hover-color;
+      }
     }
 
     &__title {
@@ -136,23 +153,10 @@ $tree-node-padding: 10px;
         border-right: none;
         transform: rotate(-45deg);
       }
-
-      &_active {
-        background-color: $selected-color;
-        &::before {
-          background-color: $selected-color;
-        }
-      }
-      
-      &:not(.node-content__title_active):hover {
-        background-color: $hover-color;
-        &::before {
-          background-color: $hover-color;
-        }
-      }
     }
 
     &__stats {
+      display: none;
       color: $text-muted-color;
       padding: 0 $tree-node-padding 0;
       text-align: center;
@@ -161,6 +165,12 @@ $tree-node-padding: 10px;
       white-space: nowrap;
       border-left: 1px solid $border-color;
     }
+  }
+}
+
+.node-branch {
+  &_collapsed {
+    display: none;
   }
 }
 

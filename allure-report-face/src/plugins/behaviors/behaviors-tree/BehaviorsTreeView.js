@@ -20,7 +20,7 @@ class BehaviorsTreeView extends DataGridView {
     highlightBehavior(state, story) {
         this.$el.find('.behaviors-list__story').removeClass('table__row_active');
         if(story) {
-            const activeStory = this.$el.find('.behaviors-list__story[data-uid="' + story + '"]');
+            const activeStory = this.$el.find(`.behaviors-list__story[data-uid="${story}"]`);
             activeStory.addClass('table__row_active');
             activeStory.parent().find(`.${this.className}__feature-row`)
                 .addClass(`${this.className}__feature-row_expanded`);

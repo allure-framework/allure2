@@ -3,7 +3,7 @@
     xUnit results
 </h2>
 
-<div class="tree">
+<div class="tree tree_root">
     {{#each suites}}
         <div class="tree-block">
             <div class="tree-block__anchor">
@@ -17,31 +17,31 @@
             </div>
             <div class="tree-block__node">
                 
-                <div class="node-content">
-                    <div class="node-content__title">
+                <div class="node-leaf">
+                    <div class="node-leaf__title">
                         {{name}}
                     </div>
-                    <div class="node-content__stats">
+                    <div class="node-leaf__stats">
                         {{statistic.total}} 
                     </div>
-                    <div class="node-content__stats">
+                    <div class="node-leaf__stats">
                         {{duration time.duration}}
                     </div>
                 </div>
                 
-                <div class="node-inner">
+                <div class="node-branch node-branch_collapsed">
                     <div class="tree tree_inner">
                         {{#each testCases}}
                             <a class="tree-block" href="#{{../../baseUrl}}/{{uid}}">
-                                <div class="tree-block__anchor tree-block__anchor_{{status}} tree-block__anchor_last">
+                                <div class="{{b 'tree-block' 'anchor' status=status last=true}}">
                                     <span class="node-anchor">{{status-symbol status}}</span>
                                 </div>
                                 <div class="tree-block__node">
-                                    <div class="node-content node-content_last">
-                                        <div class="node-content__title" data-uid="{{uid}}">
-                                           {{name}}
+                                    <div class="node-leaf node-leaf_last" data-uid="{{uid}}">
+                                        <div class="node-leaf__title">
+                                           {{name}} 
                                         </div>
-                                        <div class="node-content__stats">
+                                        <div class="node-leaf__stats">
                                             {{duration time.duration}}
                                         </div>
                                     </div>
