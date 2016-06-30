@@ -1,0 +1,13 @@
+@import "../../variables.css";
+
+.testcase {
+  &__trace {
+    display: none;
+    &_visible {
+      display: block;
+    }
+  }
+  &__severity {
+    color: $color-canceled;
+  }
+}

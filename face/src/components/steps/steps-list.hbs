@@ -1,0 +1,25 @@
+{{#each steps}}
+    <div class="step">
+        <div class="{{b "step" "title"}}">
+            {{#if hasContent}}
+                <span class="step__arrow block__arrow"></span>
+            {{/if}}
+            {{name}}
+            {{#if (eq status "failed")}}
+                <span class="{{b "text" status="failed"}} fa fa-times-circle" title="Failed step"></span>
+            {{/if}}
+            {{#if (eq status "broken")}}
+                <span class="{{b "text" status="broken"}} fa fa-exclamation-circle" title="Broken step"></span>
+            {{/if}}
+            {{#if (eq status "skipped")}}
+                <span class="{{b "text" status="canceled"}} fa fa-question-circle" title="Cancelled step"></span>
+            {{/if}}
+        </div>
+        <div class="step__content">
+            {{> steps-list steps=steps baseUrl=../baseUrl}}
+            {{#each attachments}}
+                {{> ../../blocks/attachment-row/attachment-row . baseUrl=../baseUrl}}
+            {{/each}}
+        </div>
+    </div>
+{{/each}}

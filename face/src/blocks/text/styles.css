@@ -1,0 +1,19 @@
+@import "../../variables.css";
+
+.text {
+  &_status_failed {
+    color: $color-failed;
+  }
+  &_status_broken {
+    color: $color-broken;
+  }
+  &_status_canceled {
+    color: $color-canceled;
+  }
+  &_status_passed {
+    color: $color-passed;
+  }
+  &_status_pending {
+    color: $color-pending;
+  }
+}

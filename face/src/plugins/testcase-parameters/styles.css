@@ -1,0 +1,8 @@
+@import "../../variables.css";
+
+.testcase-environment {
+  margin-bottom: 0.5em;
+  &__key {
+    color: $text-muted-color;
+  }
+}

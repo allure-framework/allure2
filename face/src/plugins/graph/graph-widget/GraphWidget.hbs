@@ -1,0 +1,14 @@
+<h2 class="{{b 'widget' 'title'}}">{{t "TEST_RUN"}}
+    <span class="{{b 'widget' 'subtitle'}}">
+        {{t "STARTED_AT" date=(date time.start) time=(time time.start)}}
+    </span>
+</h2>
+
+<div class="{{b 'widget' 'flex-line'}}">
+    <div class="{{b 'widget' 'column'}} splash">
+        <div class="{{b 'splash' 'title'}}">{{ statistic.total }}</div>
+        <div class="{{b 'splash' 'subtitle'}}">Cases in {{duration time.duration}}</div>
+    </div>
+
+    <div class="{{b 'widget' 'column'}} {{b 'graph-widget' 'chart'}}"></div>
+</div>

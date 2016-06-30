@@ -1,0 +1,63 @@
+@import "../../variables.css";
+
+.node {
+  margin-left: 10px;
+  position: relative;
+  display: block;
+  text-decoration: none;
+  color: $text-color;
+  &__arrow {
+    left: 7px;
+    position: absolute;
+  }
+  &__anchor {
+    left: 10px;
+    position: absolute;
+  }
+  &__stats {
+    float: right;
+  }
+  &__title {
+    overflow: hidden;
+    line-height: 1.2em;
+    padding: 7px $gap-size 7px 25px;
+    flex: 1;
+    cursor: pointer;
+    border-bottom: 1px solid #ECEFF1;
+    position: relative;
+    .node__leaf & {
+      padding: 7px $gap-size 7px 35px;
+    }
+    &_active {
+      background-color: $selected-color;
+        &::before {
+        background-color: $selected-color;
+      }
+    }
+    &:hover {
+      background-color: $hover-color;
+      &::before {
+        background-color: $hover-color;
+      }
+    }
+  }
+  &__children {
+    display: none;
+    .node__expanded > & {
+      display: block;
+    }
+  }
+  &__expanded > &__title > &__arrow {
+    transform: rotate(90deg);
+  }
+  &:focus {
+    outline: 0;
+  }
+}
+
+.statuses-filter {
+  cursor: pointer;
+  width: 30px;
+  line-height: 30px;
+  text-align: center;
+}

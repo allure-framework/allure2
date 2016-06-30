@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:ns="urn:report.allurefw.org"
+            targetNamespace="urn:report.allurefw.org">
+
+    <xsd:include schemaLocation="allure_report-data.xsd"/>
+
+    <xsd:element name="behaviorData" type="ns:BehaviorData"/>
+    <xsd:complexType name="BehaviorData">
+        <xsd:sequence>
+            <xsd:element name="statistic" type="ns:Statistic"/>
+            <xsd:element name="features" minOccurs="0">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="feature" type="ns:Feature" minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:element name="feature" type="ns:Feature"/>
+    <xsd:complexType name="Feature">
+        <xsd:all>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="statistic" type="ns:Statistic"/>
+            <xsd:element name="stories" minOccurs="0">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="story" type="ns:Story" minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:element name="story" type="ns:Story"/>
+    <xsd:complexType name="Story">
+        <xsd:all>
+            <xsd:element name="uid" type="xsd:string"/>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="statistic" type="ns:Statistic"/>
+            <xsd:element name="testCases" minOccurs="0">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="testCase" type="ns:TestCaseInfo" minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:all>
+    </xsd:complexType>
+</xsd:schema>

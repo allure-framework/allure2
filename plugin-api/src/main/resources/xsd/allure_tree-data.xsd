@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:api="urn:entity.report.allurefw.org"
+            xmlns:ns="urn:tree.report.allurefw.org"
+            targetNamespace="urn:tree.report.allurefw.org">
+
+    <xsd:import namespace="urn:entity.report.allurefw.org" schemaLocation="allure_report-api.xsd"/>
+
+    <xsd:element name="treeData" type="ns:TreeData"/>
+    <xsd:complexType name="TreeData">
+        <xsd:sequence>
+            <xsd:element name="statistic" type="api:Statistic"/>
+            <xsd:element name="time" type="api:GroupTime"/>
+            <xsd:element name="children" minOccurs="0">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="child" type="ns:TreeNode" minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:element name="testGroupNode" type="ns:TestGroupNode"/>
+    <xsd:complexType name="TestGroupNode">
+        <xsd:all>
+            <xsd:element name="uid" type="xsd:string"/>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="time" type="api:GroupTime"/>
+            <xsd:element name="statistic" type="api:Statistic"/>
+            <xsd:element name="children" minOccurs="0">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="child" type="ns:TreeNode" minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:element name="testCaseNode" type="ns:TestCaseNode"/>
+    <xsd:complexType name="TestCaseNode">
+        <xsd:all>
+            <xsd:element name="uid" type="xsd:string"/>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="time" type="api:Time"/>
+            <xsd:element name="status" type="api:Status"/>
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:complexType name="TreeNode"/>
+
+    <xsd:element name="treeWidgetData" type="ns:TreeWidgetData"/>
+    <xsd:complexType name="TreeWidgetData">
+        <xsd:sequence>
+            <xsd:element name="total" type="xsd:long"/>
+            <xsd:element name="items" minOccurs="0">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="item" type="ns:TreeWidgetItem" minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:element name="treeWidgetItem" type="ns:TreeWidgetItem"/>
+    <xsd:complexType name="TreeWidgetItem">
+        <xsd:sequence>
+            <xsd:element name="uid" type="xsd:string"/>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="statistic" type="api:Statistic"/>
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>

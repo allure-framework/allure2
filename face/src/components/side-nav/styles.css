@@ -1,0 +1,113 @@
+@import "../../variables.css";
+
+.side-nav {
+  background: $app-nav-bg;
+  width: $sidebar-full-width;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  transition: width 0.3s;
+  overflow: hidden;
+
+  &__head {
+    margin: $gap-size 0;
+    padding-bottom: $gap-size;
+    border-bottom: 1px solid $sidebar-separator-color;
+    transition: width 0.3s;
+  }
+
+  &__brand {
+    color: $sidebar-brand-color;
+    text-decoration: none;
+    display: block;
+    font-size: 20px;
+    line-height: 40px;
+    font-weight: bold;
+    background: url('allure_logo.svg') no-repeat left center;
+    background-size: 65px;
+    padding-left: 50px;
+    margin-bottom: 10px;
+    transition: all 0.3s;
+  }
+  
+  &__brand-text {
+    padding-left: $gap-size;
+    transition: opacity .2s .1s;
+  }
+
+  &__menu {
+    margin: 0;
+    left: 0;
+    padding: 0;
+    list-style-type: none;
+    transition: width 0.3s;
+  }
+
+  &__footer {
+    margin-top: auto;
+    margin-bottom: $gap-size;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  &__item {
+    display: block;
+    font-size: 14px;
+  }
+
+  &__link, &__collapse {
+    display: block;
+    line-height: 24px;
+    color: $text-muted-color;
+    text-decoration: none;
+    transition: color 0.1s ease-in;
+    padding: 0.8em 0;
+    &_active {
+      color: $sidebar-active-text-color;
+      border-right: 4px solid $sidebar-active-accent-color;
+    }
+    &:hover {
+      color: $sidebar-hover-text-color;
+    }
+  }
+  &__icon {
+    position: absolute;
+    left: $gap-size;
+    font-size: 22px;
+    vertical-align: middle;
+    transition: top 0.3s ease-in;
+    margin: 0 5px;
+  }
+  &__text {
+    padding-left: 55px;
+    transition: opacity .2s .1s;
+  }
+
+  &__language-small {
+    display: block;
+    text-transform: capitalize;
+    padding: 0 5px;
+    text-overflow: '.';
+    max-width: 30px;
+    margin: 0 auto;
+  }
+  &__collapse {
+    cursor: pointer;
+    .side-nav__icon {
+      left: calc($gap-size + 5px);
+      transition: transform 0.1s;
+    }
+  }
+  &_collapsed {
+    width: $sidebar-collapsed;
+    
+    .side-nav__collapse .side-nav__icon {
+      transform: rotate(180deg);
+    }
+    
+    .side-nav__text, .side-nav__brand-text {
+      visibility: hidden;
+      opacity: 0;
+    }
+  }
+}

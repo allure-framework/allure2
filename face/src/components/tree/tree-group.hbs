@@ -1,0 +1,18 @@
+{{#if (eq type 'TestGroupNode')}}
+    <div class="node">
+        <div class="node__title long-line">
+            <span class="node__arrow block__arrow"></span>
+            {{name}}
+            <span class="node__stats">
+                {{statistic-bar statistic}}
+            </span>
+        </div>
+        <div class="node__children">
+            {{#each children}}
+                {{> tree-group baseUrl=../baseUrl}}
+            {{/each}}
+        </div>
+    </div>
+{{else}}
+    {{> tree-leaf baseUrl=baseUrl}}
+{{/if}}

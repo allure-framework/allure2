@@ -1,0 +1,24 @@
+@import "../../variables.css";
+
+.testcase-table {
+  &__title {
+    white-space: nowrap;
+    float: left;
+    line-height: 28px;
+    margin: 0;
+  }
+  &__statuses {
+    float: right;
+  }
+  &__table {
+    clear: both;
+  }
+  &__index {
+    flex: none;
+    width: 5%;
+    min-width: 70px;
+  }
+  &__name {
+    flex: 3;
+  }
+}

@@ -1,0 +1,11 @@
+@import "../../mixins.css";
+
+.label {
+  vertical-align: baseline;
+  letter-spacing: 1px;
+  color: #fff;
+  padding: 2px 4px 2px 5px;
+  font-size: 80%;
+  border-radius: 3px;
+  @mixin status-bg;
+}

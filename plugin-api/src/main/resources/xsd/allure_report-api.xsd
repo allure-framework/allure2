@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:ns="urn:entity.report.allurefw.org"
+            xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+            targetNamespace="urn:entity.report.allurefw.org"
+            xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+            jaxb:extensionBindingPrefixes="xjc"
+            jaxb:version="1.0">
+
+    <xsd:annotation>
+        <xsd:appinfo>
+            <jaxb:globalBindings>
+                <xjc:serializable uid="1"/>
+            </jaxb:globalBindings>
+        </xsd:appinfo>
+    </xsd:annotation>
+
+    <xsd:element name="testCaseInfo" type="ns:TestCaseInfo"/>
+    <xsd:complexType name="TestCaseInfo">
+        <xsd:all>
+            <xsd:element name="uid" type="xsd:string"/>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="time" type="ns:Time"/>
+            <xsd:element name="status" type="ns:Status"/>
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:element name="testCaseResult" type="ns:TestCaseResult"/>
+    <xsd:complexType name="TestCaseResult">
+        <xsd:all>
+            <xsd:element name="uid" type="xsd:string"/>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="time" type="ns:Time"/>
+            <xsd:element name="status" type="ns:Status"/>
+            <xsd:element name="failure" type="ns:Failure" minOccurs="0"/>
+            <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="descriptionHtml" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="steps" type="ns:Steps" minOccurs="0"/>
+            <xsd:element name="attachments" type="ns:Attachments" minOccurs="0"/>
+            <xsd:element name="labels" type="ns:Labels" minOccurs="0"/>
+            <xsd:element name="parameters" type="ns:Parameters" minOccurs="0"/>
+            <xsd:element name="links" type="ns:Links" minOccurs="0"/>
+            <xsd:element name="environment" type="ns:Environment" minOccurs="0"/>
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:element name="testGroup" type="ns:TestGroup"/>
+    <xsd:complexType name="TestGroup">
+        <xsd:all>
+            <xsd:element name="uid" type="xsd:string"/>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="type" type="xsd:string"/>
+            <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="descriptionHtml" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="links" type="ns:Links" minOccurs="0"/>
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:element name="link" type="ns:Link"/>
+    <xsd:complexType name="Link">
+        <xsd:all>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="url" type="xsd:string"/>
+            <xsd:element name="type" type="xsd:string"/>
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:element name="time" type="ns:Time"/>
+    <xsd:complexType name="Time">
+        <xsd:sequence>
+            <xsd:element name="start" type="xsd:long" nillable="true"/>
+            <xsd:element name="stop" type="xsd:long" nillable="true"/>
+            <xsd:element name="duration" type="xsd:long" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="GroupTime">
+        <xsd:complexContent>
+            <xsd:extension base="ns:Time">
+                <xsd:sequence>
+                    <xsd:element name="maxDuration" type="xsd:long" nillable="true"/>
+                    <xsd:element name="sumDuration" type="xsd:long" nillable="true"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="failure" type="ns:Failure"/>
+    <xsd:complexType name="Failure">
+        <xsd:all>
+            <xsd:element name="message" type="xsd:string"/>
+            <xsd:element name="trace" type="xsd:string"/>
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:element name="step" type="ns:Step"/>
+    <xsd:complexType name="Step">
+        <xsd:all>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="time" type="ns:Time"/>
+            <xsd:element name="status" type="ns:Status"/>
+            <xsd:element name="failure" type="ns:Failure" minOccurs="0"/>
+            <xsd:element name="steps" type="ns:Steps" minOccurs="0"/>
+            <xsd:element name="attachments" type="ns:Attachments" minOccurs="0"/>
+            <xsd:element name="parameters" type="ns:Parameters" minOccurs="0"/>
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:element name="attachment" type="ns:Attachment"/>
+    <xsd:complexType name="Attachment">
+        <xsd:all>
+            <xsd:element name="uid" type="xsd:string"/>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="source" type="xsd:string"/>
+            <xsd:element name="type" type="xsd:string"/>
+            <xsd:element name="size" type="xsd:long" nillable="true"/>
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:element name="parameter" type="ns:Parameter"/>
+    <xsd:complexType name="Parameter">
+        <xsd:attribute name="name" type="xsd:string" use="required"/>
+        <xsd:attribute name="value" type="xsd:string" use="required"/>
+    </xsd:complexType>
+
+    <xsd:element name="environmentItem" type="ns:EnvironmentItem"/>
+    <xsd:complexType name="EnvironmentItem">
+        <xsd:attribute name="name" type="xsd:string" use="required"/>
+        <xsd:attribute name="value" type="xsd:string" use="required"/>
+    </xsd:complexType>
+
+    <!-- Other entity -->
+    <xsd:element name="statistic" type="ns:Statistic"/>
+    <xsd:complexType name="Statistic">
+        <xsd:attribute name="passed" type="xsd:long" default="0"/>
+        <xsd:attribute name="pending" type="xsd:long" default="0"/>
+        <xsd:attribute name="canceled" type="xsd:long" default="0"/>
+        <xsd:attribute name="failed" type="xsd:long" default="0"/>
+        <xsd:attribute name="broken" type="xsd:long" default="0"/>
+    </xsd:complexType>
+
+    <xsd:element name="summary" type="ns:Summary"/>
+    <xsd:complexType name="Summary">
+        <xsd:attribute name="attachments" type="xsd:long" default="0"/>
+        <xsd:attribute name="steps" type="xsd:long" default="0"/>
+    </xsd:complexType>
+
+    <xsd:element name="attachment-file" type="ns:AttachmentFile"/>
+    <xsd:complexType name="AttachmentFile">
+        <xsd:attribute name="uid" type="xsd:string" use="required"/>
+        <xsd:attribute name="source" type="xsd:string" use="required"/>
+        <xsd:attribute name="size" type="xsd:long" use="required"/>
+        <xsd:attribute name="type" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:element name="label" type="ns:Label"/>
+    <xsd:complexType name="Label">
+        <xsd:attribute name="name" type="xsd:string" use="required"/>
+        <xsd:attribute name="value" type="xsd:string" use="required"/>
+    </xsd:complexType>
+
+    <xsd:simpleType name="Status">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="failed"/>
+            <xsd:enumeration value="broken"/>
+            <xsd:enumeration value="passed"/>
+            <xsd:enumeration value="canceled"/>
+            <xsd:enumeration value="pending"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="SeverityLevel">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="blocker"/>
+            <xsd:enumeration value="critical"/>
+            <xsd:enumeration value="normal"/>
+            <xsd:enumeration value="minor"/>
+            <xsd:enumeration value="trivial"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <!-- Reserved label names -->
+    <xsd:simpleType name="LabelName">
+        <xsd:restriction base="xsd:string">
+            <!-- Test -->
+            <xsd:enumeration value="severity"/>
+            <xsd:enumeration value="issue"/>
+            <xsd:enumeration value="testId"/>
+
+            <!-- Suite -->
+            <xsd:enumeration value="suite"/>
+
+            <!-- BDD -->
+            <xsd:enumeration value="feature"/>
+            <xsd:enumeration value="story"/>
+
+            <!-- Java -->
+            <xsd:enumeration value="testClass"/>
+            <xsd:enumeration value="testMethod"/>
+
+            <!-- Info  -->
+            <xsd:enumeration value="host"/>
+            <xsd:enumeration value="thread"/>
+            <xsd:enumeration value="language"/>
+            <xsd:enumeration value="framework"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <!-- Wrappers, not actually a classes -->
+    <xsd:complexType name="Steps">
+        <xsd:sequence>
+            <xsd:element name="step" type="ns:Step" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="Attachments">
+        <xsd:sequence>
+            <xsd:element name="attachment" type="ns:Attachment" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="Labels">
+        <xsd:sequence>
+            <xsd:element name="label" type="ns:Label" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="Parameters">
+        <xsd:sequence>
+            <xsd:element name="parameter" type="ns:Parameter" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="Environment">
+        <xsd:sequence>
+            <xsd:element name="environmentItem" type="ns:EnvironmentItem" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="Links">
+        <xsd:sequence>
+            <xsd:element name="link" type="ns:Link" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>

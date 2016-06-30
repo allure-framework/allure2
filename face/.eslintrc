@@ -1,0 +1,15 @@
+{
+  "extends": "eslint:recommended",
+  "parser": "babel-eslint",
+  "env": {
+    "es6": true,
+    "browser": true,
+    "commonjs": true
+  },
+  "rules": {
+    "quotes": [2, "single"],
+    "one-var": [2, "never"],
+    "semi": [2, "always"],
+    "eqeqeq": [2]
+  }
+}

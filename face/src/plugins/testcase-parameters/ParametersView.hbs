@@ -1,0 +1,18 @@
+{{#if arguments.length}}
+<h3>Arguments</h3>
+    <p>
+        {{#each arguments}}
+            {{name}} = {{value}}{{#unless @last}};{{/unless}}
+        {{/each}}
+    </p>
+{{/if}}
+
+{{#if environment.length}}
+    <h3>Environment</h3>
+    {{#each environment}}
+        <div class="testcase-environment">
+            <span class="testcase-environment__key">{{name}}</span>:
+            {{linky value}}
+        </div>
+    {{/each}}
+{{/if}}

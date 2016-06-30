@@ -1,0 +1,39 @@
+@import "../../variables.css";
+
+.steps {
+  &__title {
+    margin: $gap-size $gap-size 0.3em;
+  }
+}
+
+.step {
+  line-height: 1.2em;
+  &__arrow {
+    left: 7px;
+    position: absolute;
+  }
+  &__title {
+    position: relative;
+    padding: 7px $gap-size 7px 25px;
+    cursor: pointer;
+    &:hover {
+      background-color: $hover-color;
+      &::before {
+        background-color: $hover-color;
+      }
+    }
+  }
+  &__time {
+    color: $text-muted-color
+  }
+  &__content {
+    margin-left: 30px;
+    display: none;
+  }
+  &__expanded > &__title > &__arrow {
+    transform: rotate(90deg);
+  }
+  &__expanded > &__content {
+    display: block;
+  }
+}

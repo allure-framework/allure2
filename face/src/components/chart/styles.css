@@ -1,0 +1,70 @@
+@import "../../variables.css";
+
+.chart {
+  margin-right: $gap-size;
+  margin-bottom: $gap-size;
+  margin-top: $gap-size;
+  position: relative;
+  flex: 1;
+  &__title {
+    margin-top: 0;
+    margin-bottom: $gap-size;
+    font-size: 18px;
+  }
+  &__caption {
+      text-anchor: middle;
+  }
+  &__svg {
+    width: 100%;
+    height: 100%;
+  }
+  &__wrap {
+    width: 50%;
+    &:nth-child(2) ~ & {
+      .chart {
+        margin-top: 0;
+      }
+    }
+  }
+  &__bar {
+    fill: $brand-blue;
+  }
+  &__arc {
+    stroke: #FFF;
+    stop-opacity: 0;
+  }
+  &__fill {
+    &_status_failed {
+      fill: $color-failed
+    }
+    &_status_broken {
+      fill: $color-broken;
+    }
+    &_status_passed {
+      fill: $color-passed;
+    }
+    &_status_pending {
+      fill: $color-pending;
+    }
+    &_status_canceled {
+      fill: $color-canceled;
+    }
+  }
+  &__axis {
+    path, line {
+      shape-rendering: crispEdges;
+      stroke: #000;
+      fill: none;
+    }
+  }
+}
+
+@media (max-width: $small-screen) {
+  .chart__wrap {
+    width: 100%;
+    &:nth-child(2) .chart {
+      margin-top: 0;
+    }
+  }
+}
+

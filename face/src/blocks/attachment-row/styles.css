@@ -1,0 +1,18 @@
+@import "../../variables.css";
+
+.attachment-row {
+  padding: 10px $gap-size;
+  cursor: pointer;
+  &:hover {
+    background: $hover-color;
+  }
+  &_selected {
+    &, &:hover {
+      background: $selected-color;
+    }
+  }
+  &__link {
+    float: right;
+    min-width: 70px;
+  }
+}

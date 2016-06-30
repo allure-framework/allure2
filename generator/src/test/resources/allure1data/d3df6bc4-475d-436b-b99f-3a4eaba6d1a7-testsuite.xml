@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:test-suite xmlns:ns2="urn:model.allure.qatools.yandex.ru" start="1391003394188" stop="1391003394494">
+    <name>my.company.AllureMigrationTest</name>
+    <test-cases>
+        <test-case start="1412949539363" stop="1412949993580" status="skipped" severity="normal">
+            <name>AllureOldDataTest</name>
+            <title>Test what do nothing and always passed right, but have a very long title, over 100 symbols, seriously</title>
+            <description type="text">I hate descriptions! See the title!</description>
+            <steps/>
+            <attachments/>
+            <labels>
+                <label name="story" value="SuccessStory"/>
+                <label name="feature" value="SimpleStories"/>
+            </labels>
+        </test-case>
+    </test-cases>
+    <labels/>
+</ns2:test-suite>

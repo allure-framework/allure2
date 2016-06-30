@@ -1,0 +1,13 @@
+<a class="{{b 'pane' 'overlay'}}" href="#{{baseUrl}}"></a>
+<h2 class="{{b 'pane' 'title'}}">
+    {{tabName}}
+    <span class="pane__controls">
+     <a class="fa fa-filter statuses-filter"></a>
+    </span>
+</h2>
+
+<div class="tree tree_root">
+    {{#each items}}
+        {{> tree-group baseUrl=../baseUrl}}
+    {{/each}}
+</div>

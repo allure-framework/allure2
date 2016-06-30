@@ -1,0 +1,36 @@
+@import "../../mixins.css";
+
+.charts-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  overflow: auto;
+  height: 100vh;
+  padding-left: $gap-size;
+}
+
+.chart {
+  padding-bottom: $gap-size;
+  &__legend {
+    position: absolute;
+    top: 20%;
+    right: 10%;
+  }
+  &__legend-icon {
+    position: relative;
+    top: -1px;
+    border-radius: 3px;
+    display: inline-block;
+    vertical-align: middle;
+    width: 20px;
+    height: 16px;
+    margin-right: 5px;
+    @mixin status-bg;
+  }
+}
+
+.graph-widget {
+    &__chart {
+        padding: 1em 0;
+    }
+}

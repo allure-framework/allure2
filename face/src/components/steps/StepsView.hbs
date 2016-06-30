@@ -1,0 +1,7 @@
+{{#if steps}}
+    <h3 class="steps__title">Steps</h3>
+    {{> steps-list steps=steps baseUrl=baseUrl}}
+    {{#each attachments}}
+        {{> ../../blocks/attachment-row/attachment-row . baseUrl=../baseUrl}}
+    {{/each}}
+{{/if}}

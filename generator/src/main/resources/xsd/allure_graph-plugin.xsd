@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:ns="urn:report.allurefw.org"
+            targetNamespace="urn:report.allurefw.org">
+
+    <xsd:include schemaLocation="allure_report-data.xsd"/>
+
+    <xsd:element name="graphData" type="ns:GraphData"/>
+    <xsd:complexType name="GraphData">
+        <xsd:sequence>
+            <xsd:element name="testCases" minOccurs="0">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="testCase" type="ns:TestCaseInfo" minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>

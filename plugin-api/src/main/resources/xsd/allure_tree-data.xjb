@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxb:bindings xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+               xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+               xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://java.sun.com/xml/ns/jaxb http://java.sun.com/xml/ns/jaxb/bindingschema_2_1.xsd"
+               xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
+               jaxb:extensionBindingPrefixes="xjc annox"
+               schemaLocation="allure_tree-data.xsd"
+               jaxb:version="2.1">
+
+    <jaxb:bindings node="//xsd:complexType[@name='TestGroupNode']">
+        <inheritance:implements>org.allurefw.report.entity.WithStatistic</inheritance:implements>
+        <inheritance:implements>org.allurefw.report.entity.WithGroupTime</inheritance:implements>
+        <inheritance:implements>org.allurefw.report.tree.WithChildren</inheritance:implements>
+        <inheritance:implements>org.allurefw.report.tree.TreeNode</inheritance:implements>
+    </jaxb:bindings>
+
+    <jaxb:bindings node="//xsd:complexType[@name='TestCaseNode']">
+        <inheritance:implements>org.allurefw.report.entity.WithTime</inheritance:implements>
+        <inheritance:implements>org.allurefw.report.tree.TreeNode</inheritance:implements>
+    </jaxb:bindings>
+
+    <jaxb:bindings node="//xsd:complexType[@name='TreeData']">
+        <inheritance:implements>org.allurefw.report.entity.WithStatistic</inheritance:implements>
+        <inheritance:implements>org.allurefw.report.entity.WithGroupTime</inheritance:implements>
+        <inheritance:implements>org.allurefw.report.tree.WithChildren</inheritance:implements>
+    </jaxb:bindings>
+
+    <jaxb:bindings node="//xsd:complexType[@name='TreeNode']">
+        <jaxb:class ref="org.allurefw.report.tree.TreeNode"/>
+    </jaxb:bindings>
+
+</jaxb:bindings>

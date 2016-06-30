@@ -1,0 +1,19 @@
+@import "../../variables.css";
+
+.widgets-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: $gap-size $gap-size 0 $gap-size;
+  max-height: 100%;
+  overflow: auto;
+  display: flex;
+  &__col {
+    width: 50%;
+  }
+  &__col + &__col {
+    padding-left: $gap-size;
+  }
+}

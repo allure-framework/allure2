@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="urn:report.allurefw.org">
+
+    <xsd:complexType name="TestCaseInfo"/>
+    <xsd:complexType name="Time"/>
+    <xsd:complexType name="GroupTime"/>
+    <xsd:complexType name="Status"/>
+    <xsd:complexType name="Failure"/>
+    <xsd:complexType name="Statistic"/>
+</xsd:schema>

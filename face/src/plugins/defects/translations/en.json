@@ -1,0 +1,11 @@
+{
+  "defects": {
+    "TITLE": "Defects",
+    "productDefects": "Product defects",
+    "testDefects": "Test defects",
+    "STATISTIC": "(1)({{count}} defect);(0,2-inf)({{count}} defects);",
+    "SHOW_ALL": "Show all defects",
+    "COUNT": "Count",
+    "DEFECT": "Defect"
+  }
+}

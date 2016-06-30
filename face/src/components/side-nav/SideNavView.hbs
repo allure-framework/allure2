@@ -1,0 +1,29 @@
+<div class="{{b 'side-nav' 'head'}}">
+    <a href="#" class="{{b 'side-nav' 'brand'}}">
+        <span class="{{b 'side-nav' 'brand-text'}}">Allure</span>
+    </a>
+</div>
+<ul class="{{b 'side-nav' 'menu'}}">
+    {{#each tabs}}
+        <li class="{{b 'side-nav' 'item'}}">
+            <a href="#{{tabName}}" class="{{b 'side-nav' 'link' active=active}}" data-tooltip="{{title}}">
+                <span class="{{b 'side-nav' 'icon'}} {{icon}}"></span>
+                <span class="{{b 'side-nav' 'text'}}">{{title}}</span>
+            </a>
+        </li>
+    {{/each}}
+</ul>
+<div class="{{b 'side-nav' 'strut'}}"></div>
+<div class="{{b 'side-nav' 'footer'}}">
+    <div class="{{b 'side-nav' 'item'}}" data-tooltip="Change language">
+        <button class="{{b 'button'}} {{b 'button' inverse=true}} {{b 'side-nav' 'language-small' lang=language.id}}">
+            {{language.id}}
+        </button>
+    </div>
+    <div class="{{b 'side-nav' 'item'}} ">
+        <div class="{{b 'side-nav' 'collapse'}}" data-tooltip="Expand">
+            <span class="{{b 'side-nav' 'icon'}} fa fa-angle-left"></span>
+            <span class="{{b 'side-nav' 'text'}}">Collapse</span>
+        </div>
+    </div>
+</div>
