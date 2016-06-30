@@ -21,6 +21,7 @@
         <module>xunit-plugin</module>
         <module>behaviors-plugin</module>
         <module>packages-plugin</module>
+        <module>opensancefont-plugin</module>
         <module>generator</module>
         <module>face</module>
         <module>bundle</module>

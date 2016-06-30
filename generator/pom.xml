@@ -64,6 +64,11 @@
             <artifactId>packages-plugin</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.allurefw.report</groupId>
+            <artifactId>opensancefont-plugin</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- Testing -->
         <dependency>

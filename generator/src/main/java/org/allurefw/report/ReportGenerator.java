@@ -16,6 +16,7 @@ import org.allurefw.report.graph.GraphPlugin;
 import org.allurefw.report.issue.IssueModule;
 import org.allurefw.report.jackson.JacksonMapperModule;
 import org.allurefw.report.junit.JunitTestsResults;
+import org.allurefw.report.opensancefont.OpenSansFontPlugin;
 import org.allurefw.report.packages.PackagesPlugin;
 import org.allurefw.report.timeline.TimelinePlugin;
 import org.allurefw.report.tms.TmsModule;
@@ -88,6 +89,7 @@ public class ReportGenerator {
 
     private List<AbstractPlugin> getPlugins() {
         return Arrays.asList(
+                new OpenSansFontPlugin(),
                 new DefectsPlugin(),
                 new XunitPlugin(),
                 new BehaviorsPlugin(),
