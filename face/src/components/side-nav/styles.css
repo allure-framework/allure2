@@ -24,9 +24,10 @@
     line-height: 40px;
     font-weight: bold;
     background: url('allure_logo.svg') no-repeat left center;
-    background-size: 65px;
-    padding-left: 50px;
+    background-size: 30px;
+    padding-left: 40px;
     margin-bottom: 10px;
+    margin-left: 14px;
     transition: all 0.3s;
   }
   
