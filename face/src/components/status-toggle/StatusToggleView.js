@@ -1,4 +1,5 @@
 import './styles.css';
+import $ from 'jquery';
 import {on, className} from '../../decorators';
 import settings from '../../util/settings';
 import template from './StatusToggleView.hbs';
@@ -11,6 +12,13 @@ class StatusToggleView extends PopoverView {
 
     initialize() {
         super.initialize({position: 'bottom-left', offset: -1});
+        this.onDocumentClick = this.onDocumentClick.bind(this);
+    }
+
+    onDocumentClick(e) {
+        if(!this.$(e.target).length) {
+            this.hide();
+        }
     }
     
     setContent() {
@@ -20,6 +28,14 @@ class StatusToggleView extends PopoverView {
     show(anchor) {
         super.show(null, anchor);
         this.delegateEvents();
+        setTimeout(() => {
+            $(document).on('click', this.onDocumentClick);
+        });
+    }
+
+    hide() {
+        $(document).off('click', this.onDocumentClick);
+        super.hide();
     }
 
     serializeData() {
