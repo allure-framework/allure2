@@ -25,6 +25,10 @@ class TreeView extends LayoutView {
         this.highlightItem(this.state.get('testcase'));
     }
 
+    onDestroy() {
+        this.statusesSelect.hide();
+    }
+
     @on('click .node__title')
     onNodeClick(e) {
         this.$(e.currentTarget).parent().toggleClass('node__expanded');
