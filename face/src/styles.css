@@ -66,6 +66,11 @@ html, body {
   white-space: nowrap;
 }
 
+.preformated-text {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
 .line-ellipsis {
   white-space: nowrap;
   text-overflow: ellipsis;
