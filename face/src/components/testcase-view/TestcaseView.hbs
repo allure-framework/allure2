@@ -1,6 +1,6 @@
 <a class="pane__overlay" href="#{{route.baseUrl}}/{{uid}}"></a>
 <h2 class="pane__title">
-    <span class="{{b 'testcase' 'severity'}}  {{severityIcon}}" data-tooltip="Severity: {{severity}}"></span>
+    <span class="label label_status_{{status}}">{{status}}</span>
     {{name}}
     <span class="pane__controls">
         <a class="fa fa-expand pane__expand" data-tooltip="Expand" href="#{{route.baseUrl}}/{{uid}}?expanded=true"></a>
@@ -10,7 +10,7 @@
 </h2>
 
 {{#if failure}}
-    <div class="testcase__failure alert alert_status_{{status}}">
+    <div class="testcase__failure alert">
         <div class="row">
             <div class="col_flex">
                 <pre class="alert__code"><code>{{failure.message}}</code></pre>
