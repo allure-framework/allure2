@@ -79,7 +79,8 @@ public class Allure1TestsResults extends InMemoryTestsResults {
                 .forEach(testSuite -> {
                     String suiteName = Stream.of(testSuite.getTitle(), testSuite.getName())
                             .filter(Objects::nonNull)
-                            .findFirst().orElse("unknownSuite");
+                            .findFirst()
+                            .orElse("unknownSuite");
                     TestGroup group = new TestGroup()
                             .withName(suiteName)
                             .withType("suite");
@@ -87,13 +88,26 @@ public class Allure1TestsResults extends InMemoryTestsResults {
                     addTestGroup(group);
                     testSuite.getTestCases().stream()
                             .map(this::convert)
-                            .forEach(result -> {
-                                result.getEnvironment().addAll(environment);
-                                result.addLabelIfNotExists(LabelName.SUITE, suiteName);
-                                result.addLabelIfNotExists(LabelName.TEST_CLASS, testSuite.getName());
-                                addTestCaseResult(result);
-                            });
+                            .forEach(result -> addTestCaseResult(environment, suiteName, testSuite, result));
                 });
+    }
+
+    private void addTestCaseResult(List<EnvironmentItem> environment, String suiteName,
+                                   TestSuiteResult testSuite, TestCaseResult result) {
+        result.getEnvironment().addAll(environment);
+        result.addLabelIfNotExists(LabelName.SUITE, suiteName);
+        result.addLabelIfNotExists(LabelName.TEST_CLASS, testSuite.getName());
+
+        testSuite.getLabels().forEach(label -> {
+            Optional<String> any = result.findAll(label.getName()).stream()
+                    .filter(value -> value.equals(label.getValue()))
+                    .findAny();
+            if (!any.isPresent()) {
+                result.addLabel(label.getName(), label.getValue());
+            }
+        });
+
+        addTestCaseResult(result);
     }
 
     protected List<EnvironmentItem> getEnvironmentXml() {

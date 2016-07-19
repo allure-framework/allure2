@@ -1,6 +1,7 @@
 package org.allurefw.report.allure1;
 
 import org.allurefw.report.entity.Attachment;
+import org.allurefw.report.entity.Label;
 import org.allurefw.report.entity.LabelName;
 import org.allurefw.report.entity.TestCaseResult;
 import org.allurefw.report.entity.TestGroup;
@@ -17,12 +18,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.github.npathai.hamcrestopt.OptionalMatchers.hasValue;
 import static com.github.npathai.hamcrestopt.OptionalMatchers.isPresent;
 import static org.allurefw.allure1.AllureUtils.generateTestSuiteJsonName;
 import static org.allurefw.allure1.AllureUtils.generateTestSuiteXmlName;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -143,6 +147,22 @@ public class Allure1TestResultsTest {
         Optional<String> suiteName = result.findOne(LabelName.SUITE);
         assertThat(suiteName, isPresent());
         assertThat(suiteName, hasValue("my.company.AlwaysPassingTest"));
+    }
+
+    @Test
+    public void shouldCopyLabelsFromSuite() throws Exception {
+        Allure1TestsResults testResults = process(
+                "allure1/sample-testsuite.json", generateTestSuiteJsonName()
+        );
+        List<TestCaseResult> testCases = testResults.getTestCases();
+        assertThat(testCases, hasSize(1));
+        TestCaseResult result = testCases.iterator().next();
+        List<String> stories = result.getLabels().stream()
+                .filter(label -> "story".equals(label.getName()))
+                .map(Label::getValue)
+                .collect(Collectors.toList());
+        assertThat(stories, hasSize(2));
+        assertThat(stories, hasItems("SuccessStory", "OtherStory"));
     }
 
     public Allure1TestsResults process(String... strings) throws IOException {

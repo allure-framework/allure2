@@ -18,6 +18,10 @@
         {
           "name": "testId",
           "value": "TMS-1"
+        },
+        {
+          "name": "story",
+          "value": "OtherStory"
         }
       ]
     }
@@ -26,6 +30,10 @@
     {
       "name": "story",
       "value": "SuccessStory"
+    },
+    {
+      "name": "story",
+      "value": "OtherStory"
     }
   ]
 }
