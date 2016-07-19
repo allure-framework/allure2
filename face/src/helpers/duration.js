@@ -27,7 +27,7 @@ const dateTokens = [
 
 export default function(timeInt, count) {
     if(!timeInt) {
-        return '0s';
+        return 'Unknown';
     }
     const time = new Date(timeInt);
     const res = dateTokens.map(({method, suffix, pad}) => ({

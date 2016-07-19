@@ -11,6 +11,7 @@ import './plugins/graph';
 import './plugins/timeline';
 import './plugins/report-stats';
 
+import './plugins/testcase-info';
 import './plugins/testcase-parameters';
 import './plugins/testcase-description';
 import './plugins/testcase-links';
