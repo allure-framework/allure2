@@ -7,7 +7,9 @@ class DescriptionView extends ItemView {
     template = template;
 
     serializeData() {
-        return this.model.get('description');
+        return {
+            description: this.model.get('description')
+        };
     }
 }
 
