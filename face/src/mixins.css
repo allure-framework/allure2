@@ -17,3 +17,21 @@
     background: $color-broken;
   }
 }
+
+@define-mixin status-border {
+  &_status_passed {
+    border-color: $color-passed;
+  }
+  &_status_canceled {
+    border-color: $color-canceled;
+  }
+  &_status_pending {
+    border-color: $color-pending;
+  }
+  &_status_failed {
+    border-color: $color-failed;
+  }
+  &_status_broken {
+    border-color: $color-broken;
+  }
+}

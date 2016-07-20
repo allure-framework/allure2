@@ -26,6 +26,9 @@ const dateTokens = [
 ];
 
 export default function(timeInt, count) {
+    if(timeInt === 0) {
+        return '0s';
+    }
     if(!timeInt) {
         return 'Unknown';
     }

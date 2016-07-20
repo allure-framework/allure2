@@ -1,4 +1,5 @@
 @import "../../variables.css";
+@import "../../mixins.css";
 
 .testcase {
   &__trace {
@@ -10,4 +11,9 @@
   &__severity {
     color: $color-canceled;
   }
+}
+
+.message {
+  border-left: 7px solid;
+  @mixin status-border;
 }

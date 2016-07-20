@@ -7,9 +7,9 @@ const DAY = 24 * HOUR;
 
 describe('duration helper', function () {
     it('should format empty values as zero', function () {
-        expect(duration('')).toBe('0s');
+        expect(duration('')).toBe('Unknown');
+        expect(duration()).toBe('Unknown');
         expect(duration(0)).toBe('0s');
-        expect(duration()).toBe('0s');
     });
 
     it('should render only non-zero milliseconds', function () {
