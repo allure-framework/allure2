@@ -1,4 +1,3 @@
-import allurePlugins from '../../pluginApi';
-
 import ParametersView from './ParametersView';
-allurePlugins.addTestcaseBlock(ParametersView, {position: 'before'});
+
+allure.api.addTestcaseBlock(ParametersView, {position: 'before'});

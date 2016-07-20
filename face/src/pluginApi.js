@@ -1,36 +1,11 @@
-import router from './router';
-import App from './app';
-import { addTranslation } from './util/translation';
+import pluginsRegistry from './util/pluginsRegistry';
+import TreeLayout from './layouts/tree/TreeLayout';
+import WidgetStatusView from './components/widget-status/WidgetStatusView';
 
-class AllurePluginApi {
-    tabs = [];
-
-    testcaseBlocks = {
-        before: [],
-        after: []
-    };
-
-    widgets = {
-    };
-
-    addTab(tabName, {title, icon, route, onEnter = App.tabNotFound} = {}) {
-        title = title || tabName;
-        this.tabs.push({tabName, title, icon});
-        router.route(route, tabName);
-        router.on('route:'+tabName, App.showView(onEnter));
+window.allure = {
+    api: pluginsRegistry,
+    components: {
+        TreeLayout: TreeLayout,
+        WidgetStatusView: WidgetStatusView
     }
-
-    addWidget(name, Widget) {
-        this.widgets[name] = Widget;
-    }
-
-    addTranslation(lang, json) {
-        addTranslation(lang, json);
-    }
-
-    addTestcaseBlock(view, {position}) {
-        this.testcaseBlocks[position].push(view);
-    }
-}
-
-export default new AllurePluginApi();
+};

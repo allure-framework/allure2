@@ -1,6 +1,6 @@
 import {View} from 'backbone';
 import settings from 'util/settings';
-import allurePlugins from 'pluginApi';
+import pluginsRegistry from 'util/pluginsRegistry';
 import WidgetsGridView from 'components/widgets-grid/WidgetsGridView';
 import WidgetsModel from 'data/widgets/WidgetsModel';
 
@@ -13,7 +13,7 @@ describe('WidgetsGridView', function() {
 
     beforeEach(function() {
         settings.clear();
-        allurePlugins.widgets = {
+        pluginsRegistry.widgets = {
             a: View,
             b: View,
             c: View,

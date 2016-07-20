@@ -1,14 +1,13 @@
-import allurePlugins from '../../pluginApi';
 import DefectsLayout from './DefectsLayout';
 import DefectsWidget from './defects-widget/DefectsWidget';
 
-allurePlugins.addTab('defects', {
+allure.api.addTab('defects', {
     title: 'Defects', icon: 'fa fa-flag',
     route: 'defects(/:defectId)(/:testcaseId)(/:attachmentId)',
     onEnter: (...routeParams) => new DefectsLayout({routeParams})
 });
-allurePlugins.addWidget('productDefects', DefectsWidget);
-allurePlugins.addWidget('testDefects', DefectsWidget);
-allurePlugins.addTranslation('en', require('./translations/en.json'));
-allurePlugins.addTranslation('ru', require('./translations/ru.json'));
-allurePlugins.addTranslation('ptbr', require('./translations/ptbr.json'));
+allure.api.addWidget('productDefects', DefectsWidget);
+allure.api.addWidget('testDefects', DefectsWidget);
+allure.api.addTranslation('en', require('./translations/en.json'));
+allure.api.addTranslation('ru', require('./translations/ru.json'));
+allure.api.addTranslation('ptbr', require('./translations/ptbr.json'));

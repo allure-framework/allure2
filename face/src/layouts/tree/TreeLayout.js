@@ -1,16 +1,13 @@
-import PaneLayout from '../../layouts/pane/PaneLayout';
-import TreeCollection from './TreeCollection';
-import TreeView from './TreeView';
+import PaneLayout from '../pane/PaneLayout';
+import TreeCollection from '../../data/tree/TreeCollection';
+import TreeView from '../../components/tree/TreeView';
 import router from '../../router';
 
 export default class TreeLayout extends PaneLayout {
 
-    initialize({url, baseUrl, tabName}) {
+    initialize({url}) {
         super.initialize();
-        const Collection = TreeCollection.extend({url: url});
-        this.items = new Collection;
-        this.baseUrl = baseUrl;
-        this.tabName = tabName;
+        this.items = new TreeCollection([], {url});
     }
 
     loadData() {
@@ -25,11 +22,11 @@ export default class TreeLayout extends PaneLayout {
             paneView.addPane('testrun', new TreeView({
                 collection: this.items,
                 state: this.state,
-                tabName: this.tabName,
-                baseUrl: this.baseUrl
+                tabName: this.options.tabName,
+                baseUrl: this.options.baseUrl
             }));
         }
-        this.testcase.updatePanes(this.baseUrl, changed);
+        this.testcase.updatePanes(this.options.baseUrl, changed);
         paneView.updatePanesPositions();
     }
 

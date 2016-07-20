@@ -63,7 +63,7 @@ class TreeView extends LayoutView {
             items: this.filterNodes(statuses, this.collection.toJSON())
         };
     }
-    
+
     filterNodes(statuses, nodes) {
         return nodes
             .map(item => this.mapNode(statuses, item))
