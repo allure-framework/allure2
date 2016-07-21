@@ -1,7 +1,7 @@
 import './styles.css';
 import {LayoutView} from 'backbone.marionette';
 import {on, region, behavior} from '../../decorators';
-import allurePlugins from '../../pluginApi';
+import pluginsRegistry from '../../util/pluginsRegistry';
 import StepsView from '../steps/StepsView';
 import template from './TestcaseView.hbs';
 
@@ -27,13 +27,13 @@ class TestcaseView extends LayoutView {
     }
 
     onRender() {
-        this.showTestcasePlugins(this.$('.testcase__content_before'), allurePlugins.testcaseBlocks.before);
+        this.showTestcasePlugins(this.$('.testcase__content_before'), pluginsRegistry.testcaseBlocks.before);
         this.steps.show(new StepsView({
             baseUrl: this.options.baseUrl + '/' + this.model.id,
             model: this.model
         }));
         // this.highlightSelectedAttachment();
-        this.showTestcasePlugins(this.$('.testcase__content_after'), allurePlugins.testcaseBlocks.after);
+        this.showTestcasePlugins(this.$('.testcase__content_after'), pluginsRegistry.testcaseBlocks.after);
     }
 
     onDestroy() {

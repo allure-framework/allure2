@@ -3,6 +3,7 @@ import $ from 'jquery';
 import Backbone from 'backbone';
 
 import './blocks/arrow/styles.css';
+import './pluginApi';
 
 import './plugins/default';
 import './plugins/defects';
@@ -15,8 +16,6 @@ import './plugins/testcase-info';
 import './plugins/testcase-parameters';
 import './plugins/testcase-description';
 import './plugins/testcase-links';
-
-import './globals';
 
 App.start();
 Backbone.history.start();

@@ -5,7 +5,7 @@ import {ItemView} from 'backbone.marionette';
 import TooltipView from '../tooltip/TooltipView';
 import LanguageSelectView from '../language-select/LanguageSelectView';
 import { LANGUAGES } from '../../util/translation';
-import allurePlugins from '../../pluginApi';
+import pluginsRegistry from '../../util/pluginsRegistry';
 import settings from '../../util/settings';
 import template from './SideNavView.hbs';
 import {escapeExpression as escape} from 'handlebars/runtime';
@@ -16,7 +16,7 @@ class SideNavView extends ItemView {
     template = template;
 
     initialize() {
-        this.tabs = allurePlugins.tabs.map(({tabName, icon, title}) => ({
+        this.tabs = pluginsRegistry.tabs.map(({tabName, icon, title}) => ({
             tabName, icon, title,
             active: this.isTabActive(tabName)
         }));

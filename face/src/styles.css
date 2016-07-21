@@ -17,7 +17,7 @@
 
 body {
   color: $text-color;
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
 }
 
 * {

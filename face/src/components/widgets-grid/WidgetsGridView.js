@@ -4,7 +4,7 @@ import $ from 'jquery';
 import Sortable from 'sortablejs';
 import settings from '../../util/settings';
 import {className} from '../../decorators';
-import allurePlugins from '../../pluginApi';
+import pluginsRegistry from '../../util/pluginsRegistry';
 
 const widgetTpl = (id) => `<div class="widget island" data-id="${id}">
     <div class="widget__handle">
@@ -22,7 +22,7 @@ class WidgetsGridView extends LayoutView {
 
     onShow() {
         this.getWidgetsArrangement().map(col => {
-            return col.map(widgetName => [widgetName, allurePlugins.widgets[widgetName]]);
+            return col.map(widgetName => [widgetName, pluginsRegistry.widgets[widgetName]]);
         }).forEach(widgetCol => {
             const col = $(colTpl);
             this.$el.append(col);
@@ -41,9 +41,9 @@ class WidgetsGridView extends LayoutView {
     getWidgetsArrangement() {
         const savedData = settings.get('widgets') || [[], []];
         const storedWidgets = savedData.map(col => {
-            return col.filter(widgetName => allurePlugins.widgets[widgetName]);
+            return col.filter(widgetName => pluginsRegistry.widgets[widgetName]);
         });
-        Object.keys(allurePlugins.widgets).forEach(widgetName => {
+        Object.keys(pluginsRegistry.widgets).forEach(widgetName => {
             if (storedWidgets.every(col => col.indexOf(widgetName) === -1)) {
                 const freeColumn = storedWidgets.reduce((smallestCol, col) =>
                     col.length < smallestCol.length ? col : smallestCol
@@ -63,7 +63,7 @@ class WidgetsGridView extends LayoutView {
     addWidget(col, name, Widget) {
         let data = this.model.getWidgetData(name);
         data.set('widget', name);
-        
+
         const el = $(widgetTpl(name));
         col.append(el);
         this.addRegion(name, {el: el.find('.widget__body')});
