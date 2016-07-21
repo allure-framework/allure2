@@ -10,7 +10,7 @@ allure.api.addTab('xUnit', {
     })
 });
 allure.api.addWidget('xunit', allure.components.WidgetStatusView.extend({
-    title: 'xunit.widgetTitle',
+    title: 'xunit widget',
     baseUrl: 'xUnit',
     showAllText: 'Show all test suites'
 }));

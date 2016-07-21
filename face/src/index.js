@@ -10,7 +10,6 @@ import './plugins/defects';
 import './plugins/environment';
 import './plugins/graph';
 import './plugins/timeline';
-import './plugins/report-stats';
 
 import './plugins/testcase-info';
 import './plugins/testcase-parameters';

@@ -89,13 +89,6 @@ public class ProcessStage {
         });
 
         writer.write(dataDir, "widgets.json", widgets);
-
-        Map<String, Object> report = new HashMap<>();
-        report.put("name", "Sample Allure 2.0 Report");
-        report.put("size", 1151131);
-        report.put("time", 6014);
-        writer.write(dataDir, "report.json", report);
-
         Path attachmentsDir = dataDir.resolve("attachments");
         attachments.forEach((path, attachment) ->
                 writer.write(attachmentsDir, attachment.getSource(), path)
