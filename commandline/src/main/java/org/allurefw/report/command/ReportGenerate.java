@@ -2,6 +2,7 @@ package org.allurefw.report.command;
 
 import io.airlift.airline.Arguments;
 import io.airlift.airline.Command;
+import org.allurefw.report.utils.CommandUtils;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.util.StringUtils;
@@ -44,7 +45,7 @@ public class ReportGenerate extends ReportCommand {
     @Override
     protected void runUnsafe() throws Exception {
         validateResultsDirectories();
-        CommandLine commandLine = createCommandLine();
+        CommandLine commandLine = createCommandLine(getReportDirectoryPath());
         new DefaultExecutor().execute(commandLine);
         LOGGER.info("Report successfully generated to the directory <{}>. " +
                 "Use `allure report open` command to show the report.", getReportDirectoryPath());
@@ -54,24 +55,22 @@ public class ReportGenerate extends ReportCommand {
      * Throws an exception if at least one results directory is missing.
      */
     protected void validateResultsDirectories() {
-        for (String result : results) {
-            if (Files.notExists(Paths.get(result))) {
-                throw new AllureCommandException(String.format("Report directory <%s> not found.", result));
-            }
-        }
+        results.stream()
+                .map(Paths::get)
+                .forEach(CommandUtils::validateDirectoryExists);
     }
 
     /**
      * Create a {@link CommandLine} to run bundle with needed arguments.
      */
-    private CommandLine createCommandLine() throws IOException {
+    protected CommandLine createCommandLine(Path outputDirectory) throws IOException {
         return new CommandLine(getJavaExecutablePath())
                 .addArguments(getBundleJavaOptsArgument())
                 .addArgument(getLoggerConfigurationArgument())
                 .addArgument("-jar")
                 .addArgument(getExecutableJar())
                 .addArguments(results.toArray(new String[results.size()]), false)
-                .addArgument(getReportDirectoryPath().toString(), false);
+                .addArgument(outputDirectory.toString(), false);
     }
 
     /**

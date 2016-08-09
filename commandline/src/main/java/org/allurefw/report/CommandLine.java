@@ -1,8 +1,6 @@
 package org.allurefw.report;
 
 import io.airlift.airline.Cli;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.allurefw.report.command.AbstractCommand;
 import org.allurefw.report.command.AllureCommand;
 import org.allurefw.report.command.AllureCommandException;
@@ -12,6 +10,9 @@ import org.allurefw.report.command.ExitCode;
 import org.allurefw.report.command.ReportClean;
 import org.allurefw.report.command.ReportGenerate;
 import org.allurefw.report.command.ReportOpen;
+import org.allurefw.report.command.ReportServe;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Artem Eroshenko <eroshenkoam@qameta.io>
@@ -37,8 +38,8 @@ public class CommandLine {
                     .withDefaultCommand(ReportOpen.class)
                     .withCommand(ReportOpen.class)
                     .withCommand(ReportClean.class)
-                    .withCommand(ReportGenerate.class);
-
+                    .withCommand(ReportGenerate.class)
+                    .withCommand(ReportServe.class);
 
             Cli<AllureCommand> allureParser = builder.build();
             AllureCommand command = allureParser.parse(args);
