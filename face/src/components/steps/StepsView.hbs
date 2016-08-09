@@ -1,5 +1,5 @@
-{{#if steps}}
-    <h3 class="steps__title">Steps</h3>
+{{#if (or steps.length attachments.length)}}
+    <h3 class="steps__title">Steps & Attachments</h3>
     {{> steps-list steps=steps baseUrl=baseUrl}}
     {{#each attachments}}
         {{> ../../blocks/attachment-row/attachment-row . baseUrl=../baseUrl}}

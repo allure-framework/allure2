@@ -21,7 +21,7 @@
         <dependency>
             <groupId>org.allurefw</groupId>
             <artifactId>allure1-model</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
 
         <!-- Testing -->
