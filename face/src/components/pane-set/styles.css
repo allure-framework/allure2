@@ -10,6 +10,7 @@
   overflow-y: scroll;
   transition: left 0.3s, width 0.3s;
   z-index: 1;
+  padding-bottom: 100px;
   &_leave, &_enter {
     left: 100% !important;
   }
