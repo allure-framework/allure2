@@ -15,6 +15,7 @@
 
   &__title {
     margin-top: 0;
+    margin-bottom: 15px;
     font-weight: lighter;
     text-transform: uppercase;
   }
@@ -23,6 +24,13 @@
     color: $text-muted-color;
     font-size: 16px;
     text-transform: none;
+  }
+
+  &__noitems {
+    font-size: 16px;
+    text-align: center;
+    padding: 10px 15px;
+    line-height: 1.5em;
   }
 
   &__flex-line {

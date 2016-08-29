@@ -1,6 +1,6 @@
 {{#if time}}
     <h3 class="pane__section-title">Info</h3>
-    <div class="testcase-info">Test case started at: {{time time.start}}</div>
-    <div class="testcase-info">Test case finished at: {{time time.stop}}</div>
+    <div class="testcase-info">Test case started {{date time.start}} at {{time time.start}}</div>
+    <div class="testcase-info">Test case finished {{date time.stop}} at {{time time.stop}}</div>
     <div class="testcase-info">Test case duration: {{duration time.duration}}</div>
 {{/if}}

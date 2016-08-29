@@ -21,4 +21,10 @@
     width: 5%;
     min-width: 70px;
   }
+  &__empty {
+    margin: 5em auto 0;
+    padding: 30px;
+    text-align: center;
+    font-size: 20px;
+  }
 }

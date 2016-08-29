@@ -7,7 +7,11 @@
 </h2>
 
 <div class="tree tree_root">
-    {{#each items}}
-        {{> tree-group baseUrl=../baseUrl}}
-    {{/each}}
+    {{#if items}}
+        {{#each items}}
+            {{> tree-group baseUrl=../baseUrl}}
+        {{/each}}
+    {{else}}
+        There are no items
+    {{/if}}
 </div>

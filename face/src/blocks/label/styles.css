@@ -7,5 +7,5 @@
   padding: 2px 4px 2px 5px;
   font-size: 80%;
   border-radius: 3px;
-  @mixin status-bg;
+  @mixin status-bg-bright;
 }

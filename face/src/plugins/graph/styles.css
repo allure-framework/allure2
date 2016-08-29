@@ -25,7 +25,7 @@
     width: 20px;
     height: 16px;
     margin-right: 5px;
-    @mixin status-bg;
+    @mixin status-bg-bright;
   }
 }
 

@@ -52,6 +52,15 @@ html, body {
   &_narrow {
     max-width: 1100px;
   }
+  &-small {
+    max-width: 300px;
+  }
+  &-medium {
+    max-width: 600px;
+  }
+  &-large {
+    max-width: 1200px;
+  }
 }
 
 .clickable {

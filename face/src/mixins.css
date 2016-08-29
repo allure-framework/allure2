@@ -2,6 +2,24 @@
 
 @define-mixin status-bg {
   &_status_passed {
+    background: $background-passed;
+  }
+  &_status_canceled {
+    background: $background-canceled;
+  }
+  &_status_pending {
+    background: $background-pending;
+  }
+  &_status_failed {
+    background: $background-failed;
+  }
+  &_status_broken {
+    background: $background-broken;
+  }
+}
+
+@define-mixin status-bg-bright {
+  &_status_passed {
     background: $color-passed;
   }
   &_status_canceled {
@@ -33,5 +51,23 @@
   }
   &_status_broken {
     border-color: $color-broken;
+  }
+}
+
+@define-mixin status-text {
+  &_status_passed {
+    color: $color-passed;
+  }
+  &_status_canceled {
+    color: $color-canceled;
+  }
+  &_status_pending {
+    color: $color-pending;
+  }
+  &_status_failed {
+    color: $color-failed;
+  }
+  &_status_broken {
+    color: $color-broken;
   }
 }

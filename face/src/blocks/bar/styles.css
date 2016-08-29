@@ -16,6 +16,6 @@
     color: #fff;
     font-size: 12px;
     line-height: 18px;
-    @mixin status-bg;
+    @mixin status-bg-bright;
   }
 }

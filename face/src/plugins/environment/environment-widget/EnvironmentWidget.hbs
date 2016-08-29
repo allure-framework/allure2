@@ -1,7 +1,8 @@
 <h2 class="widget__title">
     Environment
 </h2>
-<div class="table  table_hover widget__table">
+{{#if items}}
+    <div class="table  table_hover widget__table">
     {{#each items}}
         <div class="{{b "table" "row"}}" disabled>
             <div class="{{b "table" "col"}} long-line">
@@ -19,4 +20,8 @@
             <div class="{{b "table" "col" center=true}}">Show all environment variables</div>
         </a>
     {{/if}}
-</div>
+    </div>
+
+{{else}}
+    <div class="widget__noitems">There are no environment variables</div>
+{{/if}}

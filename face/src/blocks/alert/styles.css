@@ -1,4 +1,4 @@
-@import "../../variables.css";
+@import "../../mixins.css";
 
 .alert {
   padding: $gap-size;
@@ -6,19 +6,5 @@
     margin: 0;
     word-break: break-word;
   }
-  &_status_passed {
-    background: $background-passed;
-  }
-  &_status_pending {
-    background: $background-pending;
-  }
-  &_status_canceled {
-    background: $background-canceled;
-  }
-  &_status_broken {
-    background: $background-broken;
-  }
-  &_status_failed {
-    background: $background-failed;
-  }
+  @mixin status-bg;
 }
