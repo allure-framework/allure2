@@ -11,6 +11,8 @@
 
     <artifactId>packages-plugin</artifactId>
 
+    <name>Allure Packages Plugin</name>
+
     <dependencies>
         <dependency>
             <groupId>org.allurefw.report</groupId>

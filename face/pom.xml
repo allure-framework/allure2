@@ -12,6 +12,8 @@
     <artifactId>face</artifactId>
     <packaging>war</packaging>
 
+    <name>Allure Face</name>
+
     <properties>
         <sonar.language>js</sonar.language>
         <sonar.testsResults>src/</sonar.testsResults>

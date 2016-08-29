@@ -11,6 +11,8 @@
 
     <artifactId>generator</artifactId>
 
+    <name>Allure Generator</name>
+
     <build>
         <plugins>
             <plugin>

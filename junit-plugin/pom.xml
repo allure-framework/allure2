@@ -11,6 +11,8 @@
 
     <artifactId>junit-plugin</artifactId>
 
+    <name>Allure JUnit Plugin</name>
+
     <dependencies>
         <dependency>
             <groupId>org.allurefw.report</groupId>

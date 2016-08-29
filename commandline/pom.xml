@@ -9,6 +9,8 @@
 
     <artifactId>commandline</artifactId>
 
+    <name>Allure Commandline</name>
+
     <dependencies>
         <dependency>
             <groupId>io.airlift</groupId>

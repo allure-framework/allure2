@@ -11,6 +11,8 @@
 
     <artifactId>xunit-plugin</artifactId>
 
+    <name>Allure XUnit Plugin</name>
+
     <dependencies>
         <dependency>
             <groupId>org.allurefw.report</groupId>

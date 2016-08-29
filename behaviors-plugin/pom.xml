@@ -11,6 +11,8 @@
 
     <artifactId>behaviors-plugin</artifactId>
 
+    <name>Allure Behaviors Plugin</name>
+
     <dependencies>
         <dependency>
             <groupId>org.allurefw.report</groupId>

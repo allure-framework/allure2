@@ -9,6 +9,8 @@
 
     <artifactId>bundle</artifactId>
 
+    <name>Allure Bundle</name>
+
     <dependencies>
         <dependency>
             <groupId>org.slf4j</groupId>

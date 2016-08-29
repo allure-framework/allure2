@@ -11,6 +11,8 @@
 
     <artifactId>plugin-api</artifactId>
 
+    <name>Allure Plugin API</name>
+
     <build>
         <plugins>
             <plugin>

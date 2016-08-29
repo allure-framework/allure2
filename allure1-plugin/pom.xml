@@ -11,6 +11,8 @@
 
     <artifactId>allure1-plugin</artifactId>
 
+    <name>Allure 1.0 Plugin</name>
+
     <dependencies>
         <dependency>
             <groupId>org.allurefw.report</groupId>

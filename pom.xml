@@ -33,6 +33,33 @@
         <compiler.version>1.8</compiler.version>
     </properties>
 
+    <name>Allure Report</name>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/allurefw/allure-report</url>
+        <connection>scm:git@github.com:allurefw/allure-report.git</connection>
+        <developerConnection>scm:git:git@github.com:allurefw/allure-report.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/allurefw/allure-report/issues</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>Jenkins</system>
+        <url>http://ci.qameta.in/</url>
+    </ciManagement>
+
     <build>
         <pluginManagement>
             <plugins>
