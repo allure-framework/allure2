@@ -28,7 +28,7 @@ describe('WidgetsGridView', function() {
             }
         });
         this.view = new WidgetsGridView({model: this.model}).render();
-        this.view.onShow();
+        this.view.onRender();
         this.el = new PageObject(this.view.$el);
     });
 
@@ -57,17 +57,6 @@ describe('WidgetsGridView', function() {
         expect(this.view.getWidgetsArrangement()).toEqual([
             ['a', 'c', 'b'],
             ['d', 'e']
-        ]);
-    });
-
-
-    it('should save current arrangement', function() {
-        const widget = this.el.widgetById('b');
-        this.el.widgetById('a').append(widget);
-        this.view.saveWidgetsArrangement();
-        expect(settings.get('widgets')).toEqual([
-            ['a', 'b', 'c', 'e'],
-            ['d']
         ]);
     });
 });
