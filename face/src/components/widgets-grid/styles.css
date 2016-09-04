@@ -12,7 +12,7 @@
   display: flex;
   &__col {
     width: 50%;
-    min-width: 600px;
+    min-width: 300px;
   }
   &__col + &__col {
     padding-left: $gap-size;
