@@ -91,8 +91,26 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.5.5</version>
+                <version>2.6</version>
                 <executions>
+                    <execution>
+                        <id>commandline-uberjar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <archive>
+                                <manifest>
+                                    <mainClass>org.allurefw.report.CommandLine</mainClass>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                    </execution>
                     <execution>
                         <id>commandline-zip</id>
                         <phase>package</phase>

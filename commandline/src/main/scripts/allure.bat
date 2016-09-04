@@ -81,7 +81,7 @@ if not exist "%ALLURE_HOME%\bin\allure.bat" (
 )
 
 set "ALLURE_MAIN=org.allurefw.report.CommandLine"
-set "ALLURE_CP=%ALLURE_HOME%\lib\*;%ALLURE_HOME%\conf"
+set "ALLURE_CP=%ALLURE_HOME%\bin\commandline.jar;%ALLURE_HOME%\conf"
 set "ALLURE_ARGS="
 
 call :add_system_property_arg "allure.home" "%ALLURE_HOME%"

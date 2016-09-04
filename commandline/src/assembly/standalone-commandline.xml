@@ -1,6 +1,7 @@
-<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3
+          http://maven.apache.org/xsd/assembly-1.1.3.xsd">
 
     <id>standalone</id>
     <includeBaseDirectory>false</includeBaseDirectory>
@@ -12,12 +13,13 @@
 
     <dependencySets>
         <dependencySet>
+            <outputDirectory>bin</outputDirectory>
             <useProjectArtifact>true</useProjectArtifact>
-            <outputDirectory>lib</outputDirectory>
             <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
             <includes>
-                <include>*:jar</include>
+                <include>org.allurefw.report:commandline</include>
             </includes>
+            <fileMode>0755</fileMode>
         </dependencySet>
     </dependencySets>
 

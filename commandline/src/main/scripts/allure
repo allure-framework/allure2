@@ -74,7 +74,7 @@ fi
 check_file_exists "$ALLURE_HOME/bin/allure" "ALLURE_HOME" "$ALLURE_HOME"
 
 ALLURE_ARGS=""
-ALLURE_CP="$ALLURE_HOME/lib/*"
+ALLURE_CP="$ALLURE_HOME/bin/commandline.jar"
 ALLURE_MAIN="org.allurefw.report.CommandLine"
 
 add_system_property_arg "allure.home" "${ALLURE_HOME}"
