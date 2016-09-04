@@ -1,5 +1,5 @@
 import TestcaseModel from '../data/testcase/TestcaseModel';
-import TestcaseView from '../components/testcase-view/TestcaseView';
+import TestcaseView from '../components/testcase/TestcaseView';
 import AttachmentView from '../components/attachment/AttachmentView';
 
 export default class TestcasePanes {

@@ -1,6 +1,6 @@
-import './styles.css';
-import { View } from 'backbone.marionette';
-import { region, className } from '../../decorators';
+import './style.css';
+import {View} from 'backbone.marionette';
+import {region, className} from '../../decorators';
 import template from './AppLayout.hbs';
 import SideNav from '../../components/side-nav/SideNavView';
 
