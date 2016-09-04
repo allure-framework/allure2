@@ -1,5 +1,5 @@
 import './styles.css';
-import {LayoutView} from 'backbone.marionette';
+import {View} from 'backbone.marionette';
 import $ from 'jquery';
 import {className} from '../../decorators';
 import DurationChart from './charts/DurationChart';
@@ -8,10 +8,10 @@ import SeverityChart from './charts/SeverityChart';
 
 
 @className('charts-grid')
-class GraphsView extends LayoutView {
+class GraphsView extends View {
     template() { return ''; }
 
-    onShow() {
+    onAttach() {
         const collection = this.collection;
         this.addChart('Status', new StatusChart({
             statistic: this.getStatusChartData(),

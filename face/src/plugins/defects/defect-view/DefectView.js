@@ -1,10 +1,10 @@
-import {LayoutView} from 'backbone.marionette';
+import {View} from 'backbone.marionette';
 import {region, behavior} from '../../../decorators';
 import TestcaseTableView from '../../../components/testcase-table/TestcaseTableView';
 import template from './DefectView.hbs';
 
 @behavior('TooltipBehavior', {position: 'bottom'})
-class DefectView extends LayoutView {
+class DefectView extends View {
     template = template;
 
     @region('.defect__table')
@@ -21,7 +21,7 @@ class DefectView extends LayoutView {
             currentCase: this.state.get('testcase'),
             baseUrl: 'defects/' + this.state.get('defect')
         });
-        this.testcases.show(this.testcaseTable);
+        this.showChildView('testcases', this.testcaseTable);
     }
 
     showTestcase(testcase) {

@@ -1,10 +1,10 @@
 import './styles.css';
-import {ItemView} from 'backbone.marionette';
+import {View} from 'backbone.marionette';
 import {className} from '../../decorators';
 import template from './ParametersView.hbs';
 
 @className('pane__section')
-class ParametersView extends ItemView {
+class ParametersView extends View {
     template = template;
 
     serializeData() {

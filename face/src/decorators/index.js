@@ -27,3 +27,10 @@ export function region(selector) {
         }, target.regions);
     };
 }
+
+export function regions(regions) {
+    return function (target) {
+        target.prototype.regions = Object.assign(regions, target.regions);
+    };
+}
+

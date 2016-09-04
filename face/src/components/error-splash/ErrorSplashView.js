@@ -1,9 +1,9 @@
-import {ItemView} from 'backbone.marionette';
+import {View} from 'backbone.marionette';
 import {className} from '../../decorators';
 import template from './ErrorSplashView.hbs';
 
 @className('error-splash')
-class ErrorSplashView extends ItemView {
+class ErrorSplashView extends View {
     template = template;
 
     serializeData() {

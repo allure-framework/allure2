@@ -1,4 +1,4 @@
-import {LayoutView} from 'backbone.marionette';
+import {View} from 'backbone.marionette';
 import {on} from '../../decorators';
 import {doSort, updateSort} from '../../util/sorting';
 import router from '../../router';
@@ -7,7 +7,7 @@ import settings from '../../util/settings';
 const KEY_UP = 38;
 const KEY_DOWN = 40;
 
-class DataGridView extends LayoutView {
+class DataGridView extends View {
     settingsKey = null;
 
     getSettings() {

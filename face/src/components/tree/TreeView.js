@@ -1,11 +1,11 @@
 import './styles.css';
-import {LayoutView} from 'backbone.marionette';
+import {View} from 'backbone.marionette';
 import settings from '../../util/settings';
 import template from './TreeView.hbs';
 import StatusToggleView from '../status-toggle/StatusToggleView';
 import {on} from '../../decorators';
 
-class TreeView extends LayoutView {
+class TreeView extends View {
     template = template;
 
     initialize({state, tabName, baseUrl}) {

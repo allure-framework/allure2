@@ -16,12 +16,12 @@ export default class TimelineLayout extends PaneLayout {
 
     onStateChange() {
         const changed = Object.assign({}, this.state.changed);
-        const paneView = this.content.currentView;
+        const paneView = this.getChildView('content');
         paneView.expanded = this.state.get('expanded');
         if(!paneView.getRegion('timeline')) {
             paneView.addPane('timeline', new TimelineView({model: this.model}));
         } else {
-            paneView.getRegion('timeline').currentView.onShow(true);
+            paneView.getChildView('timeline').onRender();
         }
         this.testcase.updatePanes('timeline', changed);
         paneView.updatePanesPositions();

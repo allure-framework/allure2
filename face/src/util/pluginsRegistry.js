@@ -1,6 +1,6 @@
-import { addTranslation } from './translation';
+import {addTranslation} from './translation';
 import router from '../router';
-import App from '../app';
+import {showView, notFound} from '../app';
 
 class AllurePluginsRegistry {
     tabs = [];
@@ -10,14 +10,13 @@ class AllurePluginsRegistry {
         after: []
     };
 
-    widgets = {
-    };
+    widgets = {};
 
-    addTab(tabName, {title, icon, route, onEnter = App.tabNotFound} = {}) {
+    addTab(tabName, {title, icon, route, onEnter = notFound} = {}) {
         title = title || tabName;
         this.tabs.push({tabName, title, icon});
         router.route(route, tabName);
-        router.on('route:'+tabName, App.showView(onEnter));
+        router.on('route:' + tabName, showView(onEnter));
     }
 
     addWidget(name, Widget) {

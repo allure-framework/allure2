@@ -1,5 +1,5 @@
 import './styles.css';
-import {LayoutView} from 'backbone.marionette';
+import {View} from 'backbone.marionette';
 import $ from 'jquery';
 import Sortable from 'sortablejs';
 import settings from '../../util/settings';
@@ -15,12 +15,12 @@ const widgetTpl = (id) => `<div class="widget island" data-id="${id}">
 const colTpl = `<div class="widgets-grid__col"></div>`;
 
 @className('widgets-grid')
-class WidgetsGridView extends LayoutView {
+class WidgetsGridView extends View {
     template() {
         return '';
     }
 
-    onShow() {
+    onRender() {
         this.getWidgetsArrangement().map(col => {
             return col.map(widgetName => [widgetName, pluginsRegistry.widgets[widgetName]]);
         }).forEach(widgetCol => {

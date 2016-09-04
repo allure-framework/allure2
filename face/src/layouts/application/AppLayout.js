@@ -1,11 +1,11 @@
 import './styles.css';
-import { LayoutView } from 'backbone.marionette';
+import { View } from 'backbone.marionette';
 import { region, className } from '../../decorators';
 import template from './AppLayout.hbs';
 import SideNav from '../../components/side-nav/SideNavView';
 
 @className('app')
-class AppLayout extends LayoutView {
+class AppLayout extends View {
     template = template;
 
     @region('.app__content')
@@ -16,15 +16,15 @@ class AppLayout extends LayoutView {
     initialize() {}
 
     onRender() {
-        this.nav.show(new SideNav());
+        this.showChildView('nav', new SideNav());
         const dataPromise = this.loadData();
         if(dataPromise) {
             dataPromise.then(() => {
-                this.content.show(this.getContentView());
+                this.showChildView('content', this.getContentView());
                 this.onViewReady();
             });
         } else {
-            this.content.show(this.getContentView());
+            this.showChildView('content', this.getContentView());
         }
     }
 

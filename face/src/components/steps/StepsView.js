@@ -1,11 +1,11 @@
 import './styles.css';
 import $ from 'jquery';
-import {ItemView} from 'backbone.marionette';
+import {View} from 'backbone.marionette';
 import {on} from '../../decorators';
 import router from '../../router';
 import template from './StepsView.hbs';
 
-export default class StepsView extends ItemView {
+export default class StepsView extends View {
     template = template;
 
     fillStep(step) {

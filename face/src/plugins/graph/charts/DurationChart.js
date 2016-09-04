@@ -16,10 +16,10 @@ export default class DurationChart extends BaseChartView {
         this.tooltip = new PopoverView({position: 'right'});
     }
 
-    onShow() {
+    onAttach() {
         const data = this.collection.toJSON().map(testcase => ({
             value: testcase.time.duration,
-            title: testcase.title
+            name: testcase.name
         }));
         this.$el.height(this.$el.width() * 0.5);
         const width = this.$el.width() - PAD_LEFT;
@@ -85,7 +85,7 @@ export default class DurationChart extends BaseChartView {
             y: d => this.y(d.y),
             height: d => height - this.y(d.y)
         });
-        super.onShow();
+        super.onAttach();
     }
 
 
@@ -95,7 +95,9 @@ export default class DurationChart extends BaseChartView {
         const overLimit = testcases.length - items.length;
         return `<b>${testcases.length} test cases</b><br>` +
             `<ul class="popover__list">` +
-            items.map(testcase => escape`<li>${testcase.title}</li>`).join('') +
+            items.map(testcase => {
+                return escape`<li>${testcase.name}</li>`;
+            }).join('') +
             `</ul>` +
             (overLimit ? `...and ${overLimit} more` : '');
     }

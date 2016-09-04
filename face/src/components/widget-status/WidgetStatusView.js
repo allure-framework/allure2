@@ -1,7 +1,7 @@
-import {ItemView} from 'backbone.marionette';
+import {View} from 'backbone.marionette';
 import template from './WidgetStatusView.hbs';
 
-export default class WidgetStatusView extends ItemView {
+export default class WidgetStatusView extends View {
     template = template;
     showLinks = true;
 

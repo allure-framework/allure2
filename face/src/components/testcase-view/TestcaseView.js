@@ -1,5 +1,5 @@
 import './styles.css';
-import {LayoutView} from 'backbone.marionette';
+import {View} from 'backbone.marionette';
 import {on, region, behavior} from '../../decorators';
 import pluginsRegistry from '../../util/pluginsRegistry';
 import StepsView from '../steps/StepsView';
@@ -14,7 +14,7 @@ const SEVERITY_ICONS = {
 };
 
 @behavior('TooltipBehavior', {position: 'bottom'})
-class TestcaseView extends LayoutView {
+class TestcaseView extends View {
     template = template;
 
     @region('.testcase__steps')
@@ -28,7 +28,7 @@ class TestcaseView extends LayoutView {
 
     onRender() {
         this.showTestcasePlugins(this.$('.testcase__content_before'), pluginsRegistry.testcaseBlocks.before);
-        this.steps.show(new StepsView({
+        this.showChildView('steps', new StepsView({
             baseUrl: this.options.baseUrl + '/' + this.model.id,
             model: this.model
         }));

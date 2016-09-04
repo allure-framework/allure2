@@ -1,12 +1,12 @@
 import './styles.css';
-import {LayoutView} from 'backbone.marionette';
+import {View} from 'backbone.marionette';
 import $ from 'jquery';
 import {className} from '../../decorators';
 
 const paneTpl = `<div class="pane"></div>`;
 
 @className('pane-set')
-class PaneSetView extends LayoutView {
+class PaneSetView extends View {
     panes = {};
     expanded = false;
 

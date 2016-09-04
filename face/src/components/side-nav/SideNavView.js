@@ -1,7 +1,7 @@
 import './styles.css';
 import {className, on} from '../../decorators';
 import {findWhere} from 'underscore';
-import {ItemView} from 'backbone.marionette';
+import {View} from 'backbone.marionette';
 import TooltipView from '../tooltip/TooltipView';
 import LanguageSelectView from '../language-select/LanguageSelectView';
 import { LANGUAGES } from '../../util/translation';
@@ -12,7 +12,7 @@ import {escapeExpression as escape} from 'handlebars/runtime';
 import router from '../../router';
 
 @className('side-nav')
-class SideNavView extends ItemView {
+class SideNavView extends View {
     template = template;
 
     initialize() {

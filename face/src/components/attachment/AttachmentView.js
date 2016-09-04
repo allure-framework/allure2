@@ -1,7 +1,7 @@
 import './styles.css';
 import d3 from 'd3';
 import highlight from '../../util/highlight';
-import {ItemView} from 'backbone.marionette';
+import {View} from 'backbone.marionette';
 import $ from 'jquery';
 import router from '../../router';
 import {className, on, behavior} from '../../decorators';
@@ -10,7 +10,7 @@ import template from './AttachmentView.hbs';
 
 @className('attachment')
 @behavior('TooltipBehavior', {position: 'bottom'})
-class AttachmentView extends ItemView {
+class AttachmentView extends View {
     template = template;
 
     initialize({attachment}) {

@@ -19,7 +19,7 @@ class TestcaseTableView extends DataGridView {
 
     onRender() {
         // this.highlightItem(this.options.currentCase);
-        this.statuses.show(new StatusToggleView());
+        this.showChildView('statuses', new StatusToggleView());
     }
 
     serializeData() {

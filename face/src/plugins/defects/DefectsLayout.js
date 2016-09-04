@@ -29,7 +29,7 @@ export default class DefectsLayoutView extends PaneLayout {
     onStateChange() {
         const state = this.state;
         const changed = Object.assign({}, this.state.changed);
-        const paneView = this.content.currentView;
+        const paneView = this.getChildView('content');
         paneView.expanded = this.state.get('expanded');
         if(!paneView.getRegion('defects')) {
             paneView.addPane('defects', new DefectsListView({

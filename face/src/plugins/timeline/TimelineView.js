@@ -21,7 +21,7 @@ class TimelineView extends BaseChartView {
         this.tooltip = new TooltipView({position: 'bottom'});
     }
 
-    onShow(waitTransition) {
+    onAttach(waitTransition) {
         if(waitTransition || this.firstRender) {
             const callback = once(() => this.doShow());
             this.$el.parent().one('transitionend', callback);
@@ -60,7 +60,7 @@ class TimelineView extends BaseChartView {
             left: PAD_LEFT
         });
         this.$el.height(currentHeight + PAD_BOTTOM);
-        super.onShow();
+        super.onRender();
     }
 
     drawHost(host, offset) {
@@ -87,7 +87,7 @@ class TimelineView extends BaseChartView {
 
         group.append('rect').attr({
             'class': 'timeline__host-bg',
-            width: this.x.range()[1] - this.x.range()[0],
+            width: Math.max(0, this.x.range()[1] - this.x.range()[0]),
             height: y.range()[1]
         });
         group.append('text').text(host.name).attr({
@@ -118,7 +118,7 @@ class TimelineView extends BaseChartView {
         }
         bars.attr({
             x: d => this.x(d.start),
-            width: d => this.x(d.stop - d.start)
+            width: d => this.x(Math.max(d.stop - d.start))
         });
         this.makeAxis(group.append('g').classed('chart__axis', true), {
             tickSize: 0,

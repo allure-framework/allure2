@@ -51,9 +51,9 @@
   "dependencies": {
     "b_": "^1.3.3",
     "babel-runtime": "^5.8.25",
-    "backbone": "1.3.2",
+    "backbone": "1.3.3",
     "backbone-decorators": "0.0.4",
-    "backbone.marionette": "^2.4.5",
+    "backbone.marionette": "^3.0.0",
     "backbone.wreqr": "^1.3.0",
     "d3": "^3.5.12",
     "denodeify": "^1.2.1",

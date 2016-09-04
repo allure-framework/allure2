@@ -1,7 +1,7 @@
 import '../styles.css';
-import {ItemView} from 'backbone.marionette';
+import {View} from 'backbone.marionette';
 import template from './DefectsWidget.hbs';
 
-export default class DefectsWidget extends ItemView {
+export default class DefectsWidget extends View {
     template = template;
 }

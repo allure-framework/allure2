@@ -1,9 +1,9 @@
-import {ItemView} from 'backbone.marionette';
+import {View} from 'backbone.marionette';
 import {className} from '../../decorators';
 import template from './InfoView.hbs';
 
 @className('pane__section')
-class InfoView extends ItemView {
+class InfoView extends View {
     template = template;
 
     serializeData() {

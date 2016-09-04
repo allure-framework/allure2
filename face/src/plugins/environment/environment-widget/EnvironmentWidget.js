@@ -1,8 +1,8 @@
-import {ItemView} from 'backbone.marionette';
+import {View} from 'backbone.marionette';
 import {on} from '../../../decorators';
 import template from './EnvironmentWidget.hbs';
 
-export default class EnvironmentWidget extends ItemView {
+export default class EnvironmentWidget extends View {
     template = template;
 
     initialize() {

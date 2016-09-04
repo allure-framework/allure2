@@ -16,7 +16,7 @@ export default class PaneLayout extends AppLayout {
     }
 
     onViewReady() {
-        this.testcase = new TestcasePanes(this.state, this.content.currentView);
+        this.testcase = new TestcasePanes(this.state, this.getChildView('content'));
         this.onRouteUpdate(...this.options.routeParams);
     }
 

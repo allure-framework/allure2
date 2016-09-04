@@ -16,7 +16,7 @@ export default class TreeLayout extends PaneLayout {
 
     onStateChange() {
         const changed = Object.assign({}, this.state.changed);
-        const paneView = this.content.currentView;
+        const paneView = this.getChildView('content');
         paneView.expanded = this.state.get('expanded');
         if (!paneView.getRegion('testrun')) {
             paneView.addPane('testrun', new TreeView({

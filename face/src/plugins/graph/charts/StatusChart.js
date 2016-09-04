@@ -29,7 +29,6 @@ export default class StatusChart extends BaseChartView {
         }));
     }
 
-
     setupViewport() {
         const svg = super.setupViewport();
         if(this.options.showLegend) {
@@ -38,7 +37,7 @@ export default class StatusChart extends BaseChartView {
         return svg;
     }
 
-    onShow() {
+    onAttach() {
         const data = this.getChartData();
         const width = this.$el.width();
         const radius = width / 4;
@@ -77,7 +76,7 @@ export default class StatusChart extends BaseChartView {
         } else {
             sectors.attr('d', d => this.arc(d));
         }
-        super.onShow();
+        super.onAttach();
     }
 
     formatNumber(number) {

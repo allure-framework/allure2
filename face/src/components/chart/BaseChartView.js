@@ -11,14 +11,14 @@ export default class BaseChartView extends View {
     }
 
     onRender() {
-        d3.select(window).on('resize.' + this.cid, this.onShow.bind(this));
+        d3.select(window).on('resize.' + this.cid, this.onAttach.bind(this));
     }
 
     onDestroy() {
         d3.select(window).on('resize.' + this.cid, null);
     }
 
-    onShow() {
+    onAttach() {
         this.firstRender = false;
     }
 
