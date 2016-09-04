@@ -14,11 +14,11 @@
 
     <modules>
         <module>plugin-api</module>
-        <module>allure1-plugin</module>
-        <module>junit-plugin</module>
-        <module>xunit-plugin</module>
-        <module>behaviors-plugin</module>
-        <module>packages-plugin</module>
+        <module>plugins/allure1-plugin</module>
+        <module>plugins/junit-plugin</module>
+        <module>plugins/xunit-plugin</module>
+        <module>plugins/behaviors-plugin</module>
+        <module>plugins/packages-plugin</module>
         <module>generator</module>
         <module>face</module>
         <module>bundle</module>
