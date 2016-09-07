@@ -3,8 +3,6 @@ package org.allurefw.report;
 import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.MapBinder;
 
-import java.net.URL;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -12,8 +10,6 @@ import java.util.UUID;
  *         Date: 26.02.16
  */
 public abstract class AbstractPlugin extends AbstractModule {
-
-    private final Plugin pluginAnnotation = getClass().getAnnotation(Plugin.class);
 
     public <T> AggregatorBuilder<T> aggregator(Class<? extends Aggregator<T>> aggregatorClass) {
         String uid = UUID.randomUUID().toString();
@@ -27,20 +23,6 @@ public abstract class AbstractPlugin extends AbstractModule {
         String uid = UUID.randomUUID().toString();
         MapBinder.newMapBinder(binder(), String.class, Processor.class)
                 .addBinding(uid).to(processorClass);
-    }
-
-    /**
-     * Returns the plugins name.
-     */
-    public final String getPluginName() {
-        Objects.requireNonNull(pluginAnnotation);
-        return pluginAnnotation.name();
-    }
-
-    public final boolean hasStaticContent() {
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        URL resource = loader.getResource("allure" + getPluginName() + "/index.js");
-        return Objects.nonNull(resource);
     }
 
     public class AggregatorBuilder<T> {

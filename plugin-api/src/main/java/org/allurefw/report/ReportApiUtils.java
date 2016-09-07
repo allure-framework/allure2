@@ -79,10 +79,19 @@ public final class ReportApiUtils {
     }
 
     public static String probeContentType(Path path) {
-        try (InputStream stream = new BufferedInputStream(newInputStream(path))) {
-            return getDefaultMimeTypes().detect(stream, METADATA).toString();
+        try (InputStream stream = newInputStream(path)) {
+            return probeContentType(stream, path.getFileName().toString());
         } catch (IOException e) {
             LOGGER.warn("Couldn't detect the mime-type of attachment {} {}", path, e);
+            return "unknown";
+        }
+    }
+
+    public static String probeContentType(InputStream is, String name) {
+        try (InputStream stream = new BufferedInputStream(is)) {
+            return getDefaultMimeTypes().detect(stream, METADATA).toString();
+        } catch (IOException e) {
+            LOGGER.warn("Couldn't detect the mime-type of attachment {} {}", name, e);
             return "unknown";
         }
     }

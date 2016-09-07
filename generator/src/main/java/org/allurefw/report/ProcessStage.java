@@ -27,9 +27,6 @@ public class ProcessStage {
     protected Map<Path, Attachment> attachments;
 
     @Inject
-    protected ReportConfig config;
-
-    @Inject
     protected Map<String, Processor> processors;
 
     @Inject
