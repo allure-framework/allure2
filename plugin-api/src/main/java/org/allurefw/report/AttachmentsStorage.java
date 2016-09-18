@@ -2,6 +2,8 @@ package org.allurefw.report;
 
 import org.allurefw.report.entity.Attachment;
 
+import java.nio.file.Path;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -10,10 +12,10 @@ import java.util.Set;
  */
 public interface AttachmentsStorage {
 
-    Attachment addAttachment(ResultsSource source, String resourceName);
+    Attachment addAttachment(Path attachment);
 
-    Optional<Attachment> findAttachmentByName(String resourceName);
+    Optional<Attachment> findAttachmentByFileName(String resourceName);
 
-    Set<Attachment> getAttachments();
+    Map<Path, Attachment> getAttachments();
 
 }

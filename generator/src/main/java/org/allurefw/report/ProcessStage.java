@@ -1,7 +1,5 @@
 package org.allurefw.report;
 
-import org.allurefw.report.entity.Attachment;
-import org.allurefw.report.entity.TestCaseResult;
 import org.allurefw.report.writer.Writer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +19,7 @@ public class ProcessStage {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProcessStage.class);
 
     @Inject
-    protected Set<TestCaseResult> testCases;
-
-    @Inject
-    protected Map<Path, Attachment> attachments;
+    protected AttachmentsStorage storage;
 
     @Inject
     protected Map<String, Processor> processors;
@@ -46,10 +41,10 @@ public class ProcessStage {
     @Inject
     protected Map<String, Finalizer> finalizers;
 
-    public void run(Path output) {
+    public void run(Report report, Path output) {
         LOGGER.debug("Process stage started...");
 
-        if (testCases.isEmpty()) {
+        if (report.getResults().isEmpty()) {
             throw new ReportGenerationException("Could not find any results");
         }
 
@@ -57,7 +52,7 @@ public class ProcessStage {
         Path testCasesDir = dataDir.resolve("test-cases");
 
         Map<String, Object> data = new HashMap<>();
-        testCases.forEach(testCase -> {
+        report.getResults().forEach(testCase -> {
             LOGGER.debug("Processing test case: \"{}\"", testCase.getName());
             processors.forEach((uid, processor) -> processor.process(testCase));
             writer.write(testCasesDir, testCase.getSource(), testCase);
@@ -74,23 +69,21 @@ public class ProcessStage {
             fileNames.forEach(fileName -> {
                 Finalizer finalizer = finalizers.getOrDefault(fileName, Finalizer.identity());
                 //noinspection unchecked
-                writer.write(dataDir, fileName, finalizer.finalize(object));
+                writer.write(dataDir, fileName, finalizer.convert(object));
             });
 
             Set<String> widgetNames = widgetsNamesMap.getOrDefault(uid, Collections.emptySet());
             widgetNames.forEach(name -> {
                 Finalizer finalizer = finalizers.getOrDefault(name, Finalizer.identity());
                 //noinspection unchecked
-                widgets.put(name, finalizer.finalize(object));
+                widgets.put(name, finalizer.convert(object));
             });
         });
 
         writer.write(dataDir, "widgets.json", widgets);
         Path attachmentsDir = dataDir.resolve("attachments");
-        attachments.forEach((path, attachment) ->
+        storage.getAttachments().forEach((path, attachment) ->
                 writer.write(attachmentsDir, attachment.getSource(), path)
         );
-
-
     }
 }

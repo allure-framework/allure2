@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.baev.BadXmlCharactersFilterReader;
 import com.google.inject.Inject;
 import org.allurefw.report.AttachmentsStorage;
-import org.allurefw.report.ResultsSource;
+import org.allurefw.report.ReportApiUtils;
 import org.allurefw.report.TestCaseResultsReader;
 import org.allurefw.report.entity.Attachment;
 import org.allurefw.report.entity.LabelName;
@@ -20,7 +20,8 @@ import ru.yandex.qatools.allure.model.TestSuiteResult;
 import javax.xml.bind.JAXB;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -30,6 +31,7 @@ import java.util.stream.Stream;
 import static org.allurefw.allure1.AllureConstants.ATTACHMENTS_FILE_GLOB;
 import static org.allurefw.allure1.AllureConstants.TEST_SUITE_JSON_FILE_GLOB;
 import static org.allurefw.allure1.AllureConstants.TEST_SUITE_XML_FILE_GLOB;
+import static org.allurefw.report.ReportApiUtils.listFiles;
 import static org.allurefw.report.allure1.Allure1ModelConvertUtils.convertDescription;
 import static org.allurefw.report.allure1.Allure1ModelConvertUtils.convertFailure;
 import static org.allurefw.report.allure1.Allure1ModelConvertUtils.convertLabels;
@@ -54,9 +56,9 @@ public class Allure1ResultsReader implements TestCaseResultsReader {
     }
 
     @Override
-    public List<TestCaseResult> readResults(ResultsSource source) {
-        source.getResultsByGlob(ATTACHMENTS_FILE_GLOB)
-                .forEach(name -> storage.addAttachment(source, name));
+    public List<TestCaseResult> readResults(Path source) {
+        listFiles(source, ATTACHMENTS_FILE_GLOB)
+                .forEach(storage::addAttachment);
 
         return getStreamOfAllure1Results(source)
                 .flatMap(testSuite -> testSuite.getTestCases().stream()
@@ -76,6 +78,7 @@ public class Allure1ResultsReader implements TestCaseResultsReader {
         String name = source.getTitle() != null ? source.getTitle() : source.getName();
 
         dest.setId(suiteName + name);
+        dest.setUid(ReportApiUtils.generateUid());
         dest.setName(name);
         dest.setStatus(convertStatus(source.getStatus()));
 
@@ -122,7 +125,7 @@ public class Allure1ResultsReader implements TestCaseResultsReader {
     }
 
     protected Attachment convert(ru.yandex.qatools.allure.model.Attachment attachment) {
-        return storage.findAttachmentByName(attachment.getSource())
+        return storage.findAttachmentByFileName(attachment.getSource())
                 .map(result -> {
                     if (attachment.getType() != null) {
                         result.setType(attachment.getType());
@@ -131,39 +134,33 @@ public class Allure1ResultsReader implements TestCaseResultsReader {
                 })
                 .map(result -> {
                     if (attachment.getTitle() != null) {
-                        result.setName(attachment.getType());
+                        result.setName(attachment.getTitle());
                     }
                     return result;
                 }).orElseGet(Attachment::new);
     }
 
-    private Stream<TestSuiteResult> getStreamOfAllure1Results(ResultsSource source) {
-        Stream<TestSuiteResult> xml = source.getResultsByGlob(TEST_SUITE_XML_FILE_GLOB).stream()
-                .map(name -> readXmlTestSuiteFile(name, source))
-                .filter(Optional::isPresent)
-                .map(Optional::get);
-        Stream<TestSuiteResult> json = source.getResultsByGlob(TEST_SUITE_JSON_FILE_GLOB).stream()
-                .map(name -> readJsonTestSuiteFile(name, source))
-                .filter(Optional::isPresent)
-                .map(Optional::get);
-        return Stream.concat(xml, json);
+    private Stream<TestSuiteResult> getStreamOfAllure1Results(Path source) {
+        return Stream.concat(
+                listFiles(source, TEST_SUITE_XML_FILE_GLOB).map(this::readXmlTestSuiteFile),
+                listFiles(source, TEST_SUITE_JSON_FILE_GLOB).map(this::readJsonTestSuiteFile)
+        ).filter(Optional::isPresent).map(Optional::get);
     }
 
-    private Optional<TestSuiteResult> readXmlTestSuiteFile(String name, ResultsSource source) {
-        try (BadXmlCharactersFilterReader reader = new BadXmlCharactersFilterReader(
-                new InputStreamReader(source.getResult(name)))) {
+    private Optional<TestSuiteResult> readXmlTestSuiteFile(Path source) {
+        try (BadXmlCharactersFilterReader reader = new BadXmlCharactersFilterReader(source)) {
             return Optional.of(JAXB.unmarshal(reader, TestSuiteResult.class));
         } catch (IOException e) {
-            LOGGER.debug("Could not read result {} from {}", name, source, e);
+            LOGGER.debug("Could not read result {}: {}", source, e);
         }
         return Optional.empty();
     }
 
-    private Optional<TestSuiteResult> readJsonTestSuiteFile(String name, ResultsSource source) {
-        try (InputStream is = source.getResult(name)) {
+    private Optional<TestSuiteResult> readJsonTestSuiteFile(Path source) {
+        try (InputStream is = Files.newInputStream(source)) {
             return Optional.of(mapper.readValue(is, TestSuiteResult.class));
         } catch (IOException e) {
-            LOGGER.debug("Could not read result {} from {}", name, source, e);
+            LOGGER.debug("Could not read result {}: {}", source, e);
             return Optional.empty();
         }
     }

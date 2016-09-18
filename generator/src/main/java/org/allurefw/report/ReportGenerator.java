@@ -63,7 +63,7 @@ public class ReportGenerator {
                 .createChildInjector(getModules())
                 .createChildInjector(plugins)
                 .getInstance(ProcessStage.class)
-                .run(output);
+                .run(null, output);
     }
 
     private List<AbstractPlugin> getPlugins() {

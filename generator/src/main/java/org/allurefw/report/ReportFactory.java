@@ -6,6 +6,7 @@ import org.allurefw.report.entity.TestCase;
 import org.allurefw.report.entity.TestCaseResult;
 
 import javax.inject.Inject;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,7 @@ public class ReportFactory {
         this.readers = readers;
     }
 
-    public Report create(ResultsSource... sources) {
+    public Report create(Path... sources) {
         Map<String, TestCase> testCases = new HashMap<>();
         List<TestCaseResult> results = Stream.of(sources)
                 .flatMap(this::readTestCases)
@@ -57,7 +58,7 @@ public class ReportFactory {
         return new Report(plugins, testCases, results);
     }
 
-    private Stream<TestCaseResult> readTestCases(ResultsSource source) {
+    private Stream<TestCaseResult> readTestCases(Path source) {
         return readers.stream()
                 .flatMap(reader -> reader.readResults(source).stream());
     }

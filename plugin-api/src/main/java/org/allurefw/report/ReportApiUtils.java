@@ -1,6 +1,5 @@
 package org.allurefw.report;
 
-import org.allurefw.report.entity.Attachment;
 import org.apache.tika.metadata.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,19 +12,12 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.SecureRandom;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Properties;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import static com.google.common.io.Files.getFileExtension;
-import static com.google.common.io.Files.getNameWithoutExtension;
 import static java.nio.file.Files.newDirectoryStream;
 import static java.nio.file.Files.newInputStream;
-import static java.nio.file.Files.notExists;
 import static java.nio.file.Files.size;
 import static org.apache.tika.mime.MimeTypes.getDefaultMimeTypes;
 
@@ -51,22 +43,6 @@ public final class ReportApiUtils {
         byte[] randomBytes = new byte[UID_RANDOM_BYTES_COUNT];
         rand.nextBytes(randomBytes);
         return new BigInteger(1, randomBytes).toString(RADIX);
-    }
-
-    public static Properties loadProperties(Properties properties, String fileName, Path... directories) {
-        for (Path path : directories) {
-            Path env = path.resolve(fileName);
-            if (notExists(env)) {
-                continue;
-            }
-            try (InputStream stream = newInputStream(env)) {
-                properties.load(stream);
-            } catch (IOException e) {
-                LOGGER.debug("Could not read properties from file " + path, e);
-            }
-        }
-
-        return properties;
     }
 
     public static String getExtensionByMimeType(String type) {
@@ -96,44 +72,19 @@ public final class ReportApiUtils {
         }
     }
 
-    public static List<Path> listFiles(Path directory, String glob) {
+    public static Stream<Path> listFiles(Path directory, String glob) {
         try (DirectoryStream<Path> directoryStream = newDirectoryStream(directory, glob)) {
             return StreamSupport.stream(directoryStream.spliterator(), false)
                     .filter(Files::isRegularFile)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList())
+                    .stream();
         } catch (IOException e) {
             LOGGER.error("Could not list files by glob {} in directory {}: {}", glob, directory, e);
-            return Collections.emptyList();
+            return Stream.empty();
         }
     }
 
-    public static Attachment createAttachment(Path attachmentFile) {
-        return createAttachment(attachmentFile, null);
-    }
-
-    public static Attachment createAttachment(Path attachmentFile, String mimeType) {
-        String uid = generateUid();
-        String fileName = attachmentFile.getFileName().toString();
-        String realType = Optional.ofNullable(mimeType)
-                .filter(Objects::nonNull)
-                .filter(s -> !s.isEmpty())
-                .orElseGet(() -> ReportApiUtils.probeContentType(attachmentFile));
-        String extension = Optional.of(getFileExtension(fileName))
-                .filter(s -> !s.isEmpty())
-                .orElseGet(() -> ReportApiUtils.getExtensionByMimeType(realType));
-        String fileNameWithoutExtension = getNameWithoutExtension(fileName);
-        String source = uid + (extension.isEmpty() ? "" : "." + extension);
-        Long size = getFileSizeSafe(attachmentFile);
-
-        return new Attachment()
-                .withUid(uid)
-                .withName(fileNameWithoutExtension)
-                .withSource(source)
-                .withType(realType)
-                .withSize(size);
-    }
-
-    private static Long getFileSizeSafe(Path path) {
+    public static Long getFileSizeSafe(Path path) {
         try {
             return size(path);
         } catch (IOException e) {

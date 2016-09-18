@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class ProductDefectsWidgetFinalizer implements Finalizer<DefectsData> {
 
     @Override
-    public Object finalize(DefectsData identity) {
+    public Object convert(DefectsData identity) {
         List<DefectsWidgetItem> items = identity.getProductDefects().stream()
                 .sorted(Comparator
                         .<Defect>comparingInt(value -> value.getTestCases().size())

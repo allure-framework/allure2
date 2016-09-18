@@ -2,7 +2,6 @@ package org.allurefw.report.allure1;
 
 import org.allurefw.report.AttachmentsStorage;
 import org.allurefw.report.DefaultAttachmentsStorage;
-import org.allurefw.report.FileSystemResultsSource;
 import org.allurefw.report.entity.Label;
 import org.allurefw.report.entity.LabelName;
 import org.allurefw.report.entity.TestCaseResult;
@@ -69,7 +68,7 @@ public class Allure1TestResultsTest {
                 "allure1/sample-attachment.txt", "sample-attachment.txt"
         );
 
-        assertThat(storage.getAttachments(), hasSize(1));
+        assertThat(storage.getAttachments().entrySet(), hasSize(1));
     }
 
     @Test
@@ -144,7 +143,7 @@ public class Allure1TestResultsTest {
             copyFile(resultsDirectory, first, second);
         }
         Allure1ResultsReader reader = new Allure1ResultsReader(storage);
-        return reader.readResults(new FileSystemResultsSource(resultsDirectory));
+        return reader.readResults(resultsDirectory);
     }
 
     private void copyFile(Path dir, String resourceName, String fileName) throws IOException {

@@ -2,52 +2,53 @@ package org.allurefw.report;
 
 import org.allurefw.report.entity.Attachment;
 
+import java.nio.file.Path;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 import static com.google.common.io.Files.getFileExtension;
 import static org.allurefw.report.ReportApiUtils.generateUid;
+import static org.allurefw.report.ReportApiUtils.getFileSizeSafe;
+import static org.allurefw.report.ReportApiUtils.probeContentType;
 
 /**
  * @author charlie (Dmitry Baev).
  */
 public class DefaultAttachmentsStorage implements AttachmentsStorage {
 
-    private final Set<Attachment> attachments = new HashSet<>();
+    private final Map<Path, Attachment> attachments = new HashMap<>();
 
     @Override
-    public Attachment addAttachment(ResultsSource resultsSource, String resourceName) {
+    public Attachment addAttachment(Path file) {
         String uid = generateUid();
-        String realType = ReportApiUtils.probeContentType(
-                resultsSource.getResult(resourceName), resourceName
-        );
-        String extension = Optional.of(getFileExtension(resourceName))
+        String realType = probeContentType(file);
+        String extension = Optional.of(getFileExtension(file.toString()))
                 .filter(s -> !s.isEmpty())
                 .orElseGet(() -> ReportApiUtils.getExtensionByMimeType(realType));
         String source = uid + (extension.isEmpty() ? "" : "." + extension);
-        Long size = resultsSource.getSize(resourceName);
+        Long size = getFileSizeSafe(file);
         Attachment attachment = new Attachment()
                 .withUid(uid)
-                .withName(resourceName)
+                .withName(file.getFileName().toString())
                 .withSource(source)
                 .withType(realType)
                 .withSize(size);
-        attachments.add(attachment);
+        attachments.put(file, attachment);
         return attachment;
     }
 
     @Override
-    public Optional<Attachment> findAttachmentByName(String resourceName) {
-        return attachments.stream()
+    public Optional<Attachment> findAttachmentByFileName(String resourceName) {
+        return attachments.values().stream()
                 .filter(attachment -> Objects.equals(resourceName, attachment.getName()))
                 .findAny();
     }
 
     @Override
-    public Set<Attachment> getAttachments() {
-        return Collections.unmodifiableSet(attachments);
+    public Map<Path, Attachment> getAttachments() {
+        return Collections.unmodifiableMap(attachments);
     }
 }

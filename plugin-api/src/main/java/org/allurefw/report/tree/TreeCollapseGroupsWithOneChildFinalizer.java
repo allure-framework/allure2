@@ -8,7 +8,7 @@ import org.allurefw.report.Finalizer;
 public class TreeCollapseGroupsWithOneChildFinalizer implements Finalizer<TreeData> {
 
     @Override
-    public Object finalize(TreeData treeData) {
+    public Object convert(TreeData treeData) {
         treeData.getChildren().stream()
                 .filter(TestGroupNode.class::isInstance)
                 .map(TestGroupNode.class::cast)

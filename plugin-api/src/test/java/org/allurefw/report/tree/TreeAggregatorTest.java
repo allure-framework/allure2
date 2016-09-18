@@ -135,7 +135,7 @@ public class TreeAggregatorTest {
         String first = UUID.randomUUID().toString();
         String second = UUID.randomUUID().toString();
 
-        TreeData treeData = (TreeData) new TreeCollapseGroupsWithOneChildFinalizer().finalize(
+        TreeData treeData = (TreeData) new TreeCollapseGroupsWithOneChildFinalizer().convert(
                 aggregateResultsWithUids(new FewLevelsTreeAggregator(), first, second)
         );
         assertThat(treeData.getChildren(), hasSize(1));

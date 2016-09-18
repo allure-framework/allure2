@@ -3,6 +3,7 @@ package org.allurefw.report;
 import com.google.inject.Guice;
 import org.junit.Test;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -22,8 +23,8 @@ public class ReportFactoryTest {
         ReportFactory factory = Guice.createInjector(new ParentModule(plugins))
                 .getInstance(ReportFactory.class);
 
-        ResultsSource source = new FileSystemResultsSource(Paths.get("/Users/charlie/projects/allure-report/generator/src/test/resources/allure1data"));
-        Report report = factory.create(source);
+        Path results = Paths.get("/Users/charlie/projects/allure-report/generator/src/test/resources/allure1data");
+        Report report = factory.create(results);
 
         assertThat(report, notNullValue());
     }
