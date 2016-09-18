@@ -15,7 +15,6 @@
     <modules>
         <module>plugin-api</module>
         <module>plugin-parent</module>
-        <module>plugins/allure1-plugin</module>
         <module>plugins/junit-plugin</module>
         <module>plugins/xunit-plugin</module>
         <module>plugins/behaviors-plugin</module>

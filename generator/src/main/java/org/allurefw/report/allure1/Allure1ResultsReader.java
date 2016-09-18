@@ -4,9 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.baev.BadXmlCharactersFilterReader;
 import com.google.inject.Inject;
 import org.allurefw.report.AttachmentsStorage;
-import org.allurefw.report.Result;
-import org.allurefw.report.ResultsReader;
 import org.allurefw.report.ResultsSource;
+import org.allurefw.report.TestCaseResultsReader;
 import org.allurefw.report.entity.Attachment;
 import org.allurefw.report.entity.LabelName;
 import org.allurefw.report.entity.Parameter;
@@ -31,7 +30,6 @@ import java.util.stream.Stream;
 import static org.allurefw.allure1.AllureConstants.ATTACHMENTS_FILE_GLOB;
 import static org.allurefw.allure1.AllureConstants.TEST_SUITE_JSON_FILE_GLOB;
 import static org.allurefw.allure1.AllureConstants.TEST_SUITE_XML_FILE_GLOB;
-import static org.allurefw.report.ReportApiUtils.generateUid;
 import static org.allurefw.report.allure1.Allure1ModelConvertUtils.convertDescription;
 import static org.allurefw.report.allure1.Allure1ModelConvertUtils.convertFailure;
 import static org.allurefw.report.allure1.Allure1ModelConvertUtils.convertLabels;
@@ -41,7 +39,7 @@ import static org.allurefw.report.allure1.Allure1ModelConvertUtils.convertStatus
 /**
  * @author charlie (Dmitry Baev).
  */
-public class Allure1ResultsReader implements ResultsReader {
+public class Allure1ResultsReader implements TestCaseResultsReader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Allure1ResultsReader.class);
 
@@ -56,7 +54,7 @@ public class Allure1ResultsReader implements ResultsReader {
     }
 
     @Override
-    public List<Result> readResults(ResultsSource source) {
+    public List<TestCaseResult> readResults(ResultsSource source) {
         source.getResultsByGlob(ATTACHMENTS_FILE_GLOB)
                 .forEach(name -> storage.addAttachment(source, name));
 
@@ -66,7 +64,8 @@ public class Allure1ResultsReader implements ResultsReader {
                 .collect(Collectors.toList());
     }
 
-    private Result convert(TestSuiteResult testSuite, ru.yandex.qatools.allure.model.TestCaseResult source) {
+    private TestCaseResult convert(TestSuiteResult testSuite,
+                                   ru.yandex.qatools.allure.model.TestCaseResult source) {
         String suiteName = Stream.of(testSuite.getTitle(), testSuite.getName())
                 .filter(Objects::nonNull)
                 .findFirst()
@@ -74,18 +73,20 @@ public class Allure1ResultsReader implements ResultsReader {
         String testClass = testSuite.getName();
 
         TestCaseResult dest = new TestCaseResult();
-        dest.setUid(generateUid());
-        dest.setName(source.getTitle() != null ? source.getTitle() : source.getName());
+        String name = source.getTitle() != null ? source.getTitle() : source.getName();
+
+        dest.setId(suiteName + name);
+        dest.setName(name);
         dest.setStatus(convertStatus(source.getStatus()));
 
         dest.setTime(source.getStart(), source.getStop());
-        dest.setParameters(source.getParameters().stream()
+        source.getParameters().stream()
                 .filter(parameter -> ParameterKind.ARGUMENT.equals(parameter.getKind()))
-                .map(parameter -> new Parameter()
+                .forEach(parameter -> dest.getParameters().add(new Parameter()
                         .withName(parameter.getName())
-                        .withValue(parameter.getValue()))
-                .collect(Collectors.toList())
-        );
+                        .withValue(parameter.getValue())
+                ));
+
         dest.setSteps(convertList(source.getSteps(), this::convert));
         dest.setAttachments(convertList(source.getAttachments(), this::convert));
 
@@ -105,7 +106,7 @@ public class Allure1ResultsReader implements ResultsReader {
         dest.addLabelIfNotExists(LabelName.SUITE, suiteName);
         dest.addLabelIfNotExists(LabelName.TEST_CLASS, testClass);
 
-        return () -> dest;
+        return dest;
     }
 
     protected Step convert(ru.yandex.qatools.allure.model.Step s) {

@@ -34,6 +34,13 @@ public interface ExtraStatisticMethods {
         return getFailed() + getBroken() + getPassed() + getCanceled() + getPending();
     }
 
+    default void update(WithStatus withStatus) {
+        if (withStatus == null) {
+            return;
+        }
+        update(withStatus.getStatus());
+    }
+
     default void update(Status status) {
         if (status == null) {
             return;

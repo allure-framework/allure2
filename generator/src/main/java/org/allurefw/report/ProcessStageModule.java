@@ -17,12 +17,6 @@ import java.util.List;
  */
 public class ProcessStageModule extends AbstractModule {
 
-    private final List<Module> plugins;
-
-    public ProcessStageModule(List<Module> plugins) {
-        this.plugins = plugins;
-    }
-
     @Override
     protected void configure() {
         Multibinder.newSetBinder(binder(), TestCaseResult.class);
@@ -37,7 +31,5 @@ public class ProcessStageModule extends AbstractModule {
         MapBinder.newMapBinder(binder(), String.class, String.class, WidgetsNamesMap.class)
                 .permitDuplicates();
         MapBinder.newMapBinder(binder(), String.class, Finalizer.class);
-
-        plugins.forEach(this::install);
     }
 }

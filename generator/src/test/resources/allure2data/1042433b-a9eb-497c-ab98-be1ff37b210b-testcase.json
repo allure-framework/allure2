@@ -1,0 +1,70 @@
+{
+  "id" : "a7ad13ab5c078741d3f67a790ecdb2b9",
+  "testGroupId" : "57485f8125dd787657f81e259e7ffc47",
+  "status" : "passed",
+  "befores" : [ {
+    "name" : "configure",
+    "start" : 1473761338983,
+    "stop" : 1473761338983,
+    "steps" : [ {
+      "status" : "passed",
+      "parameters" : [ {
+        "name" : "how",
+        "value" : "cool"
+      } ],
+      "name" : "configureSomething",
+      "start" : 1473761338983,
+      "stop" : 1473761338983
+    }, {
+      "status" : "passed",
+      "parameters" : [ {
+        "name" : "how",
+        "value" : "bad"
+      } ],
+      "name" : "configureSomething",
+      "start" : 1473761338983,
+      "stop" : 1473761338983
+    } ],
+    "attachments" : [ ]
+  } ],
+  "afters" : [ {
+    "name" : "cleanUp",
+    "start" : 1473761338983,
+    "stop" : 1473761338983,
+    "steps" : [ {
+      "status" : "passed",
+      "parameters" : [ {
+        "name" : "how",
+        "value" : "fast"
+      } ],
+      "name" : "cleanUpSomething",
+      "start" : 1473761338983,
+      "stop" : 1473761338983
+    }, {
+      "status" : "passed",
+      "parameters" : [ {
+        "name" : "how",
+        "value" : "slow"
+      } ],
+      "name" : "cleanUpSomething",
+      "start" : 1473761338983,
+      "stop" : 1473761338983
+    } ],
+    "attachments" : [ ]
+  } ],
+  "labels" : [ {
+    "name" : "package",
+    "value" : "io.qameta.allure"
+  }, {
+    "name" : "testMethod",
+    "value" : "shouldBeOkAsWell"
+  }, {
+    "name" : "testClass",
+    "value" : "io.qameta.allure.SampleJunit4Test"
+  } ],
+  "name" : "shouldBeOkAsWell",
+  "start" : 1473761338983,
+  "stop" : 1473761338983,
+  "steps" : [ ],
+  "attachments" : [ ]
+}

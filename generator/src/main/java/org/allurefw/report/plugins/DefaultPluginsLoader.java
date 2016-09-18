@@ -116,11 +116,11 @@ public class DefaultPluginsLoader implements PluginsLoader {
         try (InputStream is = zipFile.getInputStream(entry)) {
             Path pluginJar = Files.createTempFile(workDirectory, zipFile.getName(), PLUGIN_JAR_ENTRY_NAME);
             Files.copy(is, pluginJar, StandardCopyOption.REPLACE_EXISTING);
-            ClassLoader classLoader = new URLClassLoader(
-                    new URL[]{pluginJar.toUri().toURL()},
-                    getClass().getClassLoader()
-            );
-            return Optional.of((Module) classLoader.loadClass(moduleClass).newInstance());
+            URL[] classPath = new URL[]{pluginJar.toUri().toURL()};
+            ClassLoader parent = getClass().getClassLoader();
+            try (URLClassLoader classLoader = new URLClassLoader(classPath, parent)) {
+                return Optional.of((Module) classLoader.loadClass(moduleClass).newInstance());
+            }
         } catch (Exception e) {
             LOGGER.error("Could not load module {} for plugin {} {}", moduleClass, zipFile.getName(), e);
             return Optional.empty();

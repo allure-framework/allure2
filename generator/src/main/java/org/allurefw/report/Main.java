@@ -1,53 +1,59 @@
 package org.allurefw.report;
 
 import com.google.inject.Guice;
-import com.google.inject.Inject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.inject.Module;
+import org.allurefw.report.plugins.DefaultPluginsLoader;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.Set;
-import java.util.stream.Stream;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author charlie (Dmitry Baev).
  */
 public class Main {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+    private final Configuration configuration;
 
-    private final ResultsSourceFactory factory;
-
-    private final Set<ResultsReader> readers;
-
-    @Inject
-    public Main(ResultsSourceFactory factory, Set<ResultsReader> readers) {
-        this.factory = factory;
-        this.readers = readers;
+    public Main(Configuration configuration) {
+        this.configuration = configuration;
     }
 
-    public void process(Path... resultsDirectories) {
-        processSources(Stream.of(resultsDirectories)
-                .map(factory::create)
-                .toArray(ResultsSource[]::new));
+    public List<Plugin> loadPlugins() {
+        PluginsLoader pluginsLoader = new DefaultPluginsLoader(
+                configuration.getPluginsDirectory(),
+                configuration.getWorkDirectory()
+        );
+        return pluginsLoader.loadPlugins();
     }
 
-    public void processSources(ResultsSource... sources) {
-        Stream.of(sources)
-                .flatMap(this::readSource)
-                .forEach(result -> LOGGER.info("Process result {}", result.getTestCaseResult().getName()));
+    public boolean isPluginEnabled(Plugin plugin) {
+        return configuration.getEnabledPlugins()
+                .contains(plugin.getDescriptor().getName());
     }
 
-    private Stream<Result> readSource(ResultsSource source) {
-        return readers.stream()
-                .flatMap(reader -> reader.readResults(source).stream());
+    public List<Plugin> getEnabledPlugins() {
+        return loadPlugins().stream()
+                .filter(this::isPluginEnabled)
+                .collect(Collectors.toList());
+    }
+
+    public List<Module> getEnabledPluginsModules() {
+        return getEnabledPlugins().stream()
+                .map(Plugin::getModule)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
+    }
+
+    public Report createReport(ResultsSource... sources) {
+        ReportFactory factory = Guice.createInjector(new ParentModule(loadPlugins()))
+                .createChildInjector(getEnabledPluginsModules())
+                .getInstance(ReportFactory.class);
+        return factory.create(sources);
     }
 
     public static void main(String[] args) {
-        Main stage = Guice.createInjector(new ParentModule(Collections.emptyList()))
-                .getInstance(Main.class);
-        stage.process(Paths.get("/Users/charlie/projects/allure-report/generator/src/test/resources/allure1data"));
+        new Main(null).createReport();
     }
 }

@@ -7,7 +7,6 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.allurefw.report.defects.DefectsPlugin;
-import org.allurefw.report.environment.EnvironmentPlugin;
 import org.allurefw.report.graph.GraphPlugin;
 import org.allurefw.report.jackson.JacksonMapperModule;
 import org.allurefw.report.timeline.TimelinePlugin;
@@ -31,7 +30,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static java.nio.file.Files.copy;
 
@@ -49,10 +47,6 @@ public class ReportGenerator {
         this.inputs = inputs;
     }
 
-    public void loadPlugins() {
-
-    }
-
     public void generate(Path output) {
         createDirectory(output, "Could not create output directory");
 
@@ -65,11 +59,9 @@ public class ReportGenerator {
             Path pluginDir = pluginsDir.resolve(pluginName);
             unpackReportPlugin(pluginDir, pluginName);
         });
-
-        List<Module> all = new ArrayList<>();
-        all.addAll(getModules());
-        all.addAll(plugins);
-        Guice.createInjector(new ProcessStageModule(all))
+        Guice.createInjector(new ProcessStageModule())
+                .createChildInjector(getModules())
+                .createChildInjector(plugins)
                 .getInstance(ProcessStage.class)
                 .run(output);
     }
@@ -86,7 +78,6 @@ public class ReportGenerator {
         return Arrays.asList(
                 new JacksonMapperModule(),
                 new WriterModule(),
-                new EnvironmentPlugin(),
                 new TotalPlugin()
         );
     }

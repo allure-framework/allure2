@@ -3,7 +3,6 @@ package org.allurefw.report.allure1;
 import org.allurefw.report.AttachmentsStorage;
 import org.allurefw.report.DefaultAttachmentsStorage;
 import org.allurefw.report.FileSystemResultsSource;
-import org.allurefw.report.Result;
 import org.allurefw.report.entity.Label;
 import org.allurefw.report.entity.LabelName;
 import org.allurefw.report.entity.TestCaseResult;
@@ -49,24 +48,18 @@ public class Allure1TestResultsTest {
 
     @Test
     public void shouldReadTestSuiteXml() throws Exception {
-        List<Result> testResults = process(
+        List<TestCaseResult> testResults = process(
                 "allure1/sample-testsuite.xml", generateTestSuiteXmlName()
         );
-        List<TestCaseResult> testCaseResults = testResults.stream()
-                .map(Result::getTestCaseResult)
-                .collect(Collectors.toList());
-        assertThat(testCaseResults, hasSize(4));
+        assertThat(testResults, hasSize(4));
     }
 
     @Test
     public void shouldReadTestSuiteJson() throws Exception {
-        List<Result> testResults = process(
+        List<TestCaseResult> testResults = process(
                 "allure1/sample-testsuite.json", generateTestSuiteJsonName()
         );
-        List<TestCaseResult> testCaseResults = testResults.stream()
-                .map(Result::getTestCaseResult)
-                .collect(Collectors.toList());
-        assertThat(testCaseResults, hasSize(1));
+        assertThat(testResults, hasSize(1));
     }
 
     @Test
@@ -99,22 +92,15 @@ public class Allure1TestResultsTest {
 
     @Test
     public void shouldNotFailIfNoResultsDirectory() throws Exception {
-        List<Result> testResults = process();
-        List<TestCaseResult> testCaseResults = testResults.stream()
-                .map(Result::getTestCaseResult)
-                .collect(Collectors.toList());
-        assertThat(testCaseResults, empty());
+        List<TestCaseResult> testResults = process();
+        assertThat(testResults, empty());
     }
 
     @Test
     public void shouldGetSuiteTitleIfExists() throws Exception {
-        List<Result> testResults = process(
+        List<TestCaseResult> testCases = process(
                 "allure1/sample-testsuite.json", generateTestSuiteJsonName()
         );
-
-        List<TestCaseResult> testCases = testResults.stream()
-                .map(Result::getTestCaseResult)
-                .collect(Collectors.toList());
         assertThat(testCases, hasSize(1));
         TestCaseResult result = testCases.iterator().next();
         Optional<String> suiteName = result.findOne(LabelName.SUITE);
@@ -124,13 +110,9 @@ public class Allure1TestResultsTest {
 
     @Test
     public void shouldNotFailIfSuiteTitleNotExists() throws Exception {
-        List<Result> testResults = process(
+        List<TestCaseResult> testCases = process(
                 "allure1/suite-with-attachments.xml", generateTestSuiteXmlName()
         );
-
-        List<TestCaseResult> testCases = testResults.stream()
-                .map(Result::getTestCaseResult)
-                .collect(Collectors.toList());
         assertThat(testCases, hasSize(1));
         TestCaseResult result = testCases.iterator().next();
         Optional<String> suiteName = result.findOne(LabelName.SUITE);
@@ -140,12 +122,9 @@ public class Allure1TestResultsTest {
 
     @Test
     public void shouldCopyLabelsFromSuite() throws Exception {
-        List<Result> testResults = process(
+        List<TestCaseResult> testCases = process(
                 "allure1/sample-testsuite.json", generateTestSuiteJsonName()
         );
-        List<TestCaseResult> testCases = testResults.stream()
-                .map(Result::getTestCaseResult)
-                .collect(Collectors.toList());
         assertThat(testCases, hasSize(1));
         TestCaseResult result = testCases.iterator().next();
         List<String> stories = result.getLabels().stream()
@@ -156,7 +135,7 @@ public class Allure1TestResultsTest {
         assertThat(stories, hasItems("SuccessStory", "OtherStory"));
     }
 
-    private List<Result> process(String... strings) throws IOException {
+    private List<TestCaseResult> process(String... strings) throws IOException {
         Path resultsDirectory = folder.newFolder().toPath();
         Iterator<String> iterator = Arrays.asList(strings).iterator();
         while (iterator.hasNext()) {
