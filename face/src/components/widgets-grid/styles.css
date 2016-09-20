@@ -12,9 +12,21 @@
   display: flex;
   &__col {
     width: 50%;
-    min-width: 300px;
+    min-width: $min-pane-size;
   }
   &__col + &__col {
     padding-left: $gap-size;
+  }
+}
+
+@media(max-width: $small-screen) {
+  .widgets-grid {
+    display: block;
+    &__col {
+      width: 100%;
+    }
+    &__col + &__col {
+      padding-left: 0;
+    }
   }
 }

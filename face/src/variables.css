@@ -31,6 +31,7 @@ $text-muted-color: #999;
 $gap-size: 15px;
 
 $small-screen: 1000px;
+$min-pane-size: 300px;
 
 /*  Sidebar  **/
 
