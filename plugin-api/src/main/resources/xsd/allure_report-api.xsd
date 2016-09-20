@@ -26,23 +26,52 @@
         </xsd:all>
     </xsd:complexType>
 
-    <xsd:element name="testCaseResult" type="ns:TestCaseResult"/>
-    <xsd:complexType name="TestCaseResult">
-        <xsd:all>
-            <xsd:element name="uid" type="xsd:string"/>
+    <xsd:element name="testCase" type="ns:TestCase"/>
+    <xsd:complexType name="TestCase">
+        <xsd:sequence>
+            <xsd:element name="id" type="xsd:string"/>
             <xsd:element name="name" type="xsd:string"/>
-            <xsd:element name="time" type="ns:Time"/>
-            <xsd:element name="status" type="ns:Status"/>
-            <xsd:element name="failure" type="ns:Failure" minOccurs="0"/>
             <xsd:element name="description" type="xsd:string" minOccurs="0"/>
             <xsd:element name="descriptionHtml" type="xsd:string" minOccurs="0"/>
-            <xsd:element name="steps" type="ns:Steps" minOccurs="0"/>
-            <xsd:element name="attachments" type="ns:Attachments" minOccurs="0"/>
-            <xsd:element name="labels" type="ns:Labels" minOccurs="0"/>
-            <xsd:element name="parameters" type="ns:Parameters" minOccurs="0"/>
+            <xsd:element name="parametersNames">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="parameterName" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
             <xsd:element name="links" type="ns:Links" minOccurs="0"/>
-            <xsd:element name="environment" type="ns:Environment" minOccurs="0"/>
-        </xsd:all>
+            <xsd:element name="results">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="result" type="ns:TestCaseInfo" minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:element name="testCaseResult" type="ns:TestCaseResult"/>
+    <xsd:complexType name="TestCaseResult">
+        <xsd:complexContent>
+            <xsd:extension base="ns:ExtraElements">
+                <xsd:sequence>
+                    <xsd:element name="id" type="xsd:string"/>
+                    <xsd:element name="uid" type="xsd:string"/>
+                    <xsd:element name="name" type="xsd:string"/>
+                    <xsd:element name="time" type="ns:Time"/>
+                    <xsd:element name="status" type="ns:Status"/>
+                    <xsd:element name="failure" type="ns:Failure" minOccurs="0"/>
+                    <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="descriptionHtml" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="steps" type="ns:Steps" minOccurs="0"/>
+                    <xsd:element name="attachments" type="ns:Attachments" minOccurs="0"/>
+                    <xsd:element name="labels" type="ns:Labels" minOccurs="0"/>
+                    <xsd:element name="parameters" type="ns:Parameters" minOccurs="0"/>
+                    <xsd:element name="links" type="ns:Links" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
     </xsd:complexType>
 
     <xsd:element name="testGroup" type="ns:TestGroup"/>
@@ -243,4 +272,6 @@
             <xsd:element name="link" type="ns:Link" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
     </xsd:complexType>
+
+    <xsd:complexType name="ExtraElements"/>
 </xsd:schema>

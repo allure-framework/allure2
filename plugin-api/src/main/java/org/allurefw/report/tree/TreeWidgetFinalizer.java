@@ -14,7 +14,7 @@ import static org.allurefw.report.entity.ExtraStatisticMethods.comparator;
 public class TreeWidgetFinalizer implements Finalizer<TreeData> {
 
     @Override
-    public Object finalize(TreeData identity) {
+    public Object convert(TreeData identity) {
         List<TreeWidgetItem> items = identity.getChildren().stream()
                 .filter(TestGroupNode.class::isInstance)
                 .map(TestGroupNode.class::cast)

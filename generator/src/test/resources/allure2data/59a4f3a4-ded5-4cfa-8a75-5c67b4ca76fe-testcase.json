@@ -1,0 +1,86 @@
+{
+  "id" : "e5014db89367b99a929c29f088ad3f1d",
+  "testGroupId" : "ddb8b994a624580ffe7b4095fe38c788",
+  "status" : "failed",
+  "befores" : [ {
+    "name" : "configure",
+    "start" : 1473761338872,
+    "stop" : 1473761338893,
+    "steps" : [ {
+      "status" : "passed",
+      "parameters" : [ {
+        "name" : "how",
+        "value" : "cool"
+      } ],
+      "name" : "configureSomething",
+      "start" : 1473761338893,
+      "stop" : 1473761338893
+    }, {
+      "status" : "passed",
+      "parameters" : [ {
+        "name" : "how",
+        "value" : "bad"
+      } ],
+      "name" : "configureSomething",
+      "start" : 1473761338893,
+      "stop" : 1473761338893
+    } ],
+    "attachments" : [ ]
+  }, {
+    "name" : "setUp",
+    "start" : 1473761338893,
+    "stop" : 1473761338894,
+    "steps" : [ {
+      "status" : "passed",
+      "name" : "step",
+      "start" : 1473761338894,
+      "stop" : 1473761338894
+    }, {
+      "status" : "failed",
+      "name" : "failedStep",
+      "start" : 1473761338894,
+      "stop" : 1473761338894
+    } ],
+    "attachments" : [ ]
+  } ],
+  "afters" : [ {
+    "name" : "cleanUp",
+    "start" : 1473761338894,
+    "stop" : 1473761338894,
+    "steps" : [ {
+      "status" : "passed",
+      "parameters" : [ {
+        "name" : "how",
+        "value" : "fast"
+      } ],
+      "name" : "cleanUpSomething",
+      "start" : 1473761338894,
+      "stop" : 1473761338894
+    }, {
+      "status" : "passed",
+      "parameters" : [ {
+        "name" : "how",
+        "value" : "slow"
+      } ],
+      "name" : "cleanUpSomething",
+      "start" : 1473761338894,
+      "stop" : 1473761338894
+    } ],
+    "attachments" : [ ]
+  } ],
+  "labels" : [ {
+    "name" : "package",
+    "value" : "io.qameta.allure"
+  }, {
+    "name" : "testMethod",
+    "value" : "oneMoreTest"
+  }, {
+    "name" : "testClass",
+    "value" : "io.qameta.allure.OtherTest"
+  } ],
+  "name" : "oneMoreTest",
+  "start" : 1473761338863,
+  "stop" : 1473761338901,
+  "steps" : [ ],
+  "attachments" : [ ]
+}

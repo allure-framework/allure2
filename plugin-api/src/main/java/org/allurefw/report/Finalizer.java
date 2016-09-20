@@ -4,9 +4,10 @@ package org.allurefw.report;
  * @author Dmitry Baev baev@qameta.io
  *         Date: 23.04.16
  */
+@FunctionalInterface
 public interface Finalizer<T> {
 
-    Object finalize(T identity);
+    Object convert(T identity);
 
     static <T> Finalizer<T> identity() {
         return identity -> identity;

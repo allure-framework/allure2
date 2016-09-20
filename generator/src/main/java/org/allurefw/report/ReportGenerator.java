@@ -6,22 +6,12 @@ import com.google.inject.Module;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import org.allurefw.allure1.AllureException;
-import org.allurefw.report.allure1.Allure1TestsResults;
-import org.allurefw.report.behaviors.BehaviorsPlugin;
-import org.allurefw.report.config.ConfigModule;
 import org.allurefw.report.defects.DefectsPlugin;
-import org.allurefw.report.environment.EnvironmentPlugin;
 import org.allurefw.report.graph.GraphPlugin;
-import org.allurefw.report.issue.IssueModule;
 import org.allurefw.report.jackson.JacksonMapperModule;
-import org.allurefw.report.junit.JunitTestsResults;
-import org.allurefw.report.packages.PackagesPlugin;
 import org.allurefw.report.timeline.TimelinePlugin;
-import org.allurefw.report.tms.TmsModule;
 import org.allurefw.report.total.TotalPlugin;
 import org.allurefw.report.writer.WriterModule;
-import org.allurefw.report.xunit.XunitPlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,14 +23,13 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.nio.file.Files.copy;
 
@@ -61,15 +50,8 @@ public class ReportGenerator {
     public void generate(Path output) {
         createDirectory(output, "Could not create output directory");
 
-        List<TestsResults> sources = Stream.of(inputs)
-                .flatMap(input -> Stream.of(new Allure1TestsResults(input), new JunitTestsResults(input)))
-                .collect(Collectors.toList());
-
         List<AbstractPlugin> plugins = getPlugins();
-        Set<String> pluginsWithStaticContent = plugins.stream()
-                .filter(AbstractPlugin::hasStaticContent)
-                .map(AbstractPlugin::getPluginName)
-                .collect(Collectors.toSet());
+        Set<String> pluginsWithStaticContent = Collections.emptySet();
         writeIndexHtml(output, pluginsWithStaticContent);
 
         Path pluginsDir = output.resolve("plugins");
@@ -77,35 +59,25 @@ public class ReportGenerator {
             Path pluginDir = pluginsDir.resolve(pluginName);
             unpackReportPlugin(pluginDir, pluginName);
         });
-
-        List<Module> all = new ArrayList<>();
-        all.addAll(getModules());
-        all.addAll(plugins);
-        Guice.createInjector(new ProcessStageModule(sources, all))
+        Guice.createInjector(new ProcessStageModule())
+                .createChildInjector(getModules())
+                .createChildInjector(plugins)
                 .getInstance(ProcessStage.class)
-                .run(output);
+                .run(null, output);
     }
 
     private List<AbstractPlugin> getPlugins() {
         return Arrays.asList(
                 new DefectsPlugin(),
-                new XunitPlugin(),
-                new BehaviorsPlugin(),
-                new PackagesPlugin(),
                 new TimelinePlugin(),
-                new GraphPlugin(),
-                new PackagesPlugin(),
-                new IssueModule(),
-                new TmsModule()
+                new GraphPlugin()
         );
     }
 
     private List<Module> getModules() {
         return Arrays.asList(
-                new ConfigModule(inputs),
                 new JacksonMapperModule(),
                 new WriterModule(),
-                new EnvironmentPlugin(),
                 new TotalPlugin()
         );
     }
@@ -141,7 +113,7 @@ public class ReportGenerator {
             dataModel.put("plugins", facePluginNames);
             template.process(dataModel, writer);
         } catch (IOException | TemplateException e) {
-            LOGGER.error("Could't process index file", e);
+            LOGGER.error("Could't read index file", e);
         }
     }
 
@@ -149,7 +121,7 @@ public class ReportGenerator {
         try {
             Files.createDirectories(directory);
         } catch (IOException e) {
-            throw new AllureException(message, e);
+            throw new RuntimeException(message, e);
         }
     }
 }

@@ -14,7 +14,7 @@
 
     <modules>
         <module>plugin-api</module>
-        <module>plugins/allure1-plugin</module>
+        <module>plugin-parent</module>
         <module>plugins/junit-plugin</module>
         <module>plugins/xunit-plugin</module>
         <module>plugins/behaviors-plugin</module>
@@ -137,12 +137,17 @@
             <dependency>
                 <groupId>com.google.inject</groupId>
                 <artifactId>guice</artifactId>
-                <version>4.0</version>
+                <version>4.1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.inject.extensions</groupId>
+                <artifactId>guice-assistedinject</artifactId>
+                <version>4.1.0</version>
             </dependency>
             <dependency>
                 <groupId>com.google.inject.extensions</groupId>
                 <artifactId>guice-multibindings</artifactId>
-                <version>4.0</version>
+                <version>4.1.0</version>
             </dependency>
 
             <!-- Commons -->

@@ -1,8 +1,6 @@
 package org.allurefw.report.defects;
 
 import org.allurefw.report.Aggregator;
-import org.allurefw.report.Defect;
-import org.allurefw.report.DefectsData;
 import org.allurefw.report.entity.Failure;
 import org.allurefw.report.entity.Status;
 import org.allurefw.report.entity.TestCaseResult;

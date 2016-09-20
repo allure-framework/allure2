@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:ns="urn:report.allurefw.org"
+            targetNamespace="urn:report.allurefw.org">
+
+    <xsd:element name="pluginDescriptor" type="ns:PluginDescriptor"/>
+    <xsd:complexType name="PluginDescriptor">
+        <xsd:sequence>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="moduleClass" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>

@@ -1,10 +1,5 @@
 package org.allurefw.report.defects;
 
-import org.allurefw.report.Defect;
-import org.allurefw.report.DefectType;
-import org.allurefw.report.DefectsData;
-import org.allurefw.report.DefectsWidget;
-import org.allurefw.report.DefectsWidgetItem;
 import org.allurefw.report.Finalizer;
 
 import java.util.Comparator;
@@ -18,7 +13,7 @@ import java.util.stream.Collectors;
 public class ProductDefectsWidgetFinalizer implements Finalizer<DefectsData> {
 
     @Override
-    public Object finalize(DefectsData identity) {
+    public Object convert(DefectsData identity) {
         List<DefectsWidgetItem> items = identity.getProductDefects().stream()
                 .sorted(Comparator
                         .<Defect>comparingInt(value -> value.getTestCases().size())

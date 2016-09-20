@@ -86,6 +86,26 @@
                             <stripVersion>true</stripVersion>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>copy-xunit-plugin</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.allurefw.report</groupId>
+                                    <artifactId>xunit-plugin</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>zip</type>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/plugins</outputDirectory>
+                            <stripClassifier>true</stripClassifier>
+                            <stripVersion>true</stripVersion>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>

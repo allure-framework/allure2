@@ -37,32 +37,20 @@
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
         </dependency>
-        <!-- Plugins -->
-
         <dependency>
-            <groupId>org.allurefw.report</groupId>
-            <artifactId>allure1-plugin</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.github.baev</groupId>
+            <artifactId>jaxb-utils</artifactId>
+            <version>1.0</version>
         </dependency>
         <dependency>
-            <groupId>org.allurefw.report</groupId>
-            <artifactId>junit-plugin</artifactId>
-            <version>${project.version}</version>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>model-v2</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.allurefw.report</groupId>
-            <artifactId>xunit-plugin</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.allurefw.report</groupId>
-            <artifactId>behaviors-plugin</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.allurefw.report</groupId>
-            <artifactId>packages-plugin</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.allurefw</groupId>
+            <artifactId>allure1-model</artifactId>
+            <version>1.0</version>
         </dependency>
 
         <!-- Testing -->
@@ -85,6 +73,10 @@
             <groupId>com.github.baev</groupId>
             <artifactId>hamcrest-optional</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ru.yandex.qatools.matchers</groupId>
+            <artifactId>nio-matchers</artifactId>
         </dependency>
     </dependencies>
 
