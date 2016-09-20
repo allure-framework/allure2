@@ -41,7 +41,7 @@ public class ProcessStage {
     @Inject
     protected Map<String, Finalizer> finalizers;
 
-    public void run(Report report, Path output) {
+    public void run(ReportInfo report, Path output) {
         LOGGER.debug("Process stage started...");
 
         if (report.getResults().isEmpty()) {

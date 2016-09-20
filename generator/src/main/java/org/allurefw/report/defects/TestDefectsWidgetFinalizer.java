@@ -1,10 +1,5 @@
 package org.allurefw.report.defects;
 
-import org.allurefw.report.Defect;
-import org.allurefw.report.DefectType;
-import org.allurefw.report.DefectsData;
-import org.allurefw.report.DefectsWidget;
-import org.allurefw.report.DefectsWidgetItem;
 import org.allurefw.report.Finalizer;
 
 import java.util.Comparator;

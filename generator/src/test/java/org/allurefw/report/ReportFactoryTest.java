@@ -24,7 +24,7 @@ public class ReportFactoryTest {
                 .getInstance(ReportFactory.class);
 
         Path results = Paths.get("/Users/charlie/projects/allure-report/generator/src/test/resources/allure1data");
-        Report report = factory.create(results);
+        ReportInfo report = factory.create(results);
 
         assertThat(report, notNullValue());
     }

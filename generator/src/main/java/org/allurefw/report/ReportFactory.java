@@ -29,7 +29,7 @@ public class ReportFactory {
         this.readers = readers;
     }
 
-    public Report create(Path... sources) {
+    public ReportInfo create(Path... sources) {
         Map<String, TestCase> testCases = new HashMap<>();
         List<TestCaseResult> results = Stream.of(sources)
                 .flatMap(this::readTestCases)
@@ -55,7 +55,7 @@ public class ReportFactory {
             testCase.setLinks(links);
         });
 
-        return new Report(plugins, testCases, results);
+        return new ReportInfo(plugins, testCases, results);
     }
 
     private Stream<TestCaseResult> readTestCases(Path source) {

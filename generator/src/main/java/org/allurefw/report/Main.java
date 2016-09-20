@@ -6,6 +6,7 @@ import com.google.inject.Module;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.allurefw.report.plugins.DefaultPluginsLoader;
+import org.allurefw.report.plugins.EmptyPluginsLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,23 +30,24 @@ public class Main {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-    private final Path pluginsDirectory;
-
-    private final Path workDirectory;
+    private final PluginsLoader pluginsLoader;
 
     private final Set<String> enabledPlugins;
 
+    public Main() {
+        this(new EmptyPluginsLoader(), Collections.emptySet());
+    }
+
     public Main(Path pluginsDirectory, Path workDirectory, Set<String> enabledPlugins) {
-        this.pluginsDirectory = pluginsDirectory;
-        this.workDirectory = workDirectory;
+        this(new DefaultPluginsLoader(pluginsDirectory, workDirectory), enabledPlugins);
+    }
+
+    public Main(PluginsLoader pluginsLoader, Set<String> enabledPlugins) {
+        this.pluginsLoader = pluginsLoader;
         this.enabledPlugins = enabledPlugins;
     }
 
     public List<Plugin> loadPlugins() {
-        PluginsLoader pluginsLoader = new DefaultPluginsLoader(
-                pluginsDirectory,
-                workDirectory
-        );
         return pluginsLoader.loadPlugins();
     }
 
@@ -67,7 +69,7 @@ public class Main {
                 .collect(Collectors.toList());
     }
 
-    public Report createReport(Path... sources) {
+    public ReportInfo createReport(Path... sources) {
         ReportFactory factory = createInjector()
                 .getInstance(ReportFactory.class);
         return factory.create(sources);
@@ -77,7 +79,7 @@ public class Main {
         Injector injector = createInjector();
         ReportFactory factory = injector.getInstance(ReportFactory.class);
         ProcessStage stage = injector.getInstance(ProcessStage.class);
-        Report report = factory.create(sources);
+        ReportInfo report = factory.create(sources);
         stage.run(report, output);
         writeIndexHtml(output);
     }

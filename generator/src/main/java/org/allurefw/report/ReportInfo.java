@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class Report {
+public class ReportInfo {
 
     private final Set<Plugin> plugins;
 
@@ -18,7 +18,7 @@ public class Report {
 
     private final List<TestCaseResult> results;
 
-    public Report(Set<Plugin> plugins, Map<String, TestCase> testCases, List<TestCaseResult> results) {
+    public ReportInfo(Set<Plugin> plugins, Map<String, TestCase> testCases, List<TestCaseResult> results) {
         this.plugins = plugins;
         this.testCases = testCases;
         this.results = results;

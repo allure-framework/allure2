@@ -1,7 +1,6 @@
 package org.allurefw.report.total;
 
 import org.allurefw.report.Aggregator;
-import org.allurefw.report.TotalData;
 import org.allurefw.report.entity.TestCaseResult;
 
 import java.util.function.BiConsumer;

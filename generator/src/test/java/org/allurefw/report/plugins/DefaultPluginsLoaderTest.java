@@ -16,6 +16,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static ru.yandex.qatools.matchers.nio.PathMatchers.exists;
@@ -33,6 +34,33 @@ public class DefaultPluginsLoaderTest {
         Path pluginsDirectory = getPluginsDirectory();
         DefaultPluginsLoader pluginsLoader = new DefaultPluginsLoader(pluginsDirectory, folder.newFolder().toPath());
         List<Plugin> plugins = pluginsLoader.loadPlugins();
+        assertThat(plugins, notNullValue());
+        assertThat(plugins, hasSize(1));
+        assertThat(plugins, hasItem(allOf(
+                hasProperty("descriptor", allOf(
+                        hasProperty("name", equalTo("xunit-plugin")),
+                        hasProperty("moduleClass", equalTo("org.allurefw.report.xunit.XunitPlugin"))
+                )),
+                hasProperty("module", notNullValue()),
+                hasProperty("archive", exists())
+        )));
+    }
+
+    @Test
+    public void shouldNotFailIfPluginDirectoryDoesNotExists() throws Exception {
+        Path pluginsDirectory = folder.newFolder().toPath().resolve("pluginsDirectory");
+        DefaultPluginsLoader loader = new DefaultPluginsLoader(pluginsDirectory, folder.newFolder().toPath());
+        List<Plugin> plugins = loader.loadPlugins();
+        assertThat(plugins, notNullValue());
+        assertThat(plugins, empty());
+    }
+
+    @Test
+    public void shouldNotFailIfWorkDirectoryDoesNotExists() throws Exception {
+        Path pluginsDirectory = getPluginsDirectory();
+        Path workDirectory = folder.newFolder().toPath().resolve("workDirectory");
+        DefaultPluginsLoader loader = new DefaultPluginsLoader(pluginsDirectory, workDirectory);
+        List<Plugin> plugins = loader.loadPlugins();
         assertThat(plugins, notNullValue());
         assertThat(plugins, hasSize(1));
         assertThat(plugins, hasItem(allOf(

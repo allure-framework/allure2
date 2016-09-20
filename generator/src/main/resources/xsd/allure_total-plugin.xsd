@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            xmlns:ns="urn:report.allurefw.org"
-            targetNamespace="urn:report.allurefw.org">
+            xmlns:ns="urn:total.report.allurefw.org"
+            xmlns:data="urn:report.allurefw.org"
+            targetNamespace="urn:total.report.allurefw.org">
 
-    <xsd:include schemaLocation="allure_report-data.xsd"/>
+    <xsd:import namespace="urn:report.allurefw.org" schemaLocation="allure_report-data.xsd"/>
 
     <xsd:element name="totalData" type="ns:TotalData"/>
     <xsd:complexType name="TotalData">
         <xsd:sequence>
-            <xsd:element name="statistic" type="ns:Statistic"/>
-            <xsd:element name="time" type="ns:GroupTime"/>
+            <xsd:element name="statistic" type="data:Statistic"/>
+            <xsd:element name="time" type="data:GroupTime"/>
         </xsd:sequence>
     </xsd:complexType>
 </xsd:schema>

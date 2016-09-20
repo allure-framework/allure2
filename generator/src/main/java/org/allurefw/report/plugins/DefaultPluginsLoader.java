@@ -15,6 +15,7 @@ import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -45,28 +46,28 @@ public class DefaultPluginsLoader implements PluginsLoader {
 
     @Override
     public List<Plugin> loadPlugins() {
-        return findPluginArchives()
-                .map(this::loadPlugin)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toList());
-    }
-
-    private Stream<Path> findPluginArchives() {
-        try {
-            return Files.walk(pluginsDirectory)
+        if (!Files.exists(pluginsDirectory)) {
+            return Collections.emptyList();
+        }
+        try (Stream<Path> stream = Files.walk(pluginsDirectory)) {
+            Files.createDirectories(workDirectory);
+            return stream
                     .filter(Files::isRegularFile)
                     .filter(this::isZipArchive)
-                    .filter(this::isPluginArchive);
+                    .filter(this::isPluginArchive)
+                    .map(this::loadPlugin)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .collect(Collectors.toList());
         } catch (IOException e) {
-            LOGGER.error("Could not find plugin files {}", e);
-            return Stream.empty();
+            LOGGER.error("Error loading plugins", e);
+            return Collections.emptyList();
         }
     }
 
     private Optional<Plugin> loadPlugin(Path archive) {
         return open(archive, zipFile -> readPluginDescriptor(zipFile)
-                .map(descriptor -> loadPluginModule(descriptor.getModuleClass(), zipFile)
+                .map(descriptor -> loadPluginModule(descriptor, zipFile)
                         .map(module -> new Plugin(descriptor, module, archive))
                         .orElseGet(() -> new Plugin(descriptor, null, archive))
                 )
@@ -100,29 +101,30 @@ public class DefaultPluginsLoader implements PluginsLoader {
         }
     }
 
-    private Optional<Module> loadPluginModule(String moduleClass, ZipFile zipFile) {
-        if (moduleClass == null || moduleClass.isEmpty()) {
+    private Optional<Module> loadPluginModule(PluginDescriptor descriptor, ZipFile zipFile) {
+        if (descriptor.getModuleClass() == null || descriptor.getModuleClass().isEmpty()) {
             return Optional.empty();
         }
         return zipFile.stream()
                 .filter(this::isPluginJarEntry)
                 .findAny()
-                .map(entry -> loadPluginModule(moduleClass, zipFile, entry))
+                .map(entry -> loadPluginModule(descriptor, zipFile, entry))
                 .filter(Optional::isPresent)
                 .map(Optional::get);
     }
 
-    private Optional<Module> loadPluginModule(String moduleClass, ZipFile zipFile, ZipEntry entry) {
+    private Optional<Module> loadPluginModule(PluginDescriptor descriptor, ZipFile zipFile, ZipEntry entry) {
         try (InputStream is = zipFile.getInputStream(entry)) {
-            Path pluginJar = Files.createTempFile(workDirectory, zipFile.getName(), PLUGIN_JAR_ENTRY_NAME);
+            Path pluginJar = Files.createTempFile(workDirectory, descriptor.getName(), PLUGIN_JAR_ENTRY_NAME);
             Files.copy(is, pluginJar, StandardCopyOption.REPLACE_EXISTING);
             URL[] classPath = new URL[]{pluginJar.toUri().toURL()};
             ClassLoader parent = getClass().getClassLoader();
             try (URLClassLoader classLoader = new URLClassLoader(classPath, parent)) {
-                return Optional.of((Module) classLoader.loadClass(moduleClass).newInstance());
+                return Optional.of((Module) classLoader.loadClass(descriptor.getModuleClass()).newInstance());
             }
         } catch (Exception e) {
-            LOGGER.error("Could not load module {} for plugin {} {}", moduleClass, zipFile.getName(), e);
+            LOGGER.error("Could not load module {} for plugin {} {}",
+                    descriptor.getModuleClass(), descriptor.getName(), e);
             return Optional.empty();
         }
     }

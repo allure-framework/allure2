@@ -44,8 +44,7 @@ public class AllureMain {
                 .toArray(Path[]::new);
         Path outputDirectory = Paths.get(args[lastIndex]);
 
-        ReportGenerator reportGenerator = new ReportGenerator(inputDirectories);
-        reportGenerator.generate(outputDirectory);
+        new Main().generate(outputDirectory, inputDirectories);
 
         unpackFace(outputDirectory);
     }

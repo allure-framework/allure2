@@ -31,8 +31,8 @@ public final class DummyReportGenerator {
         }
         int lastIndex = args.length - 1;
         Path[] files = getFiles(args);
-        ReportGenerator reportGenerator = new ReportGenerator(Arrays.copyOf(files, lastIndex));
-        reportGenerator.generate(files[lastIndex]);
+        Main main = new Main();
+        main.generate(files[lastIndex], Arrays.copyOf(files, lastIndex));
     }
 
     public static Path[] getFiles(String[] paths) {

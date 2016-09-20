@@ -27,7 +27,7 @@ public class MainTest {
         Main main = new Main(plugins, work, Collections.emptySet());
 
         Path results = Paths.get("/Users/charlie/projects/allure-report/generator/src/test/resources/allure1data");
-        Report report = main.createReport(results);
+        ReportInfo report = main.createReport(results);
 
         assertThat(report, notNullValue());
         assertThat(report.getResults(), hasSize(20));
