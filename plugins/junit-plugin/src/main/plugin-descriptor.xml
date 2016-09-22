@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<pluginDescriptor>
+<ns:pluginDescriptor xmlns:ns="urn:report.allurefw.org">
     <name>junit-plugin</name>
-    <enabled>true</enabled>
-</pluginDescriptor>
+</ns:pluginDescriptor>
