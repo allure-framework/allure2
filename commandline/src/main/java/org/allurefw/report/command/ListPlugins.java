@@ -19,7 +19,7 @@ public class ListPlugins implements AllureCommand {
     @Override
     public void run(Context context) throws Exception {
         verboseOptions.configureLogLevel();
-        createMain(context.getPluginsDirectory(), context.getWorkDirectory())
+        createMain(context)
                 .loadPlugins()
                 .forEach(this::printPluginInfo);
     }

@@ -3,6 +3,7 @@ package org.allurefw.report;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.allurefw.report.plugins.DefaultPluginsLoader;
@@ -19,6 +20,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -52,21 +54,8 @@ public class Main {
     }
 
     public boolean isPluginEnabled(Plugin plugin) {
-        return enabledPlugins.contains(plugin.getDescriptor().getName());
-    }
-
-    public List<Plugin> getEnabledPlugins() {
-        return loadPlugins().stream()
-                .filter(this::isPluginEnabled)
-                .collect(Collectors.toList());
-    }
-
-    public List<Module> getEnabledPluginsModules() {
-        return getEnabledPlugins().stream()
-                .map(Plugin::getModule)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toList());
+        return Objects.isNull(enabledPlugins) ||
+                enabledPlugins.contains(plugin.getDescriptor().getName());
     }
 
     public ReportInfo createReport(Path... sources) {
@@ -85,7 +74,7 @@ public class Main {
     }
 
     private void writeIndexHtml(Path outputDirectory) {
-        freemarker.template.Configuration cfg = new freemarker.template.Configuration(freemarker.template.Configuration.VERSION_2_3_23);
+        Configuration cfg = new Configuration(Configuration.VERSION_2_3_23);
         cfg.setClassLoaderForTemplateLoading(getClass().getClassLoader(), "tpl");
         Path indexHtml = outputDirectory.resolve("index.html");
         try (BufferedWriter writer = Files.newBufferedWriter(indexHtml, StandardOpenOption.CREATE)) {
@@ -99,10 +88,13 @@ public class Main {
     }
 
     private Injector createInjector() {
-        return Guice.createInjector(new ParentModule(loadPlugins()))
-                .createChildInjector(getEnabledPluginsModules());
-    }
-
-    public static void main(String[] args) {
+        List<Plugin> plugins = loadPlugins();
+        List<Module> enabledPluginsModules = plugins.stream()
+                .filter(this::isPluginEnabled)
+                .map(Plugin::getModule)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
+        return Guice.createInjector(new ParentModule(plugins, enabledPluginsModules));
     }
 }

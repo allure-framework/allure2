@@ -1,6 +1,7 @@
 package org.allurefw.report.command;
 
 import java.nio.file.Path;
+import java.util.Set;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -15,11 +16,15 @@ public class Context {
 
     private final String toolVersion;
 
-    public Context(Path workDirectory, Path pluginsDirectory, Path webDirectory, String toolVersion) {
+    private final Set<String> enabledPlugins;
+
+    public Context(Path workDirectory, Path pluginsDirectory, Path webDirectory,
+                   String toolVersion, Set<String> enabledPlugins) {
         this.workDirectory = workDirectory;
         this.pluginsDirectory = pluginsDirectory;
         this.webDirectory = webDirectory;
         this.toolVersion = toolVersion;
+        this.enabledPlugins = enabledPlugins;
     }
 
     public Path getWorkDirectory() {
@@ -36,5 +41,9 @@ public class Context {
 
     public String getToolVersion() {
         return toolVersion;
+    }
+
+    public Set<String> getEnabledPlugins() {
+        return enabledPlugins;
     }
 }

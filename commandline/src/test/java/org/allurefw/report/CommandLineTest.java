@@ -3,6 +3,7 @@ package org.allurefw.report;
 import com.github.rvesse.airline.parser.errors.ParseArgumentsMissingException;
 import com.github.rvesse.airline.parser.errors.ParseRestrictionViolatedException;
 import org.allurefw.report.command.AllureCommand;
+import org.allurefw.report.command.Context;
 import org.allurefw.report.command.Help;
 import org.allurefw.report.command.ListPlugins;
 import org.allurefw.report.command.ReportGenerate;
@@ -13,8 +14,15 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import static org.allurefw.allure1.AllureUtils.generateTestSuiteJsonName;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static ru.yandex.qatools.matchers.nio.PathMatchers.exists;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -84,5 +92,35 @@ public class CommandLineTest {
         String secondResult = folder.newFolder().toPath().toAbsolutePath().toString();
         AllureCommand cmd = new CommandLine().parse("generate", firstResult, secondResult);
         assertThat(cmd, instanceOf(ReportGenerate.class));
+    }
+
+    @Test
+    public void shouldGenerateReport() throws Exception {
+        Path results = folder.newFolder().toPath();
+        copyFile(results, "testdata/sample-testsuite.json", generateTestSuiteJsonName());
+
+        Path plugins = folder.newFolder().toPath();
+        copyFile(plugins, "testdata/dummy-plugin.zip", "dummy-plugin.zip");
+
+        Path output = folder.newFolder().toPath();
+
+        AllureCommand generate = new CommandLine().parse(
+                "generate", results.toString(), "-o", output.toString()
+        );
+
+        generate.run(new Context(
+                folder.newFolder().toPath(),
+                plugins,
+                folder.newFolder().toPath(),
+                null,
+                null
+        ));
+        assertThat(output.resolve("index.html"), exists());
+    }
+
+    private void copyFile(Path dir, String resourceName, String fileName) throws IOException {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourceName)) {
+            Files.copy(is, dir.resolve(fileName));
+        }
     }
 }

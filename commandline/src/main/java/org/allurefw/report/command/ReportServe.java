@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static org.allurefw.report.utils.CommandUtils.copyDirectory;
 import static org.allurefw.report.utils.CommandUtils.createMain;
 import static org.allurefw.report.utils.CommandUtils.openBrowser;
 import static org.allurefw.report.utils.CommandUtils.setUpServer;
@@ -36,8 +37,9 @@ public class ReportServe implements AllureCommand {
 
         Path serve = Files.createTempDirectory(context.getWorkDirectory(), "serve");
         LOGGER.info("Generate report to temp directory...");
-        createMain(context.getPluginsDirectory(), context.getWorkDirectory())
+        createMain(context)
                 .generate(serve, resultsOptions.getResultsDirectories());
+        copyDirectory(context.getWebDirectory(), serve);
 
         LOGGER.info("Starting web server...");
         Server server = setUpServer(portOptions.getPort(), serve);

@@ -1,6 +1,7 @@
 package org.allurefw.report;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Module;
 import com.google.inject.Scopes;
 import com.google.inject.multibindings.MapBinder;
 import com.google.inject.multibindings.Multibinder;
@@ -23,8 +24,11 @@ public class ParentModule extends AbstractModule {
 
     private final List<Plugin> plugins;
 
-    public ParentModule(List<Plugin> plugins) {
+    private final List<Module> children;
+
+    public ParentModule(List<Plugin> plugins, List<Module> children) {
         this.plugins = plugins;
+        this.children = children;
     }
 
     @Override
@@ -60,6 +64,9 @@ public class ParentModule extends AbstractModule {
 //        Plugins
         Multibinder.newSetBinder(binder(), Plugin.class);
         plugins.forEach(this::bindPlugin);
+
+//        Children
+        children.forEach(this::install);
     }
 
     private void bindPlugin(Plugin plugin) {

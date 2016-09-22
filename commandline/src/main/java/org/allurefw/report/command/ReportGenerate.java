@@ -2,13 +2,15 @@ package org.allurefw.report.command;
 
 import com.github.rvesse.airline.annotations.Command;
 import com.github.rvesse.airline.annotations.Option;
+import org.allurefw.report.Main;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.allurefw.report.utils.CommandUtils.copyWeb;
+import static org.allurefw.report.utils.CommandUtils.copyDirectory;
 import static org.allurefw.report.utils.CommandUtils.createMain;
 
 /**
@@ -34,9 +36,11 @@ public class ReportGenerate implements AllureCommand {
     @Override
     public void run(Context context) throws Exception {
         verboseOptions.configureLogLevel();
-        createMain(context.getPluginsDirectory(), context.getWorkDirectory())
-                .generate(Paths.get(reportDirectory), resultsOptions.getResultsDirectories());
-        copyWeb(context.getWebDirectory(), context.getWebDirectory());
+        Path output = Paths.get(reportDirectory);
+        Main main = createMain(context);
+        main.generate(output, resultsOptions.getResultsDirectories());
+
+        copyDirectory(context.getWebDirectory(), output);
         LOGGER.info("Report successfully generated to the directory <{}>. " +
                 "Use `allure report open` command to show the report.", reportDirectory);
     }

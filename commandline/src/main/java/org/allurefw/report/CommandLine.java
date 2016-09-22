@@ -60,7 +60,7 @@ public class CommandLine {
             String toolVersion = CommandLine.class.getPackage().getImplementationVersion();
 
             Context context = new Context(workDirectory.getPath(), pluginsDirectory,
-                    webDirectory, toolVersion);
+                    webDirectory, toolVersion, null);
 
             new CommandLine().parse(args).run(context);
         } catch (AllureCommandException e) {

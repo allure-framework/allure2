@@ -119,9 +119,9 @@ public class DefaultPluginsLoader implements PluginsLoader {
             Files.copy(is, pluginJar, StandardCopyOption.REPLACE_EXISTING);
             URL[] classPath = new URL[]{pluginJar.toUri().toURL()};
             ClassLoader parent = getClass().getClassLoader();
-            try (URLClassLoader classLoader = new URLClassLoader(classPath, parent)) {
-                return Optional.of((Module) classLoader.loadClass(descriptor.getModuleClass()).newInstance());
-            }
+            //We should not close this classloader to load other plugin classes.
+            URLClassLoader classLoader = new URLClassLoader(classPath, parent);
+            return Optional.of((Module) classLoader.loadClass(descriptor.getModuleClass()).newInstance());
         } catch (Exception e) {
             LOGGER.error("Could not load module {} for plugin {} {}",
                     descriptor.getModuleClass(), descriptor.getName(), e);
