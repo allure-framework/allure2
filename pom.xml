@@ -21,7 +21,6 @@
         <module>plugins/packages-plugin</module>
         <module>generator</module>
         <module>face</module>
-        <module>bundle</module>
         <module>commandline</module>
     </modules>
 

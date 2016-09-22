@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>org.allurefw.report</groupId>
         <artifactId>allure-report</artifactId>
@@ -13,9 +14,13 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.airlift</groupId>
+            <groupId>org.allurefw.report</groupId>
+            <artifactId>generator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.rvesse</groupId>
             <artifactId>airline</artifactId>
-            <version>0.7</version>
+            <version>2.2.0</version>
         </dependency>
         <dependency>
             <groupId>com.squareup.retrofit</groupId>
@@ -66,24 +71,22 @@
                 <version>2.10</version>
                 <executions>
                     <execution>
-                        <id>copy-bundle</id>
+                        <id>copy-face</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>copy</goal>
+                            <goal>unpack</goal>
                         </goals>
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>org.allurefw.report</groupId>
-                                    <artifactId>bundle</artifactId>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>face</artifactId>
                                     <version>${project.version}</version>
-                                    <type>jar</type>
-                                    <classifier>standalone</classifier>
+                                    <type>war</type>
                                 </artifactItem>
                             </artifactItems>
-                            <outputDirectory>${project.build.directory}/app</outputDirectory>
-                            <stripClassifier>true</stripClassifier>
-                            <stripVersion>true</stripVersion>
+                            <excludes>META-INF/**,WEB-INF/**</excludes>
+                            <outputDirectory>${project.build.directory}/web</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -95,7 +98,7 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>org.allurefw.report</groupId>
+                                    <groupId>${project.groupId}</groupId>
                                     <artifactId>xunit-plugin</artifactId>
                                     <version>${project.version}</version>
                                     <type>zip</type>
@@ -127,6 +130,8 @@
                             <archive>
                                 <manifest>
                                     <mainClass>org.allurefw.report.CommandLine</mainClass>
+                                    <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                                    <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                                 </manifest>
                             </archive>
                         </configuration>

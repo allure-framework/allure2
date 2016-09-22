@@ -40,8 +40,18 @@
             <fileMode>0644</fileMode>
         </fileSet>
         <fileSet>
+            <outputDirectory>plugins</outputDirectory>
+            <directory>target/plugins</directory>
+            <fileMode>0644</fileMode>
+        </fileSet>
+        <fileSet>
             <outputDirectory>app</outputDirectory>
             <directory>target/app</directory>
+            <fileMode>0644</fileMode>
+        </fileSet>
+        <fileSet>
+            <outputDirectory>web</outputDirectory>
+            <directory>target/web</directory>
             <fileMode>0644</fileMode>
         </fileSet>
     </fileSets>

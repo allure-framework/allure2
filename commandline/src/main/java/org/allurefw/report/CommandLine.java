@@ -1,59 +1,78 @@
 package org.allurefw.report;
 
-import io.airlift.airline.Cli;
-import org.allurefw.report.command.AbstractCommand;
+import com.github.rvesse.airline.Cli;
+import com.github.rvesse.airline.builder.CliBuilder;
 import org.allurefw.report.command.AllureCommand;
 import org.allurefw.report.command.AllureCommandException;
-import org.allurefw.report.command.AllureHelp;
-import org.allurefw.report.command.AllureVersion;
-import org.allurefw.report.command.ExitCode;
-import org.allurefw.report.command.ReportClean;
+import org.allurefw.report.command.Context;
+import org.allurefw.report.command.Help;
+import org.allurefw.report.command.ListPlugins;
 import org.allurefw.report.command.ReportGenerate;
 import org.allurefw.report.command.ReportOpen;
 import org.allurefw.report.command.ReportServe;
+import org.allurefw.report.command.Version;
+import org.allurefw.report.utils.AutoCleanablePath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.qatools.properties.PropertyLoader;
+
+import java.nio.file.Path;
+
+import static org.allurefw.report.command.ExitCode.ARGUMENT_PARSING_ERROR;
+import static org.allurefw.report.command.ExitCode.GENERIC_ERROR;
+import static org.allurefw.report.utils.AutoCleanablePath.create;
 
 /**
  * @author Artem Eroshenko <eroshenkoam@qameta.io>
  */
 public class CommandLine {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCommand.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommandLine.class);
 
-    private CommandLine() {
+    private static final String COMMANDLINE_NAME = "allure";
+
+    private final Cli<AllureCommand> parser;
+
+    public CommandLine() {
+        CliBuilder<AllureCommand> builder = Cli.<AllureCommand>builder(COMMANDLINE_NAME)
+                .withDefaultCommand(Help.class)
+                .withCommand(Help.class)
+                .withCommand(Version.class)
+                .withCommand(ListPlugins.class)
+                .withCommand(ReportOpen.class)
+                .withCommand(ReportGenerate.class)
+                .withCommand(ReportServe.class);
+
+        this.parser = builder.build();
+    }
+
+    public AllureCommand parse(String... args) {
+        return parser.parse(args);
     }
 
     public static void main(String[] args) throws InterruptedException {
-        ExitCode exitCode;
-        try {
-            Cli.CliBuilder<AllureCommand> builder = Cli.<AllureCommand>builder("allure")
-                    .withDefaultCommand(AllureHelp.class)
-                    .withCommand(AllureHelp.class)
-                    .withCommand(AllureVersion.class)
-                    .withCommand(ReportGenerate.class);
+        CommandProperties properties = PropertyLoader.newInstance()
+                .populate(CommandProperties.class);
 
-            builder.withGroup("report")
-                    .withDescription("Report commands")
-                    .withDefaultCommand(ReportOpen.class)
-                    .withCommand(ReportOpen.class)
-                    .withCommand(ReportClean.class)
-                    .withCommand(ReportGenerate.class)
-                    .withCommand(ReportServe.class);
+        System.out.println(properties.getAllureHome());
 
-            Cli<AllureCommand> allureParser = builder.build();
-            AllureCommand command = allureParser.parse(args);
+        try (AutoCleanablePath workDirectory = create("allure-commandline")) {
+            Path pluginsDirectory = properties.getAllureHome().resolve("plugins");
+            Path webDirectory = properties.getAllureHome().resolve("web");
+            String toolVersion = CommandLine.class.getPackage().getImplementationVersion();
 
-            command.run();      //NOSONAR
-            exitCode = command.getExitCode();
+            Context context = new Context(workDirectory.getPath(), pluginsDirectory,
+                    webDirectory, toolVersion);
+
+            new CommandLine().parse(args).run(context);
         } catch (AllureCommandException e) {
-            LOGGER.error("{}", e);
-            exitCode = ExitCode.GENERIC_ERROR;
+            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            System.exit(GENERIC_ERROR.getCode());
         } catch (Exception e) {
-            LOGGER.error("{}", e);
-            exitCode = ExitCode.ARGUMENT_PARSING_ERROR;
+            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            System.exit(ARGUMENT_PARSING_ERROR.getCode());
         }
-
-        System.exit(exitCode.getCode());
     }
 }

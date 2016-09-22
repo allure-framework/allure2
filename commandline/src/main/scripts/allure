@@ -78,8 +78,6 @@ ALLURE_CP="$ALLURE_HOME/bin/commandline.jar"
 ALLURE_MAIN="org.allurefw.report.CommandLine"
 
 add_system_property_arg "allure.home" "${ALLURE_HOME}"
-add_system_property_arg "allure.config" "${ALLURE_CONFIG}"
-add_system_property_arg "allure.bundle.javaOpts" "${ALLURE_BUNDLE_JAVA_OPTS}"
 add_allure_cp "$ALLURE_HOME/conf"
 
 ALLURE_COMMAND="${JAVA} ${JAVA_ARGS} -cp \"${ALLURE_CP}\" ${ALLURE_ARGS} ${ALLURE_MAIN} $@"

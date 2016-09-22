@@ -1,14 +1,10 @@
 package org.allurefw.report.command;
 
 /**
- * @author Dmitry Baev baev@qameta.io
- *         Date: 10.08.15
+ * @author charlie (Dmitry Baev).
  */
-public interface AllureCommand extends Runnable {
+public interface AllureCommand {
 
-    /**
-     * Returns the exit code for command. Should not be null.
-     */
-    ExitCode getExitCode();
+    void run(Context context) throws Exception;
 
 }
