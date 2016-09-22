@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -20,10 +21,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -31,6 +33,7 @@ import java.util.stream.Collectors;
 public class Main {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+    public static final String STATIC_FILES_PREFIX = "static/";
 
     private final PluginsLoader pluginsLoader;
 
@@ -50,51 +53,87 @@ public class Main {
     }
 
     public List<Plugin> loadPlugins() {
-        return pluginsLoader.loadPlugins();
-    }
-
-    public boolean isPluginEnabled(Plugin plugin) {
-        return Objects.isNull(enabledPlugins) ||
-                enabledPlugins.contains(plugin.getDescriptor().getName());
+        return pluginsLoader.loadPlugins(enabledPlugins);
     }
 
     public ReportInfo createReport(Path... sources) {
-        ReportFactory factory = createInjector()
+        List<Plugin> plugins = pluginsLoader.loadPlugins(enabledPlugins);
+        ReportFactory factory = createInjector(plugins)
                 .getInstance(ReportFactory.class);
         return factory.create(sources);
     }
 
     public void generate(Path output, Path... sources) {
-        Injector injector = createInjector();
+        List<Plugin> plugins = pluginsLoader.loadPlugins(enabledPlugins);
+        Injector injector = createInjector(plugins);
         ReportFactory factory = injector.getInstance(ReportFactory.class);
         ProcessStage stage = injector.getInstance(ProcessStage.class);
         ReportInfo report = factory.create(sources);
         stage.run(report, output);
-        writeIndexHtml(output);
+        Set<String> pluginsWithStatic = unpackPluginStatic(plugins, output);
+        writeIndexHtml(pluginsWithStatic, output);
     }
 
-    private void writeIndexHtml(Path outputDirectory) {
+    private static Injector createInjector(List<Plugin> plugins) {
+        List<Module> enabledPluginsModules = plugins.stream()
+                .filter(Plugin::isEnabled)
+                .map(Plugin::getModule)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
+        return Guice.createInjector(new ParentModule(plugins, enabledPluginsModules));
+    }
+
+    private static void writeIndexHtml(Set<String> pluginsWithStatic, Path outputDirectory) {
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_23);
-        cfg.setClassLoaderForTemplateLoading(getClass().getClassLoader(), "tpl");
+        cfg.setClassLoaderForTemplateLoading(Main.class.getClassLoader(), "tpl");
         Path indexHtml = outputDirectory.resolve("index.html");
         try (BufferedWriter writer = Files.newBufferedWriter(indexHtml, StandardOpenOption.CREATE)) {
             Template template = cfg.getTemplate("index.html.ftl");
             Map<String, Object> dataModel = new HashMap<>();
-            dataModel.put("plugins", Collections.emptySet());
+            dataModel.put("plugins", pluginsWithStatic);
             template.process(dataModel, writer);
         } catch (IOException | TemplateException e) {
             LOGGER.error("Could't read index file", e);
         }
     }
 
-    private Injector createInjector() {
-        List<Plugin> plugins = loadPlugins();
-        List<Module> enabledPluginsModules = plugins.stream()
-                .filter(this::isPluginEnabled)
-                .map(Plugin::getModule)
+    private static Set<String> unpackPluginStatic(List<Plugin> plugins, Path outputDirectory) {
+        Path pluginsDirectory = outputDirectory.resolve("plugins");
+        return plugins.stream()
+                .filter(Plugin::isEnabled)
+                .map(plugin -> copyPluginStatic(plugin, pluginsDirectory))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .collect(Collectors.toList());
-        return Guice.createInjector(new ParentModule(plugins, enabledPluginsModules));
+                .collect(Collectors.toSet());
+    }
+
+    private static Optional<String> copyPluginStatic(Plugin plugin, Path pluginsDirectory) {
+        String name = plugin.getDescriptor().getName();
+        Path pluginDirectory = pluginsDirectory.resolve(name);
+        try (ZipFile zipFile = new ZipFile(plugin.getArchive().toFile())) {
+            boolean anyCopied = zipFile.stream()
+                    .filter(entry -> entry.getName().startsWith(STATIC_FILES_PREFIX))
+                    .map(entry -> unpackEntry(zipFile, entry, pluginDirectory))
+                    .anyMatch(Boolean::booleanValue);
+            if (anyCopied) {
+                return Optional.of(name);
+            }
+        } catch (IOException e) {
+            LOGGER.error("Could not read <{}> plugin archive {}", name, e);
+        }
+        return Optional.empty();
+    }
+
+    private static boolean unpackEntry(ZipFile zipFile, ZipEntry entry, Path pluginDirectory) {
+        try (InputStream is = zipFile.getInputStream(entry)) {
+            Files.createDirectories(pluginDirectory);
+            String entryPath = entry.getName().substring(STATIC_FILES_PREFIX.length());
+            Files.copy(is, pluginDirectory.resolve(entryPath));
+            return true;
+        } catch (IOException e) {
+            LOGGER.error("Could not copy plugin entry {} {}", entry, e);
+            return false;
+        }
     }
 }

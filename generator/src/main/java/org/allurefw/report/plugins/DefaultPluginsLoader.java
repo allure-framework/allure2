@@ -17,7 +17,9 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -45,7 +47,7 @@ public class DefaultPluginsLoader implements PluginsLoader {
     }
 
     @Override
-    public List<Plugin> loadPlugins() {
+    public List<Plugin> loadPlugins(Set<String> enabledPlugins) {
         if (!Files.exists(pluginsDirectory)) {
             return Collections.emptyList();
         }
@@ -55,7 +57,7 @@ public class DefaultPluginsLoader implements PluginsLoader {
                     .filter(Files::isRegularFile)
                     .filter(this::isZipArchive)
                     .filter(this::isPluginArchive)
-                    .map(this::loadPlugin)
+                    .map(archive -> loadPlugin(archive, enabledPlugins))
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .collect(Collectors.toList());
@@ -65,13 +67,17 @@ public class DefaultPluginsLoader implements PluginsLoader {
         }
     }
 
-    private Optional<Plugin> loadPlugin(Path archive) {
+    private Optional<Plugin> loadPlugin(Path archive, Set<String> enabledPlugins) {
         return open(archive, zipFile -> readPluginDescriptor(zipFile)
                 .map(descriptor -> loadPluginModule(descriptor, zipFile)
-                        .map(module -> new Plugin(descriptor, module, archive))
-                        .orElseGet(() -> new Plugin(descriptor, null, archive))
+                        .map(module -> new Plugin(descriptor, module, archive, isEnabled(descriptor, enabledPlugins)))
+                        .orElseGet(() -> new Plugin(descriptor, null, archive, isEnabled(descriptor, enabledPlugins)))
                 )
         );
+    }
+
+    private boolean isEnabled(PluginDescriptor descriptor, Set<String> enabledPlugins) {
+        return Objects.isNull(enabledPlugins) || enabledPlugins.contains(descriptor.getName());
     }
 
     private <T> Optional<T> open(Path zipArchive, Function<ZipFile, Optional<T>> function) {

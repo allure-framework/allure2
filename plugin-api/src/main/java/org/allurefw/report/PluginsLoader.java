@@ -1,6 +1,7 @@
 package org.allurefw.report;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -8,6 +9,6 @@ import java.util.List;
 @FunctionalInterface
 public interface PluginsLoader {
 
-    List<Plugin> loadPlugins();
+    List<Plugin> loadPlugins(Set<String> enabledPlugins);
 
 }

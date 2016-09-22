@@ -39,7 +39,7 @@ public class DefaultPluginsLoaderTest {
     public void shouldLoad() throws Exception {
         Path pluginsDirectory = getPluginsDirectory();
         DefaultPluginsLoader pluginsLoader = new DefaultPluginsLoader(pluginsDirectory, folder.newFolder().toPath());
-        List<Plugin> plugins = pluginsLoader.loadPlugins();
+        List<Plugin> plugins = pluginsLoader.loadPlugins(Collections.singleton("xunit-plugin"));
         assertThat(plugins, notNullValue());
         assertThat(plugins, hasSize(1));
         assertThat(plugins, hasItem(allOf(
@@ -48,6 +48,7 @@ public class DefaultPluginsLoaderTest {
                         hasProperty("moduleClass", equalTo("org.allurefw.report.xunit.XunitPlugin"))
                 )),
                 hasProperty("module", notNullValue()),
+                hasProperty("enabled", equalTo(true)),
                 hasProperty("archive", exists())
         )));
     }
@@ -56,7 +57,7 @@ public class DefaultPluginsLoaderTest {
     public void shouldNotFailIfPluginDirectoryDoesNotExists() throws Exception {
         Path pluginsDirectory = folder.newFolder().toPath().resolve("pluginsDirectory");
         DefaultPluginsLoader loader = new DefaultPluginsLoader(pluginsDirectory, folder.newFolder().toPath());
-        List<Plugin> plugins = loader.loadPlugins();
+        List<Plugin> plugins = loader.loadPlugins(Collections.emptySet());
         assertThat(plugins, notNullValue());
         assertThat(plugins, empty());
     }
@@ -66,7 +67,7 @@ public class DefaultPluginsLoaderTest {
         Path pluginsDirectory = getPluginsDirectory();
         Path workDirectory = folder.newFolder().toPath().resolve("workDirectory");
         DefaultPluginsLoader loader = new DefaultPluginsLoader(pluginsDirectory, workDirectory);
-        List<Plugin> plugins = loader.loadPlugins();
+        List<Plugin> plugins = loader.loadPlugins(Collections.emptySet());
         assertThat(plugins, notNullValue());
         assertThat(plugins, hasSize(1));
         assertThat(plugins, hasItem(allOf(
@@ -83,7 +84,7 @@ public class DefaultPluginsLoaderTest {
     public void shouldCreateInjector() throws Exception {
         Path pluginsDirectory = getPluginsDirectory();
         DefaultPluginsLoader pluginsLoader = new DefaultPluginsLoader(pluginsDirectory, folder.newFolder().toPath());
-        List<Plugin> plugins = pluginsLoader.loadPlugins();
+        List<Plugin> plugins = pluginsLoader.loadPlugins(Collections.emptySet());
         List<Module> modules = plugins.stream()
                 .map(Plugin::getModule)
                 .filter(Optional::isPresent)

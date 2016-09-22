@@ -17,10 +17,13 @@ public class Plugin {
 
     private final Module module;
 
-    public Plugin(PluginDescriptor descriptor, Module module, Path archive) {
+    private final boolean enabled;
+
+    public Plugin(PluginDescriptor descriptor, Module module, Path archive, boolean enabled) {
         this.descriptor = descriptor;
         this.archive = archive;
         this.module = module;
+        this.enabled = enabled;
     }
 
     public PluginDescriptor getDescriptor() {
@@ -37,5 +40,9 @@ public class Plugin {
 
     public Path getArchive() {
         return archive;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 }
