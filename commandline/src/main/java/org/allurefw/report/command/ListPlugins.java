@@ -14,7 +14,7 @@ import static org.allurefw.report.utils.CommandUtils.createMain;
 public class ListPlugins implements AllureCommand {
 
     @Inject
-    private VerboseOptions verboseOptions;
+    private VerboseOptions verboseOptions = new VerboseOptions();
 
     @Override
     public void run(Context context) throws Exception {

@@ -54,8 +54,6 @@ public class CommandLine {
         CommandProperties properties = PropertyLoader.newInstance()
                 .populate(CommandProperties.class);
 
-        System.out.println(properties.getAllureHome());
-
         try (AutoCleanablePath workDirectory = create("allure-commandline")) {
             Path pluginsDirectory = properties.getAllureHome().resolve("plugins");
             Path webDirectory = properties.getAllureHome().resolve("web");

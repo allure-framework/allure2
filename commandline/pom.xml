@@ -90,7 +90,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>copy-xunit-plugin</id>
+                        <id>copy-plugins</id>
                         <phase>package</phase>
                         <goals>
                             <goal>copy</goal>
@@ -100,6 +100,24 @@
                                 <artifactItem>
                                     <groupId>${project.groupId}</groupId>
                                     <artifactId>xunit-plugin</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>zip</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>packages-plugin</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>zip</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>behaviors-plugin</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>zip</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>junit-plugin</artifactId>
                                     <version>${project.version}</version>
                                     <type>zip</type>
                                 </artifactItem>

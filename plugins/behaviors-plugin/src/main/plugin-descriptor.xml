@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pluginDescriptor>
+    <name>behaviors-plugin</name>
+    <enabled>true</enabled>
+    <moduleClass>org.allurefw.report.behaviors.BehaviorsPlugin</moduleClass>
+</pluginDescriptor>
