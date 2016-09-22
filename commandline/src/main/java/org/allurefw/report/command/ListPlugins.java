@@ -25,6 +25,7 @@ public class ListPlugins implements AllureCommand {
     }
 
     protected void printPluginInfo(Plugin plugin) {
-        System.out.println(plugin.getDescriptor().getName());
+        System.out.println(String.format("<%s> enabled: %s",
+                plugin.getDescriptor().getName(), plugin.isEnabled()));
     }
 }
