@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Module;
 import org.allurefw.report.ParentModule;
 import org.allurefw.report.Plugin;
+import org.allurefw.report.PluginDescriptor;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -17,6 +18,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.github.npathai.hamcrestopt.OptionalMatchers.hasValue;
+import static com.github.npathai.hamcrestopt.OptionalMatchers.isPresent;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -50,6 +53,17 @@ public class DefaultPluginsLoaderTest {
                 hasProperty("module", notNullValue()),
                 hasProperty("enabled", equalTo(true)),
                 hasProperty("archive", exists())
+        )));
+    }
+
+    @Test
+    public void shouldLoadPluginDescriptor() throws Exception {
+        Path archive = getPluginArchive();
+        Optional<PluginDescriptor> plugin = DefaultPluginsLoader.loadPluginDescriptor(archive);
+        assertThat(plugin, isPresent());
+        assertThat(plugin, hasValue(allOf(
+                hasProperty("name", equalTo("xunit-plugin")),
+                hasProperty("moduleClass", equalTo("org.allurefw.report.xunit.XunitPlugin"))
         )));
     }
 
@@ -104,5 +118,13 @@ public class DefaultPluginsLoaderTest {
             Files.copy(is, dir.resolve("dummy-plugin.zip"));
         }
         return dir;
+    }
+
+    private Path getPluginArchive() throws IOException {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("dummy-plugin.zip")) {
+            Path archive = folder.newFolder().toPath().resolve("dummy-plugin.zip");
+            Files.copy(is, archive);
+            return archive;
+        }
     }
 }

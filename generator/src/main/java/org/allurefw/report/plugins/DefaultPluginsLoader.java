@@ -55,8 +55,8 @@ public class DefaultPluginsLoader implements PluginsLoader {
             Files.createDirectories(workDirectory);
             return stream
                     .filter(Files::isRegularFile)
-                    .filter(this::isZipArchive)
-                    .filter(this::isPluginArchive)
+                    .filter(DefaultPluginsLoader::isZipArchive)
+                    .filter(DefaultPluginsLoader::isPluginArchive)
                     .map(archive -> loadPlugin(archive, enabledPlugins))
                     .filter(Optional::isPresent)
                     .map(Optional::get)
@@ -80,39 +80,12 @@ public class DefaultPluginsLoader implements PluginsLoader {
         return Objects.isNull(enabledPlugins) || enabledPlugins.contains(descriptor.getName());
     }
 
-    private <T> Optional<T> open(Path zipArchive, Function<ZipFile, Optional<T>> function) {
-        try (ZipFile zipFile = new ZipFile(zipArchive.toFile())) {
-            return function.apply(zipFile);
-        } catch (IOException e) {
-            LOGGER.error("Could not open zip file {} {}", zipArchive, e);
-            return Optional.empty();
-        }
-    }
-
-    private Optional<PluginDescriptor> readPluginDescriptor(ZipFile zipFile) {
-        return zipFile.stream()
-                .filter(this::isPluginDescriptorEntry)
-                .findAny()
-                .map(entry -> readPluginDescriptor(zipFile, entry))
-                .filter(Optional::isPresent)
-                .map(Optional::get);
-    }
-
-    private Optional<PluginDescriptor> readPluginDescriptor(ZipFile zipFile, ZipEntry entry) {
-        try (InputStream is = zipFile.getInputStream(entry)) {
-            return Optional.of(JAXB.unmarshal(is, PluginDescriptor.class));
-        } catch (IOException e) {
-            LOGGER.error("Could not read plugin descriptor {} {}", zipFile.getName(), e);
-            return Optional.empty();
-        }
-    }
-
     private Optional<Module> loadPluginModule(PluginDescriptor descriptor, ZipFile zipFile) {
         if (descriptor.getModuleClass() == null || descriptor.getModuleClass().isEmpty()) {
             return Optional.empty();
         }
         return zipFile.stream()
-                .filter(this::isPluginJarEntry)
+                .filter(DefaultPluginsLoader::isPluginJarEntry)
                 .findAny()
                 .map(entry -> loadPluginModule(descriptor, zipFile, entry))
                 .filter(Optional::isPresent)
@@ -135,27 +108,58 @@ public class DefaultPluginsLoader implements PluginsLoader {
         }
     }
 
-    private boolean isPluginArchive(Path path) {
-        try (ZipFile zipFile = new ZipFile(path.toFile())) {
+    public static Optional<PluginDescriptor> loadPluginDescriptor(Path archive) {
+        return open(archive, DefaultPluginsLoader::readPluginDescriptor);
+    }
+
+    public static boolean isPluginArchive(Path archive) {
+        try (ZipFile zipFile = new ZipFile(archive.toFile())) {
             return zipFile.stream()
-                    .filter(this::isPluginDescriptorEntry)
+                    .filter(DefaultPluginsLoader::isPluginDescriptorEntry)
                     .findAny()
                     .isPresent();
         } catch (IOException e) {
-            LOGGER.debug("Could not process plugin archive {} {}", path, e);
+            LOGGER.debug("Could not process plugin archive {} {}", archive, e);
             return false;
         }
     }
 
-    private boolean isPluginDescriptorEntry(ZipEntry entry) {
+    private static Optional<PluginDescriptor> readPluginDescriptor(ZipFile zipFile) {
+        return zipFile.stream()
+                .filter(DefaultPluginsLoader::isPluginDescriptorEntry)
+                .findAny()
+                .map(entry -> readPluginDescriptor(zipFile, entry))
+                .filter(Optional::isPresent)
+                .map(Optional::get);
+    }
+
+    private static Optional<PluginDescriptor> readPluginDescriptor(ZipFile zipFile, ZipEntry entry) {
+        try (InputStream is = zipFile.getInputStream(entry)) {
+            return Optional.of(JAXB.unmarshal(is, PluginDescriptor.class));
+        } catch (IOException e) {
+            LOGGER.error("Could not read plugin descriptor {} {}", zipFile.getName(), e);
+            return Optional.empty();
+        }
+    }
+
+    private static <T> Optional<T> open(Path zipArchive, Function<ZipFile, Optional<T>> function) {
+        try (ZipFile zipFile = new ZipFile(zipArchive.toFile())) {
+            return function.apply(zipFile);
+        } catch (IOException e) {
+            LOGGER.error("Could not open zip file {} {}", zipArchive, e);
+            return Optional.empty();
+        }
+    }
+
+    private static boolean isPluginDescriptorEntry(ZipEntry entry) {
         return DESCRIPTOR_ENTRY_NAME.equals(entry.getName());
     }
 
-    private boolean isPluginJarEntry(ZipEntry entry) {
+    private static boolean isPluginJarEntry(ZipEntry entry) {
         return PLUGIN_JAR_ENTRY_NAME.equals(entry.getName());
     }
 
-    private boolean isZipArchive(Path file) {
+    private static boolean isZipArchive(Path file) {
         return file.getFileName().toString().endsWith(PLUGIN_FILE_SUFFIX);
     }
 }
