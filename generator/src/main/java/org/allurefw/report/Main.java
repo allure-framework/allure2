@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.Collections;
 import java.util.HashMap;
@@ -129,7 +130,7 @@ public class Main {
         try (InputStream is = zipFile.getInputStream(entry)) {
             Files.createDirectories(pluginDirectory);
             String entryPath = entry.getName().substring(STATIC_FILES_PREFIX.length());
-            Files.copy(is, pluginDirectory.resolve(entryPath));
+            Files.copy(is, pluginDirectory.resolve(entryPath), StandardCopyOption.REPLACE_EXISTING);
             return true;
         } catch (IOException e) {
             LOGGER.error("Could not copy plugin entry {} {}", entry, e);
