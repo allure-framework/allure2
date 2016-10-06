@@ -15,7 +15,6 @@
     text-align: center;
     padding-top: 10px;
     color: $text-muted-color;
-    cursor: pointer;
   }
   &__trace-toggle::before {
     content: 'show trace';
