@@ -9,19 +9,19 @@
     {{name}}
 </h2>
 
-{{#if failure}}
-    <div class="testcase__failure alert message message_status_{{status}}">
+<div class="testcase__failure alert message message_status_{{status}}">
+    {{#if failure.message}}
         <pre class="alert__code"><code>{{failure.message}}</code></pre>
+    {{else}}
+        The test has been passed!
+    {{/if}}
+    {{#if failure.trace}}
         <div class="testcase__trace-toggle clickable" data-tooltip="Show trace">
             <i class="fa fa-ellipsis-h fa-lg" aria-hidden="true"></i>
         </div>
         <pre class="alert__code testcase__trace"><code>{{failure.trace}}</code></pre>
-    </div>
-{{else}}
-    <div class="alert message message_status_{{status}}">
-        The test has been passed!
-    </div>
-{{/if}}
+    {{/if}}
+</div>
 
 <div class="testcase__content_before"></div>
 <div class="testcase__steps"></div>
