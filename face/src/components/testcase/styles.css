@@ -12,12 +12,13 @@
     }
   }
   &__trace-toggle {
+    margin-top: 5px;
     text-align: center;
-    padding-top: 10px;
+    padding-top: 5px;
     color: $text-muted-color;
-  }
-  &__trace-toggle::before {
-    content: 'show trace';
+    &:hover {
+      background-color: $hover-color;
+    }
   }
   &__severity {
     color: $color-canceled;
@@ -29,10 +30,6 @@
 
 .testcase__failure_expanded > .testcase__trace {
   display: block;
-}
-
-.testcase__failure_expanded > .testcase__trace-toggle::before {
-  content: 'hide trace';
 }
 
 .message {

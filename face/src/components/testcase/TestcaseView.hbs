@@ -12,7 +12,9 @@
 {{#if failure}}
     <div class="testcase__failure alert message message_status_{{status}}">
         <pre class="alert__code"><code>{{failure.message}}</code></pre>
-        <div class="testcase__trace-toggle clickable"></div>
+        <div class="testcase__trace-toggle clickable" data-tooltip="Show trace">
+            <i class="fa fa-ellipsis-h fa-lg" aria-hidden="true"></i>
+        </div>
         <pre class="alert__code testcase__trace"><code>{{failure.trace}}</code></pre>
     </div>
 {{else}}
