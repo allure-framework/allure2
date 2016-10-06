@@ -3,14 +3,37 @@
 
 .testcase {
   &__trace {
+    border-top: 1px solid $border-color;
+    padding-top: 10px;
+    margin-top: 10px;
     display: none;
     &_visible {
       display: block;
     }
   }
+  &__trace-toggle {
+    text-align: center;
+    padding-top: 10px;
+    color: $text-muted-color;
+    cursor: pointer;
+  }
+  &__trace-toggle::before {
+    content: 'show trace';
+  }
   &__severity {
     color: $color-canceled;
   }
+  &__failure {
+    padding-bottom: 10px;
+  }
+}
+
+.testcase__failure_expanded > .testcase__trace {
+  display: block;
+}
+
+.testcase__failure_expanded > .testcase__trace-toggle::before {
+  content: 'hide trace';
 }
 
 .message {

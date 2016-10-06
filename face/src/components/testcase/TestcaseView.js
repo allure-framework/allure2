@@ -67,7 +67,7 @@ class TestcaseView extends View {
     @on('dblclick .testcase__failure')
     @on('click .testcase__trace-toggle')
     onStacktraceClick() {
-        this.$('.testcase__trace').toggleClass('testcase__trace_visible');
+        this.$('.testcase__failure').toggleClass('testcase__failure_expanded');
     }
 }
 
