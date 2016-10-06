@@ -30,6 +30,8 @@ export default function typeByMime(type) {
         case 'video/ogg':
         case 'video/webm':
             return 'video';
+        case 'text/uri-list':
+            return 'uri';
         default:
     }
 }

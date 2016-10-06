@@ -39,6 +39,14 @@ class AttachmentView extends View {
         return $.ajax(this.sourceUrl, {dataType: 'text'}).then((responseText) => {
             if(this.type === 'csv') {
                 this.content = d3.csv.parseRows(responseText);
+            } else if(this.type === 'uri') {
+                this.content = responseText.split('\n')
+                    .map(line => line.trim())
+                    .filter(line => line.length > 0)
+                    .map(line => ({
+                        comment: line.startsWith('#'),
+                        text: line
+                    }));
             } else {
                 this.content = responseText;
             }
@@ -46,7 +54,7 @@ class AttachmentView extends View {
     }
 
     needsFetch() {
-        return ['text', 'code', 'csv'].indexOf(this.type) > -1;
+        return ['text', 'code', 'csv', 'uri'].indexOf(this.type) > -1;
     }
 
     serializeData() {

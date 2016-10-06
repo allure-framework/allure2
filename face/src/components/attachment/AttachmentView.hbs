@@ -45,7 +45,16 @@
             Your browser does not support video tag
         </video>
     </div>
+{{else if (eq type "uri")}}
+    {{#each content}}
+        <p class="{{b 'attachment' 'url' comment=comment}}">
+            {{#if comment}}
+                {{text}}
+            {{else}}
+                <a href="{{text}}" target="_blank" class="link">{{text}}</a>
+            {{/if}}
+        </p>
+    {{/each}}
 {{else}}
     <iframe class="attachment__iframe" frameborder="0" src="{{sourceUrl}}"></iframe>
 {{/if}}
-

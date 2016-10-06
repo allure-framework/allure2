@@ -125,8 +125,9 @@ Expected: element text is "Yandex"
             </steps>
             <attachments>
                 <attachment title="Server Log" source="234a7a37-5559-4294-8da6-84b193cee507-attachment.txt" type="text/plain" size="18"/>
-                <attachment title="Response" source="650cb877-49cc-446d-964f-f6aa1e5d9634-attachment.txt" type="text/plain" size="51"/>
+                <attachment title="Response" source="650cb877-49cc-446d-964f-f6aa1e5d9634-attachment.json" type="application/json" size="51"/>
                 <attachment title="Page Screenshot" source="10790969-f137-4a63-84e0-f900cb0dd79c-attachment.png" type="image/png" size="16100"/>
+                <attachment title="URI Attachment" source="00a0bc5a-6372-4e66-8088-1571966a056b-attachment.uri" type="text/uri-list"/>
             </attachments>
             <labels>
                 <label name="story" value="WebdriverScreenshot"/>

@@ -27,6 +27,13 @@
       padding: 10px 15px;
     }
   }
+  &__url {
+    padding: 0 $gap-size;
+    margin: 0.5em 0;
+    &_comment {
+      color: $text-muted-color;
+    }
+  }
   &__embed, &__media {
     max-width: 100%;
   }
