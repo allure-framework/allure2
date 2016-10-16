@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ns:pluginDescriptor xmlns:ns="urn:report.allurefw.org">
-    <name>xunit-plugin</name>
-    <moduleClass>org.allurefw.report.xunit.XunitPlugin</moduleClass>
-</ns:pluginDescriptor>

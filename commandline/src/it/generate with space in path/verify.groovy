@@ -26,7 +26,7 @@ def plugins = new File(report, 'plugins')
 assert plugins.exists()
 assert plugins.isDirectory()
 
-['xunit-plugin', 'behaviors-plugin', 'packages-plugin'].each {
+['behaviors-plugin', 'packages-plugin'].each {
     def plugin = new File(plugins, it)
     assert plugin.exists()
     assert plugin.isDirectory()

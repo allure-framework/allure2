@@ -14,6 +14,7 @@ import org.allurefw.report.jackson.JacksonMapperModule;
 import org.allurefw.report.timeline.TimelinePlugin;
 import org.allurefw.report.total.TotalPlugin;
 import org.allurefw.report.writer.WriterModule;
+import org.allurefw.report.xunit.XunitPlugin;
 
 import java.util.List;
 
@@ -60,6 +61,7 @@ public class ParentModule extends AbstractModule {
         install(new GraphPlugin());
         install(new TimelinePlugin());
         install(new DefectsPlugin());
+        install(new XunitPlugin());
 
 //        Plugins
         Multibinder.newSetBinder(binder(), Plugin.class);
