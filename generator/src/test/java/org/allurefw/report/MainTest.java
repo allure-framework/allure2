@@ -4,7 +4,7 @@ import com.google.common.reflect.ClassPath;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import ru.yandex.qatools.matchers.nio.PathMatchers;
+import org.zeroturnaround.zip.ZipUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,8 +35,7 @@ public class MainTest {
     @Test
     public void shouldCreateReportInfo() throws Exception {
         Path plugins = folder.newFolder().toPath();
-        Path work = folder.newFolder().toPath();
-        Main main = new Main(plugins, work, Collections.emptySet());
+        Main main = new Main(plugins, Collections.emptySet());
 
         ReportInfo report = main.createReport(getDataFolder("allure1data/"));
 
@@ -47,20 +46,19 @@ public class MainTest {
     @Test
     public void shouldGenerateTheReport() throws Exception {
         Path plugins = folder.newFolder().toPath();
-        Path work = folder.newFolder().toPath();
-        Main main = new Main(plugins, work, Collections.emptySet());
+        Main main = new Main(plugins, Collections.emptySet());
         main.generate(folder.newFolder().toPath(), getDataFolder("allure1data/"));
     }
 
     @Test
     public void shouldUnpackPluginFiles() throws Exception {
         String name = "some-name";
-        Path archive = getPluginArchive();
+        Path dir = getPluginDirectory();
         PluginDescriptor dummy = new PluginDescriptor();
         dummy.setName(name);
-        Plugin plugin = new Plugin(dummy, null, archive, true);
+        Plugin plugin = new Plugin(dummy, null, dir, true);
         Path output = folder.newFolder().toPath();
-        Optional<String> pluginName = Main.copyPluginStatic(plugin, output);
+        Optional<String> pluginName = Main.unpackStatic(plugin, output);
         assertThat(pluginName, isPresent());
         assertThat(pluginName, hasValue(name));
 
@@ -70,11 +68,11 @@ public class MainTest {
         assertThat(pluginDirectory, contains("index.js"));
     }
 
-    private Path getPluginArchive() throws IOException {
+    private Path getPluginDirectory() throws IOException {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("dummy-plugin.zip")) {
-            Path archive = folder.newFolder().toPath().resolve("dummy-plugin.zip");
-            Files.copy(is, archive);
-            return archive;
+            Path pluginsDirectory = folder.newFolder().toPath();
+            ZipUtil.unpack(is, pluginsDirectory.toFile());
+            return pluginsDirectory;
         }
     }
 

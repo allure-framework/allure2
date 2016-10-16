@@ -13,15 +13,15 @@ public class Plugin {
 
     private final PluginDescriptor descriptor;
 
-    private final Path archive;
+    private final Path pluginDirectory;
 
     private final Module module;
 
     private final boolean enabled;
 
-    public Plugin(PluginDescriptor descriptor, Module module, Path archive, boolean enabled) {
+    public Plugin(PluginDescriptor descriptor, Module module, Path pluginDirectory, boolean enabled) {
         this.descriptor = descriptor;
-        this.archive = archive;
+        this.pluginDirectory = pluginDirectory;
         this.module = module;
         this.enabled = enabled;
     }
@@ -38,8 +38,8 @@ public class Plugin {
         return Optional.ofNullable(module);
     }
 
-    public Path getArchive() {
-        return archive;
+    public Path getPluginDirectory() {
+        return pluginDirectory;
     }
 
     public boolean isEnabled() {

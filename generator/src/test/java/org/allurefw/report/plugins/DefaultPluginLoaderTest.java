@@ -8,10 +8,10 @@ import org.allurefw.report.PluginDescriptor;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.zeroturnaround.zip.ZipUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +33,7 @@ import static ru.yandex.qatools.matchers.nio.PathMatchers.exists;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class DefaultPluginsLoaderTest {
+public class DefaultPluginLoaderTest {
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
@@ -41,7 +41,7 @@ public class DefaultPluginsLoaderTest {
     @Test
     public void shouldLoad() throws Exception {
         Path pluginsDirectory = getPluginsDirectory();
-        DefaultPluginsLoader pluginsLoader = new DefaultPluginsLoader(pluginsDirectory, folder.newFolder().toPath());
+        DefaultPluginLoader pluginsLoader = new DefaultPluginLoader(pluginsDirectory);
         List<Plugin> plugins = pluginsLoader.loadPlugins(Collections.singleton("xunit-plugin"));
         assertThat(plugins, notNullValue());
         assertThat(plugins, hasSize(1));
@@ -52,14 +52,14 @@ public class DefaultPluginsLoaderTest {
                 )),
                 hasProperty("module", notNullValue()),
                 hasProperty("enabled", equalTo(true)),
-                hasProperty("archive", exists())
+                hasProperty("pluginDirectory", exists())
         )));
     }
 
     @Test
     public void shouldLoadPluginDescriptor() throws Exception {
-        Path archive = getPluginArchive();
-        Optional<PluginDescriptor> plugin = DefaultPluginsLoader.loadPluginDescriptor(archive);
+        Path archive = getPluginDirectory();
+        Optional<PluginDescriptor> plugin = DefaultPluginLoader.readPluginDescriptor(archive);
         assertThat(plugin, isPresent());
         assertThat(plugin, hasValue(allOf(
                 hasProperty("name", equalTo("xunit-plugin")),
@@ -70,34 +70,16 @@ public class DefaultPluginsLoaderTest {
     @Test
     public void shouldNotFailIfPluginDirectoryDoesNotExists() throws Exception {
         Path pluginsDirectory = folder.newFolder().toPath().resolve("pluginsDirectory");
-        DefaultPluginsLoader loader = new DefaultPluginsLoader(pluginsDirectory, folder.newFolder().toPath());
+        DefaultPluginLoader loader = new DefaultPluginLoader(pluginsDirectory);
         List<Plugin> plugins = loader.loadPlugins(Collections.emptySet());
         assertThat(plugins, notNullValue());
         assertThat(plugins, empty());
     }
 
     @Test
-    public void shouldNotFailIfWorkDirectoryDoesNotExists() throws Exception {
-        Path pluginsDirectory = getPluginsDirectory();
-        Path workDirectory = folder.newFolder().toPath().resolve("workDirectory");
-        DefaultPluginsLoader loader = new DefaultPluginsLoader(pluginsDirectory, workDirectory);
-        List<Plugin> plugins = loader.loadPlugins(Collections.emptySet());
-        assertThat(plugins, notNullValue());
-        assertThat(plugins, hasSize(1));
-        assertThat(plugins, hasItem(allOf(
-                hasProperty("descriptor", allOf(
-                        hasProperty("name", equalTo("xunit-plugin")),
-                        hasProperty("moduleClass", equalTo("org.allurefw.report.xunit.XunitPlugin"))
-                )),
-                hasProperty("module", notNullValue()),
-                hasProperty("archive", exists())
-        )));
-    }
-
-    @Test
     public void shouldCreateInjector() throws Exception {
         Path pluginsDirectory = getPluginsDirectory();
-        DefaultPluginsLoader pluginsLoader = new DefaultPluginsLoader(pluginsDirectory, folder.newFolder().toPath());
+        DefaultPluginLoader pluginsLoader = new DefaultPluginLoader(pluginsDirectory);
         List<Plugin> plugins = pluginsLoader.loadPlugins(Collections.emptySet());
         List<Module> modules = plugins.stream()
                 .map(Plugin::getModule)
@@ -115,16 +97,16 @@ public class DefaultPluginsLoaderTest {
     private Path getPluginsDirectory() throws IOException {
         Path dir = folder.newFolder().toPath();
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("dummy-plugin.zip")) {
-            Files.copy(is, dir.resolve("dummy-plugin.zip"));
+            ZipUtil.unpack(is, dir.resolve("dummy-plugin").toFile());
         }
         return dir;
     }
 
-    private Path getPluginArchive() throws IOException {
+    private Path getPluginDirectory() throws IOException {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("dummy-plugin.zip")) {
-            Path archive = folder.newFolder().toPath().resolve("dummy-plugin.zip");
-            Files.copy(is, archive);
-            return archive;
+            Path pluginsDirectory = folder.newFolder().toPath();
+            ZipUtil.unpack(is, pluginsDirectory.toFile());
+            return pluginsDirectory;
         }
     }
 }

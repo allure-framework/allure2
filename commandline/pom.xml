@@ -98,7 +98,7 @@
                         <id>copy-plugins</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>copy</goal>
+                            <goal>unpack</goal>
                         </goals>
                         <configuration>
                             <artifactItems>
@@ -107,29 +107,30 @@
                                     <artifactId>xunit-plugin</artifactId>
                                     <version>${project.version}</version>
                                     <type>zip</type>
+                                    <outputDirectory>${project.build.directory}/plugins/xunit</outputDirectory>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>${project.groupId}</groupId>
                                     <artifactId>packages-plugin</artifactId>
                                     <version>${project.version}</version>
                                     <type>zip</type>
+                                    <outputDirectory>${project.build.directory}/plugins/packages</outputDirectory>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>${project.groupId}</groupId>
                                     <artifactId>behaviors-plugin</artifactId>
                                     <version>${project.version}</version>
                                     <type>zip</type>
+                                    <outputDirectory>${project.build.directory}/plugins/behaviors</outputDirectory>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>${project.groupId}</groupId>
                                     <artifactId>junit-plugin</artifactId>
                                     <version>${project.version}</version>
                                     <type>zip</type>
+                                    <outputDirectory>${project.build.directory}/plugins/junit</outputDirectory>
                                 </artifactItem>
                             </artifactItems>
-                            <outputDirectory>${project.build.directory}/plugins</outputDirectory>
-                            <stripClassifier>true</stripClassifier>
-                            <stripVersion>true</stripVersion>
                         </configuration>
                     </execution>
                 </executions>

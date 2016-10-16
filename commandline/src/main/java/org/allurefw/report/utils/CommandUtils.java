@@ -41,7 +41,6 @@ public final class CommandUtils {
     public static Main createMain(Context context) {
         return new Main(
                 context.getPluginsDirectory(),
-                context.getWorkDirectory(),
                 context.getEnabledPlugins()
         );
     }

@@ -6,14 +6,14 @@ import com.google.inject.Module;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import org.allurefw.report.plugins.DefaultPluginsLoader;
+import org.allurefw.report.plugins.DefaultPluginLoader;
 import org.allurefw.report.plugins.EmptyPluginsLoader;
+import org.allurefw.report.utils.CopyVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -24,8 +24,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -33,7 +31,6 @@ import java.util.zip.ZipFile;
 public class Main {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
-    public static final String STATIC_FILES_PREFIX = "static/";
 
     private final PluginsLoader pluginsLoader;
 
@@ -43,8 +40,8 @@ public class Main {
         this(new EmptyPluginsLoader(), Collections.emptySet());
     }
 
-    public Main(Path pluginsDirectory, Path workDirectory, Set<String> enabledPlugins) {
-        this(new DefaultPluginsLoader(pluginsDirectory, workDirectory), enabledPlugins);
+    public Main(Path pluginsDirectory, Set<String> enabledPlugins) {
+        this(new DefaultPluginLoader(pluginsDirectory), enabledPlugins);
     }
 
     public Main(PluginsLoader pluginsLoader, Set<String> enabledPlugins) {
@@ -70,7 +67,7 @@ public class Main {
         ProcessStage stage = injector.getInstance(ProcessStage.class);
         ReportInfo report = factory.create(sources);
         stage.run(report, output);
-        Set<String> pluginsWithStatic = unpackPluginStatic(plugins, output);
+        Set<String> pluginsWithStatic = unpackStatic(plugins, output);
         writeIndexHtml(pluginsWithStatic, output);
     }
 
@@ -98,43 +95,35 @@ public class Main {
         }
     }
 
-    private static Set<String> unpackPluginStatic(List<Plugin> plugins, Path outputDirectory) {
+    private static Set<String> unpackStatic(List<Plugin> plugins, Path outputDirectory) {
         Path pluginsDirectory = outputDirectory.resolve("plugins");
         return plugins.stream()
                 .filter(Plugin::isEnabled)
-                .map(plugin -> copyPluginStatic(plugin, pluginsDirectory))
+                .map(plugin -> unpackStatic(plugin, pluginsDirectory))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toSet());
     }
 
-    public static Optional<String> copyPluginStatic(Plugin plugin, Path outputDirectory) {
+    public static Optional<String> unpackStatic(Plugin plugin, Path outputDirectory) {
         String name = plugin.getDescriptor().getName();
-        Path pluginDirectory = outputDirectory.resolve(name);
-        try (ZipFile zipFile = new ZipFile(plugin.getArchive().toFile())) {
-            boolean anyCopied = zipFile.stream()
-                    .filter(entry -> entry.getName().startsWith(STATIC_FILES_PREFIX))
-                    .filter(entry -> !entry.isDirectory())
-                    .map(entry -> unpackEntry(zipFile, entry, pluginDirectory))
-                    .anyMatch(Boolean::booleanValue);
-            if (anyCopied) {
-                return Optional.of(name);
-            }
-        } catch (IOException e) {
-            LOGGER.error("Could not read <{}> plugin archive {}", name, e);
-        }
-        return Optional.empty();
+        Path pluginOutputDirectory = outputDirectory.resolve(name);
+        unpack(plugin, pluginOutputDirectory);
+        return Files.exists(pluginOutputDirectory.resolve("index.js"))
+                ? Optional.of(name)
+                : Optional.empty();
     }
 
-    private static boolean unpackEntry(ZipFile zipFile, ZipEntry entry, Path pluginDirectory) {
-        try (InputStream is = zipFile.getInputStream(entry)) {
-            Files.createDirectories(pluginDirectory);
-            String entryPath = entry.getName().substring(STATIC_FILES_PREFIX.length());
-            Files.copy(is, pluginDirectory.resolve(entryPath));
-            return true;
+    private static void unpack(Plugin plugin, Path outputDirectory) {
+        Path pluginStatic = plugin.getPluginDirectory().resolve("static");
+        if (Files.notExists(pluginStatic)) {
+            return;
+        }
+        try {
+            Files.createDirectories(outputDirectory);
+            Files.walkFileTree(pluginStatic, new CopyVisitor(pluginStatic, outputDirectory));
         } catch (IOException e) {
-            LOGGER.error("Could not copy plugin entry {} {}", entry, e);
-            return false;
+            LOGGER.error("Could not copy plugin static {} {}", plugin.getDescriptor().getName(), e);
         }
     }
 }
