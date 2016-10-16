@@ -85,7 +85,7 @@ export default class StatusChart extends BaseChartView {
 
     getChartTitle() {
         const {passed, total} = this.options.statistic;
-        return this.formatNumber(passed / total * 100) + '%';
+        return this.formatNumber((passed || 0) / total * 100) + '%';
     }
 
     getTooltipContent({data}) {

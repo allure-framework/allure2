@@ -128,7 +128,7 @@
                                     <resources>
                                         <resource>
                                             <directory>
-                                                ${project.parent.basedir}/generator/src/test/resources/allure1data
+                                                ${project.basedir}/test-data/one-failed
                                             </directory>
                                             <filtering>false</filtering>
                                         </resource>
