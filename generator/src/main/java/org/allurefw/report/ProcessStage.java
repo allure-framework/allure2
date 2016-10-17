@@ -78,7 +78,7 @@ public class ProcessStage {
                 writer.write(testCasesDir, result.getSource(), result);
 
                 aggregators.forEach((uid, aggregator) -> {
-                    Object value = data.computeIfAbsent(uid, key -> aggregator.supplier().get());
+                    Object value = data.computeIfAbsent(uid, key -> aggregator.supplier(testRun).get());
                     //noinspection unchecked
                     aggregator.aggregate(testRun, testCase, result).accept(value);
                 });

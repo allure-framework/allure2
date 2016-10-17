@@ -20,7 +20,7 @@ import static org.allurefw.report.ReportApiUtils.generateUid;
 public abstract class TreeAggregator implements Aggregator<TreeData> {
 
     @Override
-    public Supplier<TreeData> supplier() {
+    public Supplier<TreeData> supplier(TestRun testRun) {
         return TreeData::new;
     }
 

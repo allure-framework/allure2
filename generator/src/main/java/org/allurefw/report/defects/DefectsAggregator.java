@@ -22,7 +22,7 @@ import static org.allurefw.report.entity.Status.FAILED;
 public class DefectsAggregator implements Aggregator<DefectsData> {
 
     @Override
-    public Supplier<DefectsData> supplier() {
+    public Supplier<DefectsData> supplier(TestRun testRun) {
         return DefectsData::new;
     }
 

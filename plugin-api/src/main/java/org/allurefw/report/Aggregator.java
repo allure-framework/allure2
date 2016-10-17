@@ -13,7 +13,7 @@ import java.util.function.Supplier;
  */
 public interface Aggregator<T> {
 
-    Supplier<T> supplier();
+    Supplier<T> supplier(TestRun testRun);
 
     Consumer<T> aggregate(TestRun testRun, TestCase testCase, TestCaseResult result);
 

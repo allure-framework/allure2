@@ -1,6 +1,6 @@
 {{#if history}}
-    <h3 class="pane__section-title">History</h3>
+    <h3 class="history-title">History</h3>
     {{#each history}}
-        <div>{{status}} {{date timestamp}}</div>
+        <div data-tooltip="{{statusDetails}}" class="history-row"><span class="label label_status_{{status}}">{{status}}</span> {{date timestamp}} at {{time timestamp}}</div>
     {{/each}}
 {{/if}}

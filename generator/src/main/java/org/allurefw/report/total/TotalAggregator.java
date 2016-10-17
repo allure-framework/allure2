@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 public class TotalAggregator implements Aggregator<TotalData> {
 
     @Override
-    public Supplier<TotalData> supplier() {
+    public Supplier<TotalData> supplier(TestRun testRun) {
         return TotalData::new;
     }
 

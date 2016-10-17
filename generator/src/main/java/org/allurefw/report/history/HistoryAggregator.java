@@ -13,14 +13,16 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import static org.allurefw.report.history.HistoryPlugin.HISTORY;
+
 /**
  * @author charlie (Dmitry Baev).
  */
 public class HistoryAggregator implements Aggregator<Map<String, List<HistoryItem>>> {
 
     @Override
-    public Supplier<Map<String, List<HistoryItem>>> supplier() {
-        return HashMap::new;
+    public Supplier<Map<String, List<HistoryItem>>> supplier(TestRun testRun) {
+        return () -> testRun.getExtraBlock(HISTORY, new HashMap<>());
     }
 
     @Override

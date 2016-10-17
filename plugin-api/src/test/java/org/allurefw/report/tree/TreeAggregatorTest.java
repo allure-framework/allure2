@@ -33,7 +33,7 @@ public class TreeAggregatorTest {
     @Test
     public void shouldSupplyData() throws Exception {
         OneValueTreeAggregator aggregator = new OneValueTreeAggregator();
-        TreeData treeData = aggregator.supplier().get();
+        TreeData treeData = aggregator.supplier(null).get();
         assertThat(treeData, notNullValue());
         assertThat(treeData.getChildren(), hasSize(0));
     }
@@ -41,7 +41,7 @@ public class TreeAggregatorTest {
     @Test
     public void shouldAggregate() throws Exception {
         OneValueTreeAggregator aggregator = new OneValueTreeAggregator();
-        TreeData treeData = aggregator.supplier().get();
+        TreeData treeData = aggregator.supplier(null).get();
         TestCaseResult result = mock(TestCaseResult.class);
 
         aggregator.accumulator().accept(treeData, result);
@@ -54,7 +54,7 @@ public class TreeAggregatorTest {
     @Test
     public void shouldUpdateStatistic() throws Exception {
         OneValueTreeAggregator aggregator = new OneValueTreeAggregator();
-        TreeData treeData = aggregator.supplier().get();
+        TreeData treeData = aggregator.supplier(null).get();
         TestCaseResult result = mock(TestCaseResult.class);
         doReturn(Status.PASSED).when(result).getStatus();
         aggregator.accumulator().accept(treeData, result);
@@ -66,7 +66,7 @@ public class TreeAggregatorTest {
     @Test
     public void shouldUpdateGroupTime() throws Exception {
         OneValueTreeAggregator aggregator = new OneValueTreeAggregator();
-        TreeData treeData = aggregator.supplier().get();
+        TreeData treeData = aggregator.supplier(null).get();
 
         TestCaseResult first = mock(TestCaseResult.class);
         doReturn(new Time().withDuration(123L)).when(first).getTime();
@@ -147,7 +147,7 @@ public class TreeAggregatorTest {
     }
 
     private TreeData aggregateResultsWithUids(TreeAggregator aggregator, String... uids) {
-        TreeData treeData = aggregator.supplier().get();
+        TreeData treeData = aggregator.supplier(null).get();
         Stream.of(uids).forEach(uid -> {
             TestCaseResult result = mock(TestCaseResult.class);
             doReturn(uid).when(result).getUid();

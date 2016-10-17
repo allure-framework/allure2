@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 public class GraphAggregator implements Aggregator<GraphData> {
 
     @Override
-    public Supplier<GraphData> supplier() {
+    public Supplier<GraphData> supplier(TestRun testRun) {
         return GraphData::new;
     }
 
