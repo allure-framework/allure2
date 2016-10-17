@@ -1,15 +1,14 @@
 package org.allurefw.report;
 
-import org.allurefw.report.entity.Link;
-import org.allurefw.report.entity.Parameter;
 import org.allurefw.report.entity.TestCase;
 import org.allurefw.report.entity.TestCaseResult;
+import org.allurefw.report.entity.TestRun;
 
 import javax.inject.Inject;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -19,55 +18,50 @@ import java.util.stream.Stream;
  */
 public class ReportFactory {
 
-    private final Set<TestCaseResultsReader> readers;
+    private final Set<TestCaseResultsReader> testCaseReaders;
+
+    private final TestRunReader testRunReader;
 
     private final Set<Plugin> plugins;
 
+    private final HashMap<String, TestCase> testCases;
+
     @Inject
-    public ReportFactory(Set<Plugin> plugins, Set<TestCaseResultsReader> readers) {
+    public ReportFactory(Set<Plugin> plugins, Set<TestCaseResultsReader> testCaseReaders,
+                         TestRunReader testRunReader) {
         this.plugins = plugins;
-        this.readers = readers;
+        this.testCaseReaders = testCaseReaders;
+        this.testRunReader = testRunReader;
+        this.testCases = new HashMap<>();
     }
 
     public ReportInfo create(Path... sources) {
-        Map<String, TestCase> testCases = new HashMap<>();
-        List<TestCaseResult> results = Stream.of(sources)
-                .flatMap(this::readTestCases)
-                .collect(Collectors.toList());
-
-        results.forEach(result -> {
-            TestCase testCase = testCases.computeIfAbsent(
-                    result.getId(),
-                    id -> createTestCase(result)
-            );
-            testCase.getResults().add(result.toInfo());
-
-            List<String> parameterNames = Stream.concat(
-                    testCase.getParametersNames().stream(),
-                    result.getParameters().stream().map(Parameter::getName)
-            ).distinct().collect(Collectors.toList());
-            testCase.setParametersNames(parameterNames);
-
-            List<Link> links = Stream.concat(
-                    testCase.getLinks().stream(),
-                    result.getLinks().stream()
-            ).distinct().collect(Collectors.toList());
-            testCase.setLinks(links);
-        });
-
+        List<TestCaseResult> results = new ArrayList<>();
+        for (Path source : sources) {
+            TestRun testRun = testRunReader.readTestRun(source);
+            List<TestCaseResult> testCaseResults = readTestCases(source)
+                    .collect(Collectors.toList());
+            for (TestCaseResult result : testCaseResults) {
+                TestCase testCase = getTestCase(result);
+                testCase.updateLinks(result.getLinks());
+                testCase.updateParametersNames(result.getParameters());
+            }
+            results.addAll(testCaseResults);
+        }
         return new ReportInfo(plugins, testCases, results);
     }
 
-    private Stream<TestCaseResult> readTestCases(Path source) {
-        return readers.stream()
-                .flatMap(reader -> reader.readResults(source).stream());
-    }
-
-    private TestCase createTestCase(TestCaseResult result) {
-        return new TestCase()
-                .withId(result.getId())
+    private TestCase getTestCase(TestCaseResult result) {
+        return testCases.computeIfAbsent(result.getId(), id -> new TestCase()
+                .withId(id)
                 .withName(result.getName())
                 .withDescription(result.getDescription())
-                .withDescriptionHtml(result.getDescriptionHtml());
+                .withDescriptionHtml(result.getDescriptionHtml())
+        );
+    }
+
+    private Stream<TestCaseResult> readTestCases(Path source) {
+        return testCaseReaders.stream()
+                .flatMap(reader -> reader.readResults(source).stream());
     }
 }

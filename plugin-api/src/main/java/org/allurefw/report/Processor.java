@@ -1,6 +1,8 @@
 package org.allurefw.report;
 
+import org.allurefw.report.entity.TestCase;
 import org.allurefw.report.entity.TestCaseResult;
+import org.allurefw.report.entity.TestRun;
 
 /**
  * @author Dmitry Baev baev@qameta.io
@@ -9,6 +11,6 @@ import org.allurefw.report.entity.TestCaseResult;
 @FunctionalInterface
 public interface Processor {
 
-    TestCaseResult process(TestCaseResult testCase);
+    TestCaseResult process(TestRun testRun, TestCase testCase, TestCaseResult result);
 
 }

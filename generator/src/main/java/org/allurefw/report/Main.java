@@ -63,10 +63,8 @@ public class Main {
     public void generate(Path output, Path... sources) {
         List<Plugin> plugins = pluginsLoader.loadPlugins(enabledPlugins);
         Injector injector = createInjector(plugins);
-        ReportFactory factory = injector.getInstance(ReportFactory.class);
         ProcessStage stage = injector.getInstance(ProcessStage.class);
-        ReportInfo report = factory.create(sources);
-        stage.run(report, output);
+        stage.run(output, sources);
         Set<String> pluginsWithStatic = unpackStatic(plugins, output);
         writeIndexHtml(pluginsWithStatic, output);
     }

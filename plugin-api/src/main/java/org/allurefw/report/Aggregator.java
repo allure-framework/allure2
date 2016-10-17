@@ -1,10 +1,10 @@
 package org.allurefw.report;
 
+import org.allurefw.report.entity.TestCase;
 import org.allurefw.report.entity.TestCaseResult;
+import org.allurefw.report.entity.TestRun;
 
-import java.util.function.BiConsumer;
-import java.util.function.BinaryOperator;
-import java.util.function.Function;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -15,8 +15,6 @@ public interface Aggregator<T> {
 
     Supplier<T> supplier();
 
-    BinaryOperator<T> combiner();
-
-    BiConsumer<T, TestCaseResult> accumulator();
+    Consumer<T> aggregate(TestRun testRun, TestCase testCase, TestCaseResult result);
 
 }

@@ -11,6 +11,7 @@ import './plugins/environment';
 import './plugins/xunit';
 import './plugins/graph';
 import './plugins/timeline';
+import './plugins/history';
 
 import './plugins/testcase-info';
 import './plugins/testcase-parameters';

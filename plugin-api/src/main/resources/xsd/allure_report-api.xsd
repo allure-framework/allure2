@@ -86,6 +86,15 @@
         </xsd:all>
     </xsd:complexType>
 
+    <xsd:element name="testRun" type="ns:TestRun"/>
+    <xsd:complexType name="TestRun">
+        <xsd:all>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="time" type="ns:Time"/>
+            <xsd:element name="url" type="xsd:string" minOccurs="0"/>
+        </xsd:all>
+    </xsd:complexType>
+
     <xsd:element name="link" type="ns:Link"/>
     <xsd:complexType name="Link">
         <xsd:all>

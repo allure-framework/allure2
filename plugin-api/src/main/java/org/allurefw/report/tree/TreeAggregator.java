@@ -1,13 +1,15 @@
 package org.allurefw.report.tree;
 
 import org.allurefw.report.Aggregator;
+import org.allurefw.report.entity.TestCase;
 import org.allurefw.report.entity.TestCaseResult;
+import org.allurefw.report.entity.TestRun;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.BinaryOperator;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static org.allurefw.report.ReportApiUtils.generateUid;
@@ -22,14 +24,39 @@ public abstract class TreeAggregator implements Aggregator<TreeData> {
         return TreeData::new;
     }
 
-    @Override
-    public BinaryOperator<TreeData> combiner() {
-        throw new UnsupportedOperationException("Tree aggregator doesn't support combiner() method");
+    public BiConsumer<TreeData, TestCaseResult> accumulator() {
+        return (treeData, result) -> {
+            treeData.updateStatistic(result);
+            treeData.updateTime(result);
+
+            List<WithChildren> currentLevelGroups = Collections.singletonList(treeData);
+
+            for (TreeGroup treeGroup : getGroups(result)) {
+                List<WithChildren> nextLevelGroups = new ArrayList<>();
+                for (WithChildren currentLevelGroup : currentLevelGroups) {
+                    for (String groupName : treeGroup.getGroupNames()) {
+                        TestGroupNode groupNode = findGroupByName(groupName, currentLevelGroup.getChildren());
+                        groupNode.updateStatistic(result);
+                        groupNode.updateTime(result);
+                        nextLevelGroups.add(groupNode);
+                    }
+                }
+                currentLevelGroups = nextLevelGroups;
+            }
+            TestCaseNode testCaseNode = new TestCaseNode()
+                    .withUid(result.getUid())
+                    .withName(result.getName())
+                    .withStatus(result.getStatus())
+                    .withTime(result.getTime());
+            for (WithChildren currentLevelGroup : currentLevelGroups) {
+                currentLevelGroup.getChildren().add(testCaseNode);
+            }
+        };
     }
 
     @Override
-    public BiConsumer<TreeData, TestCaseResult> accumulator() {
-        return (treeData, result) -> {
+    public Consumer<TreeData> aggregate(TestRun testRun, TestCase testCase, TestCaseResult result) {
+        return treeData -> {
             treeData.updateStatistic(result);
             treeData.updateTime(result);
 

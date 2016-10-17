@@ -1,10 +1,11 @@
 package org.allurefw.report.graph;
 
 import org.allurefw.report.Aggregator;
+import org.allurefw.report.entity.TestCase;
 import org.allurefw.report.entity.TestCaseResult;
+import org.allurefw.report.entity.TestRun;
 
-import java.util.function.BiConsumer;
-import java.util.function.BinaryOperator;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -19,12 +20,7 @@ public class GraphAggregator implements Aggregator<GraphData> {
     }
 
     @Override
-    public BinaryOperator<GraphData> combiner() {
-        return (left, right) -> left.withTestCases(right.getTestCases());
-    }
-
-    @Override
-    public BiConsumer<GraphData, TestCaseResult> accumulator() {
-        return (identity, testCase) -> identity.getTestCases().add(testCase.toInfo());
+    public Consumer<GraphData> aggregate(TestRun testRun, TestCase testCase, TestCaseResult result) {
+        return identity -> identity.getTestCases().add(result.toInfo());
     }
 }

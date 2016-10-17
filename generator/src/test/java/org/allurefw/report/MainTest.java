@@ -22,6 +22,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
 import static ru.yandex.qatools.matchers.nio.PathMatchers.contains;
+import static ru.yandex.qatools.matchers.nio.PathMatchers.hasFilesCount;
 import static ru.yandex.qatools.matchers.nio.PathMatchers.isDirectory;
 
 /**
@@ -46,8 +47,30 @@ public class MainTest {
     @Test
     public void shouldGenerateTheReport() throws Exception {
         Path plugins = folder.newFolder().toPath();
-        Main main = new Main(plugins, Collections.emptySet());
-        main.generate(folder.newFolder().toPath(), getDataFolder("allure1data/"));
+        Main main = new Main(plugins, null);
+        Path output = folder.newFolder().toPath();
+        main.generate(output, getDataFolder("allure1data/"));
+        assertThat(output, contains("index.html"));
+        assertThat(output, contains("data"));
+        Path data = output.resolve("data");
+        assertThat(data, isDirectory());
+
+        assertThat(data, contains("test-cases"));
+        Path testCases = data.resolve("test-cases");
+        assertThat(testCases, isDirectory());
+        assertThat(testCases, hasFilesCount(20, "*.json"));
+
+        assertThat(data, contains("attachments"));
+        Path attachments = data.resolve("attachments");
+        assertThat(attachments, isDirectory());
+        assertThat(attachments, hasFilesCount(13));
+
+        assertThat(data, contains("defects.json"));
+        assertThat(data, contains("graph.json"));
+        assertThat(data, contains("history.json"));
+        assertThat(data, contains("timeline.json"));
+        assertThat(data, contains("widgets.json"));
+        assertThat(data, contains("xunit.json"));
     }
 
     @Test

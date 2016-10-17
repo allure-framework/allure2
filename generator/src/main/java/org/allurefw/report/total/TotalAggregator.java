@@ -1,10 +1,11 @@
 package org.allurefw.report.total;
 
 import org.allurefw.report.Aggregator;
+import org.allurefw.report.entity.TestCase;
 import org.allurefw.report.entity.TestCaseResult;
+import org.allurefw.report.entity.TestRun;
 
-import java.util.function.BiConsumer;
-import java.util.function.BinaryOperator;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -18,17 +19,8 @@ public class TotalAggregator implements Aggregator<TotalData> {
     }
 
     @Override
-    public BinaryOperator<TotalData> combiner() {
-        return (first, second) -> {
-            first.getTime().merge(second.getTime());
-            first.getStatistic().merge(second.getStatistic());
-            return first;
-        };
-    }
-
-    @Override
-    public BiConsumer<TotalData, TestCaseResult> accumulator() {
-        return (totalData, result) -> {
+    public Consumer<TotalData> aggregate(TestRun testRun, TestCase testCase, TestCaseResult result) {
+        return totalData -> {
             totalData.updateStatistic(result);
             totalData.updateTime(result);
         };

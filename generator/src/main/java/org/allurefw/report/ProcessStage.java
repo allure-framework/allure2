@@ -1,5 +1,8 @@
 package org.allurefw.report;
 
+import org.allurefw.report.entity.TestCase;
+import org.allurefw.report.entity.TestCaseResult;
+import org.allurefw.report.entity.TestRun;
 import org.allurefw.report.writer.Writer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,8 +11,10 @@ import javax.inject.Inject;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -41,27 +46,40 @@ public class ProcessStage {
     @Inject
     protected Map<String, Finalizer> finalizers;
 
-    public void run(ReportInfo report, Path output) {
-        LOGGER.debug("Process stage started...");
+    @Inject
+    protected Set<TestCaseResultsReader> testCaseReaders;
 
-        if (report.getResults().isEmpty()) {
-            throw new ReportGenerationException("Could not find any results");
-        }
+    @Inject
+    protected TestRunReader testRunReader;
+
+    protected HashMap<String, TestCase> testCases = new HashMap<>();
+
+    public void run(Path output, Path... sources) {
+        LOGGER.debug("Process stage started...");
 
         Path dataDir = output.resolve("data");
         Path testCasesDir = dataDir.resolve("test-cases");
 
         Map<String, Object> data = new HashMap<>();
-        report.getResults().forEach(testCase -> {
-            LOGGER.debug("Processing test case: \"{}\"", testCase.getName());
-            processors.forEach((uid, processor) -> processor.process(testCase));
-            writer.write(testCasesDir, testCase.getSource(), testCase);
-            aggregators.forEach((uid, aggregator) -> {
-                Object value = data.computeIfAbsent(uid, key -> aggregator.supplier().get());
-                //noinspection unchecked
-                aggregator.accumulator().accept(value, testCase);
-            });
-        });
+        for (Path source : sources) {
+            TestRun testRun = testRunReader.readTestRun(source);
+            List<TestCaseResult> testCaseResults = readTestCases(source);
+            for (TestCaseResult result : testCaseResults) {
+                TestCase testCase = getTestCase(result);
+                testCase.updateLinks(result.getLinks());
+                testCase.updateParametersNames(result.getParameters());
+
+                LOGGER.debug("Processing test case: \"{}\"", result.getName());
+                processors.forEach((uid, processor) -> processor.process(testRun, testCase, result));
+                writer.write(testCasesDir, result.getSource(), result);
+
+                aggregators.forEach((uid, aggregator) -> {
+                    Object value = data.computeIfAbsent(uid, key -> aggregator.supplier().get());
+                    //noinspection unchecked
+                    aggregator.aggregate(testRun, testCase, result).accept(value);
+                });
+            }
+        }
 
         Map<String, Object> widgets = new HashMap<>();
         data.forEach((uid, object) -> {
@@ -85,5 +103,20 @@ public class ProcessStage {
         storage.getAttachments().forEach((path, attachment) ->
                 writer.write(attachmentsDir, attachment.getSource(), path)
         );
+    }
+
+    private TestCase getTestCase(TestCaseResult result) {
+        return testCases.computeIfAbsent(result.getId(), id -> new TestCase()
+                .withId(id)
+                .withName(result.getName())
+                .withDescription(result.getDescription())
+                .withDescriptionHtml(result.getDescriptionHtml())
+        );
+    }
+
+    private List<TestCaseResult> readTestCases(Path source) {
+        return testCaseReaders.stream()
+                .flatMap(reader -> reader.readResults(source).stream())
+                .collect(Collectors.toList());
     }
 }

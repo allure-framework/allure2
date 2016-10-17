@@ -10,7 +10,9 @@ import org.allurefw.report.allure1.Allure1ResultsReader;
 import org.allurefw.report.allure2.Allure2ResultsReader;
 import org.allurefw.report.defects.DefectsPlugin;
 import org.allurefw.report.graph.GraphPlugin;
+import org.allurefw.report.history.HistoryPlugin;
 import org.allurefw.report.jackson.JacksonMapperModule;
+import org.allurefw.report.testrun.DefaultTestRunReader;
 import org.allurefw.report.timeline.TimelinePlugin;
 import org.allurefw.report.total.TotalPlugin;
 import org.allurefw.report.writer.WriterModule;
@@ -52,6 +54,9 @@ public class ParentModule extends AbstractModule {
         Multibinder.newSetBinder(binder(), TestCaseResultsReader.class)
                 .addBinding().to(Allure2ResultsReader.class);
 
+        OptionalBinder.newOptionalBinder(binder(), TestRunReader.class)
+                .setDefault().to(DefaultTestRunReader.class);
+
 //        Attachments
         OptionalBinder.newOptionalBinder(binder(), AttachmentsStorage.class)
                 .setDefault().to(DefaultAttachmentsStorage.class).in(Scopes.SINGLETON);
@@ -62,6 +67,7 @@ public class ParentModule extends AbstractModule {
         install(new TimelinePlugin());
         install(new DefectsPlugin());
         install(new XunitPlugin());
+        install(new HistoryPlugin());
 
 //        Plugins
         Multibinder.newSetBinder(binder(), Plugin.class);

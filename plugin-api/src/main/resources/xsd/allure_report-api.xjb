@@ -24,6 +24,7 @@
         <inheritance:implements>org.allurefw.report.entity.WithAttachments</inheritance:implements>
         <inheritance:implements>org.allurefw.report.entity.WithLabels</inheritance:implements>
         <inheritance:implements>org.allurefw.report.entity.WithFailure</inheritance:implements>
+        <inheritance:implements>org.allurefw.report.entity.WithLinks</inheritance:implements>
 
         <inheritance:implements>org.allurefw.report.entity.WithSource</inheritance:implements>
         <inheritance:implements>org.allurefw.report.entity.WithSummary</inheritance:implements>
@@ -33,6 +34,8 @@
     <jaxb:bindings node="//xsd:complexType[@name='TestCase']">
         <inheritance:implements>org.allurefw.report.entity.WithName</inheritance:implements>
         <inheritance:implements>org.allurefw.report.entity.WithDescription</inheritance:implements>
+        <inheritance:implements>org.allurefw.report.entity.WithLinks</inheritance:implements>
+        <inheritance:implements>org.allurefw.report.entity.WithParametersNames</inheritance:implements>
     </jaxb:bindings>
 
     <jaxb:bindings node="//xsd:complexType[@name='Step']">
