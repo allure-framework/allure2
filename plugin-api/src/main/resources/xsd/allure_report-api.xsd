@@ -86,13 +86,25 @@
         </xsd:all>
     </xsd:complexType>
 
+    <xsd:element name="testRunInfo" type="ns:TestRunInfo"/>
+    <xsd:complexType name="TestRunInfo">
+        <xsd:sequence>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="start" type="xsd:long"/>
+            <xsd:element name="stop" type="xsd:long"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
     <xsd:element name="testRun" type="ns:TestRun"/>
     <xsd:complexType name="TestRun">
-        <xsd:all>
-            <xsd:element name="name" type="xsd:string"/>
-            <xsd:element name="time" type="ns:Time"/>
-            <xsd:element name="url" type="xsd:string" minOccurs="0"/>
-        </xsd:all>
+        <xsd:complexContent>
+            <xsd:extension base="ns:ExtraElements">
+                <xsd:sequence>
+                    <xsd:element name="name" type="xsd:string"/>
+                    <xsd:element name="time" type="ns:Time"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
     </xsd:complexType>
 
     <xsd:element name="link" type="ns:Link"/>

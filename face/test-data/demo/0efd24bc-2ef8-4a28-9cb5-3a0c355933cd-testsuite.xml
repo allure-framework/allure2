@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:test-suite xmlns:ns2="urn:model.allure.qatools.yandex.ru" start="1412949538848" stop="1412949560045" version="1.4.4-SNAPSHOT">
+    <name>my.company.AlwaysPassingTest</name>
+    <test-cases>
+        <test-case start="1412949539363" stop="1412949539730" status="passed">
+            <name>testFour</name>
+            <steps/>
+            <attachments/>
+            <labels>
+                <label name="host" value="my.cool.host.com"/>
+                <label name="thread" value="pool-1-thread-4"/>
+                <label name="issue" value="JIRA-1"/>
+                <label name="issue" value="JIRA-2"/>
+                <label name="testId" value="TMS-1"/>
+            </labels>
+        </test-case>
+        <test-case start="1412949539363" stop="1412949539715" status="passed">
+            <name>testOne</name>
+            <steps/>
+            <attachments/>
+            <labels>
+                <label name="host" value="my.cool.host.com"/>
+                <label name="thread" value="pool-1-thread-1"/>
+                <label name="testId" value="TMS-1"/>
+            </labels>
+        </test-case>
+        <test-case start="1412949539363" stop="1412949539372" status="passed">
+            <name>testTwo</name>
+            <steps/>
+            <attachments/>
+            <labels>
+                <label name="host" value="my.cool.host.com"/>
+                <label name="thread" value="pool-1-thread-2"/>
+                <label name="issue" value="JIRA-1"/>
+            </labels>
+        </test-case>
+        <test-case start="1412949539364" stop="1412949539746" status="passed">
+            <name>testThree</name>
+            <steps/>
+            <attachments/>
+            <labels>
+                <label name="host" value="my.cool.host.com"/>
+                <label name="thread" value="pool-1-thread-3"/>
+            </labels>
+        </test-case>
+    </test-cases>
+    <labels>
+        <label name="story" value="SuccessStory"/>
+        <label name="feature" value="SimpleStories"/>
+        <label name="framework" value="JUnit"/>
+        <label name="language" value="JAVA"/>
+    </labels>
+</ns2:test-suite>

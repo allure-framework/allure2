@@ -128,7 +128,7 @@
                                     <resources>
                                         <resource>
                                             <directory>
-                                                ${project.basedir}/test-data/one-failed
+                                                ${project.basedir}/test-data/demo
                                             </directory>
                                             <filtering>false</filtering>
                                         </resource>

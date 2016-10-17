@@ -1,0 +1,91 @@
+{
+  "Search testsEmpty text search" : [ {
+    "status" : "passed",
+    "timestamp" : 1412949558344
+  } ],
+  "other.PassingTesttestPassed" : [ {
+    "status" : "passed",
+    "timestamp" : 1412949549730
+  } ],
+  "my.company.ManyInfoTest<script>3443</script>" : [ {
+    "status" : "failed",
+    "statusDetails" : "AlarmAssertionErrorAssertionErrorAssertionErrorAssertionErrorAssertionError: This test should be failed",
+    "timestamp" : 1412949540559
+  } ],
+  "my.company.AlwaysPassingTesttestThree" : [ {
+    "status" : "passed",
+    "timestamp" : 1412949539746
+  } ],
+  "my.company.AlwaysPassingTesttestOne" : [ {
+    "status" : "passed",
+    "timestamp" : 1412949539715
+  } ],
+  "my.company.SimpleTestskippedSimpleTest" : [ {
+    "status" : "pending",
+    "statusDetails" : "Test ignored (without reason)!",
+    "timestamp" : 1412949558832
+  } ],
+  "my.company.AllureMigrationTestTest what do nothing and always passed right, but have a very long title, over 100 symbols, seriously" : [ {
+    "status" : "canceled",
+    "timestamp" : 1412949993580
+  } ],
+  "Search testsPage loading test" : [ {
+    "status" : "failed",
+    "statusDetails" : "AssertionError: Text on current page should be correct\nExpected: element text is \"Yandex\"\n     but: <[[PhantomJSDriver: phantomjs on MAC (9e679b20-5085-11e4-ad6d-87edf8da84a7)] -> css selector: title]> text is \"\"",
+    "timestamp" : 1412949556298
+  } ],
+  "my.company.NonAsciiTesttest_pass" : [ {
+    "status" : "passed",
+    "timestamp" : 1412949540565
+  } ],
+  "Search testsWildcard search test" : [ {
+    "status" : "passed",
+    "timestamp" : 1412949558737
+  } ],
+  "my.company.NonAsciiTesttest_raise_cyrilling (невероятный тест кодировки!)" : [ {
+    "status" : "broken",
+    "statusDetails" : "Exception: Невероятная проблема!",
+    "timestamp" : 1412949540660
+  } ],
+  "my.company.SimpleTestTest what do nothing and always passed right, but have a very long title, over 100 symbols, seriously" : [ {
+    "status" : "passed",
+    "timestamp" : 1412949558829
+  } ],
+  "my.company.AlwaysPassingTesttestTwo" : [ {
+    "status" : "passed",
+    "timestamp" : 1412949539372
+  } ],
+  "my.company.ManyInfoTestTest with long assertion text" : [ {
+    "status" : "failed",
+    "statusDetails" : "AssertionError: \nExpected: \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"ok value\\\"\\n}\"\n     but: was \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"bad value\\\"\\n}\"",
+    "timestamp" : 1412949540461
+  } ],
+  "my.company.ManyInfoTestlotOfStepsTest" : [ {
+    "status" : "broken",
+    "statusDetails" : "FileNotFoundException: No file found.",
+    "timestamp" : 1412949539862
+  } ],
+  "my.company.AlwaysPassingTesttestFour" : [ {
+    "status" : "passed",
+    "timestamp" : 1412949539730
+  } ],
+  "my.company.SimpleTestfailedSimpleTest" : [ {
+    "status" : "failed",
+    "statusDetails" : "AssertionError: 5 is not 2 + 2\nExpected: is <4>\n     but: was <5>",
+    "timestamp" : 1412949558830
+  } ],
+  "my.company.SimpleTestbrokenSimpleTest" : [ {
+    "status" : "broken",
+    "statusDetails" : "ArrayIndexOutOfBoundsException: 1",
+    "timestamp" : 1412949558832
+  } ],
+  "my.company.BeforeClassFailTestBeforeClassFailTest" : [ {
+    "status" : "broken",
+    "statusDetails" : "RuntimeException: bye-bye",
+    "timestamp" : 1412949539779
+  } ],
+  "Search testsUsual search test" : [ {
+    "status" : "passed",
+    "timestamp" : 1412949558826
+  } ]
+}

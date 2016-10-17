@@ -52,6 +52,9 @@ public class ProcessStage {
     @Inject
     protected TestRunReader testRunReader;
 
+    @Inject
+    protected Set<TestRunDetailsReader> testRunDetailsReaders;
+
     protected HashMap<String, TestCase> testCases = new HashMap<>();
 
     public void run(Path output, Path... sources) {
@@ -63,6 +66,7 @@ public class ProcessStage {
         Map<String, Object> data = new HashMap<>();
         for (Path source : sources) {
             TestRun testRun = testRunReader.readTestRun(source);
+            testRunDetailsReaders.forEach(reader -> reader.readDetails(source).accept(testRun));
             List<TestCaseResult> testCaseResults = readTestCases(source);
             for (TestCaseResult result : testCaseResults) {
                 TestCase testCase = getTestCase(result);

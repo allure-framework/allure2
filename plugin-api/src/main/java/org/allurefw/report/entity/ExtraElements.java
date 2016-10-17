@@ -14,7 +14,10 @@ public class ExtraElements {
         extra.put(blockName, block);
     }
 
-    public Map<String, Object> getExtra() {
-        return extra;
+    public <T> T getExtraBlock(String blockName, T defaultValue) {
+        //noinspection unchecked
+        return extra.containsKey(blockName)
+                ? (T) extra.get(blockName)
+                : defaultValue;
     }
 }

@@ -31,6 +31,12 @@
         <inheritance:implements>org.allurefw.report.entity.WithTestCaseInfo</inheritance:implements>
     </jaxb:bindings>
 
+    <jaxb:bindings node="//xsd:complexType[@name='TestRun']">
+        <inheritance:implements>org.allurefw.report.entity.WithName</inheritance:implements>
+
+        <inheritance:implements>org.allurefw.report.entity.WithTime</inheritance:implements>
+    </jaxb:bindings>
+
     <jaxb:bindings node="//xsd:complexType[@name='TestCase']">
         <inheritance:implements>org.allurefw.report.entity.WithName</inheritance:implements>
         <inheritance:implements>org.allurefw.report.entity.WithDescription</inheritance:implements>

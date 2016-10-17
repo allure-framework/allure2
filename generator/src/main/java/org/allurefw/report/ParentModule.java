@@ -56,6 +56,7 @@ public class ParentModule extends AbstractModule {
 
         OptionalBinder.newOptionalBinder(binder(), TestRunReader.class)
                 .setDefault().to(DefaultTestRunReader.class);
+        Multibinder.newSetBinder(binder(), TestRunDetailsReader.class);
 
 //        Attachments
         OptionalBinder.newOptionalBinder(binder(), AttachmentsStorage.class)
