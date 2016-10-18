@@ -38,7 +38,7 @@ public class DefaultTestRunReader implements TestRunReader {
                 LOGGER.error("Could not read test run from {}", file, e);
             }
         }
-        return new TestRun().withName(source.getFileName().toString());
+        return new TestRun().withName("Allure Report");
     }
 
 }
