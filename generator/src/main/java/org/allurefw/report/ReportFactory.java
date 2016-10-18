@@ -2,7 +2,6 @@ package org.allurefw.report;
 
 import org.allurefw.report.entity.TestCase;
 import org.allurefw.report.entity.TestCaseResult;
-import org.allurefw.report.entity.TestRun;
 
 import javax.inject.Inject;
 import java.nio.file.Path;
@@ -20,31 +19,27 @@ public class ReportFactory {
 
     private final Set<TestCaseResultsReader> testCaseReaders;
 
-    private final TestRunReader testRunReader;
-
     private final Set<Plugin> plugins;
 
     private final HashMap<String, TestCase> testCases;
 
     @Inject
-    public ReportFactory(Set<Plugin> plugins, Set<TestCaseResultsReader> testCaseReaders,
-                         TestRunReader testRunReader) {
+    public ReportFactory(Set<Plugin> plugins, Set<TestCaseResultsReader> testCaseReaders) {
         this.plugins = plugins;
         this.testCaseReaders = testCaseReaders;
-        this.testRunReader = testRunReader;
         this.testCases = new HashMap<>();
     }
 
     public ReportInfo create(Path... sources) {
         List<TestCaseResult> results = new ArrayList<>();
         for (Path source : sources) {
-            TestRun testRun = testRunReader.readTestRun(source);
             List<TestCaseResult> testCaseResults = readTestCases(source)
                     .collect(Collectors.toList());
             for (TestCaseResult result : testCaseResults) {
                 TestCase testCase = getTestCase(result);
                 testCase.updateLinks(result.getLinks());
                 testCase.updateParametersNames(result.getParameters());
+                testCase.getResults().add(result.toInfo());
             }
             results.addAll(testCaseResults);
         }
