@@ -2,7 +2,7 @@ package org.allurefw.report.allure2;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.model.TestCaseResult;
-import org.allurefw.report.TestCaseResultsReader;
+import org.allurefw.report.ResultsReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +20,7 @@ import static org.allurefw.report.ReportApiUtils.listFiles;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class Allure2ResultsReader implements TestCaseResultsReader {
+public class Allure2ResultsReader implements ResultsReader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Allure2ResultsReader.class);
 

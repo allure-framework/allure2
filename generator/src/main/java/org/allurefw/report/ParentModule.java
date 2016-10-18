@@ -9,6 +9,7 @@ import com.google.inject.multibindings.OptionalBinder;
 import org.allurefw.report.allure1.Allure1ResultsReader;
 import org.allurefw.report.allure2.Allure2ResultsReader;
 import org.allurefw.report.defects.DefectsPlugin;
+import org.allurefw.report.executor.ExecutorPlugin;
 import org.allurefw.report.graph.GraphPlugin;
 import org.allurefw.report.history.HistoryPlugin;
 import org.allurefw.report.jackson.JacksonMapperModule;
@@ -40,18 +41,23 @@ public class ParentModule extends AbstractModule {
         install(new JacksonMapperModule());
         install(new WriterModule());
 
-        MapBinder.newMapBinder(binder(), String.class, Aggregator.class);
+//        Aggregators
+        MapBinder.newMapBinder(binder(), String.class, TestRunAggregator.class);
+        MapBinder.newMapBinder(binder(), String.class, TestCaseAggregator.class);
+        MapBinder.newMapBinder(binder(), String.class, ResultAggregator.class);
+
+
         MapBinder.newMapBinder(binder(), String.class, Processor.class);
-        MapBinder.newMapBinder(binder(), String.class, String.class, DataNamesMap.class)
+        MapBinder.newMapBinder(binder(), String.class, String.class, DataFileNames.class)
                 .permitDuplicates();
-        MapBinder.newMapBinder(binder(), String.class, String.class, WidgetsNamesMap.class)
+        MapBinder.newMapBinder(binder(), String.class, String.class, WidgetNames.class)
                 .permitDuplicates();
         MapBinder.newMapBinder(binder(), String.class, Finalizer.class);
 
 //        Readers
-        Multibinder.newSetBinder(binder(), TestCaseResultsReader.class)
+        Multibinder.newSetBinder(binder(), ResultsReader.class)
                 .addBinding().to(Allure1ResultsReader.class);
-        Multibinder.newSetBinder(binder(), TestCaseResultsReader.class)
+        Multibinder.newSetBinder(binder(), ResultsReader.class)
                 .addBinding().to(Allure2ResultsReader.class);
 
         OptionalBinder.newOptionalBinder(binder(), TestRunReader.class)
@@ -69,6 +75,7 @@ public class ParentModule extends AbstractModule {
         install(new DefectsPlugin());
         install(new XunitPlugin());
         install(new HistoryPlugin());
+        install(new ExecutorPlugin());
 
 //        Plugins
         Multibinder.newSetBinder(binder(), Plugin.class);

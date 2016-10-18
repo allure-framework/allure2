@@ -27,27 +27,33 @@ public class ProcessStage {
     protected AttachmentsStorage storage;
 
     @Inject
-    protected Map<String, Processor> processors;
+    protected Map<String, Processor> resultProcessors;
 
     @Inject
-    protected Map<String, Aggregator> aggregators;
+    protected Map<String, TestRunAggregator> testRunAggregators;
+
+    @Inject
+    protected Map<String, TestCaseAggregator> testCaseAggregators;
+
+    @Inject
+    protected Map<String, ResultAggregator> resultAggregators;
 
     @Inject
     protected Writer writer;
 
     @Inject
-    @DataNamesMap
+    @DataFileNames
     protected Map<String, Set<String>> filesNamesMap;
 
     @Inject
-    @WidgetsNamesMap
+    @WidgetNames
     protected Map<String, Set<String>> widgetsNamesMap;
 
     @Inject
     protected Map<String, Finalizer> finalizers;
 
     @Inject
-    protected Set<TestCaseResultsReader> testCaseReaders;
+    protected Set<ResultsReader> testCaseReaders;
 
     @Inject
     protected TestRunReader testRunReader;
@@ -67,21 +73,19 @@ public class ProcessStage {
         for (Path source : sources) {
             TestRun testRun = testRunReader.readTestRun(source);
             testRunDetailsReaders.forEach(reader -> reader.readDetails(source).accept(testRun));
+            each(data, testRun);
             List<TestCaseResult> testCaseResults = readTestCases(source);
             for (TestCaseResult result : testCaseResults) {
-                TestCase testCase = getTestCase(result);
+                if (!testCases.containsKey(result.getId())) {
+                    TestCase testCase = createTestCase(result);
+                    testCases.put(result.getId(), testCase);
+                    each(data, testRun, testCase);
+                }
+                TestCase testCase = testCases.get(result.getId());
                 testCase.updateLinks(result.getLinks());
                 testCase.updateParametersNames(result.getParameters());
-
-                LOGGER.debug("Processing test case: \"{}\"", result.getName());
-                processors.forEach((uid, processor) -> processor.process(testRun, testCase, result));
                 writer.write(testCasesDir, result.getSource(), result);
-
-                aggregators.forEach((uid, aggregator) -> {
-                    Object value = data.computeIfAbsent(uid, key -> aggregator.supplier(testRun).get());
-                    //noinspection unchecked
-                    aggregator.aggregate(testRun, testCase, result).accept(value);
-                });
+                each(data, testRun, testCase, result);
             }
         }
 
@@ -109,13 +113,37 @@ public class ProcessStage {
         );
     }
 
-    private TestCase getTestCase(TestCaseResult result) {
-        return testCases.computeIfAbsent(result.getId(), id -> new TestCase()
-                .withId(id)
+    private void each(Map<String, Object> data, TestRun testRun) {
+        testRunAggregators.forEach((uid, aggregator) -> {
+            Object value = data.computeIfAbsent(uid, key -> aggregator.supplier().get());
+            //noinspection unchecked
+            aggregator.aggregate(testRun).accept(value);
+        });
+    }
+
+    private void each(Map<String, Object> data, TestRun testRun, TestCase testCase) {
+        testCaseAggregators.forEach((uid, aggregator) -> {
+            Object value = data.computeIfAbsent(uid, key -> aggregator.supplier(testRun).get());
+            //noinspection unchecked
+            aggregator.aggregate(testRun, testCase).accept(value);
+        });
+    }
+
+    private void each(Map<String, Object> data, TestRun testRun, TestCase testCase, TestCaseResult result) {
+        resultProcessors.forEach((uid, processor) -> processor.process(testRun, testCase, result));
+        resultAggregators.forEach((uid, aggregator) -> {
+            Object value = data.computeIfAbsent(uid, key -> aggregator.supplier(testRun, testCase).get());
+            //noinspection unchecked
+            aggregator.aggregate(testRun, testCase, result).accept(value);
+        });
+    }
+
+    private TestCase createTestCase(TestCaseResult result) {
+        return new TestCase()
+                .withId(result.getId())
                 .withName(result.getName())
                 .withDescription(result.getDescription())
-                .withDescriptionHtml(result.getDescriptionHtml())
-        );
+                .withDescriptionHtml(result.getDescriptionHtml());
     }
 
     private List<TestCaseResult> readTestCases(Path source) {

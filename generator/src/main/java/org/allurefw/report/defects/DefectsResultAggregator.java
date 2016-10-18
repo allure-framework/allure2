@@ -1,6 +1,6 @@
 package org.allurefw.report.defects;
 
-import org.allurefw.report.Aggregator;
+import org.allurefw.report.ResultAggregator;
 import org.allurefw.report.entity.Failure;
 import org.allurefw.report.entity.Status;
 import org.allurefw.report.entity.TestCase;
@@ -19,10 +19,10 @@ import static org.allurefw.report.entity.Status.FAILED;
  * @author Dmitry Baev baev@qameta.io
  *         Date: 16.04.16
  */
-public class DefectsAggregator implements Aggregator<DefectsData> {
+public class DefectsResultAggregator implements ResultAggregator<DefectsData> {
 
     @Override
-    public Supplier<DefectsData> supplier(TestRun testRun) {
+    public Supplier<DefectsData> supplier(TestRun testRun, TestCase testCase) {
         return DefectsData::new;
     }
 

@@ -10,7 +10,7 @@ public class BehaviorsPlugin extends AbstractPlugin {
 
     @Override
     protected void configure() {
-        aggregator(BehaviorsAggregator.class)
+        aggregator(BehaviorsResultAggregator.class)
                 .toReportData("behaviors.json");
     }
 }

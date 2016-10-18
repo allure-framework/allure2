@@ -45,7 +45,7 @@ public class MainTest {
     }
 
     @Test
-    public void shouldGenerateTheReport() throws Exception {
+    public void shouldGenerateReport() throws Exception {
         Path plugins = folder.newFolder().toPath();
         Main main = new Main(plugins, null);
         Path output = folder.newFolder().toPath();

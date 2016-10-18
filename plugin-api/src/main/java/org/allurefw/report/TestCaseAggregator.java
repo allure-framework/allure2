@@ -11,10 +11,10 @@ import java.util.function.Supplier;
  * @author Dmitry Baev baev@qameta.io
  *         Date: 04.03.16
  */
-public interface Aggregator<T> {
+public interface TestCaseAggregator<T> {
 
     Supplier<T> supplier(TestRun testRun);
 
-    Consumer<T> aggregate(TestRun testRun, TestCase testCase, TestCaseResult result);
+    Consumer<T> aggregate(TestRun testRun, TestCase testCase);
 
 }

@@ -17,14 +17,14 @@ import java.util.stream.Stream;
  */
 public class ReportFactory {
 
-    private final Set<TestCaseResultsReader> testCaseReaders;
+    private final Set<ResultsReader> testCaseReaders;
 
     private final Set<Plugin> plugins;
 
     private final HashMap<String, TestCase> testCases;
 
     @Inject
-    public ReportFactory(Set<Plugin> plugins, Set<TestCaseResultsReader> testCaseReaders) {
+    public ReportFactory(Set<Plugin> plugins, Set<ResultsReader> testCaseReaders) {
         this.plugins = plugins;
         this.testCaseReaders = testCaseReaders;
         this.testCases = new HashMap<>();

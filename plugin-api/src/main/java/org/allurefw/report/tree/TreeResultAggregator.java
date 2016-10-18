@@ -1,6 +1,6 @@
 package org.allurefw.report.tree;
 
-import org.allurefw.report.Aggregator;
+import org.allurefw.report.ResultAggregator;
 import org.allurefw.report.entity.TestCase;
 import org.allurefw.report.entity.TestCaseResult;
 import org.allurefw.report.entity.TestRun;
@@ -17,10 +17,10 @@ import static org.allurefw.report.ReportApiUtils.generateUid;
 /**
  * @author charlie (Dmitry Baev).
  */
-public abstract class TreeAggregator implements Aggregator<TreeData> {
+public abstract class TreeResultAggregator implements ResultAggregator<TreeData> {
 
     @Override
-    public Supplier<TreeData> supplier(TestRun testRun) {
+    public Supplier<TreeData> supplier(TestRun testRun, TestCase testCase) {
         return TreeData::new;
     }
 

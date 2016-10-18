@@ -11,9 +11,9 @@ import java.util.UUID;
  */
 public abstract class AbstractPlugin extends AbstractModule {
 
-    public <T> AggregatorBuilder<T> aggregator(Class<? extends Aggregator<T>> aggregatorClass) {
+    public <T> AggregatorBuilder<T> aggregator(Class<? extends ResultAggregator<T>> aggregatorClass) {
         String uid = UUID.randomUUID().toString();
-        MapBinder.newMapBinder(binder(), String.class, Aggregator.class)
+        MapBinder.newMapBinder(binder(), String.class, ResultAggregator.class)
                 .addBinding(uid).to(aggregatorClass);
 
         return new AggregatorBuilder<>(uid);
@@ -34,7 +34,7 @@ public abstract class AbstractPlugin extends AbstractModule {
         }
 
         public AggregatorBuilder<T> toReportData(String fileName) {
-            MapBinder.newMapBinder(binder(), String.class, String.class, DataNamesMap.class)
+            MapBinder.newMapBinder(binder(), String.class, String.class, DataFileNames.class)
                     .addBinding(uid).toInstance(fileName);
             return this;
         }
@@ -46,7 +46,7 @@ public abstract class AbstractPlugin extends AbstractModule {
         }
 
         public AggregatorBuilder<T> toWidget(String widgetName) {
-            MapBinder.newMapBinder(binder(), String.class, String.class, WidgetsNamesMap.class)
+            MapBinder.newMapBinder(binder(), String.class, String.class, WidgetNames.class)
                     .addBinding(uid).toInstance(widgetName);
             return this;
         }

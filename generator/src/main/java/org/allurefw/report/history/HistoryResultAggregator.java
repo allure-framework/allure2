@@ -1,6 +1,6 @@
 package org.allurefw.report.history;
 
-import org.allurefw.report.Aggregator;
+import org.allurefw.report.ResultAggregator;
 import org.allurefw.report.entity.TestCase;
 import org.allurefw.report.entity.TestCaseResult;
 import org.allurefw.report.entity.TestRun;
@@ -18,10 +18,10 @@ import static org.allurefw.report.history.HistoryPlugin.HISTORY;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class HistoryAggregator implements Aggregator<Map<String, List<HistoryItem>>> {
+public class HistoryResultAggregator implements ResultAggregator<Map<String, List<HistoryItem>>> {
 
     @Override
-    public Supplier<Map<String, List<HistoryItem>>> supplier(TestRun testRun) {
+    public Supplier<Map<String, List<HistoryItem>>> supplier(TestRun testRun, TestCase testCase) {
         return () -> testRun.getExtraBlock(HISTORY, new HashMap<>());
     }
 

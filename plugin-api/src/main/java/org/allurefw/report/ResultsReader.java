@@ -9,7 +9,7 @@ import java.util.List;
  * @author charlie (Dmitry Baev).
  */
 @FunctionalInterface
-public interface TestCaseResultsReader {
+public interface ResultsReader {
 
     List<TestCaseResult> readResults(Path source);
 }

@@ -10,7 +10,7 @@ public class GraphPlugin extends AbstractPlugin {
 
     @Override
     protected void configure() {
-        aggregator(GraphAggregator.class)
+        aggregator(GraphResultAggregator.class)
                 .toReportData("graph.json");
     }
 }

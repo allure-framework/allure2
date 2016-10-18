@@ -28,20 +28,20 @@ import static org.mockito.Mockito.mock;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class TreeAggregatorTest {
+public class TreeResultAggregatorTest {
 
     @Test
     public void shouldSupplyData() throws Exception {
-        OneValueTreeAggregator aggregator = new OneValueTreeAggregator();
-        TreeData treeData = aggregator.supplier(null).get();
+        OneValueTreeResultAggregator aggregator = new OneValueTreeResultAggregator();
+        TreeData treeData = aggregator.supplier(null, null).get();
         assertThat(treeData, notNullValue());
         assertThat(treeData.getChildren(), hasSize(0));
     }
 
     @Test
     public void shouldAggregate() throws Exception {
-        OneValueTreeAggregator aggregator = new OneValueTreeAggregator();
-        TreeData treeData = aggregator.supplier(null).get();
+        OneValueTreeResultAggregator aggregator = new OneValueTreeResultAggregator();
+        TreeData treeData = aggregator.supplier(null, null).get();
         TestCaseResult result = mock(TestCaseResult.class);
 
         aggregator.accumulator().accept(treeData, result);
@@ -53,8 +53,8 @@ public class TreeAggregatorTest {
 
     @Test
     public void shouldUpdateStatistic() throws Exception {
-        OneValueTreeAggregator aggregator = new OneValueTreeAggregator();
-        TreeData treeData = aggregator.supplier(null).get();
+        OneValueTreeResultAggregator aggregator = new OneValueTreeResultAggregator();
+        TreeData treeData = aggregator.supplier(null, null).get();
         TestCaseResult result = mock(TestCaseResult.class);
         doReturn(Status.PASSED).when(result).getStatus();
         aggregator.accumulator().accept(treeData, result);
@@ -65,8 +65,8 @@ public class TreeAggregatorTest {
 
     @Test
     public void shouldUpdateGroupTime() throws Exception {
-        OneValueTreeAggregator aggregator = new OneValueTreeAggregator();
-        TreeData treeData = aggregator.supplier(null).get();
+        OneValueTreeResultAggregator aggregator = new OneValueTreeResultAggregator();
+        TreeData treeData = aggregator.supplier(null, null).get();
 
         TestCaseResult first = mock(TestCaseResult.class);
         doReturn(new Time().withDuration(123L)).when(first).getTime();
@@ -87,7 +87,7 @@ public class TreeAggregatorTest {
     @Test
     public void shouldBuildTree() throws Exception {
         String uid = UUID.randomUUID().toString();
-        TreeData treeData = aggregateResultsWithUids(new OneValueTreeAggregator(), uid);
+        TreeData treeData = aggregateResultsWithUids(new OneValueTreeResultAggregator(), uid);
 
         assertThat(treeData, notNullValue());
         assertThat(treeData.getChildren(), hasSize(1));
@@ -102,7 +102,7 @@ public class TreeAggregatorTest {
     @Test
     public void shouldGroupByFewValues() throws Exception {
         String uid = UUID.randomUUID().toString();
-        TreeData treeData = aggregateResultsWithUids(new FewValuesTreeAggregator(), uid);
+        TreeData treeData = aggregateResultsWithUids(new FewValuesTreeResultAggregator(), uid);
 
         assertThat(treeData.getChildren(), hasSize(2));
         treeData.getChildren().forEach(treeNode ->
@@ -113,7 +113,7 @@ public class TreeAggregatorTest {
     @Test
     public void shouldGroupLikeACharm() throws Exception {
         String uid = UUID.randomUUID().toString();
-        TreeData treeData = aggregateResultsWithUids(new ComplexTreeAggregator(), uid);
+        TreeData treeData = aggregateResultsWithUids(new ComplexTreeResultAggregator(), uid);
         assertThat(treeData.getChildren(), hasSize(2));
         Set<String> firstLevelGroups = treeData.getChildren().stream()
                 .map(TreeNode::getName).collect(Collectors.toSet());
@@ -136,7 +136,7 @@ public class TreeAggregatorTest {
         String second = UUID.randomUUID().toString();
 
         TreeData treeData = (TreeData) new TreeCollapseGroupsWithOneChildFinalizer().convert(
-                aggregateResultsWithUids(new FewLevelsTreeAggregator(), first, second)
+                aggregateResultsWithUids(new FewLevelsTreeResultAggregator(), first, second)
         );
         assertThat(treeData.getChildren(), hasSize(1));
         TreeNode firstLevelNode = treeData.getChildren().iterator().next();
@@ -146,8 +146,8 @@ public class TreeAggregatorTest {
         checkNodeHasOnlyOneTestCasesUids(groupNode, first, second);
     }
 
-    private TreeData aggregateResultsWithUids(TreeAggregator aggregator, String... uids) {
-        TreeData treeData = aggregator.supplier(null).get();
+    private TreeData aggregateResultsWithUids(TreeResultAggregator aggregator, String... uids) {
+        TreeData treeData = aggregator.supplier(null, null).get();
         Stream.of(uids).forEach(uid -> {
             TestCaseResult result = mock(TestCaseResult.class);
             doReturn(uid).when(result).getUid();
@@ -174,21 +174,21 @@ public class TreeAggregatorTest {
         assertThat(actualUids, hasItems(uids));
     }
 
-    private class OneValueTreeAggregator extends TreeAggregator {
+    private class OneValueTreeResultAggregator extends TreeResultAggregator {
         @Override
         protected List<TreeGroup> getGroups(TestCaseResult result) {
             return Collections.singletonList(TreeGroup.values("sampleGroup"));
         }
     }
 
-    private class FewValuesTreeAggregator extends TreeAggregator {
+    private class FewValuesTreeResultAggregator extends TreeResultAggregator {
         @Override
         protected List<TreeGroup> getGroups(TestCaseResult result) {
             return Collections.singletonList(TreeGroup.values("first", "second"));
         }
     }
 
-    private class FewLevelsTreeAggregator extends TreeAggregator {
+    private class FewLevelsTreeResultAggregator extends TreeResultAggregator {
 
         @Override
         protected List<TreeGroup> getGroups(TestCaseResult result) {
@@ -196,7 +196,7 @@ public class TreeAggregatorTest {
         }
     }
 
-    private class ComplexTreeAggregator extends TreeAggregator {
+    private class ComplexTreeResultAggregator extends TreeResultAggregator {
         @Override
         protected List<TreeGroup> getGroups(TestCaseResult result) {
             return Arrays.asList(TreeGroup.values("a", "b"), TreeGroup.values("1", "2"));

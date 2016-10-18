@@ -14,5 +14,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @BindingAnnotation
-public @interface WidgetsNamesMap {
+public @interface WidgetNames {
 }

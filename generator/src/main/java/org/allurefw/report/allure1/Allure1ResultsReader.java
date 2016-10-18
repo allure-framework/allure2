@@ -5,7 +5,7 @@ import com.github.baev.BadXmlCharactersFilterReader;
 import com.google.inject.Inject;
 import org.allurefw.report.AttachmentsStorage;
 import org.allurefw.report.ReportApiUtils;
-import org.allurefw.report.TestCaseResultsReader;
+import org.allurefw.report.ResultsReader;
 import org.allurefw.report.entity.Attachment;
 import org.allurefw.report.entity.LabelName;
 import org.allurefw.report.entity.Parameter;
@@ -41,7 +41,7 @@ import static org.allurefw.report.allure1.Allure1ModelConvertUtils.convertStatus
 /**
  * @author charlie (Dmitry Baev).
  */
-public class Allure1ResultsReader implements TestCaseResultsReader {
+public class Allure1ResultsReader implements ResultsReader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Allure1ResultsReader.class);
 

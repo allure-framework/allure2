@@ -2,7 +2,7 @@ package org.allurefw.report.packages;
 
 import org.allurefw.report.entity.LabelName;
 import org.allurefw.report.entity.TestCaseResult;
-import org.allurefw.report.tree.TreeAggregator;
+import org.allurefw.report.tree.TreeResultAggregator;
 import org.allurefw.report.tree.TreeGroup;
 
 import java.util.Arrays;
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class PackagesAggregator extends TreeAggregator {
+public class PackagesResultAggregator extends TreeResultAggregator {
 
     @Override
     protected List<TreeGroup> getGroups(TestCaseResult result) {
