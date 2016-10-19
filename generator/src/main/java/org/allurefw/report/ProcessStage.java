@@ -67,10 +67,23 @@ public class ProcessStage {
     public void run(Path output, Path... sources) {
         LOGGER.debug("Process stage started...");
 
-        Path dataDir = output.resolve("data");
-        Path testCasesDir = dataDir.resolve("test-cases");
+        Path dataDirectory = output.resolve("data");
+        Path testCasesDirectory = dataDirectory.resolve("test-cases");
+        Path attachmentsDirectory = dataDirectory.resolve("attachments");
 
         Map<String, Object> data = new HashMap<>();
+        processData(testCasesDirectory, data, sources);
+        writeData(dataDirectory, data);
+        writeAttachments(attachmentsDirectory);
+    }
+
+    private void writeAttachments(Path attachmentsDirectory) {
+        storage.getAttachments().forEach((path, attachment) ->
+                writer.write(attachmentsDirectory, attachment.getSource(), path)
+        );
+    }
+
+    private void processData(Path testCasesDir, Map<String, Object> data, Path[] sources) {
         for (Path source : sources) {
             TestRun testRun = testRunReader.readTestRun(source);
             testRunDetailsReaders.forEach(reader -> reader.readDetails(source).accept(testRun));
@@ -89,7 +102,9 @@ public class ProcessStage {
                 each(data, testRun, testCase, result);
             }
         }
+    }
 
+    private void writeData(Path dataDir, Map<String, Object> data) {
         Map<String, Object> widgets = new HashMap<>();
         data.forEach((uid, object) -> {
             Set<String> fileNames = filesNamesMap.getOrDefault(uid, Collections.emptySet());
@@ -106,12 +121,7 @@ public class ProcessStage {
                 widgets.put(name, finalizer.convert(object));
             });
         });
-
         writer.write(dataDir, "widgets.json", widgets);
-        Path attachmentsDir = dataDir.resolve("attachments");
-        storage.getAttachments().forEach((path, attachment) ->
-                writer.write(attachmentsDir, attachment.getSource(), path)
-        );
     }
 
     private void each(Map<String, Object> data, TestRun testRun) {
