@@ -11,11 +11,25 @@ import java.util.UUID;
  */
 public abstract class AbstractPlugin extends AbstractModule {
 
-    public <T> AggregatorBuilder<T> aggregator(Class<? extends ResultAggregator<T>> aggregatorClass) {
+    public <T> AggregatorBuilder<T> aggregateResults(Class<? extends ResultAggregator<T>> aggregatorClass) {
         String uid = UUID.randomUUID().toString();
         MapBinder.newMapBinder(binder(), String.class, ResultAggregator.class)
                 .addBinding(uid).to(aggregatorClass);
 
+        return new AggregatorBuilder<>(uid);
+    }
+
+    public <T> AggregatorBuilder<T> aggregateTestCases(Class<? extends TestCaseAggregator<T>> aggregatorClass) {
+        String uid = UUID.randomUUID().toString();
+        MapBinder.newMapBinder(binder(), String.class, TestCaseAggregator.class)
+                .addBinding(uid).to(aggregatorClass);
+        return new AggregatorBuilder<>(uid);
+    }
+
+    public <T> AggregatorBuilder<T> aggregateTestRuns(Class<? extends TestRunAggregator<T>> aggregatorClass) {
+        String uid = UUID.randomUUID().toString();
+        MapBinder.newMapBinder(binder(), String.class, TestRunAggregator.class)
+                .addBinding(uid).to(aggregatorClass);
         return new AggregatorBuilder<>(uid);
     }
 

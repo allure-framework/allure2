@@ -10,7 +10,7 @@ public class PackagesPlugin extends AbstractPlugin {
 
     @Override
     protected void configure() {
-        aggregator(PackagesResultAggregator.class)
+        aggregateResults(PackagesResultAggregator.class)
                 .toReportData("packages.json", TreeCollapseGroupsWithOneChildFinalizer.class);
     }
 }

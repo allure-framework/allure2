@@ -20,4 +20,13 @@ public class ExtraElements {
                 ? (T) extra.get(blockName)
                 : defaultValue;
     }
+
+    public boolean hasExtraBlock(String blockName) {
+        return extra.containsKey(blockName);
+    }
+
+    public <T> T getExtraBlock(String blockName) {
+        //noinspection unchecked
+        return (T) extra.get(blockName);
+    }
 }

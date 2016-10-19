@@ -1,0 +1,15 @@
+.executor-icon {
+  width: 32px;
+  height: 32px;
+  background: url(./default-icon.png) center no-repeat;
+  background-size: contain;
+  display: inline-block;
+
+  &__jenkins {
+    background-image: url(./jenkins.png)
+  }
+}
+
+.executor {
+  line-height: 32px;
+}

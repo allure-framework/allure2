@@ -1,0 +1,8 @@
+{
+  "name": "Jenkins",
+  "type": "jenkins",
+  "url": "http://example.org",
+  "buildName": "allure-report_deploy#13",
+  "buildUrl": "http://example.org/build#13",
+  "reportUrl": "http://example.org/build#13/AllureReport"
+}

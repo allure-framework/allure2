@@ -14,6 +14,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.function.Consumer;
 
+import static org.allurefw.report.executor.ExecutorPlugin.EXECUTOR_BLOCK_NAME;
+import static org.allurefw.report.executor.ExecutorPlugin.EXECUTOR_FILE_NAME;
+
 /**
  * @author charlie (Dmitry Baev).
  */
@@ -31,11 +34,11 @@ public class ExecutorReader implements TestRunDetailsReader {
     @Override
     public Consumer<TestRun> readDetails(Path source) {
         return testRun -> {
-            Path file = source.resolve("executor.json");
+            Path file = source.resolve(EXECUTOR_FILE_NAME);
             if (Files.exists(file)) {
                 try (InputStream is = Files.newInputStream(file)) {
                     ExecutorInfo info = mapper.readValue(is, ExecutorInfo.class);
-                    testRun.addExtraBlock("executor", info);
+                    testRun.addExtraBlock(EXECUTOR_BLOCK_NAME, info);
                 } catch (IOException e) {
                     LOGGER.error("Could not read executor file {}", file, e);
                 }

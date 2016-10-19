@@ -16,7 +16,7 @@ public class HistoryPlugin extends AbstractPlugin {
     @Override
     protected void configure() {
         processor(HistoryProcessor.class);
-        aggregator(HistoryResultAggregator.class).toReportData(HISTORY_JSON);
+        aggregateResults(HistoryResultAggregator.class).toReportData(HISTORY_JSON);
 
         Multibinder.newSetBinder(binder(), TestRunDetailsReader.class)
                 .addBinding().to(HistoryReader.class);

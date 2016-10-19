@@ -9,6 +9,6 @@ public class TotalPlugin extends AbstractPlugin {
 
     @Override
     protected void configure() {
-        aggregator(TotalResultAggregator.class).toWidget("total");
+        aggregateResults(TotalResultAggregator.class).toWidget("total");
     }
 }

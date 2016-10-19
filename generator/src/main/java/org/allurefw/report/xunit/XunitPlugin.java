@@ -11,7 +11,7 @@ public class XunitPlugin extends AbstractPlugin {
 
     @Override
     protected void configure() {
-        aggregator(XunitResultAggregator.class)
+        aggregateResults(XunitResultAggregator.class)
                 .toReportData("xunit.json")
                 .toWidget("xunit", TreeWidgetFinalizer.class);
     }

@@ -1,0 +1,24 @@
+<h2 class="widget__title">
+    Executors
+</h2>
+<div class="table table_hover widget__table">
+{{#if items}}
+    {{#each items}}
+    <span class="table__row">
+        <div class="{{b 'table' 'col'}} executor">
+            <span class="executor-icon executor-icon__{{type}}">&nbsp;</span>
+            {{name}}
+        </div>
+        <div class="{{b 'table' 'col' right=true}} executor">
+            <a class="link" href="{{buildUrl}}">{{buildName}}</a>
+        </div>
+    </span>
+    {{/each}}
+{{else}}
+    <div class="table__row">
+        <div class="{{b 'table' 'col' center=true}}">
+            There are no information about tests executors
+        </div>
+    </div>
+{{/if}}
+</div>

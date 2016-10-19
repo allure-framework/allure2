@@ -3,6 +3,8 @@ import $ from 'jquery';
 import Backbone from 'backbone';
 
 import './blocks/arrow/styles.css';
+import './blocks/executor-icon/styles.css';
+
 import './pluginApi';
 
 import './plugins/default';
@@ -12,6 +14,7 @@ import './plugins/xunit';
 import './plugins/graph';
 import './plugins/timeline';
 import './plugins/history';
+import './plugins/executor';
 
 import './plugins/testcase-info';
 import './plugins/testcase-parameters';

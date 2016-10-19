@@ -10,7 +10,7 @@ public class TimelinePlugin extends AbstractPlugin {
 
     @Override
     protected void configure() {
-        aggregator(TimelineResultAggregator.class)
+        aggregateResults(TimelineResultAggregator.class)
                 .toReportData("timeline.json");
     }
 
