@@ -1,7 +1,6 @@
 package org.allurefw.report.executor;
 
 import org.allurefw.report.TestRunAggregator;
-import org.allurefw.report.entity.ExecutorInfo;
 import org.allurefw.report.entity.TestRun;
 
 import java.util.ArrayList;
@@ -14,19 +13,20 @@ import static org.allurefw.report.executor.ExecutorPlugin.EXECUTOR_BLOCK_NAME;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class ExecutorAggregator implements TestRunAggregator<List<ExecutorInfo>> {
+public class ExecutorAggregator implements TestRunAggregator<List<ExecutorWidgetItem>> {
 
     @Override
-    public Supplier<List<ExecutorInfo>> supplier() {
+    public Supplier<List<ExecutorWidgetItem>> supplier() {
         return ArrayList::new;
     }
 
     @Override
-    public Consumer<List<ExecutorInfo>> aggregate(TestRun testRun) {
-        return executors -> {
-            if (testRun.hasExtraBlock(EXECUTOR_BLOCK_NAME)) {
-                executors.add(testRun.getExtraBlock(EXECUTOR_BLOCK_NAME));
-            }
+    public Consumer<List<ExecutorWidgetItem>> aggregate(TestRun testRun) {
+        return items -> {
+            ExecutorWidgetItem item = new ExecutorWidgetItem();
+            item.setName(testRun.getName());
+            item.setInfo(testRun.getExtraBlock(EXECUTOR_BLOCK_NAME, null));
+            items.add(item);
         };
     }
 }

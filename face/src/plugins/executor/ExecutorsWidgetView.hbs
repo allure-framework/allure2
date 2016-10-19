@@ -6,12 +6,18 @@
     {{#each items}}
     <span class="table__row">
         <div class="{{b 'table' 'col'}} executor">
-            <span class="executor-icon executor-icon__{{type}}">&nbsp;</span>
+            <span class="executor-icon executor-icon__{{info.type}}">&nbsp;</span>
             {{name}}
         </div>
-        <div class="{{b 'table' 'col' right=true}} executor">
-            <a class="link" href="{{buildUrl}}">{{buildName}}</a>
-        </div>
+        {{#if info}}
+            <div class="{{b 'table' 'col' right=true}} executor">
+                <a class="link" href="{{info.buildUrl}}">{{info.buildName}}</a>
+            </div>
+        {{else}}
+            <div class="{{b 'table' 'col' right=true}}">
+                Unknown
+            </div>
+        {{/if}}
     </span>
     {{/each}}
 {{else}}
