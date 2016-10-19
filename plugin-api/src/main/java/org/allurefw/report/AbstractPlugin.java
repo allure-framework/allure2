@@ -2,6 +2,7 @@ package org.allurefw.report;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.MapBinder;
+import com.google.inject.name.Names;
 
 import java.util.UUID;
 
@@ -48,27 +49,35 @@ public abstract class AbstractPlugin extends AbstractModule {
         }
 
         public AggregatorBuilder<T> toReportData(String fileName) {
-            MapBinder.newMapBinder(binder(), String.class, String.class, DataFileNames.class)
-                    .addBinding(uid).toInstance(fileName);
+            toData("report-data-folder", fileName);
             return this;
         }
 
         public AggregatorBuilder<T> toReportData(String fileName, Class<? extends Finalizer<T>> finalizerClass) {
-            MapBinder.newMapBinder(binder(), String.class, Finalizer.class)
-                    .addBinding(fileName).to(finalizerClass);
-            return toReportData(fileName);
+            toData("report-data-folder", fileName, finalizerClass);
+            return this;
         }
 
         public AggregatorBuilder<T> toWidget(String widgetName) {
-            MapBinder.newMapBinder(binder(), String.class, String.class, WidgetNames.class)
-                    .addBinding(uid).toInstance(widgetName);
+            toData("report-widgets", widgetName);
             return this;
         }
 
         public AggregatorBuilder<T> toWidget(String widgetName, Class<? extends Finalizer<T>> finalizerClass) {
+            toData("report-widgets", widgetName, finalizerClass);
+            return this;
+        }
+
+        private AggregatorBuilder<T> toData(String dataName, String fileName) {
+            MapBinder.newMapBinder(binder(), String.class, String.class, Names.named(dataName))
+                    .addBinding(uid).toInstance(fileName);
+            return this;
+        }
+
+        private AggregatorBuilder<T> toData(String dataName, String widgetName, Class<? extends Finalizer<T>> finalizerClass) {
             MapBinder.newMapBinder(binder(), String.class, Finalizer.class)
                     .addBinding(widgetName).to(finalizerClass);
-            return toWidget(widgetName);
+            return toData(dataName, widgetName);
         }
     }
 }

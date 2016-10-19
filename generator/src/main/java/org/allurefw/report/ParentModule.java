@@ -6,15 +6,16 @@ import com.google.inject.Scopes;
 import com.google.inject.multibindings.MapBinder;
 import com.google.inject.multibindings.Multibinder;
 import com.google.inject.multibindings.OptionalBinder;
+import com.google.inject.name.Names;
 import org.allurefw.report.allure1.Allure1ResultsReader;
 import org.allurefw.report.allure2.Allure2ResultsReader;
 import org.allurefw.report.core.DefaultAttachmentsStorage;
+import org.allurefw.report.core.DefaultTestRunReader;
 import org.allurefw.report.defects.DefectsPlugin;
 import org.allurefw.report.executor.ExecutorPlugin;
 import org.allurefw.report.graph.GraphPlugin;
 import org.allurefw.report.history.HistoryPlugin;
 import org.allurefw.report.jackson.JacksonMapperModule;
-import org.allurefw.report.core.DefaultTestRunReader;
 import org.allurefw.report.timeline.TimelinePlugin;
 import org.allurefw.report.total.TotalPlugin;
 import org.allurefw.report.writer.WriterModule;
@@ -49,9 +50,9 @@ public class ParentModule extends AbstractModule {
 
 
         MapBinder.newMapBinder(binder(), String.class, Processor.class);
-        MapBinder.newMapBinder(binder(), String.class, String.class, DataFileNames.class)
+        MapBinder.newMapBinder(binder(), String.class, String.class, Names.named("report-widgets"))
                 .permitDuplicates();
-        MapBinder.newMapBinder(binder(), String.class, String.class, WidgetNames.class)
+        MapBinder.newMapBinder(binder(), String.class, String.class, Names.named("report-data-folder"))
                 .permitDuplicates();
         MapBinder.newMapBinder(binder(), String.class, Finalizer.class);
 
