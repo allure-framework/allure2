@@ -1,5 +1,7 @@
-package org.allurefw.report;
+package org.allurefw.report.core;
 
+import org.allurefw.report.AttachmentsStorage;
+import org.allurefw.report.ReportApiUtils;
 import org.allurefw.report.entity.Attachment;
 
 import java.nio.file.Path;

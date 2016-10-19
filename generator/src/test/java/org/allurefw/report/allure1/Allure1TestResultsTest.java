@@ -1,7 +1,7 @@
 package org.allurefw.report.allure1;
 
 import org.allurefw.report.AttachmentsStorage;
-import org.allurefw.report.DefaultAttachmentsStorage;
+import org.allurefw.report.core.DefaultAttachmentsStorage;
 import org.allurefw.report.entity.Label;
 import org.allurefw.report.entity.LabelName;
 import org.allurefw.report.entity.TestCaseResult;

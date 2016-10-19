@@ -1,4 +1,4 @@
-package org.allurefw.report.testrun;
+package org.allurefw.report.core;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.allurefw.report.TestRunReader;
@@ -40,5 +40,4 @@ public class DefaultTestRunReader implements TestRunReader {
         }
         return new TestRun().withName("Allure Report");
     }
-
 }
