@@ -99,7 +99,6 @@
         <profile>
             <id>dev</id>
             <properties>
-                <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
                 <allure.report.directory>${project.build.directory}/allure-report</allure.report.directory>
             </properties>
 
@@ -114,30 +113,6 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-resources-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>copy-allure-model-test-resources</id>
-                                <phase>compile</phase>
-                                <goals>
-                                    <goal>copy-resources</goal>
-                                </goals>
-                                <configuration>
-                                    <outputDirectory>${allure.results.directory}</outputDirectory>
-                                    <resources>
-                                        <resource>
-                                            <directory>
-                                                ${project.basedir}/test-data/demo
-                                            </directory>
-                                            <filtering>false</filtering>
-                                        </resource>
-                                    </resources>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
                         <executions>
@@ -151,7 +126,8 @@
                         <configuration>
                             <mainClass>org.allurefw.report.DummyReportGenerator</mainClass>
                             <arguments>
-                                <argument>${allure.results.directory}</argument>
+                                <argument>${project.basedir}/test-data/demo</argument>
+                                <argument>${project.basedir}/test-data/one-failed</argument>
                                 <argument>${allure.report.directory}</argument>
                             </arguments>
                             <systemProperties>

@@ -16,9 +16,7 @@ public class ExtraElements {
 
     public <T> T getExtraBlock(String blockName, T defaultValue) {
         //noinspection unchecked
-        return extra.containsKey(blockName)
-                ? (T) extra.get(blockName)
-                : defaultValue;
+        return (T) extra.computeIfAbsent(blockName, name -> defaultValue);
     }
 
     public boolean hasExtraBlock(String blockName) {

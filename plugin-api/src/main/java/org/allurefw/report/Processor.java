@@ -11,6 +11,6 @@ import org.allurefw.report.entity.TestRun;
 @FunctionalInterface
 public interface Processor {
 
-    TestCaseResult process(TestRun testRun, TestCase testCase, TestCaseResult result);
+    void process(TestRun testRun, TestCase testCase, TestCaseResult result);
 
 }
