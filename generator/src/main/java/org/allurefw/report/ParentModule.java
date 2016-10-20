@@ -16,9 +16,9 @@ import org.allurefw.report.executor.ExecutorPlugin;
 import org.allurefw.report.graph.GraphPlugin;
 import org.allurefw.report.history.HistoryPlugin;
 import org.allurefw.report.jackson.JacksonMapperModule;
+import org.allurefw.report.summary.SummaryPlugin;
 import org.allurefw.report.testrun.TestRunPlugin;
 import org.allurefw.report.timeline.TimelinePlugin;
-import org.allurefw.report.total.TotalPlugin;
 import org.allurefw.report.writer.WriterModule;
 import org.allurefw.report.xunit.XunitPlugin;
 
@@ -72,7 +72,7 @@ public class ParentModule extends AbstractModule {
                 .setDefault().to(DefaultAttachmentsStorage.class).in(Scopes.SINGLETON);
 
 //        Defaults
-        install(new TotalPlugin());
+        install(new SummaryPlugin());
         install(new GraphPlugin());
         install(new TimelinePlugin());
         install(new DefectsPlugin());

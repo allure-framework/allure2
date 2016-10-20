@@ -16,6 +16,7 @@ import './plugins/timeline';
 import './plugins/history';
 import './plugins/executor';
 import './plugins/testrun';
+import './plugins/summary';
 
 import './plugins/testcase-info';
 import './plugins/testcase-parameters';

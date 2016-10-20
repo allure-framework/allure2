@@ -6,10 +6,10 @@
                xsi:schemaLocation="http://java.sun.com/xml/ns/jaxb http://java.sun.com/xml/ns/jaxb/bindingschema_2_1.xsd"
                xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
                jaxb:extensionBindingPrefixes="xjc annox"
-               schemaLocation="allure_total-plugin.xsd"
+               schemaLocation="allure_summary-plugin.xsd"
                jaxb:version="2.1">
 
-    <jaxb:bindings node="//xsd:complexType[@name='TotalData']">
+    <jaxb:bindings node="//xsd:complexType[@name='SummaryData']">
         <inheritance:implements>org.allurefw.report.entity.WithStatistic</inheritance:implements>
         <inheritance:implements>org.allurefw.report.entity.WithGroupTime</inheritance:implements>
     </jaxb:bindings>
