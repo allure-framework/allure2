@@ -11,6 +11,7 @@
             <labels>
                 <label name="story" value="SuccessStory"/>
                 <label name="feature" value="SimpleStories"/>
+                <label name="severity" value="blocker"/>
             </labels>
         </test-case>
     </test-cases>

@@ -1,7 +1,9 @@
 import BaseChartView from '../../../components/chart/BaseChartView';
 import PopoverView from '../../../components/popover/PopoverView';
 import escape from '../../../util/escape';
-import d3 from 'd3';
+
+import {scaleBand, scaleSqrt} from 'd3-scale';
+import {max} from 'd3-array';
 
 const PAD_LEFT = 30;
 const PAD_TOP = 7;
@@ -13,10 +15,11 @@ const statuses = ['failed', 'broken', 'canceled', 'pending', 'passed'];
 export default class SeverityChart extends BaseChartView {
 
     initialize() {
-        this.x = d3.scale.ordinal().domain(severities);
-        this.y = d3.scale.sqrt();
-        this.status = d3.scale.ordinal().domain(statuses);
+        this.x = scaleBand().domain(severities);
+        this.y = scaleSqrt();
+        this.status = scaleBand().domain(statuses);
         this.tooltip = new PopoverView({position: 'right'});
+
     }
 
     getChartData() {
@@ -25,9 +28,9 @@ export default class SeverityChart extends BaseChartView {
                 const testcases = this.collection.where({status, severity}).map(model => model.toJSON());
                 return {
                     value: testcases.length,
-                    testcases,
-                    severity,
-                    status
+                         testcases,
+                         severity,
+                         status
                 };
             })
         );
@@ -39,29 +42,27 @@ export default class SeverityChart extends BaseChartView {
         const width = this.$el.width() - PAD_LEFT;
         const height = this.$el.height() - PAD_BOTTOM - PAD_TOP;
 
-        this.x.rangeRoundBands([0, width], 0.2);
+        this.x.range([0, width]);
         this.y.range([height, 0], 1);
-        this.y.domain([0, d3.max(data, d => d3.max(d, d => d.value))]).nice();
-        this.status.rangeRoundBands([0, this.x.rangeBand()]);
-
+        this.y.domain([0, max(data, d => max(d, d => d.value))]).nice();
+        this.status.rangeRound([0, this.x.step()]);
         this.svg = this.setupViewport();
 
-        this.makeAxis(this.svg.select('.chart__axis_x'), {
+        this.makeBottomAxis(this.svg.select('.chart__axis_x'), {
             tickFormat: d => d.toLowerCase(),
-            orient: 'bottom',
             scale: this.x
         }, {
             top: height + PAD_TOP,
             left: PAD_LEFT
         });
-        this.makeAxis(this.svg.select('.chart__axis_y'), {
-            orient: 'left',
+
+        this.makeLeftAxis(this.svg.select('.chart__axis_y'), {
             scale: this.y
         }, {
             left: PAD_LEFT,
             top: PAD_TOP
         });
-        this.svg.select('.chart__plot').attr({transform: `translate(${PAD_LEFT},${PAD_TOP})`});
+        this.svg.select('.chart__plot').attrs({transform: `translate(${PAD_LEFT},${PAD_TOP})`});
 
         var bars = this.svg.select('.chart__plot').selectAll('.chart__group')
             .data(data).enter()
@@ -71,11 +72,11 @@ export default class SeverityChart extends BaseChartView {
             .data(d => d).enter()
             .append('rect');
 
-        bars.attr({
+        bars.attrs({
             x: d => this.status(d.status),
             y: height,
             height: 0,
-            width: this.status.rangeBand(),
+            width: this.status.step(),
             'class': d => 'chart__bar chart__fill_status_' + d.status
         });
 
@@ -85,7 +86,7 @@ export default class SeverityChart extends BaseChartView {
             bars = bars.transition().duration(500);
         }
 
-        bars.attr({
+        bars.attrs({
             y: d => this.y(d.value),
             height: d => height - this.y(d.value)
         });
