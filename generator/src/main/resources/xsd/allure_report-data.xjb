@@ -20,6 +20,10 @@
         <jaxb:class ref="org.allurefw.report.entity.Status"/>
     </jaxb:bindings>
 
+    <jaxb:bindings node="//xsd:complexType[@name='SeverityLevel']">
+        <jaxb:class ref="org.allurefw.report.entity.SeverityLevel"/>
+    </jaxb:bindings>
+
     <jaxb:bindings node="//xsd:complexType[@name='Failure']">
         <jaxb:class ref="org.allurefw.report.entity.Failure"/>
     </jaxb:bindings>

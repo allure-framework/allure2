@@ -99,7 +99,7 @@ export default class SeverityChart extends BaseChartView {
         const overLimit = testcases.length - items.length;
         return `<b>${value} ${severity.toLowerCase()} test cases ${status.toLowerCase()}</b><br>` +
             `<ul class="popover__list">` +
-                items.map(testcase => escape`<li>${testcase.title}</li>`).join('') +
+                items.map(testcase => escape`<li>${testcase.name}</li>`).join('') +
             `</ul>` +
             (overLimit ? `...and ${overLimit} more` : '');
     }

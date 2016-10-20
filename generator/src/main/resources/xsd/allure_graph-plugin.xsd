@@ -10,13 +10,12 @@
     <xsd:element name="graphData" type="ns:GraphData"/>
     <xsd:complexType name="GraphData">
         <xsd:sequence>
-            <xsd:element name="testCases" minOccurs="0">
-                <xsd:complexType>
-                    <xsd:sequence>
-                        <xsd:element name="testCase" type="data:TestCaseInfo" minOccurs="0" maxOccurs="unbounded"/>
-                    </xsd:sequence>
-                </xsd:complexType>
-            </xsd:element>
+            <xsd:element name="uid" type="xsd:string"/>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="time" type="data:Time"/>
+            <xsd:element name="status" type="data:Status"/>
+            <xsd:element name="severity" type="data:SeverityLevel"/>
         </xsd:sequence>
     </xsd:complexType>
+
 </xsd:schema>
