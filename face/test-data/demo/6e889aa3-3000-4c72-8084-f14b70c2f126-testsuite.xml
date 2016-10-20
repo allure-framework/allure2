@@ -45,7 +45,9 @@
             </failure>
             <steps/>
             <attachments/>
-            <labels/>
+            <labels>
+              <label name="severity" value="blocker"/>
+            </labels>
         </test-case>
     </test-cases>
     <labels>
