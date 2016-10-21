@@ -5,7 +5,6 @@ import org.allurefw.report.entity.TestCase;
 import org.allurefw.report.entity.TestCaseResult;
 import org.allurefw.report.entity.TestRun;
 
-import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -22,14 +21,11 @@ public class SummaryAggregator implements ResultAggregator<SummaryData> {
     @Override
     public Consumer<SummaryData> aggregate(TestRun testRun, TestCase testCase, TestCaseResult result) {
         return summaryData -> {
-            String name = summaryData.getTestRuns().stream()
-                    .filter(item -> Objects.equals(testRun.getName(), item))
-                    .findAny()
-                    .orElseGet(() -> {
-                        summaryData.getTestRuns().add(testRun.getName());
-                        return testRun.getName();
-                    });
-            summaryData.setReportName(name);
+            boolean anyMatch = summaryData.getTestRuns().stream().anyMatch(testRun.getUid()::equals);
+            if (!anyMatch) {
+                summaryData.getTestRuns().add(testRun.getUid());
+            }
+            summaryData.setReportName(testRun.getName());
             summaryData.updateStatistic(result);
             summaryData.updateTime(result);
         };

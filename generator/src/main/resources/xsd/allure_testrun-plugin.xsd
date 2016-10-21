@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:ns="urn:testrun.report.allurefw.org"
+            xmlns:data="urn:report.allurefw.org"
+            targetNamespace="urn:testrun.report.allurefw.org">
+
+    <xsd:import namespace="urn:report.allurefw.org" schemaLocation="allure_report-data.xsd"/>
+
+    <xsd:element name="testRunStatistic" type="ns:TestRunStatistic"/>
+    <xsd:complexType name="TestRunStatistic">
+        <xsd:sequence>
+            <xsd:element name="uid" type="xsd:string"/>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="statistic" type="data:Statistic"/>
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>

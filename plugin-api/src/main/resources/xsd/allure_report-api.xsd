@@ -112,6 +112,7 @@
         <xsd:complexContent>
             <xsd:extension base="ns:ExtraElements">
                 <xsd:sequence>
+                    <xsd:element name="uid" type="xsd:string"/>
                     <xsd:element name="name" type="xsd:string"/>
                     <xsd:element name="time" type="ns:Time"/>
                 </xsd:sequence>
