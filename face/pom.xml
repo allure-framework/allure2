@@ -127,7 +127,7 @@
                             <mainClass>org.allurefw.report.DummyReportGenerator</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/test-data/demo</argument>
-                                <argument>${project.basedir}/test-data/one-failed</argument>
+                                <!--<argument>${project.based&lt;!&ndash;&ndash;&gt;ir}/test-data/one-failed</argument>-->
                                 <argument>${allure.report.directory}</argument>
                             </arguments>
                             <systemProperties>

@@ -1,0 +1,16 @@
+{
+  "my.company.NonAsciiTest#test_raise_cyrilling (невероятный тест кодировки!)" : {
+    "id" : "my.company.NonAsciiTest#test_raise_cyrilling (невероятный тест кодировки!)",
+    "name" : "test_raise_cyrilling (невероятный тест кодировки!)",
+    "statistic" : {
+      "broken" : 1,
+      "total" : 1
+    },
+    "items" : [ {
+      "status" : "broken",
+      "statusDetails" : "Exception: Невероятная проблема!",
+      "testRunName" : "One failed",
+      "timestamp" : 1412949540660
+    } ]
+  }
+}

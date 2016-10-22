@@ -71,6 +71,7 @@ public class MainTest {
         assertThat(data, contains("timeline.json"));
         assertThat(data, contains("widgets.json"));
         assertThat(data, contains("xunit.json"));
+        assertThat(data, contains("history.json"));
     }
 
     @Test

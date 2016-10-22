@@ -10,4 +10,7 @@
       background-color: $hover-color;
     }
   }
+  &-success-rate {
+    margin: 0 15px 0.3em;
+  }
 }

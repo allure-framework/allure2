@@ -77,7 +77,7 @@ public class Allure1ResultsReader implements ResultsReader {
         TestCaseResult dest = new TestCaseResult();
         String name = source.getTitle() != null ? source.getTitle() : source.getName();
 
-        dest.setId(suiteName + name);
+        dest.setId(String.format("%s#%s", suiteName, name));
         dest.setUid(ReportApiUtils.generateUid());
         dest.setName(name);
         dest.setStatus(convertStatus(source.getStatus()));

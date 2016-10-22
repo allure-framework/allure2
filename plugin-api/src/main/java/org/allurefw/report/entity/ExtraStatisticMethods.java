@@ -34,6 +34,15 @@ public interface ExtraStatisticMethods {
         return getFailed() + getBroken() + getPassed() + getCanceled() + getPending();
     }
 
+    /**
+     * To ignore total property during deserialization. Should not be used manually.
+     */
+    @Deprecated
+    @XmlElement
+    default void setTotal(long total) {
+        //do nothing
+    }
+
     default void update(WithStatus withStatus) {
         if (withStatus == null) {
             return;

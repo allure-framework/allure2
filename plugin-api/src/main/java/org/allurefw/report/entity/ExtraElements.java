@@ -1,5 +1,6 @@
 package org.allurefw.report.entity;
 
+import javax.xml.bind.annotation.XmlElement;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import java.util.Map;
  */
 public class ExtraElements {
 
+    @XmlElement
     private Map<String, Object> extra = new HashMap<>();
 
     public void addExtraBlock(String blockName, Object block) {

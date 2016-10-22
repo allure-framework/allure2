@@ -7,9 +7,23 @@ class HistoryView extends View {
 
     serializeData() {
         var extra = this.model.get('extra');
+        var history = extra ? extra.history : null;
         return {
-            history: extra ? extra.history : null
+            history: history,
+            successRate: this.getSuccessRate(history)
         };
+    }
+
+    getSuccessRate(history) {
+        if (!history) {
+            return 'unknown';
+        }
+        const {passed, total} = history.statistic;
+        return this.formatNumber((passed || 0) / total * 100) + '%';
+    }
+
+    formatNumber(number) {
+        return (Math.floor(number * 100) / 100).toString();
     }
 }
 

@@ -1,5 +1,8 @@
 package org.allurefw.report;
 
+import org.allurefw.report.core.ProcessResultStage;
+import org.allurefw.report.core.ProcessTestCaseStage;
+import org.allurefw.report.core.ProcessTestRunStage;
 import org.allurefw.report.entity.TestCase;
 import org.allurefw.report.entity.TestCaseResult;
 import org.allurefw.report.entity.TestRun;
@@ -28,18 +31,6 @@ public class ProcessStage {
     protected AttachmentsStorage storage;
 
     @Inject
-    protected Map<String, Processor> resultProcessors;
-
-    @Inject
-    protected Map<String, TestRunAggregator> testRunAggregators;
-
-    @Inject
-    protected Map<String, TestCaseAggregator> testCaseAggregators;
-
-    @Inject
-    protected Map<String, ResultAggregator> resultAggregators;
-
-    @Inject
     protected Writer writer;
 
     @Inject
@@ -57,10 +48,13 @@ public class ProcessStage {
     protected Set<ResultsReader> testCaseReaders;
 
     @Inject
-    protected TestRunReader testRunReader;
+    protected ProcessTestRunStage testRunStage;
 
     @Inject
-    protected Set<TestRunDetailsReader> testRunDetailsReaders;
+    protected ProcessTestCaseStage testCaseStage;
+
+    @Inject
+    protected ProcessResultStage resultStage;
 
     protected HashMap<String, TestCase> testCases = new HashMap<>();
 
@@ -85,21 +79,21 @@ public class ProcessStage {
 
     private void processData(Path testCasesDir, Map<String, Object> data, Path[] sources) {
         for (Path source : sources) {
-            TestRun testRun = testRunReader.readTestRun(source);
-            testRunDetailsReaders.forEach(reader -> reader.readDetails(source).accept(testRun));
-            each(data, testRun);
+            TestRun testRun = testRunStage.read().apply(source);
+            testRunStage.process(testRun).accept(data);
+
             List<TestCaseResult> testCaseResults = readTestCases(source);
             for (TestCaseResult result : testCaseResults) {
                 if (!testCases.containsKey(result.getId())) {
                     TestCase testCase = createTestCase(result);
                     testCases.put(result.getId(), testCase);
-                    each(data, testRun, testCase);
+                    testCaseStage.process(testRun, testCase).accept(data);
                 }
                 TestCase testCase = testCases.get(result.getId());
                 testCase.updateLinks(result.getLinks());
                 testCase.updateParametersNames(result.getParameters());
+                resultStage.process(testRun, testCase, result).accept(data);
                 writer.write(testCasesDir, result.getSource(), result);
-                each(data, testRun, testCase, result);
             }
         }
     }
@@ -122,31 +116,6 @@ public class ProcessStage {
             });
         });
         writer.write(dataDir, "widgets.json", widgets);
-    }
-
-    private void each(Map<String, Object> data, TestRun testRun) {
-        testRunAggregators.forEach((uid, aggregator) -> {
-            Object value = data.computeIfAbsent(uid, key -> aggregator.supplier().get());
-            //noinspection unchecked
-            aggregator.aggregate(testRun).accept(value);
-        });
-    }
-
-    private void each(Map<String, Object> data, TestRun testRun, TestCase testCase) {
-        testCaseAggregators.forEach((uid, aggregator) -> {
-            Object value = data.computeIfAbsent(uid, key -> aggregator.supplier(testRun).get());
-            //noinspection unchecked
-            aggregator.aggregate(testRun, testCase).accept(value);
-        });
-    }
-
-    private void each(Map<String, Object> data, TestRun testRun, TestCase testCase, TestCaseResult result) {
-        resultProcessors.forEach((uid, processor) -> processor.process(testRun, testCase, result));
-        resultAggregators.forEach((uid, aggregator) -> {
-            Object value = data.computeIfAbsent(uid, key -> aggregator.supplier(testRun, testCase).get());
-            //noinspection unchecked
-            aggregator.aggregate(testRun, testCase, result).accept(value);
-        });
     }
 
     private TestCase createTestCase(TestCaseResult result) {
