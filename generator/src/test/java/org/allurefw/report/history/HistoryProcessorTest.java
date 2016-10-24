@@ -4,6 +4,7 @@ import org.allurefw.report.entity.TestCase;
 import org.allurefw.report.entity.TestCaseResult;
 import org.allurefw.report.entity.TestRun;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.Map;
 
@@ -26,7 +27,7 @@ public class HistoryProcessorTest {
         Map<String, HistoryData> history = mock(Map.class);
 
         String id = "some-id";
-        HistoryData data = new HistoryData();
+        HistoryData data = new HistoryData().withId(id);
 
         doReturn(data).when(history).computeIfAbsent(eq("some-id"), any());
 
@@ -43,6 +44,6 @@ public class HistoryProcessorTest {
         HistoryProcessor processor = new HistoryProcessor();
         processor.process(testRun, testCase, result);
 
-        verify(result, times(1)).addExtraBlock(eq(HISTORY), eq(data));
+        verify(result, times(1)).addExtraBlock(eq(HISTORY), Mockito.any(HistoryData.class));
     }
 }

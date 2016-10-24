@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.allurefw.report.history.HistoryPlugin.HISTORY;
+import static org.allurefw.report.history.HistoryPlugin.copy;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -18,9 +19,10 @@ public class HistoryProcessor implements Processor {
     @Override
     public void process(TestRun testRun, TestCase testCase, TestCaseResult result) {
         Map<String, HistoryData> history = testRun.getExtraBlock(HISTORY, new HashMap<>());
-        result.addExtraBlock(HISTORY, history.computeIfAbsent(
+        HistoryData data = history.computeIfAbsent(
                 result.getId(),
-                id -> new HistoryData().withId(id).withName(result.getName()))
+                id -> new HistoryData().withId(id).withName(result.getName())
         );
+        result.addExtraBlock(HISTORY, copy(data));
     }
 }

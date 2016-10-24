@@ -6,12 +6,16 @@ import org.allurefw.report.entity.TestCaseResult;
 import org.allurefw.report.entity.TestRun;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.allurefw.report.history.HistoryPlugin.HISTORY;
+import static org.allurefw.report.history.HistoryPlugin.copy;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -20,7 +24,12 @@ public class HistoryResultAggregator implements ResultAggregator<Map<String, His
 
     @Override
     public Supplier<Map<String, HistoryData>> supplier(TestRun testRun, TestCase testCase) {
-        return () -> testRun.getExtraBlock(HISTORY, new HashMap<>());
+        return () -> {
+            Map<String, HistoryData> result = new HashMap<>();
+            Map<String, HistoryData> history = testRun.getExtraBlock(HISTORY, new HashMap<>());
+            history.forEach((key, value) -> result.put(key, copy(value)));
+            return result;
+        };
     }
 
     @Override
@@ -31,12 +40,17 @@ public class HistoryResultAggregator implements ResultAggregator<Map<String, His
                     id -> new HistoryData().withId(id).withName(result.getName())
             );
             data.updateStatistic(result);
-            data.getItems().add(new HistoryItem()
+
+            HistoryItem newItem = new HistoryItem()
                     .withStatus(result.getStatus())
                     .withStatusDetails(Objects.isNull(result.getFailure()) ? null : result.getFailure().getMessage())
                     .withTimestamp(result.getTime().getStop())
-                    .withTestRunName(testRun.getName())
-            );
+                    .withTestRunName(testRun.getName());
+
+            List<HistoryItem> newItems = Stream.concat(Stream.of(newItem), data.getItems().stream())
+                    .limit(5)
+                    .collect(Collectors.toList());
+            data.setItems(newItems);
         };
     }
 }

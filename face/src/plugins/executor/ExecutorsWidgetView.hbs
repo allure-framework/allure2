@@ -11,7 +11,10 @@
         </div>
         {{#if info}}
             <div class="{{b 'table' 'col' right=true}} executor">
-                <a class="link" href="{{info.buildUrl}}">{{info.buildName}}</a>
+                <a class="link" href="{{info.buildUrl}}">
+                    {{info.buildName}}
+                    <span class="fa fa-external-link"></span>
+                </a>
             </div>
         {{else}}
             <div class="{{b 'table' 'col' right=true}}">
