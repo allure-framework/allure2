@@ -2,7 +2,7 @@ import './styles.css';
 import {View} from 'backbone';
 import {select} from 'd3-selection';
 import {axisLeft, axisBottom} from 'd3-axis';
-
+import {event as currentEvent} from 'd3-selection'; 
 export default class BaseChartView extends View {
 
     constructor(options) {
@@ -53,7 +53,7 @@ export default class BaseChartView extends View {
     getTooltipContent() {}
 
     onItemOver(d) {
-        this.showTooltip(d, event.target);
+        this.showTooltip(d, currentEvent.target);
     }
 
     showTooltip(d, element) {
