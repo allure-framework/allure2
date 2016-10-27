@@ -1,5 +1,5 @@
 import './styles.css';
-import d3 from 'd3';
+import {csvParseRows} from 'd3-dsv';
 import highlight from '../../util/highlight';
 import {View} from 'backbone.marionette';
 import $ from 'jquery';
@@ -38,7 +38,7 @@ class AttachmentView extends View {
     loadContent() {
         return $.ajax(this.sourceUrl, {dataType: 'text'}).then((responseText) => {
             if(this.type === 'csv') {
-                this.content = d3.csv.parseRows(responseText);
+                this.content = csvParseRows(responseText);
             } else if(this.type === 'uri') {
                 this.content = responseText.split('\n')
                     .map(line => line.trim())
