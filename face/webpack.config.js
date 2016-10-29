@@ -2,7 +2,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 function makeConfig(development) {
     return {
@@ -22,7 +21,7 @@ function makeConfig(development) {
                 loader: 'json-loader'
             }, {
                 test: /\.(png|svg|woff2?|ttf|eot)(\?.*)?$/,
-                loader: 'file-loader'
+                loader: 'url-loader'
             }, {
                 test: /\.css$/,
                 loader: development ? 'style-loader!css-loader!postcss-loader' : ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader')
@@ -40,7 +39,6 @@ function makeConfig(development) {
         devtool: development ? 'source-map' : null,
         plugins: (() => {
             const plugins = [
-                new CopyWebpackPlugin([{from: './src/favicon.ico'}]),
                 new ExtractTextPlugin('styles.css')
             ];
             if(development) {
