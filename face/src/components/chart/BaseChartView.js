@@ -1,6 +1,7 @@
 import './styles.css';
 import {View} from 'backbone';
-import d3 from 'd3';
+import {axisLeft, axisBottom} from 'd3-axis';
+import {select, event as currentEvent} from 'd3-selection'; 
 
 export default class BaseChartView extends View {
 
@@ -11,11 +12,11 @@ export default class BaseChartView extends View {
     }
 
     onRender() {
-        d3.select(window).on('resize.' + this.cid, this.onAttach.bind(this));
+        select(window).on('resize.' + this.cid, this.onAttach.bind(this));
     }
 
     onDestroy() {
-        d3.select(window).on('resize.' + this.cid, null);
+        select(window).on('resize.' + this.cid, null);
     }
 
     onAttach() {
@@ -28,13 +29,22 @@ export default class BaseChartView extends View {
             <g class="chart__axis chart__axis_y"></g>
             <g class="chart__plot"></g>
         </svg>`);
-        return d3.select(this.$el[0]).select('svg');
+        return select(this.$el[0]).select('svg');
     }
 
-    makeAxis(element, options, {left = 0, top = 0} = {}) {
-        const axis = d3.svg.axis();
+    makeLeftAxis(element, options, translate){
+        const axis = axisLeft();
+        return this.makeAxis(axis, element, options, translate);
+    }
+
+    makeBottomAxis(element, options, translate){
+        const axis = axisBottom();
+        return this.makeAxis(axis, element, options, translate);
+    }
+
+    makeAxis(axis, element, options, {left = 0, top = 0} = {}) {
         Object.keys(options).forEach(option => axis[option](options[option]));
-        element.call(axis).attr({
+        element.call(axis).attrs({
             transform: `translate(${left},${top})`
         });
         return axis;
@@ -43,7 +53,7 @@ export default class BaseChartView extends View {
     getTooltipContent() {}
 
     onItemOver(d) {
-        this.showTooltip(d, d3.event.target);
+        this.showTooltip(d, currentEvent.target);
     }
 
     showTooltip(d, element) {

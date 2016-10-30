@@ -2,7 +2,11 @@ import BaseChartView from '../../../components/chart/BaseChartView';
 import TooltipView from '../../../components/tooltip/TooltipView';
 import {on} from '../../../decorators';
 import {omit} from 'underscore';
-import d3 from 'd3';
+
+import {arc, pie} from 'd3-shape';
+import {interpolate} from 'd3-interpolate';
+import {select} from 'd3-selection';
+
 import escape from '../../../util/escape';
 
 const legendTpl = `<div class="chart__legend">
@@ -14,8 +18,8 @@ const legendTpl = `<div class="chart__legend">
 export default class StatusChart extends BaseChartView {
 
     initialize() {
-        this.arc = d3.svg.arc();
-        this.pie = d3.layout.pie().sort(null).value(d => d.value);
+        this.arc = arc();
+        this.pie = pie().sort(null).value(d => d.value);
         this.tooltip = new TooltipView({position: 'center'});
     }
 
@@ -52,7 +56,7 @@ export default class StatusChart extends BaseChartView {
         this.svg = this.setupViewport();
 
         var sectors = this.svg.select('.chart__plot')
-            .attr({transform: `translate(${leftOffset},${radius})`})
+            .attrs({transform: `translate(${leftOffset},${radius})`})
             .selectAll('.chart__arc').data(this.pie(data))
             .enter()
             .append('path')
@@ -62,14 +66,14 @@ export default class StatusChart extends BaseChartView {
 
         this.svg.select('.chart__plot').append('text')
             .classed('chart__caption', true)
-            .attr({dy: '0.4em'})
-            .style({'font-size': radius / 3})
+            .attrs({dy: '0.4em'})
+            .styles({'font-size': radius / 3})
             .text(this.getChartTitle());
 
         if(this.firstRender) {
             sectors.transition().duration(750).attrTween('d', d => {
-                const startAngleFn = d3.interpolate(0, d.startAngle);
-                const endAngleFn = d3.interpolate(0, d.endAngle);
+                const startAngleFn = interpolate(0, d.startAngle);
+                const endAngleFn = interpolate(0, d.endAngle);
                 return t =>
                     this.arc({startAngle: startAngleFn(t), endAngle: endAngleFn(t)});
             });
@@ -105,7 +109,7 @@ export default class StatusChart extends BaseChartView {
         const el = this.$(e.currentTarget);
         const status = el.data('status');
         const sector = this.$('.chart__fill_status_' + status)[0];
-        const data = d3.select(sector).datum();
+        const data = select(sector).datum();
         this.showTooltip(data, sector);
     }
 }
