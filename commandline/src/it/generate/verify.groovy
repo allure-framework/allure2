@@ -2,7 +2,7 @@ def report = new File(basedir as File, 'report')
 assert report.exists()
 assert report.isDirectory()
 
-['index.html', 'app.js', 'favicon.ico', 'styles.css'].each {
+['index.html', 'app.js', 'styles.css'].each {
     def file = new File(report, it)
     assert file.exists()
     assert file.isFile()
