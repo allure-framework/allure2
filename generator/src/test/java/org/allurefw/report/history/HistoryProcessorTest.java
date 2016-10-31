@@ -1,5 +1,6 @@
 package org.allurefw.report.history;
 
+import org.allurefw.report.entity.Statistic;
 import org.allurefw.report.entity.TestCase;
 import org.allurefw.report.entity.TestCaseResult;
 import org.allurefw.report.entity.TestRun;

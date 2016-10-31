@@ -6,6 +6,7 @@ import com.google.inject.Module;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.allurefw.report.entity.Statistic;
 import org.allurefw.report.plugins.DefaultPluginLoader;
 import org.allurefw.report.plugins.EmptyPluginsLoader;
 import org.allurefw.report.utils.CopyVisitor;
@@ -62,11 +63,23 @@ public class Main {
 
     public void generate(Path output, Path... sources) {
         List<Plugin> plugins = pluginsLoader.loadPlugins(enabledPlugins);
+        LOGGER.debug("Found {} plugins", plugins.size());
+        plugins.forEach(plugin ->
+                LOGGER.debug("<{}>, enabled: {}", plugin.getDescriptor().getName(), plugin.isEnabled())
+        );
         Injector injector = createInjector(plugins);
         ProcessStage stage = injector.getInstance(ProcessStage.class);
-        stage.run(output, sources);
+        Statistic run = stage.run(output, sources);
+        LOGGER.debug("## Summary");
+        LOGGER.debug("Found {} test cases ({} failed, {} broken)", run.getTotal(), run.getFailed(), run.getBroken());
+        LOGGER.debug("Success percentage: {}", getSuccessPercentage(run));
+        LOGGER.debug("Creating index.html...");
         Set<String> pluginsWithStatic = unpackStatic(plugins, output);
         writeIndexHtml(pluginsWithStatic, output);
+    }
+
+    private String getSuccessPercentage(Statistic run) {
+        return run.getTotal() == 0 ? "Unknown" : String.valueOf(run.getPassed() * 100 / run.getTotal());
     }
 
     private static Injector createInjector(List<Plugin> plugins) {
@@ -81,6 +94,8 @@ public class Main {
 
     private static void writeIndexHtml(Set<String> pluginsWithStatic, Path outputDirectory) {
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_23);
+        cfg.setLocalizedLookup(false);
+        cfg.setTemplateUpdateDelayMilliseconds(0);
         cfg.setClassLoaderForTemplateLoading(Main.class.getClassLoader(), "tpl");
         Path indexHtml = outputDirectory.resolve("index.html");
         try (BufferedWriter writer = Files.newBufferedWriter(indexHtml, StandardOpenOption.CREATE)) {

@@ -15,7 +15,7 @@ class HistoryView extends View {
     }
 
     getSuccessRate(history) {
-        if (!history) {
+        if (!history || !history.statistic || !history.statistic.total) {
             return 'unknown';
         }
         const {passed, total} = history.statistic;

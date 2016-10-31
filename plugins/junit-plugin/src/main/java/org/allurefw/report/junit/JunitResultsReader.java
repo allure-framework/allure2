@@ -1,20 +1,21 @@
 package org.allurefw.report.junit;
 
-import com.github.baev.BadXmlCharactersFilterReader;
-import com.github.baev.junit.Testsuite;
 import com.google.inject.Inject;
 import org.allurefw.report.AttachmentsStorage;
 import org.allurefw.report.ResultsReader;
 import org.allurefw.report.entity.Attachment;
 import org.allurefw.report.entity.Failure;
-import org.allurefw.report.entity.Label;
 import org.allurefw.report.entity.LabelName;
 import org.allurefw.report.entity.Status;
 import org.allurefw.report.entity.TestCaseResult;
 import org.allurefw.report.entity.Time;
+import org.apache.maven.plugins.surefire.report.ReportTestCase;
+import org.apache.maven.plugins.surefire.report.ReportTestSuite;
+import org.apache.maven.plugins.surefire.report.TestSuiteXmlParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.xml.bind.JAXB;
-import java.io.IOException;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,8 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static org.allurefw.report.ModelUtils.createLabel;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.allurefw.report.ReportApiUtils.generateUid;
 import static org.allurefw.report.ReportApiUtils.listFiles;
 
@@ -33,7 +35,13 @@ import static org.allurefw.report.ReportApiUtils.listFiles;
  */
 public class JunitResultsReader implements ResultsReader {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(JunitResultsReader.class);
+
+    public static final BigDecimal MULTIPLICAND = new BigDecimal(1000);
+
     private final AttachmentsStorage storage;
+
+    private final TestSuiteXmlParser parser = new TestSuiteXmlParser();
 
     @Inject
     public JunitResultsReader(AttachmentsStorage storage) {
@@ -43,66 +51,68 @@ public class JunitResultsReader implements ResultsReader {
     @Override
     public List<TestCaseResult> readResults(Path source) {
         return listFiles(source, "TEST-*.xml")
-                .map(this::unmarshal)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+                .flatMap(this::parse)
                 .flatMap(testSuite -> {
-                    Label suiteLabel = createLabel(LabelName.SUITE, testSuite.getName());
-                    Path attachmentFile = source.resolve(testSuite.getName() + ".txt");
+                    Path attachmentFile = source.resolve(testSuite.getFullClassName() + ".txt");
                     Optional<Attachment> log = Optional.of(attachmentFile)
                             .filter(Files::exists)
                             .map(storage::addAttachment)
                             .map(attachment -> attachment.withName("System out"));
 
                     List<TestCaseResult> results = new ArrayList<>();
-                    for (Testsuite.Testcase testCaseRow : testSuite.getTestcase()) {
-                        TestCaseResult testCase = convert(testCaseRow);
-                        log.ifPresent(testCase.getAttachments()::add);
-                        testCase.getLabels().add(suiteLabel);
-                        results.add(testCase);
+                    for (ReportTestCase testCase : testSuite.getTestCases()) {
+                        TestCaseResult result = convert(testCase);
+                        log.ifPresent(result.getAttachments()::add);
+                        result.addLabelIfNotExists(LabelName.SUITE, testSuite.getFullClassName());
+                        result.addLabelIfNotExists(LabelName.TEST_CLASS, testSuite.getFullClassName());
+                        results.add(result);
                     }
                     return results.stream();
-                }).collect(Collectors.toList());
+                })
+                .collect(Collectors.toList());
     }
 
-    protected TestCaseResult convert(Testsuite.Testcase source) {
+    protected TestCaseResult convert(ReportTestCase source) {
         TestCaseResult dest = new TestCaseResult();
-        dest.setId(String.format("%s#%s", source.getClassname(), source.getName()));
+        dest.setId(String.format("%s#%s", source.getFullClassName(), source.getName()));
         dest.setUid(generateUid());
         dest.setName(source.getName());
         dest.setTime(new Time()
-                .withDuration(source.getTime().multiply(new BigDecimal(1000)).longValue())
+                .withDuration(BigDecimal.valueOf(source.getTime()).multiply(MULTIPLICAND).longValue())
         );
         dest.setStatus(getStatus(source));
         dest.setFailure(getFailure(source));
         return dest;
     }
 
-    protected Status getStatus(Testsuite.Testcase source) {
-        if (source.getFailure() != null) {
+    protected Status getStatus(ReportTestCase source) {
+        if (!source.hasFailure()) {
+            return Status.PASSED;
+        }
+        if ("java.lang.AssertionError".equalsIgnoreCase(source.getFailureType())) {
             return Status.FAILED;
         }
-        if (source.getError() != null) {
-            return Status.BROKEN;
+        if ("skipped".equalsIgnoreCase(source.getFailureType())) {
+            return Status.CANCELED;
         }
-        return Status.PASSED;
+        return Status.BROKEN;
     }
 
-    protected Failure getFailure(Testsuite.Testcase source) {
-        if (source.getFailure() != null) {
-            return new Failure().withMessage(source.getFailure().getMessage());
-        }
-        if (source.getError() != null) {
-            return new Failure().withMessage(source.getError().getMessage());
+    protected Failure getFailure(ReportTestCase source) {
+        if (source.hasFailure()) {
+            return new Failure()
+                    .withMessage(source.getFailureMessage())
+                    .withTrace(source.getFailureDetail());
         }
         return null;
     }
 
-    protected Optional<Testsuite> unmarshal(Path path) {
-        try (BadXmlCharactersFilterReader reader = new BadXmlCharactersFilterReader(path)) {
-            return Optional.of(JAXB.unmarshal(reader, Testsuite.class));
-        } catch (IOException e) {
-            return Optional.empty();
+    protected Stream<ReportTestSuite> parse(Path source) {
+        try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(source), UTF_8)) {
+            return parser.parse(reader).stream();
+        } catch (Exception e) {
+            LOGGER.debug("Could not parse result {}: {}", source, e);
+            return Stream.empty();
         }
     }
 }

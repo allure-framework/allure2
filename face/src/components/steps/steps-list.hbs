@@ -1,7 +1,7 @@
 {{#each steps}}
     <div class="step">
         <div class="{{b "step" "title"}}">
-            {{#if hasContent}}
+            {{#if (or steps.length attachments.length)}}
                 <span class="step__arrow block__arrow"></span>
             {{/if}}
             {{name}}

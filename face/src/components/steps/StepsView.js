@@ -8,18 +8,11 @@ import template from './StepsView.hbs';
 export default class StepsView extends View {
     template = template;
 
-    fillStep(step) {
-        return Object.assign({}, step, {
-            hasContent: step.steps.length > 0 || step.attachments.length > 0,
-            steps: step.steps.map(this.fillStep, this)
-        });
-    }
-
     serializeData() {
         return {
             status: this.model.get('status'),
             time: this.model.get('time'),
-            steps: this.model.get('steps').map(this.fillStep, this),
+            steps: this.model.get('steps'),
             baseUrl: this.options.baseUrl,
             attachments: this.model.get('attachments')
         };

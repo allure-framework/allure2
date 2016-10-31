@@ -23,6 +23,7 @@ public class HistoryProcessor implements Processor {
                 result.getId(),
                 id -> new HistoryData().withId(id).withName(result.getName())
         );
+        data.updateStatistic(result);
         result.addExtraBlock(HISTORY, copy(data));
     }
 }

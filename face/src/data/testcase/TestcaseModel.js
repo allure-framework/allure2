@@ -11,12 +11,16 @@ export default class TestcaseModel extends Model {
     }
 
     updateAttachments() {
+        function orEmpty(items) {
+            return items ? items : [];
+        }
         function collectAttachments(steps) {
-            return steps.reduce((attachments, step) => {
-                return attachments.concat(collectAttachments(step.steps), step.attachments);
+            return orEmpty(steps).reduce((attachments, step) => {
+                return attachments.concat(collectAttachments(step.steps), orEmpty(step.attachments));
             }, []);
         }
-        this.allAttachments = collectAttachments(this.get('steps')).concat(this.get('attachments'));
+        this.allAttachments = collectAttachments(this.get('steps'))
+            .concat(orEmpty(this.get('attachments')));
     }
 
     getAttachment(uid) {

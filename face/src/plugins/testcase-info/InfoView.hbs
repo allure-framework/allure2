@@ -1,6 +1,24 @@
 {{#if time}}
     <h3 class="pane__section-title">Info</h3>
-    <div class="testcase-info">Started {{date time.start}} at {{time time.start}}</div>
-    <div class="testcase-info">Finished {{date time.stop}} at {{time time.stop}}</div>
-    <div class="testcase-info">Duration {{duration time.duration}}</div>
+    <div class="testcase-info">Started
+        {{#if time.start}}
+        {{date time.start}} at {{time time.start}}
+        {{else}}
+            unknown
+        {{/if}}
+    </div>
+    <div class="testcase-info">Finished
+        {{#if time.stop}}
+            {{date time.stop}} at {{time time.stop}}
+        {{else}}
+            unknown
+        {{/if}}
+    </div>
+    <div class="testcase-info">Duration
+        {{#if time.duration}}
+            {{duration time.duration}}
+        {{else}}
+            unknown
+        {{/if}}
+    </div>
 {{/if}}

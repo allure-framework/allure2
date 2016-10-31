@@ -3,6 +3,7 @@ package org.allurefw.report;
 import org.allurefw.report.core.ProcessResultStage;
 import org.allurefw.report.core.ProcessTestCaseStage;
 import org.allurefw.report.core.ProcessTestRunStage;
+import org.allurefw.report.entity.Statistic;
 import org.allurefw.report.entity.TestCase;
 import org.allurefw.report.entity.TestCaseResult;
 import org.allurefw.report.entity.TestRun;
@@ -58,17 +59,18 @@ public class ProcessStage {
 
     protected HashMap<String, TestCase> testCases = new HashMap<>();
 
-    public void run(Path output, Path... sources) {
-        LOGGER.debug("Process stage started...");
-
+    public Statistic run(Path output, Path... sources) {
+        LOGGER.debug("Found {} results readers", testCaseReaders.size());
         Path dataDirectory = output.resolve("data");
         Path testCasesDirectory = dataDirectory.resolve("test-cases");
         Path attachmentsDirectory = dataDirectory.resolve("attachments");
 
         Map<String, Object> data = new HashMap<>();
-        processData(testCasesDirectory, data, sources);
+        Statistic statistic = processData(testCasesDirectory, data, sources);
         writeData(dataDirectory, data);
         writeAttachments(attachmentsDirectory);
+
+        return statistic;
     }
 
     private void writeAttachments(Path attachmentsDirectory) {
@@ -77,13 +79,16 @@ public class ProcessStage {
         );
     }
 
-    private void processData(Path testCasesDir, Map<String, Object> data, Path[] sources) {
+    private Statistic processData(Path testCasesDir, Map<String, Object> data, Path[] sources) {
+        Statistic statistic = new Statistic();
         for (Path source : sources) {
             TestRun testRun = testRunStage.read().apply(source);
             testRunStage.process(testRun).accept(data);
 
             List<TestCaseResult> testCaseResults = readTestCases(source);
+            LOGGER.debug("Found {} results for source {}", testCaseResults.size(), source.getFileName());
             for (TestCaseResult result : testCaseResults) {
+                statistic.update(result);
                 if (!testCases.containsKey(result.getId())) {
                     TestCase testCase = createTestCase(result);
                     testCases.put(result.getId(), testCase);
@@ -96,6 +101,7 @@ public class ProcessStage {
                 writer.write(testCasesDir, result.getSource(), result);
             }
         }
+        return statistic;
     }
 
     private void writeData(Path dataDir, Map<String, Object> data) {
