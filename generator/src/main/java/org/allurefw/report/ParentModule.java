@@ -8,7 +8,6 @@ import com.google.inject.multibindings.Multibinder;
 import com.google.inject.multibindings.OptionalBinder;
 import com.google.inject.name.Names;
 import org.allurefw.report.allure1.Allure1ResultsReader;
-import org.allurefw.report.allure2.Allure2ResultsReader;
 import org.allurefw.report.core.DefaultAttachmentsStorage;
 import org.allurefw.report.core.DefaultTestRunReader;
 import org.allurefw.report.defects.DefectsPlugin;
@@ -61,8 +60,6 @@ public class ParentModule extends AbstractModule {
 //        Readers
         Multibinder.newSetBinder(binder(), ResultsReader.class)
                 .addBinding().to(Allure1ResultsReader.class);
-        Multibinder.newSetBinder(binder(), ResultsReader.class)
-                .addBinding().to(Allure2ResultsReader.class);
 
         OptionalBinder.newOptionalBinder(binder(), TestRunReader.class)
                 .setDefault().to(DefaultTestRunReader.class);
