@@ -70,16 +70,19 @@ public class DefaultPluginLoader implements PluginsLoader {
     }
 
     private Optional<Module> loadPluginModule(Path pluginDirectory, PluginDescriptor descriptor) {
+        String moduleClass = descriptor.getModuleClass();
+        if (Objects.isNull(moduleClass) || moduleClass.isEmpty()) {
+            return Optional.empty();
+        }
         try {
             Path pluginJar = pluginDirectory.resolve(PLUGIN_JAR_ENTRY_NAME);
             URL[] classPath = new URL[]{pluginJar.toUri().toURL()};
             ClassLoader parent = getClass().getClassLoader();
             //We should not close this classloader in order to load other plugin classes.
             URLClassLoader classLoader = new URLClassLoader(classPath, parent);
-            return Optional.of((Module) classLoader.loadClass(descriptor.getModuleClass()).newInstance());
+            return Optional.of((Module) classLoader.loadClass(moduleClass).newInstance());
         } catch (Exception e) {
-            LOGGER.error("Could not load module {} for plugin {} {}",
-                    descriptor.getModuleClass(), descriptor.getName(), e);
+            LOGGER.error("Could not load module {} for plugin {} {}", moduleClass, descriptor.getName(), e);
             return Optional.empty();
         }
     }

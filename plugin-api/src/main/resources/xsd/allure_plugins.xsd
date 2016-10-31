@@ -8,7 +8,7 @@
     <xsd:complexType name="PluginDescriptor">
         <xsd:sequence>
             <xsd:element name="name" type="xsd:string"/>
-            <xsd:element name="moduleClass" type="xsd:string"/>
+            <xsd:element name="moduleClass" type="xsd:string" minOccurs="0"/>
         </xsd:sequence>
     </xsd:complexType>
 </xsd:schema>
