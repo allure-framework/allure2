@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns:pluginDescriptor xmlns:ns="urn:report.allurefw.org">
     <name>junit-plugin</name>
+    <moduleClass>org.allurefw.report.junit.JunitResultsModule</moduleClass>
 </ns:pluginDescriptor>
