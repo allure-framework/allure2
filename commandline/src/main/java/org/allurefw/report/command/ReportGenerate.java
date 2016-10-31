@@ -42,6 +42,6 @@ public class ReportGenerate implements AllureCommand {
 
         copyDirectory(context.getWebDirectory(), output);
         LOGGER.info("Report successfully generated to the directory <{}>. " +
-                "Use `allure report open` command to show the report.", reportDirectory);
+                "Use `allure open` command to show the report.", reportDirectory);
     }
 }
