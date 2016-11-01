@@ -2,10 +2,11 @@ import 'font-awesome/css/font-awesome.css';
 import './styles.css';
 import './blocks/table/styles.css';
 import {Application, Behaviors} from 'backbone.marionette';
+import {history} from 'backbone';
 import router from './router';
 import * as behaviors from './behaviors';
 import ErrorLayout from './layouts/error/ErrorLayout';
-import i18next, {init as initTranslations} from './util/translation';
+import i18next, { initTranslations } from './util/translation';
 
 Behaviors.behaviorsLookup = behaviors;
 
@@ -37,10 +38,12 @@ const App = new Application({
 });
 
 App.on('start', () => {
-    initTranslations();
-    i18next.on('languageChanged', () => {
-        App.getRegion().reset();
-        router.reload();
+    initTranslations().then(() => {
+        history.start();
+        i18next.on('languageChanged', () => {
+            App.getRegion().reset();
+            router.reload();
+        });
     });
 
     router.on('route:notFound', showView(notFound));

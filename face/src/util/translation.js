@@ -12,19 +12,19 @@ LANGUAGES
     .map(lang => lang.id)
     .forEach(lang => addTranslation(lang, require('../translations/' + lang)));
 
-export function init() {
-    Object.assign(intervalPlural.options, {
-        intervalRegex: /^\((\S*)\)\((.*)\)$/
-    });
-    i18next
-        .use(intervalPlural)
-        .init({
+export function initTranslations() {
+    return new Promise((resolve, reject) => {
+        Object.assign(intervalPlural.options, {
+            intervalRegex: /^\((\S*)\)\((.*)\)$/
+        });
+        i18next.use(intervalPlural).init({
             lng: settings.get('language'),
             interpolation: {
                 escapeValue: false
             },
             fallbackLng: 'en'
-        });
+        }, err => err ? reject(err) : resolve());
+    });
 }
 
 export function addTranslation(lang, json) {
@@ -34,4 +34,3 @@ export function addTranslation(lang, json) {
 }
 
 export default i18next;
-
