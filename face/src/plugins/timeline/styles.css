@@ -2,13 +2,40 @@
 
 .timeline {
   padding: $gap-size;
+
   &__item:hover {
     opacity: 0.7;
   }
+
   &__host {
-    font-size: 18px;
+    font-size: 12px;
   }
+
   &__host-bg {
-    fill: $heading-bg;
+    fill: none;
+    stroke: $border-accent-color;
+    shape-rendering: crispEdges;
   }
+
+  &__item {
+    shape-rendering: crispEdges;
+  }
+
+  &__left_handle, &__right_handle {
+    font-family: 'FontAwesome';
+    font-size: 10px;
+    dominant-baseline: central;
+    fill: steelblue;
+    opacity: .15;
+    cursor: default;
+  }
+
+  &__left_handle {
+    text-anchor: end;
+  }
+}
+
+.selection {
+  fill: steelblue;
+  fill-opacity: 0.15;
 }

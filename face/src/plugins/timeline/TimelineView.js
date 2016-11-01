@@ -12,15 +12,19 @@ import 'd3-selection-multi';
 import escape from '../../util/escape';
 import TooltipView from '../../components/tooltip/TooltipView';
 
-const BAR_HEIGHT = 25;
-const BAR_GAP = 0.5;
-const MINIBAR_HEIGHT=5;
 
-const PAD_BOTTOM = 30;
-const PAD_LEFT = 25;
-const PAD_RIGHT = 25;
+const HOST_TITLE_HEIGHT = 20;
 
-const MINI_HEIGHT = 150;
+const GRAPH_MIN_HEIGHT = 100;
+const BAR_HEIGHT = 20;
+
+const BRUSH_MIN_HEIGHT = 25;
+const PREVIEW_BAR_HEIGHT = 2;
+
+const MIN_BAR_GAP = 1;
+
+const PADDING = 30;
+
 
 @className('timeline')
 class TimelineView extends BaseChartView {
@@ -29,7 +33,7 @@ class TimelineView extends BaseChartView {
         this.miniX = scaleLinear();
         this.tooltip = new TooltipView({position: 'bottom'});
         this.brush = brushX()
-            .on('brush',this.onBrushChange.bind(this));
+            .on('brush', this.onBrushChange.bind(this));
     }
 
     onAttach(waitTransition) {
@@ -43,31 +47,41 @@ class TimelineView extends BaseChartView {
     }
 
     doShow() {
-        const width = this.$el.width() > PAD_LEFT + PAD_RIGHT ? this.$el.width() - PAD_LEFT - PAD_RIGHT : this.$el.width();
+        const width = this.$el.width() > 2 * PADDING ? this.$el.width() - 2 * PADDING : this.$el.width();
 
         const [from, to] = this.model.getAllTestcases().reduce(
             ([from, to], {time}) => [Math.min(from, time.start), Math.max(to, time.stop)],
             [Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY]
         );
-        this.minX = from;
 
-        this.x.domain([0, to - from]).nice();
+        this.minX = from;
+        this.maxX = to-from;
+
+        this.x.domain([0, this.maxX]).nice();
         this.x.range([0, width]);
 
-        this.miniX.domain([0, to - from]).nice();
+        this.miniX.domain([0, this.maxX]).nice();
         this.miniX.range([0, width]);
 
         this.svg = this.setupViewport();
 
+        var totalThreads = this.model.get('children').reduce((a,b) => { return a + b.children.length; }, 0);
+
+        var bar_gap = (GRAPH_MIN_HEIGHT - BAR_HEIGHT * totalThreads)/2;
+        bar_gap = bar_gap < MIN_BAR_GAP ? MIN_BAR_GAP : Math.trunc(bar_gap);
+
+        var preview_bar_gap = (BRUSH_MIN_HEIGHT - PREVIEW_BAR_HEIGHT * totalThreads)/2;
+        preview_bar_gap = preview_bar_gap < MIN_BAR_GAP ? MIN_BAR_GAP : Math.trunc(preview_bar_gap);
+
         var currentHeight = 0;
         this.model.get('children').forEach(host => {
-            currentHeight += this.drawHost(host, currentHeight, false);
+            currentHeight += this.drawHost(host, currentHeight, bar_gap);
         });
 
         var mainHeight = currentHeight;
-        currentHeight += PAD_BOTTOM;
+        currentHeight += PADDING;
         this.model.get('children').forEach(host => {
-            currentHeight += this.drawHost(host, currentHeight, true);
+            currentHeight += this.drawMiniHost(host, currentHeight, preview_bar_gap);
         });
 
         this.xAxis = this.makeBottomAxis(this.svg.select('.chart__axis_x'), {
@@ -75,7 +89,7 @@ class TimelineView extends BaseChartView {
             scale: this.x
         }, {
             top: mainHeight,
-            left: PAD_LEFT
+            left: PADDING
         });
 
         this.svg.append('g').attr('class', 'chart__mini__axis_x');
@@ -83,19 +97,40 @@ class TimelineView extends BaseChartView {
             tickFormat: d => duration(d, 2),
             scale: this.miniX
         }, {
-            top: currentHeight,
-            left: PAD_LEFT
+            top: currentHeight + MIN_BAR_GAP,
+            left: PADDING
         });
 
-        this.$el.height(currentHeight + PAD_BOTTOM);
-
-        this.brush.extent([[0, currentHeight - MINI_HEIGHT + 2*PAD_BOTTOM], [width, currentHeight]]);
-        this.svg.select('.chart__plot').append('g')
-            .attrs({ transform: `translate(${PAD_LEFT},0)` })
+        const miniHeight = currentHeight - mainHeight;
+        this.brush.extent([[0, mainHeight + PADDING -2*MIN_BAR_GAP], [width, currentHeight]]);
+        this.svg.append('g')
+            .attrs({ transform: `translate(${PADDING}, 0)` })
             .attr('class', 'brush')
             .call(this.brush)
             .call(this.brush.move, this.x.range());
 
+        var handle = this.svg.select('.chart__plot')
+            .append('g')
+            .attrs({ transform: 'translate(' + (PADDING) + ', ' + (mainHeight + (miniHeight + PADDING)/2 - MIN_BAR_GAP) + ')'});
+
+        handle.append('text')
+            .attr('class', 'timeline__left_handle')
+            .text(() => { return '\uf0d9'; });
+
+        handle.append('text')
+            .attr('class', 'timeline__right_handle')
+            .attr('x', width)
+            .text(() => { return '\uf0da'; });
+
+        if(this.firstRender) {
+            this.svg.select('.brush')
+                .transition().duration(300)
+                .call(this.brush.move, [1/16 * this.x(this.maxX), 15/16 * this.x(this.maxX)])
+                .transition().duration(500)
+                .call(this.brush.move, this.x.range());
+         }
+
+        this.$el.height(currentHeight + PADDING);
         super.onRender();
     }
 
@@ -114,37 +149,35 @@ class TimelineView extends BaseChartView {
         );
     }
 
-    drawHost(host, offset, mini = false) {
-        const itemClass = mini ? 'timeline__mini_item' : 'timeline__item';
-        const barHeight = mini ?  MINIBAR_HEIGHT : BAR_HEIGHT;
-
-        const height = (host.children.length + 1) * barHeight;
+    drawHost(host, offset, bar_gap) {
+        const height = host.children.length * (bar_gap + BAR_HEIGHT) + HOST_TITLE_HEIGHT;
         const testcases = this.getTestcases(host);
 
         const y = scaleBand()
-            .domain([''].concat(host.children.map(d => d.name)))
-            .range([0, height]);
+            .domain(host.children.map(d => d.name))
+            .range([HOST_TITLE_HEIGHT, height]);
 
         const group = this.svg.select('.chart__plot').append('g').attrs({
             'class': 'timeline__group',
-            transform: `translate(${PAD_LEFT},${offset})`
+            transform: `translate(${PADDING},${offset})`
         });
 
-        group.append('rect').attrs({
-            'class': 'timeline__host-bg',
-            width: Math.max(0, this.x.range()[1] - this.x.range()[0]),
-            height: y.step()
+        var text = group.append('text').text(host.name).attrs({
+            x: 0,
+            y: HOST_TITLE_HEIGHT/2,
+            'class': 'timeline__host',
+            'dominant-baseline': 'central'
         });
 
-        if (!mini) {
-            group.append('text').text(host.name).attrs({
-                'class': 'timeline__host',
-                y: barHeight * 0.7,
-                x: 10
-            });
-        }
+        group.append('line').attrs({
+             'class': 'timeline__host-bg', 
+             x1: text.node().getComputedTextLength() + MIN_BAR_GAP,
+             y1: HOST_TITLE_HEIGHT/2,
+             x2: this.x.range()[1] - this.x.range()[0],
+             y2: HOST_TITLE_HEIGHT/2
+        });
 
-        var bars = group.selectAll('.' + itemClass)
+        var bars = group.selectAll('.timeline__item ')
             .data(testcases).enter()
             .append('a')
             .attrs({
@@ -152,27 +185,44 @@ class TimelineView extends BaseChartView {
             })
             .append('rect')
             .attrs({
-                'class': d => itemClass + ' chart__fill_status_' + d.status,
-                rx: 1, ry: 1,
-                width: 0,
-                height: barHeight - BAR_GAP * 2,
-                x: this.x(0),
-                y: d => y(d.thread) + BAR_GAP
+                'class': d => 'timeline__item chart__fill_status_' + d.status,
+                x: d => this.x(d.start),
+                y: d => y(d.thread) + bar_gap,
+                width: d => this.x(d.stop) - this.x(d.start),
+                height: BAR_HEIGHT
             });
 
         this.bindTooltip(bars);
         bars.on('click', this.hideTooltip.bind(this));
 
-        if(this.firstRender) {
-            bars = bars.transition().duration(500);
-        }
+        return height + bar_gap;
+    }
 
-        bars.attrs({
-            x: d => this.x(d.start),
-            width: d => this.x(d.stop) - this.x(d.start)
+    drawMiniHost(host, offset, preview_bar_gap) {
+        const height = host.children.length * (preview_bar_gap + PREVIEW_BAR_HEIGHT);
+        const testcases = this.getTestcases(host);
+
+        const y = scaleBand()
+            .domain(host.children.map(d => d.name))
+            .range([0, height]);
+
+        const group = this.svg.select('.chart__plot').append('g').attrs({
+            'class': 'timeline__group',
+            transform: `translate(${PADDING},${offset})`
         });
 
-        return height;
+        group.selectAll('.timeline__mini_item')
+            .data(testcases).enter()
+            .append('rect')
+            .attrs({
+                'class': d => 'timeline__mini_item chart__fill_status_' + d.status,
+                x: d => this.x(d.start),
+                y: d => y(d.thread) + preview_bar_gap,
+                width: d => this.x(d.stop) - this.x(d.start),
+                height: PREVIEW_BAR_HEIGHT
+            });
+
+        return height + preview_bar_gap;
     }
 
     onBrushChange() {
@@ -181,10 +231,14 @@ class TimelineView extends BaseChartView {
 
         if (selection) {
             this.x.domain(selection.map(this.miniX.invert, this.miniX));
+
             this.svg.selectAll('.timeline__item').attrs({
                 x: d => Math.max(0, Math.min(this.x(d.start), maxRight)),
                 width: d => Math.max(0, Math.min(this.x(d.stop), maxRight)) - Math.max(0, Math.min(this.x(d.start), maxRight))
             });
+
+            this.svg.selectAll('.timeline__left_handle').attr('x', selection[0]);
+            this.svg.selectAll('.timeline__right_handle').attr('x', selection[1]);
             this.svg.select('.chart__axis_x').call(this.xAxis);
         }
     }
