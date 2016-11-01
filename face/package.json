@@ -60,6 +60,7 @@
     "d3-array": "^1.0.1",
     "d3-shape": "^1.0.3",
     "d3-dsv": "^1.0.3",
+    "d3-brush": "^1.0.3",
     "d3-interpolate": "^1.1.1",
     "d3-selection-multi": "^1.0.0",
     "denodeify": "^1.2.1",
