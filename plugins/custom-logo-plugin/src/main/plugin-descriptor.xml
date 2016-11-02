@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns:pluginDescriptor xmlns:ns="urn:report.allurefw.org">
+    <name>custom-logo-plugin</name>
+</ns:pluginDescriptor>

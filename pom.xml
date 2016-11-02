@@ -18,6 +18,7 @@
         <module>plugins/junit-plugin</module>
         <module>plugins/behaviors-plugin</module>
         <module>plugins/packages-plugin</module>
+        <module>plugins/custom-logo-plugin</module>
         <module>generator</module>
         <module>face</module>
         <module>commandline</module>
