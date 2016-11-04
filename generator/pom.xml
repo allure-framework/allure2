@@ -47,6 +47,11 @@
             <artifactId>allure1-model</artifactId>
             <version>1.0</version>
         </dependency>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>model-v2</artifactId>
+            <version>1.0-BETA1</version>
+        </dependency>
 
         <!-- Testing -->
         <dependency>

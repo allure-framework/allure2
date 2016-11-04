@@ -1,21 +1,21 @@
 {{#if time}}
     <h3 class="pane__section-title">Info</h3>
     <div class="testcase-info">Started
-        {{#if time.start}}
+        {{#if (is-def time.start)}}
         {{date time.start}} at {{time time.start}}
         {{else}}
             unknown
         {{/if}}
     </div>
     <div class="testcase-info">Finished
-        {{#if time.stop}}
+        {{#if (is-def time.stop)}}
             {{date time.stop}} at {{time time.stop}}
         {{else}}
             unknown
         {{/if}}
     </div>
     <div class="testcase-info">Duration
-        {{#if time.duration}}
+        {{#if (is-def time.duration)}}
             {{duration time.duration}}
         {{else}}
             unknown

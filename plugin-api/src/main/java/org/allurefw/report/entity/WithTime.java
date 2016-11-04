@@ -10,15 +10,15 @@ public interface WithTime {
 
     Time getTime();
 
-    default void setTime(long start, long stop) {
+    default void setTime(Long start, Long stop) {
         setTime(new Time()
                 .withStart(start)
                 .withStop(stop)
-                .withDuration(stop - start)
+                .withDuration((start == null || stop == null) ? null : stop - start)
         );
     }
 
-    default void setTime(long duration) {
+    default void setTime(Long duration) {
         setTime(new Time()
                 .withDuration(duration)
         );

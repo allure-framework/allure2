@@ -43,7 +43,7 @@ public class SummaryAggregatorTest {
         TestCase testCase = new TestCase();
         TestCaseResult result = new TestCaseResult()
                 .withStatus(Status.FAILED);
-        result.setTime(4, 10);
+        result.setTime(4L, 10L);
         aggregator.aggregate(testRun, testCase, result).accept(data);
         assertThat(data, notNullValue());
         assertThat(data.getReportName(), is("name"));

@@ -13,7 +13,11 @@
     {{#if failure.message}}
         <pre class="alert__code"><code>{{failure.message}}</code></pre>
     {{else}}
-        The test has been passed!
+        {{#if (eq status 'passed')}}
+            The test has been passed!
+        {{else}}
+            Empty status details
+        {{/if}}
     {{/if}}
     {{#if failure.trace}}
         <div class="testcase__trace-toggle clickable" data-tooltip="Show trace">
