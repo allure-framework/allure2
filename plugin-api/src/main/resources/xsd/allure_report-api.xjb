@@ -27,7 +27,6 @@
         <inheritance:implements>org.allurefw.report.entity.WithLinks</inheritance:implements>
 
         <inheritance:implements>org.allurefw.report.entity.WithSource</inheritance:implements>
-        <inheritance:implements>org.allurefw.report.entity.WithSummary</inheritance:implements>
         <inheritance:implements>org.allurefw.report.entity.WithTestCaseInfo</inheritance:implements>
     </jaxb:bindings>
 
@@ -51,8 +50,6 @@
         <inheritance:implements>org.allurefw.report.entity.WithSteps</inheritance:implements>
         <inheritance:implements>org.allurefw.report.entity.WithAttachments</inheritance:implements>
         <inheritance:implements>org.allurefw.report.entity.WithFailure</inheritance:implements>
-
-        <inheritance:implements>org.allurefw.report.entity.WithSummary</inheritance:implements>
     </jaxb:bindings>
 
     <jaxb:bindings node="//xsd:complexType[@name='Statistic']">

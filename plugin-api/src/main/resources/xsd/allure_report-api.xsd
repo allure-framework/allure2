@@ -203,12 +203,6 @@
         <xsd:attribute name="broken" type="xsd:long" default="0"/>
     </xsd:complexType>
 
-    <xsd:element name="summary" type="ns:Summary"/>
-    <xsd:complexType name="Summary">
-        <xsd:attribute name="attachments" type="xsd:long" default="0"/>
-        <xsd:attribute name="steps" type="xsd:long" default="0"/>
-    </xsd:complexType>
-
     <xsd:element name="attachment-file" type="ns:AttachmentFile"/>
     <xsd:complexType name="AttachmentFile">
         <xsd:attribute name="uid" type="xsd:string" use="required"/>
