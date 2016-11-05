@@ -1,6 +1,6 @@
 {{#each steps}}
     <div class="step">
-        <div class="{{b "step" "title"}}">
+        <div class="{{b "step" "title" hasContent=(gt (or steps.length attachments.length) 0)}}">
             {{#if (or steps.length attachments.length)}}
                 <span class="step__arrow block__arrow"></span>
             {{/if}}

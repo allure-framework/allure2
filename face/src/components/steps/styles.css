@@ -15,7 +15,9 @@
   &__title {
     position: relative;
     padding: 7px $gap-size 7px 25px;
-    cursor: pointer;
+    &_hasContent {
+      cursor: pointer;
+    }
     &:hover {
       background-color: $hover-color;
       &::before {

@@ -18,7 +18,7 @@ export default class StepsView extends View {
         };
     }
 
-    @on('click .step__title')
+    @on('click .step__title_hasContent')
     onStepClick(e) {
         this.$(e.currentTarget).parent().toggleClass('step__expanded');
     }
