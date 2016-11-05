@@ -20,8 +20,6 @@
 
         <inheritance:implements>org.allurefw.report.entity.WithTime</inheritance:implements>
         <inheritance:implements>org.allurefw.report.entity.WithStatus</inheritance:implements>
-        <inheritance:implements>org.allurefw.report.entity.WithSteps</inheritance:implements>
-        <inheritance:implements>org.allurefw.report.entity.WithAttachments</inheritance:implements>
         <inheritance:implements>org.allurefw.report.entity.WithLabels</inheritance:implements>
         <inheritance:implements>org.allurefw.report.entity.WithFailure</inheritance:implements>
         <inheritance:implements>org.allurefw.report.entity.WithLinks</inheritance:implements>
@@ -47,8 +45,6 @@
         <inheritance:implements>org.allurefw.report.entity.WithName</inheritance:implements>
         <inheritance:implements>org.allurefw.report.entity.WithTime</inheritance:implements>
         <inheritance:implements>org.allurefw.report.entity.WithStatus</inheritance:implements>
-        <inheritance:implements>org.allurefw.report.entity.WithSteps</inheritance:implements>
-        <inheritance:implements>org.allurefw.report.entity.WithAttachments</inheritance:implements>
         <inheritance:implements>org.allurefw.report.entity.WithFailure</inheritance:implements>
     </jaxb:bindings>
 
