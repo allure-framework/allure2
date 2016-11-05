@@ -16,6 +16,7 @@ import org.allurefw.report.executor.ExecutorPlugin;
 import org.allurefw.report.graph.GraphPlugin;
 import org.allurefw.report.history.HistoryPlugin;
 import org.allurefw.report.jackson.JacksonMapperModule;
+import org.allurefw.report.markdown.MarkdownPlugin;
 import org.allurefw.report.severity.SeverityPlugin;
 import org.allurefw.report.summary.SummaryPlugin;
 import org.allurefw.report.testrun.TestRunPlugin;
@@ -82,6 +83,7 @@ public class ParentModule extends AbstractModule {
         install(new ExecutorPlugin());
         install(new TestRunPlugin());
         install(new SeverityPlugin());
+        install(new MarkdownPlugin());
 
 //        Plugins
         Multibinder.newSetBinder(binder(), Plugin.class);

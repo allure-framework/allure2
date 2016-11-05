@@ -8,7 +8,7 @@ class DescriptionView extends View {
 
     serializeData() {
         return {
-            description: this.model.get('description')
+            descriptionHtml: this.model.get('descriptionHtml')
         };
     }
 }
