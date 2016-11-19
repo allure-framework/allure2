@@ -1,0 +1,36 @@
+{{#each steps}}
+    <div class="step">
+        <div class="{{b "step" "title" hasContent=(or steps.length attachments.length)}}">
+            {{#if (or steps.length attachments.length)}}
+                <span class="step__arrow block__arrow"></span>
+            {{else}}
+                {{#if (eq status "passed")}}
+                    <span class="step__status {{b "text" status="passed"}} fa fa-check" title="Passed step"></span>
+                {{/if}}
+                {{#if (eq status "failed")}}
+                    <span class="step__status {{b "text" status="failed"}} fa fa-times" title="Failed step"></span>
+                {{/if}}
+                {{#if (eq status "broken")}}
+                    <span class="step__status {{b "text" status="broken"}} fa fa-exclamation" title="Broken step"></span>
+                {{/if}}
+                {{#if (eq status "skipped")}}
+                    <span class="step__status {{b "text" status="canceled"}} fa fa-question" title="Cancelled step"></span>
+                {{/if}}
+            {{/if}}
+            {{name}}
+            {{#if parameters}}
+                [
+                {{#each parameters}}
+                    <span>{{name}}: {{value}}</span>
+                {{/each}}
+                ]
+            {{/if}}
+        </div>
+        <div class="step__content">
+            {{> steps-list steps=steps baseUrl=../baseUrl}}
+            {{#each attachments}}
+                {{> ../../blocks/attachment-row/attachment-row . baseUrl=../../baseUrl}}
+            {{/each}}
+        </div>
+    </div>
+{{/each}}

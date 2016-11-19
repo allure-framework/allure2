@@ -1,16 +1,24 @@
 @import "../../variables.css";
 
-.steps {
+.execution {
   &__title {
-    margin: $gap-size $gap-size 0.3em;
+    margin: $gap-size $gap-size 5px;
+  }
+  &__stage-title {
+    margin: $gap-size $gap-size 5px;
   }
 }
 
 .step {
   line-height: 1.2em;
+  &__status {
+    left: 7px;
+    position: absolute;
+  }
   &__arrow {
     left: 7px;
     position: absolute;
+    display: none;
   }
   &__title {
     position: relative;
@@ -18,24 +26,27 @@
     &_hasContent {
       cursor: pointer;
     }
+    &_hasContent > .step__arrow {
+      display: block;
+    }
     &:hover {
       background-color: $hover-color;
       &::before {
         background-color: $hover-color;
       }
     }
-  }
-  &__time {
-    color: $text-muted-color
+    &_stage {
+      font-weight: bold;
+    }
   }
   &__content {
-    margin-left: 30px;
+    margin-left: 15px;
     display: none;
   }
-  &__expanded > &__title > &__arrow {
+  &_expanded > &__title > &__arrow {
     transform: rotate(90deg);
   }
-  &__expanded > &__content {
+  &_expanded > &__content {
     display: block;
   }
 }

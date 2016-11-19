@@ -70,9 +70,9 @@ public class JunitTestResultsTest {
         assertThat(attachment.getName(), is("System out"));
 
         TestCaseResult result = testCases.iterator().next();
-        assertThat(result.getAttachments(), hasSize(1));
+        assertThat(result.getTestStage().getAttachments(), hasSize(1));
 
-        Attachment resultAttachment = result.getAttachments().iterator().next();
+        Attachment resultAttachment = result.getTestStage().getAttachments().iterator().next();
         assertThat(resultAttachment, is(attachment));
     }
 

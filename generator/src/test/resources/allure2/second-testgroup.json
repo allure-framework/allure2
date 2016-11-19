@@ -1,0 +1,16 @@
+{
+  "id" : "ce89ae8efce25684a940d13c39ccc26c",
+  "name" : "My suite",
+  "start" : 1479552601299,
+  "stop" : 1479552646843,
+  "befores" : [ {
+    "name" : "loadTestConfiguration",
+    "start" : 1479552601315,
+    "stop" : 1479552601318
+  } ],
+  "afters": [ {
+    "name" : "unloadTestConfiguration",
+    "start" : 1479552646943,
+    "stop" : 1479552647043
+  } ]
+}
