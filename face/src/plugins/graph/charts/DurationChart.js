@@ -32,7 +32,7 @@ export default class DurationChart extends BaseChartView {
         this.x.range([0, width]);
         this.y.range([height, 0], 1);
 
-        this.x.domain([0, Math.max(maxDuration, 1)]).nice();
+        this.x.domain([0, Math.max(maxDuration, 10)]).nice();
 
         const bins = histogram()
            .value(d => d.value)

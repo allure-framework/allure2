@@ -39,7 +39,7 @@ export default class SeverityChart extends BaseChartView {
     onAttach() {
         const data = this.getChartData();
         this.$el.height(this.$el.width() * 0.5);
-        const width = this.$el.width() - PAD_LEFT;
+        const width = this.$el.width() - PAD_LEFT - 2;
         const height = this.$el.height() - PAD_BOTTOM - PAD_TOP;
 
         this.x.range([0, width]);
@@ -55,6 +55,9 @@ export default class SeverityChart extends BaseChartView {
             top: height + PAD_TOP,
             left: PAD_LEFT
         });
+
+        this.svg.selectAll('.tick').select('line')
+            .attr('transform', 'translate(' + this.x.step()/2 + ', 0)');
 
         this.makeLeftAxis(this.svg.select('.chart__axis_y'), {
             scale: this.y
