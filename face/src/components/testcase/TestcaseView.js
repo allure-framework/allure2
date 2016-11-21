@@ -69,6 +69,11 @@ class TestcaseView extends View {
     onStacktraceClick() {
         this.$('.testcase__failure').toggleClass('testcase__failure_expanded');
     }
+
+    @on('click .pane__subtitle')
+    onSubtitleClick() {
+        this.$('.pane__subtitle').toggleClass('line-ellipsis', false);
+    }
 }
 
 export default TestcaseView;

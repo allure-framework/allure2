@@ -59,6 +59,7 @@
                     <xsd:element name="id" type="xsd:string"/>
                     <xsd:element name="uid" type="xsd:string"/>
                     <xsd:element name="name" type="xsd:string"/>
+                    <xsd:element name="fullName" type="xsd:string"/>
                     <xsd:element name="time" type="ns:Time"/>
                     <xsd:element name="status" type="ns:Status"/>
                     <xsd:element name="failure" type="ns:Failure" minOccurs="0"/>
