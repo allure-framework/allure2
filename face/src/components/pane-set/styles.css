@@ -27,6 +27,11 @@
       background: $pane-overlay-bg-hover;
     }
   }
+  &__subtitle {
+    color: $text-muted-color;
+    padding-left: 15px;
+    margin: 10px 0;
+  }
   &__title {
     padding: 0 15px 10px;
     margin: 7px 0 0;
