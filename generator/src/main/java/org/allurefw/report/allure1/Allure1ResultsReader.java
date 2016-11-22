@@ -4,16 +4,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.baev.BadXmlCharactersFilterReader;
 import com.google.inject.Inject;
 import org.allurefw.report.AttachmentsStorage;
-import org.allurefw.report.ReportApiUtils;
 import org.allurefw.report.ResultsReader;
 import org.allurefw.report.entity.Attachment;
+import org.allurefw.report.entity.Failure;
+import org.allurefw.report.entity.Label;
 import org.allurefw.report.entity.LabelName;
 import org.allurefw.report.entity.Parameter;
+import org.allurefw.report.entity.StageResult;
+import org.allurefw.report.entity.Status;
 import org.allurefw.report.entity.Step;
 import org.allurefw.report.entity.TestCaseResult;
 import org.allurefw.report.entity.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.yandex.qatools.allure.model.Description;
+import ru.yandex.qatools.allure.model.DescriptionType;
 import ru.yandex.qatools.allure.model.ParameterKind;
 import ru.yandex.qatools.allure.model.TestSuiteResult;
 
@@ -22,21 +27,31 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.allurefw.allure1.AllureConstants.ATTACHMENTS_FILE_GLOB;
 import static org.allurefw.allure1.AllureConstants.TEST_SUITE_JSON_FILE_GLOB;
 import static org.allurefw.allure1.AllureConstants.TEST_SUITE_XML_FILE_GLOB;
+import static org.allurefw.report.ReportApiUtils.generateUid;
 import static org.allurefw.report.ReportApiUtils.listFiles;
-import static org.allurefw.report.allure1.Allure1ModelConvertUtils.convertDescription;
-import static org.allurefw.report.allure1.Allure1ModelConvertUtils.convertFailure;
-import static org.allurefw.report.allure1.Allure1ModelConvertUtils.convertLabels;
 import static org.allurefw.report.allure1.Allure1ModelConvertUtils.convertList;
 import static org.allurefw.report.allure1.Allure1ModelConvertUtils.convertStatus;
+import static org.allurefw.report.entity.Status.BROKEN;
+import static org.allurefw.report.entity.Status.CANCELED;
+import static org.allurefw.report.entity.Status.FAILED;
+import static org.allurefw.report.entity.Status.PASSED;
+import static org.allurefw.report.entity.Status.PENDING;
+import static org.allurefw.report.utils.ListUtils.firstNonNull;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -68,44 +83,37 @@ public class Allure1ResultsReader implements ResultsReader {
 
     private TestCaseResult convert(TestSuiteResult testSuite,
                                    ru.yandex.qatools.allure.model.TestCaseResult source) {
-        String suiteName = Stream.of(testSuite.getTitle(), testSuite.getName())
-                .filter(Objects::nonNull)
-                .findFirst()
-                .orElse("unknownSuite");
-        String testClass = testSuite.getName();
-
         TestCaseResult dest = new TestCaseResult();
-        dest.setFullName(String.format("%s#%s", testSuite.getName(), source.getName()));
-        String name = source.getTitle() != null ? source.getTitle() : source.getName();
+
+
+        String suiteName = firstNonNull(testSuite.getTitle(), testSuite.getName(), "unknown test suite");
+        String testClass = firstNonNull(testSuite.getName(), "unknown");
+        String name = firstNonNull(source.getTitle(), source.getName(), "unknown test case");
 
         dest.setId(String.format("%s#%s", testClass, name));
-        dest.setUid(ReportApiUtils.generateUid());
+        dest.setUid(generateUid());
         dest.setName(name);
-        dest.setStatus(convertStatus(source.getStatus()));
+        dest.setFullName(String.format("%s#%s", testSuite.getName(), source.getName()));
 
+        dest.setStatus(convert(source.getStatus()));
         dest.setTime(source.getStart(), source.getStop());
-        source.getParameters().stream()
-                .filter(parameter -> ParameterKind.ARGUMENT.equals(parameter.getKind()))
-                .forEach(parameter -> dest.getParameters().add(new Parameter()
-                        .withName(parameter.getName())
-                        .withValue(parameter.getValue())
-                ));
+        dest.setParameters(convert(source.getParameters(), this::hasArgumentType, this::convert));
+        dest.setDescription(getDescription(source));
+        dest.setDescriptionHtml(getDescriptionHtml(source));
+        dest.setFailure(convert(source.getFailure()));
 
-        dest.setSteps(convertList(source.getSteps(), this::convert));
-        dest.setAttachments(convertList(source.getAttachments(), this::convert));
+        if (!source.getSteps().isEmpty() || !source.getAttachments().isEmpty()) {
+            StageResult testStage = new StageResult();
+            testStage.setSteps(convertList(source.getSteps(), this::convert));
+            testStage.setAttachments(convertList(source.getAttachments(), this::convert));
+            testStage.setFailure(convert(source.getFailure()));
+            dest.setTestStage(testStage);
+        }
 
-        convertDescription(dest, source.getDescription());
-        convertFailure(dest, source.getFailure());
-        convertLabels(dest, source.getLabels());
-
-        testSuite.getLabels().forEach(label -> {
-            Optional<String> any = dest.findAll(label.getName()).stream()
-                    .filter(value -> value.equals(label.getValue()))
-                    .findAny();
-            if (!any.isPresent()) {
-                dest.addLabel(label.getName(), label.getValue());
-            }
-        });
+        Set<Label> set = new TreeSet<>(Comparator.comparing(Label::getName).thenComparing(Label::getValue));
+        set.addAll(convert(testSuite.getLabels(), this::convert));
+        set.addAll(convert(source.getLabels(), this::convert));
+        dest.setLabels(set.stream().collect(Collectors.toList()));
 
         dest.addLabelIfNotExists(LabelName.SUITE, suiteName);
         dest.addLabelIfNotExists(LabelName.TEST_CLASS, testClass);
@@ -113,7 +121,32 @@ public class Allure1ResultsReader implements ResultsReader {
         return dest;
     }
 
-    protected Step convert(ru.yandex.qatools.allure.model.Step s) {
+    private String getDescription(ru.yandex.qatools.allure.model.TestCaseResult source) {
+        return Optional.ofNullable(source.getDescription())
+                .filter(description -> !DescriptionType.HTML.equals(description.getType()))
+                .map(Description::getValue)
+                .orElse(null);
+    }
+
+    private String getDescriptionHtml(ru.yandex.qatools.allure.model.TestCaseResult source) {
+        return Optional.ofNullable(source.getDescription())
+                .filter(description -> DescriptionType.HTML.equals(description.getType()))
+                .map(Description::getValue)
+                .orElse(null);
+    }
+
+    private <T, R> List<R> convert(Collection<T> source, Function<T, R> converter) {
+        return convert(source, t -> true, converter);
+    }
+
+    private <T, R> List<R> convert(Collection<T> source, Predicate<T> predicate, Function<T, R> converter) {
+        return Objects.isNull(source) ? null : source.stream()
+                .filter(predicate)
+                .map(converter)
+                .collect(Collectors.toList());
+    }
+
+    private Step convert(ru.yandex.qatools.allure.model.Step s) {
         return new Step()
                 .withName(s.getTitle() == null ? s.getName() : s.getTitle())
                 .withTime(new Time()
@@ -125,20 +158,49 @@ public class Allure1ResultsReader implements ResultsReader {
                 .withAttachments(convertList(s.getAttachments(), this::convert));
     }
 
-    protected Attachment convert(ru.yandex.qatools.allure.model.Attachment attachment) {
+    private Failure convert(ru.yandex.qatools.allure.model.Failure failure) {
+        return Objects.isNull(failure) ? null : new Failure()
+                .withMessage(failure.getMessage())
+                .withTrace(failure.getStackTrace());
+    }
+
+    private Label convert(ru.yandex.qatools.allure.model.Label label) {
+        return new Label()
+                .withName(label.getName())
+                .withValue(label.getValue());
+    }
+
+    private Parameter convert(ru.yandex.qatools.allure.model.Parameter parameter) {
+        return new Parameter()
+                .withName(parameter.getName())
+                .withValue(parameter.getValue());
+    }
+
+    private Attachment convert(ru.yandex.qatools.allure.model.Attachment attachment) {
         return storage.findAttachmentByFileName(attachment.getSource())
-                .map(result -> {
-                    if (attachment.getType() != null) {
-                        result.setType(attachment.getType());
-                    }
-                    return result;
-                })
-                .map(result -> {
-                    if (attachment.getTitle() != null) {
-                        result.setName(attachment.getTitle());
-                    }
-                    return result;
-                }).orElseGet(Attachment::new);
+                .map(attach -> Objects.isNull(attachment.getType()) ? attach : attach.withType(attachment.getType()))
+                .map(attach -> Objects.isNull(attachment.getTitle()) ? attach : attach.withName(attachment.getTitle()))
+                .orElseGet(Attachment::new);
+    }
+
+    public static Status convert(ru.yandex.qatools.allure.model.Status status) {
+        switch (status) {
+            case FAILED:
+                return FAILED;
+            case BROKEN:
+                return BROKEN;
+            case PASSED:
+                return PASSED;
+            case CANCELED:
+            case SKIPPED:
+                return CANCELED;
+            default:
+                return PENDING;
+        }
+    }
+
+    private boolean hasArgumentType(ru.yandex.qatools.allure.model.Parameter parameter) {
+        return ParameterKind.ARGUMENT.equals(parameter.getKind());
     }
 
     private Stream<TestSuiteResult> getStreamOfAllure1Results(Path source) {

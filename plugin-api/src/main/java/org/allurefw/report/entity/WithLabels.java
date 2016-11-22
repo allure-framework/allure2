@@ -54,7 +54,7 @@ public interface WithLabels {
     }
 
     default void addLabelIfNotExists(String name, String value) {
-        if (value == null) {
+        if (value == null || name == null) {
             return;
         }
         Optional<String> any = getLabels().stream()

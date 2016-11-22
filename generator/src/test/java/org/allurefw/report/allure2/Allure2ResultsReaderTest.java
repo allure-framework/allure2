@@ -1,9 +1,13 @@
 package org.allurefw.report.allure2;
 
 import com.google.common.reflect.ClassPath;
+import org.allurefw.report.AttachmentsStorage;
 import org.allurefw.report.Main;
 import org.allurefw.report.ReportInfo;
+import org.allurefw.report.core.DefaultAttachmentsStorage;
+import org.allurefw.report.entity.TestCaseResult;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -13,10 +17,18 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static io.qameta.allure.AllureUtils.generateTestCaseJsonFileName;
+import static io.qameta.allure.AllureUtils.generateTestGroupJsonFileName;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -27,10 +39,17 @@ import static ru.yandex.qatools.matchers.nio.PathMatchers.isDirectory;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class Allure2TestResultsTest {
+public class Allure2ResultsReaderTest {
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
+
+    private AttachmentsStorage storage;
+
+    @Before
+    public void setUp() throws Exception {
+        storage = new DefaultAttachmentsStorage();
+    }
 
     @Test
     public void shouldCreateReportInfo() throws Exception {
@@ -41,6 +60,40 @@ public class Allure2TestResultsTest {
 
         Assert.assertThat(report, notNullValue());
         Assert.assertThat(report.getResults(), hasSize(7));
+    }
+
+    @Test
+    public void shouldReadBeforesFromGroups() throws Exception {
+        List<TestCaseResult> testResults = process(
+                "allure2/simple-testcase.json", generateTestCaseJsonFileName(),
+                "allure2/first-testgroup.json", generateTestGroupJsonFileName(),
+                "allure2/second-testgroup.json", generateTestGroupJsonFileName()
+        );
+
+        assertThat(testResults, hasSize(1));
+        TestCaseResult result = testResults.iterator().next();
+        assertThat(result.getBeforeStages(), hasSize(2));
+        assertThat(result.getBeforeStages(), hasItems(
+                hasProperty("name", equalTo("mockAuthorization")),
+                hasProperty("name", equalTo("loadTestConfiguration"))
+        ));
+    }
+
+    @Test
+    public void shouldReadAftersFromGroups() throws Exception {
+        List<TestCaseResult> testResults = process(
+                "allure2/simple-testcase.json", generateTestCaseJsonFileName(),
+                "allure2/first-testgroup.json", generateTestGroupJsonFileName(),
+                "allure2/second-testgroup.json", generateTestGroupJsonFileName()
+        );
+
+        assertThat(testResults, hasSize(1));
+        TestCaseResult result = testResults.iterator().next();
+        assertThat(result.getAfterStages(), hasSize(2));
+        assertThat(result.getAfterStages(), hasItems(
+                hasProperty("name", equalTo("cleanUpContext")),
+                hasProperty("name", equalTo("unloadTestConfiguration"))
+        ));
     }
 
     @Test
@@ -87,5 +140,23 @@ public class Allure2TestResultsTest {
             }
         });
         return dir;
+    }
+
+    private List<TestCaseResult> process(String... strings) throws IOException {
+        Path resultsDirectory = folder.newFolder().toPath();
+        Iterator<String> iterator = Arrays.asList(strings).iterator();
+        while (iterator.hasNext()) {
+            String first = iterator.next();
+            String second = iterator.next();
+            copyFile(resultsDirectory, first, second);
+        }
+        Allure2ResultsReader reader = new Allure2ResultsReader(storage);
+        return reader.readResults(resultsDirectory);
+    }
+
+    private void copyFile(Path dir, String resourceName, String fileName) throws IOException {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourceName)) {
+            Files.copy(is, dir.resolve(fileName));
+        }
     }
 }

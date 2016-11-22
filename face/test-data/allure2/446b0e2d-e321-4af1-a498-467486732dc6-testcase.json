@@ -1,0 +1,98 @@
+{
+  "id" : "1c70704e652a0279ec75ca927750102c",
+  "testGroupId" : "11e22ecd5656828961af843105f0efc7",
+  "status" : "passed",
+  "befores" : [ {
+    "name" : "mockAuthorization",
+    "start" : 1478974034522,
+    "stop" : 1478974034540,
+    "steps" : [ {
+      "status" : "passed",
+      "name" : "generateRandomUsername",
+      "start" : 1478974034540,
+      "stop" : 1478974034540
+    }, {
+      "status" : "passed",
+      "parameters" : [ {
+        "name" : "username",
+        "value" : "some-user-123"
+      } ],
+      "name" : "createMockUser",
+      "start" : 1478974034540,
+      "stop" : 1478974034540
+    }, {
+      "status" : "passed",
+      "parameters" : [ {
+        "name" : "username",
+        "value" : "some-user-123"
+      } ],
+      "name" : "loginAs",
+      "start" : 1478974034540,
+      "stop" : 1478974034540
+    } ],
+    "attachments" : [ ]
+  }, {
+    "name" : "setUpDatabase",
+    "start" : 1478974034540,
+    "stop" : 1478974034541,
+    "steps" : [ {
+      "status" : "passed",
+      "parameters" : [ {
+        "name" : "databaseEndpoint",
+        "value" : "jdbc://example.org/database"
+      } ],
+      "name" : "validateEndpoint",
+      "start" : 1478974034541,
+      "stop" : 1478974034541
+    } ],
+    "attachments" : [ ]
+  } ],
+  "afters" : [ {
+    "name" : "cleanUpContext",
+    "start" : 1478974034541,
+    "stop" : 1478974034541,
+    "steps" : [ {
+      "status" : "passed",
+      "name" : "closeContext",
+      "start" : 1478974034541,
+      "stop" : 1478974034541
+    } ],
+    "attachments" : [ ]
+  }, {
+    "name" : "cleanUpDatabase",
+    "start" : 1478974034541,
+    "stop" : 1478974034541,
+    "steps" : [ {
+      "status" : "passed",
+      "name" : "closeDatabaseConnection",
+      "start" : 1478974034541,
+      "stop" : 1478974034541
+    } ],
+    "attachments" : [ ]
+  } ],
+  "labels" : [ {
+    "name" : "package",
+    "value" : "io.qameta.allure"
+  }, {
+    "name" : "testMethod",
+    "value" : "shouldCreate"
+  }, {
+    "name" : "testClass",
+    "value" : "io.qameta.allure.ProjectServiceTest"
+  } ],
+  "name" : "shouldCreate",
+  "start" : 1478974034541,
+  "stop" : 1478974034541,
+  "steps" : [ {
+    "status" : "passed",
+    "name" : "createProject",
+    "start" : 1478974034541,
+    "stop" : 1478974034541
+  }, {
+    "status" : "passed",
+    "name" : "validateExists",
+    "start" : 1478974034541,
+    "stop" : 1478974034541
+  } ],
+  "attachments" : [ ]
+}

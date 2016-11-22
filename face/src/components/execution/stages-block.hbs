@@ -1,0 +1,31 @@
+{{#if stages.length}}
+    <div class="{{b 'step' expanded=expanded}}">
+        <div class="{{b 'step' 'title' hasContent=true stage=true}}">
+            <span class="step__arrow block__arrow"></span>
+            {{name}}
+        </div>
+        <div class="{{b 'step' 'content'}}">
+            {{#each stages}}
+                {{#if name}}
+                    <div class="{{b 'step'}}">
+                        <div class="{{b 'step' 'title' hasContent=(or steps.length attachments.length) stage=true}}">
+                            <span class="step__arrow block__arrow"></span>
+                            {{name}}
+                        </div>
+                        <div class="{{b 'step' 'content'}}">
+                            {{> steps-list steps=steps baseUrl=../baseUrl}}
+                            {{#each attachments}}
+                                {{> ../../blocks/attachment-row/attachment-row . baseUrl=../../baseUrl}}
+                            {{/each}}
+                        </div>
+                    </div>
+                {{else}}
+                    {{> steps-list steps=steps baseUrl=../baseUrl}}
+                    {{#each attachments}}
+                        {{> ../../blocks/attachment-row/attachment-row . baseUrl=../../baseUrl}}
+                    {{/each}}
+                {{/if}}
+            {{/each}}
+        </div>
+    </div>
+{{/if}}

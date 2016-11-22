@@ -6,6 +6,7 @@ import org.allurefw.report.ResultsReader;
 import org.allurefw.report.entity.Attachment;
 import org.allurefw.report.entity.Failure;
 import org.allurefw.report.entity.LabelName;
+import org.allurefw.report.entity.StageResult;
 import org.allurefw.report.entity.Status;
 import org.allurefw.report.entity.TestCaseResult;
 import org.allurefw.report.entity.Time;
@@ -62,7 +63,8 @@ public class JunitResultsReader implements ResultsReader {
                     List<TestCaseResult> results = new ArrayList<>();
                     for (ReportTestCase testCase : testSuite.getTestCases()) {
                         TestCaseResult result = convert(testCase);
-                        log.ifPresent(result.getAttachments()::add);
+                        result.setTestStage(new StageResult());
+                        log.ifPresent(result.getTestStage().getAttachments()::add);
                         result.addLabelIfNotExists(LabelName.SUITE, testSuite.getFullClassName());
                         result.addLabelIfNotExists(LabelName.TEST_CLASS, testSuite.getFullClassName());
                         results.add(result);

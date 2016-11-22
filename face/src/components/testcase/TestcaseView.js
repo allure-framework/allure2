@@ -1,9 +1,9 @@
 import './styles.css';
 import {View} from 'backbone.marionette';
-import {on, region, behavior} from '../../decorators';
+import {on, regions, behavior} from '../../decorators';
 import pluginsRegistry from '../../util/pluginsRegistry';
-import StepsView from '../steps/StepsView';
 import template from './TestcaseView.hbs';
+import ExecutionView from '../execution/ExecutionView';
 
 const SEVERITY_ICONS = {
     blocker: 'fa fa-exclamation-triangle',
@@ -14,11 +14,11 @@ const SEVERITY_ICONS = {
 };
 
 @behavior('TooltipBehavior', {position: 'bottom'})
+@regions({
+    execution: '.testcase__execution'
+})
 class TestcaseView extends View {
     template = template;
-
-    @region('.testcase__steps')
-    steps;
 
     initialize({state}) {
         this.state = state;
@@ -28,7 +28,7 @@ class TestcaseView extends View {
 
     onRender() {
         this.showTestcasePlugins(this.$('.testcase__content_before'), pluginsRegistry.testcaseBlocks.before);
-        this.showChildView('steps', new StepsView({
+        this.showChildView('execution', new ExecutionView({
             baseUrl: this.options.baseUrl + '/' + this.model.id,
             model: this.model
         }));

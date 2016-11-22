@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.AllureConstants;
 import io.qameta.allure.AllureUtils;
 import io.qameta.allure.model.StatusDetails;
+import io.qameta.allure.model.TestAfterResult;
+import io.qameta.allure.model.TestBeforeResult;
 import io.qameta.allure.model.TestGroupResult;
 import io.qameta.allure.model.TestStepResult;
 import org.allurefw.report.AttachmentsStorage;
@@ -13,6 +15,7 @@ import org.allurefw.report.entity.Failure;
 import org.allurefw.report.entity.Label;
 import org.allurefw.report.entity.Link;
 import org.allurefw.report.entity.Parameter;
+import org.allurefw.report.entity.StageResult;
 import org.allurefw.report.entity.Status;
 import org.allurefw.report.entity.Step;
 import org.allurefw.report.entity.TestCaseResult;
@@ -25,9 +28,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -61,14 +68,11 @@ public class Allure2ResultsReader implements ResultsReader {
         return listFiles(source, AllureConstants.TEST_CASE_JSON_FILE_GLOB)
                 .flatMap(this::readTestCaseResult)
                 .map(result -> {
-                    TestGroupResult group = groups.getOrDefault(result.getTestGroupId(), defaultGroup());
-
                     TestCaseResult dest = new TestCaseResult();
                     dest.setUid(generateUid());
 
                     dest.setId(result.getId());
                     dest.setName(result.getName());
-                    dest.setFullName(String.format("%s#%s", group.getName(), dest.getName()));
                     dest.setTime(result.getStart(), result.getStop());
                     dest.setDescription(result.getDescription());
                     dest.setDescriptionHtml(result.getDescriptionHtml());
@@ -78,18 +82,75 @@ public class Allure2ResultsReader implements ResultsReader {
                     dest.setLinks(convert(result.getLinks(), this::convert));
                     dest.setLabels(convert(result.getLabels(), this::convert));
                     dest.setParameters(convert(result.getParameters(), this::convert));
-                    dest.setAttachments(convert(result.getAttachments(), this::convert));
-                    dest.setSteps(convert(result.getSteps(), this::convert));
 
-                    dest.addLabelIfNotExists(group.getType(), group.getName());
+                    if (!result.getSteps().isEmpty() || !result.getAttachments().isEmpty()) {
+                        StageResult testStage = new StageResult();
+                        testStage.setSteps(convert(result.getSteps(), this::convert));
+                        testStage.setAttachments(convert(result.getAttachments(), this::convert));
+                        testStage.setFailure(convert(result.getStatusDetails()));
+                        dest.setTestStage(testStage);
+                    }
+
+                    dest.getBeforeStages().addAll(getParentBefores(result.getTestGroupId(), groups));
+                    dest.getBeforeStages().addAll(convert(result.getBefores(), this::convert));
+                    dest.getAfterStages().addAll(convert(result.getAfters(), this::convert));
+                    dest.getAfterStages().addAll(getParentAfters(result.getTestGroupId(), groups));
                     return dest;
                 }).collect(Collectors.toList());
     }
 
+    private List<StageResult> getParentBefores(String parentId, Map<String, TestGroupResult> groups) {
+        return getParentBefores(parentId, groups, new HashSet<>());
+    }
+
+    private List<StageResult> getParentBefores(String parentId, Map<String, TestGroupResult> groups, Set<String> seen) {
+        if (Objects.nonNull(parentId) && groups.containsKey(parentId) && seen.add(parentId)) {
+            TestGroupResult result = groups.get(parentId);
+            List<StageResult> results = getParentBefores(result.getParentId(), groups, seen);
+            results.addAll(convert(result.getBefores(), this::convert));
+            return results;
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    private List<StageResult> getParentAfters(String parentId, Map<String, TestGroupResult> groups) {
+        return getParentAfters(parentId, groups, new HashSet<>());
+    }
+
+    private List<StageResult> getParentAfters(String parentId, Map<String, TestGroupResult> groups, Set<String> seen) {
+        if (Objects.nonNull(parentId) && groups.containsKey(parentId) && seen.add(parentId)) {
+            TestGroupResult result = groups.get(parentId);
+            List<StageResult> results = convert(result.getAfters(), this::convert);
+            results.addAll(getParentAfters(result.getParentId(), groups, seen));
+            return results;
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
     private <T, R> List<R> convert(List<T> source, Function<T, R> converter) {
-        return source.stream()
+        return Objects.isNull(source) ? Collections.emptyList() : source.stream()
                 .map(converter)
                 .collect(Collectors.toList());
+    }
+
+    private StageResult convert(TestBeforeResult result) {
+        return new StageResult()
+                .withName(result.getName())
+                .withTime(convert(result.getStart(), result.getStop()))
+                .withSteps(convert(result.getSteps(), this::convert))
+                .withAttachments(convert(result.getAttachments(), this::convert));
+
+    }
+
+    private StageResult convert(TestAfterResult result) {
+        return new StageResult()
+                .withName(result.getName())
+                .withTime(convert(result.getStart(), result.getStop()))
+                .withSteps(convert(result.getSteps(), this::convert))
+                .withAttachments(convert(result.getAttachments(), this::convert));
+
     }
 
     private Link convert(io.qameta.allure.model.Link link) {
@@ -141,12 +202,6 @@ public class Allure2ResultsReader implements ResultsReader {
 
     private Time convert(Long start, Long stop) {
         return new Time().withStart(start).withStop(stop).withDuration(stop - start);
-    }
-
-    private TestGroupResult defaultGroup() {
-        return new TestGroupResult()
-                .withName("Unknown Suite")
-                .withType("suite");
     }
 
     private Stream<io.qameta.allure.model.TestCaseResult> readTestCaseResult(Path source) {

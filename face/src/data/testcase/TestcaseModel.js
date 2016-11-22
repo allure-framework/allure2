@@ -1,5 +1,6 @@
 import {findWhere} from 'underscore';
 import {Model} from 'backbone';
+import {makeArray} from '../../util/arrays';
 
 export default class TestcaseModel extends Model {
     get idAttribute() {
@@ -11,16 +12,15 @@ export default class TestcaseModel extends Model {
     }
 
     updateAttachments() {
-        function orEmpty(items) {
-            return items ? items : [];
+        function collectAttachments({steps, attachments}) {
+            return makeArray(steps)
+                .reduce((result, step) => result.concat(collectAttachments(step)), [])
+                .concat(makeArray(attachments));
         }
-        function collectAttachments(steps) {
-            return orEmpty(steps).reduce((attachments, step) => {
-                return attachments.concat(collectAttachments(step.steps), orEmpty(step.attachments));
-            }, []);
-        }
-        this.allAttachments = collectAttachments(this.get('steps'))
-            .concat(orEmpty(this.get('attachments')));
+        this.allAttachments = makeArray(this.get('beforeStages'))
+            .concat(makeArray(this.get('testStage')))
+            .concat(makeArray(this.get('beforeStages')))
+            .reduce((result, stage) => result.concat(collectAttachments(stage)), []);
     }
 
     getAttachment(uid) {
