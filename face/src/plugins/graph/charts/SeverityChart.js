@@ -4,7 +4,6 @@ import escape from '../../../util/escape';
 
 import {scaleBand, scaleSqrt} from 'd3-scale';
 import {max} from 'd3-array';
-
 const PAD_LEFT = 30;
 const PAD_TOP = 7;
 const PAD_BOTTOM = 30;
@@ -60,7 +59,8 @@ export default class SeverityChart extends BaseChartView {
             .attr('transform', 'translate(' + this.x.step()/2 + ', 0)');
 
         this.makeLeftAxis(this.svg.select('.chart__axis_y'), {
-            scale: this.y
+            scale: this.y,
+            ticks: Math.min(10, this.y.domain()[1])
         }, {
             left: PAD_LEFT,
             top: PAD_TOP
