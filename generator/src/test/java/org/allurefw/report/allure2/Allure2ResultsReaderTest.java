@@ -59,7 +59,7 @@ public class Allure2ResultsReaderTest {
         ReportInfo report = main.createReport(getDataFolder("allure2data/"));
 
         Assert.assertThat(report, notNullValue());
-        Assert.assertThat(report.getResults(), hasSize(7));
+        Assert.assertThat(report.getResults(), hasSize(4));
     }
 
     @Test
@@ -110,7 +110,7 @@ public class Allure2ResultsReaderTest {
         assertThat(data, contains("test-cases"));
         Path testCases = data.resolve("test-cases");
         assertThat(testCases, isDirectory());
-        assertThat(testCases, hasFilesCount(7, "*.json"));
+        assertThat(testCases, hasFilesCount(4, "*.json"));
 
         assertThat(data, contains("defects.json"));
         assertThat(data, contains("graph.json"));

@@ -1,18 +1,18 @@
 {
   "id" : "b1c94ca2fbc3e78fc30069c8d0f01680",
-  "parentIds" : [ "ce89ae8efce25684a940d13c39ccc26c" ],
   "name" : "All",
-  "start" : 1479552601319,
-  "stop" : 1479552646834,
+  "start" : 1480450609874,
+  "stop" : 1480450655458,
+  "parentIds" : [ "ce89ae8efce25684a940d13c39ccc26c" ],
   "befores" : [ {
     "name" : "mockAuthorization",
-    "start" : 1479552601319,
-    "stop" : 1479552601337,
+    "start" : 1480450609874,
+    "stop" : 1480450609892,
     "steps" : [ {
       "status" : "passed",
       "name" : "generateRandomUsername",
-      "start" : 1479552601335,
-      "stop" : 1479552601337
+      "start" : 1480450609890,
+      "stop" : 1480450609891
     }, {
       "status" : "passed",
       "parameters" : [ {
@@ -20,8 +20,8 @@
         "value" : "some-user-123"
       } ],
       "name" : "createMockUser",
-      "start" : 1479552601337,
-      "stop" : 1479552601337
+      "start" : 1480450609892,
+      "stop" : 1480450609892
     }, {
       "status" : "passed",
       "parameters" : [ {
@@ -29,19 +29,19 @@
         "value" : "some-user-123"
       } ],
       "name" : "loginAs",
-      "start" : 1479552601337,
-      "stop" : 1479552601337
+      "start" : 1480450609892,
+      "stop" : 1480450609892
     } ]
   } ],
   "afters" : [ {
     "name" : "cleanUpContext",
-    "start" : 1479552641818,
-    "stop" : 1479552641818,
+    "start" : 1480450650438,
+    "stop" : 1480450650439,
     "steps" : [ {
       "status" : "passed",
       "name" : "closeContext",
-      "start" : 1479552641818,
-      "stop" : 1479552641818
+      "start" : 1480450650439,
+      "stop" : 1480450650439
     } ]
   } ]
 }

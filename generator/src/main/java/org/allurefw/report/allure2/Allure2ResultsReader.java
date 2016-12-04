@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -91,39 +92,42 @@ public class Allure2ResultsReader implements ResultsReader {
                         dest.setTestStage(testStage);
                     }
 
-                    dest.getBeforeStages().addAll(getParentBefores(result.getTestGroupId(), groups));
+                    dest.getBeforeStages().addAll(getParentBefores(result.getParentIds(), groups));
                     dest.getBeforeStages().addAll(convert(result.getBefores(), this::convert));
                     dest.getAfterStages().addAll(convert(result.getAfters(), this::convert));
-                    dest.getAfterStages().addAll(getParentAfters(result.getTestGroupId(), groups));
+                    dest.getAfterStages().addAll(getParentAfters(result.getParentIds(), groups));
                     return dest;
                 }).collect(Collectors.toList());
     }
 
-    private List<StageResult> getParentBefores(String parentId, Map<String, TestGroupResult> groups) {
-        return getParentBefores(parentId, groups, new HashSet<>());
+    private List<StageResult> getParentBefores(List<String> parents, Map<String, TestGroupResult> groups) {
+        return getFromParents(parents, (result, stageResults) -> {
+            stageResults.addAll(convert(result.getBefores(), this::convert));
+            return stageResults;
+        }, groups, new HashSet<>());
     }
 
-    private List<StageResult> getParentBefores(String parentId, Map<String, TestGroupResult> groups, Set<String> seen) {
+    private List<StageResult> getParentAfters(List<String> parents, Map<String, TestGroupResult> groups) {
+        return getFromParents(parents, (result, stageResults) -> {
+            List<StageResult> current = convert(result.getAfters(), this::convert);
+            current.addAll(stageResults);
+            return current;
+        }, groups, new HashSet<>());
+    }
+
+    private <T> List<T> getFromParents(List<String> parents, BiFunction<TestGroupResult, List<T>, List<T>> getter,
+                                       Map<String, TestGroupResult> groups, Set<String> seen) {
+        return parents.stream()
+                .flatMap(parentId -> getFromParents(parentId, getter, groups, seen).stream())
+                .collect(Collectors.toList());
+    }
+
+    private <T> List<T> getFromParents(String parentId, BiFunction<TestGroupResult, List<T>, List<T>> getter,
+                                       Map<String, TestGroupResult> groups, Set<String> seen) {
         if (Objects.nonNull(parentId) && groups.containsKey(parentId) && seen.add(parentId)) {
             TestGroupResult result = groups.get(parentId);
-            List<StageResult> results = getParentBefores(result.getParentId(), groups, seen);
-            results.addAll(convert(result.getBefores(), this::convert));
-            return results;
-        } else {
-            return new ArrayList<>();
-        }
-    }
-
-    private List<StageResult> getParentAfters(String parentId, Map<String, TestGroupResult> groups) {
-        return getParentAfters(parentId, groups, new HashSet<>());
-    }
-
-    private List<StageResult> getParentAfters(String parentId, Map<String, TestGroupResult> groups, Set<String> seen) {
-        if (Objects.nonNull(parentId) && groups.containsKey(parentId) && seen.add(parentId)) {
-            TestGroupResult result = groups.get(parentId);
-            List<StageResult> results = convert(result.getAfters(), this::convert);
-            results.addAll(getParentAfters(result.getParentId(), groups, seen));
-            return results;
+            List<T> fromParents = getFromParents(result.getParentIds(), getter, groups, seen);
+            return getter.apply(result, fromParents);
         } else {
             return new ArrayList<>();
         }
