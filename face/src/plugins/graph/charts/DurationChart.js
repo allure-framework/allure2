@@ -51,14 +51,15 @@ export default class DurationChart extends BaseChartView {
 
         this.svg = this.setupViewport();
         this.makeBottomAxis(this.svg.select('.chart__axis_x'), {
-            tickFormat: time => duration(time, 1),
-            scale: this.x
+            scale: this.x,
+            tickFormat: time => duration(time, 1)
         }, {
             top: PAD_TOP + height,
             left: PAD_LEFT
         });
         this.makeLeftAxis(this.svg.select('.chart__axis_y'), {
-            scale: this.y
+            scale: this.y,
+            ticks: Math.min(10, maxY)
         }, {
             left: PAD_LEFT,
             top: PAD_TOP
