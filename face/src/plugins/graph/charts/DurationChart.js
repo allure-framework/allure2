@@ -58,8 +58,8 @@ export default class DurationChart extends BaseChartView {
             left: PAD_LEFT
         });
         this.makeLeftAxis(this.svg.select('.chart__axis_y'), {
-                scale: this.y,
-                ticks: Math.min(10, maxY)
+            scale: this.y,
+            ticks: Math.min(10, maxY)
         }, {
             left: PAD_LEFT,
             top: PAD_TOP
