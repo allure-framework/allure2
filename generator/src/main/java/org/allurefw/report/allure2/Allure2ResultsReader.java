@@ -61,6 +61,9 @@ public class Allure2ResultsReader implements ResultsReader {
 
     @Override
     public List<TestCaseResult> readResults(Path source) {
+        listFiles(source, "*-attachment*")
+                .forEach(storage::addAttachment);
+
         Map<String, TestGroupResult> groups = listFiles(source, AllureConstants.TEST_GROUP_JSON_FILE_GLOB)
                 .flatMap(this::readTestGroupResult)
                 .collect(Collectors.toMap(TestGroupResult::getId, Function.identity()));
