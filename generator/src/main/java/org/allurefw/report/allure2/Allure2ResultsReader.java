@@ -61,6 +61,9 @@ public class Allure2ResultsReader implements ResultsReader {
 
     @Override
     public List<TestCaseResult> readResults(Path source) {
+        listFiles(source, "*-attachment*")
+                .forEach(storage::addAttachment);
+
         Map<String, TestGroupResult> groups = listFiles(source, AllureConstants.TEST_GROUP_JSON_FILE_GLOB)
                 .flatMap(this::readTestGroupResult)
                 .collect(Collectors.toMap(TestGroupResult::getId, Function.identity()));
@@ -177,10 +180,22 @@ public class Allure2ResultsReader implements ResultsReader {
     }
 
     private Attachment convert(io.qameta.allure.model.Attachment attachment) {
-        return storage.findAttachmentByFileName(attachment.getSource())
-                .map(attach -> Objects.isNull(attachment.getType()) ? attach : attach.withType(attachment.getType()))
-                .map(attach -> Objects.isNull(attachment.getName()) ? attach : attach.withName(attachment.getName()))
-                .orElseGet(Attachment::new);
+        Attachment found = storage.findAttachmentByFileName(attachment.getSource())
+                .map(attach -> new Attachment()
+                        .withUid(attach.getUid())
+                        .withName(attach.getName())
+                        .withType(attach.getType())
+                        .withSource(attach.getSource())
+                        .withSize(attach.getSize()))
+                .orElseGet(() -> new Attachment().withName("unknown").withSize(0L).withType("*/*"));
+
+        if (Objects.nonNull(attachment.getType())) {
+            found.setType(attachment.getType());
+        }
+        if (Objects.nonNull(attachment.getName())) {
+            found.setName(attachment.getName());
+        }
+        return found;
     }
 
     private Step convert(TestStepResult step) {

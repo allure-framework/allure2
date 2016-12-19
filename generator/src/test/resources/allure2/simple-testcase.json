@@ -7,5 +7,16 @@
   "status": "passed",
   "name": "shouldCreate",
   "start": 1479552611395,
-  "stop": 1479552611399
+  "stop": 1479552611399,
+  "steps" : [ {
+    "status" : "passed",
+    "name" : "someSimpleStep",
+    "start" : 1479552601335,
+    "stop" : 1479552601337,
+    "attachments" : [ {
+      "name" : "String attachment in test",
+      "source" : "test-sample-attachment.txt",
+      "type" : "text/plain"
+    }]
+  }]
 }

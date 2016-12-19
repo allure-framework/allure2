@@ -11,6 +11,11 @@
   "afters": [ {
     "name" : "unloadTestConfiguration",
     "start" : 1479552646943,
-    "stop" : 1479552647043
+    "stop" : 1479552647043,
+    "attachments" : [ {
+      "name" : "String attachment in after",
+      "source" : "after-sample-attachment.txt",
+      "type" : "text/plain"
+    }]
   } ]
 }
