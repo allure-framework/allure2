@@ -1,10 +1,14 @@
 package org.allurefw.report.allure2;
 
+import com.google.common.collect.Iterables;
 import com.google.common.reflect.ClassPath;
 import org.allurefw.report.AttachmentsStorage;
 import org.allurefw.report.Main;
 import org.allurefw.report.ReportInfo;
 import org.allurefw.report.core.DefaultAttachmentsStorage;
+import org.allurefw.report.entity.Attachment;
+import org.allurefw.report.entity.StageResult;
+import org.allurefw.report.entity.Step;
 import org.allurefw.report.entity.TestCaseResult;
 import org.junit.Assert;
 import org.junit.Before;
@@ -24,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static io.qameta.allure.AllureUtils.generateAttachmentFileName;
 import static io.qameta.allure.AllureUtils.generateTestCaseJsonFileName;
 import static io.qameta.allure.AllureUtils.generateTestGroupJsonFileName;
 import static org.hamcrest.Matchers.equalTo;
@@ -94,6 +99,45 @@ public class Allure2ResultsReaderTest {
                 hasProperty("name", equalTo("cleanUpContext")),
                 hasProperty("name", equalTo("unloadTestConfiguration"))
         ));
+    }
+
+    @Test
+    public void shouldPickUpAttachmentsForTestCase() throws IOException {
+        List<TestCaseResult> testResults = process(
+                "allure2/simple-testcase.json", generateTestCaseJsonFileName(),
+                "allure2/first-testgroup.json", generateTestGroupJsonFileName(),
+                "allure2/second-testgroup.json", generateTestGroupJsonFileName(),
+                "allure2/test-sample-attachment.txt", "test-sample-attachment.txt"
+        );
+
+        assertThat("Test case is not found", testResults, hasSize(1));
+        TestCaseResult result = testResults.iterator().next();
+        List<Step> steps = result.getTestStage().getSteps();
+        assertThat("Test case should have one step", steps, hasSize(1));
+        List<Attachment> attachments = result.getTestStage().getSteps().iterator().next().getAttachments();
+        assertThat("Step should have an attachment", attachments, hasSize(1));
+        assertThat("Attachment's name is unexpected",
+                attachments.iterator().next().getName(), equalTo("String attachment in test"));
+    }
+
+    @Test
+    public void shouldPickUpAttachmentsForAfters() throws IOException {
+        List<TestCaseResult> testResults = process(
+                "allure2/simple-testcase.json", generateTestCaseJsonFileName(),
+                "allure2/first-testgroup.json", generateTestGroupJsonFileName(),
+                "allure2/second-testgroup.json", generateTestGroupJsonFileName(),
+                "allure2/after-sample-attachment.txt", "after-sample-attachment.txt"
+        );
+
+        assertThat("Test case is not found", testResults, hasSize(1));
+        TestCaseResult result = testResults.iterator().next();
+        List<StageResult> afters = result.getAfterStages();
+        assertThat("Test case should have afters", afters, hasSize(2));
+        List<Attachment> attachments = Iterables.getLast(afters).getAttachments();
+        assertThat("Second after method should have an attachment",
+                attachments, hasSize(1));
+        assertThat("Attachment's name is unexpected",
+                attachments.iterator().next().getName(), equalTo("String attachment in after"));
     }
 
     @Test
