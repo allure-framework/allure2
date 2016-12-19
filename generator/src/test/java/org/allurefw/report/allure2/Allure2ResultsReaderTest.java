@@ -28,13 +28,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static io.qameta.allure.AllureUtils.generateAttachmentFileName;
 import static io.qameta.allure.AllureUtils.generateTestCaseJsonFileName;
 import static io.qameta.allure.AllureUtils.generateTestGroupJsonFileName;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.iterableWithSize;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
 import static ru.yandex.qatools.matchers.nio.PathMatchers.contains;
@@ -138,6 +140,28 @@ public class Allure2ResultsReaderTest {
                 attachments, hasSize(1));
         assertThat("Attachment's name is unexpected",
                 attachments.iterator().next().getName(), equalTo("String attachment in after"));
+    }
+
+    @Test
+    public void shouldDoNotOverrideAttachmentsForGroups() throws IOException {
+        List<TestCaseResult> testResults = process(
+                "allure2/other-testcase.json", generateTestCaseJsonFileName(),
+                "allure2/other-testcase.json", generateTestCaseJsonFileName(),
+                "allure2/second-testgroup.json", generateTestGroupJsonFileName(),
+                "allure2/after-sample-attachment.txt", "after-sample-attachment.txt"
+        );
+
+        assertThat("Test cases is not found", testResults, hasSize(2));
+        assertThat(testResults, allOf(
+                iterableWithSize(2),
+                everyItem(hasProperty("afterStages", allOf(
+                        iterableWithSize(1),
+                        everyItem(hasProperty("attachments", allOf(
+                                iterableWithSize(1),
+                                everyItem(hasProperty("name", equalTo("String attachment in after")))
+                        )))
+                )))
+        ));
     }
 
     @Test
