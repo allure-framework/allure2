@@ -76,6 +76,7 @@ public class Allure2ResultsReader implements ResultsReader {
                     dest.setUid(generateUid());
 
                     dest.setId(result.getId());
+                    dest.setFullName(result.getFullName());
                     dest.setName(result.getName());
                     dest.setTime(result.getStart(), result.getStop());
                     dest.setDescription(result.getDescription());
