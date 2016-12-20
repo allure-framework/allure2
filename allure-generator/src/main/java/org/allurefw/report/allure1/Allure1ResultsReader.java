@@ -116,7 +116,7 @@ public class Allure1ResultsReader implements ResultsReader {
         dest.setLabels(set.stream().collect(Collectors.toList()));
 
         dest.addLabelIfNotExists(LabelName.SUITE, suiteName);
-        dest.addLabelIfNotExists(LabelName.TEST_CLASS, testClass);
+        dest.addLabelIfNotExists("package", testClass);
 
         return dest;
     }
