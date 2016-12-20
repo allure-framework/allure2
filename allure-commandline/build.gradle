@@ -1,0 +1,73 @@
+description = 'Allure Commandline'
+
+apply plugin: 'application'
+
+applicationName = 'allure'
+mainClassName = 'org.allurefw.report.CommandLine'
+
+jar {
+    manifest {
+        attributes(
+                'Implementation-Title': description,
+                'Implementation-Version': version
+        )
+    }
+}
+
+startScripts {
+    classpath += files('src/lib/config')
+    doLast {
+        unixScript.text = unixScript.text
+                .replaceAll('(?m)^APP_HOME=', 'export APP_HOME=')
+    }
+}
+
+configurations {
+    allureWeb
+    allurePlugin
+}
+
+task copyWeb(type: Sync) {
+    dependsOn configurations.allureWeb
+    exclude('META-INF/**', 'WEB-INF/**')
+    from {
+        configurations.allureWeb.collect { zipTree(it) }
+    }
+    into "$buildDir/web/"
+}
+
+task copyPlugins(type: Sync) {
+    dependsOn configurations.allurePlugin
+    from {
+        configurations.allurePlugin.collect { zipTree(it) }
+    }
+    into "$buildDir/plugins/"
+}
+
+applicationDistribution.from(copyWeb) {
+    into 'web'
+}
+
+applicationDistribution.from(copyPlugins) {
+    into 'plugins'
+}
+
+dependencies {
+    allureWeb project(':allure-web')
+
+    allurePlugin project(path: ':behaviors-plugin', configuration: 'allurePlugin')
+    allurePlugin project(path: ':junit-plugin', configuration: 'allurePlugin')
+    allurePlugin project(path: ':packages-plugin', configuration: 'allurePlugin')
+
+    compile project(':allure-generator')
+    compile('com.github.rvesse:airline:2.2.0')
+    compile('com.squareup.retrofit:retrofit:1.9.0')
+    compile('org.apache.commons:commons-exec:1.3')
+    compile('org.eclipse.jetty:jetty-server:9.2.2.v20140723')
+    compile("org.slf4j:slf4j-api:${slf4jVersion}")
+    compile("org.slf4j:slf4j-log4j12:${slf4jVersion}")
+
+    testCompile('junit:junit:4.12')
+    testCompile('org.hamcrest:hamcrest-all:1.3')
+    testCompile('ru.yandex.qatools.matchers:nio-matchers:1.2')
+}

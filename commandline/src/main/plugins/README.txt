@@ -1,1 +1,0 @@
-The directory with Allure plugins. To add the plugin simply add plugin zip to this folder.

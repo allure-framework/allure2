@@ -1,0 +1,15 @@
+rootProject.name = 'allure2'
+
+include 'allure-commandline'
+include 'allure-web'
+include 'allure-generator'
+include 'allure-plugin-api'
+include 'behaviors-plugin'
+include 'custom-logo-plugin'
+include 'junit-plugin'
+include 'packages-plugin'
+
+project(':behaviors-plugin').projectDir = new File(settingsDir, 'plugins/behaviors-plugin')
+project(':custom-logo-plugin').projectDir = new File(settingsDir, 'plugins/custom-logo-plugin')
+project(':junit-plugin').projectDir = new File(settingsDir, 'plugins/junit-plugin')
+project(':packages-plugin').projectDir = new File(settingsDir, 'plugins/packages-plugin')

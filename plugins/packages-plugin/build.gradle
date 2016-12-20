@@ -1,0 +1,19 @@
+description = 'Allure Packages Plugin'
+
+apply plugin: 'java-library-distribution'
+
+jar {
+    archiveName = 'plugin.jar'
+}
+
+dependencies {
+    compileOnly project(':allure-plugin-api')
+}
+
+configurations {
+    allurePlugin
+}
+
+artifacts {
+    allurePlugin distZip
+}

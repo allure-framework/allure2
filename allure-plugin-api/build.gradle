@@ -1,0 +1,39 @@
+description = 'Allure Plugin Api'
+
+compileJava {
+    dependsOn xjc, processResources
+    source jaxb.xjc.destinationDir
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs(jaxb.xjc.destinationDir, 'src/main/java')
+        }
+    }
+}
+
+jaxb {
+    xsdDir = 'allure-plugin-api/src/main/resources/xsd'
+    bindingsDir = 'allure-plugin-api/src/main/resources/xsd/xjb'
+    bindings = ['allure_report-api.xjb', 'allure_tree-data.xjb']
+}
+
+dependencies {
+    compile('com.google.inject:guice:4.1.0')
+    compile('com.google.inject.extensions:guice-assistedinject:4.1.0')
+    compile('com.google.inject.extensions:guice-multibindings:4.1.0')
+
+    compile('org.apache.tika:tika-core:1.11')
+    compile('org.pegdown:pegdown:1.6.0')
+    compile('ru.qatools.commons:properties:2.0.RC5')
+    compile('com.fasterxml.jackson.core:jackson-databind:2.7.0')
+    compile('com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.7.0')
+    compile("org.slf4j:slf4j-api:${slf4jVersion}")
+
+    testCompile('junit:junit:4.12')
+    testCompile('org.hamcrest:hamcrest-all:1.3')
+    testCompile('org.mockito:mockito-all:1.10.19')
+    testCompile('com.github.baev:hamcrest-optional:1.0')
+    testCompile("org.slf4j:slf4j-simple:${slf4jVersion}")
+}

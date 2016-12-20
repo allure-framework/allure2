@@ -3,6 +3,8 @@
 target
 *.iml
 *.ipr
+build
+schema
 
 #Eclipse files
 *.settings
