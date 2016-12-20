@@ -1,0 +1,64 @@
+{
+    "status": "failed", 
+    "name": "test_mixed_nested_steps[False-True-True]", 
+    "parameters": [
+        {
+            "name": "first_fail_before_second", 
+            "value": "False"
+        }, 
+        {
+            "name": "first_fail_after_second", 
+            "value": "True"
+        }, 
+        {
+            "name": "second_fail", 
+            "value": "True"
+        }
+    ], 
+    "parentIds": [], 
+    "labels": [
+        {
+            "name": "testClass", 
+            "value": "test.steps.nested_steps_test"
+        }
+    ], 
+    "stop": 1482258280674, 
+    "statusDetails": {
+        "message": "AssertionError: assert not True", 
+        "trace": "first_fail_before_second = False, first_fail_after_second = True, second_fail = True\n\n    @pytest.mark.parametrize(\"first_fail_before_second, first_fail_after_second, second_fail\", fruit_machine)\n    def test_mixed_nested_steps(first_fail_before_second, first_fail_after_second, second_fail):\n>       yet_another_first_step(first_fail_before_second, first_fail_after_second, second_fail)\n\ntest/steps/nested_steps_test.py:98: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nfirst_fail_before_second = False, first_fail_after_second = True, second_fail = True\n\n    @pytest.allure.step(\"First step\")\n    def yet_another_first_step(first_fail_before_second, first_fail_after_second, second_fail):\n        assert not first_fail_before_second\n        with pytest.allure.step('Second step'):\n>           assert not second_fail\nE           assert not True\n\ntest/steps/nested_steps_test.py:92: AssertionError"
+    }, 
+    "start": 1482258280674, 
+    "steps": [
+        {
+            "name": "First step", 
+            "description": null, 
+            "descriptionHtml": null, 
+            "steps": [
+                {
+                    "name": "Second step", 
+                    "description": null, 
+                    "descriptionHtml": null, 
+                    "steps": null, 
+                    "attachments": null, 
+                    "start": 1482258280674, 
+                    "stop": 1482258280674, 
+                    "id": null, 
+                    "status": "failed", 
+                    "statusDetails": null, 
+                    "parameters": null
+                }
+            ], 
+            "attachments": null, 
+            "start": 1482258280674, 
+            "stop": 1482258280674, 
+            "id": null, 
+            "status": "failed", 
+            "statusDetails": null, 
+            "parameters": null
+        }
+    ], 
+    "fullName": "test.steps.nested_steps_test#test_mixed_nested_steps[False-True-True]", 
+    "afters": [], 
+    "id": "08872e705509f22467d005117088723f", 
+    "befores": []
+}

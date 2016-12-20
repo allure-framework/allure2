@@ -1,0 +1,55 @@
+{
+    "status": "passed", 
+    "name": "test_sequence_of_inside_steps[False-False]", 
+    "parameters": [
+        {
+            "name": "first_step_fail", 
+            "value": "False"
+        }, 
+        {
+            "name": "second_step_fail", 
+            "value": "False"
+        }
+    ], 
+    "parentIds": [], 
+    "labels": [
+        {
+            "name": "testClass", 
+            "value": "test.steps.simple_steps_test"
+        }
+    ], 
+    "stop": 1482258280763, 
+    "start": 1482258280763, 
+    "steps": [
+        {
+            "name": "First step", 
+            "description": null, 
+            "descriptionHtml": null, 
+            "steps": null, 
+            "attachments": null, 
+            "start": 1482258280763, 
+            "stop": 1482258280763, 
+            "id": null, 
+            "status": "passed", 
+            "statusDetails": null, 
+            "parameters": null
+        }, 
+        {
+            "name": "Second step", 
+            "description": null, 
+            "descriptionHtml": null, 
+            "steps": null, 
+            "attachments": null, 
+            "start": 1482258280763, 
+            "stop": 1482258280763, 
+            "id": null, 
+            "status": "passed", 
+            "statusDetails": null, 
+            "parameters": null
+        }
+    ], 
+    "fullName": "test.steps.simple_steps_test#test_sequence_of_inside_steps[False-False]", 
+    "afters": [], 
+    "id": "ff44ac5fb367f7a6a7f2dd50c9e0e7c9", 
+    "befores": []
+}

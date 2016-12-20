@@ -1,0 +1,32 @@
+{
+    "status": "failed", 
+    "name": "test_parametrization_many_params_as_iterable_without_ids[True-False]", 
+    "parameters": [
+        {
+            "name": "param1", 
+            "value": "True"
+        }, 
+        {
+            "name": "param2", 
+            "value": "False"
+        }
+    ], 
+    "parentIds": [], 
+    "labels": [
+        {
+            "name": "testClass", 
+            "value": "test.parametrization.parametrization_simple_test"
+        }
+    ], 
+    "stop": 1482258280485, 
+    "statusDetails": {
+        "message": "AssertionError: assert (True and False)", 
+        "trace": "param1 = True, param2 = False\n\n    @pytest.mark.parametrize(['param1', 'param2'], [(True, False), (True, True)])\n    def test_parametrization_many_params_as_iterable_without_ids(param1, param2):\n>       assert param1 and param2\nE       assert (True and False)\n\ntest/parametrization/parametrization_simple_test.py:79: AssertionError"
+    }, 
+    "start": 1482258280485, 
+    "steps": [], 
+    "fullName": "test.parametrization.parametrization_simple_test#test_parametrization_many_params_as_iterable_without_ids[True-False]", 
+    "afters": [], 
+    "id": "8b0b9b898b33ee9485b7137782518a48", 
+    "befores": []
+}

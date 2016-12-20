@@ -1,0 +1,27 @@
+{
+    "status": "passed", 
+    "name": "test_method_of_decorated_class", 
+    "parameters": [], 
+    "parentIds": [], 
+    "labels": [
+        {
+            "name": "severity", 
+            "value": "normal"
+        }, 
+        {
+            "name": "severity", 
+            "value": "trivial"
+        }, 
+        {
+            "name": "testClass", 
+            "value": "test.labels.module_severity_test"
+        }
+    ], 
+    "stop": 1482258280315, 
+    "start": 1482258280315, 
+    "steps": [], 
+    "fullName": "test.labels.module_severity_test.TestDecorated#test_method_of_decorated_class", 
+    "afters": [], 
+    "id": "553eced7847bf99b73c7e41ad1b89369", 
+    "befores": []
+}

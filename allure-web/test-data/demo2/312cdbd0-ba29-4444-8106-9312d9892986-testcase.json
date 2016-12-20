@@ -1,0 +1,24 @@
+{
+    "status": "passed", 
+    "name": "test_parametrization_one_param_with_ids[fail]", 
+    "parameters": [
+        {
+            "name": "fail", 
+            "value": "False"
+        }
+    ], 
+    "parentIds": [], 
+    "labels": [
+        {
+            "name": "testClass", 
+            "value": "test.parametrization.parametrization_simple_test"
+        }
+    ], 
+    "stop": 1482258280476, 
+    "start": 1482258280476, 
+    "steps": [], 
+    "fullName": "test.parametrization.parametrization_simple_test#test_parametrization_one_param_with_ids[fail]", 
+    "afters": [], 
+    "id": "3ba666a5ba7865f104f4b524f46d5a07", 
+    "befores": []
+}

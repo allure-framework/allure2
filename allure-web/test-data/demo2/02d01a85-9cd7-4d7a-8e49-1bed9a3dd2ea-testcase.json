@@ -1,0 +1,32 @@
+{
+    "status": "failed", 
+    "name": "test_parametrization_many_decorators_without_ids[True1-False]", 
+    "parameters": [
+        {
+            "name": "param1", 
+            "value": "False"
+        }, 
+        {
+            "name": "param2", 
+            "value": "True"
+        }
+    ], 
+    "parentIds": [], 
+    "labels": [
+        {
+            "name": "testClass", 
+            "value": "test.parametrization.parametrization_deep_test"
+        }
+    ], 
+    "stop": 1482258280356, 
+    "statusDetails": {
+        "message": "AssertionError: assert (False)", 
+        "trace": "param1 = False, param2 = True\n\n    @pytest.mark.parametrize('param1', [True, False])\n    @pytest.mark.parametrize('param2', [True, True])\n    def test_parametrization_many_decorators_without_ids(param1, param2):\n>       assert param1 and param2\nE       assert (False)\n\ntest/parametrization/parametrization_deep_test.py:96: AssertionError"
+    }, 
+    "start": 1482258280356, 
+    "steps": [], 
+    "fullName": "test.parametrization.parametrization_deep_test#test_parametrization_many_decorators_without_ids[True1-False]", 
+    "afters": [], 
+    "id": "e2cf68148b5881274a57734729ef0c70", 
+    "befores": []
+}

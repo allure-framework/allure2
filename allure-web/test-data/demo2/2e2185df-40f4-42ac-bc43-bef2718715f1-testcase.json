@@ -1,0 +1,23 @@
+{
+    "status": "passed", 
+    "name": "test_minor", 
+    "parameters": [], 
+    "parentIds": [], 
+    "labels": [
+        {
+            "name": "severity", 
+            "value": "minor"
+        }, 
+        {
+            "name": "testClass", 
+            "value": "test.labels.function_severity_test"
+        }
+    ], 
+    "stop": 1482258280308, 
+    "start": 1482258280308, 
+    "steps": [], 
+    "fullName": "test.labels.function_severity_test#test_minor", 
+    "afters": [], 
+    "id": "e2f8f64116923edb09c0f70b90b7f649", 
+    "befores": []
+}

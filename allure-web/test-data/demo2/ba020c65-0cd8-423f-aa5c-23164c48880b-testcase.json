@@ -1,0 +1,59 @@
+{
+    "status": "failed", 
+    "name": "test_sequence_of_inside_steps[False-True]", 
+    "parameters": [
+        {
+            "name": "first_step_fail", 
+            "value": "False"
+        }, 
+        {
+            "name": "second_step_fail", 
+            "value": "True"
+        }
+    ], 
+    "parentIds": [], 
+    "labels": [
+        {
+            "name": "testClass", 
+            "value": "test.steps.simple_steps_test"
+        }
+    ], 
+    "stop": 1482258280758, 
+    "statusDetails": {
+        "message": "AssertionError: assert not True", 
+        "trace": "first_step_fail = False, second_step_fail = True\n\n    @pytest.mark.parametrize(\"first_step_fail, second_step_fail\", true_false)\n    def test_sequence_of_inside_steps(first_step_fail, second_step_fail):\n        with pytest.allure.step('First step'):\n            assert not first_step_fail\n        with pytest.allure.step('Second step'):\n>           assert not second_step_fail\nE           assert not True\n\ntest/steps/simple_steps_test.py:59: AssertionError"
+    }, 
+    "start": 1482258280758, 
+    "steps": [
+        {
+            "name": "First step", 
+            "description": null, 
+            "descriptionHtml": null, 
+            "steps": null, 
+            "attachments": null, 
+            "start": 1482258280758, 
+            "stop": 1482258280758, 
+            "id": null, 
+            "status": "passed", 
+            "statusDetails": null, 
+            "parameters": null
+        }, 
+        {
+            "name": "Second step", 
+            "description": null, 
+            "descriptionHtml": null, 
+            "steps": null, 
+            "attachments": null, 
+            "start": 1482258280758, 
+            "stop": 1482258280758, 
+            "id": null, 
+            "status": "failed", 
+            "statusDetails": null, 
+            "parameters": null
+        }
+    ], 
+    "fullName": "test.steps.simple_steps_test#test_sequence_of_inside_steps[False-True]", 
+    "afters": [], 
+    "id": "d18590c83b823819286de55f42f22d1d", 
+    "befores": []
+}

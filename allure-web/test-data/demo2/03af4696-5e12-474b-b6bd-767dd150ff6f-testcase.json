@@ -1,0 +1,28 @@
+{
+    "status": "passed", 
+    "name": "test_parametrization_many_decorators_without_ids[True0-True]", 
+    "parameters": [
+        {
+            "name": "param1", 
+            "value": "True"
+        }, 
+        {
+            "name": "param2", 
+            "value": "True"
+        }
+    ], 
+    "parentIds": [], 
+    "labels": [
+        {
+            "name": "testClass", 
+            "value": "test.parametrization.parametrization_deep_test"
+        }
+    ], 
+    "stop": 1482258280317, 
+    "start": 1482258280317, 
+    "steps": [], 
+    "fullName": "test.parametrization.parametrization_deep_test#test_parametrization_many_decorators_without_ids[True0-True]", 
+    "afters": [], 
+    "id": "291ffc9ac9d277ec3ee02c12efbff42c", 
+    "befores": []
+}

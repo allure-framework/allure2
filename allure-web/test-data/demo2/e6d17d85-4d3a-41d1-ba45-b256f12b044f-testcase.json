@@ -1,0 +1,48 @@
+{
+    "status": "passed", 
+    "name": "test_fixture_with_two_finalizer", 
+    "parameters": [], 
+    "parentIds": [], 
+    "labels": [
+        {
+            "name": "testClass", 
+            "value": "test.fixtures.function_scope.finalizers_simple_test"
+        }
+    ], 
+    "stop": 1482258280281, 
+    "start": 1482258280281, 
+    "steps": [], 
+    "fullName": "test.fixtures.function_scope.finalizers_simple_test#test_fixture_with_two_finalizer", 
+    "afters": [
+        {
+            "name": "fixture_with_two_finalizers::first_finalizer", 
+            "description": null, 
+            "descriptionHtml": null, 
+            "steps": [], 
+            "attachments": null, 
+            "start": 1482258280282, 
+            "stop": 1482258280283
+        }, 
+        {
+            "name": "fixture_with_two_finalizers::second_finalizer", 
+            "description": null, 
+            "descriptionHtml": null, 
+            "steps": [], 
+            "attachments": null, 
+            "start": 1482258280282, 
+            "stop": 1482258280282
+        }
+    ], 
+    "id": "42e68b900c42d8a0e009c3ea1dad438a", 
+    "befores": [
+        {
+            "name": "fixture_with_two_finalizers", 
+            "description": null, 
+            "descriptionHtml": null, 
+            "steps": [], 
+            "attachments": null, 
+            "start": 1482258280281, 
+            "stop": 1482258280281
+        }
+    ]
+}

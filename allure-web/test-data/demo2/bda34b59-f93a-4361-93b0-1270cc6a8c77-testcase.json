@@ -1,0 +1,21 @@
+{
+    "status": "passed", 
+    "name": "test_class_one_method_with_class_scope_fixture_one", 
+    "parameters": [], 
+    "parentIds": [
+        "d9a91ea2-b942-4fd0-a6df-54338d6e94d3"
+    ], 
+    "labels": [
+        {
+            "name": "testClass", 
+            "value": "test.fixtures.class_scope.fixtures_simple_test"
+        }
+    ], 
+    "stop": 1482258280274, 
+    "start": 1482258280274, 
+    "steps": [], 
+    "fullName": "test.fixtures.class_scope.fixtures_simple_test.TestClassOne#test_class_one_method_with_class_scope_fixture_one", 
+    "afters": [], 
+    "id": "221a5271b4bd5c21549c392292928574", 
+    "befores": []
+}

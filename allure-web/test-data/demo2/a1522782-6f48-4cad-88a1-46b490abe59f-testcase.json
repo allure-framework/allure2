@@ -1,0 +1,32 @@
+{
+    "status": "passed", 
+    "name": "test_parametrization_with_many_decorators_with_partial_ids_and_unsorted_args[param3_id3-param2_id1-True]", 
+    "parameters": [
+        {
+            "name": "param3_id3", 
+            "value": "False"
+        }, 
+        {
+            "name": "param1", 
+            "value": "True"
+        }, 
+        {
+            "name": "param2_id1", 
+            "value": "True"
+        }
+    ], 
+    "parentIds": [], 
+    "labels": [
+        {
+            "name": "testClass", 
+            "value": "test.parametrization.parametrization_deep_test"
+        }
+    ], 
+    "stop": 1482258280436, 
+    "start": 1482258280436, 
+    "steps": [], 
+    "fullName": "test.parametrization.parametrization_deep_test#test_parametrization_with_many_decorators_with_partial_ids_and_unsorted_args[param3_id3-param2_id1-True]", 
+    "afters": [], 
+    "id": "b0084253ef9b441d054e011eeb2f596f", 
+    "befores": []
+}

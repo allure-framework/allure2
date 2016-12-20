@@ -1,0 +1,46 @@
+{
+    "status": "failed", 
+    "name": "test_sequence_of_inside_steps[True-False]", 
+    "parameters": [
+        {
+            "name": "first_step_fail", 
+            "value": "True"
+        }, 
+        {
+            "name": "second_step_fail", 
+            "value": "False"
+        }
+    ], 
+    "parentIds": [], 
+    "labels": [
+        {
+            "name": "testClass", 
+            "value": "test.steps.simple_steps_test"
+        }
+    ], 
+    "stop": 1482258280754, 
+    "statusDetails": {
+        "message": "AssertionError: assert not True", 
+        "trace": "first_step_fail = True, second_step_fail = False\n\n    @pytest.mark.parametrize(\"first_step_fail, second_step_fail\", true_false)\n    def test_sequence_of_inside_steps(first_step_fail, second_step_fail):\n        with pytest.allure.step('First step'):\n>           assert not first_step_fail\nE           assert not True\n\ntest/steps/simple_steps_test.py:57: AssertionError"
+    }, 
+    "start": 1482258280754, 
+    "steps": [
+        {
+            "name": "First step", 
+            "description": null, 
+            "descriptionHtml": null, 
+            "steps": null, 
+            "attachments": null, 
+            "start": 1482258280754, 
+            "stop": 1482258280754, 
+            "id": null, 
+            "status": "failed", 
+            "statusDetails": null, 
+            "parameters": null
+        }
+    ], 
+    "fullName": "test.steps.simple_steps_test#test_sequence_of_inside_steps[True-False]", 
+    "afters": [], 
+    "id": "c2900f7674bdd4d28bf9ae83bf398cef", 
+    "befores": []
+}

@@ -1,0 +1,16 @@
+{
+    "befores": [
+        {
+            "name": "class_scope_simple_fixture", 
+            "description": null, 
+            "descriptionHtml": null, 
+            "steps": [], 
+            "attachments": null, 
+            "start": 1482258280273, 
+            "stop": 1482258280273
+        }
+    ], 
+    "type": 1, 
+    "id": "d9a91ea2-b942-4fd0-a6df-54338d6e94d3", 
+    "parentIds": []
+}

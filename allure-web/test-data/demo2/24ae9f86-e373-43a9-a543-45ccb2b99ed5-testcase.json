@@ -1,0 +1,27 @@
+{
+    "status": "passed", 
+    "name": "test_decorated_function", 
+    "parameters": [], 
+    "parentIds": [], 
+    "labels": [
+        {
+            "name": "severity", 
+            "value": "minor"
+        }, 
+        {
+            "name": "severity", 
+            "value": "trivial"
+        }, 
+        {
+            "name": "testClass", 
+            "value": "test.labels.module_severity_test"
+        }
+    ], 
+    "stop": 1482258280311, 
+    "start": 1482258280311, 
+    "steps": [], 
+    "fullName": "test.labels.module_severity_test#test_decorated_function", 
+    "afters": [], 
+    "id": "5a2b79254415052d5f8d00510b92dd82", 
+    "befores": []
+}

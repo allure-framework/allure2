@@ -1,0 +1,28 @@
+{
+    "status": "passed", 
+    "name": "test_parametrization_many_params_as_iterable_without_ids[True-True]", 
+    "parameters": [
+        {
+            "name": "param1", 
+            "value": "True"
+        }, 
+        {
+            "name": "param2", 
+            "value": "True"
+        }
+    ], 
+    "parentIds": [], 
+    "labels": [
+        {
+            "name": "testClass", 
+            "value": "test.parametrization.parametrization_simple_test"
+        }
+    ], 
+    "stop": 1482258280490, 
+    "start": 1482258280490, 
+    "steps": [], 
+    "fullName": "test.parametrization.parametrization_simple_test#test_parametrization_many_params_as_iterable_without_ids[True-True]", 
+    "afters": [], 
+    "id": "e19017e02592472270164dd2d9a844ff", 
+    "befores": []
+}

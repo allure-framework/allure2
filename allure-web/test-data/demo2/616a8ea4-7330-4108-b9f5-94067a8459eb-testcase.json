@@ -1,0 +1,47 @@
+{
+    "status": "passed", 
+    "name": "test_with_apple_pineapple_pen_fixture", 
+    "parameters": [], 
+    "parentIds": [], 
+    "labels": [
+        {
+            "name": "testClass", 
+            "value": "test.fixtures.function_scope.fixtures_simple_test"
+        }
+    ], 
+    "stop": 1482258280299, 
+    "start": 1482258280299, 
+    "steps": [], 
+    "fullName": "test.fixtures.function_scope.fixtures_simple_test#test_with_apple_pineapple_pen_fixture", 
+    "afters": [], 
+    "id": "cb259d27a2f7d19131c23814ffbe13de", 
+    "befores": [
+        {
+            "name": "function_scope_fixture_wich_depends_on_two_other", 
+            "description": null, 
+            "descriptionHtml": null, 
+            "steps": [], 
+            "attachments": null, 
+            "start": 1482258280299, 
+            "stop": 1482258280299
+        }, 
+        {
+            "name": "one_more_function_scope_fixture", 
+            "description": null, 
+            "descriptionHtml": null, 
+            "steps": [], 
+            "attachments": null, 
+            "start": 1482258280299, 
+            "stop": 1482258280299
+        }, 
+        {
+            "name": "function_scope_simple_fixture", 
+            "description": null, 
+            "descriptionHtml": null, 
+            "steps": [], 
+            "attachments": null, 
+            "start": 1482258280299, 
+            "stop": 1482258280299
+        }
+    ]
+}
