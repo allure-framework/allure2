@@ -6,10 +6,6 @@ jar {
     enabled = false
 }
 
-configurations {
-    allurePlugin
-}
-
 artifacts {
     allurePlugin distZip
 }

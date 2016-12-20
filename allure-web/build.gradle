@@ -13,6 +13,10 @@ processResources.dependsOn npm_run_build
 dependencies {
     compileOnly project(':allure-generator')
     compileOnly "org.slf4j:slf4j-simple:${slf4jVersion}"
+
+    allurePlugin project(path: ':behaviors-plugin', configuration: 'allurePlugin')
+    allurePlugin project(path: ':junit-plugin', configuration: 'allurePlugin')
+    allurePlugin project(path: ':packages-plugin', configuration: 'allurePlugin')
 }
 
 def resultsDirectory = findProperty('results') ?: 'demo'
@@ -25,6 +29,7 @@ task generateDemoReport(type: JavaExec) {
     dependsOn cleanUpDemoReport
     main = 'org.allurefw.report.DummyReportGenerator'
     classpath = sourceSets.main.compileClasspath
+    systemProperties += ['allure.pluginsDirectory': file('build/plugins')]
     args = [file("test-data/${resultsDirectory}"), file('build/demo-report')]
 }
 
@@ -33,5 +38,5 @@ task write {
 }
 
 task dev {
-    dependsOn write, generateDemoReport, npm_run_start
+    dependsOn write, generateDemoReport, copyPlugins, npm_run_start
 }

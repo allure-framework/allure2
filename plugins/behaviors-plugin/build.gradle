@@ -10,10 +10,6 @@ dependencies {
     compileOnly project(':allure-plugin-api')
 }
 
-configurations {
-    allurePlugin
-}
-
 artifacts {
     allurePlugin distZip
 }

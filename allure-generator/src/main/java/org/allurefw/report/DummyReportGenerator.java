@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * @author Artem Eroshenko eroshenkoam@qameta.io
@@ -31,7 +32,9 @@ public final class DummyReportGenerator {
         }
         int lastIndex = args.length - 1;
         Path[] files = getFiles(args);
-        Main main = new Main();
+
+        String pluginsDirectory = System.getProperty("allure.pluginsDirectory");
+        Main main = Objects.isNull(pluginsDirectory) ? new Main() : new Main(Paths.get(pluginsDirectory), null);
         main.generate(files[lastIndex], Arrays.copyOf(files, lastIndex));
     }
 

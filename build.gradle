@@ -85,6 +85,18 @@ subprojects { project ->
         compression = Compression.GZIP
     }
 
+    configurations {
+        allurePlugin
+    }
+
+    task copyPlugins(type: Sync) {
+        dependsOn configurations.allurePlugin
+        from {
+            configurations.allurePlugin.collect { zipTree(it) }
+        }
+        into "$buildDir/plugins/"
+    }
+
     repositories {
         mavenLocal()
         mavenCentral()

@@ -24,7 +24,6 @@ startScripts {
 
 configurations {
     allureWeb
-    allurePlugin
 }
 
 task copyWeb(type: Sync) {
@@ -34,14 +33,6 @@ task copyWeb(type: Sync) {
         configurations.allureWeb.collect { zipTree(it) }
     }
     into "$buildDir/web/"
-}
-
-task copyPlugins(type: Sync) {
-    dependsOn configurations.allurePlugin
-    from {
-        configurations.allurePlugin.collect { zipTree(it) }
-    }
-    into "$buildDir/plugins/"
 }
 
 applicationDistribution.from(copyWeb) {
