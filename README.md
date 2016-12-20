@@ -16,3 +16,19 @@ You can find the roadmap [here](https://github.com/allurefw/allure-report/wiki/R
 
 [build]: https://ci.qameta.in/job/allure2_deploy/lastBuild "Jenkins build"
 [build-badge]: https://ci.qameta.in/buildStatus/icon?job=allure2_deploy
+
+## Development
+
+To start dev server you can run
+
+```bash
+$ ./gradlew dev
+```
+
+And then open `http://localhost:3000`
+
+Also you can choose different demo data using `results` parameter:
+
+```bash
+$ ./gradlew dev -Presults=allure2
+```

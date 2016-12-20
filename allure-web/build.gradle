@@ -11,4 +11,27 @@ node {
 processResources.dependsOn npm_run_build
 
 dependencies {
+    compileOnly project(':allure-generator')
+    compileOnly "org.slf4j:slf4j-simple:${slf4jVersion}"
+}
+
+def resultsDirectory = findProperty('results') ?: 'demo'
+
+task cleanUpDemoReport(type: Delete) {
+    delete file('build/demo-report')
+}
+
+task generateDemoReport(type: JavaExec) {
+    dependsOn cleanUpDemoReport
+    main = 'org.allurefw.report.DummyReportGenerator'
+    classpath = sourceSets.main.compileClasspath
+    args = [file("test-data/${resultsDirectory}"), file('build/demo-report')]
+}
+
+task write {
+    println("start up development server on localhost:3000 (${resultsDirectory})")
+}
+
+task dev {
+    dependsOn write, generateDemoReport, npm_run_start
 }

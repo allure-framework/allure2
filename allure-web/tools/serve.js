@@ -8,7 +8,7 @@ const port = process.env.PORT || 3000;
 config.entry.unshift(`webpack-dev-server/client?http://localhost:${port}`, 'webpack/hot/dev-server');
 const compiler = webpack(config);
 const server = new WebpackDevServer(compiler, {
-    contentBase: './build/resources/main/',
+    contentBase: './build/demo-report/',
     stats: { colors: true },
     inline: true,
     hot: true
