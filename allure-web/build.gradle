@@ -1,0 +1,14 @@
+description = 'Allure Web'
+
+apply plugin: 'com.moowork.node'
+
+node {
+    version = '6.9.1'
+    npmVersion = '3.10.3'
+    download = true
+}
+
+processResources.dependsOn npm_run_build
+
+dependencies {
+}

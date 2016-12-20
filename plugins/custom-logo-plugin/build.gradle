@@ -1,0 +1,15 @@
+description = 'Allure Custom Logo Plugin'
+
+apply plugin: 'java-library-distribution'
+
+jar {
+    enabled = false
+}
+
+configurations {
+    allurePlugin
+}
+
+artifacts {
+    allurePlugin distZip
+}
