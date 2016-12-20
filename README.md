@@ -14,5 +14,5 @@ You can find the roadmap [here](https://github.com/allurefw/allure-report/wiki/R
 [mavencentral]: https://mvnrepository.com/artifact/org.allurefw.report/allure-report "Maven central"
 [mavencentral-badge]: https://img.shields.io/maven-central/v/org.allurefw.report/allure-report.svg?style=flat
 
-[build]: https://ci.qameta.in/job/allure-report_deploy/lastBuild "Jenkins build"
-[build-badge]: https://ci.qameta.in/buildStatus/icon?job=allure-report_deploy
+[build]: https://ci.qameta.in/job/allure2_deploy/lastBuild "Jenkins build"
+[build-badge]: https://ci.qameta.in/buildStatus/icon?job=allure2_deploy
