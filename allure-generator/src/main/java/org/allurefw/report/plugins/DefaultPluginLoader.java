@@ -99,7 +99,7 @@ public class DefaultPluginLoader implements PluginsLoader {
 
     private Stream<Path> getChildren(Path directory) throws IOException {
         try (Stream<Path> children = Files.walk(directory, 1, FileVisitOption.FOLLOW_LINKS)) {
-            //we need to load lazy directory stream to memery and close it
+            //we need to load lazy directory stream to memory and close it
             return children.collect(Collectors.toList()).stream();
         }
     }
