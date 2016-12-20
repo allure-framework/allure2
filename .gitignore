@@ -5,6 +5,7 @@ target
 *.ipr
 build
 schema
+.gradle
 
 #Eclipse files
 *.settings
@@ -18,3 +19,6 @@ npm-debug.log
 
 #Other
 .repo
+
+#Mac OS stuff
+.DS_Store
