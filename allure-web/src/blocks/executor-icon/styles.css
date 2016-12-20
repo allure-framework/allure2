@@ -8,6 +8,14 @@
   &__jenkins {
     background-image: url(./jenkins.png)
   }
+
+  &__bamboo {
+    background-image: url(./bamboo.png)
+  }
+
+  &__teamcity {
+    background-image: url(./teamcity.png)
+  }
 }
 
 .executor {
