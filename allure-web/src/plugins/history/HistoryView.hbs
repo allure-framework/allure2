@@ -1,6 +1,11 @@
 {{#if history}}
     <h3 class="history-title">History</h3>
-    <div class="history-success-rate">success rate {{successRate}}</div>
+    <div class="history-success-rate">
+        success rate {{successRate}}
+        {{# if history.statistic.total}}
+            ({{history.statistic.passed}} of {{history.statistic.total}})
+        {{/if}}
+    </div>
     {{#each history.items}}
         <div class="history-row"><span class="label label_status_{{status}}">{{status}}</span> {{date timestamp}} at {{time timestamp}}</div>
     {{/each}}
