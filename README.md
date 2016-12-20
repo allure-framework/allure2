@@ -1,4 +1,4 @@
-### Allure Report
+## Allure Report
 
 [![release-badge][]][release]
 [![mavencentral-badge][]][mavencentral]
