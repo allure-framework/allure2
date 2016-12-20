@@ -52,6 +52,8 @@ applicationDistribution.from(copyPlugins) {
     into 'plugins'
 }
 
+build.dependsOn installDist
+
 dependencies {
     allureWeb project(':allure-web')
 
