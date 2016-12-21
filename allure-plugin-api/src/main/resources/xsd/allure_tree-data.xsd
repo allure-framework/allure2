@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            xmlns:api="urn:entity.report.allurefw.org"
-            xmlns:ns="urn:tree.report.allurefw.org"
-            targetNamespace="urn:tree.report.allurefw.org">
+            xmlns:api="urn:entity.allure.qameta.io"
+            xmlns:ns="urn:tree.allure.qameta.io"
+            targetNamespace="urn:tree.allure.qameta.io">
 
-    <xsd:import namespace="urn:entity.report.allurefw.org" schemaLocation="allure_report-api.xsd"/>
+    <xsd:import namespace="urn:entity.allure.qameta.io" schemaLocation="allure_report-api.xsd"/>
 
     <xsd:element name="treeData" type="ns:TreeData"/>
     <xsd:complexType name="TreeData">
