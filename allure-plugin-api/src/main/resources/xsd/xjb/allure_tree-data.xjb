@@ -10,25 +10,25 @@
                jaxb:version="2.1">
 
     <jaxb:bindings node="//xsd:complexType[@name='TestGroupNode']">
-        <inheritance:implements>org.allurefw.report.entity.WithStatistic</inheritance:implements>
-        <inheritance:implements>org.allurefw.report.entity.WithGroupTime</inheritance:implements>
-        <inheritance:implements>org.allurefw.report.tree.WithChildren</inheritance:implements>
-        <inheritance:implements>org.allurefw.report.tree.TreeNode</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithStatistic</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithGroupTime</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.tree.WithChildren</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.tree.TreeNode</inheritance:implements>
     </jaxb:bindings>
 
     <jaxb:bindings node="//xsd:complexType[@name='TestCaseNode']">
-        <inheritance:implements>org.allurefw.report.entity.WithTime</inheritance:implements>
-        <inheritance:implements>org.allurefw.report.tree.TreeNode</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithTime</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.tree.TreeNode</inheritance:implements>
     </jaxb:bindings>
 
     <jaxb:bindings node="//xsd:complexType[@name='TreeData']">
-        <inheritance:implements>org.allurefw.report.entity.WithStatistic</inheritance:implements>
-        <inheritance:implements>org.allurefw.report.entity.WithGroupTime</inheritance:implements>
-        <inheritance:implements>org.allurefw.report.tree.WithChildren</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithStatistic</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithGroupTime</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.tree.WithChildren</inheritance:implements>
     </jaxb:bindings>
 
     <jaxb:bindings node="//xsd:complexType[@name='TreeNode']">
-        <jaxb:class ref="org.allurefw.report.tree.TreeNode"/>
+        <jaxb:class ref="io.qameta.allure.tree.TreeNode"/>
     </jaxb:bindings>
 
 </jaxb:bindings>

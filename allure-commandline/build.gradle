@@ -3,7 +3,7 @@ description = 'Allure Commandline'
 apply plugin: 'application'
 
 applicationName = 'allure'
-mainClassName = 'org.allurefw.report.CommandLine'
+mainClassName = 'io.qameta.allure.CommandLine'
 
 jar {
     manifest {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ns:pluginDescriptor xmlns:ns="urn:report.allurefw.org">
+<ns:pluginDescriptor xmlns:ns="urn:allure.qameta.io">
     <name>packages-plugin</name>
-    <moduleClass>org.allurefw.report.packages.PackagesPlugin</moduleClass>
+    <moduleClass>io.qameta.allure.packages.PackagesPlugin</moduleClass>
 </ns:pluginDescriptor>

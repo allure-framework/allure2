@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            targetNamespace="urn:report.allurefw.org">
+            targetNamespace="urn:allure.qameta.io">
 
     <xsd:complexType name="TestCaseInfo"/>
     <xsd:complexType name="Time"/>

@@ -10,7 +10,7 @@
                jaxb:version="2.1">
 
     <jaxb:bindings node="//xsd:complexType[@name='HistoryData']">
-        <inheritance:implements>org.allurefw.report.entity.WithStatistic</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithStatistic</inheritance:implements>
     </jaxb:bindings>
 
 </jaxb:bindings>

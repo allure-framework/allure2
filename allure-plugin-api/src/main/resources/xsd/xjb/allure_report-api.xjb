@@ -10,54 +10,54 @@
                jaxb:version="2.1">
 
     <jaxb:bindings node="//xsd:complexType[@name='TestGroup']">
-        <inheritance:implements>org.allurefw.report.entity.WithName</inheritance:implements>
-        <inheritance:implements>org.allurefw.report.entity.WithDescription</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithName</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithDescription</inheritance:implements>
     </jaxb:bindings>
 
     <jaxb:bindings node="//xsd:complexType[@name='TestCaseResult']">
-        <inheritance:implements>org.allurefw.report.entity.WithName</inheritance:implements>
-        <inheritance:implements>org.allurefw.report.entity.WithDescription</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithName</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithDescription</inheritance:implements>
 
-        <inheritance:implements>org.allurefw.report.entity.WithTime</inheritance:implements>
-        <inheritance:implements>org.allurefw.report.entity.WithStatus</inheritance:implements>
-        <inheritance:implements>org.allurefw.report.entity.WithLabels</inheritance:implements>
-        <inheritance:implements>org.allurefw.report.entity.WithFailure</inheritance:implements>
-        <inheritance:implements>org.allurefw.report.entity.WithLinks</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithTime</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithStatus</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithLabels</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithFailure</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithLinks</inheritance:implements>
 
-        <inheritance:implements>org.allurefw.report.entity.WithSource</inheritance:implements>
-        <inheritance:implements>org.allurefw.report.entity.WithTestCaseInfo</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithSource</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithTestCaseInfo</inheritance:implements>
     </jaxb:bindings>
 
     <jaxb:bindings node="//xsd:complexType[@name='TestRun']">
-        <inheritance:implements>org.allurefw.report.entity.WithName</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithName</inheritance:implements>
 
-        <inheritance:implements>org.allurefw.report.entity.WithTime</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithTime</inheritance:implements>
     </jaxb:bindings>
 
     <jaxb:bindings node="//xsd:complexType[@name='TestCase']">
-        <inheritance:implements>org.allurefw.report.entity.WithName</inheritance:implements>
-        <inheritance:implements>org.allurefw.report.entity.WithDescription</inheritance:implements>
-        <inheritance:implements>org.allurefw.report.entity.WithLinks</inheritance:implements>
-        <inheritance:implements>org.allurefw.report.entity.WithParametersNames</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithName</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithDescription</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithLinks</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithParametersNames</inheritance:implements>
     </jaxb:bindings>
 
     <jaxb:bindings node="//xsd:complexType[@name='Step']">
-        <inheritance:implements>org.allurefw.report.entity.WithName</inheritance:implements>
-        <inheritance:implements>org.allurefw.report.entity.WithTime</inheritance:implements>
-        <inheritance:implements>org.allurefw.report.entity.WithStatus</inheritance:implements>
-        <inheritance:implements>org.allurefw.report.entity.WithFailure</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithName</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithTime</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithStatus</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithFailure</inheritance:implements>
     </jaxb:bindings>
 
     <jaxb:bindings node="//xsd:complexType[@name='Statistic']">
-        <inheritance:implements>org.allurefw.report.entity.ExtraStatisticMethods</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.ExtraStatisticMethods</inheritance:implements>
     </jaxb:bindings>
 
     <jaxb:bindings node="//xsd:complexType[@name='GroupTime']">
-        <inheritance:implements>org.allurefw.report.entity.ExtraGroupTimeMethods</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.ExtraGroupTimeMethods</inheritance:implements>
     </jaxb:bindings>
 
     <jaxb:bindings node="//xsd:complexType[@name='ExtraElements']">
-        <jaxb:class ref="org.allurefw.report.entity.ExtraElements"/>
+        <jaxb:class ref="io.qameta.allure.entity.ExtraElements"/>
     </jaxb:bindings>
 
 </jaxb:bindings>

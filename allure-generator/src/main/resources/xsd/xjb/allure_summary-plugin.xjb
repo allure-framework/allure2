@@ -10,8 +10,8 @@
                jaxb:version="2.1">
 
     <jaxb:bindings node="//xsd:complexType[@name='SummaryData']">
-        <inheritance:implements>org.allurefw.report.entity.WithStatistic</inheritance:implements>
-        <inheritance:implements>org.allurefw.report.entity.WithGroupTime</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithStatistic</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithGroupTime</inheritance:implements>
     </jaxb:bindings>
 
 </jaxb:bindings>

@@ -1,10 +1,11 @@
 package org.allurefw.report.junit;
 
-import org.allurefw.report.AttachmentsStorage;
-import org.allurefw.report.core.DefaultAttachmentsStorage;
-import org.allurefw.report.entity.Attachment;
-import org.allurefw.report.entity.Status;
-import org.allurefw.report.entity.TestCaseResult;
+import io.qameta.allure.AttachmentsStorage;
+import io.qameta.allure.core.DefaultAttachmentsStorage;
+import io.qameta.allure.entity.Attachment;
+import io.qameta.allure.entity.Status;
+import io.qameta.allure.entity.TestCaseResult;
+import io.qameta.allure.junit.JunitResultsReader;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;

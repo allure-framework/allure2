@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            xmlns:ns="urn:defects.report.allurefw.org"
-            xmlns:data="urn:report.allurefw.org"
-            targetNamespace="urn:defects.report.allurefw.org">
+            xmlns:data="urn:allure.qameta.io"
+            xmlns:ns="urn:defects.allure.qameta.io"
+            targetNamespace="urn:defects.allure.qameta.io">
 
-    <xsd:import namespace="urn:report.allurefw.org" schemaLocation="allure_report-data.xsd"/>
+    <xsd:import namespace="urn:allure.qameta.io" schemaLocation="allure_report-data.xsd"/>
 
     <xsd:element name="defectsData" type="ns:DefectsData"/>
     <xsd:complexType name="DefectsData">
