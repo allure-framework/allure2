@@ -1,6 +1,8 @@
 description = 'Allure Web'
 
 apply plugin: 'com.moowork.node'
+apply from: "${gradleScriptDir}/bintray.gradle"
+apply plugin: 'maven'
 
 node {
     version = '6.9.1'

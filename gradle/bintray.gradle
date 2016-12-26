@@ -1,0 +1,31 @@
+apply plugin: 'com.jfrog.bintray'
+
+bintray {
+    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+
+    configurations = ['archives']
+
+    publish = true
+    pkg {
+        userOrg = 'qameta'
+        repo = 'maven'
+        name = 'allure2'
+        desc = 'Allure Report'
+        websiteUrl = 'https://github.com/allure-framework/allure2'
+        issueTrackerUrl = 'https://github.com/allure-framework/allure2'
+        vcsUrl = 'https://github.com/allure-framework/allure2.git'
+        licenses = ['Apache-2.0']
+
+        githubRepo = 'allure-framework/allure2'
+        githubReleaseNotesFile = 'README.md'
+
+        version {
+            name = project.version
+            released = new Date()
+            gpg {
+                sign = true
+            }
+        }
+    }
+}

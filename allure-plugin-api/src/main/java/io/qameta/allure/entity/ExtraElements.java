@@ -7,6 +7,7 @@ import java.util.Map;
 /**
  * @author charlie (Dmitry Baev).
  */
+@SuppressWarnings("unchecked")
 public class ExtraElements {
 
     @XmlElement
@@ -17,7 +18,6 @@ public class ExtraElements {
     }
 
     public <T> T getExtraBlock(String blockName, T defaultValue) {
-        //noinspection unchecked
         return (T) extra.computeIfAbsent(blockName, name -> defaultValue);
     }
 
@@ -26,7 +26,6 @@ public class ExtraElements {
     }
 
     public <T> T getExtraBlock(String blockName) {
-        //noinspection unchecked
         return (T) extra.get(blockName);
     }
 }

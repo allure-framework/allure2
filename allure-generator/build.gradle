@@ -1,31 +1,16 @@
 description = 'Allure Report Generator'
 
-compileJava {
-    dependsOn xjc, processResources
-    source jaxb.xjc.destinationDir
-}
-
-sourceSets {
-    main {
-        java {
-            srcDirs(jaxb.xjc.destinationDir, 'src/main/java')
-        }
-    }
-}
-
-jaxb {
-    xsdDir = 'allure-generator/src/main/resources/xsd'
-    bindingsDir = 'allure-generator/src/main/resources/xsd/xjb'
-    bindings = ['allure_history-plugin.xjb', 'allure_report-data.xjb',
-                'allure_summary-plugin.xjb', 'allure_testrun-plugin.xjb']
-}
+apply from: "${gradleScriptDir}/maven-publish.gradle"
+apply from: "${gradleScriptDir}/jaxb.gradle"
+apply from: "${gradleScriptDir}/bintray.gradle"
+apply plugin: 'maven'
 
 dependencies {
     compile project(':allure-plugin-api')
     compile('org.freemarker:freemarker:2.3.23')
     compile('com.github.baev:jaxb-utils:1.0')
     compile('org.allurefw:allure1-model:1.0')
-    compile('io.qameta.allure:model-v2:1.0-SNAPSHOT')
+    compile('io.qameta.allure:model-v2:1.0-BETA2')
 
     testCompile('junit:junit:4.12')
     testCompile('org.hamcrest:hamcrest-all:1.3')
@@ -34,4 +19,13 @@ dependencies {
     testCompile('ru.yandex.qatools.matchers:nio-matchers:1.2')
     testCompile("org.slf4j:slf4j-simple:${slf4jVersion}")
     testCompile('org.zeroturnaround:zt-zip:1.9')
+}
+
+task sourceJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allJava
+}
+
+artifacts {
+    archives sourceJar
 }
