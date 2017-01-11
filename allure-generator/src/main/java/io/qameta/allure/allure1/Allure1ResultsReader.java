@@ -177,10 +177,22 @@ public class Allure1ResultsReader implements ResultsReader {
     }
 
     private Attachment convert(ru.yandex.qatools.allure.model.Attachment attachment) {
-        return storage.findAttachmentByFileName(attachment.getSource())
-                .map(attach -> Objects.isNull(attachment.getType()) ? attach : attach.withType(attachment.getType()))
-                .map(attach -> Objects.isNull(attachment.getTitle()) ? attach : attach.withName(attachment.getTitle()))
-                .orElseGet(Attachment::new);
+        Attachment found = storage.findAttachmentByFileName(attachment.getSource())
+                .map(attach -> new Attachment()
+                        .withUid(attach.getUid())
+                        .withName(attach.getName())
+                        .withType(attach.getType())
+                        .withSource(attach.getSource())
+                        .withSize(attach.getSize()))
+                .orElseGet(() -> new Attachment().withName("unknown").withSize(0L).withType("*/*"));
+
+        if (Objects.nonNull(attachment.getType())) {
+            found.setType(attachment.getType());
+        }
+        if (Objects.nonNull(attachment.getTitle())) {
+            found.setName(attachment.getTitle());
+        }
+        return found;
     }
 
     public static Status convert(ru.yandex.qatools.allure.model.Status status) {
