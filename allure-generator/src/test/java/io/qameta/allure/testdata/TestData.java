@@ -1,8 +1,10 @@
 package io.qameta.allure.testdata;
 
 import com.google.common.reflect.ClassPath;
+import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.TestCaseResult;
 import io.qameta.allure.entity.TestGroup;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.zeroturnaround.zip.ZipUtil;
 
 import java.io.IOException;
@@ -11,6 +13,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -19,6 +22,35 @@ import java.util.stream.Collectors;
 public final class TestData {
 
     TestData() {
+    }
+
+    public static String randomContent() {
+        return RandomStringUtils.randomAlphabetic(50);
+    }
+
+    public static String randomString() {
+        return RandomStringUtils.randomAlphabetic(10);
+    }
+
+    public static String randomName() {
+        return RandomStringUtils.randomAlphabetic(7);
+    }
+
+    public static long randomLong() {
+        return new Random().nextLong();
+    }
+
+    public static String randomFileName() {
+        return randomString() + ".txt";
+    }
+
+    public static Attachment randomAttachment() {
+        return new Attachment()
+                .withName(randomName())
+                .withType("text/plain")
+                .withSize(randomLong())
+                .withUid(randomString())
+                .withSource(randomFileName());
     }
 
     public static TestCaseResult randomTestCase() {
