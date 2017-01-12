@@ -1,11 +1,10 @@
 buildscript {
     repositories {
-        mavenLocal()
         jcenter()
-        mavenCentral()
     }
 
     dependencies {
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3"
         classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
         classpath 'com.github.jacobono:gradle-jaxb-plugin:1.3.6'
         classpath 'com.moowork.gradle:gradle-node-plugin:0.13'
@@ -19,7 +18,10 @@ ext {
     linkScmUrl = 'https://github.com/qameta/allure-server'
     linkScmConnection = 'scm:git:git://github.com/qameta/allure-server.git'
     linkScmDevConnection = 'scm:git:ssh://git@github.com:qameta/allure-server.git'
+    gradleScriptDir = "${rootProject.projectDir}/gradle"
 }
+
+apply from: "${gradleScriptDir}/bintray.gradle"
 
 configure(rootProject) {
     description = "Allure Report"
@@ -29,21 +31,31 @@ configure(rootProject) {
     }
 }
 
-subprojects { project ->
-    group = 'io.qameta.allure'
+allprojects {
+    group = project.name.endsWith('plugin') ? 'io.qameta.allure.plugins' : 'io.qameta.allure'
     version = version
 
-    ext.aspectjVersion = '1.8.9'
-    ext.jaxb2BasicsVersion = '0.9.5'
-    ext.slf4jVersion = '1.7.12'
-
-    apply plugin: 'java'
-    apply plugin: 'com.github.jacobono.jaxb'
-
-    configurations.all {
-        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+    configurations {
+        allurePlugin
     }
 
+    tasks.withType(Tar){
+        compression = Compression.GZIP
+    }
+
+    repositories {
+        jcenter()
+    }
+}
+
+subprojects { project ->
+    ext {
+        aspectjVersion = '1.8.9'
+        jaxb2BasicsVersion = '0.9.5'
+        slf4jVersion = '1.7.12'
+    }
+
+    apply plugin: 'java'
     compileJava.dependsOn(processResources)
 
     compileJava {
@@ -59,32 +71,6 @@ subprojects { project ->
         options.compilerArgs += "-parameters"
     }
 
-    def generatedSources = 'build/generated-sources/xjc'
-    jaxb {
-        xjc {
-            destinationDir = generatedSources
-            taskClassname = 'org.jvnet.jaxb2_commons.xjc.XJC2Task'
-            args = ['-enableIntrospection',
-                    '-no-header',
-                    '-Xxew',
-                    '-Xxew:instantiate lazy',
-                    '-Xfluent-api',
-                    '-Xinheritance']
-        }
-    }
-
-    dependencies {
-        jaxb('org.jvnet.jaxb2_commons:jaxb2-basics-ant:1.11.1')
-        jaxb("org.jvnet.jaxb2_commons:jaxb2-basics:${jaxb2BasicsVersion}")
-        jaxb('com.github.jaxb-xew-plugin:jaxb-xew-plugin:1.5')
-        jaxb('net.java.dev.jaxb2-commons:jaxb-fluent-api:2.1.8')
-        jaxb('org.slf4j:slf4j-simple:1.7.21')
-    }
-
-    tasks.withType(Tar){
-        compression = Compression.GZIP
-    }
-
     configurations {
         allurePlugin
     }
@@ -95,11 +81,5 @@ subprojects { project ->
             configurations.allurePlugin.collect { zipTree(it) }
         }
         into "$buildDir/plugins/"
-    }
-
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
 }

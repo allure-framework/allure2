@@ -1,23 +1,9 @@
 description = 'Allure Plugin Api'
 
-compileJava {
-    dependsOn xjc, processResources
-    source jaxb.xjc.destinationDir
-}
-
-sourceSets {
-    main {
-        java {
-            srcDirs(jaxb.xjc.destinationDir, 'src/main/java')
-        }
-    }
-}
-
-jaxb {
-    xsdDir = 'allure-plugin-api/src/main/resources/xsd'
-    bindingsDir = 'allure-plugin-api/src/main/resources/xsd/xjb'
-    bindings = ['allure_report-api.xjb', 'allure_tree-data.xjb']
-}
+apply from: "${gradleScriptDir}/maven-publish.gradle"
+apply from: "${gradleScriptDir}/jaxb.gradle"
+apply from: "${gradleScriptDir}/bintray.gradle"
+apply plugin: 'maven'
 
 dependencies {
     compile('com.google.inject:guice:4.1.0')
@@ -36,4 +22,13 @@ dependencies {
     testCompile('org.mockito:mockito-all:1.10.19')
     testCompile('com.github.baev:hamcrest-optional:1.0')
     testCompile("org.slf4j:slf4j-simple:${slf4jVersion}")
+}
+
+task sourceJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allJava
+}
+
+artifacts {
+    archives sourceJar
 }

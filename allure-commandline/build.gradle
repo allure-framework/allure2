@@ -1,6 +1,7 @@
 description = 'Allure Commandline'
 
 apply plugin: 'application'
+apply from: "${gradleScriptDir}/bintray.gradle"
 
 applicationName = 'allure'
 mainClassName = 'io.qameta.allure.CommandLine'
@@ -63,4 +64,12 @@ dependencies {
     testCompile('junit:junit:4.12')
     testCompile('org.hamcrest:hamcrest-all:1.3')
     testCompile('ru.yandex.qatools.matchers:nio-matchers:1.2')
+}
+
+configurations.archives.artifacts.removeAll { it.archiveTask.is jar }
+
+bintray {
+    pkg {
+        repo = 'generic'
+    }
 }

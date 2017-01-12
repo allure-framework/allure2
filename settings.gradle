@@ -1,13 +1,13 @@
 rootProject.name = 'allure2'
 
-include 'allure-commandline'
-include 'allure-web'
-include 'allure-generator'
 include 'allure-plugin-api'
+include 'allure-generator'
+include 'allure-web'
 include 'behaviors-plugin'
 include 'custom-logo-plugin'
 include 'junit-plugin'
 include 'packages-plugin'
+include 'allure-commandline'
 
 project(':behaviors-plugin').projectDir = new File(settingsDir, 'plugins/behaviors-plugin')
 project(':custom-logo-plugin').projectDir = new File(settingsDir, 'plugins/custom-logo-plugin')
