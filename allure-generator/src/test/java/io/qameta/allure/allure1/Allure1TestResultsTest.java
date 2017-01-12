@@ -2,8 +2,11 @@ package io.qameta.allure.allure1;
 
 import io.qameta.allure.AttachmentsStorage;
 import io.qameta.allure.core.DefaultAttachmentsStorage;
+import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.LabelName;
+import io.qameta.allure.entity.StageResult;
+import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestCaseResult;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -20,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.github.npathai.hamcrestopt.OptionalMatchers.hasValue;
 import static com.github.npathai.hamcrestopt.OptionalMatchers.isPresent;
@@ -29,6 +33,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -63,12 +68,39 @@ public class Allure1TestResultsTest {
 
     @Test
     public void shouldReadAttachments() throws Exception {
-        process(
+        List<TestCaseResult> results = process(
                 "allure1/suite-with-attachments.xml", generateTestSuiteXmlName(),
                 "allure1/sample-attachment.txt", "sample-attachment.txt"
         );
 
         assertThat(storage.getAttachments().entrySet(), hasSize(1));
+        List<Attachment> attachments = results.stream()
+                .flatMap(this::extractAttachments)
+                .collect(Collectors.toList());
+        assertThat(attachments, hasSize(1));
+        Attachment a = storage.getAttachments().values().iterator().next();
+        Attachment b = attachments.iterator().next();
+        assertThat(a.getSource(), is(b.getSource()));
+    }
+
+    private Stream<Attachment> extractAttachments(TestCaseResult testCaseResult) {
+        Stream<StageResult> before = testCaseResult.getBeforeStages().stream();
+        Stream<StageResult> test = Stream.of(testCaseResult.getTestStage());
+        Stream<StageResult> after = testCaseResult.getAfterStages().stream();
+        return Stream.concat(before, Stream.concat(test, after))
+                .flatMap(this::extractAttachments);
+    }
+
+    private Stream<Attachment> extractAttachments(StageResult stageResult) {
+        Stream<Attachment> fromSteps = stageResult.getSteps().stream().flatMap(this::extractAttachments);
+        Stream<Attachment> fromAttachments = stageResult.getAttachments().stream();
+        return Stream.concat(fromSteps, fromAttachments);
+    }
+
+    private Stream<Attachment> extractAttachments(Step step) {
+        Stream<Attachment> fromSteps = step.getSteps().stream().flatMap(this::extractAttachments);
+        Stream<Attachment> fromAttachments = step.getAttachments().stream();
+        return Stream.concat(fromSteps, fromAttachments);
     }
 
     @Test

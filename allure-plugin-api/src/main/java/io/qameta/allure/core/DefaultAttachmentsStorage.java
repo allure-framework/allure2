@@ -24,22 +24,23 @@ public class DefaultAttachmentsStorage implements AttachmentsStorage {
     private final Map<Path, Attachment> attachments = new HashMap<>();
 
     @Override
-    public Attachment addAttachment(Path file) {
-        String uid = generateUid();
-        String realType = probeContentType(file);
-        String extension = Optional.of(getFileExtension(file.toString()))
-                .filter(s -> !s.isEmpty())
-                .orElseGet(() -> ReportApiUtils.getExtensionByMimeType(realType));
-        String source = uid + (extension.isEmpty() ? "" : "." + extension);
-        Long size = getFileSizeSafe(file);
-        Attachment attachment = new Attachment()
-                .withUid(uid)
-                .withName(file.getFileName().toString())
-                .withSource(source)
-                .withType(realType)
-                .withSize(size);
-        attachments.put(file, attachment);
-        return attachment;
+    public Attachment addAttachment(Path attachmentFile) {
+        return attachments.computeIfAbsent(attachmentFile, file -> {
+            String uid = generateUid();
+            String realType = probeContentType(file);
+            String extension = Optional.of(getFileExtension(file.toString()))
+                    .filter(s -> !s.isEmpty())
+                    .map(s -> "." + s)
+                    .orElseGet(() -> ReportApiUtils.getExtensionByMimeType(realType));
+            String source = uid + (extension.isEmpty() ? "" : extension);
+            Long size = getFileSizeSafe(file);
+            return new Attachment()
+                    .withUid(uid)
+                    .withName(file.getFileName().toString())
+                    .withSource(source)
+                    .withType(realType)
+                    .withSize(size);
+        });
     }
 
     @Override
