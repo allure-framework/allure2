@@ -21,7 +21,6 @@ import io.qameta.allure.severity.SeverityPlugin;
 import io.qameta.allure.summary.SummaryPlugin;
 import io.qameta.allure.testrun.TestRunPlugin;
 import io.qameta.allure.timeline.TimelinePlugin;
-import io.qameta.allure.writer.WriterModule;
 import io.qameta.allure.xunit.XunitPlugin;
 
 import java.util.List;
@@ -44,7 +43,6 @@ public class ParentModule extends AbstractModule {
     protected void configure() {
 //        Core
         install(new JacksonMapperModule());
-        install(new WriterModule());
 
 //        Aggregators
         MapBinder.newMapBinder(binder(), String.class, TestRunAggregator.class);

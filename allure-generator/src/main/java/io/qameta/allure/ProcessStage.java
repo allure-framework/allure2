@@ -3,16 +3,20 @@ package io.qameta.allure;
 import io.qameta.allure.core.ProcessResultStage;
 import io.qameta.allure.core.ProcessTestCaseStage;
 import io.qameta.allure.core.ProcessTestRunStage;
+import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.TestCase;
 import io.qameta.allure.entity.TestCaseResult;
 import io.qameta.allure.entity.TestRun;
-import io.qameta.allure.writer.Writer;
+import io.qameta.allure.writer.ReportWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,9 +34,6 @@ public class ProcessStage {
 
     @Inject
     protected AttachmentsStorage storage;
-
-    @Inject
-    protected Writer writer;
 
     @Inject
     @Named("report-data-folder")
@@ -59,27 +60,28 @@ public class ProcessStage {
 
     protected HashMap<String, TestCase> testCases = new HashMap<>();
 
-    public Statistic run(Path output, Path... sources) {
+    public Statistic run(ReportWriter writer, Path... sources) {
         LOGGER.debug("Found {} results readers", testCaseReaders.size());
-        Path dataDirectory = output.resolve("data");
-        Path testCasesDirectory = dataDirectory.resolve("test-cases");
-        Path attachmentsDirectory = dataDirectory.resolve("attachments");
-
         Map<String, Object> data = new HashMap<>();
-        Statistic statistic = processData(testCasesDirectory, data, sources);
-        writeData(dataDirectory, data);
-        writeAttachments(attachmentsDirectory);
-
+        Statistic statistic = processData(writer, data, sources);
+        writeData(writer, data);
+        writeAttachments(writer);
         return statistic;
     }
 
-    private void writeAttachments(Path attachmentsDirectory) {
-        storage.getAttachments().forEach((path, attachment) ->
-                writer.write(attachmentsDirectory, attachment.getSource(), path)
-        );
+    private void writeAttachments(ReportWriter writer) {
+        storage.getAttachments().forEach((path, attachment) -> writeAttachment(writer, path, attachment));
     }
 
-    private Statistic processData(Path testCasesDir, Map<String, Object> data, Path[] sources) {
+    private void writeAttachment(ReportWriter writer, Path attachmentFile, Attachment attachment) {
+        try (InputStream is = Files.newInputStream(attachmentFile)) {
+            writer.writeAttachment(is, attachment);
+        } catch (IOException e) {
+            LOGGER.error("Could not read attachment file {} {} {}", attachment.getName(), attachmentFile, e);
+        }
+    }
+
+    private Statistic processData(ReportWriter writer, Map<String, Object> data, Path[] sources) {
         Statistic statistic = new Statistic();
         for (Path source : sources) {
             TestRun testRun = testRunStage.read().apply(source);
@@ -98,20 +100,20 @@ public class ProcessStage {
                 testCase.updateLinks(result.getLinks());
                 testCase.updateParametersNames(result.getParameters());
                 resultStage.process(testRun, testCase, result).accept(data);
-                writer.write(testCasesDir, result.getSource(), result);
+                writer.writeTestCase(result);
             }
         }
         return statistic;
     }
 
-    private void writeData(Path dataDir, Map<String, Object> data) {
+    private void writeData(ReportWriter writer, Map<String, Object> data) {
         Map<String, Object> widgets = new HashMap<>();
         data.forEach((uid, object) -> {
             Set<String> fileNames = filesNamesMap.getOrDefault(uid, Collections.emptySet());
             fileNames.forEach(fileName -> {
                 Finalizer finalizer = finalizers.getOrDefault(fileName, Finalizer.identity());
                 //noinspection unchecked
-                writer.write(dataDir, fileName, finalizer.convert(object));
+                writer.writeJsonData(fileName, finalizer.convert(object));
             });
 
             Set<String> widgetNames = widgetsNamesMap.getOrDefault(uid, Collections.emptySet());
@@ -121,7 +123,7 @@ public class ProcessStage {
                 widgets.put(name, finalizer.convert(object));
             });
         });
-        writer.write(dataDir, "widgets.json", widgets);
+        writer.writeJsonData("widgets.json", widgets);
     }
 
     private TestCase createTestCase(TestCaseResult result) {

@@ -1,5 +1,6 @@
 package io.qameta.allure;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
@@ -10,6 +11,8 @@ import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.plugins.DefaultPluginLoader;
 import io.qameta.allure.plugins.EmptyPluginsLoader;
 import io.qameta.allure.utils.CopyVisitor;
+import io.qameta.allure.writer.FileSystemReportWriter;
+import io.qameta.allure.writer.ReportWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,7 +72,9 @@ public class Main {
         );
         Injector injector = createInjector(plugins);
         ProcessStage stage = injector.getInstance(ProcessStage.class);
-        Statistic run = stage.run(output, sources);
+        ReportWriter writer = new FileSystemReportWriter(injector.getInstance(ObjectMapper.class), output);
+
+        Statistic run = stage.run(writer, sources);
         LOGGER.debug("## Summary");
         LOGGER.debug("Found {} test cases ({} failed, {} broken)", run.getTotal(), run.getFailed(), run.getBroken());
         LOGGER.debug("Success percentage: {}", getSuccessPercentage(run));

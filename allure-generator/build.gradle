@@ -19,6 +19,7 @@ dependencies {
     testCompile('ru.yandex.qatools.matchers:nio-matchers:1.2')
     testCompile("org.slf4j:slf4j-simple:${slf4jVersion}")
     testCompile('org.zeroturnaround:zt-zip:1.9')
+    testCompile('org.apache.commons:commons-lang3:3.4')
 }
 
 task sourceJar(type: Jar, dependsOn: classes) {
