@@ -9,6 +9,7 @@ import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.Failure;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.LabelName;
+import io.qameta.allure.entity.Link;
 import io.qameta.allure.entity.Parameter;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
@@ -39,13 +40,13 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static io.qameta.allure.entity.LabelName.ISSUE;
+import static io.qameta.allure.entity.LabelName.TEST_ID;
 import static org.allurefw.allure1.AllureConstants.ATTACHMENTS_FILE_GLOB;
 import static org.allurefw.allure1.AllureConstants.TEST_SUITE_JSON_FILE_GLOB;
 import static org.allurefw.allure1.AllureConstants.TEST_SUITE_XML_FILE_GLOB;
 import static io.qameta.allure.ReportApiUtils.generateUid;
 import static io.qameta.allure.ReportApiUtils.listFiles;
-import static io.qameta.allure.allure1.Allure1ModelConvertUtils.convertList;
-import static io.qameta.allure.allure1.Allure1ModelConvertUtils.convertStatus;
 import static io.qameta.allure.entity.Status.BROKEN;
 import static io.qameta.allure.entity.Status.CANCELED;
 import static io.qameta.allure.entity.Status.FAILED;
@@ -104,8 +105,8 @@ public class Allure1ResultsReader implements ResultsReader {
 
         if (!source.getSteps().isEmpty() || !source.getAttachments().isEmpty()) {
             StageResult testStage = new StageResult();
-            testStage.setSteps(convertList(source.getSteps(), this::convert));
-            testStage.setAttachments(convertList(source.getAttachments(), this::convert));
+            testStage.setSteps(convert(source.getSteps(), this::convert));
+            testStage.setAttachments(convert(source.getAttachments(), this::convert));
             testStage.setFailure(convert(source.getFailure()));
             dest.setTestStage(testStage);
         }
@@ -114,7 +115,12 @@ public class Allure1ResultsReader implements ResultsReader {
         set.addAll(convert(testSuite.getLabels(), this::convert));
         set.addAll(convert(source.getLabels(), this::convert));
         dest.setLabels(set.stream().collect(Collectors.toList()));
-
+        dest.findOne(ISSUE).ifPresent(issue ->
+                dest.getLinks().add(getLink(ISSUE, issue, getIssueUrl(issue)))
+        );
+        dest.findOne(TEST_ID).ifPresent(testId ->
+                dest.getLinks().add(getLink(TEST_ID, testId, getTestCaseIdUrl(testId)))
+        );
         dest.addLabelIfNotExists(LabelName.SUITE, suiteName);
         dest.addLabelIfNotExists("package", testClass);
 
@@ -153,9 +159,9 @@ public class Allure1ResultsReader implements ResultsReader {
                         .withStart(s.getStart())
                         .withStop(s.getStop())
                         .withDuration(s.getStop() - s.getStart()))
-                .withStatus(convertStatus(s.getStatus()))
-                .withSteps(convertList(s.getSteps(), this::convert))
-                .withAttachments(convertList(s.getAttachments(), this::convert));
+                .withStatus(convert(s.getStatus()))
+                .withSteps(convert(s.getSteps(), this::convert))
+                .withAttachments(convert(s.getAttachments(), this::convert));
     }
 
     private Failure convert(ru.yandex.qatools.allure.model.Failure failure) {
@@ -213,6 +219,24 @@ public class Allure1ResultsReader implements ResultsReader {
 
     private boolean hasArgumentType(ru.yandex.qatools.allure.model.Parameter parameter) {
         return ParameterKind.ARGUMENT.equals(parameter.getKind());
+    }
+
+    private Link getLink(LabelName labelName, String value, String url) {
+        return new Link().withName(value).withType(labelName.value()).withUrl(url);
+    }
+
+    private String getIssueUrl(String issue) {
+        return String.format(
+                System.getProperty("allure.issues.tracker.pattern", "%s"),
+                issue
+        );
+    }
+
+    private String getTestCaseIdUrl(String testCaseId) {
+        return String.format(
+                System.getProperty("allure.tests.management.pattern", "%s"),
+                testCaseId
+        );
     }
 
     private Stream<TestSuiteResult> getStreamOfAllure1Results(Path source) {
