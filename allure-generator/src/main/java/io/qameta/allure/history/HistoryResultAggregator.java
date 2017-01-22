@@ -44,7 +44,7 @@ public class HistoryResultAggregator implements ResultAggregator<Map<String, His
             HistoryItem newItem = new HistoryItem()
                     .withStatus(result.getStatus())
                     .withStatusDetails(Objects.isNull(result.getFailure()) ? null : result.getFailure().getMessage())
-                    .withTimestamp(result.getTime().getStop())
+                    .withTime(result.getTime())
                     .withTestRunName(testRun.getName());
 
             List<HistoryItem> newItems = Stream.concat(Stream.of(newItem), data.getItems().stream())

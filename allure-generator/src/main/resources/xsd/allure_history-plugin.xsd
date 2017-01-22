@@ -29,7 +29,7 @@
             <xsd:element name="status" type="data:Status"/>
             <xsd:element name="statusDetails" type="xsd:string"/>
             <xsd:element name="testRunName" type="xsd:string"/>
-            <xsd:element name="timestamp" type="xsd:long" nillable="true"/>
+            <xsd:element name="time" type="data:Time"/>
         </xsd:sequence>
     </xsd:complexType>
 </xsd:schema>
