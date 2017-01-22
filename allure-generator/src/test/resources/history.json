@@ -10,7 +10,9 @@
       "status" : "broken",
       "statusDetails" : "Exception: Невероятная проблема!",
       "testRunName" : "One failed",
-      "timestamp" : 1412949540660
+      "testStarted" : 1412949540659,
+      "testStopped" : 1412949540661,
+      "duration" : 2
     } ]
   }
 }
