@@ -28,13 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -42,6 +36,7 @@ import java.util.stream.Stream;
 
 import static io.qameta.allure.ReportApiUtils.generateUid;
 import static io.qameta.allure.ReportApiUtils.listFiles;
+import static java.lang.String.format;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -75,7 +70,12 @@ public class Allure2ResultsReader implements ResultsReader {
                     TestCaseResult dest = new TestCaseResult();
                     dest.setUid(generateUid());
 
-                    dest.setId(result.getId());
+                    String id = Optional.ofNullable(result.getId()).orElseGet(() -> {
+                        String random = UUID.randomUUID().toString();
+                        LOGGER.warn("Test case id is missing in report, random id %s is generated", random);
+                        return random;
+                    });
+                    dest.setId(id);
                     dest.setFullName(result.getFullName());
                     dest.setName(result.getName());
                     dest.setTime(result.getStart(), result.getStop());

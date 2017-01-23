@@ -35,22 +35,24 @@ public class HistoryResultAggregator implements ResultAggregator<Map<String, His
     @Override
     public Consumer<Map<String, HistoryData>> aggregate(TestRun testRun, TestCase testCase, TestCaseResult result) {
         return (history) -> {
-            HistoryData data = history.computeIfAbsent(
-                    result.getId(),
-                    id -> new HistoryData().withId(id).withName(result.getName())
-            );
-            data.updateStatistic(result);
+            if(Objects.nonNull(result.getId())){
+                HistoryData data = history.computeIfAbsent(
+                        result.getId(),
+                        id -> new HistoryData().withId(id).withName(result.getName())
+                );
+                data.updateStatistic(result);
 
-            HistoryItem newItem = new HistoryItem()
-                    .withStatus(result.getStatus())
-                    .withStatusDetails(Objects.isNull(result.getFailure()) ? null : result.getFailure().getMessage())
-                    .withTime(result.getTime())
-                    .withTestRunName(testRun.getName());
+                HistoryItem newItem = new HistoryItem()
+                        .withStatus(result.getStatus())
+                        .withStatusDetails(Objects.isNull(result.getFailure()) ? null : result.getFailure().getMessage())
+                        .withTime(result.getTime())
+                        .withTestRunName(testRun.getName());
 
-            List<HistoryItem> newItems = Stream.concat(Stream.of(newItem), data.getItems().stream())
-                    .limit(5)
-                    .collect(Collectors.toList());
-            data.setItems(newItems);
+                List<HistoryItem> newItems = Stream.concat(Stream.of(newItem), data.getItems().stream())
+                        .limit(5)
+                        .collect(Collectors.toList());
+                data.setItems(newItems);
+            }
         };
     }
 }
