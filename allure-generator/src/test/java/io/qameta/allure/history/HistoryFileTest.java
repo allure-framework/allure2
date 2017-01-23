@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import static io.qameta.allure.history.HistoryReader.HISTORY_TYPE;
 import static io.qameta.allure.testdata.TestData.unpackDummyResources;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -31,7 +32,7 @@ public class HistoryFileTest {
     private final ObjectMapper mapper = AllureUtils.createMapper();
 
     @Test
-    public void generateHistoryForTestCaseWithoutId() throws Exception {
+    public void skipHistoryForTestCaseWithoutId() throws Exception {
         String testName = "noIdTest";
 
         Path plugins = folder.newFolder().toPath();
@@ -47,10 +48,11 @@ public class HistoryFileTest {
 
         try (InputStream is = Files.newInputStream(data.resolve("history.json"))){
             Map<String, HistoryData> history = mapper.readValue(is, HISTORY_TYPE);
+            assertThat(history.entrySet(), hasSize(1));
             Optional<Map.Entry<String, HistoryData>> historyEntry = history.entrySet().stream()
                     .filter(entry -> entry.getValue().getName().equals(testName)).findFirst();
-            assertThat("Corresponding entry for test case without id is not found in history file",
-                    historyEntry.isPresent(), equalTo(true));
+            assertThat("Corresponding entry for test case without id should not exist in history file",
+                    historyEntry.isPresent(), equalTo(false));
         } catch (IOException e) {
             fail("Cannot read history.json file");
         }

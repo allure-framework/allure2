@@ -34,9 +34,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -77,12 +75,7 @@ public class Allure2ResultsReader implements ResultsReader {
                     TestCaseResult dest = new TestCaseResult();
                     dest.setUid(generateUid());
 
-                    String id = Optional.ofNullable(result.getId()).orElseGet(() -> {
-                        String random = UUID.randomUUID().toString();
-                        LOGGER.warn("Test case id is missing in report, random id %s is generated", random);
-                        return random;
-                    });
-                    dest.setId(id);
+                    dest.setId(result.getId());
                     dest.setFullName(result.getFullName());
                     dest.setName(result.getName());
                     dest.setTime(result.getStart(), result.getStop());
