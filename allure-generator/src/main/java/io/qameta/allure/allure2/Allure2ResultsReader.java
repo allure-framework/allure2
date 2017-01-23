@@ -3,11 +3,6 @@ package io.qameta.allure.allure2;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.AllureConstants;
 import io.qameta.allure.AllureUtils;
-import io.qameta.allure.model.StatusDetails;
-import io.qameta.allure.model.TestAfterResult;
-import io.qameta.allure.model.TestBeforeResult;
-import io.qameta.allure.model.TestGroupResult;
-import io.qameta.allure.model.TestStepResult;
 import io.qameta.allure.AttachmentsStorage;
 import io.qameta.allure.ResultsReader;
 import io.qameta.allure.entity.Attachment;
@@ -20,6 +15,11 @@ import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestCaseResult;
 import io.qameta.allure.entity.Time;
+import io.qameta.allure.model.StatusDetails;
+import io.qameta.allure.model.TestAfterResult;
+import io.qameta.allure.model.TestBeforeResult;
+import io.qameta.allure.model.TestGroupResult;
+import io.qameta.allure.model.TestStepResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +28,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -36,7 +44,6 @@ import java.util.stream.Stream;
 
 import static io.qameta.allure.ReportApiUtils.generateUid;
 import static io.qameta.allure.ReportApiUtils.listFiles;
-import static java.lang.String.format;
 
 /**
  * @author charlie (Dmitry Baev).

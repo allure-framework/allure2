@@ -18,24 +18,5 @@
         }
       }
     ]
-  },
-  "com.example.test.MySuperTest#method": {
-    "name": "test_raise_cyrilling (невероятный тест кодировки!)",
-    "statistic": {
-      "failed": 1,
-      "total": 1
-    },
-    "items": [
-      {
-        "status": "failed",
-        "statusDetails": "oopsie",
-        "testRunName": "One failed",
-        "time": {
-          "start": 1412949540659,
-          "stop": 1412949540661,
-          "duration": 2
-        }
-      }
-    ]
   }
 }
