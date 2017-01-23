@@ -35,6 +35,9 @@ public class HistoryResultAggregator implements ResultAggregator<Map<String, His
     @Override
     public Consumer<Map<String, HistoryData>> aggregate(TestRun testRun, TestCase testCase, TestCaseResult result) {
         return (history) -> {
+            if (Objects.isNull(result.getId())) {
+                return;
+            }
             HistoryData data = history.computeIfAbsent(
                     result.getId(),
                     id -> new HistoryData().withId(id).withName(result.getName())

@@ -22,7 +22,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -91,12 +93,14 @@ public class ProcessStage {
             LOGGER.debug("Found {} results for source {}", testCaseResults.size(), source.getFileName());
             for (TestCaseResult result : testCaseResults) {
                 statistic.update(result);
-                if (!testCases.containsKey(result.getId())) {
+                String testCaseId = Objects.isNull(result.getId()) ? UUID.randomUUID().toString() : result.getId();
+                if (!testCases.containsKey(testCaseId)) {
                     TestCase testCase = createTestCase(result);
-                    testCases.put(result.getId(), testCase);
+                    testCase.setId(testCaseId);
+                    testCases.put(testCaseId, testCase);
                     testCaseStage.process(testRun, testCase).accept(data);
                 }
-                TestCase testCase = testCases.get(result.getId());
+                TestCase testCase = testCases.get(testCaseId);
                 testCase.updateLinks(result.getLinks());
                 testCase.updateParametersNames(result.getParameters());
                 resultStage.process(testRun, testCase, result).accept(data);
