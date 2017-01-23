@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -90,6 +91,9 @@ public class ProcessStage {
             List<TestCaseResult> testCaseResults = readTestCases(source);
             LOGGER.debug("Found {} results for source {}", testCaseResults.size(), source.getFileName());
             for (TestCaseResult result : testCaseResults) {
+                if (Objects.isNull(result.getId())) {
+                    continue;
+                }
                 statistic.update(result);
                 if (!testCases.containsKey(result.getId())) {
                     TestCase testCase = createTestCase(result);
