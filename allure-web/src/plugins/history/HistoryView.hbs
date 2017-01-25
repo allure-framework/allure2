@@ -7,6 +7,9 @@
         {{/if}}
     </div>
     {{#each history.items}}
-        <div class="history-row"><span class="label label_status_{{status}}">{{status}}</span> {{date timestamp}} at {{time timestamp}}</div>
+        <div class="history-row">
+            <span class="label label_status_{{status}}">{{status}}</span>
+            {{date time.start}} at {{time time.start}}
+        </div>
     {{/each}}
 {{/if}}
