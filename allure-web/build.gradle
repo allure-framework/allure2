@@ -29,7 +29,7 @@ task cleanUpDemoReport(type: Delete) {
 
 task generateDemoReport(type: JavaExec) {
     dependsOn cleanUpDemoReport
-    main = 'org.allurefw.report.DummyReportGenerator'
+    main = 'io.qameta.allure.DummyReportGenerator'
     classpath = sourceSets.main.compileClasspath
     systemProperties += ['allure.pluginsDirectory': file('build/plugins')]
     args = [file("test-data/${resultsDirectory}"), file('build/demo-report')]

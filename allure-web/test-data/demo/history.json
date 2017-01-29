@@ -9,7 +9,11 @@
     "items" : [ {
       "status" : "passed",
       "testRunName" : "Demo Allure tests",
-      "timestamp" : 1412949549730
+      "time" : {
+        "start": 1412949549730,
+        "stop": 1412949549745,
+        "duration": 15
+      }
     } ]
   },
   "my.company.AlwaysPassingTest#testOne" : {
@@ -22,7 +26,11 @@
     "items" : [ {
       "status" : "passed",
       "testRunName" : "Demo Allure tests",
-      "timestamp" : 1412949539715
+      "time" : {
+        "start": 1412949539715,
+        "stop": 1412949539718,
+        "duration": 3
+      }
     } ]
   },
   "my.company.SimpleTest#failedSimpleTest" : {
@@ -36,7 +44,11 @@
       "status" : "failed",
       "statusDetails" : "AssertionError: 5 is not 2 + 2\nExpected: is <4>\n     but: was <5>",
       "testRunName" : "Demo Allure tests",
-      "timestamp" : 1412949558830
+      "time" : {
+        "start": 1412949558830,
+        "stop": 1412949558866,
+        "duration": 36
+      }
     } ]
   },
   "my.company.NonAsciiTest#test_pass" : {
@@ -49,7 +61,11 @@
     "items" : [ {
       "status" : "passed",
       "testRunName" : "Demo Allure tests",
-      "timestamp" : 1412949540565
+      "time" : {
+        "start": 1412949558830,
+        "stop": 1412949558866,
+        "duration": 36
+      }
     } ]
   },
   "Search tests#Empty text search" : {
@@ -62,7 +78,11 @@
     "items" : [ {
       "status" : "passed",
       "testRunName" : "Demo Allure tests",
-      "timestamp" : 1412949558344
+      "time" : {
+        "start": 1412949558830,
+        "stop": 1412949558866,
+        "duration": 36
+      }
     } ]
   },
   "my.company.AlwaysPassingTest#testFour" : {
@@ -75,7 +95,11 @@
     "items" : [ {
       "status" : "passed",
       "testRunName" : "Demo Allure tests",
-      "timestamp" : 1412949539730
+      "time" : {
+        "start": 1412949558830,
+        "stop": 1412949558866,
+        "duration": 36
+      }
     } ]
   },
   "my.company.NonAsciiTest#test_raise_cyrilling (невероятный тест кодировки!)" : {
@@ -89,7 +113,11 @@
       "status" : "broken",
       "statusDetails" : "Exception: Невероятная проблема!",
       "testRunName" : "Demo Allure tests",
-      "timestamp" : 1412949540660
+      "time" : {
+        "start": 1412949558830,
+        "stop": 1412949558866,
+        "duration": 36
+      }
     } ]
   },
   "my.company.SimpleTest#Test what do nothing and always passed right, but have a very long title, over 100 symbols, seriously" : {
@@ -102,21 +130,29 @@
     "items" : [ {
       "status" : "passed",
       "testRunName" : "Demo Allure tests",
-      "timestamp" : 1412949558829
+      "time" : {
+        "start": 1412949558830,
+        "stop": 1412949558866,
+        "duration": 36
+      }
     } ]
   },
   "my.company.ManyInfoTest#Test with long assertion text" : {
     "id" : "my.company.ManyInfoTest#Test with long assertion text",
     "name" : "Test with long assertion text",
     "statistic" : {
-      "failed" : 1,
+      "passed" : 1,
       "total" : 1
     },
     "items" : [ {
-      "status" : "failed",
+      "status" : "passed",
       "statusDetails" : "AssertionError: \nExpected: \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"ok value\\\"\\n}\"\n     but: was \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"bad value\\\"\\n}\"",
       "testRunName" : "Demo Allure tests",
-      "timestamp" : 1412949540461
+      "time" : {
+        "start": 1412949558830,
+        "stop": 1412949558866,
+        "duration": 36
+      }
     } ]
   },
   "Search tests#Wildcard search test" : {
@@ -129,7 +165,11 @@
     "items" : [ {
       "status" : "passed",
       "testRunName" : "Demo Allure tests",
-      "timestamp" : 1412949558737
+      "time" : {
+        "start": 1412949558830,
+        "stop": 1412949558866,
+        "duration": 36
+      }
     } ]
   },
   "my.company.SimpleTest#skippedSimpleTest" : {
@@ -143,7 +183,11 @@
       "status" : "pending",
       "statusDetails" : "Test ignored (without reason)!",
       "testRunName" : "Demo Allure tests",
-      "timestamp" : 1412949558832
+      "time" : {
+        "start": 1412949558830,
+        "stop": 1412949558866,
+        "duration": 36
+      }
     } ]
   },
   "my.company.BeforeClassFailTest#BeforeClassFailTest" : {
@@ -157,7 +201,11 @@
       "status" : "broken",
       "statusDetails" : "RuntimeException: bye-bye",
       "testRunName" : "Demo Allure tests",
-      "timestamp" : 1412949539779
+      "time" : {
+        "start": 1412949558830,
+        "stop": 1412949558866,
+        "duration": 36
+      }
     } ]
   },
   "my.company.AlwaysPassingTest#testTwo" : {
@@ -170,7 +218,11 @@
     "items" : [ {
       "status" : "passed",
       "testRunName" : "Demo Allure tests",
-      "timestamp" : 1412949539372
+      "time" : {
+        "start": 1412949558830,
+        "stop": 1412949558866,
+        "duration": 36
+      }
     } ]
   },
   "my.company.AlwaysPassingTest#testThree" : {
@@ -183,7 +235,11 @@
     "items" : [ {
       "status" : "passed",
       "testRunName" : "Demo Allure tests",
-      "timestamp" : 1412949539746
+      "time" : {
+        "start": 1412949558830,
+        "stop": 1412949558866,
+        "duration": 36
+      }
     } ]
   },
   "Search tests#Page loading test" : {
@@ -197,7 +253,11 @@
       "status" : "failed",
       "statusDetails" : "AssertionError: Text on current page should be correct\nExpected: element text is \"Yandex\"\n     but: <[[PhantomJSDriver: phantomjs on MAC (9e679b20-5085-11e4-ad6d-87edf8da84a7)] -> css selector: title]> text is \"\"",
       "testRunName" : "Demo Allure tests",
-      "timestamp" : 1412949556298
+      "time" : {
+        "start": 1412949558830,
+        "stop": 1412949558866,
+        "duration": 36
+      }
     } ]
   },
   "my.company.ManyInfoTest#lotOfStepsTest" : {
@@ -211,7 +271,11 @@
       "status" : "broken",
       "statusDetails" : "FileNotFoundException: No file found.",
       "testRunName" : "Demo Allure tests",
-      "timestamp" : 1412949539862
+      "time" : {
+        "start": 1412949558830,
+        "stop": 1412949558866,
+        "duration": 36
+      }
     } ]
   },
   "my.company.ManyInfoTest#<script>3443</script>" : {
@@ -225,7 +289,11 @@
       "status" : "failed",
       "statusDetails" : "AlarmAssertionErrorAssertionErrorAssertionErrorAssertionErrorAssertionError: This test should be failed",
       "testRunName" : "Demo Allure tests",
-      "timestamp" : 1412949540559
+      "time" : {
+        "start": 1412949558830,
+        "stop": 1412949558866,
+        "duration": 36
+      }
     } ]
   },
   "my.company.SimpleTest#brokenSimpleTest" : {
@@ -239,7 +307,11 @@
       "status" : "broken",
       "statusDetails" : "ArrayIndexOutOfBoundsException: 1",
       "testRunName" : "Demo Allure tests",
-      "timestamp" : 1412949558832
+      "time" : {
+        "start": 1412949558830,
+        "stop": 1412949558866,
+        "duration": 36
+      }
     } ]
   },
   "Search tests#Usual search test" : {
@@ -252,7 +324,11 @@
     "items" : [ {
       "status" : "passed",
       "testRunName" : "Demo Allure tests",
-      "timestamp" : 1412949558826
+      "time" : {
+        "start": 1412949558830,
+        "stop": 1412949558866,
+        "duration": 36
+      }
     } ]
   },
   "my.company.AllureMigrationTest#Test what do nothing and always passed right, but have a very long title, over 100 symbols, seriously" : {
@@ -265,7 +341,11 @@
     "items" : [ {
       "status" : "canceled",
       "testRunName" : "Demo Allure tests",
-      "timestamp" : 1412949993580
+      "time" : {
+        "start": 1412949558830,
+        "stop": 1412949558866,
+        "duration": 36
+      }
     } ]
   }
 }
