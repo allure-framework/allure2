@@ -52,6 +52,7 @@ dependencies {
     allurePlugin project(path: ':behaviors-plugin', configuration: 'allurePlugin')
     allurePlugin project(path: ':junit-plugin', configuration: 'allurePlugin')
     allurePlugin project(path: ':packages-plugin', configuration: 'allurePlugin')
+    allurePlugin project(path: ':cucumber-json-plugin', configuration: 'allurePlugin')
 
     compile project(':allure-generator')
     compile('com.github.rvesse:airline:2.2.0')

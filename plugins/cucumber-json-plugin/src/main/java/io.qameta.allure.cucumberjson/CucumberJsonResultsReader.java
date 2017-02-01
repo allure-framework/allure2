@@ -51,8 +51,8 @@ public class CucumberJsonResultsReader implements ResultsReader {
         String cucumberProjectName = "unused parameter";
         Configuration configuration = new Configuration(source.toFile(), cucumberProjectName);
         if (!configuration.getEmbeddingDirectory().mkdirs()) {
-            LOGGER.warn("Cannot prepare directory for parser to store embedded files at %s",
-                    configuration.getEmbeddingDirectory().toString());
+            LOGGER.warn("Cannot prepare directory for parser to store embedded files at {}",
+                    configuration.getEmbeddingDirectory());
         }
 
         listFiles(configuration.getEmbeddingDirectory().toPath(), "embedding*")
@@ -60,16 +60,19 @@ public class CucumberJsonResultsReader implements ResultsReader {
 
         ReportParser parser = new ReportParser(configuration);
 
-        return parse(parser, source)
+        List<TestCaseResult> testCaseResults = parse(parser, source)
                 .flatMap(feature -> Stream.of(feature.getElements())
                         .map(this::convert))
                 .collect(Collectors.toList());
+        LOGGER.info("Found {} test cases", testCaseResults.size());
+        return testCaseResults;
     }
 
     private TestCaseResult convert(Element element) {
         TestCaseResult testCaseResult = new TestCaseResult();
         String testName = Optional.ofNullable(element.getName()).orElse("Unnamed scenario");
         String featureName = Optional.ofNullable(element.getFeature().getName()).orElse("Unnamed feature");
+        LOGGER.info("Starting to process test case result {} for feature {}", testName, featureName);
         testCaseResult.setId(String.format("%s#%s", featureName, testName));
         testCaseResult.setUid(generateUid());
         testCaseResult.setName(element.getName());
@@ -90,7 +93,8 @@ public class CucumberJsonResultsReader implements ResultsReader {
         if (Objects.nonNull(element.getAfter())) {
             testCaseResult.setAfterStages(convertHooks(element.getAfter()));
         }
-
+        LOGGER.info("Test case: {} ", testCaseResult);
+        LOGGER.info("Processed test case result {} for feature {}", testName, featureName);
         return testCaseResult;
     }
 
@@ -191,7 +195,7 @@ public class CucumberJsonResultsReader implements ResultsReader {
                     .map(Path::toString)
                     .collect(Collectors.toList())).stream();
         } catch (Exception e) {
-            LOGGER.debug("Could not parse result {}: {}", source, e);
+            LOGGER.error("Could not parse result {}: {}", source, e);
             return Stream.empty();
         }
     }
