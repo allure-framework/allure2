@@ -48,7 +48,7 @@ App.on('start', () => {
     });
 
     router.on('route:notFound', showView(notFound));
-    router.on('route:testcasePage', showView((testcaseUid) => new TestcaseLayout({testcaseUid})));
+    router.on('route:testcasePage', showView((...routeParams) => new TestcaseLayout({routeParams})));
 });
 
 export default App;

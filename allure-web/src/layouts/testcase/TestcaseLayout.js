@@ -1,18 +1,21 @@
-import AppLayout from '../application/AppLayout';
-import TestcaseModel from '../../data/testcase/TestcaseModel';
-import TestcaseView from '../../components/testcase/TestcaseView';
+import PaneLayout from '../pane/PaneLayout';
+import router from '../../router';
 
-export default class ErrorLayout extends AppLayout {
-    initialize({testcaseUid}) {
-        super.initialize();
-        this.model = new TestcaseModel({uid: testcaseUid});
-    }
-
-    getContentView() {
-        return new TestcaseView({model: this.model});
-    }
-
+export default class ErrorLayout extends PaneLayout {
     loadData() {
-        return this.model.fetch();
+        return Promise.resolve();
+    }
+
+    onStateChange() {
+        const changed = Object.assign({}, this.state.changed);
+        const paneView = this.getChildView('content');
+        paneView.expanded = this.state.get('expanded');
+        this.testcase.updatePanes('testcase', changed);
+        paneView.updatePanesPositions();
+    }
+
+    onRouteUpdate(testcase, attachment) {
+        const expanded = router.getUrlParams().expanded === 'true';
+        this.state.set({testcase, attachment, expanded});
     }
 }
