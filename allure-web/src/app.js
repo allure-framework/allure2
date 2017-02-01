@@ -6,6 +6,7 @@ import {history} from 'backbone';
 import router from './router';
 import * as behaviors from './behaviors';
 import ErrorLayout from './layouts/error/ErrorLayout';
+import TestcaseLayout from './layouts/testcase/TestcaseLayout';
 import i18next, { initTranslations } from './util/translation';
 
 Behaviors.behaviorsLookup = behaviors;
@@ -47,6 +48,7 @@ App.on('start', () => {
     });
 
     router.on('route:notFound', showView(notFound));
+    router.on('route:testcasePage', showView((testcaseUid) => new TestcaseLayout({testcaseUid})));
 });
 
 export default App;
