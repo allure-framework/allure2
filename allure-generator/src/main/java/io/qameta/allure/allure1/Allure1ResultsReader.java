@@ -99,8 +99,8 @@ public class Allure1ResultsReader implements ResultsReader {
         dest.setStatus(convert(source.getStatus()));
         dest.setTime(source.getStart(), source.getStop());
         dest.setParameters(convert(source.getParameters(), this::hasArgumentType, this::convert));
-        dest.setDescription(getDescription(source));
-        dest.setDescriptionHtml(getDescriptionHtml(source));
+        dest.setDescription(getDescription(testSuite.getDescription(), source.getDescription()));
+        dest.setDescriptionHtml(getDescriptionHtml(testSuite.getDescription(), source.getDescription()));
         dest.setFailure(convert(source.getFailure()));
 
         if (!source.getSteps().isEmpty() || !source.getAttachments().isEmpty()) {
@@ -127,18 +127,24 @@ public class Allure1ResultsReader implements ResultsReader {
         return dest;
     }
 
-    private String getDescription(ru.yandex.qatools.allure.model.TestCaseResult source) {
-        return Optional.ofNullable(source.getDescription())
-                .filter(description -> !DescriptionType.HTML.equals(description.getType()))
+    private String getDescription(Description... descriptions) {
+        return Stream.of(descriptions)
+                .filter(Objects::nonNull)
+                .filter(isHtmlDescription().negate())
                 .map(Description::getValue)
-                .orElse(null);
+                .collect(Collectors.joining("\n\n"));
     }
 
-    private String getDescriptionHtml(ru.yandex.qatools.allure.model.TestCaseResult source) {
-        return Optional.ofNullable(source.getDescription())
-                .filter(description -> DescriptionType.HTML.equals(description.getType()))
+    private String getDescriptionHtml(Description... descriptions) {
+        return Stream.of(descriptions)
+                .filter(Objects::nonNull)
+                .filter(isHtmlDescription())
                 .map(Description::getValue)
-                .orElse(null);
+                .collect(Collectors.joining("</br>"));
+    }
+
+    private Predicate<Description> isHtmlDescription() {
+        return description -> DescriptionType.HTML.equals(description.getType());
     }
 
     private <T, R> List<R> convert(Collection<T> source, Function<T, R> converter) {
