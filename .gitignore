@@ -19,6 +19,7 @@ npm-debug.log
 
 #Other
 .repo
+cucumber-html-reports
 
 #Mac OS stuff
 .DS_Store
