@@ -1,7 +1,8 @@
 import PaneLayout from '../pane/PaneLayout';
+import BackPanelView from '../../components/back-panel/BackPanelView';
 import router from '../../router';
 
-export default class ErrorLayout extends PaneLayout {
+export default class TestcaseLayout extends PaneLayout {
     loadData() {
         return Promise.resolve();
     }
@@ -9,7 +10,12 @@ export default class ErrorLayout extends PaneLayout {
     onStateChange() {
         const changed = Object.assign({}, this.state.changed);
         const paneView = this.getChildView('content');
-        paneView.expanded = this.state.get('expanded');
+        if(router.previousUrl && !paneView.getRegion('back')) {
+            paneView.addPane('back', new BackPanelView({
+                url: router.previousUrl
+            }));
+        }
+        paneView.expanded = true;
         this.testcase.updatePanes('testcase', changed);
         paneView.updatePanesPositions();
     }

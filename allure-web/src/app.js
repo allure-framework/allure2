@@ -16,7 +16,7 @@ function rootPath(path) {
 }
 
 function noTabChange() {
-    return rootPath(router.getCurrentUrl()) === rootPath(router.lastUrl);
+    return rootPath(router.getCurrentUrl()) === rootPath(router.currentUrl);
 }
 
 export function showView(factory) {
