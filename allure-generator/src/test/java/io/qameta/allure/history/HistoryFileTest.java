@@ -35,8 +35,7 @@ public class HistoryFileTest {
     public void skipHistoryForTestCaseWithoutId() throws Exception {
         String testName = "noIdTest";
 
-        Path plugins = folder.newFolder().toPath();
-        Main main = new Main(plugins, null);
+        Main main = new Main();
         Path resultsDirectory = folder.newFolder().toPath();
         Path output = folder.newFolder().toPath();
         unpackDummyResources("allure2/", resultsDirectory);
@@ -46,7 +45,7 @@ public class HistoryFileTest {
         Path data = output.resolve("data");
         assertThat(data, contains("history.json"));
 
-        try (InputStream is = Files.newInputStream(data.resolve("history.json"))){
+        try (InputStream is = Files.newInputStream(data.resolve("history.json"))) {
             Map<String, HistoryData> history = mapper.readValue(is, HISTORY_TYPE);
             assertThat(history.entrySet(), hasSize(1));
             Optional<Map.Entry<String, HistoryData>> historyEntry = history.entrySet().stream()
@@ -54,6 +53,7 @@ public class HistoryFileTest {
             assertThat("Corresponding entry for test case without id should not exist in history file",
                     historyEntry.isPresent(), equalTo(false));
         } catch (IOException e) {
+            e.printStackTrace(System.err);
             fail("Cannot read history.json file");
         }
     }
