@@ -16,6 +16,8 @@ task buildWeb(type: NpmTask) {
     inputs.file('package.json')
     inputs.file('jasmine.json')
     inputs.file('webpack.config.js')
+    inputs.file('.babelrc')
+    inputs.file('.eslintrc')
 
     outputs.dir('build/resources/main')
 
