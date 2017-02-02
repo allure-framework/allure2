@@ -71,7 +71,7 @@ public class CucumberJsonResultsReader implements ResultsReader {
         TestCaseResult testCaseResult = new TestCaseResult();
         String testName = Optional.ofNullable(element.getName()).orElse("Unnamed scenario");
         String featureName = Optional.ofNullable(element.getFeature().getName()).orElse("Unnamed feature");
-        LOGGER.info("Starting to process test case result {} for feature {}", testName, featureName);
+        LOGGER.debug("Starting to process test case result {} for feature {}", testName, featureName);
         testCaseResult.setId(String.format("%s#%s", featureName, testName));
         testCaseResult.setUid(generateUid());
         testCaseResult.setName(element.getName());
@@ -92,8 +92,7 @@ public class CucumberJsonResultsReader implements ResultsReader {
         if (Objects.nonNull(element.getAfter())) {
             testCaseResult.setAfterStages(convertHooks(element.getAfter()));
         }
-        LOGGER.info("Test case: {} ", testCaseResult);
-        LOGGER.info("Processed test case result {} for feature {}", testName, featureName);
+        LOGGER.debug("Processed test case result {} for feature {}", testName, featureName);
         return testCaseResult;
     }
 
