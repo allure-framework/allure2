@@ -21,6 +21,7 @@ import net.masterthought.cucumber.json.Step;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
@@ -49,20 +50,15 @@ public class CucumberJsonResultsReader implements ResultsReader {
 
     @Override
     public List<TestCaseResult> readResults(Path source) {
-        String cucumberProjectName = "unused parameter";
-        Configuration configuration = new Configuration(source.toFile(), cucumberProjectName);
-        if (!configuration.getEmbeddingDirectory().mkdirs()) {
-            LOGGER.warn("Cannot prepare directory for parser to store embedded files at {}",
-                    configuration.getEmbeddingDirectory());
+        Configuration configuration = new Configuration(source.toFile(), "Unknown project");
+        if (Files.exists(configuration.getEmbeddingDirectory().toPath())) {
+            listFiles(configuration.getEmbeddingDirectory().toPath(), "embedding*")
+                    .forEach(storage::addAttachment);
         }
 
         ReportParser parser = new ReportParser(configuration);
-        Stream<Feature> features = parse(parser, source);
-        listFiles(configuration.getEmbeddingDirectory().toPath(), "embedding*")
-                .forEach(storage::addAttachment);
-        return features
-                .flatMap(feature -> Stream.of(feature.getElements())
-                        .map(this::convert))
+        return parse(parser, source)
+                .flatMap(feature -> Stream.of(feature.getElements()).map(this::convert))
                 .collect(Collectors.toList());
     }
 
@@ -103,11 +99,10 @@ public class CucumberJsonResultsReader implements ResultsReader {
         if (source.getStatus().isPassed()) {
             return Status.PASSED;
         }
-        if (Stream.of(source.getSteps()).anyMatch(this::isStepFailed)) {
+        if (source.getStatus() == FAILED) {
             return Status.FAILED;
         }
-        //if none of the steps were executed, mark element as canceled
-        if (Stream.of(source.getSteps()).allMatch(step -> step.getResult().getStatus() == SKIPPED)) {
+        if (source.getStatus() == SKIPPED) {
             return Status.CANCELED;
         }
         return Status.BROKEN;
@@ -162,26 +157,22 @@ public class CucumberJsonResultsReader implements ResultsReader {
 
     private Failure getFailure(Result result) {
         return Optional.ofNullable(result.getErrorMessage())
-                .map(msg -> new Failure().withMessage(msg)).orElse(null);
+                .map(msg -> new Failure().withMessage(msg))
+                .orElse(null);
     }
 
     private Status getStepStatus(Step step) {
-        if (step.getResult().getStatus().isPassed()) {
+        Result result = step.getResult();
+        if (result.getStatus().isPassed()) {
             return Status.PASSED;
         }
-        if (isStepFailed(step)) {
+        if (result.getStatus() == FAILED) {
             return Status.FAILED;
         }
-        if (step.getResult().getStatus() == SKIPPED) {
+        if (result.getStatus() == SKIPPED) {
             return Status.CANCELED;
         }
         return Status.BROKEN;
-    }
-
-    private boolean isStepFailed(Step step) {
-        return step.getResult().getStatus() == FAILED && Optional.ofNullable(step.getResult().getErrorMessage())
-                .map(msg -> msg.startsWith("java.lang.AssertionError"))
-                .orElse(false);
     }
 
     private static Stream<Feature> parse(ReportParser parser, Path source) {
