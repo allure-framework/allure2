@@ -20,6 +20,7 @@ startScripts {
     doLast {
         unixScript.text = unixScript.text
                 .replaceAll('(?m)^APP_HOME=', 'export APP_HOME=')
+                .replaceAll('\\"\\$\\(uname\\)\\"\\s*=\\s*\\"Darwin\\"', '""')
     }
 }
 
