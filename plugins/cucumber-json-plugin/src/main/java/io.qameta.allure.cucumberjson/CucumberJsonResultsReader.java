@@ -60,19 +60,16 @@ public class CucumberJsonResultsReader implements ResultsReader {
         Stream<Feature> features = parse(parser, source);
         listFiles(configuration.getEmbeddingDirectory().toPath(), "embedding*")
                 .forEach(storage::addAttachment);
-        List<TestCaseResult> testCaseResults = features
+        return features
                 .flatMap(feature -> Stream.of(feature.getElements())
                         .map(this::convert))
                 .collect(Collectors.toList());
-        LOGGER.info("Found {} test cases", testCaseResults.size());
-        return testCaseResults;
     }
 
     private TestCaseResult convert(Element element) {
         TestCaseResult testCaseResult = new TestCaseResult();
         String testName = Optional.ofNullable(element.getName()).orElse("Unnamed scenario");
         String featureName = Optional.ofNullable(element.getFeature().getName()).orElse("Unnamed feature");
-        LOGGER.debug("Starting to process test case result {} for feature {}", testName, featureName);
         testCaseResult.setId(String.format("%s#%s", featureName, testName));
         testCaseResult.setUid(generateUid());
         testCaseResult.setName(element.getName());
@@ -93,7 +90,6 @@ public class CucumberJsonResultsReader implements ResultsReader {
         if (Objects.nonNull(element.getAfter())) {
             testCaseResult.setAfterStages(convertHooks(element.getAfter()));
         }
-        LOGGER.debug("Processed test case result {} for feature {}", testName, featureName);
         return testCaseResult;
     }
 
