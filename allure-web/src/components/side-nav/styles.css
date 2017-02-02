@@ -21,18 +21,18 @@
     text-decoration: none;
     display: block;
     font-size: 20px;
-    line-height: 40px;
+    line-height: 50px;
     font-weight: bold;
     background: url('allure_logo.svg') no-repeat left center;
-    background-size: 30px;
-    padding-left: 40px;
+    background-size: 47px;
+    padding-top: 5px;
     margin-bottom: 10px;
-    margin-left: 14px;
+    margin-left: 5px;
     transition: all 0.3s;
   }
   
   &__brand-text {
-    padding-left: $gap-size;
+    padding-left: 60px;
     transition: opacity .2s .1s;
   }
 
