@@ -6,15 +6,15 @@
   display: inline-block;
 
   &__jenkins {
-    background-image: url(./jenkins.png)
+    background-image: url(./jenkins.svg)
   }
 
   &__bamboo {
-    background-image: url(./bamboo.png)
+    background-image: url(./bamboo.svg)
   }
 
   &__teamcity {
-    background-image: url(./teamcity.png)
+    background-image: url(./teamcity.svg)
   }
 }
 
