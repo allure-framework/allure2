@@ -1,0 +1,79 @@
+[
+  {
+    "id": "simpleId",
+    "name": "Simple feature",
+    "keyword": "Feature",
+    "elements": [
+      {
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 123456789,
+              "status": "passed"
+            },
+            "name": "Simple step name",
+            "keyword": "Given ",
+            "match": {
+              "location": "simple.location()"
+            }
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "keyword": "Failing scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 15,
+              "status": "failed",
+              "error_message": "java.lang.AssertionError: Should parse failed status"
+            },
+            "name": "Another step name",
+            "keyword": "Given ",
+            "match": {
+              "location": "simple.failingLocation()"
+            }
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "keyword": "Skipped scenario",
+        "steps": [
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "name": "Skipped step name",
+            "keyword": "Given ",
+            "match": {
+              "location": "simple.skippedLocation()"
+            }
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "keyword": "Broken scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 10,
+              "status": "failed",
+              "error_message": "java.lang.IllegalArgumentException: some other exception"
+            },
+            "name": "Broken step name",
+            "keyword": "Given ",
+            "match": {
+              "location": "simple.brokenLocation()"
+            }
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "uri": "simple:uri"
+  }
+]
