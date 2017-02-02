@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 import static java.lang.String.format;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.core.IsEqual.equalTo;
 
 /**
  * @author Egor Borisov ehborisov@gmail.com
@@ -79,6 +80,8 @@ public class CucumberJsonReportTest {
 
         List<Attachment> attachments = steps.get(0).getAttachments();
         assertThat("Attachments have not been processed", attachments, hasSize(1));
+        assertThat("Unexpected attachment", attachments.get(0).getName(),
+                equalTo("embedding_-115657502.image"));
     }
 
     @Test

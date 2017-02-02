@@ -55,12 +55,11 @@ public class CucumberJsonResultsReader implements ResultsReader {
                     configuration.getEmbeddingDirectory());
         }
 
+        ReportParser parser = new ReportParser(configuration);
+        Stream<Feature> features = parse(parser, source);
         listFiles(configuration.getEmbeddingDirectory().toPath(), "embedding*")
                 .forEach(storage::addAttachment);
-
-        ReportParser parser = new ReportParser(configuration);
-
-        List<TestCaseResult> testCaseResults = parse(parser, source)
+        List<TestCaseResult> testCaseResults = features
                 .flatMap(feature -> Stream.of(feature.getElements())
                         .map(this::convert))
                 .collect(Collectors.toList());
