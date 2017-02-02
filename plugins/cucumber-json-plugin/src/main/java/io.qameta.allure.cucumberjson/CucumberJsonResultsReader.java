@@ -21,8 +21,9 @@ import net.masterthought.cucumber.json.Step;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.file.Files;
+import java.io.File;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -32,6 +33,7 @@ import java.util.stream.Stream;
 import static io.qameta.allure.ReportApiUtils.generateUid;
 import static io.qameta.allure.ReportApiUtils.listFiles;
 import static net.masterthought.cucumber.json.support.Status.FAILED;
+import static net.masterthought.cucumber.json.support.Status.PENDING;
 import static net.masterthought.cucumber.json.support.Status.SKIPPED;
 
 /**
@@ -50,43 +52,51 @@ public class CucumberJsonResultsReader implements ResultsReader {
 
     @Override
     public List<TestCaseResult> readResults(Path source) {
-        Configuration configuration = new Configuration(source.toFile(), "Unknown project");
-        if (Files.exists(configuration.getEmbeddingDirectory().toPath())) {
-            listFiles(configuration.getEmbeddingDirectory().toPath(), "embedding*")
-                    .forEach(storage::addAttachment);
+        List<String> cucumberJsonFiles = listFiles(source, "cucumber*.json")
+                .map(Path::toString)
+                .collect(Collectors.toList());
+        if (cucumberJsonFiles.isEmpty()) {
+            return Collections.emptyList();
         }
-
+        Configuration configuration = new Configuration(source.toFile(), "Unknown project");
+        File embeddings = configuration.getEmbeddingDirectory();
+        if (!embeddings.exists() && !embeddings.mkdirs()) {
+            LOGGER.warn("Could not create embeddings directory");
+        }
         ReportParser parser = new ReportParser(configuration);
-        return parse(parser, source)
+        List<Feature> features = parse(parser, cucumberJsonFiles);
+        listFiles(embeddings.toPath(), "embedding*")
+                .forEach(storage::addAttachment);
+        return features.stream()
                 .flatMap(feature -> Stream.of(feature.getElements()).map(this::convert))
                 .collect(Collectors.toList());
     }
 
     private TestCaseResult convert(Element element) {
-        TestCaseResult testCaseResult = new TestCaseResult();
+        TestCaseResult result = new TestCaseResult();
         String testName = Optional.ofNullable(element.getName()).orElse("Unnamed scenario");
         String featureName = Optional.ofNullable(element.getFeature().getName()).orElse("Unnamed feature");
-        testCaseResult.setId(String.format("%s#%s", featureName, testName));
-        testCaseResult.setUid(generateUid());
-        testCaseResult.setName(element.getName());
-        testCaseResult.setTime(getTime(element));
-        testCaseResult.setStatus(getStatus(element));
-        testCaseResult.setFailure(getFailure(element));
-        testCaseResult.addLabelIfNotExists(LabelName.FEATURE, element.getFeature().getName());
-        testCaseResult.setDescription(element.getDescription());
+        result.setId(String.format("%s#%s", featureName, testName));
+        result.setUid(generateUid());
+        result.setName(firstNonNull(element.getName(), element.getKeyword(), element.getDescription(), "Unknown"));
+        result.setTime(getTime(element));
+        result.setStatus(getStatus(element));
+        result.setFailure(getFailure(element));
+        result.addLabelIfNotExists(LabelName.FEATURE, element.getFeature().getName());
+        result.setDescription(element.getDescription());
 
         if (Objects.nonNull(element.getSteps()) && element.getSteps().length > 0) {
-            testCaseResult.setTestStage(getTestStage(element));
+            result.setTestStage(getTestStage(element));
         }
 
         if (Objects.nonNull(element.getBefore())) {
-            testCaseResult.setBeforeStages(convertHooks(element.getBefore()));
+            result.setBeforeStages(convertHooks(element.getBefore()));
         }
 
         if (Objects.nonNull(element.getAfter())) {
-            testCaseResult.setAfterStages(convertHooks(element.getAfter()));
+            result.setAfterStages(convertHooks(element.getAfter()));
         }
-        return testCaseResult;
+        return result;
     }
 
     private long getTime(Element source) {
@@ -99,13 +109,13 @@ public class CucumberJsonResultsReader implements ResultsReader {
         if (source.getStatus().isPassed()) {
             return Status.PASSED;
         }
-        if (source.getStatus() == FAILED) {
-            return Status.FAILED;
+        if (Objects.nonNull(source.getSteps())) {
+            return Stream.of(source.getSteps())
+                    .map(this::getStepStatus)
+                    .min(Enum::compareTo)
+                    .orElse(Status.PENDING);
         }
-        if (source.getStatus() == SKIPPED) {
-            return Status.CANCELED;
-        }
-        return Status.BROKEN;
+        return Status.PENDING;
     }
 
     private Failure getFailure(Element source) {
@@ -162,27 +172,41 @@ public class CucumberJsonResultsReader implements ResultsReader {
     }
 
     private Status getStepStatus(Step step) {
-        Result result = step.getResult();
-        if (result.getStatus().isPassed()) {
+        return getStatus(step.getResult().getStatus());
+    }
+
+    private Status getStatus(net.masterthought.cucumber.json.support.Status status) {
+        if (status.isPassed()) {
             return Status.PASSED;
         }
-        if (result.getStatus() == FAILED) {
+        if (status == FAILED) {
             return Status.FAILED;
         }
-        if (result.getStatus() == SKIPPED) {
+        if (status == PENDING) {
+            return Status.PENDING;
+        }
+        if (status == SKIPPED) {
             return Status.CANCELED;
         }
         return Status.BROKEN;
     }
 
-    private static Stream<Feature> parse(ReportParser parser, Path source) {
+    @SafeVarargs
+    private final <T> T firstNonNull(T... items) {
+        return Stream.of(items)
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("At least one item should be non-null"));
+    }
+
+    private List<Feature> parse(ReportParser parser, List<String> cucumberJsonFiles) {
         try {
-            return parser.parseJsonFiles(listFiles(source, "cucumber*.json")
-                    .map(Path::toString)
-                    .collect(Collectors.toList())).stream();
+            return cucumberJsonFiles.isEmpty()
+                    ? Collections.emptyList()
+                    : parser.parseJsonFiles(cucumberJsonFiles);
         } catch (Exception e) {
-            LOGGER.error("Could not parse result {}: {}", source, e);
-            return Stream.empty();
+            LOGGER.error("Could not parse results {}", e);
+            return Collections.emptyList();
         }
     }
 }

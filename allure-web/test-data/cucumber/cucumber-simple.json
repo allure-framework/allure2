@@ -61,25 +61,7 @@
           {
             "result": {
               "duration": 10,
-              "status": "undefined",
-              "error_message": "java.lang.IllegalArgumentException: some other exception"
-            },
-            "name": "Broken step name",
-            "keyword": "Given ",
-            "match": {
-              "location": "simple.brokenLocation()"
-            }
-          }
-        ],
-        "type": "scenario"
-      },
-      {
-        "keyword": "Pending scenario",
-        "steps": [
-          {
-            "result": {
-              "duration": 12,
-              "status": "pending",
+              "status": "failed",
               "error_message": "java.lang.IllegalArgumentException: some other exception"
             },
             "name": "Broken step name",
