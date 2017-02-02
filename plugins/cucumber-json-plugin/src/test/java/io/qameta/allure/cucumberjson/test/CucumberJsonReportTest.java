@@ -43,7 +43,7 @@ public class CucumberJsonReportTest {
 
     @Test
     public void readSingleJsonFile() throws Exception {
-        List<TestCaseResult> testCases = process("simple.json", "simple.json");
+        List<TestCaseResult> testCases = process("simple.json", "cucumber-simple.json");
         List<Status> statuses = Arrays.asList(Status.BROKEN, Status.FAILED, Status.PASSED, Status.CANCELED);
 
         assertThat(testCases, hasSize(4));
@@ -59,21 +59,21 @@ public class CucumberJsonReportTest {
 
     @Test
     public void readEmptyJsonFile() throws Exception {
-        List<TestCaseResult> results = process("empty.json", "empty.json");
+        List<TestCaseResult> results = process("empty.json", "cucumber-empty.json");
 
         assertThat(results, hasSize(0));
     }
 
     @Test
     public void readInvalidJsonFile() throws Exception {
-        List<TestCaseResult> results = process("invalid.json", "invalid.json");
+        List<TestCaseResult> results = process("invalid.json", "cucumber-invalid.json");
 
         assertThat(results, hasSize(0));
     }
 
     @Test
     public void readJsonWithAttachment() throws Exception {
-        List<TestCaseResult> results = process("complex.json", "complex.json");
+        List<TestCaseResult> results = process("complex.json", "cucumber-complex.json");
 
         final List<Step> steps = results.get(0).getTestStage().getSteps();
         assertThat("Steps have not been parsed", steps, hasSize(4));
@@ -86,8 +86,8 @@ public class CucumberJsonReportTest {
 
     @Test
     public void readSeveralJsonFiles() throws Exception {
-        List<TestCaseResult> testCases = process("simple.json", "simple.json",
-                "complex.json", "complex.json"
+        List<TestCaseResult> testCases = process("simple.json", "cucumber-simple.json",
+                "complex.json", "cucumber-complex.json"
         );
 
         assertThat("Unexpected quantity of test cases from several parsed features",

@@ -30,6 +30,7 @@ import java.util.stream.Stream;
 
 import static io.qameta.allure.ReportApiUtils.generateUid;
 import static io.qameta.allure.ReportApiUtils.listFiles;
+import static net.masterthought.cucumber.json.support.Status.FAILED;
 import static net.masterthought.cucumber.json.support.Status.SKIPPED;
 
 /**
@@ -182,14 +183,14 @@ public class CucumberJsonResultsReader implements ResultsReader {
     }
 
     private boolean isStepFailed(Step step) {
-        return Optional.ofNullable(step.getResult().getErrorMessage())
+        return step.getResult().getStatus() == FAILED && Optional.ofNullable(step.getResult().getErrorMessage())
                 .map(msg -> msg.startsWith("java.lang.AssertionError"))
                 .orElse(false);
     }
 
     private static Stream<Feature> parse(ReportParser parser, Path source) {
         try {
-            return parser.parseJsonFiles(listFiles(source, "*.json")
+            return parser.parseJsonFiles(listFiles(source, "cucumber*.json")
                     .map(Path::toString)
                     .collect(Collectors.toList())).stream();
         } catch (Exception e) {
