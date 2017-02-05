@@ -10,7 +10,7 @@ dependencies {
     compile('org.freemarker:freemarker:2.3.23')
     compile('com.github.baev:jaxb-utils:1.0')
     compile('org.allurefw:allure1-model:1.0')
-    compile('io.qameta.allure:model-v2:1.0-BETA2')
+    compile('io.qameta.allure:model-v2:1.0-SNAPSHOT')
 
     testCompile('junit:junit:4.12')
     testCompile('org.hamcrest:hamcrest-all:1.3')
