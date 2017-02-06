@@ -36,7 +36,7 @@ function makeConfig(development) {
                 }
             }]
         },
-        devtool: development ? 'source-map' : null,
+        devtool: development ? 'eval' : null,
         plugins: (() => {
             const plugins = [
                 new ExtractTextPlugin('styles.css')
