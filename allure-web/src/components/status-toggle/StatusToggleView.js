@@ -4,7 +4,7 @@ import {on, className} from '../../decorators';
 import settings from '../../util/settings';
 import template from './StatusToggleView.hbs';
 import PopoverView from '../popover/PopoverView';
-import {states} from '../../util/statuses';
+import {values} from '../../util/statuses';
 
 @className('status-toggle popover')
 class StatusToggleView extends PopoverView {
@@ -41,7 +41,7 @@ class StatusToggleView extends PopoverView {
     serializeData() {
         const statuses = settings.get('visibleStatuses');
         return {
-            statuses: states.map(status => ({
+            statuses: values.map(status => ({
                 status,
                 active: !!statuses[status]
             }))

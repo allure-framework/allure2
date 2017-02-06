@@ -95,7 +95,7 @@ public class JunitResultsReader implements ResultsReader {
             return Status.FAILED;
         }
         if ("skipped".equalsIgnoreCase(source.getFailureType())) {
-            return Status.CANCELED;
+            return Status.SKIPPED;
         }
         return Status.BROKEN;
     }

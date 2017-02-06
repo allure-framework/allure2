@@ -11,11 +11,11 @@ public interface WithStatistic {
     void setStatistic(Statistic statistic);
 
     default void updateStatistic(Statistic other) {
-        getStatistic().setPassed(other.getPassed() + getStatistic().getPassed());
-        getStatistic().setBroken(other.getBroken() + getStatistic().getBroken());
-        getStatistic().setCanceled(other.getCanceled() + getStatistic().getCanceled());
         getStatistic().setFailed(other.getFailed() + getStatistic().getFailed());
-        getStatistic().setPending(other.getPending() + getStatistic().getPending());
+        getStatistic().setBroken(other.getBroken() + getStatistic().getBroken());
+        getStatistic().setPassed(other.getPassed() + getStatistic().getPassed());
+        getStatistic().setSkipped(other.getSkipped() + getStatistic().getSkipped());
+        getStatistic().setUnknown(other.getUnknown() + getStatistic().getUnknown());
     }
 
     default void updateStatistic(WithStatus withStatus) {

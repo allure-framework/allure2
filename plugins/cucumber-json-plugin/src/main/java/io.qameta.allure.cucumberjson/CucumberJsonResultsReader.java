@@ -113,9 +113,9 @@ public class CucumberJsonResultsReader implements ResultsReader {
             return Stream.of(source.getSteps())
                     .map(this::getStepStatus)
                     .min(Enum::compareTo)
-                    .orElse(Status.PENDING);
+                    .orElse(Status.UNKNOWN);
         }
-        return Status.PENDING;
+        return getStatus(source.getStatus());
     }
 
     private Failure getFailure(Element source) {
@@ -183,12 +183,12 @@ public class CucumberJsonResultsReader implements ResultsReader {
             return Status.FAILED;
         }
         if (status == PENDING) {
-            return Status.PENDING;
+            return Status.SKIPPED;
         }
         if (status == SKIPPED) {
-            return Status.CANCELED;
+            return Status.SKIPPED;
         }
-        return Status.BROKEN;
+        return Status.UNKNOWN;
     }
 
     @SafeVarargs
