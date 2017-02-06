@@ -76,7 +76,7 @@ public class JunitResultsReader implements ResultsReader {
 
     protected TestCaseResult convert(ReportTestCase source) {
         TestCaseResult dest = new TestCaseResult();
-        dest.setId(String.format("%s#%s", source.getFullClassName(), source.getName()));
+        dest.setTestCaseId(String.format("%s#%s", source.getFullClassName(), source.getName()));
         dest.setUid(generateUid());
         dest.setName(source.getName());
         dest.setTime(new Time()

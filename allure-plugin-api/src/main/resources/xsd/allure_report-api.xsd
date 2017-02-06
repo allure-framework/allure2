@@ -56,12 +56,14 @@
         <xsd:complexContent>
             <xsd:extension base="ns:ExtraElements">
                 <xsd:sequence>
-                    <xsd:element name="id" type="xsd:string"/>
                     <xsd:element name="uid" type="xsd:string"/>
                     <xsd:element name="name" type="xsd:string"/>
                     <xsd:element name="fullName" type="xsd:string"/>
+
+                    <xsd:element name="testCaseId" type="xsd:string"/>
                     <xsd:element name="time" type="ns:Time"/>
                     <xsd:element name="status" type="ns:Status"/>
+
                     <xsd:element name="failure" type="ns:Failure" minOccurs="0"/>
                     <xsd:element name="description" type="xsd:string" minOccurs="0"/>
                     <xsd:element name="descriptionHtml" type="xsd:string" minOccurs="0"/>

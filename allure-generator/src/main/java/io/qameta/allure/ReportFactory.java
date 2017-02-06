@@ -47,7 +47,7 @@ public class ReportFactory {
     }
 
     private TestCase getTestCase(TestCaseResult result) {
-        return testCases.computeIfAbsent(result.getId(), id -> new TestCase()
+        return testCases.computeIfAbsent(result.getTestCaseId(), id -> new TestCase()
                 .withId(id)
                 .withName(result.getName())
                 .withDescription(result.getDescription())

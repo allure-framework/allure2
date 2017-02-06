@@ -75,7 +75,7 @@ public class Allure2ResultsReader implements ResultsReader {
                     TestCaseResult dest = new TestCaseResult();
                     dest.setUid(generateUid());
 
-                    dest.setId(result.getId());
+                    dest.setTestCaseId(result.getId());
                     dest.setFullName(result.getFullName());
                     dest.setName(result.getName());
                     dest.setTime(result.getStart(), result.getStop());
