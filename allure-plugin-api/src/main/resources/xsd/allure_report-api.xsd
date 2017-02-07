@@ -172,6 +172,7 @@
         <xsd:all>
             <xsd:element name="message" type="xsd:string"/>
             <xsd:element name="trace" type="xsd:string"/>
+            <xsd:element name="flaky" type="xsd:boolean"/>
         </xsd:all>
     </xsd:complexType>
 

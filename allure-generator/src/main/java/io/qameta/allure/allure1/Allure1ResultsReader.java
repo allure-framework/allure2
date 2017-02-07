@@ -125,7 +125,10 @@ public class Allure1ResultsReader implements ResultsReader {
         );
         dest.addLabelIfNotExists(LabelName.SUITE, suiteName);
         dest.addLabelIfNotExists("package", testClass);
-
+        dest.findAll("status_details").stream()
+                .filter("flaky"::equalsIgnoreCase)
+                .findAny()
+                .ifPresent(value -> dest.getStatusDetailsSafe().setFlaky(true));
         return dest;
     }
 

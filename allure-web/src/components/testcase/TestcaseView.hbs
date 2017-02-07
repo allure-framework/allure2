@@ -1,6 +1,9 @@
 <a class="pane__overlay" href="#testcase/{{uid}}"></a>
 <div class="pane__subtitle long-line line-ellipsis">{{fullName}}</div>
 <h2 class="pane__title">
+    {{#if statusDetails.flaky}}
+        {{icon 'flaky'}}
+    {{/if}}
     <span class="label label_status_{{status}}">{{status}}</span>
     <span class="pane__controls">
         <a class="fa fa-expand pane__expand" data-tooltip="Expand" href="#testcase/{{uid}}?expanded=true"></a>
