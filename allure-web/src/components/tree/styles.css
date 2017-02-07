@@ -1,14 +1,14 @@
 @import "../../variables.css";
 
 .node {
-  margin-left: 20px;
+  margin-left: 0;
   position: relative;
   display: block;
   text-decoration: none;
   color: $text-color;
 
-  &__root {
-    margin-left: 0;
+  .node {
+    margin-left: 20px;
   }
 
   &:last-child {
@@ -54,7 +54,7 @@
     padding: 7px;
   }
   &__time {
-    padding-right: 15px;
+    padding: 5px;
   }
 
   &__children {

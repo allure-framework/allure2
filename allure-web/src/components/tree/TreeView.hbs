@@ -7,10 +7,10 @@
     </span>
 </h2>
 
-<div class="tree tree_root">
+<div class="tree">
     {{#if items}}
         {{#each items}}
-            {{> tree-group baseUrl=../baseUrl root='root' showGroupInfo=../showGroupInfo}}
+            {{> tree-group baseUrl=../baseUrl showGroupInfo=../showGroupInfo}}
         {{/each}}
     {{else}}
         There are no items
