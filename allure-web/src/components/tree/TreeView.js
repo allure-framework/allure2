@@ -37,11 +37,9 @@ class TreeView extends View {
         this.$(e.currentTarget).parent().toggleClass('node__expanded');
     }
 
-    @on('click .tree__control_statuses')
+    @on('click .tree__statuses')
     onFilterClick(e) {
         const filter = this.$(e.currentTarget);
-        filter.toggleClass('tree__control_statuses_active', !this.statusesSelect.isVisible());
-
         if(this.statusesSelect.isVisible()) {
             this.statusesSelect.hide();
         } else {
@@ -49,7 +47,7 @@ class TreeView extends View {
         }
     }
 
-    @on('click .tree__control_info')
+    @on('click .tree__info')
     onInfoClick() {
         const show = settings.get('showGroupInfo');
         settings.save('showGroupInfo', !show);
