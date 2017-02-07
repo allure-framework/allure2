@@ -1,73 +1,109 @@
 @import "./variables.css";
 
 @define-mixin status-bg {
-  &_status_passed {
-    background: $background-passed;
-  }
-  &_status_canceled {
-    background: $background-canceled;
-  }
-  &_status_pending {
-    background: $background-pending;
-  }
   &_status_failed {
     background: $background-failed;
   }
   &_status_broken {
     background: $background-broken;
   }
+  &_status_passed {
+    background: $background-passed;
+  }
+  &_status_skipped {
+    background: $background-skipped;
+  }
+  &_status_unknown {
+    background: $background-unknown;
+  }
+}
+
+@define-mixin status-bg-bright-before {
+  &_status_failed::before {
+    background: $color-failed;
+  }
+  &_status_broken::before {
+    background: $color-broken;
+  }
+  &_status_passed::before {
+    background: $color-passed;
+  }
+  &_status_skipped::before {
+    background: $color-skipped;
+  }
+  &_status_unknown::before {
+    background: $color-unknown;
+  }
 }
 
 @define-mixin status-bg-bright {
-  &_status_passed {
-    background: $color-passed;
-  }
-  &_status_canceled {
-    background: $color-canceled;
-  }
-  &_status_pending {
-    background: $color-pending;
-  }
   &_status_failed {
     background: $color-failed;
   }
   &_status_broken {
     background: $color-broken;
   }
+  &_status_passed {
+    background: $color-passed;
+  }
+  &_status_skipped {
+    background: $color-skipped;
+  }
+  &_status_unknown {
+    background: $color-unknown;
+  }
 }
 
 @define-mixin status-border {
-  &_status_passed {
-    border-color: $color-passed;
-  }
-  &_status_canceled {
-    border-color: $color-canceled;
-  }
-  &_status_pending {
-    border-color: $color-pending;
-  }
   &_status_failed {
     border-color: $color-failed;
   }
   &_status_broken {
     border-color: $color-broken;
   }
+  &_status_passed {
+    border-color: $color-passed;
+  }
+  &_status_skipped {
+    border-color: $color-skipped;
+  }
+  &_status_unknown {
+    border-color: $color-unknown;
+  }
 }
 
 @define-mixin status-text {
-  &_status_passed {
-    color: $color-passed;
-  }
-  &_status_canceled {
-    color: $color-canceled;
-  }
-  &_status_pending {
-    color: $color-pending;
-  }
   &_status_failed {
     color: $color-failed;
   }
   &_status_broken {
     color: $color-broken;
+  }
+  &_status_passed {
+    color: $color-passed;
+  }
+  &_status_skipped {
+    color: $color-skipped;
+  }
+  &_status_unknown {
+    color: $color-unknown;
+  }
+}
+
+@define-mixin status-fill {
+  &_status_failed {
+    fill: $color-failed;
+  }
+  &_status_broken {
+    fill: $color-broken;
+  }
+  &_status_passed {
+    fill: $color-passed;
+  }
+  &_status_skipped {
+    fill: $color-skipped;
+  }
+  &_status_unknown {
+    fill: $color-unknown;
   }
 }

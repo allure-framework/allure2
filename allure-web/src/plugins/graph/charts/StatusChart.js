@@ -8,10 +8,11 @@ import {interpolate} from 'd3-interpolate';
 import {select} from 'd3-selection';
 
 import escape from '../../../util/escape';
+import {values} from '../../../util/statuses';
 
 const legendTpl = `<div class="chart__legend">
-    ${['Failed', 'Broken', 'Canceled', 'Pending', 'Passed'].map((status) =>
-        `<p class="chart__legend-row" data-status="${status.toLowerCase()}"><span class="chart__legend-icon chart__legend-icon_status_${status.toLowerCase()}"></span> ${status}</p>`
+    ${values.map((status) =>
+        `<p class="chart__legend-row" data-status="${status}"><span class="chart__legend-icon chart__legend-icon_status_${status}"></span> ${status}</p>`
     ).join('')}
 </div>`;
 

@@ -21,10 +21,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import static io.qameta.allure.entity.Status.BROKEN;
-import static io.qameta.allure.entity.Status.CANCELED;
 import static io.qameta.allure.entity.Status.FAILED;
 import static io.qameta.allure.entity.Status.PASSED;
-import static io.qameta.allure.entity.Status.PENDING;
+import static io.qameta.allure.entity.Status.SKIPPED;
+import static io.qameta.allure.entity.Status.UNKNOWN;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -49,7 +49,7 @@ public class CucumberJsonReportTest {
                 .isNotNull()
                 .hasSize(5)
                 .extracting(TestCaseResult::getStatus)
-                .contains(FAILED, PASSED, CANCELED, PENDING, BROKEN);
+                .contains(FAILED, PASSED, SKIPPED, UNKNOWN);
     }
 
     @Test

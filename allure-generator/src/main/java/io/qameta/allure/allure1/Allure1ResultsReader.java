@@ -42,16 +42,16 @@ import java.util.stream.Stream;
 
 import static io.qameta.allure.entity.LabelName.ISSUE;
 import static io.qameta.allure.entity.LabelName.TEST_ID;
+import static io.qameta.allure.entity.Status.SKIPPED;
+import static io.qameta.allure.entity.Status.UNKNOWN;
 import static org.allurefw.allure1.AllureConstants.ATTACHMENTS_FILE_GLOB;
 import static org.allurefw.allure1.AllureConstants.TEST_SUITE_JSON_FILE_GLOB;
 import static org.allurefw.allure1.AllureConstants.TEST_SUITE_XML_FILE_GLOB;
 import static io.qameta.allure.ReportApiUtils.generateUid;
 import static io.qameta.allure.ReportApiUtils.listFiles;
 import static io.qameta.allure.entity.Status.BROKEN;
-import static io.qameta.allure.entity.Status.CANCELED;
 import static io.qameta.allure.entity.Status.FAILED;
 import static io.qameta.allure.entity.Status.PASSED;
-import static io.qameta.allure.entity.Status.PENDING;
 import static io.qameta.allure.utils.ListUtils.firstNonNull;
 
 /**
@@ -91,7 +91,7 @@ public class Allure1ResultsReader implements ResultsReader {
         String testClass = firstNonNull(testSuite.getName(), "unknown");
         String name = firstNonNull(source.getTitle(), source.getName(), "unknown test case");
 
-        dest.setId(String.format("%s#%s", testClass, name));
+        dest.setTestCaseId(String.format("%s#%s", testClass, name));
         dest.setUid(generateUid());
         dest.setName(name);
         dest.setFullName(String.format("%s#%s", testSuite.getName(), source.getName()));
@@ -208,6 +208,9 @@ public class Allure1ResultsReader implements ResultsReader {
     }
 
     public static Status convert(ru.yandex.qatools.allure.model.Status status) {
+        if (Objects.isNull(status)) {
+            return UNKNOWN;
+        }
         switch (status) {
             case FAILED:
                 return FAILED;
@@ -217,9 +220,10 @@ public class Allure1ResultsReader implements ResultsReader {
                 return PASSED;
             case CANCELED:
             case SKIPPED:
-                return CANCELED;
+            case PENDING:
+                return SKIPPED;
             default:
-                return PENDING;
+                return UNKNOWN;
         }
     }
 
