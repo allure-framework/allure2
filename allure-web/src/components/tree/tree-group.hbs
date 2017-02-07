@@ -1,5 +1,5 @@
 {{#if (eq type 'TestGroupNode')}}
-    <div class="node">
+    <div class="{{b 'node' root}}">
         <div class="node__title long-line">
             <span class="node__arrow block__arrow"></span>
             {{name}}
@@ -8,8 +8,17 @@
             </span>
         </div>
         <div class="node__children">
+            {{#if showGroupInfo}}
+                <div class="node">
+                    <div class="node__info long-line" data-uid="{{uid}}">
+                        {{> tree-time value=time.duration name='Total' tooltip='Total duration for test group'}}
+                        {{> tree-time value=time.maxDuration name='Max' tooltip='Longest test case duration'}}
+                        {{> tree-time value=time.sumDuration name='Sum' tooltip='Summary test case duration'}}
+                    </div>
+                </div>
+            {{/if}}
             {{#each children}}
-                {{> tree-group baseUrl=../baseUrl}}
+                {{> tree-group baseUrl=../baseUrl showGroupInfo=../showGroupInfo}}
             {{/each}}
         </div>
     </div>
