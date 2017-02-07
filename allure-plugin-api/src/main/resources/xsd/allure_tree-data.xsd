@@ -46,6 +46,7 @@
             <xsd:element name="name" type="xsd:string"/>
             <xsd:element name="time" type="api:Time"/>
             <xsd:element name="status" type="api:Status"/>
+            <xsd:element name="flaky" type="xsd:boolean"/>
         </xsd:all>
     </xsd:complexType>
 

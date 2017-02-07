@@ -23,6 +23,7 @@
             <xsd:element name="name" type="xsd:string"/>
             <xsd:element name="time" type="ns:Time"/>
             <xsd:element name="status" type="ns:Status"/>
+            <xsd:element name="flaky" type="xsd:boolean"/>
         </xsd:all>
     </xsd:complexType>
 
