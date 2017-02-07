@@ -27,18 +27,24 @@ import java.util.stream.Stream;
 
 import static com.github.npathai.hamcrestopt.OptionalMatchers.hasValue;
 import static com.github.npathai.hamcrestopt.OptionalMatchers.isPresent;
+import static io.qameta.allure.entity.Status.FAILED;
+import static io.qameta.allure.entity.Status.PASSED;
+import static io.qameta.allure.entity.Status.UNKNOWN;
 import static org.allurefw.allure1.AllureUtils.generateTestSuiteJsonName;
 import static org.allurefw.allure1.AllureUtils.generateTestSuiteXmlName;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
 /**
  * @author charlie (Dmitry Baev).
  */
-public class Allure1TestResultsTest {
+public class Allure1ResultsReaderTest {
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
@@ -48,6 +54,20 @@ public class Allure1TestResultsTest {
     @Before
     public void setUp() throws Exception {
         storage = new DefaultAttachmentsStorage();
+    }
+
+    @Test
+    public void shouldProcessEmptyOrNullStatus() throws Exception {
+        List<TestCaseResult> testResults = process(
+                "allure1/empty-status-testsuite.xml", generateTestSuiteXmlName()
+        );
+        assertThat(testResults, hasSize(4));
+        assertThat(testResults, hasItems(
+                allOf(hasProperty("name", equalTo("testOne")), hasProperty("status", equalTo(UNKNOWN))),
+                allOf(hasProperty("name", equalTo("testTwo")), hasProperty("status", equalTo(PASSED))),
+                allOf(hasProperty("name", equalTo("testThree")), hasProperty("status", equalTo(FAILED))),
+                allOf(hasProperty("name", equalTo("testFour")), hasProperty("status", equalTo(UNKNOWN)))
+        ));
     }
 
     @Test

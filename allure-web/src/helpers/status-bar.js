@@ -1,7 +1,8 @@
 import {SafeString} from 'handlebars/runtime';
+import {values} from '../util/statuses';
 
 export default function statusBar(statistic) {
-    const fill = ['failed', 'broken', 'canceled', 'pending', 'passed'].map(status => {
+    const fill = values.map(status => {
         const count = typeof statistic[status] === 'undefined' ? 0 : statistic[status];
         const percents = count / statistic.total * 100;
         return count === 0

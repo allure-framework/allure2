@@ -19,12 +19,12 @@ public class HistoryProcessor implements Processor {
 
     @Override
     public void process(TestRun testRun, TestCase testCase, TestCaseResult result) {
-        if (Objects.isNull(result.getId())) {
+        if (Objects.isNull(result.getTestCaseId())) {
             return;
         }
         Map<String, HistoryData> history = testRun.getExtraBlock(HISTORY, new HashMap<>());
         HistoryData data = history.computeIfAbsent(
-                result.getId(),
+                result.getTestCaseId(),
                 id -> new HistoryData().withId(id).withName(result.getName())
         );
         data.updateStatistic(result);

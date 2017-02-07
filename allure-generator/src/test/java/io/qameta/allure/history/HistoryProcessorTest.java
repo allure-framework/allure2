@@ -39,7 +39,7 @@ public class HistoryProcessorTest {
 
         TestCase testCase = mock(TestCase.class);
         TestCaseResult result = mock(TestCaseResult.class);
-        doReturn(id).when(result).getId();
+        doReturn(id).when(result).getTestCaseId();
 
         HistoryProcessor processor = new HistoryProcessor();
         processor.process(testRun, testCase, result);

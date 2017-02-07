@@ -1,6 +1,7 @@
 package io.qameta.allure.allure2;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.qameta.allure.AllureConstants;
 import io.qameta.allure.AllureUtils;
 import io.qameta.allure.AttachmentsStorage;
@@ -52,11 +53,14 @@ public class Allure2ResultsReader implements ResultsReader {
 
     private final AttachmentsStorage storage;
 
-    private final ObjectMapper mapper = AllureUtils.createMapper();
+    private final ObjectMapper mapper;
 
     @Inject
     public Allure2ResultsReader(AttachmentsStorage storage) {
         this.storage = storage;
+        this.mapper = AllureUtils.createMapper().registerModule(new SimpleModule()
+                .addDeserializer(io.qameta.allure.model.Status.class, new StatusDeserializer())
+        );
     }
 
     @Override
@@ -68,14 +72,13 @@ public class Allure2ResultsReader implements ResultsReader {
                 .flatMap(this::readTestGroupResult)
                 .collect(Collectors.toMap(TestGroupResult::getId, Function.identity()));
 
-
         return listFiles(source, AllureConstants.TEST_CASE_JSON_FILE_GLOB)
                 .flatMap(this::readTestCaseResult)
                 .map(result -> {
                     TestCaseResult dest = new TestCaseResult();
                     dest.setUid(generateUid());
 
-                    dest.setId(result.getId());
+                    dest.setTestCaseId(result.getId());
                     dest.setFullName(result.getFullName());
                     dest.setName(result.getName());
                     dest.setTime(result.getStart(), result.getStop());
@@ -211,7 +214,13 @@ public class Allure2ResultsReader implements ResultsReader {
     }
 
     private Status convert(io.qameta.allure.model.Status status) {
-        return Status.fromValue(status.value());
+        if (Objects.isNull(status)) {
+            return Status.UNKNOWN;
+        }
+        return Stream.of(Status.values())
+                .filter(item -> item.value().equalsIgnoreCase(status.value()))
+                .findAny()
+                .orElse(Status.UNKNOWN);
     }
 
     private Failure convert(StatusDetails details) {
