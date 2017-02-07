@@ -31,7 +31,7 @@ public interface ExtraStatisticMethods {
 
     @XmlElement
     default long getTotal() {
-        return getFailed() + getBroken() + getPassed() + getSkipped();
+        return getFailed() + getBroken() + getPassed() + getSkipped() + getUnknown();
     }
 
     /**
