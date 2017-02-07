@@ -3,9 +3,12 @@ import {Router, history} from 'backbone';
 import urlLib from 'url';
 
 class AppRouter extends Router {
+    currentUrl = null;
+
     constructor() {
         super({
             routes: {
+                'testcase/:uid(/:attachment)': 'testcasePage',
                 '*default': 'notFound'
             }
         });
@@ -13,7 +16,8 @@ class AppRouter extends Router {
     }
 
     onRouteChange() {
-        this.lastUrl = this.getCurrentUrl();
+        this.previousUrl = this.currentUrl;
+        this.currentUrl = this.getCurrentUrl();
     }
 
     getCurrentUrl() {
