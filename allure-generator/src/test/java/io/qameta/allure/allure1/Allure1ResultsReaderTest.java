@@ -6,6 +6,7 @@ import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.StageResult;
+import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestCaseResult;
 import org.junit.Before;
@@ -40,6 +41,7 @@ import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -184,6 +186,18 @@ public class Allure1ResultsReaderTest {
                 .collect(Collectors.toList());
         assertThat(stories, hasSize(2));
         assertThat(stories, hasItems("SuccessStory", "OtherStory"));
+    }
+
+    @Test
+    public void shouldSetFlakyFromLabel() throws Exception {
+        List<TestCaseResult> testCases = process(
+                "allure1/suite-with-attachments.xml", generateTestSuiteXmlName()
+        );
+        assertThat(testCases, hasSize(1));
+        TestCaseResult result = testCases.iterator().next();
+        StatusDetails details = result.getStatusDetails();
+        assertThat(details, notNullValue());
+        assertThat(details, hasProperty("flaky", equalTo(true)));
     }
 
     private List<TestCaseResult> process(String... strings) throws IOException {

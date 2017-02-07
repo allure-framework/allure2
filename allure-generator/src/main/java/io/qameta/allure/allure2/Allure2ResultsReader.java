@@ -7,16 +7,15 @@ import io.qameta.allure.AllureUtils;
 import io.qameta.allure.AttachmentsStorage;
 import io.qameta.allure.ResultsReader;
 import io.qameta.allure.entity.Attachment;
-import io.qameta.allure.entity.Failure;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.Link;
 import io.qameta.allure.entity.Parameter;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
+import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestCaseResult;
 import io.qameta.allure.entity.Time;
-import io.qameta.allure.model.StatusDetails;
 import io.qameta.allure.model.TestAfterResult;
 import io.qameta.allure.model.TestBeforeResult;
 import io.qameta.allure.model.TestGroupResult;
@@ -85,7 +84,7 @@ public class Allure2ResultsReader implements ResultsReader {
                     dest.setDescription(result.getDescription());
                     dest.setDescriptionHtml(result.getDescriptionHtml());
                     dest.setStatus(convert(result.getStatus()));
-                    dest.setFailure(convert(result.getStatusDetails()));
+                    dest.setStatusDetails(convert(result.getStatusDetails()));
 
                     dest.setLinks(convert(result.getLinks(), this::convert));
                     dest.setLabels(convert(result.getLabels(), this::convert));
@@ -95,7 +94,8 @@ public class Allure2ResultsReader implements ResultsReader {
                         StageResult testStage = new StageResult();
                         testStage.setSteps(convert(result.getSteps(), this::convert));
                         testStage.setAttachments(convert(result.getAttachments(), this::convert));
-                        testStage.setFailure(convert(result.getStatusDetails()));
+                        testStage.setStatus(convert(result.getStatus()));
+                        testStage.setStatusDetails(convert(result.getStatusDetails()));
                         dest.setTestStage(testStage);
                     }
 
@@ -206,7 +206,7 @@ public class Allure2ResultsReader implements ResultsReader {
         return new Step()
                 .withName(step.getName())
                 .withStatus(convert(step.getStatus()))
-                .withFailure(convert(step.getStatusDetails()))
+                .withStatusDetails(convert(step.getStatusDetails()))
                 .withTime(convert(step.getStart(), step.getStop()))
                 .withParameters(convert(step.getParameters(), this::convert))
                 .withAttachments(convert(step.getAttachments(), this::convert))
@@ -223,8 +223,8 @@ public class Allure2ResultsReader implements ResultsReader {
                 .orElse(Status.UNKNOWN);
     }
 
-    private Failure convert(StatusDetails details) {
-        return Objects.isNull(details) ? null : new Failure()
+    private StatusDetails convert(io.qameta.allure.model.StatusDetails details) {
+        return Objects.isNull(details) ? null : new StatusDetails()
                 .withMessage(details.getMessage())
                 .withTrace(details.getTrace());
     }

@@ -1,6 +1,7 @@
 package io.qameta.allure.tree;
 
 import io.qameta.allure.ResultAggregator;
+import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.TestCase;
 import io.qameta.allure.entity.TestCaseResult;
 import io.qameta.allure.entity.TestRun;
@@ -8,7 +9,7 @@ import io.qameta.allure.entity.TestRun;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.BiConsumer;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -22,36 +23,6 @@ public abstract class TreeResultAggregator implements ResultAggregator<TreeData>
     @Override
     public Supplier<TreeData> supplier(TestRun testRun, TestCase testCase) {
         return TreeData::new;
-    }
-
-    public BiConsumer<TreeData, TestCaseResult> accumulator() {
-        return (treeData, result) -> {
-            treeData.updateStatistic(result);
-            treeData.updateTime(result);
-
-            List<WithChildren> currentLevelGroups = Collections.singletonList(treeData);
-
-            for (TreeGroup treeGroup : getGroups(result)) {
-                List<WithChildren> nextLevelGroups = new ArrayList<>();
-                for (WithChildren currentLevelGroup : currentLevelGroups) {
-                    for (String groupName : treeGroup.getGroupNames()) {
-                        TestGroupNode groupNode = findGroupByName(groupName, currentLevelGroup.getChildren());
-                        groupNode.updateStatistic(result);
-                        groupNode.updateTime(result);
-                        nextLevelGroups.add(groupNode);
-                    }
-                }
-                currentLevelGroups = nextLevelGroups;
-            }
-            TestCaseNode testCaseNode = new TestCaseNode()
-                    .withUid(result.getUid())
-                    .withName(result.getName())
-                    .withStatus(result.getStatus())
-                    .withTime(result.getTime());
-            for (WithChildren currentLevelGroup : currentLevelGroups) {
-                currentLevelGroup.getChildren().add(testCaseNode);
-            }
-        };
     }
 
     @Override
@@ -74,11 +45,15 @@ public abstract class TreeResultAggregator implements ResultAggregator<TreeData>
                 }
                 currentLevelGroups = nextLevelGroups;
             }
+            boolean isFlaky = Optional.ofNullable(result.getStatusDetails())
+                    .map(StatusDetails::isFlaky)
+                    .orElse(false);
             TestCaseNode testCaseNode = new TestCaseNode()
                     .withUid(result.getUid())
                     .withName(result.getName())
                     .withStatus(result.getStatus())
-                    .withTime(result.getTime());
+                    .withTime(result.getTime())
+                    .withFlaky(isFlaky);
             for (WithChildren currentLevelGroup : currentLevelGroups) {
                 currentLevelGroup.getChildren().add(testCaseNode);
             }

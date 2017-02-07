@@ -1,7 +1,9 @@
 package io.qameta.allure.tree;
 
 import io.qameta.allure.entity.Status;
+import io.qameta.allure.entity.TestCase;
 import io.qameta.allure.entity.TestCaseResult;
+import io.qameta.allure.entity.TestRun;
 import io.qameta.allure.entity.Time;
 import org.junit.Test;
 
@@ -42,9 +44,11 @@ public class TreeResultAggregatorTest {
     public void shouldAggregate() throws Exception {
         OneValueTreeResultAggregator aggregator = new OneValueTreeResultAggregator();
         TreeData treeData = aggregator.supplier(null, null).get();
+        TestRun testRun = mock(TestRun.class);
+        TestCase testCase = mock(TestCase.class);
         TestCaseResult result = mock(TestCaseResult.class);
 
-        aggregator.accumulator().accept(treeData, result);
+        aggregator.aggregate(testRun, testCase, result).accept(treeData);
         assertThat(treeData, notNullValue());
         assertThat(treeData.getChildren(), hasSize(1));
         assertThat(treeData.getTime(), notNullValue());
@@ -55,9 +59,13 @@ public class TreeResultAggregatorTest {
     public void shouldUpdateStatistic() throws Exception {
         OneValueTreeResultAggregator aggregator = new OneValueTreeResultAggregator();
         TreeData treeData = aggregator.supplier(null, null).get();
+        TestRun testRun = mock(TestRun.class);
+        TestCase testCase = mock(TestCase.class);
         TestCaseResult result = mock(TestCaseResult.class);
+
         doReturn(Status.PASSED).when(result).getStatus();
-        aggregator.accumulator().accept(treeData, result);
+
+        aggregator.aggregate(testRun, testCase, result).accept(treeData);
         assertThat(treeData.getStatistic(), notNullValue());
         assertThat(treeData.getStatistic().getPassed(), is(1L));
         assertThat(treeData.getStatistic().getTotal(), is(1L));
@@ -68,14 +76,17 @@ public class TreeResultAggregatorTest {
         OneValueTreeResultAggregator aggregator = new OneValueTreeResultAggregator();
         TreeData treeData = aggregator.supplier(null, null).get();
 
+        TestRun testRun = mock(TestRun.class);
+        TestCase testCase = mock(TestCase.class);
+
         TestCaseResult first = mock(TestCaseResult.class);
         doReturn(new Time().withDuration(123L)).when(first).getTime();
 
         TestCaseResult second = mock(TestCaseResult.class);
         doReturn(new Time().withDuration(321L)).when(second).getTime();
 
-        aggregator.accumulator().accept(treeData, first);
-        aggregator.accumulator().accept(treeData, second);
+        aggregator.aggregate(testRun, testCase, first).accept(treeData);
+        aggregator.aggregate(testRun, testCase, second).accept(treeData);
         assertThat(treeData.getTime(), notNullValue());
         assertThat(treeData.getTime().getMaxDuration(), is(321L));
         assertThat(treeData.getTime().getSumDuration(), is(444L));
@@ -149,9 +160,11 @@ public class TreeResultAggregatorTest {
     private TreeData aggregateResultsWithUids(TreeResultAggregator aggregator, String... uids) {
         TreeData treeData = aggregator.supplier(null, null).get();
         Stream.of(uids).forEach(uid -> {
+            TestRun testRun = mock(TestRun.class);
+            TestCase testCase = mock(TestCase.class);
             TestCaseResult result = mock(TestCaseResult.class);
             doReturn(uid).when(result).getUid();
-            aggregator.accumulator().accept(treeData, result);
+            aggregator.aggregate(testRun, testCase, result).accept(treeData);
         });
         return treeData;
     }

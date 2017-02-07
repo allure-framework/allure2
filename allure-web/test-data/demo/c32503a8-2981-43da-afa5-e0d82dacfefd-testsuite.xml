@@ -188,5 +188,6 @@ Expected: "{\n\"name\": \"test\",\n\"value\": \"ok value\"\n}"
     <labels>
         <label name="framework" value="JUnit"/>
         <label name="language" value="JAVA"/>
+        <label name="status_details" value="flaky"/>
     </labels>
 </ns2:test-suite>

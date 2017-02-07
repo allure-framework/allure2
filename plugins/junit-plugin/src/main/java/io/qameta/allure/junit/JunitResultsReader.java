@@ -4,10 +4,10 @@ import com.google.inject.Inject;
 import io.qameta.allure.AttachmentsStorage;
 import io.qameta.allure.ResultsReader;
 import io.qameta.allure.entity.Attachment;
-import io.qameta.allure.entity.Failure;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
+import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.TestCaseResult;
 import io.qameta.allure.entity.Time;
 import org.apache.maven.plugins.surefire.report.ReportTestCase;
@@ -26,9 +26,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
 import static io.qameta.allure.ReportApiUtils.generateUid;
 import static io.qameta.allure.ReportApiUtils.listFiles;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * @author Dmitry Baev baev@qameta.io
@@ -83,7 +83,7 @@ public class JunitResultsReader implements ResultsReader {
                 .withDuration(BigDecimal.valueOf(source.getTime()).multiply(MULTIPLICAND).longValue())
         );
         dest.setStatus(getStatus(source));
-        dest.setFailure(getFailure(source));
+        dest.setStatusDetails(getStatusDetails(source));
         return dest;
     }
 
@@ -100,9 +100,9 @@ public class JunitResultsReader implements ResultsReader {
         return Status.BROKEN;
     }
 
-    protected Failure getFailure(ReportTestCase source) {
+    protected StatusDetails getStatusDetails(ReportTestCase source) {
         if (source.hasFailure()) {
-            return new Failure()
+            return new StatusDetails()
                     .withMessage(source.getFailureMessage())
                     .withTrace(source.getFailureDetail());
         }

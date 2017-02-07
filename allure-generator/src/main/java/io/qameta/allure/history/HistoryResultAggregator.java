@@ -46,7 +46,7 @@ public class HistoryResultAggregator implements ResultAggregator<Map<String, His
 
             HistoryItem newItem = new HistoryItem()
                     .withStatus(result.getStatus())
-                    .withStatusDetails(Objects.isNull(result.getFailure()) ? null : result.getFailure().getMessage())
+                    .withStatusDetails(result.getStatusMessage().orElse(null))
                     .withTime(result.getTime())
                     .withTestRunName(testRun.getName());
 
