@@ -4,6 +4,7 @@ import {on, regions, behavior} from '../../decorators';
 import pluginsRegistry from '../../util/pluginsRegistry';
 import template from './TestcaseView.hbs';
 import ExecutionView from '../execution/ExecutionView';
+import clipboard from 'clipboard-js';
 
 const SEVERITY_ICONS = {
     blocker: 'fa fa-exclamation-triangle',
@@ -67,9 +68,14 @@ class TestcaseView extends View {
         this.$('.testcase__failure').toggleClass('testcase__failure_expanded');
     }
 
-    @on('click .pane__subtitle')
-    onSubtitleClick() {
+    @on('click .fullname__body')
+    onFillNameBopyClick() {
         this.$('.pane__subtitle').toggleClass('line-ellipsis', false);
+    }
+
+    @on('click .fullname__copy')
+    onFullNameCopyClick() {
+        clipboard.copy(this.model.get('fullName'));
     }
 }
 
