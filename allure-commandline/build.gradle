@@ -56,16 +56,16 @@ dependencies {
     allurePlugin project(path: ':cucumber-json-plugin', configuration: 'allurePlugin')
 
     compile project(':allure-generator')
-    compile('com.github.rvesse:airline:2.2.0')
-    compile('com.squareup.retrofit:retrofit:1.9.0')
-    compile('org.apache.commons:commons-exec:1.3')
-    compile('org.eclipse.jetty:jetty-server:9.2.2.v20140723')
-    compile("org.slf4j:slf4j-api:${slf4jVersion}")
-    compile("org.slf4j:slf4j-log4j12:${slf4jVersion}")
+    compile('com.github.rvesse:airline')
+    compile('com.squareup.retrofit:retrofit')
+    compile('org.apache.commons:commons-exec')
+    compile('org.eclipse.jetty:jetty-server')
+    compile('org.slf4j:slf4j-api')
+    compile('org.slf4j:slf4j-log4j12')
 
-    testCompile('junit:junit:4.12')
-    testCompile('org.hamcrest:hamcrest-all:1.3')
-    testCompile('ru.yandex.qatools.matchers:nio-matchers:1.2')
+    testCompile('junit:junit')
+    testCompile('org.hamcrest:hamcrest-all')
+    testCompile('ru.yandex.qatools.matchers:nio-matchers')
 }
 
 configurations.archives.artifacts.removeAll { it.archiveTask.is jar }

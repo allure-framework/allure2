@@ -53,7 +53,6 @@ public final class CommandUtils {
         Server server = new Server(port);
         ResourceHandler handler = new ResourceHandler();
         handler.setDirectoriesListed(true);
-        handler.setWelcomeFiles(new String[]{"index.html"});
         handler.setResourceBase(reportDirectory.toAbsolutePath().toString());
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[]{handler, new DefaultHandler()});

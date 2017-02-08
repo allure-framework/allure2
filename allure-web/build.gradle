@@ -29,7 +29,7 @@ processResources.dependsOn buildWeb
 
 dependencies {
     compileOnly project(':allure-generator')
-    compileOnly "org.slf4j:slf4j-simple:${slf4jVersion}"
+    compileOnly 'org.slf4j:slf4j-simple'
 
     allurePlugin project(path: ':behaviors-plugin', configuration: 'allurePlugin')
     allurePlugin project(path: ':junit-plugin', configuration: 'allurePlugin')
