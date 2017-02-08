@@ -58,28 +58,28 @@ allprojects {
             dependency 'com.google.inject.extensions:guice-assistedinject:4.1.0'
             dependency 'com.google.inject.extensions:guice-multibindings:4.1.0'
 
-            dependency 'org.apache.tika:tika-core:1.11'
+            dependency 'org.apache.tika:tika-core:1.14'
             dependency 'org.pegdown:pegdown:1.6.0'
             dependency 'ru.qatools.commons:properties:2.0.RC5'
             dependency 'org.freemarker:freemarker:2.3.23'
             dependency 'com.github.baev:jaxb-utils:1.0'
             dependency 'org.allurefw:allure1-model:1.0'
             dependency 'io.qameta.allure:model-v2:1.0-BETA2'
-            dependency 'org.zeroturnaround:zt-zip:1.9'
-            dependency 'org.apache.commons:commons-lang3:3.4'
+            dependency 'org.zeroturnaround:zt-zip:1.11'
+            dependency 'org.apache.commons:commons-lang3:3.5'
             dependency 'com.github.rvesse:airline:2.2.0'
             dependency 'com.squareup.retrofit:retrofit:1.9.0'
             dependency 'org.apache.commons:commons-exec:1.3'
             dependency 'org.eclipse.jetty:jetty-server:9.2.2.v20140723'
             dependency 'org.jvnet.jaxb2_commons:jaxb2-basics-ant:1.11.1'
-            dependency 'org.jvnet.jaxb2_commons:jaxb2-basics:0.9.5'
-            dependency 'com.github.jaxb-xew-plugin:jaxb-xew-plugin:1.5'
+            dependency 'org.jvnet.jaxb2_commons:jaxb2-basics:1.11.1'
+            dependency 'com.github.jaxb-xew-plugin:jaxb-xew-plugin:1.8'
             dependency 'net.java.dev.jaxb2-commons:jaxb-fluent-api:2.1.8'
             dependency 'net.masterthought:cucumber-reporting:3.4.0'
             dependency 'org.apache.maven.surefire:surefire-report-parser:2.19.1'
 
-            dependency 'com.fasterxml.jackson.core:jackson-databind:2.7.0'
-            dependency 'com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.7.0'
+            dependency 'com.fasterxml.jackson.core:jackson-databind:2.8.6'
+            dependency 'com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.8.6'
 
             dependency 'org.slf4j:slf4j-nop:1.7.21'
             dependency 'org.slf4j:slf4j-api:1.7.21'
@@ -91,7 +91,7 @@ allprojects {
             dependency 'org.assertj:assertj-core:3.6.2'
             dependency 'org.mockito:mockito-all:1.10.19'
             dependency 'com.github.baev:hamcrest-optional:1.0'
-            dependency 'ru.yandex.qatools.matchers:nio-matchers:1.2'
+            dependency 'ru.yandex.qatools.matchers:nio-matchers:1.3'
         }
     }
 
@@ -101,12 +101,6 @@ allprojects {
 }
 
 subprojects { project ->
-    ext {
-        aspectjVersion = '1.8.9'
-        jaxb2BasicsVersion = '0.9.5'
-        slf4jVersion = '1.7.12'
-    }
-
     apply plugin: 'java'
     compileJava.dependsOn(processResources)
 
