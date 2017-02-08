@@ -7,6 +7,7 @@ import io.qameta.allure.ReportInfo;
 import io.qameta.allure.core.DefaultAttachmentsStorage;
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.StageResult;
+import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestCaseResult;
 import io.qameta.allure.testdata.TestData;
@@ -30,6 +31,7 @@ import static io.qameta.allure.AllureUtils.generateTestGroupJsonFileName;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
@@ -162,6 +164,36 @@ public class Allure2ResultsReaderTest {
                         )))
                 )))
         ));
+    }
+
+    @Test
+    public void shouldProcessEmptyStatus() throws Exception {
+        List<TestCaseResult> testResults = process(
+                "allure2/no-status.json", generateTestCaseJsonFileName()
+        );
+
+        assertThat(testResults, hasSize(1));
+        assertThat(testResults, hasItem(hasProperty("status", equalTo(Status.UNKNOWN))));
+    }
+
+    @Test
+    public void shouldProcessNullStatus() throws Exception {
+        List<TestCaseResult> testResults = process(
+                "allure2/null-status.json", generateTestCaseJsonFileName()
+        );
+
+        assertThat(testResults, hasSize(1));
+        assertThat(testResults, hasItem(hasProperty("status", equalTo(Status.UNKNOWN))));
+    }
+
+    @Test
+    public void shouldProcessInvalidStatus() throws Exception {
+        List<TestCaseResult> testResults = process(
+                "allure2/invalid-status.json", generateTestCaseJsonFileName()
+        );
+
+        assertThat(testResults, hasSize(1));
+        assertThat(testResults, hasItem(hasProperty("status", equalTo(Status.UNKNOWN))));
     }
 
     @Test

@@ -1,7 +1,6 @@
 package io.qameta.allure.defects;
 
 import io.qameta.allure.ResultAggregator;
-import io.qameta.allure.entity.Failure;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestCase;
 import io.qameta.allure.entity.TestCaseResult;
@@ -35,8 +34,7 @@ public class DefectsResultAggregator implements ResultAggregator<DefectsData> {
             }
 
             List<Defect> defects = status == FAILED ? identity.getProductDefects() : identity.getTestDefects();
-            String defectMessage = result.getFailureIfExists()
-                    .map(Failure::getMessage)
+            String defectMessage = result.getStatusMessage()
                     .orElse("Unknown error");
 
             Defect defect = defects.stream()

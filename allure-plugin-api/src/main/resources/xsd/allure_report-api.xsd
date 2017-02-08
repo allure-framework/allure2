@@ -23,6 +23,7 @@
             <xsd:element name="name" type="xsd:string"/>
             <xsd:element name="time" type="ns:Time"/>
             <xsd:element name="status" type="ns:Status"/>
+            <xsd:element name="flaky" type="xsd:boolean"/>
         </xsd:all>
     </xsd:complexType>
 
@@ -56,13 +57,15 @@
         <xsd:complexContent>
             <xsd:extension base="ns:ExtraElements">
                 <xsd:sequence>
-                    <xsd:element name="id" type="xsd:string"/>
                     <xsd:element name="uid" type="xsd:string"/>
                     <xsd:element name="name" type="xsd:string"/>
                     <xsd:element name="fullName" type="xsd:string"/>
+
+                    <xsd:element name="testCaseId" type="xsd:string"/>
                     <xsd:element name="time" type="ns:Time"/>
                     <xsd:element name="status" type="ns:Status"/>
-                    <xsd:element name="failure" type="ns:Failure" minOccurs="0"/>
+                    <xsd:element name="statusDetails" type="ns:StatusDetails" minOccurs="0"/>
+
                     <xsd:element name="description" type="xsd:string" minOccurs="0"/>
                     <xsd:element name="descriptionHtml" type="xsd:string" minOccurs="0"/>
 
@@ -83,7 +86,8 @@
         <xsd:sequence>
             <xsd:element name="name" type="xsd:string"/>
             <xsd:element name="time" type="ns:Time"/>
-            <xsd:element name="failure" type="ns:Failure" minOccurs="0"/>
+            <xsd:element name="status" type="ns:Status"/>
+            <xsd:element name="statusDetails" type="ns:StatusDetails" minOccurs="0"/>
             <xsd:element name="steps" type="ns:Steps" minOccurs="0"/>
             <xsd:element name="attachments" type="ns:Attachments" minOccurs="0"/>
         </xsd:sequence>
@@ -164,11 +168,12 @@
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:element name="failure" type="ns:Failure"/>
-    <xsd:complexType name="Failure">
+    <xsd:element name="statusDetails" type="ns:StatusDetails"/>
+    <xsd:complexType name="StatusDetails">
         <xsd:all>
             <xsd:element name="message" type="xsd:string"/>
             <xsd:element name="trace" type="xsd:string"/>
+            <xsd:element name="flaky" type="xsd:boolean"/>
         </xsd:all>
     </xsd:complexType>
 
@@ -178,7 +183,7 @@
             <xsd:element name="name" type="xsd:string"/>
             <xsd:element name="time" type="ns:Time"/>
             <xsd:element name="status" type="ns:Status"/>
-            <xsd:element name="failure" type="ns:Failure" minOccurs="0"/>
+            <xsd:element name="statusDetails" type="ns:StatusDetails" minOccurs="0"/>
             <xsd:element name="steps" type="ns:Steps" minOccurs="0"/>
             <xsd:element name="attachments" type="ns:Attachments" minOccurs="0"/>
             <xsd:element name="parameters" type="ns:Parameters" minOccurs="0"/>
@@ -211,11 +216,11 @@
     <!-- Other entity -->
     <xsd:element name="statistic" type="ns:Statistic"/>
     <xsd:complexType name="Statistic">
-        <xsd:attribute name="passed" type="xsd:long" use="required"/>
-        <xsd:attribute name="pending" type="xsd:long" use="required"/>
-        <xsd:attribute name="canceled" type="xsd:long" use="required"/>
         <xsd:attribute name="failed" type="xsd:long" use="required"/>
         <xsd:attribute name="broken" type="xsd:long" use="required"/>
+        <xsd:attribute name="skipped" type="xsd:long" use="required"/>
+        <xsd:attribute name="passed" type="xsd:long" use="required"/>
+        <xsd:attribute name="unknown" type="xsd:long" use="required"/>
     </xsd:complexType>
 
     <xsd:element name="attachment-file" type="ns:AttachmentFile"/>
@@ -237,8 +242,8 @@
             <xsd:enumeration value="failed"/>
             <xsd:enumeration value="broken"/>
             <xsd:enumeration value="passed"/>
-            <xsd:enumeration value="canceled"/>
-            <xsd:enumeration value="pending"/>
+            <xsd:enumeration value="skipped"/>
+            <xsd:enumeration value="unknown"/>
         </xsd:restriction>
     </xsd:simpleType>
 

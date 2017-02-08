@@ -7,6 +7,9 @@
             <attachments>
                 <attachment title="some-attachment" source="sample-attachment.txt" type="text/plain"/>
             </attachments>
+            <labels>
+                <label name="status_details" value="flaky"/>
+            </labels>
         </test-case>
     </test-cases>
 </ns2:test-suite>

@@ -16,7 +16,8 @@ export default class SettingsModel extends Model {
             canceled: true,
             pending: true,
             passed: true
-        }
+        },
+        showGroupInfo: true
     };
 
     fetch() {

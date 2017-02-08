@@ -181,7 +181,7 @@ class TimelineView extends BaseChartView {
             .data(testcases).enter()
             .append('a')
             .attrs({
-                'xlink:href': d => '#timeline/' + d.uid
+                'xlink:href': d => '#testcase/' + d.uid
             })
             .append('rect')
             .attrs({

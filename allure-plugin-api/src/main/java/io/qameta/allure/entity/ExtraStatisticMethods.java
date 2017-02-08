@@ -21,21 +21,23 @@ public interface ExtraStatisticMethods {
 
     void setPassed(long value);
 
-    long getPending();
+    long getSkipped();
 
-    void setPending(long value);
+    void setSkipped(long value);
 
-    long getCanceled();
+    long getUnknown();
 
-    void setCanceled(long value);
+    void setUnknown(long value);
 
     @XmlElement
     default long getTotal() {
-        return getFailed() + getBroken() + getPassed() + getCanceled() + getPending();
+        return getFailed() + getBroken() + getPassed() + getSkipped() + getUnknown();
     }
 
     /**
      * To ignore total property during deserialization. Should not be used manually.
+     *
+     * @deprecated Do not use it manually.
      */
     @Deprecated
     @XmlElement
@@ -61,14 +63,14 @@ public interface ExtraStatisticMethods {
             case BROKEN:
                 setBroken(getBroken() + 1);
                 break;
-            case CANCELED:
-                setCanceled(getCanceled() + 1);
-                break;
             case PASSED:
                 setPassed(getPassed() + 1);
                 break;
-            case PENDING:
-                setPending(getPending() + 1);
+            case SKIPPED:
+                setSkipped(getSkipped() + 1);
+                break;
+            case UNKNOWN:
+                setUnknown(getUnknown() + 1);
                 break;
         }
     }
@@ -80,16 +82,16 @@ public interface ExtraStatisticMethods {
         setFailed(getFailed() + other.getFailed());
         setBroken(getBroken() + other.getBroken());
         setPassed(getPassed() + other.getPassed());
-        setCanceled(getCanceled() + other.getCanceled());
-        setPending(getPending() + other.getPending());
+        setSkipped(getSkipped() + other.getSkipped());
+        setUnknown(getUnknown() + other.getUnknown());
     }
 
     static Comparator<Statistic> comparator() {
         return Comparator.comparing(Statistic::getFailed)
                 .thenComparing(Statistic::getBroken)
                 .thenComparing(Statistic::getPassed)
-                .thenComparing(Statistic::getCanceled)
-                .thenComparing(Statistic::getPending);
+                .thenComparing(Statistic::getSkipped)
+                .thenComparing(Statistic::getUnknown);
     }
 
 }

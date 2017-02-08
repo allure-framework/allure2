@@ -6,6 +6,7 @@ import {history} from 'backbone';
 import router from './router';
 import * as behaviors from './behaviors';
 import ErrorLayout from './layouts/error/ErrorLayout';
+import TestcaseLayout from './layouts/testcase/TestcaseLayout';
 import i18next, { initTranslations } from './util/translation';
 
 Behaviors.behaviorsLookup = behaviors;
@@ -15,7 +16,7 @@ function rootPath(path) {
 }
 
 function noTabChange() {
-    return rootPath(router.getCurrentUrl()) === rootPath(router.lastUrl);
+    return rootPath(router.getCurrentUrl()) === rootPath(router.currentUrl);
 }
 
 export function showView(factory) {
@@ -47,6 +48,7 @@ App.on('start', () => {
     });
 
     router.on('route:notFound', showView(notFound));
+    router.on('route:testcasePage', showView((...routeParams) => new TestcaseLayout({routeParams})));
 });
 
 export default App;

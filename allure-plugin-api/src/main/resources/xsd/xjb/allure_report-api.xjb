@@ -21,7 +21,7 @@
         <inheritance:implements>io.qameta.allure.entity.WithTime</inheritance:implements>
         <inheritance:implements>io.qameta.allure.entity.WithStatus</inheritance:implements>
         <inheritance:implements>io.qameta.allure.entity.WithLabels</inheritance:implements>
-        <inheritance:implements>io.qameta.allure.entity.WithFailure</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithStatusDetails</inheritance:implements>
         <inheritance:implements>io.qameta.allure.entity.WithLinks</inheritance:implements>
 
         <inheritance:implements>io.qameta.allure.entity.WithSource</inheritance:implements>
@@ -45,7 +45,7 @@
         <inheritance:implements>io.qameta.allure.entity.WithName</inheritance:implements>
         <inheritance:implements>io.qameta.allure.entity.WithTime</inheritance:implements>
         <inheritance:implements>io.qameta.allure.entity.WithStatus</inheritance:implements>
-        <inheritance:implements>io.qameta.allure.entity.WithFailure</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithStatusDetails</inheritance:implements>
     </jaxb:bindings>
 
     <jaxb:bindings node="//xsd:complexType[@name='Statistic']">

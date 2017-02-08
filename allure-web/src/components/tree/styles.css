@@ -1,11 +1,19 @@
 @import "../../variables.css";
 
 .node {
-  margin-left: 10px;
+  margin-left: 0;
   position: relative;
   display: block;
   text-decoration: none;
   color: $text-color;
+
+  .node {
+    margin-left: 20px;
+  }
+
+  &:last-child {
+    padding-bottom: 10px;
+  }
   &__arrow {
     left: 7px;
     position: absolute;
@@ -23,7 +31,7 @@
     padding: 7px $gap-size 7px 25px;
     flex: 1;
     cursor: pointer;
-    border-bottom: 1px solid #ECEFF1;
+    border-top: 1px solid #ECEFF1;
     position: relative;
     .node__leaf & {
       padding: 7px $gap-size 7px 35px;
@@ -41,6 +49,14 @@
       }
     }
   }
+  &__info {
+    color: $text-muted-color;
+    padding: 7px;
+  }
+  &__time {
+    padding: 5px;
+  }
+
   &__children {
     display: none;
     .node__expanded > & {
@@ -55,9 +71,11 @@
   }
 }
 
-.statuses-filter {
-  cursor: pointer;
-  width: 30px;
-  line-height: 30px;
-  text-align: center;
+.tree {
+  &__control {
+    cursor: pointer;
+    width: 30px;
+    line-height: 30px;
+    text-align: center;
+  }
 }
