@@ -36,3 +36,7 @@
   border-bottom: 3px solid;
   @mixin status-border;
 }
+
+.fullname__copy {
+  cursor: pointer;
+}
