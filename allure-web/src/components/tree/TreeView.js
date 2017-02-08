@@ -4,7 +4,9 @@ import settings from '../../util/settings';
 import template from './TreeView.hbs';
 import StatusToggleView from '../status-toggle/StatusToggleView';
 import {on} from '../../decorators';
+import {behavior} from '../../decorators/index';
 
+@behavior('TooltipBehavior', {position: 'bottom'})
 class TreeView extends View {
     template = template;
 
@@ -15,6 +17,7 @@ class TreeView extends View {
         this.statusesSelect = new StatusToggleView();
         this.listenTo(this.state, 'change:testcase', (m, testcase) => this.highlightItem(testcase));
         this.listenTo(settings, 'change:visibleStatuses', this.render);
+        this.listenTo(settings, 'change:showGroupInfo', this.render);
     }
 
     onDomRefresh() {
@@ -34,16 +37,20 @@ class TreeView extends View {
         this.$(e.currentTarget).parent().toggleClass('node__expanded');
     }
 
-    @on('click .statuses-filter')
+    @on('click .tree__statuses')
     onFilterClick(e) {
         const filter = this.$(e.currentTarget);
-        filter.toggleClass('statuses-filter_active', !this.statusesSelect.isVisible());
-
         if(this.statusesSelect.isVisible()) {
             this.statusesSelect.hide();
         } else {
             this.statusesSelect.show(filter);
         }
+    }
+
+    @on('click .tree__info')
+    onInfoClick() {
+        const show = settings.get('showGroupInfo');
+        settings.save('showGroupInfo', !show);
     }
 
     highlightItem(uid) {
@@ -55,8 +62,10 @@ class TreeView extends View {
 
     serializeData() {
         const statuses = settings.get('visibleStatuses');
+        const showGroupInfo = settings.get('showGroupInfo');
         return {
             baseUrl: this.baseUrl,
+            showGroupInfo: showGroupInfo,
             time: this.collection.time,
             statistic: this.collection.statistic,
             tabName: this.tabName,

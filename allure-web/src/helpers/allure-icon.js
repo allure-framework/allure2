@@ -4,6 +4,10 @@ const icons = {
     flaky: {
         className: 'fa fa-bomb',
         tooltip: 'Test is flaky'
+    },
+    info: {
+        className: 'fa fa-info-circle',
+        tooltip: 'Info'
     }
 };
 
