@@ -38,9 +38,9 @@ jaxb {
 }
 
 dependencies {
-    jaxb('org.jvnet.jaxb2_commons:jaxb2-basics-ant:1.11.1')
-    jaxb("org.jvnet.jaxb2_commons:jaxb2-basics:${jaxb2BasicsVersion}")
-    jaxb('com.github.jaxb-xew-plugin:jaxb-xew-plugin:1.5')
-    jaxb('net.java.dev.jaxb2-commons:jaxb-fluent-api:2.1.8')
-    jaxb('org.slf4j:slf4j-nop:1.7.21')
+    jaxb('org.jvnet.jaxb2_commons:jaxb2-basics-ant')
+    jaxb('org.jvnet.jaxb2_commons:jaxb2-basics')
+    jaxb('com.github.jaxb-xew-plugin:jaxb-xew-plugin')
+    jaxb('net.java.dev.jaxb2-commons:jaxb-fluent-api')
+    jaxb('org.slf4j:slf4j-nop')
 }

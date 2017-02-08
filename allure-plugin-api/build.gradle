@@ -6,22 +6,22 @@ apply from: "${gradleScriptDir}/bintray.gradle"
 apply plugin: 'maven'
 
 dependencies {
-    compile('com.google.inject:guice:4.1.0')
-    compile('com.google.inject.extensions:guice-assistedinject:4.1.0')
-    compile('com.google.inject.extensions:guice-multibindings:4.1.0')
+    compile('com.google.inject:guice')
+    compile('com.google.inject.extensions:guice-assistedinject')
+    compile('com.google.inject.extensions:guice-multibindings')
 
-    compile('org.apache.tika:tika-core:1.11')
-    compile('org.pegdown:pegdown:1.6.0')
-    compile('ru.qatools.commons:properties:2.0.RC5')
-    compile('com.fasterxml.jackson.core:jackson-databind:2.7.0')
-    compile('com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.7.0')
-    compile("org.slf4j:slf4j-api:${slf4jVersion}")
+    compile('org.apache.tika:tika-core')
+    compile('org.pegdown:pegdown')
+    compile('ru.qatools.commons:properties')
+    compile('com.fasterxml.jackson.core:jackson-databind')
+    compile('com.fasterxml.jackson.module:jackson-module-jaxb-annotations')
+    compile('org.slf4j:slf4j-api')
 
-    testCompile('junit:junit:4.12')
-    testCompile('org.hamcrest:hamcrest-all:1.3')
-    testCompile('org.mockito:mockito-all:1.10.19')
-    testCompile('com.github.baev:hamcrest-optional:1.0')
-    testCompile("org.slf4j:slf4j-simple:${slf4jVersion}")
+    testCompile('junit:junit')
+    testCompile('org.hamcrest:hamcrest-all')
+    testCompile('org.mockito:mockito-all')
+    testCompile('com.github.baev:hamcrest-optional')
+    testCompile('org.slf4j:slf4j-simple')
 }
 
 task sourceJar(type: Jar, dependsOn: classes) {

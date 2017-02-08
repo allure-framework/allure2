@@ -9,11 +9,11 @@ jar {
 
 dependencies {
     compile project(':allure-plugin-api')
-    compile('net.masterthought:cucumber-reporting:3.4.0')
+    compile('net.masterthought:cucumber-reporting')
 
-    testCompile('junit:junit:4.12')
-    testCompile('org.assertj:assertj-core:3.6.2')
-    testCompile("org.slf4j:slf4j-simple:${slf4jVersion}")
+    testCompile('junit:junit')
+    testCompile('org.assertj:assertj-core')
+    testCompile('org.slf4j:slf4j-simple')
 }
 
 configurations.archives.artifacts.removeAll { it.archiveTask.is jar }
