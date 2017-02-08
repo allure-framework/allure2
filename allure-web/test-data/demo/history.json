@@ -176,11 +176,11 @@
     "id" : "my.company.SimpleTest#skippedSimpleTest",
     "name" : "skippedSimpleTest",
     "statistic" : {
-      "pending" : 1,
+      "skipped" : 1,
       "total" : 1
     },
     "items" : [ {
-      "status" : "pending",
+      "status" : "skipped",
       "statusDetails" : "Test ignored (without reason)!",
       "testRunName" : "Demo Allure tests",
       "time" : {
@@ -335,11 +335,11 @@
     "id" : "my.company.AllureMigrationTest#Test what do nothing and always passed right, but have a very long title, over 100 symbols, seriously",
     "name" : "Test what do nothing and always passed right, but have a very long title, over 100 symbols, seriously",
     "statistic" : {
-      "canceled" : 1,
+      "skipped" : 1,
       "total" : 1
     },
     "items" : [ {
-      "status" : "canceled",
+      "status" : "skipped",
       "testRunName" : "Demo Allure tests",
       "time" : {
         "start": 1412949558830,

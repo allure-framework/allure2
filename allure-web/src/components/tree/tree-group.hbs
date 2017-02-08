@@ -8,8 +8,18 @@
             </span>
         </div>
         <div class="node__children">
+            {{#if showGroupInfo}}
+                <div class="node">
+                    <div class="node__info long-line" data-uid="{{uid}}">
+                        <span class="fa fa-clock-o"></span>
+                        {{> tree-time value=time.duration name='total' tooltip='Total duration for test group'}}
+                        {{> tree-time value=time.maxDuration name='max' tooltip='Longest test case duration'}}
+                        {{> tree-time value=time.sumDuration name='sum' tooltip='Summary test case duration'}}
+                    </div>
+                </div>
+            {{/if}}
             {{#each children}}
-                {{> tree-group baseUrl=../baseUrl}}
+                {{> tree-group baseUrl=../baseUrl showGroupInfo=../showGroupInfo}}
             {{/each}}
         </div>
     </div>

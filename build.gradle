@@ -16,10 +16,10 @@ buildscript {
 
 ext {
     linkHomepage = 'https://qameta.io/allure'
-    linkCi = 'https://ci.qameta.in/job/allure-server_deploy/'
-    linkScmUrl = 'https://github.com/qameta/allure-server'
-    linkScmConnection = 'scm:git:git://github.com/qameta/allure-server.git'
-    linkScmDevConnection = 'scm:git:ssh://git@github.com:qameta/allure-server.git'
+    linkCi = 'https://ci.qameta.in/job/allure2_deploy/'
+    linkScmUrl = 'https://github.com/allure-framework/allure2'
+    linkScmConnection = 'scm:git:git://github.com/allure-framework/allure2.git'
+    linkScmDevConnection = 'scm:git:ssh://git@github.com:allure-framework/allure2.git'
     gradleScriptDir = "${rootProject.projectDir}/gradle"
 }
 

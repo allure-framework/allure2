@@ -1,4 +1,4 @@
-@import "../../variables.css";
+@import "../../mixins.css";
 
 .chart {
   margin-right: $gap-size;
@@ -34,21 +34,7 @@
     stop-opacity: 0;
   }
   &__fill {
-    &_status_failed {
-      fill: $color-failed
-    }
-    &_status_broken {
-      fill: $color-broken;
-    }
-    &_status_passed {
-      fill: $color-passed;
-    }
-    &_status_pending {
-      fill: $color-pending;
-    }
-    &_status_canceled {
-      fill: $color-canceled;
-    }
+    @mixin status-fill;
   }
   &__axis {
     path, line {

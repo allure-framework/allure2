@@ -6,13 +6,13 @@ import com.google.inject.Inject;
 import io.qameta.allure.AttachmentsStorage;
 import io.qameta.allure.ResultsReader;
 import io.qameta.allure.entity.Attachment;
-import io.qameta.allure.entity.Failure;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.Link;
 import io.qameta.allure.entity.Parameter;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
+import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestCaseResult;
 import io.qameta.allure.entity.Time;
@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.yandex.qatools.allure.model.Description;
 import ru.yandex.qatools.allure.model.DescriptionType;
+import ru.yandex.qatools.allure.model.Failure;
 import ru.yandex.qatools.allure.model.ParameterKind;
 import ru.yandex.qatools.allure.model.TestSuiteResult;
 
@@ -40,19 +41,19 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static io.qameta.allure.ReportApiUtils.generateUid;
+import static io.qameta.allure.ReportApiUtils.listFiles;
 import static io.qameta.allure.entity.LabelName.ISSUE;
 import static io.qameta.allure.entity.LabelName.TEST_ID;
+import static io.qameta.allure.entity.Status.BROKEN;
+import static io.qameta.allure.entity.Status.FAILED;
+import static io.qameta.allure.entity.Status.PASSED;
+import static io.qameta.allure.entity.Status.SKIPPED;
+import static io.qameta.allure.entity.Status.UNKNOWN;
+import static io.qameta.allure.utils.ListUtils.firstNonNull;
 import static org.allurefw.allure1.AllureConstants.ATTACHMENTS_FILE_GLOB;
 import static org.allurefw.allure1.AllureConstants.TEST_SUITE_JSON_FILE_GLOB;
 import static org.allurefw.allure1.AllureConstants.TEST_SUITE_XML_FILE_GLOB;
-import static io.qameta.allure.ReportApiUtils.generateUid;
-import static io.qameta.allure.ReportApiUtils.listFiles;
-import static io.qameta.allure.entity.Status.BROKEN;
-import static io.qameta.allure.entity.Status.CANCELED;
-import static io.qameta.allure.entity.Status.FAILED;
-import static io.qameta.allure.entity.Status.PASSED;
-import static io.qameta.allure.entity.Status.PENDING;
-import static io.qameta.allure.utils.ListUtils.firstNonNull;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -91,7 +92,7 @@ public class Allure1ResultsReader implements ResultsReader {
         String testClass = firstNonNull(testSuite.getName(), "unknown");
         String name = firstNonNull(source.getTitle(), source.getName(), "unknown test case");
 
-        dest.setId(String.format("%s#%s", testClass, name));
+        dest.setTestCaseId(String.format("%s#%s", testClass, name));
         dest.setUid(generateUid());
         dest.setName(name);
         dest.setFullName(String.format("%s#%s", testSuite.getName(), source.getName()));
@@ -101,13 +102,14 @@ public class Allure1ResultsReader implements ResultsReader {
         dest.setParameters(convert(source.getParameters(), this::hasArgumentType, this::convert));
         dest.setDescription(getDescription(testSuite.getDescription(), source.getDescription()));
         dest.setDescriptionHtml(getDescriptionHtml(testSuite.getDescription(), source.getDescription()));
-        dest.setFailure(convert(source.getFailure()));
+        dest.setStatusDetails(convert(source.getFailure()));
 
         if (!source.getSteps().isEmpty() || !source.getAttachments().isEmpty()) {
             StageResult testStage = new StageResult();
             testStage.setSteps(convert(source.getSteps(), this::convert));
             testStage.setAttachments(convert(source.getAttachments(), this::convert));
-            testStage.setFailure(convert(source.getFailure()));
+            testStage.setStatus(convert(source.getStatus()));
+            testStage.setStatusDetails(convert(source.getFailure()));
             dest.setTestStage(testStage);
         }
 
@@ -123,7 +125,10 @@ public class Allure1ResultsReader implements ResultsReader {
         );
         dest.addLabelIfNotExists(LabelName.SUITE, suiteName);
         dest.addLabelIfNotExists("package", testClass);
-
+        dest.findAll("status_details").stream()
+                .filter("flaky"::equalsIgnoreCase)
+                .findAny()
+                .ifPresent(value -> dest.getStatusDetailsSafe().setFlaky(true));
         return dest;
     }
 
@@ -170,8 +175,8 @@ public class Allure1ResultsReader implements ResultsReader {
                 .withAttachments(convert(s.getAttachments(), this::convert));
     }
 
-    private Failure convert(ru.yandex.qatools.allure.model.Failure failure) {
-        return Objects.isNull(failure) ? null : new Failure()
+    private StatusDetails convert(Failure failure) {
+        return Objects.isNull(failure) ? null : new StatusDetails()
                 .withMessage(failure.getMessage())
                 .withTrace(failure.getStackTrace());
     }
@@ -208,6 +213,9 @@ public class Allure1ResultsReader implements ResultsReader {
     }
 
     public static Status convert(ru.yandex.qatools.allure.model.Status status) {
+        if (Objects.isNull(status)) {
+            return UNKNOWN;
+        }
         switch (status) {
             case FAILED:
                 return FAILED;
@@ -217,9 +225,10 @@ public class Allure1ResultsReader implements ResultsReader {
                 return PASSED;
             case CANCELED:
             case SKIPPED:
-                return CANCELED;
+            case PENDING:
+                return SKIPPED;
             default:
-                return PENDING;
+                return UNKNOWN;
         }
     }
 

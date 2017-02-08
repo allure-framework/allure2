@@ -1,0 +1,11 @@
+.back-panel {
+  &__text {
+    position: absolute;
+    top: 50%;
+    transform: rotate(-90deg);
+    margin-left: 5%;
+    width: 100%;
+    text-align: center;
+    left: -50%;
+  }
+}

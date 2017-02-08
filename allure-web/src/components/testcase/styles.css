@@ -21,7 +21,7 @@
     }
   }
   &__severity {
-    color: $color-canceled;
+    color: $color-skipped;
   }
   &__failure {
     padding-bottom: 10px;

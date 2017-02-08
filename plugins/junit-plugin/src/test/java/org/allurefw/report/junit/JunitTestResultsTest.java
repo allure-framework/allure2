@@ -50,12 +50,12 @@ public class JunitTestResultsTest {
         assertThat(testCases, hasSize(5));
 
         List<TestCaseResult> failed = filterByStatus(testCases, Status.FAILED);
-        List<TestCaseResult> canceled = filterByStatus(testCases, Status.CANCELED);
+        List<TestCaseResult> skipped = filterByStatus(testCases, Status.SKIPPED);
         List<TestCaseResult> passed = filterByStatus(testCases, Status.PASSED);
 
         assertThat("Should parse failed status", failed, hasSize(1));
-        assertThat("Should parse skipped status", canceled, hasSize(1));
-        assertThat(passed, hasSize(3));
+        assertThat("Should parse skipped status", skipped, hasSize(1));
+        assertThat("Should parse passed status", passed, hasSize(3));
     }
 
     @Test

@@ -37,6 +37,9 @@
     margin: 7px 0 0;
     border-bottom: 1px solid $border-color;
     font-size: 24px;
+    &_borderless {
+      border: none;
+    }
   }
   &__controls {
     float: right;

@@ -4,10 +4,10 @@ import com.google.inject.Inject;
 import io.qameta.allure.AttachmentsStorage;
 import io.qameta.allure.ResultsReader;
 import io.qameta.allure.entity.Attachment;
-import io.qameta.allure.entity.Failure;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
+import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.TestCaseResult;
 import io.qameta.allure.entity.Time;
 import net.masterthought.cucumber.Configuration;
@@ -76,12 +76,12 @@ public class CucumberJsonResultsReader implements ResultsReader {
         TestCaseResult result = new TestCaseResult();
         String testName = Optional.ofNullable(element.getName()).orElse("Unnamed scenario");
         String featureName = Optional.ofNullable(element.getFeature().getName()).orElse("Unnamed feature");
-        result.setId(String.format("%s#%s", featureName, testName));
+        result.setTestCaseId(String.format("%s#%s", featureName, testName));
         result.setUid(generateUid());
         result.setName(firstNonNull(element.getName(), element.getKeyword(), element.getDescription(), "Unknown"));
         result.setTime(getTime(element));
         result.setStatus(getStatus(element));
-        result.setFailure(getFailure(element));
+        result.setStatusDetails(getStatusDetails(element));
         result.addLabelIfNotExists(LabelName.FEATURE, element.getFeature().getName());
         result.setDescription(element.getDescription());
 
@@ -113,15 +113,15 @@ public class CucumberJsonResultsReader implements ResultsReader {
             return Stream.of(source.getSteps())
                     .map(this::getStepStatus)
                     .min(Enum::compareTo)
-                    .orElse(Status.PENDING);
+                    .orElse(Status.UNKNOWN);
         }
-        return Status.PENDING;
+        return getStatus(source.getStatus());
     }
 
-    private Failure getFailure(Element source) {
+    private StatusDetails getStatusDetails(Element source) {
         return Stream.of(source.getSteps())
                 .map(Step::getResult)
-                .map(this::getFailure)
+                .map(this::getStatusDetails)
                 .filter(Objects::nonNull)
                 .findFirst().orElse(null);
     }
@@ -138,10 +138,10 @@ public class CucumberJsonResultsReader implements ResultsReader {
                                                 .map(this::convertAttachment)
                                                 .collect(Collectors.toList())
                                 )
-                                .withFailure(getFailure(step.getResult()))
+                                .withStatusDetails(getStatusDetails(step.getResult()))
                         )
                         .collect(Collectors.toList()))
-                .withFailure(getFailure(source));
+                .withStatusDetails(getStatusDetails(source));
     }
 
     private List<StageResult> convertHooks(Hook[] hooks) {
@@ -151,7 +151,7 @@ public class CucumberJsonResultsReader implements ResultsReader {
                                 Stream.of(hook.getEmbeddings())
                                         .map(this::convertAttachment)
                                         .collect(Collectors.toList()))
-                        .withFailure(getFailure(hook.getResult()))
+                        .withStatusDetails(getStatusDetails(hook.getResult()))
                         .withTime(new Time().withDuration(hook.getResult().getDuration()))
                 ).collect(Collectors.toList());
     }
@@ -165,9 +165,9 @@ public class CucumberJsonResultsReader implements ResultsReader {
         return found;
     }
 
-    private Failure getFailure(Result result) {
+    private StatusDetails getStatusDetails(Result result) {
         return Optional.ofNullable(result.getErrorMessage())
-                .map(msg -> new Failure().withMessage(msg))
+                .map(msg -> new StatusDetails().withMessage(msg))
                 .orElse(null);
     }
 
@@ -183,12 +183,12 @@ public class CucumberJsonResultsReader implements ResultsReader {
             return Status.FAILED;
         }
         if (status == PENDING) {
-            return Status.PENDING;
+            return Status.SKIPPED;
         }
         if (status == SKIPPED) {
-            return Status.CANCELED;
+            return Status.SKIPPED;
         }
-        return Status.BROKEN;
+        return Status.UNKNOWN;
     }
 
     @SafeVarargs

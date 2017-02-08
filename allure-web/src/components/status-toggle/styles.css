@@ -1,4 +1,4 @@
-@import "../../variables.css";
+@import "../../mixins.css";
 
 .status-toggle {
   z-index: 1;
@@ -24,21 +24,7 @@
       width: 1em;
       border-radius: 2px;
     }
-    &_status_passed::before {
-      background: $color-passed;
-    }
-    &_status_canceled::before {
-      background: $color-canceled;
-    }
-    &_status_pending::before {
-      background: $color-pending;
-    }
-    &_status_failed::before {
-      background: $color-failed;
-    }
-    &_status_broken::before {
-      background: $color-broken;
-    }
+    @mixin status-bg-bright-before;
     &:hover {
       background: $hover-color;
     }

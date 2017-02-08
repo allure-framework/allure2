@@ -4,10 +4,10 @@ import com.google.inject.Inject;
 import io.qameta.allure.AttachmentsStorage;
 import io.qameta.allure.ResultsReader;
 import io.qameta.allure.entity.Attachment;
-import io.qameta.allure.entity.Failure;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
+import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.TestCaseResult;
 import io.qameta.allure.entity.Time;
 import org.apache.maven.plugins.surefire.report.ReportTestCase;
@@ -26,9 +26,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
 import static io.qameta.allure.ReportApiUtils.generateUid;
 import static io.qameta.allure.ReportApiUtils.listFiles;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * @author Dmitry Baev baev@qameta.io
@@ -76,14 +76,14 @@ public class JunitResultsReader implements ResultsReader {
 
     protected TestCaseResult convert(ReportTestCase source) {
         TestCaseResult dest = new TestCaseResult();
-        dest.setId(String.format("%s#%s", source.getFullClassName(), source.getName()));
+        dest.setTestCaseId(String.format("%s#%s", source.getFullClassName(), source.getName()));
         dest.setUid(generateUid());
         dest.setName(source.getName());
         dest.setTime(new Time()
                 .withDuration(BigDecimal.valueOf(source.getTime()).multiply(MULTIPLICAND).longValue())
         );
         dest.setStatus(getStatus(source));
-        dest.setFailure(getFailure(source));
+        dest.setStatusDetails(getStatusDetails(source));
         return dest;
     }
 
@@ -95,14 +95,14 @@ public class JunitResultsReader implements ResultsReader {
             return Status.FAILED;
         }
         if ("skipped".equalsIgnoreCase(source.getFailureType())) {
-            return Status.CANCELED;
+            return Status.SKIPPED;
         }
         return Status.BROKEN;
     }
 
-    protected Failure getFailure(ReportTestCase source) {
+    protected StatusDetails getStatusDetails(ReportTestCase source) {
         if (source.hasFailure()) {
-            return new Failure()
+            return new StatusDetails()
                     .withMessage(source.getFailureMessage())
                     .withTrace(source.getFailureDetail());
         }

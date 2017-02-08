@@ -93,7 +93,9 @@ public class ProcessStage {
             LOGGER.debug("Found {} results for source {}", testCaseResults.size(), source.getFileName());
             for (TestCaseResult result : testCaseResults) {
                 statistic.update(result);
-                String testCaseId = Objects.isNull(result.getId()) ? UUID.randomUUID().toString() : result.getId();
+                String testCaseId = Objects.isNull(result.getTestCaseId())
+                        ? UUID.randomUUID().toString()
+                        : result.getTestCaseId();
                 if (!testCases.containsKey(testCaseId)) {
                     TestCase testCase = createTestCase(result);
                     testCase.setId(testCaseId);
@@ -132,7 +134,7 @@ public class ProcessStage {
 
     private TestCase createTestCase(TestCaseResult result) {
         return new TestCase()
-                .withId(result.getId())
+                .withId(result.getTestCaseId())
                 .withName(result.getName())
                 .withDescription(result.getDescription())
                 .withDescriptionHtml(result.getDescriptionHtml());

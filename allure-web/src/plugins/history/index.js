@@ -1,3 +1,3 @@
 import HistoryView from './HistoryView';
 
-allure.api.addTestcaseBlock(HistoryView, {position: 'before'});
+allure.api.addTestcaseBlock(HistoryView, {position: 'after'});

@@ -4,14 +4,14 @@
 <div class="table table_hover widget__table">
 {{#if items}}
     {{#each items}}
-    <span class="table__row">
+    <div class="table__row">
         <div class="{{b 'table' 'col'}}">
             {{name}}
         </div>
         <div class="{{b 'table' 'col'}}">
             {{status-bar statistic}}
         </div>
-    </span>
+    </div>
     {{/each}}
 {{else}}
     <div class="table__row">

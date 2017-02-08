@@ -1,6 +1,7 @@
 import BaseChartView from '../../../components/chart/BaseChartView';
 import PopoverView from '../../../components/popover/PopoverView';
 import escape from '../../../util/escape';
+import {values} from '../../../util/statuses';
 
 import {scaleBand, scaleSqrt} from 'd3-scale';
 import {max} from 'd3-array';
@@ -9,21 +10,20 @@ const PAD_TOP = 7;
 const PAD_BOTTOM = 30;
 
 const severities = ['blocker', 'critical', 'normal', 'minor', 'trivial'];
-const statuses = ['failed', 'broken', 'canceled', 'pending', 'passed'];
 
 export default class SeverityChart extends BaseChartView {
 
     initialize() {
         this.x = scaleBand().domain(severities);
         this.y = scaleSqrt();
-        this.status = scaleBand().domain(statuses);
+        this.status = scaleBand().domain(values);
         this.tooltip = new PopoverView({position: 'right'});
 
     }
 
     getChartData() {
         return severities.map(severity =>
-            statuses.map(status => {
+            values.map(status => {
                 const testcases = this.collection.where({status, severity}).map(model => model.toJSON());
                 return {
                     value: testcases.length,

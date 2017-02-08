@@ -29,7 +29,7 @@ class TestcaseView extends View {
     onRender() {
         this.showTestcasePlugins(this.$('.testcase__content_before'), pluginsRegistry.testcaseBlocks.before);
         this.showChildView('execution', new ExecutionView({
-            baseUrl: this.options.baseUrl + '/' + this.model.id,
+            baseUrl: '#testcase/' + this.model.id,
             model: this.model
         }));
         // this.highlightSelectedAttachment();
@@ -58,9 +58,6 @@ class TestcaseView extends View {
     serializeData() {
         return Object.assign({
             severityIcon: SEVERITY_ICONS[this.model.get('severity')],
-            route: {
-                baseUrl: this.options.baseUrl
-            }
         }, super.serializeData());
     }
 

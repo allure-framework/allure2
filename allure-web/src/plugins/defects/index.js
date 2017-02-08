@@ -3,7 +3,7 @@ import DefectsWidget from './defects-widget/DefectsWidget';
 
 allure.api.addTab('defects', {
     title: 'Defects', icon: 'fa fa-flag',
-    route: 'defects(/:defectId)(/:testcaseId)(/:attachmentId)',
+    route: 'defects(/:defectId)(/:testcaseId)',
     onEnter: (...routeParams) => new DefectsLayout({routeParams})
 });
 allure.api.addWidget('productDefects', DefectsWidget);
