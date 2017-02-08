@@ -52,6 +52,7 @@ allprojects {
 
     repositories {
         jcenter()
+        mavenLocal()
     }
 }
 

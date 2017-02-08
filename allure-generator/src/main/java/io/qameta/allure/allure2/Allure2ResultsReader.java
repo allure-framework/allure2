@@ -100,8 +100,6 @@ public class Allure2ResultsReader implements ResultsReader {
                     }
 
                     dest.getBeforeStages().addAll(getParentBefores(result.getParentIds(), groups));
-                    dest.getBeforeStages().addAll(convert(result.getBefores(), this::convert));
-                    dest.getAfterStages().addAll(convert(result.getAfters(), this::convert));
                     dest.getAfterStages().addAll(getParentAfters(result.getParentIds(), groups));
                     return dest;
                 }).collect(Collectors.toList());
