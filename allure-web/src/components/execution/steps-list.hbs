@@ -4,18 +4,9 @@
             {{#if (or steps.length attachments.length)}}
                 <span class="step__arrow block__arrow"></span>
             {{else}}
-                {{#if (eq status "passed")}}
-                    <span class="step__status {{b "text" status="passed"}} fa fa-check" title="Passed step"></span>
-                {{/if}}
-                {{#if (eq status "failed")}}
-                    <span class="step__status {{b "text" status="failed"}} fa fa-times" title="Failed step"></span>
-                {{/if}}
-                {{#if (eq status "broken")}}
-                    <span class="step__status {{b "text" status="broken"}} fa fa-exclamation" title="Broken step"></span>
-                {{/if}}
-                {{#if (eq status "skipped")}}
-                    <span class="step__status {{b "text" status="canceled"}} fa fa-question" title="Cancelled step"></span>
-                {{/if}}
+                <span class="step__status">
+                    {{allure-icon status}}
+                </span>
             {{/if}}
             {{name}}
             {{#if parameters}}

@@ -5,13 +5,29 @@ const icons = {
         className: 'fa fa-bomb',
         tooltip: 'Test is flaky'
     },
-    info: {
-        className: 'fa fa-info-circle',
-        tooltip: 'Info'
+    failed: {
+        className: 'fa fa-times-circle text_status_failed',
+        tooltip: 'Failed'
+    },
+    broken: {
+        className: 'fa fa-exclamation-circle text_status_broken',
+        tooltip: 'Broken'
+    },
+    passed: {
+        className: 'fa fa-check-circle text_status_passed',
+        tooltip: 'Passed'
+    },
+    skipped: {
+        className: 'fa fa-minus-circle text_status_skipped',
+        tooltip: 'Skipped'
+    },
+    unknown: {
+        className: 'fa fa-question-circle text_status_unknown',
+        tooltip: 'Unknown'
     }
 };
 
-export default function (value) {
+export default function (value, more_classes='') {
     const icon = icons[value];
-    return icon ? new SafeString(`<span class="${icon.className}" data-tooltip="${icon.tooltip}"></span>`) : '';
+    return icon ? new SafeString(`<span class="${icon.className} ${more_classes}" data-tooltip="${icon.tooltip}"></span>`) : '';
 }
