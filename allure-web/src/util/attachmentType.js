@@ -1,3 +1,5 @@
+import {csvParseRows, tsvParseRows} from 'd3-dsv';
+
 export default function typeByMime(type) {
     switch (type) {
         case 'image/bmp':
@@ -7,7 +9,10 @@ export default function typeByMime(type) {
         case 'image/jpg':
         case 'image/png':
         case 'image/*':
-            return 'image';
+            return {
+                type: 'image',
+                icon: 'fa fa-file-image-o'
+            };
         case 'text/xml':
         case 'application/xml':
         case 'application/json':
@@ -16,22 +21,62 @@ export default function typeByMime(type) {
         case 'application/yaml':
         case 'application/x-yaml':
         case 'text/x-yaml':
-            return 'code';
+            return {
+                type: 'code',
+                icon: 'fa fa-file-code-o',
+                parser: d => d
+            };
         case 'text/plain':
         case 'text/*':
-            return 'text';
+            return {
+                type: 'text',
+                icon: 'fa fa-file-text-o',
+                parser: d => d
+            };
         case 'text/html':
-            return 'html';
+            return {
+                type: 'html'
+            };
         case 'text/csv':
-            return 'csv';
+            return {
+                type: 'table',
+                icon: 'fa fa-table',
+                parser: d => csvParseRows(d)
+            };
+        case 'text/tab-separated-values':
+            return {
+                type: 'table',
+                icon: 'fa fa-table',
+                parser: d => tsvParseRows(d)
+            };
         case 'image/svg+xml':
-            return 'svg';
+            return {
+                type: 'svg',
+                icon: 'fa fa-file-image-o'
+            };
         case 'video/mp4':
         case 'video/ogg':
         case 'video/webm':
-            return 'video';
+            return {
+                type: 'video',
+                icon: 'fa fa-file-video-o'
+            };
         case 'text/uri-list':
-            return 'uri';
+            return {
+                type: 'uri',
+                icon: 'fa fa-list-alt',
+                parser: d => d.split('\n')
+                                .map(line => line.trim())
+                                .filter(line => line.length > 0)
+                                .map(line => ({
+                                    comment: line.startsWith('#'),
+                                    text: line
+                                }))
+            };
         default:
+            return {
+                type: '*',
+                icon: 'fa fa-file-o'
+            };
     }
 }

@@ -1,5 +1,4 @@
 import './styles.css';
-import {csvParseRows} from 'd3-dsv';
 import highlight from '../../util/highlight';
 import {View} from 'backbone.marionette';
 import $ from 'jquery';
@@ -15,14 +14,14 @@ class AttachmentView extends View {
 
     initialize({attachment}) {
         this.attachment = attachment;
-        this.type = attachmentType(this.attachment.type);
+        this.attachmentInfo = attachmentType(this.attachment.type);
         this.sourceUrl = 'data/attachments/' + this.attachment.source;
     }
 
     onRender() {
         if(this.needsFetch() && !this.content) {
             this.loadContent().then(this.render);
-        } else if(this.type === 'code') {
+        } else if(this.attachmentInfo.type === 'code') {
             const codeBlock = this.$('.attachment__code');
             codeBlock.addClass('language-' + this.attachment.type.split('/').pop());
             highlight.highlightBlock(codeBlock[0]);
@@ -37,29 +36,18 @@ class AttachmentView extends View {
 
     loadContent() {
         return $.ajax(this.sourceUrl, {dataType: 'text'}).then((responseText) => {
-            if(this.type === 'csv') {
-                this.content = csvParseRows(responseText);
-            } else if(this.type === 'uri') {
-                this.content = responseText.split('\n')
-                    .map(line => line.trim())
-                    .filter(line => line.length > 0)
-                    .map(line => ({
-                        comment: line.startsWith('#'),
-                        text: line
-                    }));
-            } else {
-                this.content = responseText;
-            }
+            var parser = this.attachmentInfo.parser;
+            this.content = parser(responseText);
         });
     }
 
     needsFetch() {
-        return ['text', 'code', 'csv', 'uri'].indexOf(this.type) > -1;
+        return 'parser' in this.attachmentInfo;
     }
 
     serializeData() {
         return {
-            type: this.type,
+            type: this.attachmentInfo.type,
             content: this.content,
             sourceUrl: this.sourceUrl,
             attachment: this.attachment,
