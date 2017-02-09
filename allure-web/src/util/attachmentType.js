@@ -75,7 +75,7 @@ export default function typeByMime(type) {
             };
         default:
             return {
-                type: '*',
+                type: null,
                 icon: 'fa fa-file-o'
             };
     }
