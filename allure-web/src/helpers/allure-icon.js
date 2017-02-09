@@ -27,7 +27,7 @@ const icons = {
     }
 };
 
-export default function (value, more_classes='') {
+export default function (value, extraClasses='') {
     const icon = icons[value];
-    return icon ? new SafeString(`<span class="${icon.className} ${more_classes}" data-tooltip="${icon.tooltip}"></span>`) : '';
+    return icon ? new SafeString(`<span class="${icon.className} ${extraClasses}" data-tooltip="${icon.tooltip}"></span>`) : '';
 }
