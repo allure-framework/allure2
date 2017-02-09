@@ -1,6 +1,8 @@
 <a class="node node__leaf" href="#{{baseUrl}}/{{uid}}">
     <div class="node__title long-line" data-uid="{{uid}}">
-        <span class="node__anchor circle circle_status_{{status}}">&nbsp;</span>
+        <span class="node__anchor">
+            {{allure-icon status 'fa-lg'}}
+        </span>
         {{#if flaky}}
             {{allure-icon 'flaky'}}
         {{/if}}
