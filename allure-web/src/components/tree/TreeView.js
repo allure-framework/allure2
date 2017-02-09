@@ -76,7 +76,8 @@ class TreeView extends View {
     filterNodes(statuses, nodes) {
         return nodes
             .map(item => this.mapNode(statuses, item))
-            .filter(item => item.type === 'TestCaseNode' ? statuses[item.status] : item.children.length > 0);
+            .filter(item => item.type === 'TestCaseNode' ? statuses[item.status] : item.children.length > 0)
+            .sort((a, b) => a.name.localeCompare(b.name));
     }
 
     mapNode(statuses, node) {
