@@ -200,6 +200,27 @@ public class Allure1ResultsReaderTest {
         assertThat(details, hasProperty("flaky", equalTo(true)));
     }
 
+    @Test
+    public void shouldUseTestClassLabelForPackage() throws Exception {
+        List<TestCaseResult> testResults = process(
+                "allure1/packages-testsuite.xml", generateTestSuiteXmlName()
+        );
+        assertThat(testResults, hasSize(1));
+        Optional<String> aPackage = testResults.iterator().next().findOne("package");
+        assertThat(aPackage, isPresent());
+        assertThat(aPackage, hasValue("my.company.package.subpackage.MyClass"));
+    }
+
+    @Test
+    public void shouldUseTestClassLabelForFullName() throws Exception {
+        List<TestCaseResult> testResults = process(
+                "allure1/packages-testsuite.xml", generateTestSuiteXmlName()
+        );
+        assertThat(testResults, hasSize(1));
+        TestCaseResult result = testResults.iterator().next();
+        assertThat(result.getFullName(), is("my.company.package.subpackage.MyClass#testThree"));
+    }
+
     private List<TestCaseResult> process(String... strings) throws IOException {
         Path resultsDirectory = folder.newFolder().toPath();
         Iterator<String> iterator = Arrays.asList(strings).iterator();

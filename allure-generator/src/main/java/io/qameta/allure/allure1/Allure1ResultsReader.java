@@ -62,6 +62,8 @@ public class Allure1ResultsReader implements ResultsReader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Allure1ResultsReader.class);
 
+    public static final String TEST_CLASS_LABEL_NAME = "testClass";
+
     private final AttachmentsStorage storage;
 
     private final ObjectMapper mapper;
@@ -89,13 +91,18 @@ public class Allure1ResultsReader implements ResultsReader {
 
 
         String suiteName = firstNonNull(testSuite.getTitle(), testSuite.getName(), "unknown test suite");
-        String testClass = firstNonNull(testSuite.getName(), "unknown");
+        String testClass = firstNonNull(
+                findLabel(source.getLabels(), TEST_CLASS_LABEL_NAME),
+                findLabel(testSuite.getLabels(), TEST_CLASS_LABEL_NAME),
+                testSuite.getName(),
+                "unknown"
+        );
         String name = firstNonNull(source.getTitle(), source.getName(), "unknown test case");
 
         dest.setTestCaseId(String.format("%s#%s", testClass, name));
         dest.setUid(generateUid());
         dest.setName(name);
-        dest.setFullName(String.format("%s#%s", testSuite.getName(), source.getName()));
+        dest.setFullName(String.format("%s#%s", testClass, source.getName()));
 
         dest.setStatus(convert(source.getStatus()));
         dest.setTime(source.getStart(), source.getStop());
@@ -230,6 +237,14 @@ public class Allure1ResultsReader implements ResultsReader {
             default:
                 return UNKNOWN;
         }
+    }
+
+    private String findLabel(List<ru.yandex.qatools.allure.model.Label> labels, String labelName) {
+        return labels.stream()
+                .filter(label -> labelName.equals(label.getName()))
+                .map(ru.yandex.qatools.allure.model.Label::getValue)
+                .findAny()
+                .orElse(null);
     }
 
     private boolean hasArgumentType(ru.yandex.qatools.allure.model.Parameter parameter) {

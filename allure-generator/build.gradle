@@ -13,6 +13,7 @@ dependencies {
     compile('io.qameta.allure:model-v2')
 
     testCompile('junit:junit')
+    testCompile('org.slf4j:slf4j-simple')
     testCompile('org.hamcrest:hamcrest-all')
     testCompile('org.mockito:mockito-all')
     testCompile('com.github.baev:hamcrest-optional')
