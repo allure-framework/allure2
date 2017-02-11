@@ -1,9 +1,9 @@
 {
   "id" : "b1c94ca2fbc3e78fc30069c8d0f01680",
+  "children" : [ "120625640d9b3ddbd6b47646e544e313", "93542b02b4f3b5c69033c3643e0428ed" ],
   "name" : "All",
   "start" : 1480450609874,
   "stop" : 1480450655458,
-  "parentIds" : [ "ce89ae8efce25684a940d13c39ccc26c" ],
   "befores" : [ {
     "name" : "mockAuthorization",
     "start" : 1480450609874,

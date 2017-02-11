@@ -90,6 +90,7 @@
             <xsd:element name="statusDetails" type="ns:StatusDetails" minOccurs="0"/>
             <xsd:element name="steps" type="ns:Steps" minOccurs="0"/>
             <xsd:element name="attachments" type="ns:Attachments" minOccurs="0"/>
+            <xsd:element name="parameters" type="ns:Parameters" minOccurs="0"/>
         </xsd:sequence>
     </xsd:complexType>
     

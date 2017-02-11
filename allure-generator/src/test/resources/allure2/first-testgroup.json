@@ -1,47 +1,63 @@
 {
-  "id" : "b1c94ca2fbc3e78fc30069c8d0f01680",
-  "parentIds" : [ "ce89ae8efce25684a940d13c39ccc26c" ],
-  "name" : "All",
-  "start" : 1479552601319,
-  "stop" : 1479552646834,
-  "befores" : [ {
-    "name" : "mockAuthorization",
-    "start" : 1479552601319,
-    "stop" : 1479552601337,
-    "steps" : [ {
-      "status" : "passed",
-      "name" : "generateRandomUsername",
-      "start" : 1479552601335,
-      "stop" : 1479552601337
-    }, {
-      "status" : "passed",
-      "parameters" : [ {
-        "name" : "username",
-        "value" : "some-user-123"
-      } ],
-      "name" : "createMockUser",
-      "start" : 1479552601337,
-      "stop" : 1479552601337
-    }, {
-      "status" : "passed",
-      "parameters" : [ {
-        "name" : "username",
-        "value" : "some-user-123"
-      } ],
-      "name" : "loginAs",
-      "start" : 1479552601337,
-      "stop" : 1479552601337
-    } ]
-  } ],
-  "afters" : [ {
-    "name" : "cleanUpContext",
-    "start" : 1479552641818,
-    "stop" : 1479552641818,
-    "steps" : [ {
-      "status" : "passed",
-      "name" : "closeContext",
-      "start" : 1479552641818,
-      "stop" : 1479552641818
-    } ]
-  } ]
+  "id": "b1c94ca2fbc3e78fc30069c8d0f01680",
+  "children": [
+    "93542b02b4f3b5c69033c3643e0428ed"
+  ],
+  "name": "All",
+  "start": 1479552601319,
+  "stop": 1479552646834,
+  "befores": [
+    {
+      "name": "mockAuthorization",
+      "start": 1479552601319,
+      "stop": 1479552601337,
+      "steps": [
+        {
+          "status": "passed",
+          "name": "generateRandomUsername",
+          "start": 1479552601335,
+          "stop": 1479552601337
+        },
+        {
+          "status": "passed",
+          "parameters": [
+            {
+              "name": "username",
+              "value": "some-user-123"
+            }
+          ],
+          "name": "createMockUser",
+          "start": 1479552601337,
+          "stop": 1479552601337
+        },
+        {
+          "status": "passed",
+          "parameters": [
+            {
+              "name": "username",
+              "value": "some-user-123"
+            }
+          ],
+          "name": "loginAs",
+          "start": 1479552601337,
+          "stop": 1479552601337
+        }
+      ]
+    }
+  ],
+  "afters": [
+    {
+      "name": "cleanUpContext",
+      "start": 1479552641818,
+      "stop": 1479552641818,
+      "steps": [
+        {
+          "status": "passed",
+          "name": "closeContext",
+          "start": 1479552641818,
+          "stop": 1479552641818
+        }
+      ]
+    }
+  ]
 }

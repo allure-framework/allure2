@@ -1,6 +1,5 @@
 {
   "id" : "93542b02b4f3b5c69033c3643e0428ed",
-  "parentIds" : [ "b1c94ca2fbc3e78fc30069c8d0f01680" ],
   "status" : "passed",
   "parameters" : [ {
     "name" : "name",

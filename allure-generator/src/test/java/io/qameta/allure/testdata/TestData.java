@@ -81,7 +81,7 @@ public final class TestData {
             try (InputStream is = url.openStream()) {
                 Files.copy(is, file);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException(String.format("name: %s, url: %s", name, url), e);
             }
         });
     }

@@ -1,8 +1,8 @@
 package io.qameta.allure.history;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.qameta.allure.AllureUtils;
 import io.qameta.allure.Main;
+import io.qameta.allure.model.Allure2ModelJackson;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -29,7 +29,8 @@ public class HistoryFileTest {
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
-    private final ObjectMapper mapper = AllureUtils.createMapper();
+
+    private final ObjectMapper mapper = Allure2ModelJackson.createMapper();
 
     @Test
     public void skipHistoryForTestCaseWithoutId() throws Exception {
@@ -38,7 +39,7 @@ public class HistoryFileTest {
         Main main = new Main();
         Path resultsDirectory = folder.newFolder().toPath();
         Path output = folder.newFolder().toPath();
-        unpackDummyResources("allure2/", resultsDirectory);
+        unpackDummyResources("allure2data/", resultsDirectory);
         main.generate(output, resultsDirectory);
         assertThat(output, contains("index.html"));
         assertThat(output, contains("data"));
@@ -47,7 +48,7 @@ public class HistoryFileTest {
 
         try (InputStream is = Files.newInputStream(data.resolve("history.json"))) {
             Map<String, HistoryData> history = mapper.readValue(is, HISTORY_TYPE);
-            assertThat(history.entrySet(), hasSize(1));
+            assertThat(history.entrySet(), hasSize(3));
             Optional<Map.Entry<String, HistoryData>> historyEntry = history.entrySet().stream()
                     .filter(entry -> entry.getValue().getName().equals(testName)).findFirst();
             assertThat("Corresponding entry for test case without id should not exist in history file",
