@@ -1,5 +1,6 @@
 {
-  "id" : "120625640d9b3ddbd6b47646e544e313",
+  "uuid" : "120625640d9b3ddbd6b47646e544e313",
+  "historyId" : "first",
   "status" : "passed",
   "parameters" : [ ],
   "labels" : [ {

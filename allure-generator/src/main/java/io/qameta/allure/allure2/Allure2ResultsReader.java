@@ -80,7 +80,7 @@ public class Allure2ResultsReader implements ResultsReader {
         TestCaseResult dest = new TestCaseResult();
         dest.setUid(generateUid());
 
-        dest.setTestCaseId(result.getId());
+        dest.setTestCaseId(result.getHistoryId());
         dest.setFullName(result.getFullName());
         dest.setName(result.getName());
         dest.setTime(result.getStart(), result.getStop());
@@ -97,7 +97,7 @@ public class Allure2ResultsReader implements ResultsReader {
             dest.setTestStage(getTestStage(result));
         }
 
-        List<TestResultContainer> parents = findAllParents(groups, result.getId(), new HashSet<>());
+        List<TestResultContainer> parents = findAllParents(groups, result.getUuid(), new HashSet<>());
         dest.getBeforeStages().addAll(getStages(parents, this::getBefore));
         dest.getAfterStages().addAll(getStages(parents, this::getAfter));
         return dest;
@@ -136,7 +136,7 @@ public class Allure2ResultsReader implements ResultsReader {
         List<TestResultContainer> parents = findParents(groups, id, seen);
         result.addAll(parents);
         for (TestResultContainer container : parents) {
-            result.addAll(findAllParents(groups, container.getId(), seen));
+            result.addAll(findAllParents(groups, container.getUuid(), seen));
         }
         return result;
     }
@@ -144,7 +144,7 @@ public class Allure2ResultsReader implements ResultsReader {
     private List<TestResultContainer> findParents(List<TestResultContainer> groups, String id, Set<String> seen) {
         return groups.stream()
                 .filter(container -> container.getChildren().contains(id))
-                .filter(container -> !seen.contains(container.getId()))
+                .filter(container -> !seen.contains(container.getUuid()))
                 .collect(Collectors.toList());
     }
 
@@ -226,6 +226,7 @@ public class Allure2ResultsReader implements ResultsReader {
 
     private StatusDetails convert(io.qameta.allure.model.StatusDetails details) {
         return Objects.isNull(details) ? null : new StatusDetails()
+                .withFlaky(details.isFlaky())
                 .withMessage(details.getMessage())
                 .withTrace(details.getTrace());
     }

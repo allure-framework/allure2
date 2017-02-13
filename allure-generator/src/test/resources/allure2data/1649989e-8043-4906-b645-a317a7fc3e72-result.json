@@ -1,5 +1,5 @@
 {
-  "id" : "93542b02b4f3b5c69033c3643e0428ed",
+  "uuid" : "93542b02b4f3b5c69033c3643e0428ed",
   "status" : "passed",
   "parameters" : [ {
     "name" : "name",
@@ -24,7 +24,7 @@
     "name" : "thread",
     "value" : "2208@charlie.local.main(1)"
   } ],
-  "name" : "shouldCreate",
+  "name" : "shouldNotCreate",
   "start" : 1480450630386,
   "stop" : 1480450630388,
   "steps" : [ {
