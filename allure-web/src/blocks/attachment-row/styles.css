@@ -1,8 +1,9 @@
 @import "../../variables.css";
 
 .attachment-row {
-  padding: 10px $gap-size;
+  padding: 7px $gap-size 7px 25px;
   cursor: pointer;
+  position: relative;
   &:hover {
     background: $hover-color;
   }
@@ -14,5 +15,9 @@
   &__link {
     float: right;
     min-width: 70px;
+  }
+  &__icon {
+    left: 7px;
+    position: absolute;
   }
 }
