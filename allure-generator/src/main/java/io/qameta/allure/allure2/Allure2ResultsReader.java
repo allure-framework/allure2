@@ -42,6 +42,7 @@ import static io.qameta.allure.AllureConstants.TEST_RESULT_FILE_GLOB;
 import static io.qameta.allure.ReportApiUtils.generateUid;
 import static io.qameta.allure.ReportApiUtils.listFiles;
 import static java.util.Comparator.comparingLong;
+import static java.util.Objects.nonNull;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -194,10 +195,10 @@ public class Allure2ResultsReader implements ResultsReader {
                         .withSize(attach.getSize()))
                 .orElseGet(() -> new Attachment().withName("unknown").withSize(0L).withType("*/*"));
 
-        if (Objects.nonNull(attachment.getType())) {
+        if (isNotEmpty(attachment.getType())) {
             found.setType(attachment.getType());
         }
-        if (Objects.nonNull(attachment.getName())) {
+        if (isNotEmpty(attachment.getName())) {
             found.setName(attachment.getName());
         }
         return found;
@@ -232,7 +233,10 @@ public class Allure2ResultsReader implements ResultsReader {
     }
 
     private Time convert(Long start, Long stop) {
-        return new Time().withStart(start).withStop(stop).withDuration(stop - start);
+        return new Time()
+                .withStart(start)
+                .withStop(stop)
+                .withDuration(nonNull(start) && nonNull(stop) ? stop - start : null);
     }
 
     private Stream<TestResult> readTestResult(Path source) {
@@ -251,5 +255,9 @@ public class Allure2ResultsReader implements ResultsReader {
             LOGGER.debug("Could not read test result container {}: {}", source, e);
             return Stream.empty();
         }
+    }
+
+    private boolean isNotEmpty(String s) {
+        return Objects.nonNull(s) && !s.isEmpty();
     }
 }
