@@ -41,6 +41,7 @@ import static io.qameta.allure.AllureConstants.TEST_RESULT_CONTAINER_FILE_GLOB;
 import static io.qameta.allure.AllureConstants.TEST_RESULT_FILE_GLOB;
 import static io.qameta.allure.ReportApiUtils.generateUid;
 import static io.qameta.allure.ReportApiUtils.listFiles;
+import static java.util.Comparator.comparingLong;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -48,6 +49,7 @@ import static io.qameta.allure.ReportApiUtils.listFiles;
 public class Allure2ResultsReader implements ResultsReader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Allure2ResultsReader.class);
+    private static final Comparator<StageResult> BY_START = comparingLong(a -> a.getTime().getStart());
 
     private final AttachmentsStorage storage;
 
@@ -70,37 +72,48 @@ public class Allure2ResultsReader implements ResultsReader {
 
         return listFiles(source, TEST_RESULT_FILE_GLOB)
                 .flatMap(this::readTestResult)
-                .map(result -> {
-                    TestCaseResult dest = new TestCaseResult();
-                    dest.setUid(generateUid());
+                .map(result -> convert(groups, result))
+                .collect(Collectors.toList());
+    }
 
-                    dest.setTestCaseId(result.getId());
-                    dest.setFullName(result.getFullName());
-                    dest.setName(result.getName());
-                    dest.setTime(result.getStart(), result.getStop());
-                    dest.setDescription(result.getDescription());
-                    dest.setDescriptionHtml(result.getDescriptionHtml());
-                    dest.setStatus(convert(result.getStatus()));
-                    dest.setStatusDetails(convert(result.getStatusDetails()));
+    private TestCaseResult convert(List<TestResultContainer> groups, TestResult result) {
+        TestCaseResult dest = new TestCaseResult();
+        dest.setUid(generateUid());
 
-                    dest.setLinks(convert(result.getLinks(), this::convert));
-                    dest.setLabels(convert(result.getLabels(), this::convert));
-                    dest.setParameters(convert(result.getParameters(), this::convert));
+        dest.setTestCaseId(result.getId());
+        dest.setFullName(result.getFullName());
+        dest.setName(result.getName());
+        dest.setTime(result.getStart(), result.getStop());
+        dest.setDescription(result.getDescription());
+        dest.setDescriptionHtml(result.getDescriptionHtml());
+        dest.setStatus(convert(result.getStatus()));
+        dest.setStatusDetails(convert(result.getStatusDetails()));
 
-                    if (!result.getSteps().isEmpty() || !result.getAttachments().isEmpty()) {
-                        StageResult testStage = new StageResult();
-                        testStage.setSteps(convert(result.getSteps(), this::convert));
-                        testStage.setAttachments(convert(result.getAttachments(), this::convert));
-                        testStage.setStatus(convert(result.getStatus()));
-                        testStage.setStatusDetails(convert(result.getStatusDetails()));
-                        dest.setTestStage(testStage);
-                    }
+        dest.setLinks(convert(result.getLinks(), this::convert));
+        dest.setLabels(convert(result.getLabels(), this::convert));
+        dest.setParameters(convert(result.getParameters(), this::convert));
 
-                    List<TestResultContainer> parents = findAllParents(groups, result.getId(), new HashSet<>());
-                    dest.getBeforeStages().addAll(getStages(parents, this::getBefore));
-                    dest.getAfterStages().addAll(getStages(parents, this::getAfter));
-                    return dest;
-                }).collect(Collectors.toList());
+        if (hasTestStage(result)) {
+            dest.setTestStage(getTestStage(result));
+        }
+
+        List<TestResultContainer> parents = findAllParents(groups, result.getId(), new HashSet<>());
+        dest.getBeforeStages().addAll(getStages(parents, this::getBefore));
+        dest.getAfterStages().addAll(getStages(parents, this::getAfter));
+        return dest;
+    }
+
+    private StageResult getTestStage(TestResult result) {
+        StageResult testStage = new StageResult();
+        testStage.setSteps(convert(result.getSteps(), this::convert));
+        testStage.setAttachments(convert(result.getAttachments(), this::convert));
+        testStage.setStatus(convert(result.getStatus()));
+        testStage.setStatusDetails(convert(result.getStatusDetails()));
+        return testStage;
+    }
+
+    private boolean hasTestStage(TestResult result) {
+        return !result.getSteps().isEmpty() || !result.getAttachments().isEmpty();
     }
 
     private List<StageResult> getStages(List<TestResultContainer> parents,
@@ -109,15 +122,13 @@ public class Allure2ResultsReader implements ResultsReader {
     }
 
     private Stream<StageResult> getBefore(TestResultContainer container) {
-        Comparator<StageResult> comparator = Comparator.comparingLong(a -> a.getTime().getStart());
         return convert(container.getBefores(), this::convert).stream()
-                .sorted(comparator);
+                .sorted(BY_START);
     }
 
     private Stream<StageResult> getAfter(TestResultContainer container) {
-        Comparator<StageResult> comparator = Comparator.comparingLong(a -> a.getTime().getStart());
         return convert(container.getAfters(), this::convert).stream()
-                .sorted(comparator);
+                .sorted(BY_START);
     }
 
     private List<TestResultContainer> findAllParents(List<TestResultContainer> groups, String id, Set<String> seen) {
