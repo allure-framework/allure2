@@ -22,12 +22,14 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static io.qameta.allure.AllureUtils.generateTestCaseJsonFileName;
-import static io.qameta.allure.AllureUtils.generateTestGroupJsonFileName;
+import static io.qameta.allure.AllureUtils.generateTestResultContainerName;
+import static io.qameta.allure.AllureUtils.generateTestResultName;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
@@ -74,9 +76,9 @@ public class Allure2ResultsReaderTest {
     @Test
     public void shouldReadBeforesFromGroups() throws Exception {
         List<TestCaseResult> testResults = process(
-                "allure2/simple-testcase.json", generateTestCaseJsonFileName(),
-                "allure2/first-testgroup.json", generateTestGroupJsonFileName(),
-                "allure2/second-testgroup.json", generateTestGroupJsonFileName()
+                "allure2/simple-testcase.json", generateTestResultName(),
+                "allure2/first-testgroup.json", generateTestResultContainerName(),
+                "allure2/second-testgroup.json", generateTestResultContainerName()
         );
 
         assertThat(testResults, hasSize(1));
@@ -91,9 +93,9 @@ public class Allure2ResultsReaderTest {
     @Test
     public void shouldReadAftersFromGroups() throws Exception {
         List<TestCaseResult> testResults = process(
-                "allure2/simple-testcase.json", generateTestCaseJsonFileName(),
-                "allure2/first-testgroup.json", generateTestGroupJsonFileName(),
-                "allure2/second-testgroup.json", generateTestGroupJsonFileName()
+                "allure2/simple-testcase.json", generateTestResultName(),
+                "allure2/first-testgroup.json", generateTestResultContainerName(),
+                "allure2/second-testgroup.json", generateTestResultContainerName()
         );
 
         assertThat(testResults, hasSize(1));
@@ -108,9 +110,9 @@ public class Allure2ResultsReaderTest {
     @Test
     public void shouldPickUpAttachmentsForTestCase() throws IOException {
         List<TestCaseResult> testResults = process(
-                "allure2/simple-testcase.json", generateTestCaseJsonFileName(),
-                "allure2/first-testgroup.json", generateTestGroupJsonFileName(),
-                "allure2/second-testgroup.json", generateTestGroupJsonFileName(),
+                "allure2/simple-testcase.json", generateTestResultName(),
+                "allure2/first-testgroup.json", generateTestResultContainerName(),
+                "allure2/second-testgroup.json", generateTestResultContainerName(),
                 "allure2/test-sample-attachment.txt", "test-sample-attachment.txt"
         );
 
@@ -127,9 +129,9 @@ public class Allure2ResultsReaderTest {
     @Test
     public void shouldPickUpAttachmentsForAfters() throws IOException {
         List<TestCaseResult> testResults = process(
-                "allure2/simple-testcase.json", generateTestCaseJsonFileName(),
-                "allure2/first-testgroup.json", generateTestGroupJsonFileName(),
-                "allure2/second-testgroup.json", generateTestGroupJsonFileName(),
+                "allure2/simple-testcase.json", generateTestResultName(),
+                "allure2/first-testgroup.json", generateTestResultContainerName(),
+                "allure2/second-testgroup.json", generateTestResultContainerName(),
                 "allure2/after-sample-attachment.txt", "after-sample-attachment.txt"
         );
 
@@ -137,7 +139,12 @@ public class Allure2ResultsReaderTest {
         TestCaseResult result = testResults.iterator().next();
         List<StageResult> afters = result.getAfterStages();
         assertThat("Test case should have afters", afters, hasSize(2));
-        List<Attachment> attachments = Iterables.getLast(afters).getAttachments();
+
+        List<Attachment> attachments = afters.stream()
+                .map(StageResult::getAttachments)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+
         assertThat("Second after method should have an attachment",
                 attachments, hasSize(1));
         assertThat("Attachment's name is unexpected",
@@ -147,9 +154,9 @@ public class Allure2ResultsReaderTest {
     @Test
     public void shouldDoNotOverrideAttachmentsForGroups() throws IOException {
         List<TestCaseResult> testResults = process(
-                "allure2/other-testcase.json", generateTestCaseJsonFileName(),
-                "allure2/other-testcase.json", generateTestCaseJsonFileName(),
-                "allure2/second-testgroup.json", generateTestGroupJsonFileName(),
+                "allure2/other-testcase.json", generateTestResultName(),
+                "allure2/other-testcase.json", generateTestResultName(),
+                "allure2/second-testgroup.json", generateTestResultContainerName(),
                 "allure2/after-sample-attachment.txt", "after-sample-attachment.txt"
         );
 
@@ -169,7 +176,7 @@ public class Allure2ResultsReaderTest {
     @Test
     public void shouldProcessEmptyStatus() throws Exception {
         List<TestCaseResult> testResults = process(
-                "allure2/no-status.json", generateTestCaseJsonFileName()
+                "allure2/no-status.json", generateTestResultName()
         );
 
         assertThat(testResults, hasSize(1));
@@ -179,7 +186,7 @@ public class Allure2ResultsReaderTest {
     @Test
     public void shouldProcessNullStatus() throws Exception {
         List<TestCaseResult> testResults = process(
-                "allure2/null-status.json", generateTestCaseJsonFileName()
+                "allure2/null-status.json", generateTestResultName()
         );
 
         assertThat(testResults, hasSize(1));
@@ -189,7 +196,7 @@ public class Allure2ResultsReaderTest {
     @Test
     public void shouldProcessInvalidStatus() throws Exception {
         List<TestCaseResult> testResults = process(
-                "allure2/invalid-status.json", generateTestCaseJsonFileName()
+                "allure2/invalid-status.json", generateTestResultName()
         );
 
         assertThat(testResults, hasSize(1));

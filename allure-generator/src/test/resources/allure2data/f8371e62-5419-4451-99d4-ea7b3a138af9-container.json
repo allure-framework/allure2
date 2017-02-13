@@ -1,5 +1,6 @@
 {
-  "id" : "ce89ae8efce25684a940d13c39ccc26c",
+  "uuid" : "ce89ae8efce25684a940d13c39ccc26c",
+  "children" : [ "b1c94ca2fbc3e78fc30069c8d0f01680" ],
   "name" : "My suite",
   "start" : 1480450609857,
   "stop" : 1480450655475,

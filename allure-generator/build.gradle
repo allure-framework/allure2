@@ -10,7 +10,7 @@ dependencies {
     compile('org.freemarker:freemarker')
     compile('com.github.baev:jaxb-utils')
     compile('org.allurefw:allure1-model')
-    compile('io.qameta.allure:model-v2')
+    compile('io.qameta.allure:allure2-model-api')
 
     testCompile('junit:junit')
     testCompile('org.slf4j:slf4j-simple')

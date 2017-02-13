@@ -1,10 +1,9 @@
 {
-  "id" : "93542b02b4f3b5c69033c3643e0428ed",
-  "parentIds" : [ "b1c94ca2fbc3e78fc30069c8d0f01680" ],
+  "uuid" : "93542b02b4f3b5c69033c3643e0428ed",
   "status" : "passed",
   "parameters" : [ {
     "name" : "name",
-    "value" : "Cedric"
+    "value" : "Anne"
   } ],
   "labels" : [ {
     "name" : "class",
@@ -25,34 +24,34 @@
     "name" : "thread",
     "value" : "2208@charlie.local.main(1)"
   } ],
-  "name" : "shouldCreate",
-  "start" : 1480450619944,
-  "stop" : 1480450619948,
+  "name" : "shouldNotCreate",
+  "start" : 1480450630386,
+  "stop" : 1480450630388,
   "steps" : [ {
     "status" : "passed",
     "name" : "createProject",
-    "start" : 1480450619946,
-    "stop" : 1480450619947,
+    "start" : 1480450630387,
+    "stop" : 1480450630387,
     "steps" : [ {
       "status" : "passed",
       "name" : "more",
-      "start" : 1480450619946,
-      "stop" : 1480450619947
+      "start" : 1480450630387,
+      "stop" : 1480450630387
     }, {
       "status" : "passed",
       "name" : "andMore",
-      "start" : 1480450619947,
-      "stop" : 1480450619947
+      "start" : 1480450630387,
+      "stop" : 1480450630387
     }, {
       "status" : "passed",
       "name" : "andEvenMore",
-      "start" : 1480450619947,
-      "stop" : 1480450619947
+      "start" : 1480450630387,
+      "stop" : 1480450630387
     } ]
   }, {
     "status" : "passed",
     "name" : "validateExists",
-    "start" : 1480450619947,
-    "stop" : 1480450619947
+    "start" : 1480450630387,
+    "stop" : 1480450630387
   } ]
 }

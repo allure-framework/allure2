@@ -89,7 +89,7 @@ allprojects {
             dependency 'org.freemarker:freemarker:2.3.23'
             dependency 'com.github.baev:jaxb-utils:1.0'
             dependency 'org.allurefw:allure1-model:1.0'
-            dependency 'io.qameta.allure:model-v2:1.0-BETA2'
+            dependency 'io.qameta.allure:allure2-model-api:1.0-BETA4'
             dependency 'org.zeroturnaround:zt-zip:1.11'
             dependency 'org.apache.commons:commons-lang3:3.5'
             dependency 'com.github.rvesse:airline:2.2.0'
