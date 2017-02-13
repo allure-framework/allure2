@@ -1,3 +1,5 @@
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+
 buildscript {
     repositories {
         jcenter()
@@ -31,12 +33,35 @@ apply from: "${gradleScriptDir}/release.gradle"
 configure(rootProject) {
     description = "Allure Report"
 
+    apply plugin: 'com.bmuschko.docker-remote-api'
+
+    String root = rootProject.projectDir
+
+    task build() {
+    }
+
     task wrapper(type: Wrapper) {
         gradleVersion = '3.3'
     }
-}
 
-task build() {
+    task deleteDemoReport(type: Delete) {
+        delete "${root}/build/docker/report"
+    }
+
+    task generateDemoReport(type: Exec) {
+        dependsOn = ['deleteDemoReport', 'allure-commandline:build']
+        executable = "${root}/allure-commandline/build/install/allure/bin/allure"
+        args = ['generate', "${root}/allure-web/test-data/demo", '-o', "${root}/build/docker/report"]
+    }
+
+    task generateDemoDockerfile(type: Dockerfile) {
+        dependsOn = ['generateDemoReport']
+        destFile project.file('build/docker/Dockerfile')
+
+        from 'nginx'
+        maintainer 'Dmitry Baev <baev@qameta.io>'
+        addFile 'report', '/usr/share/nginx/html'
+    }
 }
 
 allprojects {
@@ -47,7 +72,7 @@ allprojects {
         allurePlugin
     }
 
-    tasks.withType(Tar){
+    tasks.withType(Tar) {
         compression = Compression.GZIP
     }
 
