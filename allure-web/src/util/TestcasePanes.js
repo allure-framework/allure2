@@ -1,6 +1,7 @@
 import TestcaseModel from '../data/testcase/TestcaseModel';
 import TestcaseView from '../components/testcase/TestcaseView';
 import AttachmentView from '../components/attachment/AttachmentView';
+import ErrorSplashView from '../components/error-splash/ErrorSplashView';
 
 export default class TestcasePanes {
     constructor(state, paneView) {
@@ -11,9 +12,9 @@ export default class TestcasePanes {
 
     updatePanes(baseUrl, changed) {
         const testcaseUid = this.state.get('testcase');
-        if(this.testcase.id !== testcaseUid) {
+        if (this.testcase.id !== testcaseUid) {
             this.testcase.clear();
-            if(testcaseUid) {
+            if (testcaseUid) {
                 this.testcase.set({uid: testcaseUid});
                 this.testcase.fetch().then(() => this.updatePanes(baseUrl, changed));
                 return;
@@ -24,11 +25,21 @@ export default class TestcasePanes {
             state: this.state,
             model: this.testcase
         }));
-        this.paneView.updatePane('attachment', changed, () => new AttachmentView({
-            baseUrl: baseUrl + '/' + this.state.get('testcase'),
-            attachment: this.testcase.getAttachment(changed.attachment),
-            state: this.state
-        }));
+
+        const attachment = this.testcase.getAttachment(changed.attachment);
+        if (attachment) {
+            this.paneView.updatePane('attachment', changed, () =>
+                new AttachmentView({
+                    baseUrl: baseUrl + '/' + this.state.get('testcase'),
+                    attachment: attachment,
+                    state: this.state
+                })
+            );
+        } else {
+            this.paneView.updatePane('attachment', changed, () =>
+                new ErrorSplashView({code: 404, message: 'Attachment not found'})
+            );
+        }
         this.paneView.updatePanesPositions();
     }
 

@@ -1,3 +1,4 @@
+import './styles.css';
 import {View} from 'backbone.marionette';
 import {className} from '../../decorators';
 import template from './ErrorSplashView.hbs';
