@@ -19,7 +19,7 @@ export default class TestcaseModel extends Model {
         }
         this.allAttachments = makeArray(this.get('beforeStages'))
             .concat(makeArray(this.get('testStage')))
-            .concat(makeArray(this.get('beforeStages')))
+            .concat(makeArray(this.get('afterStages')))
             .reduce((result, stage) => result.concat(collectAttachments(stage)), []);
     }
 
