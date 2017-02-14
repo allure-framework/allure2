@@ -94,8 +94,10 @@ export default class StatusChart extends BaseChartView {
     }
 
     getTooltipContent({data}) {
+        var value = isNaN(data.value) ? 0 : data.value;
+        var part = isNaN(data.part) ? 0 : data.part;
         return escape`
-            ${data.value} tests (${this.formatNumber(data.part * 100)}%)<br>
+            ${value} tests (${this.formatNumber(part * 100)}%)<br>
             ${data.name}
         `;
     }
