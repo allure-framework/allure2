@@ -73,6 +73,15 @@ export default function typeByMime(type) {
                                     text: line
                                 }))
             };
+        case 'application/x-tar':
+        case 'application/x-gtar':
+        case 'application/x-bzip2':
+        case 'application/gzip':
+        case 'application/zip':
+            return {
+                type: 'archive',
+                icon: 'fa fa-file-archive-o'
+            };
         default:
             return {
                 type: null,
