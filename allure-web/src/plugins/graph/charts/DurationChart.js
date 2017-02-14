@@ -6,7 +6,7 @@ import PopoverView from '../../../components/popover/PopoverView';
 import escape from '../../../util/escape';
 import duration from '../../../helpers/duration';
 
-const PAD_LEFT = 35;
+const PAD_LEFT = 50;
 const PAD_RIGHT = 15;
 const PAD_TOP = 7;
 const PAD_BOTTOM = 30;

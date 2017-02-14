@@ -5,7 +5,7 @@ import {values} from '../../../util/statuses';
 
 import {scaleBand, scaleSqrt} from 'd3-scale';
 import {max} from 'd3-array';
-const PAD_LEFT = 30;
+const PAD_LEFT = 50;
 const PAD_TOP = 7;
 const PAD_BOTTOM = 30;
 
