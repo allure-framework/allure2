@@ -67,6 +67,7 @@ public class JunitResultsReader implements ResultsReader {
                         log.ifPresent(result.getTestStage().getAttachments()::add);
                         result.addLabelIfNotExists(LabelName.SUITE, testSuite.getFullClassName());
                         result.addLabelIfNotExists(LabelName.TEST_CLASS, testSuite.getFullClassName());
+                        result.addLabelIfNotExists(LabelName.PACKAGE, testSuite.getFullClassName());
                         results.add(result);
                     }
                     return results.stream();

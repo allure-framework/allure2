@@ -269,6 +269,9 @@
             <!-- Suite -->
             <xsd:enumeration value="suite"/>
 
+            <!-- Packages -->
+            <xsd:enumeration value="package"/>
+
             <!-- BDD -->
             <xsd:enumeration value="feature"/>
             <xsd:enumeration value="story"/>
