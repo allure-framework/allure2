@@ -5,7 +5,8 @@ import {values} from '../../../util/statuses';
 
 import {scaleBand, scaleSqrt} from 'd3-scale';
 import {max} from 'd3-array';
-const PAD_LEFT = 30;
+const PAD_LEFT = 50;
+const PAD_RIGHT = 15;
 const PAD_TOP = 7;
 const PAD_BOTTOM = 30;
 
@@ -38,7 +39,7 @@ export default class SeverityChart extends BaseChartView {
     onAttach() {
         const data = this.getChartData();
         this.$el.height(this.$el.width() * 0.5);
-        const width = this.$el.width() - PAD_LEFT - 2;
+        const width = this.$el.width() - PAD_LEFT - PAD_RIGHT;
         const height = this.$el.height() - PAD_BOTTOM - PAD_TOP;
 
         this.x.range([0, width]);
