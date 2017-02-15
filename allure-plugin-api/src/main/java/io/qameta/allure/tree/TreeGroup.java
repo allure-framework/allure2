@@ -34,6 +34,10 @@ public interface TreeGroup {
         return values(new ArrayList<>(groups));
     }
 
+    static TreeGroup oneByLabel(TestCaseResult result, LabelName labelName) {
+        return values(result.findOne(labelName).orElse(null));
+    }
+
     static TreeGroup oneByLabel(TestCaseResult result, LabelName labelName, String defaultGroup) {
         return values(result.findOne(labelName).orElse(defaultGroup));
     }
