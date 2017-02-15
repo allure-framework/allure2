@@ -44,7 +44,9 @@ import java.util.stream.Stream;
 import static io.qameta.allure.ReportApiUtils.generateUid;
 import static io.qameta.allure.ReportApiUtils.listFiles;
 import static io.qameta.allure.entity.LabelName.ISSUE;
+import static io.qameta.allure.entity.LabelName.TEST_CLASS;
 import static io.qameta.allure.entity.LabelName.TEST_ID;
+import static io.qameta.allure.entity.LabelName.TEST_METHOD;
 import static io.qameta.allure.entity.Status.BROKEN;
 import static io.qameta.allure.entity.Status.FAILED;
 import static io.qameta.allure.entity.Status.PASSED;
@@ -61,8 +63,6 @@ import static org.allurefw.allure1.AllureConstants.TEST_SUITE_XML_FILE_GLOB;
 public class Allure1ResultsReader implements ResultsReader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Allure1ResultsReader.class);
-
-    public static final String TEST_CLASS_LABEL_NAME = "testClass";
 
     private final AttachmentsStorage storage;
 
@@ -92,9 +92,14 @@ public class Allure1ResultsReader implements ResultsReader {
 
         String suiteName = firstNonNull(testSuite.getTitle(), testSuite.getName(), "unknown test suite");
         String testClass = firstNonNull(
-                findLabel(source.getLabels(), TEST_CLASS_LABEL_NAME),
-                findLabel(testSuite.getLabels(), TEST_CLASS_LABEL_NAME),
+                findLabel(source.getLabels(), TEST_CLASS.value()),
+                findLabel(testSuite.getLabels(), TEST_CLASS.value()),
                 testSuite.getName(),
+                "unknown"
+        );
+        String testMethod = firstNonNull(
+                findLabel(source.getLabels(), TEST_METHOD.value()),
+                source.getName(),
                 "unknown"
         );
         String name = firstNonNull(source.getTitle(), source.getName(), "unknown test case");
@@ -102,7 +107,7 @@ public class Allure1ResultsReader implements ResultsReader {
         dest.setTestCaseId(String.format("%s#%s", testClass, name));
         dest.setUid(generateUid());
         dest.setName(name);
-        dest.setFullName(String.format("%s#%s", testClass, source.getName()));
+        dest.setFullName(String.format("%s#%s", testClass, testMethod));
 
         dest.setStatus(convert(source.getStatus()));
         dest.setTime(source.getStart(), source.getStop());
@@ -131,7 +136,9 @@ public class Allure1ResultsReader implements ResultsReader {
                 dest.getLinks().add(getLink(TEST_ID, testId, getTestCaseIdUrl(testId)))
         );
         dest.addLabelIfNotExists(LabelName.SUITE, suiteName);
-        dest.addLabelIfNotExists("package", testClass);
+        dest.addLabelIfNotExists(LabelName.TEST_CLASS, testClass);
+        dest.addLabelIfNotExists(LabelName.TEST_METHOD, testMethod);
+        dest.addLabelIfNotExists(LabelName.PACKAGE, testClass);
         dest.findAll("status_details").stream()
                 .filter("flaky"::equalsIgnoreCase)
                 .findAny()

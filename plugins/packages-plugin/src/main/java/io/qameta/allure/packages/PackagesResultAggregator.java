@@ -1,5 +1,6 @@
 package io.qameta.allure.packages;
 
+import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.TestCaseResult;
 import io.qameta.allure.tree.TreeGroup;
 import io.qameta.allure.tree.TreeResultAggregator;
@@ -7,6 +8,7 @@ import io.qameta.allure.tree.TreeResultAggregator;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -16,11 +18,23 @@ public class PackagesResultAggregator extends TreeResultAggregator {
 
     @Override
     protected List<TreeGroup> getGroups(TestCaseResult result) {
-        return result.findOne("package")
+        Optional<String> aPackage = result.findOne("package");
+        if (!aPackage.isPresent()) {
+            return Collections.emptyList();
+        }
+        return aPackage
                 .map(testClass -> Arrays.asList(testClass.split("\\.")))
-                .orElse(Collections.singletonList("Without package"))
+                .get()
                 .stream()
                 .map(TreeGroup::values)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    protected String getNodeName(TestCaseResult result) {
+        return result
+                .findOne(LabelName.TEST_METHOD)
+                .filter(method -> !method.isEmpty())
+                .orElseGet(result::getName);
     }
 }
