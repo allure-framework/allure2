@@ -1,10 +1,9 @@
 {
   "name": "attachmentsInStep",
   "status": "passed",
-  "id": "553eced7847bf99b73c7e41ad1b89369",
+  "uuid": "553eced7847bf99b73c7e41ad1b89369",
   "start" : 1480450619944,
   "stop" : 1480450619948,
-  "parentIds": ["ce89ae8efce25684a940d13c39ccc26d"],
   "labels": [
     {
       "name": "severity",
@@ -130,6 +129,18 @@
           "name": "WEMB attachment",
           "type": "video/webm",
           "source": "aae99fa5-af39-461f-b218-b1e4f2a88e56-attachment.webm"
+        }
+      ]
+    },
+    {
+      "status" : "passed",
+      "name" : "Attach JPG file",
+      "start" : 1480450630387,
+      "stop" : 1480450630387,
+      "attachments": [
+        {
+          "name": "JPEG attachment",
+          "source": "2aaaec3c-1149-47cc-8640-615e51af26f5-attachment.jpeg"
         }
       ]
     }
