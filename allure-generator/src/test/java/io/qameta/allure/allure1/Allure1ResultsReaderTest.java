@@ -218,7 +218,7 @@ public class Allure1ResultsReaderTest {
         );
         assertThat(testResults, hasSize(1));
         TestCaseResult result = testResults.iterator().next();
-        assertThat(result.getFullName(), is("my.company.package.subpackage.MyClass#testThree"));
+        assertThat(result.getFullName(), is("my.company.package.subpackage.MyClass.testThree"));
     }
 
     private List<TestCaseResult> process(String... strings) throws IOException {
