@@ -2,7 +2,11 @@
     <div class="node">
         <div class="node__title long-line">
             <span class="node__arrow block__arrow"></span>
-            {{name}}
+            {{#if name}}
+                {{name}}
+            {{else}}
+                Unknown group
+            {{/if}}
             <span class="node__stats">
                 {{statistic-bar statistic}}
             </span>

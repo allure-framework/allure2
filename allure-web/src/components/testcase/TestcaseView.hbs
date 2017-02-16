@@ -1,7 +1,9 @@
 <a class="pane__overlay" href="#testcase/{{uid}}"></a>
-<div class="pane__subtitle long-line line-ellipsis">
-    <span class="fa fa-files-o fullname__copy" data-tooltip="Copy to clipboard"></span>
-    <span class="fullname__body">{{fullName}}</span>
+{{#if fullName}}
+    <div class="pane__subtitle long-line line-ellipsis">
+        <span class="fa fa-files-o fullname__copy" data-tooltip="Copy to clipboard"></span>
+        <span class="fullname__body">{{fullName}}</span>
+{{/if}}
 </div>
 <h2 class="pane__title">
     {{#if statusDetails.flaky}}

@@ -267,6 +267,7 @@
             <xsd:enumeration value="testId"/>
 
             <!-- Suite -->
+            <xsd:enumeration value="parentSuite"/>
             <xsd:enumeration value="suite"/>
 
             <!-- Packages -->

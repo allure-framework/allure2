@@ -9,6 +9,7 @@ import io.qameta.allure.entity.TestRun;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -34,6 +35,10 @@ public abstract class TreeResultAggregator implements ResultAggregator<TreeData>
             List<WithChildren> currentLevelGroups = Collections.singletonList(treeData);
 
             for (TreeGroup treeGroup : getGroups(result)) {
+                if (treeGroup.getGroupNames().isEmpty()) {
+                    continue;
+                }
+
                 List<WithChildren> nextLevelGroups = new ArrayList<>();
                 for (WithChildren currentLevelGroup : currentLevelGroups) {
                     for (String groupName : treeGroup.getGroupNames()) {
@@ -64,7 +69,7 @@ public abstract class TreeResultAggregator implements ResultAggregator<TreeData>
         return nodes.stream()
                 .filter(TestGroupNode.class::isInstance)
                 .map(TestGroupNode.class::cast)
-                .filter(group -> groupName.equals(group.getName()))
+                .filter(group -> Objects.equals(groupName, group.getName()))
                 .findAny()
                 .orElseGet(() -> {
                     TestGroupNode newOne = new TestGroupNode()

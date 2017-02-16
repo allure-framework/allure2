@@ -63,8 +63,10 @@ public class JunitResultsReader implements ResultsReader {
                     List<TestCaseResult> results = new ArrayList<>();
                     for (ReportTestCase testCase : testSuite.getTestCases()) {
                         TestCaseResult result = convert(testCase);
-                        result.setTestStage(new StageResult());
-                        log.ifPresent(result.getTestStage().getAttachments()::add);
+                        log.ifPresent(attachment -> {
+                            result.setTestStage(new StageResult());
+                            result.getTestStage().getAttachments().add(attachment);
+                        });
                         result.addLabelIfNotExists(LabelName.SUITE, testSuite.getFullClassName());
                         result.addLabelIfNotExists(LabelName.TEST_CLASS, testSuite.getFullClassName());
                         result.addLabelIfNotExists(LabelName.PACKAGE, testSuite.getFullClassName());
