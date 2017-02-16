@@ -44,6 +44,7 @@ import java.util.stream.Stream;
 import static io.qameta.allure.ReportApiUtils.generateUid;
 import static io.qameta.allure.ReportApiUtils.listFiles;
 import static io.qameta.allure.entity.LabelName.ISSUE;
+import static io.qameta.allure.entity.LabelName.SUITE;
 import static io.qameta.allure.entity.LabelName.TEST_CLASS;
 import static io.qameta.allure.entity.LabelName.TEST_ID;
 import static io.qameta.allure.entity.LabelName.TEST_METHOD;
@@ -107,7 +108,7 @@ public class Allure1ResultsReader implements ResultsReader {
         dest.setTestCaseId(String.format("%s#%s", testClass, name));
         dest.setUid(generateUid());
         dest.setName(name);
-        dest.setFullName(String.format("%s#%s", testClass, testMethod));
+        dest.setFullName(String.format("%s.%s", testClass, testMethod));
 
         dest.setStatus(convert(source.getStatus()));
         dest.setTime(source.getStart(), source.getStop());
@@ -135,7 +136,18 @@ public class Allure1ResultsReader implements ResultsReader {
         dest.findOne(TEST_ID).ifPresent(testId ->
                 dest.getLinks().add(getLink(TEST_ID, testId, getTestCaseIdUrl(testId)))
         );
-        dest.addLabelIfNotExists(LabelName.SUITE, suiteName);
+
+        //TestNG nested suite
+        Optional<String> testGroupLabel = dest.findOne("testGroup");
+        Optional<String> testSuiteLabel = dest.findOne("testSuite");
+
+        if (testGroupLabel.isPresent() && testSuiteLabel.isPresent()) {
+            dest.addLabelIfNotExists(LabelName.PARENT_SUITE, testSuiteLabel.get());
+            dest.addLabelIfNotExists(LabelName.SUITE, testGroupLabel.get());
+        } else {
+            dest.addLabelIfNotExists(SUITE, suiteName);
+        }
+
         dest.addLabelIfNotExists(LabelName.TEST_CLASS, testClass);
         dest.addLabelIfNotExists(LabelName.TEST_METHOD, testMethod);
         dest.addLabelIfNotExists(LabelName.PACKAGE, testClass);
