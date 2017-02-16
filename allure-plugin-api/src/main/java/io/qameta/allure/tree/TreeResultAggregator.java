@@ -55,7 +55,7 @@ public abstract class TreeResultAggregator implements ResultAggregator<TreeData>
                     .orElse(false);
             TestCaseNode testCaseNode = new TestCaseNode()
                     .withUid(result.getUid())
-                    .withName(result.getName())
+                    .withName(getNodeName(result))
                     .withStatus(result.getStatus())
                     .withTime(result.getTime())
                     .withFlaky(isFlaky);
@@ -82,4 +82,7 @@ public abstract class TreeResultAggregator implements ResultAggregator<TreeData>
 
     protected abstract List<TreeGroup> getGroups(TestCaseResult result);
 
+    protected String getNodeName(TestCaseResult result) {
+        return result.getName();
+    }
 }
