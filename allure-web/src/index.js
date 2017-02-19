@@ -17,6 +17,7 @@ import './plugins/executor';
 import './plugins/testrun';
 import './plugins/summary';
 import './plugins/severity';
+import './plugins/owner';
 
 import './plugins/testcase-info';
 import './plugins/testcase-parameters';

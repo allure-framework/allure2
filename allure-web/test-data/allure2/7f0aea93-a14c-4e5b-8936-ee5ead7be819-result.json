@@ -18,6 +18,9 @@
     "name" : "host",
     "value" : "charlie.local"
   }, {
+    "name" : "owner",
+    "value" : "charlie@local.ts"
+  },  {
     "name" : "thread",
     "value" : "2208@charlie.local.main(1)"
   } ],

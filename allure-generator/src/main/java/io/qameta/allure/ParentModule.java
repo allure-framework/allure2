@@ -17,12 +17,14 @@ import io.qameta.allure.graph.GraphPlugin;
 import io.qameta.allure.history.HistoryPlugin;
 import io.qameta.allure.jackson.JacksonMapperModule;
 import io.qameta.allure.markdown.MarkdownPlugin;
+import io.qameta.allure.owner.OwnerPlugin;
 import io.qameta.allure.severity.SeverityPlugin;
 import io.qameta.allure.summary.SummaryPlugin;
 import io.qameta.allure.testrun.TestRunPlugin;
 import io.qameta.allure.timeline.TimelinePlugin;
 import io.qameta.allure.xunit.XunitPlugin;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -72,16 +74,7 @@ public class ParentModule extends AbstractModule {
                 .setDefault().to(DefaultAttachmentsStorage.class).in(Scopes.SINGLETON);
 
 //        Defaults
-        install(new SummaryPlugin());
-        install(new GraphPlugin());
-        install(new TimelinePlugin());
-        install(new DefectsPlugin());
-        install(new XunitPlugin());
-        install(new HistoryPlugin());
-        install(new ExecutorPlugin());
-        install(new TestRunPlugin());
-        install(new SeverityPlugin());
-        install(new MarkdownPlugin());
+        getDefaultModules().forEach(this::install);
 
 //        Plugins
         Multibinder.newSetBinder(binder(), Plugin.class);
@@ -93,5 +86,21 @@ public class ParentModule extends AbstractModule {
 
     private void bindPlugin(Plugin plugin) {
         Multibinder.newSetBinder(binder(), Plugin.class).addBinding().toInstance(plugin);
+    }
+
+    protected List<AbstractModule> getDefaultModules() {
+        return Arrays.asList(
+                new SummaryPlugin(),
+                new GraphPlugin(),
+                new TimelinePlugin(),
+                new DefectsPlugin(),
+                new XunitPlugin(),
+                new HistoryPlugin(),
+                new ExecutorPlugin(),
+                new TestRunPlugin(),
+                new SeverityPlugin(),
+                new MarkdownPlugin(),
+                new OwnerPlugin()
+        );
     }
 }
