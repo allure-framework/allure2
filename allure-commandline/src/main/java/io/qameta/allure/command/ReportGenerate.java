@@ -27,6 +27,13 @@ public class ReportGenerate implements AllureCommand {
     private ResultsOptions resultsOptions = new ResultsOptions();
 
     @Option(
+            title = "Clean report directory",
+            name = {"-c", "--clean"},
+            description = "Clean Allure report directory before generate new one."
+    )
+    private boolean cleanReportDirectory;
+
+    @Option(
             title = "Report directory",
             name = {"-o", "--report-dir", "--output"},
             description = "The directory to generate Allure report into.")
@@ -40,7 +47,7 @@ public class ReportGenerate implements AllureCommand {
         verboseOptions.configureLogLevel();
         Path output = Paths.get(reportDirectory);
 
-        if (Files.exists(output)) {
+        if (Files.exists(output) && cleanReportDirectory) {
             Files.walkFileTree(output, new DeleteVisitor());
         }
 
