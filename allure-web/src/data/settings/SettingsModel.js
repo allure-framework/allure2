@@ -23,7 +23,9 @@ export default class SettingsModel extends Model {
     fetch() {
         return new Promise(resolve => {
             const settings = window.localStorage.getItem('allure2Settings');
-            this.set(JSON.parse(settings));
+            if(settings) {
+                this.set(JSON.parse(settings));
+            }
             resolve();
         });
     }

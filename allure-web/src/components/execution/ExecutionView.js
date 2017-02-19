@@ -11,6 +11,24 @@ import $ from 'jquery';
 class ExecutionView extends View {
     template = template;
 
+    initialize({state}) {
+        this.state = state;
+        this.listenTo(this.state, 'change:attachment', this.highlightSelectedAttachment, this);
+    }
+
+    onRender() {
+        this.highlightSelectedAttachment();
+    }
+
+    highlightSelectedAttachment() {
+        const currentAttachment = this.state.get('attachment');
+        this.$('.attachment-row').removeClass('attachment-row_selected');
+
+        const attachmentEl = this.$(`.attachment-row[data-uid="${currentAttachment}"]`);
+        attachmentEl.addClass('attachment-row_selected');
+        attachmentEl.parents('.step').addClass('step_expanded');
+    }
+
     serializeData() {
         const before = makeArray(this.model.get('beforeStages'));
         const test = makeArray(this.model.get('testStage'));

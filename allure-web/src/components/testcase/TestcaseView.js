@@ -24,27 +24,20 @@ class TestcaseView extends View {
     initialize({state}) {
         this.state = state;
         this.plugins = [];
-        this.listenTo(this.state, 'change:attachment', this.highlightSelectedAttachment, this);
     }
 
     onRender() {
         this.showTestcasePlugins(this.$('.testcase__content_before'), pluginsRegistry.testcaseBlocks.before);
         this.showChildView('execution', new ExecutionView({
             baseUrl: '#testcase/' + this.model.id,
+            state: this.state,
             model: this.model
         }));
-        // this.highlightSelectedAttachment();
         this.showTestcasePlugins(this.$('.testcase__content_after'), pluginsRegistry.testcaseBlocks.after);
     }
 
     onDestroy() {
         this.plugins.forEach(plugin => plugin.destroy());
-    }
-
-    highlightSelectedAttachment() {
-        const currentAttachment = this.state.get('attachment');
-        this.$('.attachment-row').removeClass('attachment-row_selected');
-        this.$(`.attachment-row[data-uid="${currentAttachment}"]`).addClass('attachment-row_selected');
     }
 
     showTestcasePlugins(container, plugins) {
@@ -58,7 +51,7 @@ class TestcaseView extends View {
 
     serializeData() {
         return Object.assign({
-            severityIcon: SEVERITY_ICONS[this.model.get('severity')],
+            severityIcon: SEVERITY_ICONS[this.model.get('severity')]
         }, super.serializeData());
     }
 
