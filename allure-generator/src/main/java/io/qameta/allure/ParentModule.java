@@ -17,6 +17,7 @@ import io.qameta.allure.graph.GraphPlugin;
 import io.qameta.allure.history.HistoryPlugin;
 import io.qameta.allure.jackson.JacksonMapperModule;
 import io.qameta.allure.markdown.MarkdownPlugin;
+import io.qameta.allure.owner.OwnerPlugin;
 import io.qameta.allure.severity.SeverityPlugin;
 import io.qameta.allure.summary.SummaryPlugin;
 import io.qameta.allure.testrun.TestRunPlugin;
@@ -98,7 +99,8 @@ public class ParentModule extends AbstractModule {
                 new ExecutorPlugin(),
                 new TestRunPlugin(),
                 new SeverityPlugin(),
-                new MarkdownPlugin()
+                new MarkdownPlugin(),
+                new OwnerPlugin()
         );
     }
 }
