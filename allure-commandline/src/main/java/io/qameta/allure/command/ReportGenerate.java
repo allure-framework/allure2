@@ -3,10 +3,12 @@ package io.qameta.allure.command;
 import com.github.rvesse.airline.annotations.Command;
 import com.github.rvesse.airline.annotations.Option;
 import io.qameta.allure.Main;
+import io.qameta.allure.utils.DeleteVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -25,6 +27,13 @@ public class ReportGenerate implements AllureCommand {
     private ResultsOptions resultsOptions = new ResultsOptions();
 
     @Option(
+            title = "Clean report directory",
+            name = {"-c", "--clean"},
+            description = "Clean Allure report directory before generate new one."
+    )
+    private boolean cleanReportDirectory;
+
+    @Option(
             title = "Report directory",
             name = {"-o", "--report-dir", "--output"},
             description = "The directory to generate Allure report into.")
@@ -37,6 +46,11 @@ public class ReportGenerate implements AllureCommand {
     public void run(Context context) throws Exception {
         verboseOptions.configureLogLevel();
         Path output = Paths.get(reportDirectory);
+
+        if (cleanReportDirectory && Files.exists(output)) {
+            Files.walkFileTree(output, new DeleteVisitor());
+        }
+
         Main main = createMain(context);
         main.generate(output, resultsOptions.getResultsDirectories());
 
