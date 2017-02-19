@@ -47,7 +47,7 @@ public class ReportGenerate implements AllureCommand {
         verboseOptions.configureLogLevel();
         Path output = Paths.get(reportDirectory);
 
-        if (Files.exists(output) && cleanReportDirectory) {
+        if (cleanReportDirectory && Files.exists(output)) {
             Files.walkFileTree(output, new DeleteVisitor());
         }
 
