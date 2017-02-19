@@ -100,8 +100,8 @@ Expected: "{\n\"name\": \"test\",\n\"value\": \"ok value\"\n}"
                 </step>
             </steps>
             <attachments>
-                <attachment title="JSON Attachment" source="51aee409-51ce-44ee-a8c0-82e5a3c4fdad-attachment.txt" type="text/plain"/>
-                <attachment title="XML Attachment" source="8bc0e8b2-b9f3-4d94-ae5e-99540156e65e-attachment.txt" type="text/plain"/>
+                <attachment title="JSON Attachment" source="51aee409-51ce-44ee-a8c0-82e5a3c4fdad-attachment.json" type="application/json"/>
+                <attachment title="XML Attachment" source="8bc0e8b2-b9f3-4d94-ae5e-99540156e65e-attachment.xml" type="application/xml"/>
                 <attachment title="JPG Attachment" source="8e86c8ae-c2cd-49d4-a1b8-87592aa6de02-attachment.png" type="image/png"/>
                 <attachment title="CSV Attachment" source="b81da3c0-1b9d-4219-9e35-87e139ec446c-attachment.csv" type="text/csv"/>
             </attachments>
