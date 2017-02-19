@@ -51,7 +51,7 @@ class TestcaseView extends View {
 
     serializeData() {
         return Object.assign({
-            severityIcon: SEVERITY_ICONS[this.model.get('severity')],
+            severityIcon: SEVERITY_ICONS[this.model.get('severity')]
         }, super.serializeData());
     }
 
