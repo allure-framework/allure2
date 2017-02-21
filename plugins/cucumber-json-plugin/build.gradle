@@ -8,9 +8,10 @@ jar {
 }
 
 dependencies {
-    compile project(':allure-plugin-api')
+    compileOnly project(':allure-plugin-api')
     compile('net.masterthought:cucumber-reporting')
 
+    testCompile project(':allure-plugin-api')
     testCompile('junit:junit')
     testCompile('org.assertj:assertj-core')
     testCompile('org.slf4j:slf4j-simple')
