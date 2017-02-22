@@ -3,7 +3,7 @@
 .timeline {
   padding: $gap-size;
   overflow: auto;
-   height: 100vh;
+  height: 100vh;
 
   &__item:hover {
     opacity: 0.7;
