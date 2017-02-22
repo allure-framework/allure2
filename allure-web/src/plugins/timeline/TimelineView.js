@@ -128,9 +128,9 @@ class TimelineView extends BaseChartView {
                 .call(this.brush.move, [1/16 * this.x(this.maxX), 15/16 * this.x(this.maxX)])
                 .transition().duration(500)
                 .call(this.brush.move, this.x.range());
-         }
+        }
 
-        this.$el.height(currentHeight + PADDING);
+        this.svg.style('height', currentHeight + PADDING);
         super.onRender();
     }
 
