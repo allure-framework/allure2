@@ -162,6 +162,7 @@
         <xsd:complexContent>
             <xsd:extension base="ns:Time">
                 <xsd:sequence>
+                    <xsd:element name="minDuration" type="xsd:long" nillable="true"/>
                     <xsd:element name="maxDuration" type="xsd:long" nillable="true"/>
                     <xsd:element name="sumDuration" type="xsd:long" nillable="true"/>
                 </xsd:sequence>

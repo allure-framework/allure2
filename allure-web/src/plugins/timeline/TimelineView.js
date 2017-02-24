@@ -29,9 +29,9 @@ class TimelineView extends BaseChartView {
 
         this.tooltip = new TooltipView({position: 'bottom'});
 
-        this.minDuration = 0;
-        this.selectedDuration = 0;
+        this.minDuration = this.model.get('time').minDuration;
         this.maxDuration = this.model.get('time').maxDuration;
+        this.selectedDuration = this.minDuration;
         this.data = this.model.getFilteredData(this.minDuration);
     }
 
