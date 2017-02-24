@@ -65,7 +65,9 @@ class TimelineView extends BaseChartView {
             <div class='timeline__chart'>
                 <svg class="timeline__chart_svg">
                     <g class="timeline__chart__axis timeline__chart__axis_x"></g>
-                    <g class="timeline__plot"></g>
+                    <g class="timeline__plot"
+                        transform="translate(0, ${4*BAR_GAP})">
+                    </g>
                 </svg>
             </div>
             <div class='timeline__brush'>
@@ -187,19 +189,20 @@ class TimelineView extends BaseChartView {
             transform: `translate(${PADDING}, ${offset})`
         });
 
-        group.append('rect').attrs({
+        var rect = group.append('rect').attrs({
              'class': 'timeline__host-bg',
-             x: -PADDING/4*3,
-             y: 4,
-             width: host.name.length * 6,
-             height: HOST_TITLE_HEIGHT-7
+             x: -BAR_GAP,
+             y: BAR_GAP,
+             height: HOST_TITLE_HEIGHT - 2 * BAR_GAP
         });
 
-        group.append('text').text(host.name).attrs({
+        var text = group.append('text').text(host.name).attrs({
             'class': 'timeline__host',
-            x: -PADDING/4*3+4,
+            x: BAR_GAP,
             y: HOST_TITLE_HEIGHT/2
         });
+
+        rect.attr('width', () => {return text.node().getComputedTextLength() + 4 * BAR_GAP;});
 
         var bars = group.selectAll('.timeline__item ')
             .data(testCases).enter()
@@ -221,7 +224,7 @@ class TimelineView extends BaseChartView {
         this.bindTooltip(bars);
         bars.on('click', this.hideTooltip.bind(this));
 
-        return height;
+        return height + 4 * BAR_GAP;
     }
 
     onBrushChange() {

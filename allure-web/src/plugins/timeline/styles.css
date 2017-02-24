@@ -68,8 +68,9 @@
   &__left_handle, &__right_handle {
     font-family: 'FontAwesome';
     font-size: 10px;
-    dominant-baseline: central;
     fill: #808080;
+    dominant-baseline: central;
+
     opacity: 1;
     cursor: default;
     text: 'f';
