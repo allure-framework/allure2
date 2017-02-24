@@ -59,10 +59,10 @@
 
   &__host-bg {
     fill: #eee;
+    stroke: #e0e0e0;
+
     rx:3;
     ry:9;
-    stroke: none;
-    shape-rendering: crispEdges;
   }
 
   &__left_handle, &__right_handle {
