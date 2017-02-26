@@ -3,7 +3,7 @@ import {View} from 'backbone.marionette';
 import $ from 'jquery';
 import {className} from '../../decorators';
 
-const paneTpl = `<div class="pane"></div>`;
+const paneTpl = '<div class="pane"></div>';
 
 @className('pane-set')
 class PaneSetView extends View {

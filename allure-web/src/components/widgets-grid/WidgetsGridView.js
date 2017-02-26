@@ -12,7 +12,7 @@ const widgetTpl = (id) => `<div class="widget island" data-id="${id}">
     </div>
     <div class="widget__body"></div>
 </div>`;
-const colTpl = `<div class="widgets-grid__col"></div>`;
+const colTpl = '<div class="widgets-grid__col"></div>';
 
 @className('widgets-grid')
 class WidgetsGridView extends View {

@@ -6,7 +6,7 @@ export default function statusBar(statistic) {
         const count = typeof statistic[status] === 'undefined' ? 0 : statistic[status];
         const percents = count / statistic.total * 100;
         return count === 0
-            ? ``
+            ? ''
             : `<div class="bar__fill bar__fill_status_${status}" style="width: ${percents}%">${count}</div>`;
     }
     ).join('');
