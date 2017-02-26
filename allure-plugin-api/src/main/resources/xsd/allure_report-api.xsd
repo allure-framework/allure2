@@ -271,11 +271,13 @@
             <!-- Suite -->
             <xsd:enumeration value="parentSuite"/>
             <xsd:enumeration value="suite"/>
+            <xsd:enumeration value="subSuite"/>
 
             <!-- Packages -->
             <xsd:enumeration value="package"/>
 
             <!-- BDD -->
+            <xsd:enumeration value="epic"/>
             <xsd:enumeration value="feature"/>
             <xsd:enumeration value="story"/>
 
