@@ -52,7 +52,7 @@ class TimelineView extends BaseChartView {
             minDuration: this.minDuration,
             selectedTestCases: this.data.selectedTestCases,
             selectedPercent: selectedPercent,
-            selectedDuration: this.selectedDuration | 0,
+            selectedDuration: Math.floor(this.selectedDuration),
             maxDuration: this.maxDuration
         }));
 
