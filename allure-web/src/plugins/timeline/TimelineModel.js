@@ -33,7 +33,7 @@ export default class TimelineModel extends Model {
     getFilteredData(minDuration){
         var data = this.get('children');
         var total = this.get('statistic').total;
-        this.data = {
+        return {
             children: data.map(host => {
                 return Object.assign({}, host, { children: host['children'].map(thread => {
                     return Object.assign({}, thread, { children: thread['children'].filter(testCase => {
@@ -48,6 +48,5 @@ export default class TimelineModel extends Model {
                 }).filter(d=> {return d.children.length;})});
             }).filter(d=> {return d.children.length;}),
             selectedTestCases: total};
-        return this.data;
     }
 }
