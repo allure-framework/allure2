@@ -47,8 +47,8 @@ function makeConfig(development) {
                 return [...plugins, new webpack.optimize.UglifyJsPlugin({compress: {unsafe: true}, comments: false})];
             }
         })(),
-        postcss: (webpack) => [
-            require('postcss-import')({addDependencyTo: webpack}),
+        postcss: [
+            require('postcss-import'),
             require('precss')({'import': {disable: true}}),
             require('autoprefixer')
         ]
