@@ -5,8 +5,6 @@ import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import static io.qameta.allure.ModelUtils.createLabel;
-
 /**
  * @author Dmitry Baev baev@qameta.io
  *         Date: 31.01.16
@@ -65,6 +63,6 @@ public interface WithLabels {
     }
 
     default void addLabel(String name, String value) {
-        getLabels().add(createLabel(name, value));
+        getLabels().add(new Label().withName(name).withValue(value));
     }
 }

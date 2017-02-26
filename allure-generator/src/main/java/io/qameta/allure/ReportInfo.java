@@ -1,6 +1,5 @@
 package io.qameta.allure;
 
-import io.qameta.allure.Plugin;
 import io.qameta.allure.entity.TestCase;
 import io.qameta.allure.entity.TestCaseResult;
 
