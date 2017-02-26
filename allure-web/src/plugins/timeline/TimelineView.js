@@ -10,6 +10,7 @@ import {brushX} from 'd3-brush';
 import 'd3-selection-multi';
 import escape from '../../util/escape';
 import TooltipView from '../../components/tooltip/TooltipView';
+import template from './TimelineView.hbs';
 
 
 const HOST_TITLE_HEIGHT = 20;
@@ -47,45 +48,28 @@ class TimelineView extends BaseChartView {
 
     setupViewport() {
         var selectedPercent = (100*this.data.selectedTestCases/this.model.get('statistic').total).toFixed(2);
-        this.$el.html(`<div class="timeline__header">
-            <span class="timeline__header__min_duration">${duration(this.minDuration)}</span>
-            <span class="timeline__current_duration">
-                Selected ${this.data.selectedTestCases}(${selectedPercent}%) tests
-                with duration above ${duration(this.selectedDuration|0, 2)}
-            </span>
-            <span class="timeline__header__max_duration">${duration(this.maxDuration, 2)}</span>
-            <input class="timeline__range_bar"
-                type="range"
-                min=${this.minDuration}
-                max=${this.maxDuration}
-                value=${this.selectedDuration}>
-            </input>
-        </div>
-        <div class="timeline__body">
-            <div class='timeline__chart'>
-                <svg class="timeline__chart_svg">
-                    <g class="timeline__chart__axis timeline__chart__axis_x"></g>
-                    <g class="timeline__plot"
-                        transform="translate(0, ${4*BAR_GAP})">
-                    </g>
-                </svg>
-            </div>
-            <div class='timeline__brush'>
-                <svg class="timeline__brush_svg">
-                    <rect class="timeline__brush__axis_bg"
-                        width="${this.$el.width()}"
-                        height="${PADDING}"
-                        fill="white"
-                        transform="translate(0, ${BRUSH_HEIGHT + BAR_GAP})">
-                    </rect>
-                    <g class="timeline__brush__axis timeline__brush__axis_x"></g>
-                </svg>
-            </div>
-        </div>`);
+        this.$el.html(template({
+            minDuration: this.minDuration,
+            selectedTestCases: this.data.selectedTestCases,
+            selectedPercent: selectedPercent,
+            selectedDuration: this.selectedDuration|0,
+            maxDuration: this.maxDuration
+        }));
+
         this.svgChart = select(this.$el[0]).select('.timeline__chart_svg');
         this.svgBrush = select(this.$el[0]).select('.timeline__brush_svg');
 
-        select(this.$el[0]).select('.timeline__range_bar')
+        this.svgChart.select('.timeline__plot')
+            .attrs({ transform: `translate(0, ${4*BAR_GAP})`});
+
+        this.svgBrush.select('.timeline__brush__axis_bg')
+            .attrs({
+                width: this.$el.width(),
+                height: PADDING,
+                transform: `translate(0, ${BRUSH_HEIGHT + BAR_GAP}  )`
+            });
+
+        select(this.$el[0]).select('.timeline__input')
             .on('change', this.onChangeFilter.bind(this))
             .on('input', this.onInputFilter.bind(this));
     }
