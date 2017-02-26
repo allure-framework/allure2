@@ -2,6 +2,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
 
 function makeConfig(development) {
     return {
@@ -39,7 +40,8 @@ function makeConfig(development) {
         devtool: development ? 'eval' : null,
         plugins: (() => {
             const plugins = [
-                new ExtractTextPlugin('styles.css')
+                new ExtractTextPlugin('styles.css'),
+                new CaseSensitivePathsPlugin()
             ];
             if(development) {
                 return [...plugins, new webpack.HotModuleReplacementPlugin()];
