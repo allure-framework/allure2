@@ -1,16 +1,16 @@
 import './styles.css';
 import DataGridView from '../data-grid/DataGridView';
-import {region} from '../../decorators';
+import {regions} from '../../decorators';
 import settings from '../../util/settings';
 import StatusToggleView from '../status-toggle/StatusToggleView';
 import template from './TestcaseTableView.hbs';
 
+@regions({
+    statuses: '.testcase-table__statuses'
+})
 class TestcaseTableView extends DataGridView {
     template = template;
     settingsKey = 'testCaseSorting';
-
-    @region('.testcase-table__statuses')
-    statuses;
 
     initialize() {
         this.listenTo(settings, 'change:visibleStatuses', this.render);

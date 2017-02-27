@@ -26,4 +26,4 @@ require('jasmine-jquery');
 //require hooks
 require('./handlebars-loader');
 require.extensions['.css'] = function() {};
-require('babel-core/register');
+require('babel-register');
