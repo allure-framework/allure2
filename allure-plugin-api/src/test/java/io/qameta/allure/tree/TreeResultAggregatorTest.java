@@ -88,6 +88,7 @@ public class TreeResultAggregatorTest {
         aggregator.aggregate(testRun, testCase, first).accept(treeData);
         aggregator.aggregate(testRun, testCase, second).accept(treeData);
         assertThat(treeData.getTime(), notNullValue());
+        assertThat(treeData.getTime().getMinDuration(), is(123L));
         assertThat(treeData.getTime().getMaxDuration(), is(321L));
         assertThat(treeData.getTime().getSumDuration(), is(444L));
         assertThat(treeData.getTime().getStart(), nullValue());
