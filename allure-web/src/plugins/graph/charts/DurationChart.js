@@ -20,15 +20,28 @@ export default class DurationChart extends BaseChartView {
     }
 
     onAttach() {
-        const data = this.collection.toJSON().map(testcase => ({
+        this.data = this.collection.toJSON().map(testcase => ({
             value: testcase.time.duration,
             name: testcase.name
-        }));
+        })).filter(testcase => {
+            return testcase.value != null;
+        });
+
+        if (this.data.length) {
+            this.doShow()
+        } else {
+            this.$el.append(`<div class="widget__noitems">There are nothing to show</div>`)
+        }
+
+        super.onAttach();
+    }
+
+    doShow() {
         this.$el.height(this.$el.width() * 0.5);
         const width = this.$el.width() - PAD_LEFT - PAD_RIGHT;
         const height = this.$el.height() - PAD_BOTTOM - PAD_TOP;
 
-        const maxDuration = max(data, d => d.value);
+        const maxDuration = max(this.data, d => d.value);
         this.x.range([0, width]);
         this.y.range([height, 0], 1);
 
@@ -37,7 +50,7 @@ export default class DurationChart extends BaseChartView {
         const bins = histogram()
            .value(d => d.value)
            .domain(this.x.domain())
-           .thresholds(this.x.ticks())(data)
+           .thresholds(this.x.ticks())(this.data)
            .map(bin => ({
                x0: bin.x0,
                x1: bin.x1,
@@ -88,8 +101,6 @@ export default class DurationChart extends BaseChartView {
             y: d => this.y(d.y),
             height: d => height - this.y(d.y)
         });
-
-        super.onAttach();
     }
 
 
