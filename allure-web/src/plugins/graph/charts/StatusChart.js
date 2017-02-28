@@ -94,7 +94,7 @@ export default class StatusChart extends BaseChartView {
     }
 
     getTooltipContent({data}) {
-        const value = value || 0;
+        const value = data.value || 0;
         const part = data.part || 0;
         return escape`
             ${value} tests (${this.formatNumber(part * 100)}%)<br>
@@ -111,8 +111,8 @@ export default class StatusChart extends BaseChartView {
     onLegendHover(e) {
         const el = this.$(e.currentTarget);
         const status = el.data('status');
-        const sector = this.$('.chart__fill_status_' + status)[0];
-        const data = select(sector).datum();
+        const sector = this.$('.chart__fill_status_' + status)[0] || this.$('.chart__plot');
+        const data = select(sector).datum() || {data: 0, part: 0};
         this.showTooltip(data, sector);
     }
 }
