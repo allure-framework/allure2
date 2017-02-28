@@ -94,7 +94,7 @@ export default class StatusChart extends BaseChartView {
     }
 
     getTooltipContent({data}) {
-        const value = value || 0;
+        const value = data.value || 0;
         const part = data.part || 0;
         return escape`
             ${value} tests (${this.formatNumber(part * 100)}%)<br>

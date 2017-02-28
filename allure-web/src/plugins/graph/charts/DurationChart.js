@@ -108,12 +108,11 @@ export default class DurationChart extends BaseChartView {
         const LIST_LIMIT = 10;
         const items = testcases.slice(0, LIST_LIMIT);
         const overLimit = testcases.length - items.length;
-        return `<b>${testcases.length} test cases</b><br>` +
-            `<ul class="popover__list">` +
-            items.map(testcase => {
-                return escape`<li>${testcase.name}</li>`;
-            }).join('') +
-            `</ul>` +
-            (overLimit ? `...and ${overLimit} more` : '');
+        return `<b>${testcases.length} test cases</b><br>
+            <ul class="popover__list">
+                ${items.map(testcase => escape`<li>${testcase.name}</li>`).join('')}
+            </ul>
+            ${overLimit ? `...and ${overLimit} more` : ''}
+        `;
     }
 }

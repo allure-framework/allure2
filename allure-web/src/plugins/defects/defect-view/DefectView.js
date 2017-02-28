@@ -1,14 +1,14 @@
 import {View} from 'backbone.marionette';
-import {region, behavior} from '../../../decorators';
+import {regions, behavior} from '../../../decorators';
 import TestcaseTableView from '../../../components/testcase-table/TestcaseTableView';
 import template from './DefectView.hbs';
 
 @behavior('TooltipBehavior', {position: 'bottom'})
+@regions({
+    testcases: '.defect__table'
+})
 class DefectView extends View {
     template = template;
-
-    @region('.defect__table')
-    testcases;
 
     initialize({state}) {
         this.state = state;

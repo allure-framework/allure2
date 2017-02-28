@@ -20,7 +20,7 @@ Handlebars.registerHelper('helperMissing', function() {
     const helper = config.helperDirs.reduce(function(helper, dir) {
         return helper || require(path.join(dir, options.name));
     }, null);
-    return helper.apply(this, arguments);
+    return helper.default.apply(this, arguments);
 });
 
 const resolvePartial = Handlebars.VM.resolvePartial;
