@@ -1,3 +1,9 @@
 {
-    "optional": ["runtime", "es7.decorators", "es7.classProperties"]
+    "presets": ["latest"],
+    "plugins": [
+        "transform-class-properties",
+        ["transform-object-rest-spread", {"useBuiltIns": true}],
+        "transform-decorators-legacy",
+        "transform-runtime"
+    ]
 }

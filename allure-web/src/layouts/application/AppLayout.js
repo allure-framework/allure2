@@ -1,17 +1,16 @@
 import './styles.css';
 import {View} from 'backbone.marionette';
-import {region, className} from '../../decorators';
+import {regions, className} from '../../decorators';
 import template from './AppLayout.hbs';
 import SideNav from '../../components/side-nav/SideNavView';
 
 @className('app')
+@regions({
+    content: '.app__content',
+    nav: '.app__nav'
+})
 class AppLayout extends View {
     template = template;
-
-    @region('.app__content')
-    content;
-    @region('.app__nav')
-    nav;
 
     initialize() {}
 
