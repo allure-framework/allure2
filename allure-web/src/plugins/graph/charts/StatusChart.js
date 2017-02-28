@@ -111,8 +111,8 @@ export default class StatusChart extends BaseChartView {
     onLegendHover(e) {
         const el = this.$(e.currentTarget);
         const status = el.data('status');
-        const sector = this.$('.chart__fill_status_' + status)[0] || this.$('.chart__plot');
-        const data = select(sector).datum() || {data: 0, part: 0};
+        const sector = this.$('.chart__fill_status_' + status)[0];
+        const data = select(sector).datum();
         this.showTooltip(data, sector);
     }
 }
