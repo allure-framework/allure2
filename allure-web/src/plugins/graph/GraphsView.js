@@ -41,9 +41,9 @@ class GraphsView extends View {
             total: this.collection.length,
             failed: 0,
             broken: 0,
-            canceled: 0,
-            pending: 0,
-            passed: 0
+            skipped: 0,
+            passed: 0,
+            unknown: 0
         });
     }
 }
