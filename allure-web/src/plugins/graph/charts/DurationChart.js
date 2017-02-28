@@ -30,7 +30,7 @@ export default class DurationChart extends BaseChartView {
         if (this.data.length) {
             this.doShow()
         } else {
-            this.$el.append(`<div class="widget__noitems">There are nothing to show</div>`)
+            this.$el.html(`<div class="widget__noitems">There are nothing to show</div>`)
         }
 
         super.onAttach();
