@@ -22,6 +22,10 @@ public interface ExtraGroupTimeMethods {
 
     void setDuration(Long duration);
 
+    Long getMinDuration();
+
+    void setMinDuration(Long minDuration);
+
     Long getMaxDuration();
 
     void setMaxDuration(Long maxDuration);
@@ -37,6 +41,7 @@ public interface ExtraGroupTimeMethods {
         update(firstNonNull(getStart(), Long.MAX_VALUE), groupTime.getStart(), Math::min, this::setStart);
         update(firstNonNull(getStop(), 0L), groupTime.getStop(), Math::max, this::setStop);
         update(getStop(), getStart(), (a, b) -> a - b, this::setDuration);
+        update(firstNonNull(getMinDuration(), Long.MAX_VALUE), groupTime.getMinDuration(), Math::min, this::setMinDuration);
         update(firstNonNull(getMaxDuration(), 0L), groupTime.getMaxDuration(), Math::max, this::setMaxDuration);
         update(firstNonNull(getSumDuration(), 0L), groupTime.getSumDuration(), (a, b) -> a + b, this::setSumDuration);
     }
@@ -48,6 +53,7 @@ public interface ExtraGroupTimeMethods {
         update(firstNonNull(getStart(), Long.MAX_VALUE), time.getStart(), Math::min, this::setStart);
         update(firstNonNull(getStop(), 0L), time.getStop(), Math::max, this::setStop);
         update(getStop(), getStart(), (a, b) -> a - b, this::setDuration);
+        update(firstNonNull(getMinDuration(), Long.MAX_VALUE), time.getDuration(), Math::min, this::setMinDuration);
         update(firstNonNull(getMaxDuration(), 0L), time.getDuration(), Math::max, this::setMaxDuration);
         update(firstNonNull(getSumDuration(), 0L), time.getDuration(), (a, b) -> a + b, this::setSumDuration);
     }
