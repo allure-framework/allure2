@@ -1,24 +1,24 @@
-import {Model} from 'backbone';
-import {protoprop} from '../../decorators';
+import {Model} from "backbone";
 
 export default class SettingsModel extends Model {
-    @protoprop
-    defaults = {
-        language: 'en',
-        testCaseSorting: {
-            field: 'index',
-            order: 'asc'
-        },
-        sidebarCollapsed: false,
-        visibleStatuses: {
-            failed: true,
-            broken: true,
-            canceled: true,
-            pending: true,
-            passed: true
-        },
-        showGroupInfo: true
-    };
+    defaults() {
+        return {
+            language: 'en',
+            testCaseSorting: {
+                field: 'index',
+                order: 'asc'
+            },
+            sidebarCollapsed: false,
+            visibleStatuses: {
+                failed: true,
+                broken: true,
+                skipped: true,
+                unknown: true,
+                passed: true
+            },
+            showGroupInfo: true
+        }
+    }
 
     fetch() {
         return new Promise(resolve => {
