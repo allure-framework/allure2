@@ -7,8 +7,8 @@
     "build": "webpack --optimize-minimize",
     "start": "webpack-dev-server --inline --hot --env.development",
     "pretest": "eslint --ignore-path=.gitignore .",
-    "test": "cross-env JASMINE_CONFIG_PATH=jasmine.json DEBUG=allure-face:test jasmine",
-    "coverage": "cross-env JASMINE_CONFIG_PATH=jasmine.json istanbul cover jasmine"
+    "test": "jest",
+    "coverage": "jest --coverage --collectCoverageFrom=src/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -28,23 +28,17 @@
     "babel-preset-latest": "^6.22.0",
     "babel-register": "^6.23.0",
     "case-sensitive-paths-webpack-plugin": "^1.1.4",
-    "cross-env": "^3.1.4",
     "css-loader": "^0.26.2",
-    "debug": "^2.2.0",
     "eslint": "^3.16.1",
     "extract-text-webpack-plugin": "^2.0.0",
     "handlebars-loader": "^1.1.4",
-    "istanbul": "^0.4.1",
-    "jasmine": "^2.3.2",
-    "jasmine-core": "^2.3.4",
-    "jasmine-jquery": "^2.1.1",
+    "jest": "^19.0.2",
     "jsdom": "^9.11.0",
     "json-loader": "^0.5.4",
     "postcss-import": "^9.1.0",
     "postcss-loader": "^1.3.2",
     "postcss-nesting": "^2.3.1",
     "precss": "^1.2.3",
-    "proxyquire": "^1.7.3",
     "style-loader": "^0.13.2",
     "underscore.string": "^3.2.2",
     "url-loader": "^0.5.7",
@@ -68,7 +62,6 @@
     "d3-selection": "^1.0.2",
     "d3-selection-multi": "^1.0.0",
     "d3-shape": "^1.0.3",
-    "denodeify": "^1.2.1",
     "filesize": "^3.1.5",
     "font-awesome": "^4.5.0",
     "handlebars": "^4.0.5",
@@ -79,5 +72,16 @@
     "normalize-css": "^2.3.1",
     "sortablejs": "^1.4.2",
     "underscore": "^1.8.3"
+  },
+  "jest": {
+    "setupFiles": ["<rootDir>/test/bootstrap.js"],
+    "modulePaths": ["<rootDir>/src"],
+    "transform": {
+      "^.+\\.hbs$": "<rootDir>/test/stubs/handlebars.js",
+      "^.+\\.js$": "babel-jest"
+    },
+    "moduleNameMapper": {
+      "\\.css$": "<rootDir>/test/stubs/css.js"
+    }
   }
 }

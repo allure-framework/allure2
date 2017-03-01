@@ -1,7 +1,9 @@
 import TestcaseTableView from 'components/testcase-table/TestcaseTableView';
-import router from 'router';
 import jQuery from 'jquery';
+import router from '../../src/router';
 import settings from 'util/settings';
+
+jest.mock('../../src/router');
 
 describe('TestcaseTable', function() {
     function TableElement(el) {
@@ -15,7 +17,6 @@ describe('TestcaseTable', function() {
     }
 
     beforeEach(function() {
-        spyOn(router, 'toUrl');
         settings.clear();
         settings.set('visibleStatuses', {PASSED: true, FAILED: true});
         this.view = new TestcaseTableView({
