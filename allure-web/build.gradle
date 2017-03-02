@@ -10,6 +10,20 @@ node {
     download = true
 }
 
+task testWeb(type: NpmTask) {
+    inputs.files(fileTree('node_modules'))
+    inputs.files(fileTree('src'))
+    inputs.file('package.json')
+    inputs.file('jasmine.json')
+    inputs.file('webpack.config.js')
+    inputs.file('.babelrc')
+    inputs.file('.eslintrc')
+
+    outputs.dir('build/resources/main')
+
+    args = ['run', 'test']
+}
+
 task buildWeb(type: NpmTask) {
     inputs.files(fileTree('node_modules'))
     inputs.files(fileTree('src'))
@@ -25,7 +39,10 @@ task buildWeb(type: NpmTask) {
 }
 
 buildWeb.dependsOn npmInstall
+testWeb.dependsOn npmInstall
 processResources.dependsOn buildWeb
+
+test.dependsOn testWeb
 
 dependencies {
     compileOnly project(':allure-generator')

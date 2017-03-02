@@ -24,13 +24,13 @@ export default class DurationChart extends BaseChartView {
             value: testcase.time.duration,
             name: testcase.name
         })).filter(testcase => {
-            return testcase.value != null;
+            return testcase.value !== null;
         });
 
         if (this.data.length) {
-            this.doShow()
+            this.doShow();
         } else {
-            this.$el.html(`<div class="widget__noitems">There are nothing to show</div>`)
+            this.$el.html('<div class="widget__noitems">There are nothing to show</div>');
         }
 
         super.onAttach();
