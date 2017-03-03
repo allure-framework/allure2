@@ -1,9 +1,5 @@
 export {on} from 'backbone-decorators';
 
-export function protoprop(target, name, descriptor) {
-    target[name] = descriptor.initializer();
-}
-
 export function behavior(name, config = {}) {
     return function({prototype}) {
         prototype.behaviors = Object.assign({
