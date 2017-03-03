@@ -7,8 +7,7 @@
     "build": "webpack --optimize-minimize",
     "start": "webpack-dev-server --inline --hot --env.development",
     "pretest": "eslint --ignore-path=.gitignore .",
-    "test": "npm run jasmine",
-    "jasmine": "cross-env JASMINE_CONFIG_PATH=jasmine.json DEBUG=allure-face:test jasmine",
+    "test": "cross-env JASMINE_CONFIG_PATH=jasmine.json DEBUG=allure-face:test jasmine",
     "coverage": "cross-env JASMINE_CONFIG_PATH=jasmine.json istanbul cover jasmine"
   },
   "repository": {
