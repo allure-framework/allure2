@@ -1,4 +1,4 @@
-import {Model} from "backbone";
+import {Model} from 'backbone';
 
 export default class SettingsModel extends Model {
     defaults() {
@@ -17,7 +17,7 @@ export default class SettingsModel extends Model {
                 passed: true
             },
             showGroupInfo: true
-        }
+        };
     }
 
     fetch() {
