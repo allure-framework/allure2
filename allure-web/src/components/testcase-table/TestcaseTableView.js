@@ -13,17 +13,21 @@ class TestcaseTableView extends DataGridView {
     settingsKey = 'testCaseSorting';
 
     initialize() {
-        this.listenTo(settings, 'change:visibleStatuses', this.render);
+        this.statusesKey = 'testcaseTableStatuses';
+        if (!settings.get(this.statusesKey)) {
+            settings.save(this.statusesKey, settings.get('visibleStatuses'));
+        }
+        this.listenTo(settings, 'change:' + this.statusesKey, this.render);
         this.testCases = this.options.testCases.map((testcase, index) => Object.assign(testcase, {index: index + 1}));
     }
 
     onRender() {
         // this.highlightItem(this.options.currentCase);
-        this.showChildView('statuses', new StatusToggleView());
+        this.showChildView('statuses', new StatusToggleView({statusesKey: this.statusesKey}));
     }
 
     serializeData() {
-        const statuses = settings.get('visibleStatuses');
+        const statuses = settings.get(this.statusesKey);
         const sorting = this.getSettings();
         return {
             baseUrl: this.options.baseUrl,

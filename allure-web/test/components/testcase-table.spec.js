@@ -6,6 +6,8 @@ import settings from 'util/settings';
 jest.mock('../../src/router');
 
 describe('TestcaseTable', function() {
+    const statusesKey = 'testcaseTableStatuses';
+
     function TableElement(el) {
         function getRowTitle(node) {
             return node.querySelector('.testcase-table__name').textContent;
@@ -18,12 +20,12 @@ describe('TestcaseTable', function() {
 
     beforeEach(function() {
         settings.clear();
-        settings.set('visibleStatuses', {PASSED: true, FAILED: true});
+        settings.set('visibleStatuses', {passed: true, failed: true});
         this.view = new TestcaseTableView({
             testCases: [
-                {uid: 1, name: 'case 1', time: {duration: 432}, status: 'PASSED'},
-                {uid: 2, name: 'case 2', time: {duration: 145}, status: 'PASSED'},
-                {uid: 3, name: 'case 3', time: {duration: 370}, status: 'FAILED'}
+                {uid: 1, name: 'case 1', time: {duration: 432}, status: 'passed'},
+                {uid: 2, name: 'case 2', time: {duration: 145}, status: 'passed'},
+                {uid: 3, name: 'case 3', time: {duration: 370}, status: 'failed'}
             ],
             baseUrl: 'xUnit/56'
         }).render();
@@ -47,7 +49,7 @@ describe('TestcaseTable', function() {
     });
 
     it('should filter test cases by status', function() {
-        settings.set('visibleStatuses', {PASSED: true});
+        settings.set(statusesKey, {passed: true, failed: false});
         expect(this.el.rows()).toEqual([
             'case 1',
             'case 2'

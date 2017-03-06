@@ -10,7 +10,8 @@ import {values} from '../../util/statuses';
 class StatusToggleView extends PopoverView {
     template = template;
 
-    initialize() {
+    initialize({statusesKey}) {
+        this.statusesKey = statusesKey;
         super.initialize({position: 'bottom-left', offset: -1});
         this.onDocumentClick = this.onDocumentClick.bind(this);
     }
@@ -39,7 +40,7 @@ class StatusToggleView extends PopoverView {
     }
 
     serializeData() {
-        const statuses = settings.get('visibleStatuses');
+        const statuses = settings.get(this.statusesKey);
         return {
             statuses: values.map(status => ({
                 status,
@@ -54,8 +55,8 @@ class StatusToggleView extends PopoverView {
         el.toggleClass('status-toggle__item_active');
         const name = el.data('status');
         const checked = el.hasClass('status-toggle__item_active');
-        const statuses = settings.get('visibleStatuses');
-        settings.save('visibleStatuses', Object.assign({}, statuses, {[name]: checked}));
+        const statuses = settings.get(this.statusesKey);
+        settings.save(this.statusesKey, Object.assign({}, statuses, {[name]: checked}));
     }
 }
 
