@@ -6,11 +6,11 @@ apply plugin: 'maven'
 
 node {
     version = '6.3.1'
-    npmVersion = '3.10.3'
+    yarnVersion = '0.20.3'
     download = true
 }
 
-task testWeb(type: NpmTask) {
+task testWeb(type: YarnTask) {
     inputs.files(fileTree('node_modules'))
     inputs.files(fileTree('src'))
     inputs.files(fileTree('test'))
@@ -25,7 +25,7 @@ task testWeb(type: NpmTask) {
     args = ['run', 'test']
 }
 
-task buildWeb(type: NpmTask) {
+task buildWeb(type: YarnTask) {
     inputs.files(fileTree('node_modules'))
     inputs.files(fileTree('src'))
     inputs.file('package.json')
@@ -39,8 +39,8 @@ task buildWeb(type: NpmTask) {
     args = ['run', 'build']
 }
 
-buildWeb.dependsOn npmInstall
-testWeb.dependsOn npmInstall
+buildWeb.dependsOn yarn
+testWeb.dependsOn yarn
 processResources.dependsOn buildWeb
 
 test.dependsOn testWeb
@@ -77,5 +77,5 @@ task write {
 }
 
 task dev {
-    dependsOn write, generateDemoReport, copyPlugins, npm_run_start
+    dependsOn write, generateDemoReport, copyPlugins, yarn_start
 }
