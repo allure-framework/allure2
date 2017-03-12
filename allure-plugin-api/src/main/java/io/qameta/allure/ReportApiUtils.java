@@ -12,6 +12,7 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.SecureRandom;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -56,7 +57,7 @@ public final class ReportApiUtils {
 
     public static String probeContentType(Path path) {
         try (InputStream stream = newInputStream(path)) {
-            return probeContentType(stream, path.getFileName().toString());
+            return probeContentType(stream, Objects.toString(path.getFileName()));
         } catch (IOException e) {
             LOGGER.warn("Couldn't detect the mime-type of attachment {} {}", path, e);
             return "unknown";

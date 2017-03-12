@@ -29,6 +29,13 @@ import static ru.yandex.qatools.matchers.nio.PathMatchers.exists;
  */
 public class CommandLineTest {
 
+    public static final String SERVE = "serve";
+    public static final String OPEN = "open";
+    public static final String PLUGINS = "plugins";
+    public static final String HELP = "help";
+    public static final String VERSION = "version";
+    public static final String GENERATE = "generate";
+
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
@@ -40,25 +47,25 @@ public class CommandLineTest {
 
     @Test
     public void shouldParseHelp() throws Exception {
-        AllureCommand cmd = new CommandLine().parse("help");
+        AllureCommand cmd = new CommandLine().parse(HELP);
         assertThat(cmd, instanceOf(Help.class));
     }
 
     @Test
     public void shouldParseVersion() throws Exception {
-        AllureCommand cmd = new CommandLine().parse("version");
+        AllureCommand cmd = new CommandLine().parse(VERSION);
         assertThat(cmd, instanceOf(Version.class));
     }
 
     @Test
     public void shouldParseListPlugins() throws Exception {
-        AllureCommand cmd = new CommandLine().parse("plugins");
+        AllureCommand cmd = new CommandLine().parse(PLUGINS);
         assertThat(cmd, instanceOf(ListPlugins.class));
     }
 
     @Test
     public void shouldParseReportOpen() throws Exception {
-        AllureCommand cmd = new CommandLine().parse("open");
+        AllureCommand cmd = new CommandLine().parse(OPEN);
         assertThat(cmd, instanceOf(ReportOpen.class));
     }
 
@@ -66,31 +73,31 @@ public class CommandLineTest {
     public void shouldParseReportServe() throws Exception {
         String firstResult = folder.newFolder().toPath().toAbsolutePath().toString();
         String secondResult = folder.newFolder().toPath().toAbsolutePath().toString();
-        AllureCommand cmd = new CommandLine().parse("serve", firstResult, secondResult);
+        AllureCommand cmd = new CommandLine().parse(SERVE, firstResult, secondResult);
         assertThat(cmd, instanceOf(ReportServe.class));
     }
 
     @Test(expected = ParseArgumentsMissingException.class)
     public void shouldFailIfNoResultsSpecifiedForServe() throws Exception {
-        new CommandLine().parse("serve");
+        new CommandLine().parse(SERVE);
     }
 
     @Test(expected = ParseRestrictionViolatedException.class)
     public void shouldFailIfResultsDirectoryDoesNotExistsForServe() throws Exception {
-        new CommandLine().parse("serve", "directory-does-not-exists");
+        new CommandLine().parse(SERVE, "directory-does-not-exists");
     }
 
     @Test(expected = ParseRestrictionViolatedException.class)
     public void shouldFailIfResultsDirectoryIsFileForServe() throws Exception {
         String file = folder.newFile().toPath().toString();
-        new CommandLine().parse("serve", file);
+        new CommandLine().parse(SERVE, file);
     }
 
     @Test
     public void shouldParseReportGenerate() throws Exception {
         String firstResult = folder.newFolder().toPath().toAbsolutePath().toString();
         String secondResult = folder.newFolder().toPath().toAbsolutePath().toString();
-        AllureCommand cmd = new CommandLine().parse("generate", firstResult, secondResult);
+        AllureCommand cmd = new CommandLine().parse(GENERATE, firstResult, secondResult);
         assertThat(cmd, instanceOf(ReportGenerate.class));
     }
 
@@ -105,7 +112,7 @@ public class CommandLineTest {
         Path output = folder.newFolder().toPath();
 
         AllureCommand generate = new CommandLine().parse(
-                "generate", results.toString(), "-o", output.toString()
+                GENERATE, results.toString(), "-o", output.toString()
         );
 
         generate.run(new Context(
@@ -118,7 +125,7 @@ public class CommandLineTest {
         assertThat(output.resolve("index.html"), exists());
     }
 
-    private void copyFile(Path dir, String resourceName, String fileName) throws IOException {
+    private void copyFile(final Path dir, final String resourceName, final String fileName) throws IOException {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourceName)) {
             Files.copy(is, dir.resolve(fileName));
         }

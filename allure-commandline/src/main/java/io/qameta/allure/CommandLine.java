@@ -48,11 +48,11 @@ public class CommandLine {
         this.parser = builder.build();
     }
 
-    public AllureCommand parse(String... args) {
+    public AllureCommand parse(final String... args) {
         return parser.parse(args);
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(final String[] args) throws InterruptedException {
         String allureHome = Objects.requireNonNull(
                 System.getenv("APP_HOME"),
                 "APP_HOME should not be a null"
@@ -72,11 +72,11 @@ public class CommandLine {
 
             new CommandLine().parse(args).run(context);
         } catch (AllureCommandException e) {
-            e.printStackTrace();
+            LOGGER.debug("Allure commandline error", e);
             LOGGER.error(e.getMessage());
             System.exit(GENERIC_ERROR.getCode());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.debug("Unhandled error", e);
             LOGGER.error(e.getMessage());
             System.exit(ARGUMENT_PARSING_ERROR.getCode());
         }

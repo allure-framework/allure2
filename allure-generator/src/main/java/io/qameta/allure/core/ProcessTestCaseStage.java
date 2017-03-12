@@ -20,10 +20,10 @@ public class ProcessTestCaseStage {
         this.aggregators = aggregators;
     }
 
+    @SuppressWarnings("unchecked")
     public Consumer<Map<String, Object>> process(TestRun testRun, TestCase testCase) {
         return data -> aggregators.forEach((uid, aggregator) -> {
             Object value = data.computeIfAbsent(uid, key -> aggregator.supplier(testRun).get());
-            //noinspection unchecked
             aggregator.aggregate(testRun, testCase).accept(value);
         });
     }

@@ -11,7 +11,7 @@ public class AutoCleanablePath implements AutoCloseable {
 
     private final Path path;
 
-    public AutoCleanablePath(Path path) {
+    public AutoCleanablePath(final Path path) {
         this.path = path;
     }
 
@@ -24,7 +24,7 @@ public class AutoCleanablePath implements AutoCloseable {
         Files.walkFileTree(path, new DeleteVisitor());
     }
 
-    public static AutoCleanablePath create(String prefix) throws IOException {
+    public static AutoCleanablePath create(final String prefix) throws IOException {
         return new AutoCleanablePath(Files.createTempDirectory(prefix));
     }
 }

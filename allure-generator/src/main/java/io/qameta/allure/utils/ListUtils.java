@@ -30,7 +30,8 @@ public final class ListUtils {
         return item -> Objects.nonNull(item) && Objects.equals(map.apply(item), compareWith.get());
     }
 
-    public static <T> T firstNonNull(T... items) {
+    @SafeVarargs
+    public static <T> T firstNonNull(final T... items) {
         return Stream.of(items)
                 .filter(Objects::nonNull)
                 .findFirst()

@@ -24,8 +24,8 @@ import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -63,7 +63,7 @@ public class TreeResultAggregatorTest {
         TestCase testCase = mock(TestCase.class);
         TestCaseResult result = mock(TestCaseResult.class);
 
-        doReturn(Status.PASSED).when(result).getStatus();
+        when(result.getStatus()).thenReturn(Status.PASSED);
 
         aggregator.aggregate(testRun, testCase, result).accept(treeData);
         assertThat(treeData.getStatistic(), notNullValue());
@@ -80,10 +80,10 @@ public class TreeResultAggregatorTest {
         TestCase testCase = mock(TestCase.class);
 
         TestCaseResult first = mock(TestCaseResult.class);
-        doReturn(new Time().withDuration(123L)).when(first).getTime();
+        when(first.getTime()).thenReturn(new Time().withDuration(123L));
 
         TestCaseResult second = mock(TestCaseResult.class);
-        doReturn(new Time().withDuration(321L)).when(second).getTime();
+        when(second.getTime()).thenReturn(new Time().withDuration(321L));
 
         aggregator.aggregate(testRun, testCase, first).accept(treeData);
         aggregator.aggregate(testRun, testCase, second).accept(treeData);
@@ -164,7 +164,7 @@ public class TreeResultAggregatorTest {
             TestRun testRun = mock(TestRun.class);
             TestCase testCase = mock(TestCase.class);
             TestCaseResult result = mock(TestCaseResult.class);
-            doReturn(uid).when(result).getUid();
+            when(result.getUid()).thenReturn(uid);
             aggregator.aggregate(testRun, testCase, result).accept(treeData);
         });
         return treeData;
@@ -188,21 +188,21 @@ public class TreeResultAggregatorTest {
         assertThat(actualUids, hasItems(uids));
     }
 
-    private class OneValueTreeResultAggregator extends TreeResultAggregator {
+    private static class OneValueTreeResultAggregator extends TreeResultAggregator {
         @Override
         protected List<TreeGroup> getGroups(TestCaseResult result) {
             return Collections.singletonList(TreeGroup.values("sampleGroup"));
         }
     }
 
-    private class FewValuesTreeResultAggregator extends TreeResultAggregator {
+    private static class FewValuesTreeResultAggregator extends TreeResultAggregator {
         @Override
         protected List<TreeGroup> getGroups(TestCaseResult result) {
             return Collections.singletonList(TreeGroup.values("first", "second"));
         }
     }
 
-    private class FewLevelsTreeResultAggregator extends TreeResultAggregator {
+    private static class FewLevelsTreeResultAggregator extends TreeResultAggregator {
 
         @Override
         protected List<TreeGroup> getGroups(TestCaseResult result) {
@@ -210,7 +210,7 @@ public class TreeResultAggregatorTest {
         }
     }
 
-    private class ComplexTreeResultAggregator extends TreeResultAggregator {
+    private static class ComplexTreeResultAggregator extends TreeResultAggregator {
         @Override
         protected List<TreeGroup> getGroups(TestCaseResult result) {
             return Arrays.asList(TreeGroup.values("a", "b"), TreeGroup.values("1", "2"));

@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 /**
@@ -37,7 +38,7 @@ public final class TestData {
     }
 
     public static long randomLong() {
-        return new Random().nextLong();
+        return ThreadLocalRandom.current().nextLong();
     }
 
     public static String randomFileName() {
