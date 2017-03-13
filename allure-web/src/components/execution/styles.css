@@ -40,7 +40,7 @@
     }
   }
   &__content {
-    margin-left: 15px;
+    margin-left: 20px;
     display: none;
   }
   &_expanded > &__title > &__arrow {
