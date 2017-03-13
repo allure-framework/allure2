@@ -1,12 +1,16 @@
 .block__arrow {
-  top: 10px;
+  top: 7px;
   position: absolute;
   visibility: visible;
-  width: 14px;
-  height: 14px;
-  background: url(./arrow.svg) center no-repeat;
   transition: transform 0.1s;
+  font-weight: initial;
   &__expanded {
     transform: rotate(90deg);
   }
+}
+
+.arrow {
+  width: 14px;
+  height: 14px;
+  background: url(./arrow.svg) center no-repeat;
 }

@@ -1,7 +1,7 @@
 {{#if stages.length}}
     <div class="{{b 'step' expanded=expanded}}">
         <div class="{{b 'step' 'title' hasContent=true stage=true}}">
-            <span class="step__arrow block__arrow"></span>
+            <span class="step__arrow block__arrow arrow"></span>
             {{name}}
         </div>
         <div class="{{b 'step' 'content'}}">
@@ -9,7 +9,11 @@
                 {{#if name}}
                     <div class="{{b 'step'}}">
                         <div class="{{b 'step' 'title' hasContent=(or steps.length attachments.length) stage=true}}">
-                            <span class="step__arrow block__arrow"></span>
+                            {{#if (or steps.length attachments.length)}}
+                                <span class="step__arrow block__arrow">{{arrow status}}</span>
+                            {{else}}
+                                <span class="step__status">{{allure-icon status}}</span>
+                            {{/if}}
                             {{name}}
                         </div>
                         <div class="{{b 'step' 'content'}}">

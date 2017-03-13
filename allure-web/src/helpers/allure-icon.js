@@ -6,23 +6,23 @@ const icons = {
         tooltip: 'Test is flaky'
     },
     failed: {
-        className: 'fa fa-times-circle text_status_failed',
+        className: 'fa fa-times-circle fa-fw text_status_failed',
         tooltip: 'Failed'
     },
     broken: {
-        className: 'fa fa-exclamation-circle text_status_broken',
+        className: 'fa fa-exclamation-circle fa-fw text_status_broken',
         tooltip: 'Broken'
     },
     passed: {
-        className: 'fa fa-check-circle text_status_passed',
+        className: 'fa fa-check-circle fa-fw text_status_passed',
         tooltip: 'Passed'
     },
     skipped: {
-        className: 'fa fa-minus-circle text_status_skipped',
+        className: 'fa fa-minus-circle fa-fw text_status_skipped',
         tooltip: 'Skipped'
     },
     unknown: {
-        className: 'fa fa-question-circle text_status_unknown',
+        className: 'fa fa-question-circle fa-fw text_status_unknown',
         tooltip: 'Unknown'
     }
 };
