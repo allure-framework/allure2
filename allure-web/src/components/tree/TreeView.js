@@ -14,10 +14,7 @@ class TreeView extends View {
         this.state = state;
         this.baseUrl = baseUrl;
         this.tabName = tabName;
-        this.statusesKey = tabName + 'visibleStatuses';
-        if (!settings.get(this.statusesKey)) {
-            settings.save(this.statusesKey, settings.get('visibleStatuses'));
-        }
+        this.statusesKey = tabName + '.visibleStatuses';
         this.statusesSelect = new StatusToggleView({statusesKey: this.statusesKey});
         this.listenTo(this.state, 'change:testcase', (m, testcase) => this.highlightItem(testcase));
         this.listenTo(settings, 'change:' + this.statusesKey, this.render);
@@ -65,7 +62,7 @@ class TreeView extends View {
     }
 
     serializeData() {
-        const statuses = settings.get(this.statusesKey);
+        const statuses = settings.get(this.statusesKey) || settings.get('visibleStatuses');
         const showGroupInfo = settings.get('showGroupInfo');
         return {
             baseUrl: this.baseUrl,
