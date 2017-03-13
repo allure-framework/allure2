@@ -1,5 +1,4 @@
 import {SafeString} from 'handlebars/runtime';
-import {values} from '../util/statuses';
 
 
 export default function(status = 'unknown') {
