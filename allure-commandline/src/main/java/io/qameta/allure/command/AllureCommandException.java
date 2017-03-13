@@ -7,11 +7,11 @@ package io.qameta.allure.command;
  */
 public class AllureCommandException extends RuntimeException {
 
-    public AllureCommandException(String message) {
+    public AllureCommandException(final String message) {
         super(message);
     }
 
-    public AllureCommandException(Throwable cause) {
-        super(cause);
+    public AllureCommandException(final String message, final Throwable cause) {
+        super(message, cause);
     }
 }

@@ -18,8 +18,8 @@ public class Context {
 
     private final Set<String> enabledPlugins;
 
-    public Context(Path workDirectory, Path pluginsDirectory, Path webDirectory,
-                   String toolVersion, Set<String> enabledPlugins) {
+    public Context(final Path workDirectory, final Path pluginsDirectory, final Path webDirectory,
+                   final String toolVersion, final Set<String> enabledPlugins) {
         this.workDirectory = workDirectory;
         this.pluginsDirectory = pluginsDirectory;
         this.webDirectory = webDirectory;
