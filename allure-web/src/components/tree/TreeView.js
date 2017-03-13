@@ -62,7 +62,7 @@ class TreeView extends View {
     }
 
     serializeData() {
-        const statuses = settings.get(this.statusesKey) || settings.get('visibleStatuses');
+        const statuses = settings.getVisibleStatuses(this.statusesKey);
         const showGroupInfo = settings.get('showGroupInfo');
         return {
             baseUrl: this.baseUrl,

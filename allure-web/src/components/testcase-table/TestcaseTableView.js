@@ -24,7 +24,7 @@ class TestcaseTableView extends DataGridView {
     }
 
     serializeData() {
-        const statuses = settings.get(statusesKey) || settings.get('visibleStatuses');
+        const statuses = settings.getVisibleStatuses(statusesKey);
         const sorting = this.getSettings();
         return {
             baseUrl: this.options.baseUrl,

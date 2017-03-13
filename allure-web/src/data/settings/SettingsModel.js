@@ -35,4 +35,8 @@ export default class SettingsModel extends Model {
         const json = this.toJSON();
         window.localStorage.setItem('allure2Settings', JSON.stringify(json));
     }
+
+    getVisibleStatuses(key) {
+        return this.get(key) || this.get('visibleStatuses');
+    }
 }
