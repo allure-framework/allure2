@@ -1,0 +1,17 @@
+<span class="step-stats__info">
+    {{~#if (or attachmentsCount stepsCount)}}
+    (
+        {{~#if attachmentsCount ~}}
+            {{t 'testcase.ATTACHMENTS' postProcess='interval' count=attachmentsCount}}
+            {{~#if stepsCount}},&nbsp;{{~/if~}}
+        {{/if~}}
+        {{~#if stepsCount ~}}
+            {{t 'testcase.SUBSTEPS' postProcess='interval' count=stepsCount}}
+        {{~/if~}}
+    )
+    {{~/if~}}
+    <span class="node__stats">
+        {{duration time.duration}}
+    </span>
+</span>
+

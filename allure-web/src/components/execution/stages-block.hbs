@@ -1,4 +1,4 @@
-{{#if stages.length}}
+{{#if stages}}
     <div class="{{b 'step' expanded=expanded}}">
         <div class="{{b 'step' 'title' hasContent=true stage=true}}">
             <span class="step__arrow block__arrow arrow"></span>
@@ -15,6 +15,7 @@
                                 <span class="step__status">{{allure-icon status}}</span>
                             {{/if}}
                             {{name}}
+                            {{> ../../blocks/step-stats/step-stats . baseUrl=../../baseUrl}}
                         </div>
                         <div class="{{b 'step' 'content'}}">
                             {{> steps-list steps=steps baseUrl=../baseUrl}}

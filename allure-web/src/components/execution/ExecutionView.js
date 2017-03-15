@@ -29,10 +29,26 @@ class ExecutionView extends View {
         attachmentEl.parents('.step').addClass('step_expanded');
     }
 
+    calculateSteps(steps, key) {
+        return steps.map(step => {
+            var steps = this.calculateSteps(step.steps, key);
+            step[key + 'Count'] = step[key].length + steps.reduce((count, cur) => { return count + cur[key + 'Count'];}, 0);
+            step.steps = steps;
+            return step;
+        });
+    }
+
+    getStage(executionStage) {
+        var stages = makeArray(this.model.get(executionStage));
+        this.calculateSteps(stages, 'steps');
+        this.calculateSteps(stages, 'attachments');
+        return stages;
+    }
+
     serializeData() {
-        const before = makeArray(this.model.get('beforeStages'));
-        const test = makeArray(this.model.get('testStage'));
-        const after = makeArray(this.model.get('afterStages'));
+        const before = this.getStage('beforeStages');
+        const test = this.getStage('testStage');
+        const after = this.getStage('afterStages');
         return {
             hasContent: before.length + test.length + after.length > 0,
             before: before,
