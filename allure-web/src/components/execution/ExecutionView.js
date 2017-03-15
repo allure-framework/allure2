@@ -30,11 +30,10 @@ class ExecutionView extends View {
     }
 
     calculateSteps(steps, key) {
-        return steps.map(step => {
-            var children = this.calculateSteps(step.steps, key);
-            step[key + 'Count'] = step[key].length + children.reduce((count, cur) => { return count + cur[key + 'Count'];}, 0);
-            step.steps = children;
-            return step;
+        const countKey = `${key}Count`;
+        steps.forEach(step => {
+            this.calculateSteps(step.steps, key);
+            step[countKey] = step[key].length + step.steps.reduce((count, cur) => count + cur[countKey], 0);
         });
     }
 
