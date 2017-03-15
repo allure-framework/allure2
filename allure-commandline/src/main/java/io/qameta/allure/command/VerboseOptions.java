@@ -12,12 +12,12 @@ public class VerboseOptions {
     @Option(
             name = {"-v", "--verbose"},
             description = "Switch on the verbose mode.")
-    protected boolean verbose = false;
+    protected boolean verbose;
 
     @Option(
             name = {"-q", "--quiet"},
             description = "Switch on the quiet mode.")
-    protected boolean quiet = false;
+    protected boolean quiet;
 
     /**
      * Returns true if silent mode is enabled, false otherwise.

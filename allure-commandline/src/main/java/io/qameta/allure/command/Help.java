@@ -27,10 +27,10 @@ public class Help<T> implements AllureCommand {
             name = {"--include-hidden"},
             description = "When set the help output will include hidden commands and options",
             hidden = true)
-    public boolean includeHidden = false;
+    public boolean includeHidden;
 
     @Override
-    public void run(Context context) throws Exception {
+    public void run(final Context context) throws Exception {
         help(global, command, this.includeHidden);
     }
 }

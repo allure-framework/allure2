@@ -9,7 +9,8 @@ import com.github.rvesse.airline.annotations.Command;
 public class Version implements AllureCommand {
 
     @Override
-    public void run(Context context) throws Exception {
+    @SuppressWarnings("PMD.SystemPrintln")
+    public void run(final Context context) throws Exception {
         System.out.println(context.getToolVersion());
     }
 }

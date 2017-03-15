@@ -17,22 +17,23 @@ import static io.qameta.allure.utils.CommandUtils.setUpServer;
 /**
  * @author charlie (Dmitry Baev).
  */
+@SuppressWarnings("SpringAutowiredFieldsWarningInspection")
 @Command(name = "serve", description = "Serve the report")
 public class ReportServe implements AllureCommand {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReportServe.class);
 
     @Inject
-    private ResultsOptions resultsOptions = new ResultsOptions();
+    private final ResultsOptions resultsOptions = new ResultsOptions();
 
     @Inject
-    private PortOptions portOptions = new PortOptions();
+    private final PortOptions portOptions = new PortOptions();
 
     @Inject
-    private VerboseOptions verboseOptions = new VerboseOptions();
+    private final VerboseOptions verboseOptions = new VerboseOptions();
 
     @Override
-    public void run(Context context) throws Exception {
+    public void run(final Context context) throws Exception {
         verboseOptions.configureLogLevel();
 
         Path serve = Files.createTempDirectory(context.getWorkDirectory(), "serve");

@@ -31,10 +31,10 @@ public class ProcessTestRunStage {
         this.aggregators = aggregators;
     }
 
+    @SuppressWarnings("unchecked")
     public Consumer<Map<String, Object>> process(TestRun testRun) {
         return data -> aggregators.forEach((uid, aggregator) -> {
             Object value = data.computeIfAbsent(uid, key -> aggregator.supplier().get());
-            //noinspection unchecked
             aggregator.aggregate(testRun).accept(value);
         });
     }

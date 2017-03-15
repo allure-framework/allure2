@@ -11,7 +11,7 @@ public class PortOptions {
     @Port
     @Option(name = {"-p", "--port"},
             description = "This port will be used to start web server for the report")
-    protected int port = 0;
+    protected int port;
 
     public int getPort() {
         return port;

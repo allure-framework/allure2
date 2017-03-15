@@ -4,7 +4,6 @@ import io.qameta.allure.entity.TestCase;
 import io.qameta.allure.entity.TestCaseResult;
 import io.qameta.allure.entity.TestRun;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.util.Collections;
 import java.util.Map;
@@ -17,6 +16,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -36,7 +36,7 @@ public class HistoryProcessorTest {
 
         TestCase testCase = mock(TestCase.class);
         TestCaseResult result = mock(TestCaseResult.class);
-        doReturn(id).when(result).getTestCaseId();
+        when(result.getTestCaseId()).thenReturn(id);
 
         HistoryProcessor processor = new HistoryProcessor();
         processor.process(testRun, testCase, result);
@@ -54,7 +54,7 @@ public class HistoryProcessorTest {
 
         TestCase testCase = mock(TestCase.class);
         TestCaseResult result = mock(TestCaseResult.class);
-        doReturn("some-id").when(result).getTestCaseId();
+        when(result.getTestCaseId()).thenReturn("some-id");
 
         HistoryProcessor processor = new HistoryProcessor();
         processor.process(testRun, testCase, result);
@@ -72,7 +72,7 @@ public class HistoryProcessorTest {
 
         TestCase testCase = mock(TestCase.class);
         TestCaseResult result = mock(TestCaseResult.class);
-        doReturn(null).when(result).getTestCaseId();
+        when(result.getTestCaseId()).thenReturn(null);
 
         HistoryProcessor processor = new HistoryProcessor();
         processor.process(testRun, testCase, result);
