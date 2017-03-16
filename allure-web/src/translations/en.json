@@ -63,8 +63,8 @@
     "TEST_PASSED": "The test has passed!",
     "RAW": "Raw",
     "STACKTRACE": "Stacktrace",
-    "SUBSTEPS": "{substeps, plural, one{# sub-step} other{# sub-steps}}",
-    "ATTACHMENTS": "{attachments, plural, one{# attachment} other{# attachments}}",
+    "SUBSTEPS": "(1)({{count}} sub-step);(0,2-inf)({{count}} sub-steps);",
+    "ATTACHMENTS": "(1)({{count}} attachment);(0,2-inf)({{count}} attachments);",
     "PARAMETERS": "Parameters"
   },
   "testcases": "test cases",

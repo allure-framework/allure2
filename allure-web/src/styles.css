@@ -10,6 +10,7 @@
 @import "./blocks/link/styles.css";
 @import "./blocks/spinner/styles.css";
 @import "./blocks/splash/styles.css";
+@import "./blocks/step-stats/styles.css";
 @import "./blocks/text/styles.css";
 @import "./blocks/widget/styles.css";
 @import "./variables.css";
