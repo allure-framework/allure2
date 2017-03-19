@@ -10,6 +10,7 @@ public class SummaryPlugin extends AbstractPlugin {
     @Override
     protected void configure() {
         aggregateResults(SummaryAggregator.class)
+                .toReportData("summary.json")
                 .toWidget("summary");
     }
 }
