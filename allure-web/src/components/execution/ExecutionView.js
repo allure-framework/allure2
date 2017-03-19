@@ -72,6 +72,11 @@ class ExecutionView extends View {
     onAttachmentFileClick(e) {
         e.stopPropagation();
     }
+
+    @on('click .parameters__table_cell')
+    onParameterClick(e) {
+        this.$(e.target).siblings().addBack().toggleClass('line-ellipsis');
+    }
 }
 
 export default ExecutionView;

@@ -4,5 +4,10 @@
   &__info {
     color: $text-muted-color;
     font-size: small;
+    vertical-align: bottom;
+    padding-left: 5px;
+    &_time {
+      float: right;
+    }
   }
 }

@@ -39,6 +39,16 @@
       font-weight: bold;
     }
   }
+  &__name {
+    display: inline-flex;
+    max-width: 90%;
+    white-space: nowrap;
+  }
+  &__time {
+    color: $text-muted-color;
+    font-size: small;
+    float: right;
+  }
   &__content {
     margin-left: 20px;
     display: none;
@@ -50,3 +60,38 @@
     display: block;
   }
 }
+
+.parameters {
+  display: inline;
+  white-space: nowrap;
+  &_name {
+    font-style: italic;
+  }
+  &_separator:last-child {
+   display:none;
+  }
+  &__table {
+    display: table;
+    font-size: 12px;
+    margin: 10px 10px 10px 5px;
+    width: 85%;
+    table-layout: fixed;
+    &_row {
+      display: table-row;
+    }
+    &_cell {
+      display: table-cell;
+      padding: 5px 5px;
+      border-bottom: 1px solid $border-color;
+      cursor: pointer;
+      word-wrap: break-word;
+      &_name {
+        width: 25%;
+      }
+      &_value{
+        width: 75%;
+      }
+    }
+  }
+}
+
