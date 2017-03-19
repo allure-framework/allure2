@@ -7,8 +7,8 @@ import './blocks/executor-icon/styles.css';
 import './pluginApi';
 
 import './plugins/default';
-import './plugins/defects';
 import './plugins/environment';
+import './plugins/category';
 import './plugins/xunit';
 import './plugins/graph';
 import './plugins/timeline';

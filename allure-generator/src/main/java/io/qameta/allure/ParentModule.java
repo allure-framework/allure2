@@ -9,9 +9,9 @@ import com.google.inject.multibindings.OptionalBinder;
 import com.google.inject.name.Names;
 import io.qameta.allure.allure1.Allure1ResultsReader;
 import io.qameta.allure.allure2.Allure2ResultsReader;
+import io.qameta.allure.categories.CategoriesPlugin;
 import io.qameta.allure.core.DefaultAttachmentsStorage;
 import io.qameta.allure.core.DefaultTestRunReader;
-import io.qameta.allure.defects.DefectsPlugin;
 import io.qameta.allure.executor.ExecutorPlugin;
 import io.qameta.allure.graph.GraphPlugin;
 import io.qameta.allure.history.HistoryPlugin;
@@ -92,8 +92,8 @@ public class ParentModule extends AbstractModule {
         return Arrays.asList(
                 new SummaryPlugin(),
                 new GraphPlugin(),
+                new CategoriesPlugin(),
                 new TimelinePlugin(),
-                new DefectsPlugin(),
                 new XunitPlugin(),
                 new HistoryPlugin(),
                 new ExecutorPlugin(),

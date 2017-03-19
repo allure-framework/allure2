@@ -1,6 +1,5 @@
 package io.qameta.allure.allure2;
 
-import com.google.common.collect.Iterables;
 import io.qameta.allure.AttachmentsStorage;
 import io.qameta.allure.Main;
 import io.qameta.allure.ReportInfo;
@@ -221,7 +220,7 @@ public class Allure2ResultsReaderTest {
         assertThat(testCases, isDirectory());
         assertThat(testCases, hasFilesCount(4, "*.json"));
 
-        assertThat(data, contains("defects.json"));
+        assertThat(data, contains("categories.json"));
         assertThat(data, contains("graph.json"));
         assertThat(data, contains("history.json"));
         assertThat(data, contains("timeline.json"));
