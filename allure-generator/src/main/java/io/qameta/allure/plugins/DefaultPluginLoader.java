@@ -109,7 +109,7 @@ public class DefaultPluginLoader implements PluginsLoader {
         try (InputStream is = Files.newInputStream(descriptor)) {
             return Optional.of(JAXB.unmarshal(is, PluginDescriptor.class));
         } catch (IOException e) {
-            LOGGER.error("Could not read plugin descriptor {} {}", pluginDirectory.getFileName().toString(), e);
+            LOGGER.error("Could not read plugin descriptor {} {}", pluginDirectory.getFileName(), e);
             return Optional.empty();
         }
     }

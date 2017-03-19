@@ -112,20 +112,19 @@ public class ProcessStage {
         return statistic;
     }
 
+    @SuppressWarnings("unchecked")
     private void writeData(ReportWriter writer, Map<String, Object> data) {
         Map<String, Object> widgets = new HashMap<>();
         data.forEach((uid, object) -> {
             Set<String> fileNames = filesNamesMap.getOrDefault(uid, Collections.emptySet());
             fileNames.forEach(fileName -> {
                 Finalizer finalizer = finalizers.getOrDefault(fileName, Finalizer.identity());
-                //noinspection unchecked
                 writer.writeJsonData(fileName, finalizer.convert(object));
             });
 
             Set<String> widgetNames = widgetsNamesMap.getOrDefault(uid, Collections.emptySet());
             widgetNames.forEach(name -> {
                 Finalizer finalizer = finalizers.getOrDefault(name, Finalizer.identity());
-                //noinspection unchecked
                 widgets.put(name, finalizer.convert(object));
             });
         });

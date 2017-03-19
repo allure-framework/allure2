@@ -11,7 +11,7 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.*;
+import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
@@ -24,21 +24,22 @@ public final class CommandUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommandUtils.class);
 
-    CommandUtils() {
+    private CommandUtils() {
+        throw new IllegalStateException("Do not instance");
     }
 
-    public static void copyDirectory(Path source, Path dest) {
+    public static void copyDirectory(final Path source, final Path dest) {
         if (Files.exists(source)) {
             try {
                 Files.createDirectories(dest);
                 Files.walkFileTree(source, new CopyVisitor(source, dest));
             } catch (IOException e) {
-                throw new AllureCommandException("Could not copy directory");
+                throw new AllureCommandException("Could not copy directory", e);
             }
         }
     }
 
-    public static Main createMain(Context context) {
+    public static Main createMain(final Context context) {
         return new Main(
                 context.getPluginsDirectory(),
                 context.getEnabledPlugins()
@@ -49,8 +50,8 @@ public final class CommandUtils {
     /**
      * Set up Jetty server to serve Allure Report
      */
-    public static Server setUpServer(int port, Path reportDirectory) {
-        Server server = new Server(port);
+    public static Server setUpServer(final int port, final Path reportDirectory) {
+        final Server server = new Server(port);
         ResourceHandler handler = new ResourceHandler();
         handler.setDirectoriesListed(true);
         handler.setResourceBase(reportDirectory.toAbsolutePath().toString());
@@ -64,12 +65,12 @@ public final class CommandUtils {
     /**
      * Open the given url in default system browser.
      */
-    public static void openBrowser(URI url) throws IOException {
+    public static void openBrowser(final URI url) throws IOException {
         if (Desktop.isDesktopSupported()) {
             Desktop.getDesktop().browse(url);
         } else {
-            LOGGER.error("Can not open browser because this capability is not supported on " +
-                    "your platform. You can use the link below to open the report manually.");
+            LOGGER.error("Can not open browser because this capability is not supported on "
+                    + "your platform. You can use the link below to open the report manually.");
         }
     }
 }

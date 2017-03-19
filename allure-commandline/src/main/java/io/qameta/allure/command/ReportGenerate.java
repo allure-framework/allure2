@@ -18,19 +18,19 @@ import static io.qameta.allure.utils.CommandUtils.createMain;
 /**
  * @author Artem Eroshenko <eroshenkoam@qameta.io>
  */
+@SuppressWarnings("SpringAutowiredFieldsWarningInspection")
 @Command(name = "generate", description = "Generate report")
 public class ReportGenerate implements AllureCommand {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReportGenerate.class);
 
     @Inject
-    private ResultsOptions resultsOptions = new ResultsOptions();
+    private final ResultsOptions resultsOptions = new ResultsOptions();
 
     @Option(
             title = "Clean report directory",
             name = {"-c", "--clean"},
-            description = "Clean Allure report directory before generate new one."
-    )
+            description = "Clean Allure report directory before generate new one.")
     private boolean cleanReportDirectory;
 
     @Option(
@@ -40,10 +40,10 @@ public class ReportGenerate implements AllureCommand {
     protected String reportDirectory = "allure-report";
 
     @Inject
-    private VerboseOptions verboseOptions = new VerboseOptions();
+    private final VerboseOptions verboseOptions = new VerboseOptions();
 
     @Override
-    public void run(Context context) throws Exception {
+    public void run(final Context context) throws Exception {
         verboseOptions.configureLogLevel();
         Path output = Paths.get(reportDirectory);
 
@@ -55,7 +55,7 @@ public class ReportGenerate implements AllureCommand {
         main.generate(output, resultsOptions.getResultsDirectories());
 
         copyDirectory(context.getWebDirectory(), output);
-        LOGGER.info("Report successfully generated to the directory <{}>. " +
-                "Use `allure open` command to show the report.", reportDirectory);
+        LOGGER.info("Report successfully generated to the directory <{}>. "
+                + "Use `allure open` command to show the report.", reportDirectory);
     }
 }

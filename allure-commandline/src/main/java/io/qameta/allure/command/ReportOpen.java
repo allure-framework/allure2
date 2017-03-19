@@ -17,6 +17,7 @@ import static io.qameta.allure.utils.CommandUtils.setUpServer;
 /**
  * @author Artem Eroshenko <eroshenkoam@qameta.io>
  */
+@SuppressWarnings("SpringAutowiredFieldsWarningInspection")
 @Command(name = "open", description = "Open generated report")
 public class ReportOpen implements AllureCommand {
 
@@ -29,13 +30,13 @@ public class ReportOpen implements AllureCommand {
     protected String reportDirectory = "allure-report";
 
     @Inject
-    private PortOptions portOptions = new PortOptions();
+    private final PortOptions portOptions = new PortOptions();
 
     @Inject
-    private VerboseOptions verboseOptions = new VerboseOptions();
+    private final VerboseOptions verboseOptions = new VerboseOptions();
 
     @Override
-    public void run(Context context) throws Exception {
+    public void run(final Context context) throws Exception {
         verboseOptions.configureLogLevel();
 
         LOGGER.info("Starting web server...");

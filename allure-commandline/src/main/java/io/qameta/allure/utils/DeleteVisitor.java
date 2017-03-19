@@ -13,13 +13,13 @@ import java.nio.file.attribute.BasicFileAttributes;
 public class DeleteVisitor extends SimpleFileVisitor<Path> {
 
     @Override
-    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+    public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
         Files.delete(file);
         return FileVisitResult.CONTINUE;
     }
 
     @Override
-    public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+    public FileVisitResult postVisitDirectory(final Path dir, final IOException exc) throws IOException {
         Files.delete(dir);
         return FileVisitResult.CONTINUE;
     }

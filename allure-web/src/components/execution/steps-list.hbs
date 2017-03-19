@@ -2,11 +2,9 @@
     <div class="step">
         <div class="{{b "step" "title" hasContent=(or steps.length attachments.length)}}">
             {{#if (or steps.length attachments.length)}}
-                <span class="step__arrow block__arrow"></span>
+                <span class="step__arrow block__arrow">{{arrow status}}</span>
             {{else}}
-                <span class="step__status">
-                    {{allure-icon status}}
-                </span>
+                <span class="step__status">{{allure-icon status}}</span>
             {{/if}}
             {{name}}
             {{#if parameters}}
@@ -16,6 +14,7 @@
                 {{/each}}
                 ]
             {{/if}}
+            {{> ../../blocks/step-stats/step-stats . baseUrl=../../baseUrl}}
         </div>
         <div class="step__content">
             {{> steps-list steps=steps baseUrl=../baseUrl}}

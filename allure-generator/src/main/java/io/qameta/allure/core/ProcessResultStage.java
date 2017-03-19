@@ -21,12 +21,12 @@ public class ProcessResultStage {
     @Inject
     protected Map<String, ResultAggregator> aggregators;
 
+    @SuppressWarnings("unchecked")
     public Consumer<Map<String, Object>> process(TestRun testRun, TestCase testCase, TestCaseResult result) {
         return data -> {
             processors.forEach((uid, processor) -> processor.process(testRun, testCase, result));
             aggregators.forEach((uid, aggregator) -> {
                 Object value = data.computeIfAbsent(uid, key -> aggregator.supplier(testRun, testCase).get());
-                //noinspection unchecked
                 aggregator.aggregate(testRun, testCase, result).accept(value);
             });
         };
