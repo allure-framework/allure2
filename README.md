@@ -22,6 +22,7 @@ You can find the roadmap [here](https://github.com/allurefw/allure-report/wiki/R
 To start dev server you can run
 
 ```bash
+$ ./gradlew build //only for a first time
 $ ./gradlew dev
 ```
 
