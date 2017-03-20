@@ -1,6 +1,6 @@
 <span class="step-stats__info">
     <span>
-    {{~#if (or attachmentsCount stepsCount)}}
+    {{~#if (or attachmentsCount stepsCount parameters.length)}}
     (
         {{~#if attachmentsCount ~}}
             {{~t 'testcase.ATTACHMENTS' postProcess='interval' count=attachmentsCount~}}
@@ -10,7 +10,7 @@
             {{~t 'testcase.SUBSTEPS' postProcess='interval' count=stepsCount~}}
             <span class="step-stats__info_separator">,&nbsp;</span>
         {{~/if~}}
-        {{~#if parameters.length~}}
+        {{~#if parameters.length ~}}
             {{~t 'testcase.PARAMETERS' postProcess='interval' count=parameters.length~}}
             <span class="step-stats__info_separator">,&nbsp;</span>
         {{~/if~}}
@@ -19,4 +19,3 @@
     </span>
     <span class="step-stats__info_time">{{duration time.duration}}</span>
 </span>
-
