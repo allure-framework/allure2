@@ -2,16 +2,16 @@
     <span>
     {{~#if (or attachmentsCount stepsCount parameters.length)}}
     (
-        {{~#if attachmentsCount ~}}
-            {{~t 'testcase.ATTACHMENTS' postProcess='interval' count=attachmentsCount~}}
-            <span class="step-stats__info_separator">,&nbsp;</span>
-        {{~/if~}}
-        {{~#if stepsCount ~}}
+         {{~#if parameters.length ~}}
+            {{~t 'testcase.PARAMETERS' postProcess='interval' count=parameters.length~}}
+             <span class="step-stats__info_separator">,&nbsp;</span>
+         {{~/if~}}
+         {{~#if stepsCount ~}}
             {{~t 'testcase.SUBSTEPS' postProcess='interval' count=stepsCount~}}
             <span class="step-stats__info_separator">,&nbsp;</span>
         {{~/if~}}
-        {{~#if parameters.length ~}}
-            {{~t 'testcase.PARAMETERS' postProcess='interval' count=parameters.length~}}
+        {{~#if attachmentsCount ~}}
+            {{~t 'testcase.ATTACHMENTS' postProcess='interval' count=attachmentsCount~}}
             <span class="step-stats__info_separator">,&nbsp;</span>
         {{~/if~}}
     )
