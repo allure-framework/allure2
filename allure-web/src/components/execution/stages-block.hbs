@@ -8,7 +8,7 @@
             {{#each stages}}
                 {{#if name}}
                     <div class="{{b 'step'}}">
-                        <div class="{{b 'step' 'title' hasContent=(or steps.length attachments.length) stage=true}}">
+                        <div class="{{b 'step' 'title' hasContent=hasContent stage=true}}">
                             {{#if (or steps.length attachments.length)}}
                                 <span class="step__arrow block__arrow">{{arrow status}}</span>
                             {{else}}

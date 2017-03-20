@@ -1,26 +1,31 @@
 {{#each steps}}
     <div class="step">
-        <div class="{{b "step" "title" hasContent=(or steps.length attachments.length)}}">
-            {{#if (or steps.length attachments.length)}}
+        <div class="{{b "step" "title" hasContent=hasContent}}">
+            {{#if hasContent}}
                 <span class="step__arrow block__arrow">{{arrow status}}</span>
             {{else}}
                 <span class="step__status">{{allure-icon status}}</span>
             {{/if}}
+            <div class="step__name">
             {{name}}
-            {{#if parameters}}
-                [
-                {{#each parameters}}
-                    <span>{{name}}: {{value}}</span>
-                {{/each}}
-                ]
-            {{/if}}
+            </div>
             {{> ../../blocks/step-stats/step-stats . baseUrl=../../baseUrl}}
         </div>
         <div class="step__content">
-            {{> steps-list steps=steps baseUrl=../baseUrl}}
+            {{#if parameters}}
+                <div class="parameters__table">
+                    {{#each parameters}}
+                        <div class="{{b "parameters" "table_row"}}">
+                            <div class="{{b "parameters" "table_cell" name=true}} line-ellipsis">{{name}}</div>
+                            <div class="{{b "parameters" "table_cell" value=true}} line-ellipsis">{{value}}</div>
+                        </div>
+                    {{/each}}
+                </div>
+            {{/if}}
             {{#each attachments}}
                 {{> ../../blocks/attachment-row/attachment-row . baseUrl=../../baseUrl}}
             {{/each}}
+            {{> steps-list steps=steps baseUrl=../baseUrl}}
         </div>
     </div>
 {{/each}}

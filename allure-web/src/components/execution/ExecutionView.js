@@ -37,10 +37,21 @@ class ExecutionView extends View {
         });
     }
 
+    calculateStepsContent(steps, keys) {
+        steps.forEach(step => {
+            this.calculateStepsContent(step.steps, keys);
+            step['hasContent'] = keys.reduce((result, key) => {
+                const countKey = `${key}Count`;
+                return result || !!(step[countKey]);
+            }, !!(step.parameters && step.parameters.length));
+        });
+    }
+
     getStage(executionStage) {
         var stages = makeArray(this.model.get(executionStage));
         this.calculateSteps(stages, 'steps');
         this.calculateSteps(stages, 'attachments');
+        this.calculateStepsContent(stages, ['steps', 'attachments']);
         return stages;
     }
 
@@ -71,6 +82,11 @@ class ExecutionView extends View {
     @on('click .attachment-row__link')
     onAttachmentFileClick(e) {
         e.stopPropagation();
+    }
+
+    @on('click .parameters__table_cell')
+    onParameterClick(e) {
+        this.$(e.target).siblings().addBack().toggleClass('line-ellipsis');
     }
 }
 
