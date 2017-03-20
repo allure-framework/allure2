@@ -1,25 +1,33 @@
-import settings from 'util/settings.js';
+import settings from 'util/settings';
 import StatusToggleView from 'components/status-toggle/StatusToggleView';
 
-xdescribe('StatusToggle', function() {
-    beforeEach(function() {
-        settings.set('visibleStatuses', {failed: true, broken: true, passed: false});
-        this.view = new StatusToggleView().render();
-        this.el = this.view.$el;
+describe('StatusToggle', function () {
+    const statusesKey = 'testStatusKey';
+
+    function StatusElement(el) {
+        this.activeItems = () => el.find('.status-toggle__item_active').toArray().map(item => item.textContent);
+        this.items = () => el.find('.status-toggle__item').toArray().map(item => item.textContent);
+        this.passed = () => el.find('.status-toggle__item_status_passed');
+    }
+
+    beforeEach(function () {
+        settings.set(statusesKey, {failed: true, broken: true, passed: false});
+        this.view = new StatusToggleView({statusesKey});
+        this.view.setContent();
+        this.view.render();
+        this.el = new StatusElement(this.view.$el);
     });
 
-    it('should render buttons according to settings', function() {
-        expect([...this.el.find('.button')].map(button => button.textContent))
-            .toEqual(['Failed', 'Broken', 'Canceled', 'Pending', 'Passed']);
-        expect([...this.el.find('.button_active')].map(button => button.textContent)).toEqual(['Failed', 'Broken']);
+    it('should render buttons according to settings', function () {
+        expect(this.el.items()).toEqual(['failed', 'broken', 'passed', 'skipped', 'unknown']);
+        expect(this.el.activeItems()).toEqual(['failed', 'broken']);
     });
 
-    it('should update model on click', function() {
-        const passsed = this.el.find('.status-toggle__button_status_passed');
-        passsed.click();
-        expect(settings.get('visibleStatuses')).toEqual({failed: true, broken: true, passed: true});
+    it('should update model on click', function () {
+        this.el.passed().click();
+        expect(settings.get(statusesKey)).toEqual({failed: true, broken: true, passed: true});
 
-        passsed.click();
-        expect(settings.get('visibleStatuses')).toEqual({failed: true, broken: true, passed: false});
+        this.el.passed().click();
+        expect(settings.get(statusesKey)).toEqual({failed: true, broken: true, passed: false});
     });
 });

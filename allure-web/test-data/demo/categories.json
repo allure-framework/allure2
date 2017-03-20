@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Ignored tests",
+    "messageRegex": ".*ignored.*",
+    "matchedStatuses": [
+      "skipped"
+    ]
+  },
+  {
+    "name": "Infrastructure problems",
+    "messageRegex": ".*RuntimeException.*",
+    "matchedStatuses": [
+      "broken"
+    ]
+  },
+  {
+    "name": "Outdated tests",
+    "messageRegex": ".*FileNotFound.*",
+    "matchedStatuses": [
+      "broken"
+    ]
+  },
+  {
+    "name": "Regression",
+    "messageRegex": ".*\\sException:.*",
+    "matchedStatuses": [
+      "broken"
+    ]
+  }
+]

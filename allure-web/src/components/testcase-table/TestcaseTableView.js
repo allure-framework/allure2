@@ -5,6 +5,7 @@ import settings from '../../util/settings';
 import StatusToggleView from '../status-toggle/StatusToggleView';
 import template from './TestcaseTableView.hbs';
 
+const statusesKey = 'testcaseTableStatuses';
 @regions({
     statuses: '.testcase-table__statuses'
 })
@@ -13,17 +14,17 @@ class TestcaseTableView extends DataGridView {
     settingsKey = 'testCaseSorting';
 
     initialize() {
-        this.listenTo(settings, 'change:visibleStatuses', this.render);
+        this.listenTo(settings, 'change:' + statusesKey, this.render);
         this.testCases = this.options.testCases.map((testcase, index) => Object.assign(testcase, {index: index + 1}));
     }
 
     onRender() {
         // this.highlightItem(this.options.currentCase);
-        this.showChildView('statuses', new StatusToggleView());
+        this.showChildView('statuses', new StatusToggleView({statusesKey}));
     }
 
     serializeData() {
-        const statuses = settings.get('visibleStatuses');
+        const statuses = settings.getVisibleStatuses(statusesKey);
         const sorting = this.getSettings();
         return {
             baseUrl: this.options.baseUrl,

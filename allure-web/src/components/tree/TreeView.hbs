@@ -10,7 +10,7 @@
 <div class="tree">
     {{#if items}}
         {{#each items}}
-            {{> tree-group baseUrl=../baseUrl showGroupInfo=../showGroupInfo}}
+            {{> tree-group baseUrl=../baseUrl showGroupInfo=../showGroupInfo tabName=../tabName}}
         {{/each}}
     {{else}}
         There are no items
