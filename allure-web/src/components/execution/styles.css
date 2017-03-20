@@ -44,11 +44,6 @@
     max-width: 90%;
     white-space: nowrap;
   }
-  &__time {
-    color: $text-muted-color;
-    font-size: small;
-    float: right;
-  }
   &__content {
     margin-left: 20px;
     display: none;
@@ -73,7 +68,7 @@
   &__table {
     display: table;
     font-size: 12px;
-    margin: 10px 10px 10px 5px;
+    margin: 0px 0px 5px 10px;
     width: 85%;
     table-layout: fixed;
     &_row {

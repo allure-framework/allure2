@@ -65,7 +65,7 @@
     "STACKTRACE": "Stacktrace",
     "SUBSTEPS": "(1)({{count}} sub-step);(0,2-inf)({{count}} sub-steps);",
     "ATTACHMENTS": "(1)({{count}} attachment);(0,2-inf)({{count}} attachments);",
-    "PARAMETERS": "Parameters"
+    "PARAMETERS": "(1)({{count}} parameter);(0,2-inf)({{count}} parameters);"
   },
   "testcases": "test cases",
   "total": {

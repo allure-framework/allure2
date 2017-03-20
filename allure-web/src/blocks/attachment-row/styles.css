@@ -2,10 +2,10 @@
 
 .attachment-row {
   width: 90%;
-  padding: 7px $gap-size 7px 25px;
+  padding: 5px $gap-size 5px 25px;
   cursor: pointer;
   position: relative;
-  font-size: small;
+  font-size: smaller;
   &:hover {
     background: $hover-color;
   }
@@ -19,7 +19,7 @@
     min-width: 70px;
   }
   &__icon {
-    left: 7px;
+    left: 11px;
     position: absolute;
   }
 }

@@ -8,19 +8,8 @@
             {{/if}}
             <div class="step__name">
             {{name}}
-            {{#if parameters}}
-                <div class="line-ellipsis">
-                &nbsp;[
-                {{#each parameters}}
-                        <span class="parameters_name">{{name}}</span>
-                        <span>: {{value}}</span><span class="parameters_separator">,</span>
-                {{/each}}
-                 </div>
-                ]
-            {{/if}}
-            {{> ../../blocks/step-stats/step-stats . baseUrl=../../baseUrl}}
             </div>
-            <div class="step__time">{{duration time.duration}}</div>
+            {{> ../../blocks/step-stats/step-stats . baseUrl=../../baseUrl}}
         </div>
         <div class="step__content">
             {{#if parameters}}
@@ -33,10 +22,10 @@
                     {{/each}}
                 </div>
             {{/if}}
-            {{> steps-list steps=steps baseUrl=../baseUrl}}
             {{#each attachments}}
                 {{> ../../blocks/attachment-row/attachment-row . baseUrl=../../baseUrl}}
             {{/each}}
+            {{> steps-list steps=steps baseUrl=../baseUrl}}
         </div>
     </div>
 {{/each}}
