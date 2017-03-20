@@ -37,10 +37,21 @@ class ExecutionView extends View {
         });
     }
 
+    calculateStepsContent(steps, keys) {
+        steps.forEach(step => {
+            this.calculateStepsContent(step.steps, keys);
+            step['hasContent'] = keys.reduce((result, key) => {
+                const countKey = `${key}Count`;
+                return result || !!(step[countKey]);
+            }, !!(step.parameters && step.parameters.length));
+        });
+    }
+
     getStage(executionStage) {
         var stages = makeArray(this.model.get(executionStage));
         this.calculateSteps(stages, 'steps');
         this.calculateSteps(stages, 'attachments');
+        this.calculateStepsContent(stages, ['steps', 'attachments']);
         return stages;
     }
 

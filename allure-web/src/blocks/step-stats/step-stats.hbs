@@ -1,6 +1,6 @@
 <span class="step-stats__info">
     <span>
-    {{~#if (or attachmentsCount stepsCount parameters.length)}}
+    {{~#if hasContent}}
     (
          {{~#if parameters.length ~}}
             {{~t 'testcase.PARAMETERS' postProcess='interval' count=parameters.length~}}

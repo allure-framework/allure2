@@ -1,7 +1,7 @@
 {{#each steps}}
     <div class="step">
-        <div class="{{b "step" "title" hasContent=(or steps.length attachments.length parameters.length)}}">
-            {{#if (or steps.length attachments.length parameters.length)}}
+        <div class="{{b "step" "title" hasContent=hasContent}}">
+            {{#if hasContent}}
                 <span class="step__arrow block__arrow">{{arrow status}}</span>
             {{else}}
                 <span class="step__status">{{allure-icon status}}</span>
@@ -15,9 +15,9 @@
             {{#if parameters}}
                 <div class="parameters__table">
                     {{#each parameters}}
-                        <div class="parameters__table_row">
-                            <div class="parameters__table_cell parameters__table_cell_name line-ellipsis">{{name}}</div>
-                            <div class="parameters__table_cell parameters__table_cell_value line-ellipsis">{{value}}</div>
+                        <div class="{{b "parameters" "table_row"}}">
+                            <div class="{{b "parameters" "table_cell" name=true}} line-ellipsis">{{name}}</div>
+                            <div class="{{b "parameters" "table_cell" value=true}} line-ellipsis">{{value}}</div>
                         </div>
                     {{/each}}
                 </div>
