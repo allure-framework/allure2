@@ -10,7 +10,7 @@ export default class TestcaseLayout extends PaneLayout {
     onStateChange() {
         const changed = Object.assign({}, this.state.changed);
         const paneView = this.getChildView('content');
-        if(router.previousUrl && !router.previousUrl.startsWith('testcase') && !paneView.getRegion('back')) {
+        if(router.previousUrl && !(router.previousUrl.indexOf('testcase') === 0) && !paneView.getRegion('back')) {
             paneView.addPane('back', new BackPanelView({
                 url: router.previousUrl
             }));
