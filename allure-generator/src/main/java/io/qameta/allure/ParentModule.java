@@ -36,7 +36,7 @@ public class ParentModule extends AbstractModule {
 
     private final List<Module> children;
 
-    public ParentModule(List<Plugin> plugins, List<Module> children) {
+    public ParentModule(final List<Plugin> plugins, final List<Module> children) {
         this.plugins = plugins;
         this.children = children;
     }
@@ -84,7 +84,7 @@ public class ParentModule extends AbstractModule {
         children.forEach(this::install);
     }
 
-    private void bindPlugin(Plugin plugin) {
+    private void bindPlugin(final Plugin plugin) {
         Multibinder.newSetBinder(binder(), Plugin.class).addBinding().toInstance(plugin);
     }
 

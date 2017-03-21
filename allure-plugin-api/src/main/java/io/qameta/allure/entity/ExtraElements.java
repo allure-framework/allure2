@@ -11,21 +11,22 @@ import java.util.Map;
 public class ExtraElements {
 
     @XmlElement
-    private Map<String, Object> extra = new HashMap<>();
+    private final Map<String, Object> extra = new HashMap<>();
 
-    public void addExtraBlock(String blockName, Object block) {
+    public void addExtraBlock(final String blockName, final Object block) {
         extra.put(blockName, block);
     }
 
-    public <T> T getExtraBlock(String blockName, T defaultValue) {
+    public <T> T getExtraBlock(final String blockName, final T defaultValue) {
         return (T) extra.computeIfAbsent(blockName, name -> defaultValue);
+
     }
 
-    public boolean hasExtraBlock(String blockName) {
-        return extra.containsKey(blockName);
-    }
-
-    public <T> T getExtraBlock(String blockName) {
+    public <T> T getExtraBlock(final String blockName) {
         return (T) extra.get(blockName);
+    }
+
+    public boolean hasExtraBlock(final String blockName) {
+        return extra.containsKey(blockName);
     }
 }

@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 public class XunitResultAggregator extends TreeResultAggregator {
 
     @Override
-    protected List<TreeGroup> getGroups(TestCaseResult result) {
+    protected List<TreeGroup> getGroups(final TestCaseResult result) {
         return Stream.of(LabelName.PARENT_SUITE, LabelName.SUITE, LabelName.SUB_SUITE)
                 .map(result::findOne)
                 .filter(Optional::isPresent)

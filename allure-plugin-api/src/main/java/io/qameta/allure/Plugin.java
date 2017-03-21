@@ -19,7 +19,10 @@ public class Plugin {
 
     private final boolean enabled;
 
-    public Plugin(PluginDescriptor descriptor, Module module, Path pluginDirectory, boolean enabled) {
+    public Plugin(final PluginDescriptor descriptor,
+                  final Module module,
+                  final Path pluginDirectory,
+                  final boolean enabled) {
         this.descriptor = descriptor;
         this.pluginDirectory = pluginDirectory;
         this.module = module;

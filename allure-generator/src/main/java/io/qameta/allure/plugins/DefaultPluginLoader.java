@@ -37,12 +37,12 @@ public class DefaultPluginLoader implements PluginsLoader {
 
     private final Path pluginsDirectory;
 
-    public DefaultPluginLoader(Path pluginsDirectory) {
+    public DefaultPluginLoader(final Path pluginsDirectory) {
         this.pluginsDirectory = pluginsDirectory;
     }
 
     @Override
-    public List<Plugin> loadPlugins(Set<String> enabledPlugins) {
+    public List<Plugin> loadPlugins(final Set<String> enabledPlugins) {
         if (!Files.exists(pluginsDirectory)) {
             return Collections.emptyList();
         }
@@ -60,27 +60,27 @@ public class DefaultPluginLoader implements PluginsLoader {
         }
     }
 
-    private Optional<Plugin> loadPlugin(Path pluginDirectory, Set<String> enabledPlugins) {
-        Optional<PluginDescriptor> pluginDescriptor = readPluginDescriptor(pluginDirectory);
+    private Optional<Plugin> loadPlugin(final Path pluginDirectory, final Set<String> enabledPlugins) {
+        final Optional<PluginDescriptor> pluginDescriptor = readPluginDescriptor(pluginDirectory);
         if (!pluginDescriptor.isPresent()) {
             return Optional.empty();
         }
-        PluginDescriptor descriptor = pluginDescriptor.get();
-        Plugin plugin = loadPluginModule(pluginDirectory, descriptor)
+        final PluginDescriptor descriptor = pluginDescriptor.get();
+        final Plugin plugin = loadPluginModule(pluginDirectory, descriptor)
                 .map(module -> new Plugin(descriptor, module, pluginDirectory, isEnabled(descriptor, enabledPlugins)))
                 .orElseGet(() -> new Plugin(descriptor, null, pluginDirectory, isEnabled(descriptor, enabledPlugins)));
         return Optional.of(plugin);
     }
 
-    private Optional<Module> loadPluginModule(Path pluginDirectory, PluginDescriptor descriptor) {
-        String moduleClass = descriptor.getModuleClass();
+    private Optional<Module> loadPluginModule(final Path pluginDirectory, final PluginDescriptor descriptor) {
+        final String moduleClass = descriptor.getModuleClass();
         if (Objects.isNull(moduleClass) || moduleClass.isEmpty()) {
             return Optional.empty();
         }
         try {
-            ClassLoader parent = getClass().getClassLoader();
+            final ClassLoader parent = getClass().getClassLoader();
             //We should not close this classloader in order to load other plugin classes.
-            URLClassLoader classLoader = new URLClassLoader(getClassPath(pluginDirectory), parent);
+            final URLClassLoader classLoader = new URLClassLoader(getClassPath(pluginDirectory), parent);
             return Optional.of((Module) classLoader.loadClass(moduleClass).newInstance());
         } catch (Exception e) {
             LOGGER.error("Could not load module {} for plugin {} {}", moduleClass, descriptor.getName(), e);
@@ -88,24 +88,24 @@ public class DefaultPluginLoader implements PluginsLoader {
         }
     }
 
-    private URL[] getClassPath(Path pluginDirectory) throws IOException {
-        Path lib = pluginDirectory.resolve(LIB_DIR_NAME);
-        Stream<Path> libs = Files.isDirectory(lib) ? getChildren(lib) : Stream.empty();
-        Stream<Path> pluginJar = Stream.of(pluginDirectory.resolve(PLUGIN_JAR_ENTRY_NAME));
+    private URL[] getClassPath(final Path pluginDirectory) throws IOException {
+        final Path lib = pluginDirectory.resolve(LIB_DIR_NAME);
+        final Stream<Path> libs = Files.isDirectory(lib) ? getChildren(lib) : Stream.empty();
+        final Stream<Path> pluginJar = Stream.of(pluginDirectory.resolve(PLUGIN_JAR_ENTRY_NAME));
         return Stream.concat(pluginJar, libs)
                 .map(this::toUrl)
                 .toArray(URL[]::new);
     }
 
-    private Stream<Path> getChildren(Path directory) throws IOException {
+    private Stream<Path> getChildren(final Path directory) throws IOException {
         try (Stream<Path> children = Files.walk(directory, 1, FileVisitOption.FOLLOW_LINKS)) {
             //we need to load lazy directory stream to memory and close it
             return children.collect(Collectors.toList()).stream();
         }
     }
 
-    public static Optional<PluginDescriptor> readPluginDescriptor(Path pluginDirectory) {
-        Path descriptor = pluginDirectory.resolve(DESCRIPTOR_ENTRY_NAME);
+    public static Optional<PluginDescriptor> readPluginDescriptor(final Path pluginDirectory) {
+        final Path descriptor = pluginDirectory.resolve(DESCRIPTOR_ENTRY_NAME);
         try (InputStream is = Files.newInputStream(descriptor)) {
             return Optional.of(JAXB.unmarshal(is, PluginDescriptor.class));
         } catch (IOException e) {
@@ -114,15 +114,15 @@ public class DefaultPluginLoader implements PluginsLoader {
         }
     }
 
-    public static boolean isPluginDirectory(Path directory) {
+    public static boolean isPluginDirectory(final Path directory) {
         return Files.exists(directory.resolve(DESCRIPTOR_ENTRY_NAME));
     }
 
-    private boolean isEnabled(PluginDescriptor descriptor, Set<String> enabledPlugins) {
+    private boolean isEnabled(final PluginDescriptor descriptor, final Set<String> enabledPlugins) {
         return Objects.isNull(enabledPlugins) || enabledPlugins.contains(descriptor.getName());
     }
 
-    private URL toUrl(Path path) {
+    private URL toUrl(final Path path) {
         try {
             return path.toUri().toURL();
         } catch (MalformedURLException e) {

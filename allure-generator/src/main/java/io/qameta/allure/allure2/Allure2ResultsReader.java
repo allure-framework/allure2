@@ -47,6 +47,7 @@ import static java.util.Objects.nonNull;
 /**
  * @author charlie (Dmitry Baev).
  */
+@SuppressWarnings("PMD.ExcessiveImports")
 public class Allure2ResultsReader implements ResultsReader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Allure2ResultsReader.class);
@@ -57,17 +58,17 @@ public class Allure2ResultsReader implements ResultsReader {
     private final ObjectMapper mapper;
 
     @Inject
-    public Allure2ResultsReader(AttachmentsStorage storage) {
+    public Allure2ResultsReader(final AttachmentsStorage storage) {
         this.storage = storage;
         this.mapper = Allure2ModelJackson.createMapper();
     }
 
     @Override
-    public List<TestCaseResult> readResults(Path source) {
+    public List<TestCaseResult> readResults(final Path source) {
         listFiles(source, "*-attachment*")
                 .forEach(storage::addAttachment);
 
-        List<TestResultContainer> groups = listFiles(source, TEST_RESULT_CONTAINER_FILE_GLOB)
+        final List<TestResultContainer> groups = listFiles(source, TEST_RESULT_CONTAINER_FILE_GLOB)
                 .flatMap(this::readTestResultContainer)
                 .collect(Collectors.toList());
 
@@ -77,8 +78,8 @@ public class Allure2ResultsReader implements ResultsReader {
                 .collect(Collectors.toList());
     }
 
-    private TestCaseResult convert(List<TestResultContainer> groups, TestResult result) {
-        TestCaseResult dest = new TestCaseResult();
+    private TestCaseResult convert(final List<TestResultContainer> groups, final TestResult result) {
+        final TestCaseResult dest = new TestCaseResult();
         dest.setUid(generateUid());
 
         dest.setTestCaseId(result.getHistoryId());
@@ -98,64 +99,19 @@ public class Allure2ResultsReader implements ResultsReader {
             dest.setTestStage(getTestStage(result));
         }
 
-        List<TestResultContainer> parents = findAllParents(groups, result.getUuid(), new HashSet<>());
+        final List<TestResultContainer> parents = findAllParents(groups, result.getUuid(), new HashSet<>());
         dest.getBeforeStages().addAll(getStages(parents, this::getBefore));
         dest.getAfterStages().addAll(getStages(parents, this::getAfter));
         return dest;
     }
 
-    private StageResult getTestStage(TestResult result) {
-        StageResult testStage = new StageResult();
-        testStage.setSteps(convert(result.getSteps(), this::convert));
-        testStage.setAttachments(convert(result.getAttachments(), this::convert));
-        testStage.setStatus(convert(result.getStatus()));
-        testStage.setStatusDetails(convert(result.getStatusDetails()));
-        return testStage;
-    }
-
-    private boolean hasTestStage(TestResult result) {
-        return !result.getSteps().isEmpty() || !result.getAttachments().isEmpty();
-    }
-
-    private List<StageResult> getStages(List<TestResultContainer> parents,
-                                        Function<TestResultContainer, Stream<StageResult>> getter) {
-        return parents.stream().flatMap(getter).collect(Collectors.toList());
-    }
-
-    private Stream<StageResult> getBefore(TestResultContainer container) {
-        return convert(container.getBefores(), this::convert).stream()
-                .sorted(BY_START);
-    }
-
-    private Stream<StageResult> getAfter(TestResultContainer container) {
-        return convert(container.getAfters(), this::convert).stream()
-                .sorted(BY_START);
-    }
-
-    private List<TestResultContainer> findAllParents(List<TestResultContainer> groups, String id, Set<String> seen) {
-        List<TestResultContainer> result = new ArrayList<>();
-        List<TestResultContainer> parents = findParents(groups, id, seen);
-        result.addAll(parents);
-        for (TestResultContainer container : parents) {
-            result.addAll(findAllParents(groups, container.getUuid(), seen));
-        }
-        return result;
-    }
-
-    private List<TestResultContainer> findParents(List<TestResultContainer> groups, String id, Set<String> seen) {
-        return groups.stream()
-                .filter(container -> container.getChildren().contains(id))
-                .filter(container -> !seen.contains(container.getUuid()))
-                .collect(Collectors.toList());
-    }
-
-    private <T, R> List<R> convert(List<T> source, Function<T, R> converter) {
+    private <T, R> List<R> convert(final List<T> source, final Function<T, R> converter) {
         return Objects.isNull(source) ? Collections.emptyList() : source.stream()
                 .map(converter)
                 .collect(Collectors.toList());
     }
 
-    private StageResult convert(FixtureResult result) {
+    private StageResult convert(final FixtureResult result) {
         return new StageResult()
                 .withName(result.getName())
                 .withTime(convert(result.getStart(), result.getStop()))
@@ -166,27 +122,27 @@ public class Allure2ResultsReader implements ResultsReader {
                 .withParameters(convert(result.getParameters(), this::convert));
     }
 
-    private Link convert(io.qameta.allure.model.Link link) {
+    private Link convert(final io.qameta.allure.model.Link link) {
         return new Link()
                 .withName(link.getName())
                 .withType(link.getType())
                 .withUrl(link.getUrl());
     }
 
-    private Label convert(io.qameta.allure.model.Label label) {
+    private Label convert(final io.qameta.allure.model.Label label) {
         return new Label()
                 .withName(label.getName())
                 .withValue(label.getValue());
     }
 
-    private Parameter convert(io.qameta.allure.model.Parameter parameter) {
+    private Parameter convert(final io.qameta.allure.model.Parameter parameter) {
         return new Parameter()
                 .withName(parameter.getName())
                 .withValue(parameter.getValue());
     }
 
-    private Attachment convert(io.qameta.allure.model.Attachment attachment) {
-        Attachment found = storage.findAttachmentByFileName(attachment.getSource())
+    private Attachment convert(final io.qameta.allure.model.Attachment attachment) {
+        final Attachment found = storage.findAttachmentByFileName(attachment.getSource())
                 .map(attach -> new Attachment()
                         .withUid(attach.getUid())
                         .withName(attach.getName())
@@ -204,7 +160,7 @@ public class Allure2ResultsReader implements ResultsReader {
         return found;
     }
 
-    private Step convert(StepResult step) {
+    private Step convert(final StepResult step) {
         return new Step()
                 .withName(step.getName())
                 .withStatus(convert(step.getStatus()))
@@ -215,7 +171,7 @@ public class Allure2ResultsReader implements ResultsReader {
                 .withSteps(convert(step.getSteps(), this::convert));
     }
 
-    private Status convert(io.qameta.allure.model.Status status) {
+    private Status convert(final io.qameta.allure.model.Status status) {
         if (Objects.isNull(status)) {
             return Status.UNKNOWN;
         }
@@ -225,30 +181,79 @@ public class Allure2ResultsReader implements ResultsReader {
                 .orElse(Status.UNKNOWN);
     }
 
-    private StatusDetails convert(io.qameta.allure.model.StatusDetails details) {
+    private StatusDetails convert(final io.qameta.allure.model.StatusDetails details) {
         return Objects.isNull(details) ? null : new StatusDetails()
                 .withFlaky(details.isFlaky())
                 .withMessage(details.getMessage())
                 .withTrace(details.getTrace());
     }
 
-    private Time convert(Long start, Long stop) {
+    private Time convert(final Long start, final Long stop) {
         return new Time()
                 .withStart(start)
                 .withStop(stop)
                 .withDuration(nonNull(start) && nonNull(stop) ? stop - start : null);
     }
 
-    private Stream<TestResult> readTestResult(Path source) {
+    private StageResult getTestStage(final TestResult result) {
+        StageResult testStage = new StageResult();
+        testStage.setSteps(convert(result.getSteps(), this::convert));
+        testStage.setAttachments(convert(result.getAttachments(), this::convert));
+        testStage.setStatus(convert(result.getStatus()));
+        testStage.setStatusDetails(convert(result.getStatusDetails()));
+        return testStage;
+    }
+
+    private boolean hasTestStage(final TestResult result) {
+        return !result.getSteps().isEmpty() || !result.getAttachments().isEmpty();
+    }
+
+    private List<StageResult> getStages(final List<TestResultContainer> parents,
+                                        final Function<TestResultContainer, Stream<StageResult>> getter) {
+        return parents.stream().flatMap(getter).collect(Collectors.toList());
+    }
+
+    private Stream<StageResult> getBefore(final TestResultContainer container) {
+        return convert(container.getBefores(), this::convert).stream()
+                .sorted(BY_START);
+    }
+
+    private Stream<StageResult> getAfter(final TestResultContainer container) {
+        return convert(container.getAfters(), this::convert).stream()
+                .sorted(BY_START);
+    }
+
+    private List<TestResultContainer> findAllParents(final List<TestResultContainer> groups,
+                                                     final String id,
+                                                     final Set<String> seen) {
+        final List<TestResultContainer> result = new ArrayList<>();
+        final List<TestResultContainer> parents = findParents(groups, id, seen);
+        result.addAll(parents);
+        for (TestResultContainer container : parents) {
+            result.addAll(findAllParents(groups, container.getUuid(), seen));
+        }
+        return result;
+    }
+
+    private List<TestResultContainer> findParents(final List<TestResultContainer> groups,
+                                                  final String id,
+                                                  final Set<String> seen) {
+        return groups.stream()
+                .filter(container -> container.getChildren().contains(id))
+                .filter(container -> !seen.contains(container.getUuid()))
+                .collect(Collectors.toList());
+    }
+
+    private Stream<TestResult> readTestResult(final Path source) {
         try (InputStream is = Files.newInputStream(source)) {
-            return Stream.of(mapper.readValue(is, io.qameta.allure.model.TestResult.class));
+            return Stream.of(mapper.readValue(is, TestResult.class));
         } catch (IOException e) {
             LOGGER.debug("Could not read test result {}: {}", source, e);
             return Stream.empty();
         }
     }
 
-    private Stream<TestResultContainer> readTestResultContainer(Path source) {
+    private Stream<TestResultContainer> readTestResultContainer(final Path source) {
         try (InputStream is = Files.newInputStream(source)) {
             return Stream.of(mapper.readValue(is, TestResultContainer.class));
         } catch (IOException e) {
@@ -257,7 +262,7 @@ public class Allure2ResultsReader implements ResultsReader {
         }
     }
 
-    private boolean isNotEmpty(String s) {
-        return Objects.nonNull(s) && !s.isEmpty();
+    private boolean isNotEmpty(final String s) {
+        return nonNull(s) && !s.isEmpty();
     }
 }

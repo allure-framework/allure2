@@ -2,6 +2,7 @@ package io.qameta.allure.entity;
 
 import javax.xml.bind.annotation.XmlElement;
 import java.util.Comparator;
+import java.util.Objects;
 
 /**
  * @author Dmitry Baev baev@qameta.io
@@ -41,19 +42,19 @@ public interface ExtraStatisticMethods {
      */
     @Deprecated
     @XmlElement
-    default void setTotal(long total) {
+    default void setTotal(final long total) {
         //do nothing
     }
 
-    default void update(WithStatus withStatus) {
-        if (withStatus == null) {
+    default void update(final WithStatus withStatus) {
+        if (Objects.isNull(withStatus)) {
             return;
         }
         update(withStatus.getStatus());
     }
 
-    default void update(Status status) {
-        if (status == null) {
+    default void update(final Status status) {
+        if (Objects.isNull(status)) {
             return;
         }
         switch (status) {
@@ -69,14 +70,14 @@ public interface ExtraStatisticMethods {
             case SKIPPED:
                 setSkipped(getSkipped() + 1);
                 break;
-            case UNKNOWN:
+            default:
                 setUnknown(getUnknown() + 1);
                 break;
         }
     }
 
-    default void merge(Statistic other) {
-        if (other == null) {
+    default void merge(final Statistic other) {
+        if (Objects.isNull(other)) {
             return;
         }
         setFailed(getFailed() + other.getFailed());

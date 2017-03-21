@@ -6,6 +6,7 @@ import io.qameta.allure.tree.TreeResultAggregator;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static io.qameta.allure.categories.CategoriesPlugin.CATEGORIES;
 
@@ -15,9 +16,9 @@ import static io.qameta.allure.categories.CategoriesPlugin.CATEGORIES;
 public class CategoriesResultAggregator extends TreeResultAggregator {
 
     @Override
-    protected List<TreeGroup> getGroups(TestCaseResult result) {
-        List<Category> categories = result.getExtraBlock(CATEGORIES);
-        String message = result.getStatusMessage().orElse("Empty message");
+    protected List<TreeGroup> getGroups(final TestCaseResult result) {
+        final List<Category> categories = result.getExtraBlock(CATEGORIES);
+        final String message = result.getStatusMessage().orElse("Empty message");
         return Arrays.asList(
                 TreeGroup.values(categories.stream().map(Category::getName).toArray(String[]::new)),
                 TreeGroup.values(message)
@@ -25,7 +26,8 @@ public class CategoriesResultAggregator extends TreeResultAggregator {
     }
 
     @Override
-    protected boolean shouldAggregate(TestCaseResult result) {
-        return result.hasExtraBlock(CATEGORIES);
+    protected boolean shouldAggregate(final TestCaseResult result) {
+        final List<Category> categories = result.getExtraBlock(CATEGORIES);
+        return Objects.nonNull(categories) && !categories.isEmpty();
     }
 }

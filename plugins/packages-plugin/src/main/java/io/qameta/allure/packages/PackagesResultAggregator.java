@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 public class PackagesResultAggregator extends TreeResultAggregator {
 
     @Override
-    protected List<TreeGroup> getGroups(TestCaseResult result) {
-        Optional<String> aPackage = result.findOne("package");
+    protected List<TreeGroup> getGroups(final TestCaseResult result) {
+        final Optional<String> aPackage = result.findOne(LabelName.PACKAGE);
         if (!aPackage.isPresent()) {
             return Collections.emptyList();
         }
@@ -31,7 +31,7 @@ public class PackagesResultAggregator extends TreeResultAggregator {
     }
 
     @Override
-    protected String getNodeName(TestCaseResult result) {
+    protected String getNodeName(final TestCaseResult result) {
         return result
                 .findOne(LabelName.TEST_METHOD)
                 .filter(method -> !method.isEmpty())

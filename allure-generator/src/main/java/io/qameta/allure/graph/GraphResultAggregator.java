@@ -17,12 +17,14 @@ import java.util.function.Supplier;
 public class GraphResultAggregator implements ResultAggregator<List<GraphData>> {
 
     @Override
-    public Supplier<List<GraphData>> supplier(TestRun testRun, TestCase testCase) {
+    public Supplier<List<GraphData>> supplier(final TestRun testRun, final TestCase testCase) {
         return ArrayList::new;
     }
 
     @Override
-    public Consumer<List<GraphData>> aggregate(TestRun testRun, TestCase testCase, TestCaseResult result) {
+    public Consumer<List<GraphData>> aggregate(final TestRun testRun,
+                                               final TestCase testCase,
+                                               final TestCaseResult result) {
         return data -> data.add(new GraphData()
                 .withUid(result.getUid())
                 .withName(result.getName())

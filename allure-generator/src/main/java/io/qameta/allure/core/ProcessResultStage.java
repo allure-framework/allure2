@@ -22,11 +22,13 @@ public class ProcessResultStage {
     protected Map<String, ResultAggregator> aggregators;
 
     @SuppressWarnings("unchecked")
-    public Consumer<Map<String, Object>> process(TestRun testRun, TestCase testCase, TestCaseResult result) {
+    public Consumer<Map<String, Object>> process(final TestRun testRun,
+                                                 final TestCase testCase,
+                                                 final TestCaseResult result) {
         return data -> {
             processors.forEach((uid, processor) -> processor.process(testRun, testCase, result));
             aggregators.forEach((uid, aggregator) -> {
-                Object value = data.computeIfAbsent(uid, key -> aggregator.supplier(testRun, testCase).get());
+                final Object value = data.computeIfAbsent(uid, key -> aggregator.supplier(testRun, testCase).get());
                 aggregator.aggregate(testRun, testCase, result).accept(value);
             });
         };

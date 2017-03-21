@@ -15,8 +15,10 @@ import java.util.Objects;
 public final class DummyReportGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DummyReportGenerator.class);
+    private static final int MIN_ARGUMENTS_COUNT = 2;
 
-    DummyReportGenerator() {
+    private DummyReportGenerator() {
+        throw new IllegalStateException("Do not instance");
     }
 
     /**
@@ -25,20 +27,21 @@ public final class DummyReportGenerator {
      * @param args a list of directory paths. First (args.length - 1) arguments -
      *             results directories, last argument - the folder to generated data
      */
-    public static void main(String[] args) {
-        if (args.length < 2) { // NOSONAR
+    public static void main(final String... args) {
+        if (args.length < MIN_ARGUMENTS_COUNT) {
             LOGGER.error("There must be at least two arguments");
             return;
         }
         int lastIndex = args.length - 1;
-        Path[] files = getFiles(args);
-
-        String pluginsDirectory = System.getProperty("allure.pluginsDirectory");
-        Main main = Objects.isNull(pluginsDirectory) ? new Main() : new Main(Paths.get(pluginsDirectory), null);
+        final Path[] files = getFiles(args);
+        final String pluginsDirectory = System.getProperty("allure.pluginsDirectory");
+        final Main main = Objects.isNull(pluginsDirectory)
+                ? new Main()
+                : new Main(Paths.get(pluginsDirectory), null);
         main.generate(files[lastIndex], Arrays.copyOf(files, lastIndex));
     }
 
-    public static Path[] getFiles(String[] paths) {
+    public static Path[] getFiles(final String... paths) {
         return Arrays.stream(paths)
                 .map(Paths::get)
                 .toArray(Path[]::new);

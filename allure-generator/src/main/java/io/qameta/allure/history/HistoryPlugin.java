@@ -26,10 +26,10 @@ public class HistoryPlugin extends AbstractPlugin {
                 .addBinding().to(HistoryReader.class);
     }
 
-    public static HistoryData copy(HistoryData other) {
-        Statistic statistic = new Statistic();
+    public static HistoryData copy(final HistoryData other) {
+        final Statistic statistic = new Statistic();
         statistic.merge(other.getStatistic());
-        List<HistoryItem> items = new ArrayList<>(other.getItems());
+        final List<HistoryItem> items = new ArrayList<>(other.getItems());
         return new HistoryData()
                 .withId(other.getId())
                 .withName(other.getName())

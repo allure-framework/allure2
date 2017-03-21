@@ -11,8 +11,8 @@ import java.math.BigInteger;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.security.SecureRandom;
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -36,17 +36,17 @@ public final class ReportApiUtils {
 
     public static final int UID_RANDOM_BYTES_COUNT = 8;
 
-    ReportApiUtils() {
+    private ReportApiUtils() {
+        throw new IllegalStateException("Do not instance");
     }
 
     public static String generateUid() {
-        SecureRandom rand = new SecureRandom();
         byte[] randomBytes = new byte[UID_RANDOM_BYTES_COUNT];
-        rand.nextBytes(randomBytes);
+        ThreadLocalRandom.current().nextBytes(randomBytes);
         return new BigInteger(1, randomBytes).toString(RADIX);
     }
 
-    public static String getExtensionByMimeType(String type) {
+    public static String getExtensionByMimeType(final String type) {
         try {
             return getDefaultMimeTypes().forName(type).getExtension();
         } catch (Exception e) {
@@ -55,7 +55,7 @@ public final class ReportApiUtils {
         }
     }
 
-    public static String probeContentType(Path path) {
+    public static String probeContentType(final Path path) {
         try (InputStream stream = newInputStream(path)) {
             return probeContentType(stream, Objects.toString(path.getFileName()));
         } catch (IOException e) {
@@ -64,7 +64,7 @@ public final class ReportApiUtils {
         }
     }
 
-    public static String probeContentType(InputStream is, String name) {
+    public static String probeContentType(final InputStream is, final String name) {
         try (InputStream stream = new BufferedInputStream(is)) {
             return getDefaultMimeTypes().detect(stream, METADATA).toString();
         } catch (IOException e) {
@@ -73,7 +73,7 @@ public final class ReportApiUtils {
         }
     }
 
-    public static Stream<Path> listFiles(Path directory, String glob) {
+    public static Stream<Path> listFiles(final Path directory, final String glob) {
         try (DirectoryStream<Path> directoryStream = newDirectoryStream(directory, glob)) {
             return StreamSupport.stream(directoryStream.spliterator(), false)
                     .filter(Files::isRegularFile)
@@ -85,7 +85,7 @@ public final class ReportApiUtils {
         }
     }
 
-    public static Long getFileSizeSafe(Path path) {
+    public static Long getFileSizeSafe(final Path path) {
         try {
             return size(path);
         } catch (IOException e) {

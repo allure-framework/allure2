@@ -34,48 +34,60 @@ public class ProcessStage {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProcessStage.class);
 
-    @Inject
-    protected AttachmentsStorage storage;
+    protected final AttachmentsStorage storage;
+
+    protected final Map<String, Set<String>> filesNamesMap;
+
+    protected final Map<String, Set<String>> widgetsNamesMap;
+
+    protected final Map<String, Finalizer> finalizers;
+
+    protected final Set<ResultsReader> testCaseReaders;
+
+    protected final ProcessTestRunStage testRunStage;
+
+    protected final ProcessTestCaseStage testCaseStage;
+
+    protected final ProcessResultStage resultStage;
+
+    protected final Map<String, TestCase> testCases = new HashMap<>();
 
     @Inject
-    @Named("report-data-folder")
-    protected Map<String, Set<String>> filesNamesMap;
+    public ProcessStage(final AttachmentsStorage storage,
+                        final @Named("report-data-folder") Map<String, Set<String>> filesNamesMap,
+                        final @Named("report-widgets") Map<String, Set<String>> widgetsNamesMap,
+                        final Map<String, Finalizer> finalizers,
+                        final Set<ResultsReader> testCaseReaders,
+                        final ProcessTestRunStage testRunStage,
+                        final ProcessTestCaseStage testCaseStage,
+                        final ProcessResultStage resultStage) {
+        this.storage = storage;
+        this.filesNamesMap = filesNamesMap;
+        this.widgetsNamesMap = widgetsNamesMap;
+        this.finalizers = finalizers;
+        this.testCaseReaders = testCaseReaders;
+        this.testRunStage = testRunStage;
+        this.testCaseStage = testCaseStage;
+        this.resultStage = resultStage;
+    }
 
-    @Inject
-    @Named("report-widgets")
-    protected Map<String, Set<String>> widgetsNamesMap;
-
-    @Inject
-    protected Map<String, Finalizer> finalizers;
-
-    @Inject
-    protected Set<ResultsReader> testCaseReaders;
-
-    @Inject
-    protected ProcessTestRunStage testRunStage;
-
-    @Inject
-    protected ProcessTestCaseStage testCaseStage;
-
-    @Inject
-    protected ProcessResultStage resultStage;
-
-    protected HashMap<String, TestCase> testCases = new HashMap<>();
-
-    public Statistic run(ReportWriter writer, Path... sources) {
+    @SuppressWarnings("PMD.UnnecessaryLocalBeforeReturn")
+    public Statistic run(final ReportWriter writer, final Path... sources) {
         LOGGER.debug("Found {} results readers", testCaseReaders.size());
-        Map<String, Object> data = new HashMap<>();
-        Statistic statistic = processData(writer, data, sources);
+        final Map<String, Object> data = new HashMap<>();
+        final Statistic statistic = processData(writer, data, sources);
         writeData(writer, data);
         writeAttachments(writer);
         return statistic;
     }
 
-    private void writeAttachments(ReportWriter writer) {
+    private void writeAttachments(final ReportWriter writer) {
         storage.getAttachments().forEach((path, attachment) -> writeAttachment(writer, path, attachment));
     }
 
-    private void writeAttachment(ReportWriter writer, Path attachmentFile, Attachment attachment) {
+    private void writeAttachment(final ReportWriter writer,
+                                 final Path attachmentFile,
+                                 final Attachment attachment) {
         try (InputStream is = Files.newInputStream(attachmentFile)) {
             writer.writeAttachment(is, attachment);
         } catch (IOException e) {
@@ -83,17 +95,19 @@ public class ProcessStage {
         }
     }
 
-    private Statistic processData(ReportWriter writer, Map<String, Object> data, Path[] sources) {
-        Statistic statistic = new Statistic();
+    private Statistic processData(final ReportWriter writer,
+                                  final Map<String, Object> data,
+                                  final Path... sources) {
+        final Statistic statistic = new Statistic();
         for (Path source : sources) {
-            TestRun testRun = testRunStage.read().apply(source);
+            final TestRun testRun = testRunStage.read().apply(source);
             testRunStage.process(testRun).accept(data);
 
-            List<TestCaseResult> testCaseResults = readTestCases(source);
+            final List<TestCaseResult> testCaseResults = readTestCases(source);
             LOGGER.debug("Found {} results for source {}", testCaseResults.size(), source.getFileName());
             for (TestCaseResult result : testCaseResults) {
                 statistic.update(result);
-                String testCaseId = Objects.isNull(result.getTestCaseId())
+                final String testCaseId = Objects.isNull(result.getTestCaseId())
                         ? UUID.randomUUID().toString()
                         : result.getTestCaseId();
                 if (!testCases.containsKey(testCaseId)) {
@@ -102,7 +116,7 @@ public class ProcessStage {
                     testCases.put(testCaseId, testCase);
                     testCaseStage.process(testRun, testCase).accept(data);
                 }
-                TestCase testCase = testCases.get(testCaseId);
+                final TestCase testCase = testCases.get(testCaseId);
                 testCase.updateLinks(result.getLinks());
                 testCase.updateParametersNames(result.getParameters());
                 resultStage.process(testRun, testCase, result).accept(data);
@@ -113,16 +127,16 @@ public class ProcessStage {
     }
 
     @SuppressWarnings("unchecked")
-    private void writeData(ReportWriter writer, Map<String, Object> data) {
-        Map<String, Object> widgets = new HashMap<>();
+    private void writeData(final ReportWriter writer, final Map<String, Object> data) {
+        final Map<String, Object> widgets = new HashMap<>();
         data.forEach((uid, object) -> {
-            Set<String> fileNames = filesNamesMap.getOrDefault(uid, Collections.emptySet());
+            final Set<String> fileNames = filesNamesMap.getOrDefault(uid, Collections.emptySet());
             fileNames.forEach(fileName -> {
                 Finalizer finalizer = finalizers.getOrDefault(fileName, Finalizer.identity());
                 writer.writeJsonData(fileName, finalizer.convert(object));
             });
 
-            Set<String> widgetNames = widgetsNamesMap.getOrDefault(uid, Collections.emptySet());
+            final Set<String> widgetNames = widgetsNamesMap.getOrDefault(uid, Collections.emptySet());
             widgetNames.forEach(name -> {
                 Finalizer finalizer = finalizers.getOrDefault(name, Finalizer.identity());
                 widgets.put(name, finalizer.convert(object));
@@ -131,7 +145,7 @@ public class ProcessStage {
         writer.writeJsonData("widgets.json", widgets);
     }
 
-    private TestCase createTestCase(TestCaseResult result) {
+    private TestCase createTestCase(final TestCaseResult result) {
         return new TestCase()
                 .withId(result.getTestCaseId())
                 .withName(result.getName())
@@ -139,7 +153,7 @@ public class ProcessStage {
                 .withDescriptionHtml(result.getDescriptionHtml());
     }
 
-    private List<TestCaseResult> readTestCases(Path source) {
+    private List<TestCaseResult> readTestCases(final Path source) {
         return testCaseReaders.stream()
                 .flatMap(reader -> reader.readResults(source).stream())
                 .collect(Collectors.toList());

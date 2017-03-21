@@ -23,34 +23,39 @@ import static io.qameta.allure.history.HistoryPlugin.copy;
 public class HistoryResultAggregator implements ResultAggregator<Map<String, HistoryData>> {
 
     @Override
-    public Supplier<Map<String, HistoryData>> supplier(TestRun testRun, TestCase testCase) {
+    public Supplier<Map<String, HistoryData>> supplier(final TestRun testRun, final TestCase testCase) {
         return () -> {
-            Map<String, HistoryData> result = new HashMap<>();
-            Map<String, HistoryData> history = testRun.getExtraBlock(HISTORY, new HashMap<>());
+            final Map<String, HistoryData> result = new HashMap<>();
+            final Map<String, HistoryData> history = testRun.getExtraBlock(HISTORY, new HashMap<>());
             history.forEach((key, value) -> result.put(key, copy(value)));
             return result;
         };
     }
 
     @Override
-    public Consumer<Map<String, HistoryData>> aggregate(TestRun testRun, TestCase testCase, TestCaseResult result) {
+    public Consumer<Map<String, HistoryData>> aggregate(final TestRun testRun,
+                                                        final TestCase testCase,
+                                                        final TestCaseResult result) {
         return (history) -> {
             if (Objects.isNull(result.getTestCaseId())) {
                 return;
             }
-            HistoryData data = history.computeIfAbsent(
-                    result.getTestCaseId(),
-                    id -> new HistoryData().withId(id).withName(result.getName())
+
+            //@formatter:off
+            final HistoryData data = history.computeIfAbsent(
+                result.getTestCaseId(),
+                id -> new HistoryData().withId(id).withName(result.getName())
             );
+            //@formatter:on
             data.updateStatistic(result);
 
-            HistoryItem newItem = new HistoryItem()
+            final HistoryItem newItem = new HistoryItem()
                     .withStatus(result.getStatus())
                     .withStatusDetails(result.getStatusMessage().orElse(null))
                     .withTime(result.getTime())
                     .withTestRunName(testRun.getName());
 
-            List<HistoryItem> newItems = Stream.concat(Stream.of(newItem), data.getItems().stream())
+            final List<HistoryItem> newItems = Stream.concat(Stream.of(newItem), data.getItems().stream())
                     .limit(5)
                     .collect(Collectors.toList());
             data.setItems(newItems);

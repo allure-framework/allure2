@@ -13,7 +13,7 @@ import java.util.Set;
 public class EmptyPluginsLoader implements PluginsLoader {
 
     @Override
-    public List<Plugin> loadPlugins(Set<String> enabledPlugins) {
+    public List<Plugin> loadPlugins(final Set<String> enabledPlugins) {
         return Collections.emptyList();
     }
 }

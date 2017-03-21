@@ -18,7 +18,9 @@ public class ReportInfo {
 
     private final List<TestCaseResult> results;
 
-    public ReportInfo(Set<Plugin> plugins, Map<String, TestCase> testCases, List<TestCaseResult> results) {
+    public ReportInfo(final Set<Plugin> plugins,
+                      final Map<String, TestCase> testCases,
+                      final List<TestCaseResult> results) {
         this.plugins = plugins;
         this.testCases = testCases;
         this.results = results;

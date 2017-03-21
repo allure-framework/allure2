@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -21,19 +22,19 @@ public class ReportFactory {
 
     private final Set<Plugin> plugins;
 
-    private final HashMap<String, TestCase> testCases;
+    private final Map<String, TestCase> testCases;
 
     @Inject
-    public ReportFactory(Set<Plugin> plugins, Set<ResultsReader> testCaseReaders) {
+    public ReportFactory(final Set<Plugin> plugins, final Set<ResultsReader> testCaseReaders) {
         this.plugins = plugins;
         this.testCaseReaders = testCaseReaders;
         this.testCases = new HashMap<>();
     }
 
-    public ReportInfo create(Path... sources) {
-        List<TestCaseResult> results = new ArrayList<>();
+    public ReportInfo create(final Path... sources) {
+        final List<TestCaseResult> results = new ArrayList<>();
         for (Path source : sources) {
-            List<TestCaseResult> testCaseResults = readTestCases(source)
+            final List<TestCaseResult> testCaseResults = readTestCases(source)
                     .collect(Collectors.toList());
             for (TestCaseResult result : testCaseResults) {
                 TestCase testCase = getTestCase(result);
@@ -46,7 +47,7 @@ public class ReportFactory {
         return new ReportInfo(plugins, testCases, results);
     }
 
-    private TestCase getTestCase(TestCaseResult result) {
+    private TestCase getTestCase(final TestCaseResult result) {
         return testCases.computeIfAbsent(result.getTestCaseId(), id -> new TestCase()
                 .withId(id)
                 .withName(result.getName())
@@ -55,7 +56,7 @@ public class ReportFactory {
         );
     }
 
-    private Stream<TestCaseResult> readTestCases(Path source) {
+    private Stream<TestCaseResult> readTestCases(final Path source) {
         return testCaseReaders.stream()
                 .flatMap(reader -> reader.readResults(source).stream());
     }

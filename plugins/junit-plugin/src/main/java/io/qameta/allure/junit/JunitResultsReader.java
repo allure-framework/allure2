@@ -45,24 +45,25 @@ public class JunitResultsReader implements ResultsReader {
     private final TestSuiteXmlParser parser = new TestSuiteXmlParser();
 
     @Inject
-    public JunitResultsReader(AttachmentsStorage storage) {
+    public JunitResultsReader(final AttachmentsStorage storage) {
         this.storage = storage;
     }
 
     @Override
-    public List<TestCaseResult> readResults(Path source) {
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+    public List<TestCaseResult> readResults(final Path source) {
         return listFiles(source, "TEST-*.xml")
                 .flatMap(this::parse)
                 .flatMap(testSuite -> {
-                    Path attachmentFile = source.resolve(testSuite.getFullClassName() + ".txt");
-                    Optional<Attachment> log = Optional.of(attachmentFile)
+                    final Path attachmentFile = source.resolve(testSuite.getFullClassName() + ".txt");
+                    final Optional<Attachment> log = Optional.of(attachmentFile)
                             .filter(Files::exists)
                             .map(storage::addAttachment)
                             .map(attachment -> attachment.withName("System out"));
 
-                    List<TestCaseResult> results = new ArrayList<>();
+                    final List<TestCaseResult> results = new ArrayList<>();
                     for (ReportTestCase testCase : testSuite.getTestCases()) {
-                        TestCaseResult result = convert(testCase);
+                        final TestCaseResult result = convert(testCase);
                         log.ifPresent(attachment -> {
                             result.setTestStage(new StageResult());
                             result.getTestStage().getAttachments().add(attachment);
@@ -77,8 +78,8 @@ public class JunitResultsReader implements ResultsReader {
                 .collect(Collectors.toList());
     }
 
-    protected TestCaseResult convert(ReportTestCase source) {
-        TestCaseResult dest = new TestCaseResult();
+    protected TestCaseResult convert(final ReportTestCase source) {
+        final TestCaseResult dest = new TestCaseResult();
         dest.setTestCaseId(String.format("%s#%s", source.getFullClassName(), source.getName()));
         dest.setUid(generateUid());
         dest.setName(source.getName());
@@ -90,7 +91,7 @@ public class JunitResultsReader implements ResultsReader {
         return dest;
     }
 
-    protected Status getStatus(ReportTestCase source) {
+    protected Status getStatus(final ReportTestCase source) {
         if (!source.hasFailure()) {
             return Status.PASSED;
         }
@@ -103,7 +104,7 @@ public class JunitResultsReader implements ResultsReader {
         return Status.BROKEN;
     }
 
-    protected StatusDetails getStatusDetails(ReportTestCase source) {
+    protected StatusDetails getStatusDetails(final ReportTestCase source) {
         if (source.hasFailure()) {
             return new StatusDetails()
                     .withMessage(source.getFailureMessage())
@@ -112,7 +113,7 @@ public class JunitResultsReader implements ResultsReader {
         return null;
     }
 
-    protected Stream<ReportTestSuite> parse(Path source) {
+    protected Stream<ReportTestSuite> parse(final Path source) {
         try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(source), UTF_8)) {
             return parser.parse(reader).stream();
         } catch (Exception e) {

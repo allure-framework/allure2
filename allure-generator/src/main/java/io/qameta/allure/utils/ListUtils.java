@@ -13,10 +13,13 @@ import java.util.stream.Stream;
  */
 public final class ListUtils {
 
-    ListUtils() {
+    private ListUtils() {
+        throw new IllegalStateException("Do not instance");
     }
 
-    public static <T> T computeIfAbsent(List<T> list, Predicate<T> predicate, Supplier<T> defaultValue) {
+    public static <T> T computeIfAbsent(final List<T> list,
+                                        final Predicate<T> predicate,
+                                        final Supplier<T> defaultValue) {
         Optional<T> any = list.stream().filter(predicate).findAny();
         if (any.isPresent()) {
             return any.get();
@@ -26,7 +29,7 @@ public final class ListUtils {
         return value;
     }
 
-    public static <T, S> Predicate<T> compareBy(Function<T, S> map, Supplier<S> compareWith) {
+    public static <T, S> Predicate<T> compareBy(final Function<T, S> map, final Supplier<S> compareWith) {
         return item -> Objects.nonNull(item) && Objects.equals(map.apply(item), compareWith.get());
     }
 
@@ -35,7 +38,8 @@ public final class ListUtils {
         return Stream.of(items)
                 .filter(Objects::nonNull)
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("firstNonNull method should have at " +
-                        "least one non null parameter"));
+                .orElseThrow(() -> new IllegalStateException(
+                        "firstNonNull method should have at least one non null parameter"
+                ));
     }
 }

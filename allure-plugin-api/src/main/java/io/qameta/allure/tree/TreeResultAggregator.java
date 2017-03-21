@@ -22,12 +22,13 @@ import static io.qameta.allure.ReportApiUtils.generateUid;
 public abstract class TreeResultAggregator implements ResultAggregator<TreeData> {
 
     @Override
-    public Supplier<TreeData> supplier(TestRun testRun, TestCase testCase) {
+    public Supplier<TreeData> supplier(final TestRun testRun, final TestCase testCase) {
         return TreeData::new;
     }
 
     @Override
-    public Consumer<TreeData> aggregate(TestRun testRun, TestCase testCase, TestCaseResult result) {
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+    public Consumer<TreeData> aggregate(final TestRun testRun, final TestCase testCase, final TestCaseResult result) {
         return treeData -> {
             if (!shouldAggregate(result)) {
                 return;
@@ -43,7 +44,7 @@ public abstract class TreeResultAggregator implements ResultAggregator<TreeData>
                     continue;
                 }
 
-                List<WithChildren> nextLevelGroups = new ArrayList<>();
+                final List<WithChildren> nextLevelGroups = new ArrayList<>();
                 for (WithChildren currentLevelGroup : currentLevelGroups) {
                     for (String groupName : treeGroup.getGroupNames()) {
                         TestGroupNode groupNode = findGroupByName(groupName, currentLevelGroup.getChildren());
@@ -54,7 +55,7 @@ public abstract class TreeResultAggregator implements ResultAggregator<TreeData>
                 }
                 currentLevelGroups = nextLevelGroups;
             }
-            boolean isFlaky = Optional.ofNullable(result.getStatusDetails())
+            final boolean isFlaky = Optional.ofNullable(result.getStatusDetails())
                     .map(StatusDetails::isFlaky)
                     .orElse(false);
             TestCaseNode testCaseNode = new TestCaseNode()
@@ -69,7 +70,7 @@ public abstract class TreeResultAggregator implements ResultAggregator<TreeData>
         };
     }
 
-    protected TestGroupNode findGroupByName(String groupName, List<TreeNode> nodes) {
+    protected TestGroupNode findGroupByName(final String groupName, final List<TreeNode> nodes) {
         return nodes.stream()
                 .filter(TestGroupNode.class::isInstance)
                 .map(TestGroupNode.class::cast)
@@ -84,13 +85,13 @@ public abstract class TreeResultAggregator implements ResultAggregator<TreeData>
                 });
     }
 
-    protected boolean shouldAggregate(TestCaseResult result) {
+    protected boolean shouldAggregate(final TestCaseResult result) {
         return true;
     }
 
-    protected abstract List<TreeGroup> getGroups(TestCaseResult result);
+    protected abstract List<TreeGroup> getGroups(final TestCaseResult result);
 
-    protected String getNodeName(TestCaseResult result) {
+    protected String getNodeName(final TestCaseResult result) {
         return result.getName();
     }
 }

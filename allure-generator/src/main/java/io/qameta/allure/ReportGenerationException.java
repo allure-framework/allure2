@@ -13,7 +13,7 @@ public class ReportGenerationException extends RuntimeException {
      *
      * @param cause given {@link java.lang.Throwable} cause
      */
-    public ReportGenerationException(Throwable cause) {
+    public ReportGenerationException(final Throwable cause) {
         super(cause);
     }
 
@@ -24,7 +24,7 @@ public class ReportGenerationException extends RuntimeException {
      * @param message the detail message.
      * @param cause   given {@link java.lang.Throwable} cause
      */
-    public ReportGenerationException(String message, Throwable cause) {
+    public ReportGenerationException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
@@ -33,7 +33,7 @@ public class ReportGenerationException extends RuntimeException {
      *
      * @param message the detail message.
      */
-    public ReportGenerationException(String message) {
+    public ReportGenerationException(final String message) {
         super(message);
     }
 }

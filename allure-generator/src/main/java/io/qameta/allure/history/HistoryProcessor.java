@@ -18,14 +18,14 @@ import static io.qameta.allure.history.HistoryPlugin.copy;
 public class HistoryProcessor implements Processor {
 
     @Override
-    public void process(TestRun testRun, TestCase testCase, TestCaseResult result) {
-        Map<String, HistoryData> history = testRun.getExtraBlock(HISTORY, new HashMap<>());
-        String testCaseId = result.getTestCaseId();
+    public void process(final TestRun testRun, final TestCase testCase, final TestCaseResult result) {
+        final Map<String, HistoryData> history = testRun.getExtraBlock(HISTORY, new HashMap<>());
+        final String testCaseId = result.getTestCaseId();
         if (Objects.isNull(testCaseId) || !history.containsKey(testCaseId)) {
             return;
         }
 
-        HistoryData data = copy(history.get(testCaseId));
+        final HistoryData data = copy(history.get(testCaseId));
         data.updateStatistic(result);
         result.addExtraBlock(HISTORY, data);
     }

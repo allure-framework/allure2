@@ -15,7 +15,7 @@ public class ExecutorWidgetItem {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -23,7 +23,7 @@ public class ExecutorWidgetItem {
         return info;
     }
 
-    public void setInfo(ExecutorInfo info) {
+    public void setInfo(final ExecutorInfo info) {
         this.info = info;
     }
 }

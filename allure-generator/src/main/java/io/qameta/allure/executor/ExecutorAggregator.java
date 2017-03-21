@@ -21,9 +21,9 @@ public class ExecutorAggregator implements TestRunAggregator<List<ExecutorWidget
     }
 
     @Override
-    public Consumer<List<ExecutorWidgetItem>> aggregate(TestRun testRun) {
+    public Consumer<List<ExecutorWidgetItem>> aggregate(final TestRun testRun) {
         return items -> {
-            ExecutorWidgetItem item = new ExecutorWidgetItem();
+            final ExecutorWidgetItem item = new ExecutorWidgetItem();
             item.setName(testRun.getName());
             item.setInfo(testRun.getExtraBlock(EXECUTOR_BLOCK_NAME, null));
             items.add(item);

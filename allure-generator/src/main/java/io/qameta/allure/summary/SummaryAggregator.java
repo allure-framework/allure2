@@ -14,12 +14,14 @@ import java.util.function.Supplier;
 public class SummaryAggregator implements ResultAggregator<SummaryData> {
 
     @Override
-    public Supplier<SummaryData> supplier(TestRun testRun, TestCase testCase) {
+    public Supplier<SummaryData> supplier(final TestRun testRun, final TestCase testCase) {
         return SummaryData::new;
     }
 
     @Override
-    public Consumer<SummaryData> aggregate(TestRun testRun, TestCase testCase, TestCaseResult result) {
+    public Consumer<SummaryData> aggregate(final TestRun testRun,
+                                           final TestCase testCase,
+                                           final TestCaseResult result) {
         return summaryData -> {
             boolean anyMatch = summaryData.getTestRuns().stream().anyMatch(testRun.getUid()::equals);
             if (!anyMatch) {
