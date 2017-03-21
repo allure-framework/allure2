@@ -14,8 +14,8 @@ import static io.qameta.allure.entity.ExtraStatisticMethods.comparator;
 public class TreeWidgetFinalizer implements Finalizer<TreeData> {
 
     @Override
-    public Object convert(TreeData identity) {
-        List<TreeWidgetItem> items = identity.getChildren().stream()
+    public Object convert(final TreeData identity) {
+        final List<TreeWidgetItem> items = identity.getChildren().stream()
                 .filter(TestGroupNode.class::isInstance)
                 .map(TestGroupNode.class::cast)
                 .sorted(Comparator.comparing(TestGroupNode::getStatistic, comparator()).reversed())

@@ -20,15 +20,17 @@ import static io.qameta.allure.utils.ListUtils.computeIfAbsent;
 public class TestRunStatisticAggregator implements ResultAggregator<List<TestRunStatistic>> {
 
     @Override
-    public Supplier<List<TestRunStatistic>> supplier(TestRun testRun, TestCase testCase) {
+    public Supplier<List<TestRunStatistic>> supplier(final TestRun testRun, final TestCase testCase) {
         return ArrayList::new;
     }
 
     @Override
-    public Consumer<List<TestRunStatistic>> aggregate(TestRun testRun, TestCase testCase, TestCaseResult result) {
+    public Consumer<List<TestRunStatistic>> aggregate(final TestRun testRun,
+                                                      final TestCase testCase,
+                                                      final TestCaseResult result) {
         return stats -> {
-            Predicate<TestRunStatistic> predicate = compareBy(TestRunStatistic::getUid, testRun::getUid);
-            Supplier<TestRunStatistic> supplier = () ->
+            final Predicate<TestRunStatistic> predicate = compareBy(TestRunStatistic::getUid, testRun::getUid);
+            final Supplier<TestRunStatistic> supplier = () ->
                     new TestRunStatistic().withUid(testRun.getUid()).withName(testRun.getName());
 
             computeIfAbsent(stats, predicate, supplier)

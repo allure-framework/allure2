@@ -23,24 +23,23 @@ public class CategoriesProcessor implements Processor {
     public static final Category UNKNOWN_ERROR = new Category().withName("Unknown error");
 
     @Override
-    public void process(TestRun testRun, TestCase testCase, TestCaseResult result) {
-        boolean hasCategory = false;
-        List<Category> categories = testRun.getExtraBlock(CATEGORIES, new ArrayList<>());
-        for (Category category : categories) {
+    public void process(final TestRun testRun, final TestCase testCase, final TestCaseResult result) {
+        final List<Category> testRunCategories = testRun.getExtraBlock(CATEGORIES, new ArrayList<>());
+        final List<Category> resultCategories = result.getExtraBlock(CATEGORIES, new ArrayList<>());
+        for (Category category : testRunCategories) {
             if (matches(result, category)) {
-                result.getExtraBlock(CATEGORIES, new ArrayList<Category>()).add(category);
-                hasCategory = true;
+                resultCategories.add(category);
             }
         }
-        if (!hasCategory && Status.FAILED.equals(result.getStatus())) {
+        if (resultCategories.isEmpty() && Status.FAILED.equals(result.getStatus())) {
             result.getExtraBlock(CATEGORIES, new ArrayList<Category>()).add(UNKNOWN_FAILURE);
         }
-        if (!hasCategory && Status.BROKEN.equals(result.getStatus())) {
+        if (resultCategories.isEmpty() && Status.BROKEN.equals(result.getStatus())) {
             result.getExtraBlock(CATEGORIES, new ArrayList<Category>()).add(UNKNOWN_ERROR);
         }
     }
 
-    public static boolean matches(TestCaseResult result, Category category) {
+    public static boolean matches(final TestCaseResult result, final Category category) {
         boolean matchesStatus = category.getMatchedStatuses().isEmpty()
                 || nonNull(result.getStatus())
                 && category.getMatchedStatuses().contains(result.getStatus());

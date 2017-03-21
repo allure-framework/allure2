@@ -30,7 +30,7 @@ public class DefaultTestRunReader implements TestRunReader {
     }
 
     @Override
-    public TestRun readTestRun(Path source) {
+    public TestRun readTestRun(final Path source) {
         Path file = source.resolve(TESTRUN_FILE_NAME);
         if (Files.exists(file)) {
             try (InputStream is = Files.newInputStream(file)) {

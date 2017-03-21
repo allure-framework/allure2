@@ -73,6 +73,7 @@ public class Allure2ResultsReaderTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void shouldReadBeforesFromGroups() throws Exception {
         List<TestCaseResult> testResults = process(
                 "allure2/simple-testcase.json", generateTestResultName(),
@@ -90,6 +91,7 @@ public class Allure2ResultsReaderTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void shouldReadAftersFromGroups() throws Exception {
         List<TestCaseResult> testResults = process(
                 "allure2/simple-testcase.json", generateTestResultName(),

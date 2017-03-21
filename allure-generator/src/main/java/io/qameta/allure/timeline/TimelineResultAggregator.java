@@ -2,8 +2,8 @@ package io.qameta.allure.timeline;
 
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.TestCaseResult;
-import io.qameta.allure.tree.TreeResultAggregator;
 import io.qameta.allure.tree.TreeGroup;
+import io.qameta.allure.tree.TreeResultAggregator;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
 public class TimelineResultAggregator extends TreeResultAggregator {
 
     @Override
-    protected List<TreeGroup> getGroups(TestCaseResult result) {
+    protected List<TreeGroup> getGroups(final TestCaseResult result) {
         return Arrays.asList(
                 TreeGroup.oneByLabel(result, LabelName.HOST, "Default hostname"),
                 TreeGroup.oneByLabel(result, LabelName.THREAD, "Default thread")

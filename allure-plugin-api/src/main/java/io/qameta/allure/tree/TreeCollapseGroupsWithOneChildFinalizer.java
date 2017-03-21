@@ -8,7 +8,7 @@ import io.qameta.allure.Finalizer;
 public class TreeCollapseGroupsWithOneChildFinalizer implements Finalizer<TreeData> {
 
     @Override
-    public Object convert(TreeData treeData) {
+    public Object convert(final TreeData treeData) {
         treeData.getChildren().stream()
                 .filter(TestGroupNode.class::isInstance)
                 .map(TestGroupNode.class::cast)
@@ -16,13 +16,14 @@ public class TreeCollapseGroupsWithOneChildFinalizer implements Finalizer<TreeDa
         return treeData;
     }
 
-    protected void collapseGroupsWithOnlyOneChild(TestGroupNode groupNode) {
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
+    protected void collapseGroupsWithOnlyOneChild(final TestGroupNode groupNode) {
         groupNode.getChildren().stream()
                 .filter(TestGroupNode.class::isInstance)
                 .map(TestGroupNode.class::cast)
                 .forEach(this::collapseGroupsWithOnlyOneChild);
 
-        long count = groupNode.getChildren().stream()
+        final long count = groupNode.getChildren().stream()
                 .filter(TestGroupNode.class::isInstance)
                 .count();
 
@@ -38,7 +39,7 @@ public class TreeCollapseGroupsWithOneChildFinalizer implements Finalizer<TreeDa
         }
     }
 
-    protected String getName(TestGroupNode parent, TestGroupNode child) {
+    protected String getName(final TestGroupNode parent, final TestGroupNode child) {
         return String.format("%s.%s", parent.getName(), child.getName());
     }
 

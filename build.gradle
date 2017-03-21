@@ -14,7 +14,7 @@ buildscript {
         classpath 'com.moowork.gradle:gradle-node-plugin:1.1.1'
         classpath 'com.bmuschko:gradle-docker-plugin:3.0.4'
         classpath 'net.researchgate:gradle-release:2.4.0'
-        classpath 'ru.vyarus:gradle-quality-plugin:2.1.0'
+        classpath 'ru.vyarus:gradle-quality-plugin:2.2.0'
     }
 }
 
@@ -162,6 +162,6 @@ subprojects { project ->
         pmdVersion = '5.5.4'
         findbugsVersion = '3.0.1'
         codenarcVersion = '0.26.0'
-        strict = false
+        excludeSources = fileTree('build/generated-sources')
     }
 }

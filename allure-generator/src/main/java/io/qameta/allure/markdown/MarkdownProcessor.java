@@ -18,16 +18,16 @@ public class MarkdownProcessor implements Processor {
     private final MarkdownSupport markdownSupport;
 
     @Inject
-    public MarkdownProcessor(MarkdownSupport markdownSupport) {
+    public MarkdownProcessor(final MarkdownSupport markdownSupport) {
         this.markdownSupport = markdownSupport;
     }
 
     @Override
-    public void process(TestRun testRun, TestCase testCase, TestCaseResult result) {
+    public void process(final TestRun testRun, final TestCase testCase, final TestCaseResult result) {
         if (isNotEmpty(result.getDescriptionHtml()) || isEmpty(result.getDescription())) {
             return;
         }
-        String html = markdownSupport.getProcessor().markdownToHtml(result.getDescription());
+        final String html = markdownSupport.getProcessor().markdownToHtml(result.getDescription());
         result.setDescriptionHtml(html);
     }
 }

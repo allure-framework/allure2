@@ -44,6 +44,8 @@ import java.util.stream.Stream;
 import static io.qameta.allure.ReportApiUtils.generateUid;
 import static io.qameta.allure.ReportApiUtils.listFiles;
 import static io.qameta.allure.entity.LabelName.ISSUE;
+import static io.qameta.allure.entity.LabelName.PACKAGE;
+import static io.qameta.allure.entity.LabelName.PARENT_SUITE;
 import static io.qameta.allure.entity.LabelName.SUITE;
 import static io.qameta.allure.entity.LabelName.TEST_CLASS;
 import static io.qameta.allure.entity.LabelName.TEST_ID;
@@ -61,6 +63,7 @@ import static org.allurefw.allure1.AllureConstants.TEST_SUITE_XML_FILE_GLOB;
 /**
  * @author charlie (Dmitry Baev).
  */
+@SuppressWarnings("PMD.ExcessiveImports")
 public class Allure1ResultsReader implements ResultsReader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Allure1ResultsReader.class);
@@ -70,13 +73,13 @@ public class Allure1ResultsReader implements ResultsReader {
     private final ObjectMapper mapper;
 
     @Inject
-    public Allure1ResultsReader(AttachmentsStorage storage) {
+    public Allure1ResultsReader(final AttachmentsStorage storage) {
         this.storage = storage;
         this.mapper = new ObjectMapper();
     }
 
     @Override
-    public List<TestCaseResult> readResults(Path source) {
+    public List<TestCaseResult> readResults(final Path source) {
         listFiles(source, ATTACHMENTS_FILE_GLOB)
                 .forEach(storage::addAttachment);
 
@@ -86,24 +89,25 @@ public class Allure1ResultsReader implements ResultsReader {
                 .collect(Collectors.toList());
     }
 
-    private TestCaseResult convert(TestSuiteResult testSuite,
-                                   ru.yandex.qatools.allure.model.TestCaseResult source) {
-        TestCaseResult dest = new TestCaseResult();
+    @SuppressWarnings("PMD.ExcessiveMethodLength")
+    private TestCaseResult convert(final TestSuiteResult testSuite,
+                                   final ru.yandex.qatools.allure.model.TestCaseResult source) {
+        final TestCaseResult dest = new TestCaseResult();
 
 
-        String suiteName = firstNonNull(testSuite.getTitle(), testSuite.getName(), "unknown test suite");
-        String testClass = firstNonNull(
+        final String suiteName = firstNonNull(testSuite.getTitle(), testSuite.getName(), "unknown test suite");
+        final String testClass = firstNonNull(
                 findLabel(source.getLabels(), TEST_CLASS.value()),
                 findLabel(testSuite.getLabels(), TEST_CLASS.value()),
                 testSuite.getName(),
                 "unknown"
         );
-        String testMethod = firstNonNull(
+        final String testMethod = firstNonNull(
                 findLabel(source.getLabels(), TEST_METHOD.value()),
                 source.getName(),
                 "unknown"
         );
-        String name = firstNonNull(source.getTitle(), source.getName(), "unknown test case");
+        final String name = firstNonNull(source.getTitle(), source.getName(), "unknown test case");
 
         dest.setTestCaseId(String.format("%s#%s", testClass, name));
         dest.setUid(generateUid());
@@ -126,7 +130,7 @@ public class Allure1ResultsReader implements ResultsReader {
             dest.setTestStage(testStage);
         }
 
-        Set<Label> set = new TreeSet<>(Comparator.comparing(Label::getName).thenComparing(Label::getValue));
+        final Set<Label> set = new TreeSet<>(Comparator.comparing(Label::getName).thenComparing(Label::getValue));
         set.addAll(convert(testSuite.getLabels(), this::convert));
         set.addAll(convert(source.getLabels(), this::convert));
         dest.setLabels(set.stream().collect(Collectors.toList()));
@@ -138,19 +142,19 @@ public class Allure1ResultsReader implements ResultsReader {
         );
 
         //TestNG nested suite
-        Optional<String> testGroupLabel = dest.findOne("testGroup");
-        Optional<String> testSuiteLabel = dest.findOne("testSuite");
+        final Optional<String> testGroupLabel = dest.findOne("testGroup");
+        final Optional<String> testSuiteLabel = dest.findOne("testSuite");
 
         if (testGroupLabel.isPresent() && testSuiteLabel.isPresent()) {
-            dest.addLabelIfNotExists(LabelName.PARENT_SUITE, testSuiteLabel.get());
-            dest.addLabelIfNotExists(LabelName.SUITE, testGroupLabel.get());
+            dest.addLabelIfNotExists(PARENT_SUITE, testSuiteLabel.get());
+            dest.addLabelIfNotExists(SUITE, testGroupLabel.get());
         } else {
             dest.addLabelIfNotExists(SUITE, suiteName);
         }
 
-        dest.addLabelIfNotExists(LabelName.TEST_CLASS, testClass);
-        dest.addLabelIfNotExists(LabelName.TEST_METHOD, testMethod);
-        dest.addLabelIfNotExists(LabelName.PACKAGE, testClass);
+        dest.addLabelIfNotExists(TEST_CLASS, testClass);
+        dest.addLabelIfNotExists(TEST_METHOD, testMethod);
+        dest.addLabelIfNotExists(PACKAGE, testClass);
         dest.findAll("status_details").stream()
                 .filter("flaky"::equalsIgnoreCase)
                 .findAny()
@@ -158,38 +162,20 @@ public class Allure1ResultsReader implements ResultsReader {
         return dest;
     }
 
-    private String getDescription(Description... descriptions) {
-        return Stream.of(descriptions)
-                .filter(Objects::nonNull)
-                .filter(isHtmlDescription().negate())
-                .map(Description::getValue)
-                .collect(Collectors.joining("\n\n"));
-    }
-
-    private String getDescriptionHtml(Description... descriptions) {
-        return Stream.of(descriptions)
-                .filter(Objects::nonNull)
-                .filter(isHtmlDescription())
-                .map(Description::getValue)
-                .collect(Collectors.joining("</br>"));
-    }
-
-    private Predicate<Description> isHtmlDescription() {
-        return description -> DescriptionType.HTML.equals(description.getType());
-    }
-
-    private <T, R> List<R> convert(Collection<T> source, Function<T, R> converter) {
+    private <T, R> List<R> convert(final Collection<T> source, final Function<T, R> converter) {
         return convert(source, t -> true, converter);
     }
 
-    private <T, R> List<R> convert(Collection<T> source, Predicate<T> predicate, Function<T, R> converter) {
+    private <T, R> List<R> convert(final Collection<T> source,
+                                   final Predicate<T> predicate,
+                                   final Function<T, R> converter) {
         return Objects.isNull(source) ? null : source.stream()
                 .filter(predicate)
                 .map(converter)
                 .collect(Collectors.toList());
     }
 
-    private Step convert(ru.yandex.qatools.allure.model.Step s) {
+    private Step convert(final ru.yandex.qatools.allure.model.Step s) {
         return new Step()
                 .withName(s.getTitle() == null ? s.getName() : s.getTitle())
                 .withTime(new Time()
@@ -201,26 +187,26 @@ public class Allure1ResultsReader implements ResultsReader {
                 .withAttachments(convert(s.getAttachments(), this::convert));
     }
 
-    private StatusDetails convert(Failure failure) {
+    private StatusDetails convert(final Failure failure) {
         return Objects.isNull(failure) ? null : new StatusDetails()
                 .withMessage(failure.getMessage())
                 .withTrace(failure.getStackTrace());
     }
 
-    private Label convert(ru.yandex.qatools.allure.model.Label label) {
+    private Label convert(final ru.yandex.qatools.allure.model.Label label) {
         return new Label()
                 .withName(label.getName())
                 .withValue(label.getValue());
     }
 
-    private Parameter convert(ru.yandex.qatools.allure.model.Parameter parameter) {
+    private Parameter convert(final ru.yandex.qatools.allure.model.Parameter parameter) {
         return new Parameter()
                 .withName(parameter.getName())
                 .withValue(parameter.getValue());
     }
 
-    private Attachment convert(ru.yandex.qatools.allure.model.Attachment attachment) {
-        Attachment found = storage.findAttachmentByFileName(attachment.getSource())
+    private Attachment convert(final ru.yandex.qatools.allure.model.Attachment attachment) {
+        final Attachment found = storage.findAttachmentByFileName(attachment.getSource())
                 .map(attach -> new Attachment()
                         .withUid(attach.getUid())
                         .withName(attach.getName())
@@ -238,7 +224,7 @@ public class Allure1ResultsReader implements ResultsReader {
         return found;
     }
 
-    public static Status convert(ru.yandex.qatools.allure.model.Status status) {
+    public static Status convert(final ru.yandex.qatools.allure.model.Status status) {
         if (Objects.isNull(status)) {
             return UNKNOWN;
         }
@@ -258,7 +244,27 @@ public class Allure1ResultsReader implements ResultsReader {
         }
     }
 
-    private String findLabel(List<ru.yandex.qatools.allure.model.Label> labels, String labelName) {
+    private String getDescription(final Description... descriptions) {
+        return Stream.of(descriptions)
+                .filter(Objects::nonNull)
+                .filter(isHtmlDescription().negate())
+                .map(Description::getValue)
+                .collect(Collectors.joining("\n\n"));
+    }
+
+    private String getDescriptionHtml(final Description... descriptions) {
+        return Stream.of(descriptions)
+                .filter(Objects::nonNull)
+                .filter(isHtmlDescription())
+                .map(Description::getValue)
+                .collect(Collectors.joining("</br>"));
+    }
+
+    private Predicate<Description> isHtmlDescription() {
+        return description -> DescriptionType.HTML.equals(description.getType());
+    }
+
+    private String findLabel(final List<ru.yandex.qatools.allure.model.Label> labels, final String labelName) {
         return labels.stream()
                 .filter(label -> labelName.equals(label.getName()))
                 .map(ru.yandex.qatools.allure.model.Label::getValue)
@@ -266,36 +272,36 @@ public class Allure1ResultsReader implements ResultsReader {
                 .orElse(null);
     }
 
-    private boolean hasArgumentType(ru.yandex.qatools.allure.model.Parameter parameter) {
+    private boolean hasArgumentType(final ru.yandex.qatools.allure.model.Parameter parameter) {
         return ParameterKind.ARGUMENT.equals(parameter.getKind());
     }
 
-    private Link getLink(LabelName labelName, String value, String url) {
+    private Link getLink(final LabelName labelName, final String value, final String url) {
         return new Link().withName(value).withType(labelName.value()).withUrl(url);
     }
 
-    private String getIssueUrl(String issue) {
+    private String getIssueUrl(final String issue) {
         return String.format(
                 System.getProperty("allure.issues.tracker.pattern", "%s"),
                 issue
         );
     }
 
-    private String getTestCaseIdUrl(String testCaseId) {
+    private String getTestCaseIdUrl(final String testCaseId) {
         return String.format(
                 System.getProperty("allure.tests.management.pattern", "%s"),
                 testCaseId
         );
     }
 
-    private Stream<TestSuiteResult> getStreamOfAllure1Results(Path source) {
+    private Stream<TestSuiteResult> getStreamOfAllure1Results(final Path source) {
         return Stream.concat(
                 listFiles(source, TEST_SUITE_XML_FILE_GLOB).map(this::readXmlTestSuiteFile),
                 listFiles(source, TEST_SUITE_JSON_FILE_GLOB).map(this::readJsonTestSuiteFile)
         ).filter(Optional::isPresent).map(Optional::get);
     }
 
-    private Optional<TestSuiteResult> readXmlTestSuiteFile(Path source) {
+    private Optional<TestSuiteResult> readXmlTestSuiteFile(final Path source) {
         try (BadXmlCharactersFilterReader reader = new BadXmlCharactersFilterReader(source)) {
             return Optional.of(JAXB.unmarshal(reader, TestSuiteResult.class));
         } catch (IOException e) {
@@ -304,7 +310,7 @@ public class Allure1ResultsReader implements ResultsReader {
         return Optional.empty();
     }
 
-    private Optional<TestSuiteResult> readJsonTestSuiteFile(Path source) {
+    private Optional<TestSuiteResult> readJsonTestSuiteFile(final Path source) {
         try (InputStream is = Files.newInputStream(source)) {
             return Optional.of(mapper.readValue(is, TestSuiteResult.class));
         } catch (IOException e) {

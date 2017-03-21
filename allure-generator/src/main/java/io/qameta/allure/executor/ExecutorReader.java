@@ -27,17 +27,17 @@ public class ExecutorReader implements TestRunDetailsReader {
     private final ObjectMapper mapper;
 
     @Inject
-    public ExecutorReader(ObjectMapper mapper) {
+    public ExecutorReader(final ObjectMapper mapper) {
         this.mapper = mapper;
     }
 
     @Override
-    public Consumer<TestRun> readDetails(Path source) {
+    public Consumer<TestRun> readDetails(final Path source) {
         return testRun -> {
-            Path file = source.resolve(EXECUTOR_FILE_NAME);
+            final Path file = source.resolve(EXECUTOR_FILE_NAME);
             if (Files.exists(file)) {
                 try (InputStream is = Files.newInputStream(file)) {
-                    ExecutorInfo info = mapper.readValue(is, ExecutorInfo.class);
+                    final ExecutorInfo info = mapper.readValue(is, ExecutorInfo.class);
                     testRun.addExtraBlock(EXECUTOR_BLOCK_NAME, info);
                 } catch (IOException e) {
                     LOGGER.error("Could not read executor file {}", file, e);

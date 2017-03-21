@@ -59,6 +59,7 @@ public class Allure1ResultsReaderTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void shouldProcessEmptyOrNullStatus() throws Exception {
         List<TestCaseResult> testResults = process(
                 "allure1/empty-status-testsuite.xml", generateTestSuiteXmlName()

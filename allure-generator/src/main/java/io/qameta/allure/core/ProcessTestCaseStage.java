@@ -16,14 +16,14 @@ public class ProcessTestCaseStage {
     private final Map<String, TestCaseAggregator> aggregators;
 
     @Inject
-    public ProcessTestCaseStage(Map<String, TestCaseAggregator> aggregators) {
+    public ProcessTestCaseStage(final Map<String, TestCaseAggregator> aggregators) {
         this.aggregators = aggregators;
     }
 
     @SuppressWarnings("unchecked")
-    public Consumer<Map<String, Object>> process(TestRun testRun, TestCase testCase) {
+    public Consumer<Map<String, Object>> process(final TestRun testRun, final TestCase testCase) {
         return data -> aggregators.forEach((uid, aggregator) -> {
-            Object value = data.computeIfAbsent(uid, key -> aggregator.supplier(testRun).get());
+            final Object value = data.computeIfAbsent(uid, key -> aggregator.supplier(testRun).get());
             aggregator.aggregate(testRun, testCase).accept(value);
         });
     }

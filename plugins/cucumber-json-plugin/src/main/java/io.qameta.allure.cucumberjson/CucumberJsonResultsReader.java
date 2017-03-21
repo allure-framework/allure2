@@ -39,6 +39,7 @@ import static net.masterthought.cucumber.json.support.Status.SKIPPED;
 /**
  * @author Egor Borisov ehborisov@gmail.com
  */
+@SuppressWarnings("PMD.ExcessiveImports")
 public class CucumberJsonResultsReader implements ResultsReader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CucumberJsonResultsReader.class);
@@ -46,12 +47,12 @@ public class CucumberJsonResultsReader implements ResultsReader {
     private final AttachmentsStorage storage;
 
     @Inject
-    public CucumberJsonResultsReader(AttachmentsStorage storage) {
+    public CucumberJsonResultsReader(final AttachmentsStorage storage) {
         this.storage = storage;
     }
 
     @Override
-    public List<TestCaseResult> readResults(Path source) {
+    public List<TestCaseResult> readResults(final Path source) {
         List<String> cucumberJsonFiles = listFiles(source, "cucumber*.json")
                 .map(Path::toString)
                 .collect(Collectors.toList());
@@ -72,7 +73,7 @@ public class CucumberJsonResultsReader implements ResultsReader {
                 .collect(Collectors.toList());
     }
 
-    private TestCaseResult convert(Element element) {
+    private TestCaseResult convert(final Element element) {
         TestCaseResult result = new TestCaseResult();
         String testName = Optional.ofNullable(element.getName()).orElse("Unnamed scenario");
         String featureName = Optional.ofNullable(element.getFeature().getName()).orElse("Unnamed feature");
@@ -99,13 +100,13 @@ public class CucumberJsonResultsReader implements ResultsReader {
         return result;
     }
 
-    private long getTime(Element source) {
+    private long getTime(final Element source) {
         return Stream.of(source.getSteps())
                 .map(Step::getDuration)
                 .reduce((t1, t2) -> t1 + t2).orElse(0L);
     }
 
-    private Status getStatus(Element source) {
+    private Status getStatus(final Element source) {
         if (source.getStatus().isPassed()) {
             return Status.PASSED;
         }
@@ -118,7 +119,24 @@ public class CucumberJsonResultsReader implements ResultsReader {
         return getStatus(source.getStatus());
     }
 
-    private StatusDetails getStatusDetails(Element source) {
+    @SuppressWarnings("PMD.UnnecessaryFullyQualifiedName")
+    private Status getStatus(final net.masterthought.cucumber.json.support.Status status) {
+        if (status.isPassed()) {
+            return Status.PASSED;
+        }
+        if (status == FAILED) {
+            return Status.FAILED;
+        }
+        if (status == PENDING) {
+            return Status.SKIPPED;
+        }
+        if (status == SKIPPED) {
+            return Status.SKIPPED;
+        }
+        return Status.UNKNOWN;
+    }
+
+    private StatusDetails getStatusDetails(final Element source) {
         return Stream.of(source.getSteps())
                 .map(Step::getResult)
                 .map(this::getStatusDetails)
@@ -126,7 +144,13 @@ public class CucumberJsonResultsReader implements ResultsReader {
                 .findFirst().orElse(null);
     }
 
-    private StageResult getTestStage(Element source) {
+    private StatusDetails getStatusDetails(final Result result) {
+        return Optional.ofNullable(result.getErrorMessage())
+                .map(msg -> new StatusDetails().withMessage(msg))
+                .orElse(null);
+    }
+
+    private StageResult getTestStage(final Element source) {
         return new StageResult().withSteps(
                 Stream.of(source.getSteps())
                         .map(step -> new io.qameta.allure.entity.Step()
@@ -144,7 +168,7 @@ public class CucumberJsonResultsReader implements ResultsReader {
                 .withStatusDetails(getStatusDetails(source));
     }
 
-    private List<StageResult> convertHooks(Hook[] hooks) {
+    private List<StageResult> convertHooks(final Hook... hooks) {
         return Stream.of(hooks)
                 .map(hook -> new StageResult()
                         .withAttachments(
@@ -156,7 +180,7 @@ public class CucumberJsonResultsReader implements ResultsReader {
                 ).collect(Collectors.toList());
     }
 
-    private Attachment convertAttachment(Embedding embedding) {
+    private Attachment convertAttachment(final Embedding embedding) {
         Attachment found = storage.findAttachmentByFileName(embedding.getFileName())
                 .orElseGet(() -> new Attachment().withName("unknown").withSize(0L).withType("*/*"));
         if (Objects.nonNull(embedding.getMimeType())) {
@@ -165,41 +189,19 @@ public class CucumberJsonResultsReader implements ResultsReader {
         return found;
     }
 
-    private StatusDetails getStatusDetails(Result result) {
-        return Optional.ofNullable(result.getErrorMessage())
-                .map(msg -> new StatusDetails().withMessage(msg))
-                .orElse(null);
-    }
-
-    private Status getStepStatus(Step step) {
+    private Status getStepStatus(final Step step) {
         return getStatus(step.getResult().getStatus());
     }
 
-    private Status getStatus(net.masterthought.cucumber.json.support.Status status) {
-        if (status.isPassed()) {
-            return Status.PASSED;
-        }
-        if (status == FAILED) {
-            return Status.FAILED;
-        }
-        if (status == PENDING) {
-            return Status.SKIPPED;
-        }
-        if (status == SKIPPED) {
-            return Status.SKIPPED;
-        }
-        return Status.UNKNOWN;
-    }
-
     @SafeVarargs
-    private final <T> T firstNonNull(T... items) {
+    private final <T> T firstNonNull(final T... items) {
         return Stream.of(items)
                 .filter(Objects::nonNull)
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("At least one item should be non-null"));
     }
 
-    private List<Feature> parse(ReportParser parser, List<String> cucumberJsonFiles) {
+    private List<Feature> parse(final ReportParser parser, final List<String> cucumberJsonFiles) {
         try {
             return cucumberJsonFiles.isEmpty()
                     ? Collections.emptyList()

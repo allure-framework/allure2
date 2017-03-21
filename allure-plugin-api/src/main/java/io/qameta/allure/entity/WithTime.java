@@ -6,11 +6,9 @@ package io.qameta.allure.entity;
  */
 public interface WithTime {
 
-    void setTime(Time time);
+    void setTime(final Time time);
 
-    Time getTime();
-
-    default void setTime(Long start, Long stop) {
+    default void setTime(final Long start, final Long stop) {
         setTime(new Time()
                 .withStart(start)
                 .withStop(stop)
@@ -18,9 +16,11 @@ public interface WithTime {
         );
     }
 
-    default void setTime(Long duration) {
+    default void setTime(final Long duration) {
         setTime(new Time()
                 .withDuration(duration)
         );
     }
+
+    Time getTime();
 }

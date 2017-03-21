@@ -24,24 +24,25 @@ public class ProcessTestRunStage {
     private final Map<String, TestRunAggregator> aggregators;
 
     @Inject
-    public ProcessTestRunStage(TestRunReader reader, Set<TestRunDetailsReader> detailsReaders,
-                               Map<String, TestRunAggregator> aggregators) {
+    public ProcessTestRunStage(final TestRunReader reader,
+                               final Set<TestRunDetailsReader> detailsReaders,
+                               final Map<String, TestRunAggregator> aggregators) {
         this.reader = reader;
         this.detailsReaders = detailsReaders;
         this.aggregators = aggregators;
     }
 
     @SuppressWarnings("unchecked")
-    public Consumer<Map<String, Object>> process(TestRun testRun) {
+    public Consumer<Map<String, Object>> process(final TestRun testRun) {
         return data -> aggregators.forEach((uid, aggregator) -> {
-            Object value = data.computeIfAbsent(uid, key -> aggregator.supplier().get());
+            final Object value = data.computeIfAbsent(uid, key -> aggregator.supplier().get());
             aggregator.aggregate(testRun).accept(value);
         });
     }
 
     public Function<Path, TestRun> read() {
         return source -> {
-            TestRun testRun = reader.readTestRun(source);
+            final TestRun testRun = reader.readTestRun(source);
             detailsReaders.forEach(reader -> reader.readDetails(source).accept(testRun));
             return testRun;
         };

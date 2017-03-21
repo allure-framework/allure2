@@ -19,15 +19,15 @@ public class SeverityProcessor implements Processor {
     private static final Logger LOGGER = LoggerFactory.getLogger(SeverityProcessor.class);
 
     @Override
-    public void process(TestRun testRun, TestCase testCase, TestCaseResult result) {
-        Optional<String> severity = result.findOne(LabelName.SEVERITY);
+    public void process(final TestRun testRun, final TestCase testCase, final TestCaseResult result) {
+        final Optional<String> severity = result.findOne(LabelName.SEVERITY);
         result.addExtraBlock("severity", severity.isPresent()
                 ? getSeverity(severity.get())
                 : SeverityLevel.NORMAL
         );
     }
 
-    public SeverityLevel getSeverity(String value) {
+    public SeverityLevel getSeverity(final String value) {
         try {
             return SeverityLevel.fromValue(value);
         } catch (Exception e) {

@@ -44,11 +44,11 @@ public class Main {
         this(new EmptyPluginsLoader(), Collections.emptySet());
     }
 
-    public Main(Path pluginsDirectory, Set<String> enabledPlugins) {
+    public Main(final Path pluginsDirectory, final Set<String> enabledPlugins) {
         this(new DefaultPluginLoader(pluginsDirectory), enabledPlugins);
     }
 
-    public Main(PluginsLoader pluginsLoader, Set<String> enabledPlugins) {
+    public Main(final PluginsLoader pluginsLoader, final Set<String> enabledPlugins) {
         this.pluginsLoader = pluginsLoader;
         this.enabledPlugins = enabledPlugins;
     }
@@ -57,37 +57,37 @@ public class Main {
         return pluginsLoader.loadPlugins(enabledPlugins);
     }
 
-    public ReportInfo createReport(Path... sources) {
-        List<Plugin> plugins = pluginsLoader.loadPlugins(enabledPlugins);
-        ReportFactory factory = createInjector(plugins)
+    public ReportInfo createReport(final Path... sources) {
+        final List<Plugin> plugins = pluginsLoader.loadPlugins(enabledPlugins);
+        final ReportFactory factory = createInjector(plugins)
                 .getInstance(ReportFactory.class);
         return factory.create(sources);
     }
 
-    public void generate(Path output, Path... sources) {
+    public void generate(final Path output, final Path... sources) {
         List<Plugin> plugins = pluginsLoader.loadPlugins(enabledPlugins);
         LOGGER.debug("Found {} plugins", plugins.size());
         plugins.forEach(plugin ->
                 LOGGER.debug("<{}>, enabled: {}", plugin.getDescriptor().getName(), plugin.isEnabled())
         );
-        Injector injector = createInjector(plugins);
-        ProcessStage stage = injector.getInstance(ProcessStage.class);
-        ReportWriter writer = new FileSystemReportWriter(injector.getInstance(ObjectMapper.class), output);
+        final Injector injector = createInjector(plugins);
+        final ProcessStage stage = injector.getInstance(ProcessStage.class);
+        final ReportWriter writer = new FileSystemReportWriter(injector.getInstance(ObjectMapper.class), output);
 
-        Statistic run = stage.run(writer, sources);
+        final Statistic run = stage.run(writer, sources);
         LOGGER.debug("## Summary");
         LOGGER.debug("Found {} test cases ({} failed, {} broken)", run.getTotal(), run.getFailed(), run.getBroken());
         LOGGER.debug("Success percentage: {}", getSuccessPercentage(run));
         LOGGER.debug("Creating index.html...");
-        Set<String> pluginsWithStatic = unpackStatic(plugins, output);
+        final Set<String> pluginsWithStatic = unpackStatic(plugins, output);
         writeIndexHtml(pluginsWithStatic, output);
     }
 
-    private String getSuccessPercentage(Statistic run) {
+    private String getSuccessPercentage(final Statistic run) {
         return run.getTotal() == 0 ? "Unknown" : String.valueOf(run.getPassed() * 100 / run.getTotal());
     }
 
-    private static Injector createInjector(List<Plugin> plugins) {
+    private static Injector createInjector(final List<Plugin> plugins) {
         List<Module> enabledPluginsModules = plugins.stream()
                 .filter(Plugin::isEnabled)
                 .map(Plugin::getModule)
@@ -97,15 +97,15 @@ public class Main {
         return Guice.createInjector(new ParentModule(plugins, enabledPluginsModules));
     }
 
-    private static void writeIndexHtml(Set<String> pluginsWithStatic, Path outputDirectory) {
-        Configuration cfg = new Configuration(Configuration.VERSION_2_3_23);
+    private static void writeIndexHtml(final Set<String> pluginsWithStatic, final Path outputDirectory) {
+        final Configuration cfg = new Configuration(Configuration.VERSION_2_3_23);
         cfg.setLocalizedLookup(false);
         cfg.setTemplateUpdateDelayMilliseconds(0);
         cfg.setClassLoaderForTemplateLoading(Main.class.getClassLoader(), "tpl");
-        Path indexHtml = outputDirectory.resolve("index.html");
+        final Path indexHtml = outputDirectory.resolve("index.html");
         try (BufferedWriter writer = Files.newBufferedWriter(indexHtml, StandardOpenOption.CREATE)) {
-            Template template = cfg.getTemplate("index.html.ftl");
-            Map<String, Object> dataModel = new HashMap<>();
+            final Template template = cfg.getTemplate("index.html.ftl");
+            final Map<String, Object> dataModel = new HashMap<>();
             dataModel.put("plugins", pluginsWithStatic);
             template.process(dataModel, writer);
         } catch (IOException | TemplateException e) {
@@ -113,8 +113,8 @@ public class Main {
         }
     }
 
-    private static Set<String> unpackStatic(List<Plugin> plugins, Path outputDirectory) {
-        Path pluginsDirectory = outputDirectory.resolve("plugins");
+    private static Set<String> unpackStatic(final List<Plugin> plugins, final Path outputDirectory) {
+        final Path pluginsDirectory = outputDirectory.resolve("plugins");
         return plugins.stream()
                 .filter(Plugin::isEnabled)
                 .map(plugin -> unpackStatic(plugin, pluginsDirectory))
@@ -123,17 +123,17 @@ public class Main {
                 .collect(Collectors.toSet());
     }
 
-    public static Optional<String> unpackStatic(Plugin plugin, Path outputDirectory) {
-        String name = plugin.getDescriptor().getName();
-        Path pluginOutputDirectory = outputDirectory.resolve(name);
+    public static Optional<String> unpackStatic(final Plugin plugin, final Path outputDirectory) {
+        final String name = plugin.getDescriptor().getName();
+        final Path pluginOutputDirectory = outputDirectory.resolve(name);
         unpack(plugin, pluginOutputDirectory);
         return Files.exists(pluginOutputDirectory.resolve("index.js"))
                 ? Optional.of(name)
                 : Optional.empty();
     }
 
-    private static void unpack(Plugin plugin, Path outputDirectory) {
-        Path pluginStatic = plugin.getPluginDirectory().resolve("static");
+    private static void unpack(final Plugin plugin, final Path outputDirectory) {
+        final Path pluginStatic = plugin.getPluginDirectory().resolve("static");
         if (Files.notExists(pluginStatic)) {
             return;
         }
