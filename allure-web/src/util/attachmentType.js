@@ -69,7 +69,7 @@ export default function typeByMime(type) {
                                 .map(line => line.trim())
                                 .filter(line => line.length > 0)
                                 .map(line => ({
-                                    comment: line.startsWith('#'),
+                                    comment: line.indexOf('#') === 0,
                                     text: line
                                 }))
             };
