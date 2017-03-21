@@ -35,7 +35,8 @@ export default function typeByMime(type) {
             };
         case 'text/html':
             return {
-                type: 'html'
+                type: 'html',
+                icon: 'fa fa-file-code-o',
             };
         case 'text/csv':
             return {
