@@ -46,6 +46,7 @@ import static io.qameta.allure.ReportApiUtils.listFiles;
 import static io.qameta.allure.entity.LabelName.ISSUE;
 import static io.qameta.allure.entity.LabelName.PACKAGE;
 import static io.qameta.allure.entity.LabelName.PARENT_SUITE;
+import static io.qameta.allure.entity.LabelName.SUB_SUITE;
 import static io.qameta.allure.entity.LabelName.SUITE;
 import static io.qameta.allure.entity.LabelName.TEST_CLASS;
 import static io.qameta.allure.entity.LabelName.TEST_ID;
@@ -148,6 +149,7 @@ public class Allure1ResultsReader implements ResultsReader {
         if (testGroupLabel.isPresent() && testSuiteLabel.isPresent()) {
             dest.addLabelIfNotExists(PARENT_SUITE, testSuiteLabel.get());
             dest.addLabelIfNotExists(SUITE, testGroupLabel.get());
+            dest.addLabelIfNotExists(SUB_SUITE, testClass);
         } else {
             dest.addLabelIfNotExists(SUITE, suiteName);
         }
