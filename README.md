@@ -33,3 +33,7 @@ Also you can choose different demo data using `results` parameter:
 ```bash
 $ ./gradlew dev -Presults=allure2
 ```
+
+## Release date
+
+Allure 2 is just about to release. See related milestone https://github.com/allure-framework/allure2/milestone/4
