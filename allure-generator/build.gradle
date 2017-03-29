@@ -13,6 +13,7 @@ dependencies {
     compile('commons-io:commons-io')
 
     testCompile('junit:junit')
+    testCompile('org.assertj:assertj-core')
     testCompile('org.slf4j:slf4j-simple')
     testCompile('org.hamcrest:hamcrest-all')
     testCompile('org.mockito:mockito-all')
