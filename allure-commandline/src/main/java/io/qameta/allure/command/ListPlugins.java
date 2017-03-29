@@ -5,8 +5,6 @@ import io.qameta.allure.Plugin;
 
 import javax.inject.Inject;
 
-import static io.qameta.allure.utils.CommandUtils.createMain;
-
 /**
  * @author charlie (Dmitry Baev).
  */
@@ -20,9 +18,6 @@ public class ListPlugins implements AllureCommand {
     @Override
     public void run(final Context context) throws Exception {
         verboseOptions.configureLogLevel();
-        createMain(context)
-                .loadPlugins()
-                .forEach(this::printPluginInfo);
     }
 
     @SuppressWarnings("PMD.SystemPrintln")

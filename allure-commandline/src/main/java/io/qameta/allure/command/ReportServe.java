@@ -10,7 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static io.qameta.allure.utils.CommandUtils.copyDirectory;
-import static io.qameta.allure.utils.CommandUtils.createMain;
+import static io.qameta.allure.utils.CommandUtils.createReportGenerator;
 import static io.qameta.allure.utils.CommandUtils.openBrowser;
 import static io.qameta.allure.utils.CommandUtils.setUpServer;
 
@@ -38,7 +38,7 @@ public class ReportServe implements AllureCommand {
 
         Path serve = Files.createTempDirectory(context.getWorkDirectory(), "serve");
         LOGGER.info("Generate report to temp directory...");
-        createMain(context)
+        createReportGenerator(context)
                 .generate(serve, resultsOptions.getResultsDirectories());
         copyDirectory(context.getWebDirectory(), serve);
 

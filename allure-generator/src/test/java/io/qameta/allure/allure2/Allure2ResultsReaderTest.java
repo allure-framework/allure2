@@ -222,7 +222,7 @@ public class Allure2ResultsReaderTest {
         assertThat(testCases, isDirectory());
         assertThat(testCases, hasFilesCount(4, "*.json"));
 
-        assertThat(data, contains("categories.json"));
+        assertThat(data, contains("category.json"));
         assertThat(data, contains("graph.json"));
         assertThat(data, contains("history.json"));
         assertThat(data, contains("timeline.json"));

@@ -48,6 +48,13 @@ public interface ExtraGroupTimeMethods {
         update(firstNonNull(getSumDuration(), 0L), groupTime.getSumDuration(), (a, b) -> a + b, this::setSumDuration);
     }
 
+    default void update(final WithTime withTime) {
+        if (Objects.isNull(withTime)) {
+            return;
+        }
+        update(withTime.getTime());
+    }
+
     default void update(final Time time) {
         if (Objects.isNull(time)) {
             return;

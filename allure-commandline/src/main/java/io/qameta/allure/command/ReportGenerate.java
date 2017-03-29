@@ -2,7 +2,7 @@ package io.qameta.allure.command;
 
 import com.github.rvesse.airline.annotations.Command;
 import com.github.rvesse.airline.annotations.Option;
-import io.qameta.allure.Main;
+import io.qameta.allure.ReportGenerator;
 import io.qameta.allure.utils.DeleteVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static io.qameta.allure.utils.CommandUtils.copyDirectory;
-import static io.qameta.allure.utils.CommandUtils.createMain;
+import static io.qameta.allure.utils.CommandUtils.createReportGenerator;
 
 /**
  * @author Artem Eroshenko <eroshenkoam@qameta.io>
@@ -51,8 +51,8 @@ public class ReportGenerate implements AllureCommand {
             Files.walkFileTree(output, new DeleteVisitor());
         }
 
-        Main main = createMain(context);
-        main.generate(output, resultsOptions.getResultsDirectories());
+        ReportGenerator generator = createReportGenerator(context);
+        generator.generate(output, resultsOptions.getResultsDirectories());
 
         copyDirectory(context.getWebDirectory(), output);
         LOGGER.info("Report successfully generated to the directory <{}>. "

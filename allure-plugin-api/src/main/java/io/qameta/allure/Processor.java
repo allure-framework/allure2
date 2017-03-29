@@ -1,16 +1,12 @@
 package io.qameta.allure;
 
-import io.qameta.allure.entity.TestCase;
-import io.qameta.allure.entity.TestCaseResult;
-import io.qameta.allure.entity.TestRun;
+import java.util.List;
 
 /**
- * @author Dmitry Baev baev@qameta.io
- *         Date: 16.04.16
+ * @author charlie (Dmitry Baev).
  */
-@FunctionalInterface
 public interface Processor {
 
-    void process(TestRun testRun, TestCase testCase, TestCaseResult result);
+    void process(ReportConfiguration configuration, List<LaunchResults> launches);
 
 }

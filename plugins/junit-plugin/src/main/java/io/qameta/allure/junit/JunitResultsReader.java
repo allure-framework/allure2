@@ -2,7 +2,7 @@ package io.qameta.allure.junit;
 
 import com.google.inject.Inject;
 import io.qameta.allure.AttachmentsStorage;
-import io.qameta.allure.ResultsReader;
+import io.qameta.allure.ResultsProcessor;
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.StageResult;
@@ -34,7 +34,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @author Dmitry Baev baev@qameta.io
  *         Date: 14.02.16
  */
-public class JunitResultsReader implements ResultsReader {
+public class JunitResultsReader implements ResultsProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JunitResultsReader.class);
 

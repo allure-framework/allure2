@@ -9,8 +9,8 @@ allure.api.addTab('xUnit', {
         url: 'data/xunit.json'
     })
 });
-allure.api.addWidget('xunit', allure.components.WidgetStatusView.extend({
-    title: 'xunit',
-    baseUrl: 'xUnit',
-    showAllText: 'Show all test suites'
-}));
+// allure.api.addWidget('xunit', allure.components.WidgetStatusView.extend({
+//     title: 'xunit',
+//     baseUrl: 'xUnit',
+//     showAllText: 'Show all test suites'
+// }));

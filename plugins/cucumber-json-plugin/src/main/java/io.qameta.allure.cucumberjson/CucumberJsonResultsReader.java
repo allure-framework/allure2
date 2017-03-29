@@ -2,7 +2,7 @@ package io.qameta.allure.cucumberjson;
 
 import com.google.inject.Inject;
 import io.qameta.allure.AttachmentsStorage;
-import io.qameta.allure.ResultsReader;
+import io.qameta.allure.ResultsProcessor;
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.StageResult;
@@ -40,7 +40,7 @@ import static net.masterthought.cucumber.json.support.Status.SKIPPED;
  * @author Egor Borisov ehborisov@gmail.com
  */
 @SuppressWarnings("PMD.ExcessiveImports")
-public class CucumberJsonResultsReader implements ResultsReader {
+public class CucumberJsonResultsReader implements ResultsProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CucumberJsonResultsReader.class);
 

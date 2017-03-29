@@ -36,8 +36,8 @@ public class HistoryReaderTest {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("history.json")) {
             Files.copy(is, history);
         }
-        HistoryReader reader = Guice.createInjector(new JacksonMapperModule())
-                .getInstance(HistoryReader.class);
+        HistoryPlugin reader = Guice.createInjector(new JacksonMapperModule())
+                .getInstance(HistoryPlugin.class);
         consumer = reader.readDetails(dir);
     }
 

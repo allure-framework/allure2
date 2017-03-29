@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static io.qameta.allure.history.HistoryReader.HISTORY_TYPE;
+import static io.qameta.allure.history.HistoryPlugin.HISTORY_TYPE;
 import static io.qameta.allure.testdata.TestData.unpackDummyResources;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;

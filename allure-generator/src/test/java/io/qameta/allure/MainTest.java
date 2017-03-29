@@ -64,7 +64,7 @@ public class MainTest {
         assertThat(attachments, isDirectory());
         assertThat(attachments, hasFilesCount(13));
 
-        assertThat(data, contains("categories.json"));
+        assertThat(data, contains("category.json"));
         assertThat(data, contains("graph.json"));
         assertThat(data, contains("history.json"));
         assertThat(data, contains("timeline.json"));

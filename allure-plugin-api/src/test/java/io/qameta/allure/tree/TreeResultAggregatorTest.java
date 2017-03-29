@@ -158,7 +158,7 @@ public class TreeResultAggregatorTest {
         checkNodeHasOnlyOneTestCasesUids(groupNode, first, second);
     }
 
-    private TreeData aggregateResultsWithUids(TreeResultAggregator aggregator, String... uids) {
+    private TreeData aggregateResultsWithUids(TreeAggregator aggregator, String... uids) {
         TreeData treeData = aggregator.supplier(null, null).get();
         Stream.of(uids).forEach(uid -> {
             TestRun testRun = mock(TestRun.class);
@@ -188,21 +188,21 @@ public class TreeResultAggregatorTest {
         assertThat(actualUids, hasItems(uids));
     }
 
-    private static class OneValueTreeResultAggregator extends TreeResultAggregator {
+    private static class OneValueTreeResultAggregator extends TreeAggregator {
         @Override
         protected List<TreeGroup> getGroups(TestCaseResult result) {
             return Collections.singletonList(TreeGroup.values("sampleGroup"));
         }
     }
 
-    private static class FewValuesTreeResultAggregator extends TreeResultAggregator {
+    private static class FewValuesTreeResultAggregator extends TreeAggregator {
         @Override
         protected List<TreeGroup> getGroups(TestCaseResult result) {
             return Collections.singletonList(TreeGroup.values("first", "second"));
         }
     }
 
-    private static class FewLevelsTreeResultAggregator extends TreeResultAggregator {
+    private static class FewLevelsTreeResultAggregator extends TreeAggregator {
 
         @Override
         protected List<TreeGroup> getGroups(TestCaseResult result) {
@@ -210,7 +210,7 @@ public class TreeResultAggregatorTest {
         }
     }
 
-    private static class ComplexTreeResultAggregator extends TreeResultAggregator {
+    private static class ComplexTreeResultAggregator extends TreeAggregator {
         @Override
         protected List<TreeGroup> getGroups(TestCaseResult result) {
             return Arrays.asList(TreeGroup.values("a", "b"), TreeGroup.values("1", "2"));

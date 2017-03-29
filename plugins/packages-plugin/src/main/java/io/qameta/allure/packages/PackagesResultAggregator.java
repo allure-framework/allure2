@@ -3,7 +3,7 @@ package io.qameta.allure.packages;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.TestCaseResult;
 import io.qameta.allure.tree.TreeGroup;
-import io.qameta.allure.tree.TreeResultAggregator;
+import io.qameta.allure.tree.TreeAggregator;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class PackagesResultAggregator extends TreeResultAggregator {
+public class PackagesResultAggregator extends TreeAggregator {
 
     @Override
     protected List<TreeGroup> getGroups(final TestCaseResult result) {

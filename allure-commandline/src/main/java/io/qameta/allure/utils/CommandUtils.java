@@ -1,6 +1,7 @@
 package io.qameta.allure.utils;
 
-import io.qameta.allure.Main;
+import io.qameta.allure.DefaultReportConfiguration;
+import io.qameta.allure.ReportGenerator;
 import io.qameta.allure.command.AllureCommandException;
 import io.qameta.allure.command.Context;
 import org.eclipse.jetty.server.Handler;
@@ -39,13 +40,9 @@ public final class CommandUtils {
         }
     }
 
-    public static Main createMain(final Context context) {
-        return new Main(
-                context.getPluginsDirectory(),
-                context.getEnabledPlugins()
-        );
+    public static ReportGenerator createReportGenerator(final Context context) {
+        return new ReportGenerator(new DefaultReportConfiguration());
     }
-
 
     /**
      * Set up Jetty server to serve Allure Report

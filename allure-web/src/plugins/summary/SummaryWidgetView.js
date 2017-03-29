@@ -18,7 +18,8 @@ class SummaryWidgetView extends View {
     }
 
     serializeData() {
-        var length = this.model.get('testRuns').length;
+        const testRuns = this.model.get('testRuns');
+        const length = testRuns && testRuns.length;
         return Object.assign(super.serializeData(), {
             isAggregated: length > 1,
             testRunsCount: length
