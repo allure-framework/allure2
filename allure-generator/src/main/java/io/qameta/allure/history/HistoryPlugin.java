@@ -1,13 +1,12 @@
 package io.qameta.allure.history;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import io.qameta.allure.Aggregator;
-import io.qameta.allure.JacksonMapperContext;
+import io.qameta.allure.Configuration;
 import io.qameta.allure.LaunchResults;
-import io.qameta.allure.Processor;
-import io.qameta.allure.ReportConfiguration;
+import io.qameta.allure.Plugin;
 import io.qameta.allure.ResultsReader;
 import io.qameta.allure.ResultsVisitor;
+import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.TestCaseResult;
 
@@ -27,7 +26,7 @@ import java.util.stream.Stream;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class HistoryPlugin implements ResultsReader, Processor, Aggregator {
+public class HistoryPlugin implements ResultsReader, Plugin {
 
     private static final String HISTORY_BLOCK_NAME = "history";
 
@@ -39,8 +38,10 @@ public class HistoryPlugin implements ResultsReader, Processor, Aggregator {
     //@formatter:on
 
     @Override
-    public void readResults(ReportConfiguration configuration, ResultsVisitor visitor, Path directory) {
-        final JacksonMapperContext context = configuration.requireContext(JacksonMapperContext.class);
+    public void readResults(final Configuration configuration,
+                            final ResultsVisitor visitor,
+                            final Path directory) {
+        final JacksonContext context = configuration.requireContext(JacksonContext.class);
         final Path historyFile = directory.resolve(HISTORY_FILE_NAME);
         if (Files.exists(historyFile)) {
             try (InputStream is = Files.newInputStream(historyFile)) {
@@ -53,25 +54,10 @@ public class HistoryPlugin implements ResultsReader, Processor, Aggregator {
     }
 
     @Override
-    public void process(ReportConfiguration configuration, List<LaunchResults> launches) {
-        launches.forEach(launch -> {
-            final Map<String, HistoryData> history = launch.getExtra(HISTORY_BLOCK_NAME, HashMap::new);
-            launch.getResults().stream()
-                    .filter(result -> Objects.nonNull(result.getTestCaseId()))
-                    .filter(result -> history.containsKey(result.getTestCaseId()))
-                    .forEach(result -> {
-                        final HistoryData data = copy(history.get(result.getTestCaseId()));
-                        data.updateStatistic(result);
-                        result.addExtraBlock(HISTORY_BLOCK_NAME, data);
-                    });
-        });
-    }
-
-    @Override
-    public void aggregate(ReportConfiguration configuration,
-                          List<LaunchResults> launches,
-                          Path outputDirectory) throws IOException {
-        final JacksonMapperContext context = configuration.requireContext(JacksonMapperContext.class);
+    public void process(final Configuration configuration,
+                        final List<LaunchResults> launches,
+                        final Path outputDirectory) throws IOException {
+        final JacksonContext context = configuration.requireContext(JacksonContext.class);
         final Path historyFolder = Files.createDirectories(outputDirectory.resolve(HISTORY_BLOCK_NAME));
         final Path historyFile = historyFolder.resolve(HISTORY_FILE_NAME);
         try (OutputStream os = Files.newOutputStream(historyFile)) {
@@ -79,11 +65,10 @@ public class HistoryPlugin implements ResultsReader, Processor, Aggregator {
         }
     }
 
-    protected Map<String, HistoryData> getData(List<LaunchResults> launches) {
+    protected Map<String, HistoryData> getData(final List<LaunchResults> launches) {
         return launches.stream()
                 .map(launch -> {
                     final Map<String, HistoryData> history = launch.getExtra(HISTORY_BLOCK_NAME, HashMap::new);
-
                     launch.getResults().stream()
                             .filter(result -> Objects.nonNull(result.getTestCaseId()))
                             .forEach(result -> updateHistory(history, result));
@@ -95,7 +80,7 @@ public class HistoryPlugin implements ResultsReader, Processor, Aggregator {
                 });
     }
 
-    private void updateHistory(Map<String, HistoryData> history, TestCaseResult result) {
+    private void updateHistory(final Map<String, HistoryData> history, final TestCaseResult result) {
         //@formatter:off
         final HistoryData data = history.computeIfAbsent(
             result.getTestCaseId(),
@@ -104,7 +89,7 @@ public class HistoryPlugin implements ResultsReader, Processor, Aggregator {
         //@formatter:on
 
         data.updateStatistic(result);
-
+        result.addExtraBlock(HISTORY_BLOCK_NAME, copy(data));
         final HistoryItem newItem = new HistoryItem()
                 .withStatus(result.getStatus())
                 .withStatusDetails(result.getStatusMessage().orElse(null))

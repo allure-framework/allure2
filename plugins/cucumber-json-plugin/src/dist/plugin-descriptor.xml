@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns:pluginDescriptor xmlns:ns="urn:allure.qameta.io">
-    <name>cucumber-json-plugin</name>
+    <name>cucumber-json-pluginDescriptor</name>
     <moduleClass>io.qameta.allure.cucumberjson.CucumberJsonPlugin</moduleClass>
 </ns:pluginDescriptor>

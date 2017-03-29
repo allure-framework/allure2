@@ -2,10 +2,10 @@ package io.qameta.allure.mail;
 
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import io.qameta.allure.Aggregator;
+import io.qameta.allure.Configuration;
 import io.qameta.allure.LaunchResults;
-import io.qameta.allure.ReportConfiguration;
-import io.qameta.allure.freemarker.FreemarkerContext;
+import io.qameta.allure.Plugin;
+import io.qameta.allure.context.FreemarkerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,14 +20,14 @@ import java.util.List;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class MailPlugin implements Aggregator {
+public class MailPlugin implements Plugin {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MailPlugin.class);
 
     @Override
-    public void aggregate(final ReportConfiguration configuration,
-                          final List<LaunchResults> launches,
-                          final Path outputDirectory) throws IOException {
+    public void process(final Configuration configuration,
+                        final List<LaunchResults> launches,
+                        final Path outputDirectory) throws IOException {
         final FreemarkerContext context = configuration.requireContext(FreemarkerContext.class);
         final Path exportFolder = Files.createDirectories(outputDirectory.resolve("export"));
         final Path mailFile = exportFolder.resolve("mail.html");

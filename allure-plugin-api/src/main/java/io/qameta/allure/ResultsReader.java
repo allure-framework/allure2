@@ -5,8 +5,9 @@ import java.nio.file.Path;
 /**
  * @author charlie (Dmitry Baev).
  */
+@FunctionalInterface
 public interface ResultsReader {
 
-    void readResults(ReportConfiguration configuration, final ResultsVisitor visitor, final Path directory);
+    void readResults(Configuration configuration, ResultsVisitor visitor, Path directory);
 
 }

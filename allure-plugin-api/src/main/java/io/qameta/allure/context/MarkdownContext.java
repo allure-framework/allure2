@@ -1,4 +1,4 @@
-package io.qameta.allure.markdown;
+package io.qameta.allure.context;
 
 import io.qameta.allure.Context;
 import org.pegdown.Extensions;

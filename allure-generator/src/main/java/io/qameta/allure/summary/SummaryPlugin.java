@@ -1,10 +1,10 @@
 package io.qameta.allure.summary;
 
-import io.qameta.allure.Aggregator;
-import io.qameta.allure.JacksonMapperContext;
+import io.qameta.allure.Configuration;
 import io.qameta.allure.LaunchResults;
-import io.qameta.allure.ReportConfiguration;
-import io.qameta.allure.WidgetAggregator;
+import io.qameta.allure.Plugin;
+import io.qameta.allure.WidgetPlugin;
+import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.entity.GroupTime;
 import io.qameta.allure.entity.Statistic;
 
@@ -17,13 +17,13 @@ import java.util.List;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class SummaryPlugin implements Aggregator, WidgetAggregator {
+public class SummaryPlugin implements Plugin, WidgetPlugin {
 
     @Override
-    public void aggregate(final ReportConfiguration configuration,
-                          final List<LaunchResults> launches,
-                          final Path outputDirectory) throws IOException {
-        final JacksonMapperContext context = configuration.requireContext(JacksonMapperContext.class);
+    public void process(final Configuration configuration,
+                        final List<LaunchResults> launches,
+                        final Path outputDirectory) throws IOException {
+        final JacksonContext context = configuration.requireContext(JacksonContext.class);
         final Path exportFolder = Files.createDirectories(outputDirectory.resolve("export"));
         final Path summaryFile = exportFolder.resolve("summary.json");
 
@@ -33,7 +33,7 @@ public class SummaryPlugin implements Aggregator, WidgetAggregator {
     }
 
     @Override
-    public Object aggregate(ReportConfiguration configuration, List<LaunchResults> launches) {
+    public Object getWidgetData(final Configuration configuration, final List<LaunchResults> launches) {
         return getSummaryData(launches);
     }
 
@@ -42,8 +42,8 @@ public class SummaryPlugin implements Aggregator, WidgetAggregator {
         return "summary";
     }
 
-    private SummaryData getSummaryData(List<LaunchResults> launches) {
-        SummaryData data = new SummaryData()
+    private SummaryData getSummaryData(final List<LaunchResults> launches) {
+        final SummaryData data = new SummaryData()
                 .withStatistic(new Statistic())
                 .withTime(new GroupTime())
                 .withReportName("Allure Report");

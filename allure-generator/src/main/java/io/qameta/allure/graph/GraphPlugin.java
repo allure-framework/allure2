@@ -1,9 +1,9 @@
 package io.qameta.allure.graph;
 
-import io.qameta.allure.Aggregator;
-import io.qameta.allure.JacksonMapperContext;
+import io.qameta.allure.Configuration;
 import io.qameta.allure.LaunchResults;
-import io.qameta.allure.ReportConfiguration;
+import io.qameta.allure.Plugin;
+import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.entity.TestCaseResult;
 
 import java.io.IOException;
@@ -17,13 +17,13 @@ import java.util.stream.Collectors;
  * @author Dmitry Baev baev@qameta.io
  *         Date: 16.04.16
  */
-public class GraphPlugin implements Aggregator {
+public class GraphPlugin implements Plugin {
 
     @Override
-    public void aggregate(ReportConfiguration configuration,
-                          List<LaunchResults> launches,
-                          Path outputDirectory) throws IOException {
-        final JacksonMapperContext context = configuration.requireContext(JacksonMapperContext.class);
+    public void process(final Configuration configuration,
+                        final List<LaunchResults> launches,
+                        final Path outputDirectory) throws IOException {
+        final JacksonContext context = configuration.requireContext(JacksonContext.class);
         final Path dataFolder = Files.createDirectories(outputDirectory.resolve("data"));
         final Path graphFile = dataFolder.resolve("graph.json");
 
@@ -36,7 +36,7 @@ public class GraphPlugin implements Aggregator {
         }
     }
 
-    private GraphData createData(TestCaseResult result) {
+    private GraphData createData(final TestCaseResult result) {
         return new GraphData()
                 .withUid(result.getUid())
                 .withName(result.getName())

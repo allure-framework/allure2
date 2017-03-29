@@ -1,51 +1,28 @@
 package io.qameta.allure;
 
-import com.google.inject.Module;
-
+import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.List;
 
 /**
- * @author charlie (Dmitry Baev).
+ * Base report plugin. Can be used to process results and/or generate
+ * some data to report directory.
+ *
+ * @since 2.0
  */
-public class Plugin {
+@FunctionalInterface
+public interface Plugin {
 
-    private final PluginDescriptor descriptor;
+    /**
+     * Process report data.
+     *
+     * @param configuration   the report configuration.
+     * @param launches        all the parsed test results.
+     * @param outputDirectory the report directory.
+     * @throws IOException if any occurs.
+     */
+    void process(Configuration configuration,
+                 List<LaunchResults> launches,
+                 Path outputDirectory) throws IOException;
 
-    private final Path pluginDirectory;
-
-    private final Module module;
-
-    private final boolean enabled;
-
-    public Plugin(final PluginDescriptor descriptor,
-                  final Module module,
-                  final Path pluginDirectory,
-                  final boolean enabled) {
-        this.descriptor = descriptor;
-        this.pluginDirectory = pluginDirectory;
-        this.module = module;
-        this.enabled = enabled;
-    }
-
-    public PluginDescriptor getDescriptor() {
-        return descriptor;
-    }
-
-    public boolean hasModule() {
-        return Objects.nonNull(module);
-    }
-
-    public Optional<Module> getModule() {
-        return Optional.ofNullable(module);
-    }
-
-    public Path getPluginDirectory() {
-        return pluginDirectory;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
 }

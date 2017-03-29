@@ -3,7 +3,7 @@ package io.qameta.allure.xunit;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.TestCaseResult;
 import io.qameta.allure.tree.TreeGroup;
-import io.qameta.allure.tree.TreeAggregator;
+import io.qameta.allure.tree.TreePlugin;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +14,7 @@ import java.util.stream.Stream;
  * @author Dmitry Baev baev@qameta.io
  *         Date: 05.03.16
  */
-public class XunitPlugin extends TreeAggregator {
+public class XunitPlugin extends TreePlugin {
 
     @Override
     protected String getFileName() {

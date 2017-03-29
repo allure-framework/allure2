@@ -2,11 +2,11 @@ package io.qameta.allure.core;
 
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import io.qameta.allure.Aggregator;
+import io.qameta.allure.Configuration;
 import io.qameta.allure.LaunchResults;
 import io.qameta.allure.Plugin;
-import io.qameta.allure.ReportConfiguration;
-import io.qameta.allure.freemarker.FreemarkerContext;
+import io.qameta.allure.PluginDescriptor;
+import io.qameta.allure.context.FreemarkerContext;
 import io.qameta.allure.utils.CopyVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,17 +26,16 @@ import java.util.stream.Collectors;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class IndexHtmlPlugin implements Aggregator {
+public class IndexHtmlPlugin implements Plugin {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IndexHtmlPlugin.class);
 
     @Override
-    public void aggregate(final ReportConfiguration configuration,
-                          final List<LaunchResults> launches,
-                          final Path outputDirectory) throws IOException {
+    public void process(final Configuration configuration,
+                        final List<LaunchResults> launches,
+                        final Path outputDirectory) throws IOException {
         final Path pluginsFolder = Files.createDirectories(outputDirectory.resolve("plugins"));
-        final Set<String> pluginNames = configuration.getPlugins().stream()
-                .filter(Plugin::isEnabled)
+        final Set<String> pluginNames = configuration.getPluginsDescriptors().stream()
                 .map(plugin -> unpackStatic(plugin, pluginsFolder))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
@@ -54,24 +53,28 @@ public class IndexHtmlPlugin implements Aggregator {
         }
     }
 
-    private static Optional<String> unpackStatic(final Plugin plugin, final Path outputDirectory) {
-        final String name = plugin.getDescriptor().getName();
+    private static Optional<String> unpackStatic(final PluginDescriptor pluginDescriptor, final Path outputDirectory) {
+        final String name = pluginDescriptor.getConfiguration().getName();
         final Path pluginOutputDirectory = outputDirectory.resolve(name);
-        unpack(plugin, pluginOutputDirectory);
+        unpack(pluginDescriptor, pluginOutputDirectory);
         return Files.exists(pluginOutputDirectory.resolve("index.js"))
                 ? Optional.of(name)
                 : Optional.empty();
     }
 
-    private static void unpack(final Plugin plugin, final Path outputDirectory) {
-        final Path pluginStatic = plugin.getPluginDirectory().resolve("static");
+    private static void unpack(final PluginDescriptor pluginDescriptor, final Path outputDirectory) {
+        final Path pluginStatic = pluginDescriptor.getPluginDirectory().resolve("static");
         if (Files.notExists(pluginStatic)) {
             return;
         }
         try {
             Files.walkFileTree(pluginStatic, new CopyVisitor(pluginStatic, outputDirectory));
         } catch (IOException e) {
-            LOGGER.error("Could not copy plugin static {} {}", plugin.getDescriptor().getName(), e);
+            LOGGER.error(
+                    "Could not copy pluginDescriptor static {} {}",
+                    pluginDescriptor.getConfiguration().getName(),
+                    e
+            );
         }
     }
 }

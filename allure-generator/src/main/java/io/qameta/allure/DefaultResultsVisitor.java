@@ -1,26 +1,40 @@
 package io.qameta.allure;
 
+import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.TestCase;
 import io.qameta.allure.entity.TestCaseResult;
+import org.apache.tika.metadata.Metadata;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.google.common.io.Files.getFileExtension;
-import static io.qameta.allure.ReportApiUtils.generateUid;
-import static io.qameta.allure.ReportApiUtils.getFileSizeSafe;
-import static io.qameta.allure.ReportApiUtils.probeContentType;
+import static java.nio.file.Files.newInputStream;
+import static java.nio.file.Files.size;
+import static org.apache.commons.io.FilenameUtils.getExtension;
+import static org.apache.tika.mime.MimeTypes.getDefaultMimeTypes;
 
 /**
  * @author charlie (Dmitry Baev).
  */
 public class DefaultResultsVisitor implements ResultsVisitor {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultResultsVisitor.class);
+
+    private static final Metadata METADATA = new Metadata();
+
+    private final Configuration configuration;
 
     private final Map<Path, Attachment> attachments;
 
@@ -32,7 +46,8 @@ public class DefaultResultsVisitor implements ResultsVisitor {
 
     private final Map<String, Object> extra;
 
-    public DefaultResultsVisitor() {
+    public DefaultResultsVisitor(final Configuration configuration) {
+        this.configuration = configuration;
         this.attachments = new HashMap<>();
         this.testCases = new HashSet<>();
         this.results = new HashSet<>();
@@ -42,13 +57,14 @@ public class DefaultResultsVisitor implements ResultsVisitor {
 
     @Override
     public Attachment visitAttachmentFile(final Path attachmentFile) {
+        final RandomUidContext context = configuration.requireContext(RandomUidContext.class);
         return attachments.computeIfAbsent(attachmentFile, file -> {
-            final String uid = generateUid();
+            final String uid = context.getValue().get();
             final String realType = probeContentType(file);
-            final String extension = Optional.of(getFileExtension(file.toString()))
+            final String extension = Optional.of(getExtension(file.toString()))
                     .filter(s -> !s.isEmpty())
                     .map(s -> "." + s)
-                    .orElseGet(() -> ReportApiUtils.getExtensionByMimeType(realType));
+                    .orElseGet(() -> getExtensionByMimeType(realType));
             final String source = uid + (extension.isEmpty() ? "" : extension);
             final Long size = getFileSizeSafe(file);
             return new Attachment()
@@ -61,41 +77,77 @@ public class DefaultResultsVisitor implements ResultsVisitor {
     }
 
     @Override
-    public void visitTestCase(TestCase testCase) {
+    public void visitTestCase(final TestCase testCase) {
         testCases.add(testCase);
     }
 
     @Override
-    public void visitTestResult(TestCaseResult result) {
+    public void visitTestResult(final TestCaseResult result) {
         results.add(result);
     }
 
     @Override
-    public void visitConfiguration(Map<String, String> properties) {
+    public void visitConfiguration(final Map<String, String> properties) {
         configs.putAll(properties);
     }
 
     @Override
-    public void visitExtra(String name, Object object) {
+    public void visitExtra(final String name, final Object object) {
         extra.put(name, object);
     }
 
     @Override
-    public void error(String message, Exception e) {
+    public void error(final String message, final Exception e) {
+        //not implemented yet
     }
 
     @Override
-    public void error(String message) {
-
+    public void error(final String message) {
+        //not implemented yet
     }
 
     @Override
     public LaunchResults getLaunchResults() {
         return new DefaultLaunchResults(
                 Collections.unmodifiableSet(results),
-                Collections.unmodifiableSet(testCases),
                 Collections.unmodifiableMap(attachments),
                 Collections.unmodifiableMap(extra)
         );
+    }
+
+    private static String getExtensionByMimeType(final String type) {
+        try {
+            return getDefaultMimeTypes().forName(type).getExtension();
+        } catch (Exception e) {
+            LOGGER.warn("Can't detect extension for MIME-type {} {}", type, e);
+            return "";
+        }
+    }
+
+    private static String probeContentType(final Path path) {
+        try (InputStream stream = newInputStream(path)) {
+            return probeContentType(stream, Objects.toString(path.getFileName()));
+        } catch (IOException e) {
+            LOGGER.warn("Couldn't detect the mime-type of attachment {} {}", path, e);
+            return "unknown";
+        }
+    }
+
+    private static String probeContentType(final InputStream is, final String name) {
+        try (InputStream stream = new BufferedInputStream(is)) {
+            return getDefaultMimeTypes().detect(stream, METADATA).toString();
+        } catch (IOException e) {
+            LOGGER.warn("Couldn't detect the mime-type of attachment {} {}", name, e);
+            return "unknown";
+        }
+    }
+
+    private static Long getFileSizeSafe(final Path path) {
+        try {
+            return size(path);
+        } catch (IOException e) {
+            LOGGER.warn("Could not get the size of file {} {}", path, e);
+            return null;
+        }
     }
 }

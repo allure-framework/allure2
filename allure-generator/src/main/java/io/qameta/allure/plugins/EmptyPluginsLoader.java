@@ -1,11 +1,10 @@
 package io.qameta.allure.plugins;
 
-import io.qameta.allure.Plugin;
+import io.qameta.allure.PluginDescriptor;
 import io.qameta.allure.PluginsLoader;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -13,7 +12,7 @@ import java.util.Set;
 public class EmptyPluginsLoader implements PluginsLoader {
 
     @Override
-    public List<Plugin> loadPlugins(final Set<String> enabledPlugins) {
+    public List<PluginDescriptor> loadPlugins() {
         return Collections.emptyList();
     }
 }

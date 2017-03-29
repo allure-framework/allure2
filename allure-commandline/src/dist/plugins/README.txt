@@ -1,1 +1,1 @@
-The directory with Allure plugins. To add the plugin simply unpack plugin to this folder.
+The directory with Allure pluginDescriptors. To add the pluginDescriptor simply unpack pluginDescriptor to this folder.

@@ -1,4 +1,4 @@
-package io.qameta.allure.freemarker;
+package io.qameta.allure.context;
 
 import freemarker.template.Configuration;
 import io.qameta.allure.Context;

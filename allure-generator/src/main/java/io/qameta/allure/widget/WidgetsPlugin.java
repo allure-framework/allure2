@@ -1,9 +1,9 @@
 package io.qameta.allure.widget;
 
-import io.qameta.allure.Aggregator;
-import io.qameta.allure.JacksonMapperContext;
+import io.qameta.allure.Configuration;
 import io.qameta.allure.LaunchResults;
-import io.qameta.allure.ReportConfiguration;
+import io.qameta.allure.Plugin;
+import io.qameta.allure.context.JacksonContext;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -16,13 +16,13 @@ import java.util.Map;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class WidgetPlugin implements Aggregator {
+public class WidgetsPlugin implements Plugin {
 
     @Override
-    public void aggregate(final ReportConfiguration configuration,
-                          final List<LaunchResults> launches,
-                          final Path outputDirectory) throws IOException {
-        final JacksonMapperContext context = configuration.requireContext(JacksonMapperContext.class);
+    public void process(final Configuration configuration,
+                        final List<LaunchResults> launches,
+                        final Path outputDirectory) throws IOException {
+        final JacksonContext context = configuration.requireContext(JacksonContext.class);
         final Path dataFolder = Files.createDirectories(outputDirectory.resolve("data"));
         final Path widgetsFile = dataFolder.resolve("widgets.json");
 
@@ -31,12 +31,12 @@ public class WidgetPlugin implements Aggregator {
         }
     }
 
-    protected Object getData(final ReportConfiguration configuration,
+    protected Object getData(final Configuration configuration,
                              final List<LaunchResults> launches) {
         final Map<String, Object> data = new HashMap<>();
-        configuration.getWidgetAggregators().forEach(widgetAggregator -> data.put(
+        configuration.getWidgetPlugins().forEach(widgetAggregator -> data.put(
                 widgetAggregator.getWidgetName(),
-                widgetAggregator.aggregate(configuration, launches)
+                widgetAggregator.getWidgetData(configuration, launches)
         ));
         return data;
     }

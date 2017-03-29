@@ -80,17 +80,15 @@ allprojects {
     apply plugin: 'io.spring.dependency-management'
     dependencyManagement {
         dependencies {
-            dependency 'com.google.inject:guice:4.1.0'
-            dependency 'com.google.inject.extensions:guice-assistedinject:4.1.0'
-            dependency 'com.google.inject.extensions:guice-multibindings:4.1.0'
-
             dependency 'org.apache.tika:tika-core:1.14'
+            dependency 'commons-io:commons-io:2.5'
+            dependency 'com.google.guava:guava:21.0'
+
             dependency 'org.pegdown:pegdown:1.6.0'
-            dependency 'ru.qatools.commons:properties:2.0.RC5'
             dependency 'org.freemarker:freemarker:2.3.23'
-            dependency 'com.github.baev:jaxb-utils:1.0'
             dependency 'org.allurefw:allure1-model:1.0'
             dependency 'io.qameta.allure:allure2-model-api:1.0-BETA4'
+
             dependency 'org.zeroturnaround:zt-zip:1.11'
             dependency 'org.apache.commons:commons-lang3:3.5'
             dependency 'com.github.rvesse:airline:2.2.0'

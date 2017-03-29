@@ -1,7 +1,8 @@
 package io.qameta.allure.allure1;
 
-import io.qameta.allure.AttachmentsStorage;
-import io.qameta.allure.core.DefaultAttachmentsStorage;
+import io.qameta.allure.DefaultConfiguration;
+import io.qameta.allure.DefaultResultsVisitor;
+import io.qameta.allure.LaunchResults;
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.LabelName;
@@ -9,7 +10,6 @@ import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestCaseResult;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -22,7 +22,9 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -51,19 +53,12 @@ public class Allure1ResultsReaderTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    private AttachmentsStorage storage;
-
-    @Before
-    public void setUp() throws Exception {
-        storage = new DefaultAttachmentsStorage();
-    }
-
     @Test
     @SuppressWarnings("unchecked")
     public void shouldProcessEmptyOrNullStatus() throws Exception {
-        List<TestCaseResult> testResults = process(
+        Set<TestCaseResult> testResults = process(
                 "allure1/empty-status-testsuite.xml", generateTestSuiteXmlName()
-        );
+        ).getResults();
         assertThat(testResults, hasSize(4));
         assertThat(testResults, hasItems(
                 allOf(hasProperty("name", equalTo("testOne")), hasProperty("status", equalTo(UNKNOWN))),
@@ -75,33 +70,35 @@ public class Allure1ResultsReaderTest {
 
     @Test
     public void shouldReadTestSuiteXml() throws Exception {
-        List<TestCaseResult> testResults = process(
+        Set<TestCaseResult> testResults = process(
                 "allure1/sample-testsuite.xml", generateTestSuiteXmlName()
-        );
+        ).getResults();
         assertThat(testResults, hasSize(4));
     }
 
     @Test
     public void shouldReadTestSuiteJson() throws Exception {
-        List<TestCaseResult> testResults = process(
+        Set<TestCaseResult> testResults = process(
                 "allure1/sample-testsuite.json", generateTestSuiteJsonName()
-        );
+        ).getResults();
         assertThat(testResults, hasSize(1));
     }
 
     @Test
     public void shouldReadAttachments() throws Exception {
-        List<TestCaseResult> results = process(
+        final LaunchResults launchResults = process(
                 "allure1/suite-with-attachments.xml", generateTestSuiteXmlName(),
                 "allure1/sample-attachment.txt", "sample-attachment.txt"
         );
+        final Map<Path, Attachment> attachmentMap = launchResults.getAttachments();
+        final Set<TestCaseResult> results = launchResults.getResults();
 
-        assertThat(storage.getAttachments().entrySet(), hasSize(1));
+        assertThat(attachmentMap.entrySet(), hasSize(1));
         List<Attachment> attachments = results.stream()
                 .flatMap(this::extractAttachments)
                 .collect(Collectors.toList());
         assertThat(attachments, hasSize(1));
-        Attachment a = storage.getAttachments().values().iterator().next();
+        Attachment a = attachmentMap.values().iterator().next();
         Attachment b = attachments.iterator().next();
         assertThat(a.getSource(), is(b.getSource()));
     }
@@ -146,15 +143,15 @@ public class Allure1ResultsReaderTest {
 
     @Test
     public void shouldNotFailIfNoResultsDirectory() throws Exception {
-        List<TestCaseResult> testResults = process();
+        Set<TestCaseResult> testResults = process().getResults();
         assertThat(testResults, empty());
     }
 
     @Test
     public void shouldGetSuiteTitleIfExists() throws Exception {
-        List<TestCaseResult> testCases = process(
+        Set<TestCaseResult> testCases = process(
                 "allure1/sample-testsuite.json", generateTestSuiteJsonName()
-        );
+        ).getResults();
         assertThat(testCases, hasSize(1));
         TestCaseResult result = testCases.iterator().next();
         Optional<String> suiteName = result.findOne(LabelName.SUITE);
@@ -164,9 +161,9 @@ public class Allure1ResultsReaderTest {
 
     @Test
     public void shouldNotFailIfSuiteTitleNotExists() throws Exception {
-        List<TestCaseResult> testCases = process(
+        Set<TestCaseResult> testCases = process(
                 "allure1/suite-with-attachments.xml", generateTestSuiteXmlName()
-        );
+        ).getResults();
         assertThat(testCases, hasSize(1));
         TestCaseResult result = testCases.iterator().next();
         Optional<String> suiteName = result.findOne(LabelName.SUITE);
@@ -176,9 +173,9 @@ public class Allure1ResultsReaderTest {
 
     @Test
     public void shouldCopyLabelsFromSuite() throws Exception {
-        List<TestCaseResult> testCases = process(
+        Set<TestCaseResult> testCases = process(
                 "allure1/sample-testsuite.json", generateTestSuiteJsonName()
-        );
+        ).getResults();
         assertThat(testCases, hasSize(1));
         TestCaseResult result = testCases.iterator().next();
         List<String> stories = result.getLabels().stream()
@@ -191,9 +188,9 @@ public class Allure1ResultsReaderTest {
 
     @Test
     public void shouldSetFlakyFromLabel() throws Exception {
-        List<TestCaseResult> testCases = process(
+        Set<TestCaseResult> testCases = process(
                 "allure1/suite-with-attachments.xml", generateTestSuiteXmlName()
-        );
+        ).getResults();
         assertThat(testCases, hasSize(1));
         TestCaseResult result = testCases.iterator().next();
         StatusDetails details = result.getStatusDetails();
@@ -203,9 +200,9 @@ public class Allure1ResultsReaderTest {
 
     @Test
     public void shouldUseTestClassLabelForPackage() throws Exception {
-        List<TestCaseResult> testResults = process(
+        Set<TestCaseResult> testResults = process(
                 "allure1/packages-testsuite.xml", generateTestSuiteXmlName()
-        );
+        ).getResults();
         assertThat(testResults, hasSize(1));
         Optional<String> aPackage = testResults.iterator().next().findOne("package");
         assertThat(aPackage, isPresent());
@@ -214,15 +211,15 @@ public class Allure1ResultsReaderTest {
 
     @Test
     public void shouldUseTestClassLabelForFullName() throws Exception {
-        List<TestCaseResult> testResults = process(
+        Set<TestCaseResult> testResults = process(
                 "allure1/packages-testsuite.xml", generateTestSuiteXmlName()
-        );
+        ).getResults();
         assertThat(testResults, hasSize(1));
         TestCaseResult result = testResults.iterator().next();
         assertThat(result.getFullName(), is("my.company.package.subpackage.MyClass.testThree"));
     }
 
-    private List<TestCaseResult> process(String... strings) throws IOException {
+    private LaunchResults process(String... strings) throws IOException {
         Path resultsDirectory = folder.newFolder().toPath();
         Iterator<String> iterator = Arrays.asList(strings).iterator();
         while (iterator.hasNext()) {
@@ -230,8 +227,11 @@ public class Allure1ResultsReaderTest {
             String second = iterator.next();
             copyFile(resultsDirectory, first, second);
         }
-        Allure1ResultsReader reader = new Allure1ResultsReader(storage);
-        return reader.readResults(resultsDirectory);
+        Allure1ResultsReader reader = new Allure1ResultsReader();
+        final DefaultConfiguration configuration = new DefaultConfiguration();
+        final DefaultResultsVisitor resultsVisitor = new DefaultResultsVisitor(configuration);
+        reader.readResults(configuration, resultsVisitor, resultsDirectory);
+        return resultsVisitor.getLaunchResults();
     }
 
     private void copyFile(Path dir, String resourceName, String fileName) throws IOException {

@@ -1,7 +1,6 @@
 package io.qameta.allure;
 
 import io.qameta.allure.entity.Attachment;
-import io.qameta.allure.entity.TestCase;
 import io.qameta.allure.entity.TestCaseResult;
 
 import java.nio.file.Path;
@@ -16,8 +15,6 @@ import java.util.function.Supplier;
 public interface LaunchResults {
 
     Set<TestCaseResult> getResults();
-
-    Set<TestCase> getTestCases();
 
     Map<Path, Attachment> getAttachments();
 

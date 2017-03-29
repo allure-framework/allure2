@@ -4,7 +4,7 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
-import static com.google.common.base.MoreObjects.firstNonNull;
+import static io.qameta.allure.entity.EntityUtils.firstNonNull;
 import static java.lang.Long.MAX_VALUE;
 
 /**

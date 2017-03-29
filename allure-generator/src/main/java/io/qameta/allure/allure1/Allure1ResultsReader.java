@@ -1,10 +1,10 @@
 package io.qameta.allure.allure1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.baev.BadXmlCharactersFilterReader;
-import io.qameta.allure.ReportConfiguration;
+import io.qameta.allure.Configuration;
 import io.qameta.allure.ResultsReader;
 import io.qameta.allure.ResultsVisitor;
+import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.LabelName;
@@ -16,6 +16,7 @@ import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestCaseResult;
 import io.qameta.allure.entity.Time;
+import org.allurefw.allure1.AllureUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.yandex.qatools.allure.model.Description;
@@ -24,7 +25,6 @@ import ru.yandex.qatools.allure.model.Failure;
 import ru.yandex.qatools.allure.model.ParameterKind;
 import ru.yandex.qatools.allure.model.TestSuiteResult;
 
-import javax.xml.bind.JAXB;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -39,11 +39,10 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.qameta.allure.ReportApiUtils.generateUid;
-import static io.qameta.allure.ReportApiUtils.listFiles;
 import static io.qameta.allure.entity.LabelName.ISSUE;
 import static io.qameta.allure.entity.LabelName.PACKAGE;
 import static io.qameta.allure.entity.LabelName.PARENT_SUITE;
@@ -57,8 +56,7 @@ import static io.qameta.allure.entity.Status.FAILED;
 import static io.qameta.allure.entity.Status.PASSED;
 import static io.qameta.allure.entity.Status.SKIPPED;
 import static io.qameta.allure.utils.ListUtils.firstNonNull;
-import static org.allurefw.allure1.AllureConstants.TEST_SUITE_JSON_FILE_GLOB;
-import static org.allurefw.allure1.AllureConstants.TEST_SUITE_XML_FILE_GLOB;
+import static org.allurefw.allure1.AllureUtils.unmarshalTestSuite;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -72,17 +70,18 @@ public class Allure1ResultsReader implements ResultsReader {
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public void readResults(final ReportConfiguration configuration,
+    public void readResults(final Configuration configuration,
                             final ResultsVisitor visitor,
                             final Path resultsDirectory) {
-        getStreamOfAllure1Results(resultsDirectory)
-                .forEach(testSuite -> testSuite.getTestCases()
-                        .forEach(testCase -> convert(resultsDirectory, visitor, testSuite, testCase))
-                );
+        final RandomUidContext context = configuration.requireContext(RandomUidContext.class);
+        getStreamOfAllure1Results(resultsDirectory).forEach(testSuite -> testSuite.getTestCases()
+                .forEach(testCase -> convert(context.getValue(), resultsDirectory, visitor, testSuite, testCase))
+        );
     }
 
     @SuppressWarnings("PMD.ExcessiveMethodLength")
-    private void convert(final Path directory,
+    private void convert(final Supplier<String> randomUid,
+                         final Path directory,
                          final ResultsVisitor visitor,
                          final TestSuiteResult testSuite,
                          final ru.yandex.qatools.allure.model.TestCaseResult source) {
@@ -102,7 +101,7 @@ public class Allure1ResultsReader implements ResultsReader {
         final String name = firstNonNull(source.getTitle(), source.getName(), "unknown test case");
 
         dest.setTestCaseId(String.format("%s#%s", testClass, name));
-        dest.setUid(generateUid());
+        dest.setUid(randomUid.get());
         dest.setName(name);
         dest.setFullName(String.format("%s.%s", testClass, testMethod));
 
@@ -293,15 +292,38 @@ public class Allure1ResultsReader implements ResultsReader {
     }
 
     private Stream<TestSuiteResult> getStreamOfAllure1Results(final Path source) {
-        return Stream.concat(
-                listFiles(source, TEST_SUITE_XML_FILE_GLOB).map(this::readXmlTestSuiteFile),
-                listFiles(source, TEST_SUITE_JSON_FILE_GLOB).map(this::readJsonTestSuiteFile)
-        ).filter(Optional::isPresent).map(Optional::get);
+        return Stream.concat(xmlFiles(source), jsonFiles(source));
+    }
+
+    private Stream<TestSuiteResult> xmlFiles(final Path source) {
+        try {
+            return AllureUtils.listTestSuiteXmlFiles(source)
+                    .stream()
+                    .map(this::readXmlTestSuiteFile)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get);
+        } catch (IOException e) {
+            LOGGER.error("Could not list allure1 xml files", e);
+            return Stream.empty();
+        }
+    }
+
+    private Stream<TestSuiteResult> jsonFiles(final Path source) {
+        try {
+            return AllureUtils.listTestSuiteJsonFiles(source)
+                    .stream()
+                    .map(this::readJsonTestSuiteFile)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get);
+        } catch (IOException e) {
+            LOGGER.error("Could not list allure1 json files", e);
+            return Stream.empty();
+        }
     }
 
     private Optional<TestSuiteResult> readXmlTestSuiteFile(final Path source) {
-        try (BadXmlCharactersFilterReader reader = new BadXmlCharactersFilterReader(source)) {
-            return Optional.of(JAXB.unmarshal(reader, TestSuiteResult.class));
+        try {
+            return Optional.of(unmarshalTestSuite(source));
         } catch (IOException e) {
             LOGGER.debug("Could not read result {}: {}", source, e);
         }
@@ -316,4 +338,5 @@ public class Allure1ResultsReader implements ResultsReader {
             return Optional.empty();
         }
     }
+
 }

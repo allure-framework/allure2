@@ -1,9 +1,10 @@
 package io.qameta.allure.allure2;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.qameta.allure.ReportConfiguration;
+import io.qameta.allure.Configuration;
+import io.qameta.allure.FileSystemResultsReader;
 import io.qameta.allure.ResultsReader;
 import io.qameta.allure.ResultsVisitor;
+import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.Link;
@@ -14,16 +15,11 @@ import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestCaseResult;
 import io.qameta.allure.entity.Time;
-import io.qameta.allure.model.Allure2ModelJackson;
 import io.qameta.allure.model.FixtureResult;
 import io.qameta.allure.model.StepResult;
 import io.qameta.allure.model.TestResult;
 import io.qameta.allure.model.TestResultContainer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -34,13 +30,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.qameta.allure.AllureConstants.TEST_RESULT_CONTAINER_FILE_GLOB;
-import static io.qameta.allure.AllureConstants.TEST_RESULT_FILE_GLOB;
-import static io.qameta.allure.ReportApiUtils.generateUid;
-import static io.qameta.allure.ReportApiUtils.listFiles;
 import static java.util.Comparator.comparingLong;
 import static java.util.Objects.nonNull;
 
@@ -50,31 +43,25 @@ import static java.util.Objects.nonNull;
 @SuppressWarnings("PMD.ExcessiveImports")
 public class Allure2ResultsReader implements ResultsReader {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Allure2ResultsReader.class);
     private static final Comparator<StageResult> BY_START = comparingLong(a -> a.getTime().getStart());
 
-    private final ObjectMapper mapper = Allure2ModelJackson.createMapper();
-
-
     @Override
-    public void readResults(final ReportConfiguration configuration,
+    public void readResults(final Configuration configuration,
                             final ResultsVisitor visitor,
                             final Path resultsDirectory) {
-        final List<TestResultContainer> groups = listFiles(resultsDirectory, TEST_RESULT_CONTAINER_FILE_GLOB)
-                .flatMap(this::readTestResultContainer)
-                .collect(Collectors.toList());
-
-        listFiles(resultsDirectory, TEST_RESULT_FILE_GLOB)
-                .flatMap(this::readTestResult)
-                .forEach(result -> convert(resultsDirectory, visitor, groups, result));
+        final RandomUidContext context = configuration.requireContext(RandomUidContext.class);
+        final FileSystemResultsReader reader = new FileSystemResultsReader(resultsDirectory);
+        final List<TestResultContainer> groups = reader.readTestResultsContainers().collect(Collectors.toList());
+        reader.readTestResults()
+                .forEach(result -> convert(context.getValue(), resultsDirectory, visitor, groups, result));
     }
 
-    private TestCaseResult convert(final Path resultsDirectory,
-                                   final ResultsVisitor visitor,
-                                   final List<TestResultContainer> groups, final TestResult result) {
+    private void convert(final Supplier<String> uidGenerator,
+                         final Path resultsDirectory,
+                         final ResultsVisitor visitor,
+                         final List<TestResultContainer> groups, final TestResult result) {
         final TestCaseResult dest = new TestCaseResult();
-        dest.setUid(generateUid());
-
+        dest.setUid(uidGenerator.get());
         dest.setTestCaseId(result.getHistoryId());
         dest.setFullName(result.getFullName());
         dest.setName(result.getName());
@@ -95,7 +82,7 @@ public class Allure2ResultsReader implements ResultsReader {
         final List<TestResultContainer> parents = findAllParents(groups, result.getUuid(), new HashSet<>());
         dest.getBeforeStages().addAll(getStages(parents, fixture -> getBefore(resultsDirectory, visitor, fixture)));
         dest.getAfterStages().addAll(getStages(parents, fixture -> getAfter(resultsDirectory, visitor, fixture)));
-        return dest;
+        visitor.visitTestResult(dest);
     }
 
     private <T, R> List<R> convert(final List<T> source, final Function<T, R> converter) {
@@ -142,10 +129,10 @@ public class Allure2ResultsReader implements ResultsReader {
         final Path attachmentFile = source.resolve(attachment.getSource());
         if (Files.isRegularFile(attachmentFile)) {
             final Attachment found = visitor.visitAttachmentFile(attachmentFile);
-            if (Objects.nonNull(attachment.getType())) {
+            if (nonNull(attachment.getType())) {
                 found.setType(attachment.getType());
             }
-            if (Objects.nonNull(attachment.getName())) {
+            if (nonNull(attachment.getName())) {
                 found.setName(attachment.getName());
             }
             return found;
@@ -248,27 +235,5 @@ public class Allure2ResultsReader implements ResultsReader {
                 .filter(container -> container.getChildren().contains(id))
                 .filter(container -> !seen.contains(container.getUuid()))
                 .collect(Collectors.toList());
-    }
-
-    private Stream<TestResult> readTestResult(final Path source) {
-        try (InputStream is = Files.newInputStream(source)) {
-            return Stream.of(mapper.readValue(is, TestResult.class));
-        } catch (IOException e) {
-            LOGGER.debug("Could not read test result {}: {}", source, e);
-            return Stream.empty();
-        }
-    }
-
-    private Stream<TestResultContainer> readTestResultContainer(final Path source) {
-        try (InputStream is = Files.newInputStream(source)) {
-            return Stream.of(mapper.readValue(is, TestResultContainer.class));
-        } catch (IOException e) {
-            LOGGER.debug("Could not read test result container {}: {}", source, e);
-            return Stream.empty();
-        }
-    }
-
-    private boolean isNotEmpty(final String s) {
-        return nonNull(s) && !s.isEmpty();
     }
 }

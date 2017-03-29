@@ -8,17 +8,15 @@ import java.util.Optional;
 /**
  * @author charlie (Dmitry Baev).
  */
-public interface ReportConfiguration {
+public interface Configuration {
+
+    List<PluginDescriptor> getPluginsDescriptors();
 
     List<Plugin> getPlugins();
 
-    List<Processor> getProcessors();
-
-    List<Aggregator> getAggregators();
-
     List<ResultsReader> getReaders();
 
-    List<WidgetAggregator> getWidgetAggregators();
+    List<WidgetPlugin> getWidgetPlugins();
 
     <T> Optional<T> getContext(Class<T> contextType);
 

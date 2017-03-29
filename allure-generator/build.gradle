@@ -7,10 +7,10 @@ apply plugin: 'maven'
 
 dependencies {
     compile project(':allure-plugin-api')
-    compile('org.freemarker:freemarker')
-    compile('com.github.baev:jaxb-utils')
     compile('org.allurefw:allure1-model')
     compile('io.qameta.allure:allure2-model-api')
+    compile('org.apache.tika:tika-core')
+    compile('commons-io:commons-io')
 
     testCompile('junit:junit')
     testCompile('org.slf4j:slf4j-simple')
@@ -20,6 +20,7 @@ dependencies {
     testCompile('ru.yandex.qatools.matchers:nio-matchers')
     testCompile('org.zeroturnaround:zt-zip')
     testCompile('org.apache.commons:commons-lang3')
+    testCompile('com.google.guava:guava')
 }
 
 task sourceJar(type: Jar, dependsOn: classes) {

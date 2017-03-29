@@ -34,7 +34,7 @@ public final class DummyReportGenerator {
         }
         int lastIndex = args.length - 1;
         final Path[] files = getFiles(args);
-        final DefaultReportConfiguration configuration = new DefaultReportConfiguration();
+        final DefaultConfiguration configuration = new DefaultConfiguration();
         final ReportGenerator generator = new ReportGenerator(configuration);
         generator.generate(files[lastIndex], Arrays.copyOf(files, lastIndex));
     }

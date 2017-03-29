@@ -1,16 +1,15 @@
 package io.qameta.allure.category;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import io.qameta.allure.JacksonMapperContext;
+import io.qameta.allure.Configuration;
 import io.qameta.allure.LaunchResults;
-import io.qameta.allure.Processor;
-import io.qameta.allure.ReportConfiguration;
 import io.qameta.allure.ResultsReader;
 import io.qameta.allure.ResultsVisitor;
+import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestCaseResult;
-import io.qameta.allure.tree.TreeAggregator;
 import io.qameta.allure.tree.TreeGroup;
+import io.qameta.allure.tree.TreePlugin;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +27,7 @@ import static java.util.Objects.nonNull;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class CategoryPlugin extends TreeAggregator implements ResultsReader, Processor {
+public class CategoryPlugin extends TreePlugin implements ResultsReader {
 
     private static final Category UNKNOWN_FAILURE = new Category().withName("Unknown failure");
 
@@ -44,10 +43,10 @@ public class CategoryPlugin extends TreeAggregator implements ResultsReader, Pro
     //@formatter:on
 
     @Override
-    public void readResults(final ReportConfiguration configuration,
+    public void readResults(final Configuration configuration,
                             final ResultsVisitor visitor,
                             final Path directory) {
-        final JacksonMapperContext context = configuration.requireContext(JacksonMapperContext.class);
+        final JacksonContext context = configuration.requireContext(JacksonContext.class);
         final Path categoriesFile = directory.resolve(CATEGORIES_FILE_NAME);
         if (Files.exists(categoriesFile)) {
             try (InputStream is = Files.newInputStream(categoriesFile)) {
@@ -60,7 +59,9 @@ public class CategoryPlugin extends TreeAggregator implements ResultsReader, Pro
     }
 
     @Override
-    public void process(final ReportConfiguration configuration, final List<LaunchResults> launches) {
+    public void process(final Configuration configuration,
+                        final List<LaunchResults> launches,
+                        final Path outputDirectory) throws IOException {
         launches.forEach(launch -> {
             final List<Category> categories = launch.getExtra(CATEGORIES, Collections::emptyList);
             launch.getResults().forEach(result -> {
@@ -78,6 +79,8 @@ public class CategoryPlugin extends TreeAggregator implements ResultsReader, Pro
                 }
             });
         });
+
+        super.process(configuration, launches, outputDirectory);
     }
 
     @Override

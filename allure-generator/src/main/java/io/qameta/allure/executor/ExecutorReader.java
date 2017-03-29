@@ -1,9 +1,9 @@
 package io.qameta.allure.executor;
 
-import io.qameta.allure.JacksonMapperContext;
-import io.qameta.allure.ReportConfiguration;
+import io.qameta.allure.Configuration;
 import io.qameta.allure.ResultsReader;
 import io.qameta.allure.ResultsVisitor;
+import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.entity.ExecutorInfo;
 
 import java.io.IOException;
@@ -17,8 +17,10 @@ import java.nio.file.Path;
 public class ExecutorReader implements ResultsReader {
 
     @Override
-    public void readResults(ReportConfiguration configuration, ResultsVisitor visitor, Path directory) {
-        final JacksonMapperContext context = configuration.requireContext(JacksonMapperContext.class);
+    public void readResults(final Configuration configuration,
+                            final ResultsVisitor visitor,
+                            final Path directory) {
+        final JacksonContext context = configuration.requireContext(JacksonContext.class);
         final Path executorFile = directory.resolve("executor.json");
         if (Files.exists(executorFile)) {
             try (InputStream is = Files.newInputStream(executorFile)) {

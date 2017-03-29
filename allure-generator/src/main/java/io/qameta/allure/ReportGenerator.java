@@ -11,37 +11,30 @@ import java.util.stream.Stream;
  */
 public class ReportGenerator {
 
-    private final ReportConfiguration configuration;
+    private final Configuration configuration;
 
-    public ReportGenerator(ReportConfiguration configuration) {
+    public ReportGenerator(final Configuration configuration) {
         this.configuration = configuration;
     }
 
-    public LaunchResults readResults(ResultsVisitor visitor, Path resultsDirectory) {
+    public LaunchResults readResults(final ResultsVisitor visitor, final Path resultsDirectory) {
         configuration
                 .getReaders()
                 .forEach(reader -> reader.readResults(configuration, visitor, resultsDirectory));
         return visitor.getLaunchResults();
     }
 
-    public void process(List<LaunchResults> launchResults) {
-        configuration
-                .getProcessors()
-                .forEach(processor -> processor.process(configuration, launchResults));
-    }
-
-    public void aggregate(List<LaunchResults> results, Path outputDirectory) throws IOException {
-        for (Aggregator aggregator : configuration.getAggregators()) {
-            aggregator.aggregate(configuration, results, outputDirectory);
+    public void aggregate(final List<LaunchResults> results, final Path outputDirectory) throws IOException {
+        for (Plugin plugin : configuration.getPlugins()) {
+            plugin.process(configuration, results, outputDirectory);
         }
     }
 
-    public void generate(Path outputDirectory, Path... resultsDirectories) throws IOException {
-        final DefaultResultsVisitor visitor = new DefaultResultsVisitor();
+    public void generate(final Path outputDirectory, final Path... resultsDirectories) throws IOException {
+        final DefaultResultsVisitor visitor = new DefaultResultsVisitor(configuration);
         final List<LaunchResults> results = Stream.of(resultsDirectories)
                 .map(path -> readResults(visitor, path))
                 .collect(Collectors.toList());
-        process(results);
         aggregate(results, outputDirectory);
     }
 

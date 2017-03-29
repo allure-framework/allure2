@@ -4,8 +4,8 @@
             xmlns:ns="urn:allure.qameta.io"
             targetNamespace="urn:allure.qameta.io">
 
-    <xsd:element name="pluginDescriptor" type="ns:PluginDescriptor"/>
-    <xsd:complexType name="PluginDescriptor">
+    <xsd:element name="pluginConfiguration" type="ns:PluginConfiguration"/>
+    <xsd:complexType name="PluginConfiguration">
         <xsd:sequence>
             <xsd:element name="name" type="xsd:string"/>
             <xsd:element name="moduleClass" type="xsd:string" minOccurs="0"/>

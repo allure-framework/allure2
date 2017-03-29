@@ -1,6 +1,6 @@
 package io.qameta.allure.utils;
 
-import io.qameta.allure.DefaultReportConfiguration;
+import io.qameta.allure.DefaultConfiguration;
 import io.qameta.allure.ReportGenerator;
 import io.qameta.allure.command.AllureCommandException;
 import io.qameta.allure.command.Context;
@@ -41,7 +41,7 @@ public final class CommandUtils {
     }
 
     public static ReportGenerator createReportGenerator(final Context context) {
-        return new ReportGenerator(new DefaultReportConfiguration());
+        return new ReportGenerator(new DefaultConfiguration());
     }
 
     /**

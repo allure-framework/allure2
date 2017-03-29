@@ -5,7 +5,7 @@ package io.qameta.allure.exception;
  */
 public class ContextNotFoundException extends RuntimeException {
 
-    public ContextNotFoundException(Class<?> contextType) {
+    public ContextNotFoundException(final Class<?> contextType) {
         super(String.format("Required context not found: %s", contextType));
     }
 }

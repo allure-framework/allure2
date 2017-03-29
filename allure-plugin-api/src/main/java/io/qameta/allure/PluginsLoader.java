@@ -1,7 +1,6 @@
 package io.qameta.allure;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -9,6 +8,6 @@ import java.util.Set;
 @FunctionalInterface
 public interface PluginsLoader {
 
-    List<Plugin> loadPlugins(Set<String> enabledPlugins);
+    List<PluginDescriptor> loadPlugins();
 
 }
