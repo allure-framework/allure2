@@ -1,3 +1,7 @@
 .summary-widget__chart {
   padding: 1em 0;
+  & > div {
+    position: relative;
+    padding-top: 50%;
+  }
 }
