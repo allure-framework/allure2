@@ -41,16 +41,15 @@ dependencies {
 //    allurePlugin project(path: ':packages-plugin', configuration: 'allurePlugin')
 
     compile project(':allure-generator')
-    compile('com.github.rvesse:airline')
-    compile('com.squareup.retrofit:retrofit')
-    compile('org.apache.commons:commons-exec')
+    compile('com.beust:jcommander')
     compile('org.eclipse.jetty:jetty-server')
     compile('org.slf4j:slf4j-api')
     compile('org.slf4j:slf4j-log4j12')
 
     testCompile('junit:junit')
-    testCompile('org.hamcrest:hamcrest-all')
-    testCompile('ru.yandex.qatools.matchers:nio-matchers')
+    testCompile('org.assertj:assertj-core')
+    testCompile('org.mockito:mockito-core')
+    testCompile('org.apache.commons:commons-lang3')
 }
 
 configurations.archives.artifacts.removeAll { it.archiveTask.is jar }

@@ -34,9 +34,17 @@ public class ReportGenerator {
         }
     }
 
+    public void generate(final Path outputDirectory, final List<Path> resultsDirectories) throws IOException {
+        generate(outputDirectory, resultsDirectories.stream());
+    }
+
     public void generate(final Path outputDirectory, final Path... resultsDirectories) throws IOException {
+        generate(outputDirectory, Stream.of(resultsDirectories));
+    }
+
+    private void generate(final Path outputDirectory, final Stream<Path> resultsDirectories) throws IOException {
         final DefaultResultsVisitor visitor = new DefaultResultsVisitor(configuration);
-        final List<LaunchResults> results = Stream.of(resultsDirectories)
+        final List<LaunchResults> results = resultsDirectories
                 .map(path -> readResults(visitor, path))
                 .collect(Collectors.toList());
         aggregate(results, outputDirectory);

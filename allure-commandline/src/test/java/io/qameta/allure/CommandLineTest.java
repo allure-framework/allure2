@@ -1,133 +1,210 @@
 package io.qameta.allure;
 
-import com.github.rvesse.airline.parser.errors.ParseArgumentsMissingException;
-import com.github.rvesse.airline.parser.errors.ParseRestrictionViolatedException;
-import io.qameta.allure.command.AllureCommand;
-import io.qameta.allure.command.Context;
-import io.qameta.allure.command.Help;
-import io.qameta.allure.command.ListPlugins;
-import io.qameta.allure.command.ReportGenerate;
-import io.qameta.allure.command.ReportOpen;
-import io.qameta.allure.command.ReportServe;
-import io.qameta.allure.command.Version;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
-import static org.allurefw.allure1.AllureUtils.generateTestSuiteJsonName;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static ru.yandex.qatools.matchers.nio.PathMatchers.exists;
+import static io.qameta.allure.CommandLine.GENERATE_COMMAND;
+import static io.qameta.allure.CommandLine.OPEN_COMMAND;
+import static io.qameta.allure.CommandLine.SERVE_COMMAND;
+import static io.qameta.allure.ExitCode.ARGUMENT_PARSING_ERROR;
+import static io.qameta.allure.ExitCode.NO_ERROR;
+import static io.qameta.allure.testdata.TestData.randomPort;
+import static io.qameta.allure.testdata.TestData.randomString;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author charlie (Dmitry Baev).
  */
 public class CommandLineTest {
 
-    public static final String SERVE = "serve";
-    public static final String OPEN = "open";
-    public static final String PLUGINS = "plugins";
-    public static final String HELP = "help";
-    public static final String VERSION = "version";
-    public static final String GENERATE = "generate";
+    private Commands commands;
+    private CommandLine commandLine;
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    @Test
-    public void shouldParseHelpByDefault() throws Exception {
-        AllureCommand cmd = new CommandLine().parse();
-        assertThat(cmd, instanceOf(Help.class));
+    @Before
+    public void setUp() throws Exception {
+        this.commands = mock(Commands.class);
+        this.commandLine = new CommandLine(commands);
     }
 
     @Test
-    public void shouldParseHelp() throws Exception {
-        AllureCommand cmd = new CommandLine().parse(HELP);
-        assertThat(cmd, instanceOf(Help.class));
+    public void shouldParseEmptyArguments() throws Exception {
+        final Optional<ExitCode> parse = commandLine.parse();
+        assertThat(parse)
+                .isEmpty();
     }
 
     @Test
-    public void shouldParseVersion() throws Exception {
-        AllureCommand cmd = new CommandLine().parse(VERSION);
-        assertThat(cmd, instanceOf(Version.class));
+    public void shouldParseVerboseFlag() throws Exception {
+        final Optional<ExitCode> parse = commandLine
+                .parse("-v", "--help");
+
+        assertThat(parse)
+                .isEmpty();
+
+        assertThat(commandLine.getMainCommand().getVerboseOptions())
+                .isNotNull()
+                .hasFieldOrPropertyWithValue("verbose", true)
+                .hasFieldOrPropertyWithValue("quiet", false);
+
+        final ExitCode exitCode = commandLine.run();
+        assertThat(exitCode)
+                .isEqualTo(NO_ERROR);
     }
 
     @Test
-    public void shouldParseListPlugins() throws Exception {
-        AllureCommand cmd = new CommandLine().parse(PLUGINS);
-        assertThat(cmd, instanceOf(ListPlugins.class));
+    public void shouldParseQuietFlag() throws Exception {
+        final Optional<ExitCode> parse = commandLine
+                .parse("-q", "--help");
+
+        assertThat(parse)
+                .isEmpty();
+
+        assertThat(commandLine.getMainCommand().getVerboseOptions())
+                .isNotNull()
+                .hasFieldOrPropertyWithValue("verbose", false)
+                .hasFieldOrPropertyWithValue("quiet", true);
+
+        final ExitCode exitCode = commandLine.run();
+        assertThat(exitCode)
+                .isEqualTo(NO_ERROR);
     }
 
     @Test
-    public void shouldParseReportOpen() throws Exception {
-        AllureCommand cmd = new CommandLine().parse(OPEN);
-        assertThat(cmd, instanceOf(ReportOpen.class));
+    public void shouldValidateResultsDirectoryExists() throws Exception {
+        final Optional<ExitCode> exitCode = commandLine.parse(GENERATE_COMMAND, randomString(), randomString());
+        assertThat(exitCode)
+                .isPresent()
+                .hasValue(ExitCode.ARGUMENT_PARSING_ERROR);
     }
 
     @Test
-    public void shouldParseReportServe() throws Exception {
-        String firstResult = folder.newFolder().toPath().toAbsolutePath().toString();
-        String secondResult = folder.newFolder().toPath().toAbsolutePath().toString();
-        AllureCommand cmd = new CommandLine().parse(SERVE, firstResult, secondResult);
-        assertThat(cmd, instanceOf(ReportServe.class));
-    }
-
-    @Test(expected = ParseArgumentsMissingException.class)
-    public void shouldFailIfNoResultsSpecifiedForServe() throws Exception {
-        new CommandLine().parse(SERVE);
-    }
-
-    @Test(expected = ParseRestrictionViolatedException.class)
-    public void shouldFailIfResultsDirectoryDoesNotExistsForServe() throws Exception {
-        new CommandLine().parse(SERVE, "directory-does-not-exists");
-    }
-
-    @Test(expected = ParseRestrictionViolatedException.class)
-    public void shouldFailIfResultsDirectoryIsFileForServe() throws Exception {
-        String file = folder.newFile().toPath().toString();
-        new CommandLine().parse(SERVE, file);
+    public void shouldNotFailIfResultsAreRegularFile() throws Exception {
+        final Path results = folder.newFile().toPath();
+        final Optional<ExitCode> exitCode = commandLine.parse(GENERATE_COMMAND, results.toString());
+        assertThat(exitCode)
+                .isPresent()
+                .hasValue(ExitCode.ARGUMENT_PARSING_ERROR);
     }
 
     @Test
-    public void shouldParseReportGenerate() throws Exception {
-        String firstResult = folder.newFolder().toPath().toAbsolutePath().toString();
-        String secondResult = folder.newFolder().toPath().toAbsolutePath().toString();
-        AllureCommand cmd = new CommandLine().parse(GENERATE, firstResult, secondResult);
-        assertThat(cmd, instanceOf(ReportGenerate.class));
+    public void shouldRunGenerate() throws Exception {
+        final Path report = folder.newFolder().toPath();
+        final Path firstResult = folder.newFolder().toPath();
+        final Path secondResult = folder.newFolder().toPath();
+        final List<Path> results = Arrays.asList(firstResult, secondResult);
+
+        when(commands.generate(report, results, false))
+                .thenReturn(NO_ERROR);
+
+        final Optional<ExitCode> exitCode = commandLine.parse(
+                GENERATE_COMMAND, firstResult.toString(), secondResult.toString(),
+                "--output", report.toString()
+        );
+        assertThat(exitCode)
+                .isEmpty();
+
+        final ExitCode code = commandLine.run();
+        verify(commands, times(1)).generate(report, results, false);
+        assertThat(code)
+                .isEqualTo(NO_ERROR);
     }
 
     @Test
-    public void shouldGenerateReport() throws Exception {
-        Path results = folder.newFolder().toPath();
-        copyFile(results, "testdata/sample-testsuite.json", generateTestSuiteJsonName());
+    public void shouldRunOpen() throws Exception {
+        final int port = randomPort();
+        final Path report = folder.newFolder().toPath();
+        when(commands.open(report, port))
+                .thenReturn(NO_ERROR);
 
-        Path plugins = folder.newFolder().toPath();
-        copyFile(plugins, "testdata/dummy-plugin.zip", "dummy-plugin.zip");
+        final Optional<ExitCode> exitCode = commandLine.parse(
+                OPEN_COMMAND, "--port", String.valueOf(port), report.toString()
+        );
+        assertThat(exitCode)
+                .isEmpty();
 
-        Path output = folder.newFolder().toPath();
+        final ExitCode code = commandLine.run();
+        verify(commands, times(1)).open(report, port);
+        assertThat(code)
+                .isEqualTo(NO_ERROR);
+    }
 
-        AllureCommand generate = new CommandLine().parse(
-                GENERATE, results.toString(), "-o", output.toString()
+    @Test
+    public void shouldNotLetToSpecifyFewReportDirectories() throws Exception {
+        final Path first = folder.newFolder().toPath();
+        final Path second = folder.newFolder().toPath();
+
+        final Optional<ExitCode> exitCode = commandLine.parse(
+                OPEN_COMMAND, first.toString(), second.toString()
+        );
+        assertThat(exitCode)
+                .isPresent()
+                .hasValue(ExitCode.ARGUMENT_PARSING_ERROR);
+    }
+
+    @Test
+    public void shouldRunHelpForCommand() throws Exception {
+        final Optional<ExitCode> exitCode = commandLine.parse(
+                "--help", OPEN_COMMAND
+        );
+        assertThat(exitCode)
+                .isEmpty();
+
+        final ExitCode run = commandLine.run();
+        assertThat(run)
+                .isEqualTo(NO_ERROR);
+    }
+
+    @Test
+    public void shouldPrintVersion() throws Exception {
+        final Optional<ExitCode> exitCode = commandLine.parse(
+                "--version"
+        );
+        assertThat(exitCode)
+                .isEmpty();
+
+        final ExitCode run = commandLine.run();
+        assertThat(run)
+                .isEqualTo(NO_ERROR);
+    }
+
+    @Test
+    public void shouldParseServeCommand() throws Exception {
+        final int port = randomPort();
+        final Path first = folder.newFolder().toPath();
+        final Path second = folder.newFolder().toPath();
+        final Optional<ExitCode> code = commandLine.parse(
+                SERVE_COMMAND, "--port", String.valueOf(port), first.toString(), second.toString()
         );
 
-        generate.run(new Context(
-                folder.newFolder().toPath(),
-                plugins,
-                folder.newFolder().toPath(),
-                null,
-                null
-        ));
-        assertThat(output.resolve("index.html"), exists());
+        assertThat(code)
+                .isEmpty();
+
+        when(commands.serve(Arrays.asList(first, second), port)).thenReturn(NO_ERROR);
+        final ExitCode run = commandLine.run();
+        assertThat(run)
+                .isEqualTo(NO_ERROR);
     }
 
-    private void copyFile(final Path dir, final String resourceName, final String fileName) throws IOException {
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourceName)) {
-            Files.copy(is, dir.resolve(fileName));
-        }
+    @Test
+    public void shouldValidatePortValue() throws Exception {
+        final Optional<ExitCode> exitCode = commandLine.parse(SERVE_COMMAND, "--port", "213123");
+
+        assertThat(exitCode)
+                .isPresent()
+                .hasValue(ARGUMENT_PARSING_ERROR);
     }
 }

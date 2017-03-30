@@ -1,4 +1,4 @@
-package io.qameta.allure.command;
+package io.qameta.allure;
 
 /**
  * @author etki
@@ -17,6 +17,10 @@ public enum ExitCode {
 
     public int getCode() {
         return code;
+    }
+
+    public boolean isSuccess() {
+        return 0 == code;
     }
 
 }

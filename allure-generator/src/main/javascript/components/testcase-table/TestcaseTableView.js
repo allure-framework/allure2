@@ -19,7 +19,7 @@ class TestcaseTableView extends DataGridView {
     }
 
     onRender() {
-        // this.highlightItem(this.options.currentCase);
+        // this.highlightItem(this.option.currentCase);
         this.showChildView('statuses', new StatusToggleView({statusesKey}));
     }
 
