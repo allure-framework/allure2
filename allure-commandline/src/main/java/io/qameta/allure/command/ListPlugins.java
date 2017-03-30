@@ -1,7 +1,6 @@
 package io.qameta.allure.command;
 
 import com.github.rvesse.airline.annotations.Command;
-import io.qameta.allure.PluginDescriptor;
 
 import javax.inject.Inject;
 
@@ -18,14 +17,5 @@ public class ListPlugins implements AllureCommand {
     @Override
     public void run(final Context context) throws Exception {
         verboseOptions.configureLogLevel();
-    }
-
-    @SuppressWarnings("PMD.SystemPrintln")
-    protected void printPluginInfo(final PluginDescriptor pluginDescriptor) {
-        System.out.println(String.format(
-                "<%s> enabled: %s",
-                pluginDescriptor.getConfiguration().getName(),
-                pluginDescriptor.isEnabled()
-        ));
     }
 }

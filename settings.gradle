@@ -4,14 +4,18 @@ include 'allure-plugin-api'
 include 'allure-generator'
 include 'allure-web'
 include 'allure-commandline'
-//include 'behaviors-plugin'
-//include 'custom-logo-plugin'
+
+include 'plugins/behaviors-plugin'
+project(':plugins/behaviors-plugin').name = 'behaviors-plugin'
+
+include 'plugins/packages-plugin'
+project(':plugins/packages-plugin').name = 'packages-plugin'
+
+include 'plugins/custom-logo-plugin'
+project(':plugins/custom-logo-plugin').name = 'custom-logo-plugin'
+
 //include 'junit-plugin'
-//include 'packages-plugin'
 //include 'cucumber-json-plugin'
 //
-//project(':behaviors-plugin').projectDir = new File(settingsDir, 'plugins/behaviors-plugin')
-//project(':custom-logo-plugin').projectDir = new File(settingsDir, 'plugins/custom-logo-plugin')
 //project(':junit-plugin').projectDir = new File(settingsDir, 'plugins/junit-plugin')
-//project(':packages-plugin').projectDir = new File(settingsDir, 'plugins/packages-plugin')
 //project(':cucumber-json-plugin').projectDir = new File(settingsDir, 'plugins/cucumber-json-plugin')

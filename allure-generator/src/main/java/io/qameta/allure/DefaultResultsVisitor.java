@@ -1,6 +1,9 @@
 package io.qameta.allure;
 
 import io.qameta.allure.context.RandomUidContext;
+import io.qameta.allure.core.Configuration;
+import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.TestCase;
 import io.qameta.allure.entity.TestCaseResult;

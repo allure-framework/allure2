@@ -1,26 +1,28 @@
 package io.qameta.allure;
 
-import io.qameta.allure.allure1.Allure1ResultsReader;
-import io.qameta.allure.allure2.Allure2ResultsReader;
-import io.qameta.allure.category.CategoryPlugin;
+import io.qameta.allure.allure1.Allure1Reader;
+import io.qameta.allure.allure2.Allure2Reader;
+import io.qameta.allure.category.CategoryAggregator;
 import io.qameta.allure.context.FreemarkerContext;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.context.MarkdownContext;
 import io.qameta.allure.context.RandomUidContext;
-import io.qameta.allure.core.AttachmentsPlugin;
-import io.qameta.allure.core.IndexHtmlPlugin;
-import io.qameta.allure.core.ResultsPlugin;
+import io.qameta.allure.core.AttachmentsAggregator;
+import io.qameta.allure.core.Configuration;
+import io.qameta.allure.core.IndexHtmlAggregator;
+import io.qameta.allure.core.PluginDescriptor;
+import io.qameta.allure.core.ResultsAggregator;
 import io.qameta.allure.executor.ExecutorReader;
-import io.qameta.allure.graph.GraphPlugin;
-import io.qameta.allure.history.HistoryPlugin;
-import io.qameta.allure.mail.MailPlugin;
-import io.qameta.allure.markdown.MarkdownPlugin;
-import io.qameta.allure.owner.OwnerPlugin;
-import io.qameta.allure.severity.SeverityPlugin;
-import io.qameta.allure.summary.SummaryPlugin;
-import io.qameta.allure.timeline.TimelinePlugin;
-import io.qameta.allure.widget.WidgetsPlugin;
-import io.qameta.allure.xunit.XunitPlugin;
+import io.qameta.allure.graph.GraphAggregator;
+import io.qameta.allure.history.HistoryAggregator;
+import io.qameta.allure.mail.MailAggregator;
+import io.qameta.allure.markdown.MarkdownAggregator;
+import io.qameta.allure.owner.OwnerAggregator;
+import io.qameta.allure.severity.SeverityAggregator;
+import io.qameta.allure.summary.SummaryAggregator;
+import io.qameta.allure.timeline.TimelineAggregator;
+import io.qameta.allure.widget.WidgetsAggregator;
+import io.qameta.allure.xunit.XunitAggregator;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -49,40 +51,40 @@ public class DefaultConfiguration implements Configuration {
     }
 
     @Override
-    public List<Plugin> getPlugins() {
+    public List<Aggregator> getPlugins() {
         return Arrays.asList(
-                new MarkdownPlugin(),
-                new SeverityPlugin(),
-                new OwnerPlugin(),
-                new CategoryPlugin(),
-                new HistoryPlugin(),
-                new GraphPlugin(),
-                new TimelinePlugin(),
-                new XunitPlugin(),
-                new IndexHtmlPlugin(),
-                new ResultsPlugin(),
-                new AttachmentsPlugin(),
-                new MailPlugin(),
-                new WidgetsPlugin(),
-                new SummaryPlugin()
+                new MarkdownAggregator(),
+                new SeverityAggregator(),
+                new OwnerAggregator(),
+                new CategoryAggregator(),
+                new HistoryAggregator(),
+                new GraphAggregator(),
+                new TimelineAggregator(),
+                new XunitAggregator(),
+                new IndexHtmlAggregator(),
+                new ResultsAggregator(),
+                new AttachmentsAggregator(),
+                new MailAggregator(),
+                new WidgetsAggregator(),
+                new SummaryAggregator()
         );
     }
 
     @Override
-    public List<ResultsReader> getReaders() {
+    public List<Reader> getReaders() {
         return Arrays.asList(
-                new Allure1ResultsReader(),
-                new Allure2ResultsReader(),
-                new CategoryPlugin(),
-                new HistoryPlugin(),
+                new Allure1Reader(),
+                new Allure2Reader(),
+                new CategoryAggregator(),
+                new HistoryAggregator(),
                 new ExecutorReader()
         );
     }
 
     @Override
-    public List<WidgetPlugin> getWidgetPlugins() {
+    public List<Widget> getWidgetPlugins() {
         return Collections.singletonList(
-                new SummaryPlugin()
+                new SummaryAggregator()
         );
     }
 

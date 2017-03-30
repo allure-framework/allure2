@@ -1,8 +1,8 @@
 package io.qameta.allure.plugins;
 
 import io.qameta.allure.PluginConfiguration;
-import io.qameta.allure.PluginDescriptor;
-import io.qameta.allure.PluginsLoader;
+import io.qameta.allure.core.PluginDescriptor;
+import io.qameta.allure.core.PluginsLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

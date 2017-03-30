@@ -1,9 +1,9 @@
 package io.qameta.allure.executor;
 
-import io.qameta.allure.Configuration;
-import io.qameta.allure.ResultsReader;
-import io.qameta.allure.ResultsVisitor;
+import io.qameta.allure.Reader;
 import io.qameta.allure.context.JacksonContext;
+import io.qameta.allure.core.Configuration;
+import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.ExecutorInfo;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.nio.file.Path;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class ExecutorReader implements ResultsReader {
+public class ExecutorReader implements Reader {
 
     @Override
     public void readResults(final Configuration configuration,

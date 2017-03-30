@@ -1,5 +1,9 @@
 package io.qameta.allure;
 
+import io.qameta.allure.core.Configuration;
+import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.core.ResultsVisitor;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
@@ -25,8 +29,8 @@ public class ReportGenerator {
     }
 
     public void aggregate(final List<LaunchResults> results, final Path outputDirectory) throws IOException {
-        for (Plugin plugin : configuration.getPlugins()) {
-            plugin.process(configuration, results, outputDirectory);
+        for (Aggregator aggregator : configuration.getPlugins()) {
+            aggregator.aggregate(configuration, results, outputDirectory);
         }
     }
 

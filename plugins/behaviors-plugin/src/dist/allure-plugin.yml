@@ -1,0 +1,11 @@
+id: behaviors
+name: Behaviors aggregator
+description: The aggregator adds behaviors tab to the report
+aggregators:
+  - className: io.qameta.allure.behaviors.BehaviorsAggregator
+    order: 10
+widgets:
+  - className: io.qameta.allure.behaviors.BehaviorsFeatureWidget
+    order: 1
+  - className: io.qameta.allure.behaviors.BehaviorsEpicWidget
+    order: 2
