@@ -37,6 +37,14 @@ public class ReportGeneratorTest {
     }
 
     @Test
+    public void shouldWriteReportStatic() throws Exception {
+        assertThat(output.resolve("app.js"))
+                .isRegularFile();
+        assertThat(output.resolve("styles.css"))
+                .isRegularFile();
+    }
+
+    @Test
     public void shouldGenerateCategoriesJson() throws Exception {
         assertThat(output.resolve("data/categories.json"))
                 .isRegularFile();

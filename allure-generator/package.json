@@ -1,5 +1,5 @@
 {
-  "name": "allure-report-web",
+  "name": "allure-generator",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,11 +8,11 @@
     "start": "webpack-dev-server --inline --hot --env.development",
     "pretest": "eslint --ignore-path=.gitignore .",
     "test": "jest",
-    "coverage": "jest --coverage --collectCoverageFrom=src/**/*.js"
+    "coverage": "jest --coverage --collectCoverageFrom=src/main/javascript/**/*.js"
   },
   "repository": {
     "type": "git",
-    "url": "git@git@github.com:allure-framework/allure-core.git"
+    "url": "git@git@github.com:allure-framework/allure2.git"
   },
   "author": "",
   "license": "Apache-2.0",
@@ -75,14 +75,14 @@
     "underscore": "^1.8.3"
   },
   "jest": {
-    "setupFiles": ["<rootDir>/test/bootstrap.js"],
-    "modulePaths": ["<rootDir>/src"],
+    "setupFiles": ["<rootDir>/src/test/javascript/bootstrap.js"],
+    "modulePaths": ["<rootDir>/src/main/javascript"],
     "transform": {
-      "^.+\\.hbs$": "<rootDir>/test/stubs/handlebars.js",
+      "^.+\\.hbs$": "<rootDir>/src/test/javascript/stubs/handlebars.js",
       "^.+\\.js$": "babel-jest"
     },
     "moduleNameMapper": {
-      "\\.css$": "<rootDir>/test/stubs/css.js"
+      "\\.css$": "<rootDir>/src/test/javascript/stubs/css.js"
     }
   }
 }

@@ -5,6 +5,49 @@ apply from: "${gradleScriptDir}/jaxb.gradle"
 apply from: "${gradleScriptDir}/bintray.gradle"
 apply plugin: 'maven'
 
+apply plugin: 'com.moowork.node'
+
+node {
+    version = '6.3.1'
+    yarnVersion = '0.21.3'
+    download = true
+}
+
+task testWeb(type: YarnTask) {
+    inputs.files(fileTree('node_modules'))
+    inputs.files(fileTree('src/main/javascript'))
+    inputs.files(fileTree('src/test/javascript'))
+    inputs.file('package.json')
+    inputs.file('jasmine.json')
+    inputs.file('webpack.config.js')
+    inputs.file('.babelrc')
+    inputs.file('.eslintrc')
+
+    outputs.dir('build/resources/main')
+
+    args = ['run', 'test']
+}
+
+task buildWeb(type: YarnTask) {
+    inputs.files(fileTree('node_modules'))
+    inputs.files(fileTree('src/main/javascript'))
+    inputs.file('package.json')
+    inputs.file('jasmine.json')
+    inputs.file('webpack.config.js')
+    inputs.file('.babelrc')
+    inputs.file('.eslintrc')
+
+    outputs.dir('build/resources/main')
+
+    args = ['run', 'build']
+}
+
+buildWeb.dependsOn yarn
+testWeb.dependsOn yarn
+processResources.dependsOn buildWeb
+
+//test.dependsOn testWeb
+
 dependencies {
     compile project(':allure-plugin-api')
     compile('org.allurefw:allure1-model')
@@ -31,4 +74,29 @@ task sourceJar(type: Jar, dependsOn: classes) {
 
 artifacts {
     archives sourceJar
+}
+
+def resultsDirectory = findProperty('results') ?: 'demo'
+
+task cleanUpDemoReport(type: Delete) {
+    delete file('build/demo-report')
+}
+
+task generateDemoReport(type: JavaExec) {
+    dependsOn cleanUpDemoReport
+    main = 'io.qameta.allure.DummyReportGenerator'
+    classpath = sourceSets.main.runtimeClasspath
+    systemProperties += ['allure.pluginsDirectory': file('build/plugins')]
+    args = [
+            file("test-data/${resultsDirectory}"),
+            file('build/demo-report')
+    ]
+}
+
+task write {
+    println("start up development server on localhost:3000 (${resultsDirectory})")
+}
+
+task dev {
+    dependsOn write, generateDemoReport, copyPlugins, yarn_start
 }

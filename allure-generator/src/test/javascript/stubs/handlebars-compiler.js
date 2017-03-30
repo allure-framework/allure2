@@ -5,6 +5,8 @@ const path = require('path');
 const fs = new MemoryFS();
 const file = process.argv[2];
 
+console.log('SETUP HOHOHO');
+
 const compiler = webpack({
     entry: file,
     output: {
@@ -19,8 +21,8 @@ const compiler = webpack({
                 loader: 'handlebars-loader',
                 options: {
                     helperDirs: [
-                        path.resolve('./src/helpers'),
-                        path.resolve('./src/blocks')
+                        path.resolve('./src/main/javascript/helpers'),
+                        path.resolve('./src/main/javascript/blocks')
                     ]
                 }
             }

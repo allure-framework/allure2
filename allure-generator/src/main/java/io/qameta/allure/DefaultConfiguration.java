@@ -9,9 +9,9 @@ import io.qameta.allure.context.MarkdownContext;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.AttachmentsAggregator;
 import io.qameta.allure.core.Configuration;
-import io.qameta.allure.core.IndexHtmlAggregator;
 import io.qameta.allure.core.PluginDescriptor;
 import io.qameta.allure.core.ResultsAggregator;
+import io.qameta.allure.core.StaticAggregator;
 import io.qameta.allure.executor.ExecutorReader;
 import io.qameta.allure.graph.GraphAggregator;
 import io.qameta.allure.history.HistoryAggregator;
@@ -61,7 +61,7 @@ public class DefaultConfiguration implements Configuration {
                 new GraphAggregator(),
                 new TimelineAggregator(),
                 new XunitAggregator(),
-                new IndexHtmlAggregator(),
+                new StaticAggregator(),
                 new ResultsAggregator(),
                 new AttachmentsAggregator(),
                 new MailAggregator(),

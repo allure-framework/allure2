@@ -2,7 +2,6 @@ rootProject.name = 'allure2'
 
 include 'allure-plugin-api'
 include 'allure-generator'
-include 'allure-web'
 include 'allure-commandline'
 
 include 'plugins/behaviors-plugin'

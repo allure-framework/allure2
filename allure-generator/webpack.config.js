@@ -17,7 +17,7 @@ const postcssLoader = {
 module.exports = (env) => {
     const development = env && env.development;
     return {
-        entry: ['./src/index.js'],
+        entry: ['./src/main/javascript/index.js'],
         output: {
             path: path.join(__dirname, 'build/resources/main/'),
             pathinfo: development,
@@ -51,8 +51,8 @@ module.exports = (env) => {
                     loader: 'handlebars-loader',
                     options: {
                         helperDirs: [
-                            path.join(__dirname, 'src/helpers'),
-                            path.join(__dirname, 'src/blocks')
+                            path.join(__dirname, 'src/main/javascript/helpers'),
+                            path.join(__dirname, 'src/main/javascript/blocks')
                         ]
                     }
                 }

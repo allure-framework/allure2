@@ -1,9 +1,9 @@
 import TestcaseTableView from 'components/testcase-table/TestcaseTableView';
 import jQuery from 'jquery';
-import router from '../../src/router';
+import router from '../../../main/javascript/router';
 import settings from 'util/settings';
 
-jest.mock('../../src/router');
+jest.mock('../../../main/javascript/router');
 
 describe('TestcaseTable', function() {
     const statusesKey = 'testcaseTableStatuses';

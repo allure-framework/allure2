@@ -28,19 +28,6 @@ configurations {
     allureWeb
 }
 
-task copyWeb(type: Sync) {
-    dependsOn configurations.allureWeb
-    exclude('META-INF/**', 'WEB-INF/**')
-    from {
-        configurations.allureWeb.collect { zipTree(it) }
-    }
-    into "$buildDir/web/"
-}
-
-applicationDistribution.from(copyWeb) {
-    into 'web'
-}
-
 applicationDistribution.from(copyPlugins) {
     into 'plugins'
 }
@@ -48,7 +35,6 @@ applicationDistribution.from(copyPlugins) {
 build.dependsOn installDist
 
 dependencies {
-    allureWeb project(':allure-web')
 
 //    allurePlugin project(path: ':behaviors-plugin', configuration: 'allurePlugin')
 //    allurePlugin project(path: ':junit-plugin', configuration: 'allurePlugin')
