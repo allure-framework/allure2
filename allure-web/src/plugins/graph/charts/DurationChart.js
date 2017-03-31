@@ -37,9 +37,8 @@ export default class DurationChart extends BaseChartView {
     }
 
     doShow() {
-        this.$el.height(this.$el.width() * 0.5);
-        const width = this.$el.width() - PAD_LEFT - PAD_RIGHT;
-        const height = this.$el.height() - PAD_BOTTOM - PAD_TOP;
+        const width = this.$el.outerWidth() - PAD_LEFT - PAD_RIGHT;
+        const height = this.$el.outerHeight() - PAD_BOTTOM - PAD_TOP;
 
         const maxDuration = max(this.data, d => d.value);
         this.x.range([0, width]);

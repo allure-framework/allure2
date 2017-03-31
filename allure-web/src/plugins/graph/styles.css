@@ -1,9 +1,6 @@
 @import "../../mixins.css";
 
 .charts-grid {
-  display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
   overflow: auto;
   height: 100vh;
   padding-left: $gap-size;
@@ -11,6 +8,9 @@
 
 .chart {
   padding-bottom: $gap-size;
+  &__wrap {
+    float: left;
+  }
   &__legend {
     position: absolute;
     top: 20%;

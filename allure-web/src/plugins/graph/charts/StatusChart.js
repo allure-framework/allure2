@@ -44,14 +44,13 @@ export default class StatusChart extends BaseChartView {
 
     onAttach() {
         const data = this.getChartData();
-        const width = this.$el.width();
+        const width = this.$el.outerWidth();
         const radius = width / 4;
         var leftOffset = width / 2;
 
         if(this.options.showLegend) {
             leftOffset -= 70;
         }
-        this.$el.height(radius * 2);
         this.arc.innerRadius(0.8 * radius).outerRadius(radius);
 
         this.svg = this.setupViewport();

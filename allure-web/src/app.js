@@ -9,6 +9,11 @@ import ErrorLayout from './layouts/error/ErrorLayout';
 import TestcaseLayout from './layouts/testcase/TestcaseLayout';
 import i18next, { initTranslations } from './util/translation';
 
+//https://github.com/d3/d3-timer/pull/21
+if(typeof window.requestAnimationFrame === 'function') {
+    window.requestAnimationFrame = window.requestAnimationFrame.bind(window);
+}
+
 Behaviors.behaviorsLookup = behaviors;
 
 function rootPath(path) {
