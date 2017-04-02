@@ -11,9 +11,6 @@ import i18next, { initTranslations } from './util/translation';
 
 Behaviors.behaviorsLookup = behaviors;
 
-//https://github.com/d3/d3-timer/pull/21
-window.requestAnimationFrame = window.requestAnimationFrame.bind(window);
-
 function rootPath(path) {
     return path.split('/')[0];
 }
