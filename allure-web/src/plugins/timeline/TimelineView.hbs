@@ -1,23 +1,16 @@
-<div class="timeline__header">
-    <span class="timeline__header__min_duration">{{duration minDuration}}</span>
-    <span class="timeline__current_duration">
-        Selected {{selectedTestCases}}({{selectedPercent}}%) tests
-        with duration above {{duration selectedDuration 2}}
-    </span>
-    <span class="timeline__header__max_duration">{{duration maxDuration 2}}</span>
-    <div class="timeline__range_bar"/>
-    <input class="timeline__input" type="range" min={{minDuration}} max={{maxDuration}} value={{selectedDuration}} />
-</div>
 <div class="timeline__body">
     <div class='timeline__chart'>
         <svg class="timeline__chart_svg">
-            <g class="timeline__chart__axis timeline__chart__axis_x"/>
-            <g class="timeline__plot"/>
+            <g transform="translate({{PADDING}}, {{BAR_HEIGHT}})">
+                <g class="timeline__slider"/>
+                <g class="timeline__plot" transform="translate(0, {{PADDING}})">
+                    <g class="timeline__chart__axis timeline__chart__axis_x"/>
+                </g>
+            </g>
         </svg>
     </div>
     <div class='timeline__brush'>
         <svg class="timeline__brush_svg">
-            <rect class="timeline__brush__axis_bg"/>
             <g class="timeline__brush__axis timeline__brush__axis_x"/>
         </svg>
     </div>
