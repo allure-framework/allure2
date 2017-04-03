@@ -62,6 +62,7 @@
     "d3-selection": "^1.0.2",
     "d3-selection-multi": "^1.0.0",
     "d3-shape": "^1.0.3",
+    "d3-drag": "1.0.4",
     "filesize": "^3.1.5",
     "font-awesome": "^4.5.0",
     "handlebars": "^4.0.5",

@@ -66,6 +66,7 @@ module.exports = (env) => {
         devServer: {
             contentBase: './build/demo-report/',
             stats: {colors: true},
+            host: '0.0.0.0',
             port: 3000,
             inline: true,
             hot: true
