@@ -38,9 +38,8 @@ export default class SeverityChart extends BaseChartView {
 
     onAttach() {
         const data = this.getChartData();
-        this.$el.height(this.$el.width() * 0.5);
-        const width = this.$el.width() - PAD_LEFT - PAD_RIGHT;
-        const height = this.$el.height() - PAD_BOTTOM - PAD_TOP;
+        const width = this.$el.outerWidth() - PAD_LEFT - PAD_RIGHT;
+        const height = this.$el.outerHeight() - PAD_BOTTOM - PAD_TOP;
 
         this.x.range([0, width]);
         this.y.range([height, 0], 1);
