@@ -20,7 +20,7 @@ public class GenerateCommand {
 
     @Parameter(
             names = {"-c", "--clean"},
-            description = "Clean Allure report directory before generate new one."
+            description = "Clean Allure report directory before generating a new one."
     )
     private boolean cleanReportDirectory;
 

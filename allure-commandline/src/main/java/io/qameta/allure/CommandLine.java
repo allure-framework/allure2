@@ -67,7 +67,7 @@ public class CommandLine {
         try {
             commander.parse(args);
         } catch (ParameterException e) {
-            LOGGER.debug("Error during arguments parse: {}", e);
+            LOGGER.debug("Error during arguments parsing: {}", e);
             LOGGER.info("Could not parse arguments: {}", e.getMessage());
             printUsage(commander);
             return Optional.of(ExitCode.ARGUMENT_PARSING_ERROR);

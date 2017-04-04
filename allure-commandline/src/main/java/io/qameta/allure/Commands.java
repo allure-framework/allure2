@@ -41,7 +41,7 @@ public class Commands {
     }
 
     public ExitCode serve(final List<Path> resultsDirectories, final int port) {
-        LOGGER.info("Generate report to temp directory...");
+        LOGGER.info("Generating report to temp directory...");
 
         final Path reportDirectory;
         try {
