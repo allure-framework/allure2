@@ -1,28 +1,20 @@
 package io.qameta.allure;
 
-import com.github.rvesse.airline.Cli;
-import com.github.rvesse.airline.builder.CliBuilder;
-import io.qameta.allure.command.AllureCommand;
-import io.qameta.allure.command.AllureCommandException;
-import io.qameta.allure.command.Context;
-import io.qameta.allure.command.Help;
-import io.qameta.allure.command.ListPlugins;
-import io.qameta.allure.command.ReportGenerate;
-import io.qameta.allure.command.ReportOpen;
-import io.qameta.allure.command.ReportServe;
-import io.qameta.allure.command.Version;
-import io.qameta.allure.utils.AutoCleanablePath;
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.ParameterException;
+import io.qameta.allure.command.GenerateCommand;
+import io.qameta.allure.command.MainCommand;
+import io.qameta.allure.command.OpenCommand;
+import io.qameta.allure.command.ServeCommand;
+import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.List;
 import java.util.Objects;
-
-import static io.qameta.allure.command.ExitCode.ARGUMENT_PARSING_ERROR;
-import static io.qameta.allure.command.ExitCode.GENERIC_ERROR;
-import static io.qameta.allure.utils.AutoCleanablePath.create;
+import java.util.Optional;
 
 /**
  * @author Artem Eroshenko <eroshenkoam@qameta.io>
@@ -31,54 +23,124 @@ public class CommandLine {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommandLine.class);
 
-    private static final String COMMANDLINE_NAME = "allure";
+    public static final String PROGRAM_NAME = "allure";
+    public static final String SERVE_COMMAND = "serve";
+    public static final String GENERATE_COMMAND = "generate";
+    public static final String OPEN_COMMAND = "open";
 
-    private final Cli<AllureCommand> parser;
+    private final MainCommand mainCommand;
+    private final ServeCommand serveCommand;
+    private final GenerateCommand generateCommand;
+    private final OpenCommand openCommand;
+
+    private final Commands commands;
+
+    private final JCommander commander;
 
     public CommandLine() {
-        CliBuilder<AllureCommand> builder = Cli.<AllureCommand>builder(COMMANDLINE_NAME)
-                .withDefaultCommand(Help.class)
-                .withCommand(Help.class)
-                .withCommand(Version.class)
-                .withCommand(ListPlugins.class)
-                .withCommand(ReportOpen.class)
-                .withCommand(ReportGenerate.class)
-                .withCommand(ReportServe.class);
-
-        this.parser = builder.build();
+        this(new Commands());
     }
 
-    public AllureCommand parse(final String... args) {
-        return parser.parse(args);
+    public CommandLine(final Commands commands) {
+        this.commands = commands;
+        this.mainCommand = new MainCommand();
+        this.serveCommand = new ServeCommand();
+        this.generateCommand = new GenerateCommand();
+        this.openCommand = new OpenCommand();
+        this.commander = new JCommander(mainCommand);
+        this.commander.addCommand(GENERATE_COMMAND, generateCommand);
+        this.commander.addCommand(SERVE_COMMAND, serveCommand);
+        this.commander.addCommand(OPEN_COMMAND, openCommand);
+        this.commander.setProgramName(PROGRAM_NAME);
     }
 
     public static void main(final String[] args) throws InterruptedException {
-        String allureHome = Objects.requireNonNull(
-                System.getenv("APP_HOME"),
-                "APP_HOME should not be a null"
-        );
-        Path home = Paths.get(allureHome);
-        if (!Files.isDirectory(home)) {
-            throw new AllureCommandException("APP_HOME is not a directory");
+        final CommandLine commandLine = new CommandLine();
+        final ExitCode exitCode = commandLine
+                .parse(args)
+                .orElseGet(commandLine::run);
+        System.exit(exitCode.getCode());
+    }
+
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
+    public Optional<ExitCode> parse(final String... args) {
+        try {
+            commander.parse(args);
+        } catch (ParameterException e) {
+            LOGGER.debug("Error during arguments parsing: {}", e);
+            LOGGER.info("Could not parse arguments: {}", e.getMessage());
+            printUsage(commander);
+            return Optional.of(ExitCode.ARGUMENT_PARSING_ERROR);
         }
 
-        try (AutoCleanablePath workDirectory = create("allure-commandline")) {
-            Path pluginsDirectory = home.resolve("plugins");
-            Path webDirectory = home.resolve("web");
+        //Hack to limit count of main parameters
+        final List<Path> reportDirectories = openCommand.getReportDirectories();
+        if (reportDirectories.size() != 1) {
+            LOGGER.error("Only one main argument is allowed");
+            return Optional.of(ExitCode.ARGUMENT_PARSING_ERROR);
+        }
+
+        return Optional.empty();
+    }
+
+    public ExitCode run() {
+        if (mainCommand.getVerboseOptions().isQuiet()) {
+            LogManager.getRootLogger().setLevel(Level.OFF);
+        }
+
+        if (mainCommand.getVerboseOptions().isVerbose()) {
+            LogManager.getRootLogger().setLevel(Level.DEBUG);
+        }
+
+        if (mainCommand.isVersion()) {
             String toolVersion = CommandLine.class.getPackage().getImplementationVersion();
+            LOGGER.info(Objects.isNull(toolVersion) ? "unknown" : toolVersion);
+            return ExitCode.NO_ERROR;
+        }
 
-            Context context = new Context(workDirectory.getPath(), pluginsDirectory,
-                    webDirectory, toolVersion, null);
+        if (mainCommand.isHelp()) {
+            printUsage(commander);
+            return ExitCode.NO_ERROR;
+        }
 
-            new CommandLine().parse(args).run(context);
-        } catch (AllureCommandException e) {
-            LOGGER.debug("Allure commandline error", e);
-            LOGGER.error(e.getMessage());
-            System.exit(GENERIC_ERROR.getCode());
-        } catch (Exception e) {
-            LOGGER.debug("Unhandled error", e);
-            LOGGER.error(e.getMessage());
-            System.exit(ARGUMENT_PARSING_ERROR.getCode());
+        final String parsedCommand = commander.getParsedCommand();
+        switch (parsedCommand) {
+            case GENERATE_COMMAND:
+                return commands.generate(
+                        generateCommand.getReportDirectory(),
+                        generateCommand.getResultsOptions().getResultsDirectories(),
+                        generateCommand.isCleanReportDirectory()
+                );
+            case SERVE_COMMAND:
+                return commands.serve(
+                        serveCommand.getResultsOptions().getResultsDirectories(),
+                        serveCommand.getPortOptions().getPort()
+                );
+            case OPEN_COMMAND:
+                return commands.open(
+                        openCommand.getReportDirectories().get(0),
+                        openCommand.getPortOptions().getPort()
+                );
+            default:
+                printUsage(commander);
+                return ExitCode.ARGUMENT_PARSING_ERROR;
+        }
+    }
+
+    public JCommander getCommander() {
+        return commander;
+    }
+
+    public MainCommand getMainCommand() {
+        return mainCommand;
+    }
+
+    private void printUsage(final JCommander commander) {
+        final String parsedCommand = commander.getParsedCommand();
+        if (Objects.isNull(parsedCommand)) {
+            commander.usage();
+        } else {
+            commander.usage(parsedCommand);
         }
     }
 }

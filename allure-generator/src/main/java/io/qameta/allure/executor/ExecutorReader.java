@@ -1,48 +1,34 @@
 package io.qameta.allure.executor;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.qameta.allure.TestRunDetailsReader;
+import io.qameta.allure.Reader;
+import io.qameta.allure.context.JacksonContext;
+import io.qameta.allure.core.Configuration;
+import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.ExecutorInfo;
-import io.qameta.allure.entity.TestRun;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.function.Consumer;
-
-import static io.qameta.allure.executor.ExecutorPlugin.EXECUTOR_BLOCK_NAME;
-import static io.qameta.allure.executor.ExecutorPlugin.EXECUTOR_FILE_NAME;
 
 /**
  * @author charlie (Dmitry Baev).
  */
-public class ExecutorReader implements TestRunDetailsReader {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ExecutorReader.class);
-
-    private final ObjectMapper mapper;
-
-    @Inject
-    public ExecutorReader(final ObjectMapper mapper) {
-        this.mapper = mapper;
-    }
+public class ExecutorReader implements Reader {
 
     @Override
-    public Consumer<TestRun> readDetails(final Path source) {
-        return testRun -> {
-            final Path file = source.resolve(EXECUTOR_FILE_NAME);
-            if (Files.exists(file)) {
-                try (InputStream is = Files.newInputStream(file)) {
-                    final ExecutorInfo info = mapper.readValue(is, ExecutorInfo.class);
-                    testRun.addExtraBlock(EXECUTOR_BLOCK_NAME, info);
-                } catch (IOException e) {
-                    LOGGER.error("Could not read executor file {}", file, e);
-                }
+    public void readResults(final Configuration configuration,
+                            final ResultsVisitor visitor,
+                            final Path directory) {
+        final JacksonContext context = configuration.requireContext(JacksonContext.class);
+        final Path executorFile = directory.resolve("executor.json");
+        if (Files.exists(executorFile)) {
+            try (InputStream is = Files.newInputStream(executorFile)) {
+                final ExecutorInfo info = context.getValue().readValue(is, ExecutorInfo.class);
+                visitor.visitExtra("executor", info);
+            } catch (IOException e) {
+                visitor.error("Could not read executor file " + executorFile, e);
             }
-        };
+        }
     }
 }

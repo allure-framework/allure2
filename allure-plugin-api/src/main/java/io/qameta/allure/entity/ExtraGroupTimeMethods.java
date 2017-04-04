@@ -4,7 +4,7 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
-import static com.google.common.base.MoreObjects.firstNonNull;
+import static io.qameta.allure.entity.EntityUtils.firstNonNull;
 import static java.lang.Long.MAX_VALUE;
 
 /**
@@ -46,6 +46,13 @@ public interface ExtraGroupTimeMethods {
         update(firstNonNull(getMinDuration(), MAX_VALUE), groupTime.getMinDuration(), Math::min, this::setMinDuration);
         update(firstNonNull(getMaxDuration(), 0L), groupTime.getMaxDuration(), Math::max, this::setMaxDuration);
         update(firstNonNull(getSumDuration(), 0L), groupTime.getSumDuration(), (a, b) -> a + b, this::setSumDuration);
+    }
+
+    default void update(final WithTime withTime) {
+        if (Objects.isNull(withTime)) {
+            return;
+        }
+        update(withTime.getTime());
     }
 
     default void update(final Time time) {

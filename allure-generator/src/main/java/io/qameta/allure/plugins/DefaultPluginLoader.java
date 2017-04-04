@@ -1,26 +1,19 @@
 package io.qameta.allure.plugins;
 
-import com.google.inject.Module;
-import io.qameta.allure.Plugin;
-import io.qameta.allure.PluginDescriptor;
-import io.qameta.allure.PluginsLoader;
+import io.qameta.allure.PluginConfiguration;
+import io.qameta.allure.core.PluginDescriptor;
+import io.qameta.allure.core.PluginsLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.JAXB;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -32,8 +25,6 @@ public class DefaultPluginLoader implements PluginsLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultPluginLoader.class);
 
     public static final String DESCRIPTOR_ENTRY_NAME = "plugin-descriptor.xml";
-    public static final String PLUGIN_JAR_ENTRY_NAME = "plugin.jar";
-    public static final String LIB_DIR_NAME = "lib";
 
     private final Path pluginsDirectory;
 
@@ -42,7 +33,7 @@ public class DefaultPluginLoader implements PluginsLoader {
     }
 
     @Override
-    public List<Plugin> loadPlugins(final Set<String> enabledPlugins) {
+    public List<PluginDescriptor> loadPlugins() {
         if (!Files.exists(pluginsDirectory)) {
             return Collections.emptyList();
         }
@@ -50,7 +41,7 @@ public class DefaultPluginLoader implements PluginsLoader {
             return stream
                     .filter(Files::isDirectory)
                     .filter(DefaultPluginLoader::isPluginDirectory)
-                    .map(directory -> loadPlugin(directory, enabledPlugins))
+                    .map(this::loadPlugin)
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .collect(Collectors.toList());
@@ -60,54 +51,15 @@ public class DefaultPluginLoader implements PluginsLoader {
         }
     }
 
-    private Optional<Plugin> loadPlugin(final Path pluginDirectory, final Set<String> enabledPlugins) {
-        final Optional<PluginDescriptor> pluginDescriptor = readPluginDescriptor(pluginDirectory);
-        if (!pluginDescriptor.isPresent()) {
-            return Optional.empty();
-        }
-        final PluginDescriptor descriptor = pluginDescriptor.get();
-        final Plugin plugin = loadPluginModule(pluginDirectory, descriptor)
-                .map(module -> new Plugin(descriptor, module, pluginDirectory, isEnabled(descriptor, enabledPlugins)))
-                .orElseGet(() -> new Plugin(descriptor, null, pluginDirectory, isEnabled(descriptor, enabledPlugins)));
-        return Optional.of(plugin);
+    private Optional<PluginDescriptor> loadPlugin(final Path pluginDirectory) {
+        return readPluginConfiguration(pluginDirectory)
+                .map(configuration -> new PluginDescriptor(configuration, pluginDirectory));
     }
 
-    private Optional<Module> loadPluginModule(final Path pluginDirectory, final PluginDescriptor descriptor) {
-        final String moduleClass = descriptor.getModuleClass();
-        if (Objects.isNull(moduleClass) || moduleClass.isEmpty()) {
-            return Optional.empty();
-        }
-        try {
-            final ClassLoader parent = getClass().getClassLoader();
-            //We should not close this classloader in order to load other plugin classes.
-            final URLClassLoader classLoader = new URLClassLoader(getClassPath(pluginDirectory), parent);
-            return Optional.of((Module) classLoader.loadClass(moduleClass).newInstance());
-        } catch (Exception e) {
-            LOGGER.error("Could not load module {} for plugin {} {}", moduleClass, descriptor.getName(), e);
-            return Optional.empty();
-        }
-    }
-
-    private URL[] getClassPath(final Path pluginDirectory) throws IOException {
-        final Path lib = pluginDirectory.resolve(LIB_DIR_NAME);
-        final Stream<Path> libs = Files.isDirectory(lib) ? getChildren(lib) : Stream.empty();
-        final Stream<Path> pluginJar = Stream.of(pluginDirectory.resolve(PLUGIN_JAR_ENTRY_NAME));
-        return Stream.concat(pluginJar, libs)
-                .map(this::toUrl)
-                .toArray(URL[]::new);
-    }
-
-    private Stream<Path> getChildren(final Path directory) throws IOException {
-        try (Stream<Path> children = Files.walk(directory, 1, FileVisitOption.FOLLOW_LINKS)) {
-            //we need to load lazy directory stream to memory and close it
-            return children.collect(Collectors.toList()).stream();
-        }
-    }
-
-    public static Optional<PluginDescriptor> readPluginDescriptor(final Path pluginDirectory) {
+    public static Optional<PluginConfiguration> readPluginConfiguration(final Path pluginDirectory) {
         final Path descriptor = pluginDirectory.resolve(DESCRIPTOR_ENTRY_NAME);
         try (InputStream is = Files.newInputStream(descriptor)) {
-            return Optional.of(JAXB.unmarshal(is, PluginDescriptor.class));
+            return Optional.of(JAXB.unmarshal(is, PluginConfiguration.class));
         } catch (IOException e) {
             LOGGER.error("Could not read plugin descriptor {} {}", pluginDirectory.getFileName(), e);
             return Optional.empty();
@@ -116,17 +68,5 @@ public class DefaultPluginLoader implements PluginsLoader {
 
     public static boolean isPluginDirectory(final Path directory) {
         return Files.exists(directory.resolve(DESCRIPTOR_ENTRY_NAME));
-    }
-
-    private boolean isEnabled(final PluginDescriptor descriptor, final Set<String> enabledPlugins) {
-        return Objects.isNull(enabledPlugins) || enabledPlugins.contains(descriptor.getName());
-    }
-
-    private URL toUrl(final Path path) {
-        try {
-            return path.toUri().toURL();
-        } catch (MalformedURLException e) {
-            throw new IllegalStateException("Invalid plugin", e);
-        }
     }
 }

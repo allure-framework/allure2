@@ -2,8 +2,8 @@
 <xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             xmlns:data="urn:allure.qameta.io"
-            xmlns:ns="urn:categories.allure.qameta.io"
-            targetNamespace="urn:categories.allure.qameta.io">
+            xmlns:ns="urn:category.allure.qameta.io"
+            targetNamespace="urn:category.allure.qameta.io">
 
     <xsd:import namespace="urn:allure.qameta.io" schemaLocation="allure_report-data.xsd"/>
 

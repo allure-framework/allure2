@@ -6,15 +6,11 @@ apply from: "${gradleScriptDir}/bintray.gradle"
 apply plugin: 'maven'
 
 dependencies {
-    compile('com.google.inject:guice')
-    compile('com.google.inject.extensions:guice-assistedinject')
-    compile('com.google.inject.extensions:guice-multibindings')
-
-    compile('org.apache.tika:tika-core')
     compile('org.pegdown:pegdown')
-    compile('ru.qatools.commons:properties')
+    compile('org.freemarker:freemarker')
     compile('com.fasterxml.jackson.core:jackson-databind')
     compile('com.fasterxml.jackson.module:jackson-module-jaxb-annotations')
+
     compile('org.slf4j:slf4j-api')
 
     testCompile('junit:junit')

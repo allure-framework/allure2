@@ -1,0 +1,5 @@
+id: packages
+name: Packages aggregator
+description: The aggregator adds packages tab to the report
+pluginClasses:
+  - io.qameta.allure.packages.PackagesAggregator

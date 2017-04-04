@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ns:pluginDescriptor xmlns:ns="urn:allure.qameta.io">
-    <name>behaviors-plugin</name>
-    <moduleClass>io.qameta.allure.behaviors.BehaviorsPlugin</moduleClass>
-</ns:pluginDescriptor>
