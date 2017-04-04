@@ -1,5 +1,6 @@
 package io.qameta.allure;
 
+import io.qameta.allure.config.ConfigLoader;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -15,6 +16,7 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -22,6 +24,19 @@ import java.util.List;
 public class Commands {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Commands.class);
+
+    private final Path allureHome;
+
+    public Commands(final Path allureHome) {
+        this.allureHome = allureHome;
+    }
+
+    public CommandlineConfig getConfig(final String profile) throws IOException {
+        if (Objects.isNull(allureHome) || Files.notExists(allureHome)) {
+            return new CommandlineConfig();
+        }
+        return new ConfigLoader(allureHome, profile).load();
+    }
 
     public ExitCode generate(final Path reportDirectory,
                              final List<Path> resultsDirectories,
@@ -87,6 +102,17 @@ public class Commands {
             server.join();
         } catch (InterruptedException e) {
             LOGGER.error("Report serve interrupted {}", e);
+            return ExitCode.GENERIC_ERROR;
+        }
+        return ExitCode.NO_ERROR;
+    }
+
+    public ExitCode listPlugins(final String profile) {
+        try {
+            final CommandlineConfig config = getConfig(profile);
+            config.getPlugins().forEach(LOGGER::info);
+        } catch (IOException e) {
+            LOGGER.error("Can't read config: {}", e);
             return ExitCode.GENERIC_ERROR;
         }
         return ExitCode.NO_ERROR;

@@ -2,6 +2,7 @@ description = 'Allure Commandline'
 
 apply plugin: 'application'
 apply from: "${gradleScriptDir}/bintray.gradle"
+apply from: "${gradleScriptDir}/jaxb.gradle"
 
 applicationName = 'allure'
 mainClassName = 'io.qameta.allure.CommandLine'

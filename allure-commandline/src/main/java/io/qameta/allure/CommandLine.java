@@ -5,6 +5,7 @@ import com.beust.jcommander.ParameterException;
 import io.qameta.allure.command.GenerateCommand;
 import io.qameta.allure.command.MainCommand;
 import io.qameta.allure.command.OpenCommand;
+import io.qameta.allure.command.PluginCommand;
 import io.qameta.allure.command.ServeCommand;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -27,18 +29,18 @@ public class CommandLine {
     public static final String SERVE_COMMAND = "serve";
     public static final String GENERATE_COMMAND = "generate";
     public static final String OPEN_COMMAND = "open";
+    public static final String PLUGIN_COMMAND = "plugin";
 
     private final MainCommand mainCommand;
     private final ServeCommand serveCommand;
     private final GenerateCommand generateCommand;
     private final OpenCommand openCommand;
-
+    private final PluginCommand pluginCommand;
     private final Commands commands;
-
     private final JCommander commander;
 
-    public CommandLine() {
-        this(new Commands());
+    public CommandLine(final Path allureHome) {
+        this(new Commands(allureHome));
     }
 
     public CommandLine(final Commands commands) {
@@ -47,15 +49,24 @@ public class CommandLine {
         this.serveCommand = new ServeCommand();
         this.generateCommand = new GenerateCommand();
         this.openCommand = new OpenCommand();
+        this.pluginCommand = new PluginCommand();
         this.commander = new JCommander(mainCommand);
         this.commander.addCommand(GENERATE_COMMAND, generateCommand);
         this.commander.addCommand(SERVE_COMMAND, serveCommand);
         this.commander.addCommand(OPEN_COMMAND, openCommand);
+        this.commander.addCommand(PLUGIN_COMMAND, pluginCommand);
         this.commander.setProgramName(PROGRAM_NAME);
     }
 
     public static void main(final String[] args) throws InterruptedException {
-        final CommandLine commandLine = new CommandLine();
+        final String allureHome = System.getenv("ALLURE_HOME");
+        final CommandLine commandLine;
+        if (Objects.isNull(allureHome)) {
+            LOGGER.info("ALLURE_HOME is not set, using default configuration");
+            commandLine = new CommandLine((Path) null);
+        } else {
+            commandLine = new CommandLine(Paths.get(allureHome));
+        }
         final ExitCode exitCode = commandLine
                 .parse(args)
                 .orElseGet(commandLine::run);
@@ -83,6 +94,7 @@ public class CommandLine {
         return Optional.empty();
     }
 
+    @SuppressWarnings("PMD.NPathComplexity")
     public ExitCode run() {
         if (mainCommand.getVerboseOptions().isQuiet()) {
             LogManager.getRootLogger().setLevel(Level.OFF);
@@ -121,6 +133,8 @@ public class CommandLine {
                         openCommand.getReportDirectories().get(0),
                         openCommand.getPortOptions().getPort()
                 );
+            case PLUGIN_COMMAND:
+                return commands.listPlugins(pluginCommand.getProfileOptions().getProfile());
             default:
                 printUsage(commander);
                 return ExitCode.ARGUMENT_PARSING_ERROR;

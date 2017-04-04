@@ -12,6 +12,7 @@ import java.util.Optional;
 
 import static io.qameta.allure.CommandLine.GENERATE_COMMAND;
 import static io.qameta.allure.CommandLine.OPEN_COMMAND;
+import static io.qameta.allure.CommandLine.PLUGIN_COMMAND;
 import static io.qameta.allure.CommandLine.SERVE_COMMAND;
 import static io.qameta.allure.ExitCode.ARGUMENT_PARSING_ERROR;
 import static io.qameta.allure.ExitCode.NO_ERROR;
@@ -206,5 +207,17 @@ public class CommandLineTest {
         assertThat(exitCode)
                 .isPresent()
                 .hasValue(ARGUMENT_PARSING_ERROR);
+    }
+
+    @Test
+    public void shouldPrintPluginList() throws Exception {
+        final Optional<ExitCode> exitCode = commandLine.parse(PLUGIN_COMMAND);
+        assertThat(exitCode)
+                .isEmpty();
+
+        when(commands.listPlugins(null)).thenReturn(NO_ERROR);
+        final ExitCode run = commandLine.run();
+        assertThat(run)
+                .isEqualTo(NO_ERROR);
     }
 }
