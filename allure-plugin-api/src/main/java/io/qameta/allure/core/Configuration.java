@@ -15,11 +15,11 @@ public interface Configuration {
 
     List<PluginDescriptor> getPluginsDescriptors();
 
-    List<Aggregator> getPlugins();
+    List<Aggregator> getAggregators();
 
     List<Reader> getReaders();
 
-    List<Widget> getWidgetPlugins();
+    List<Widget> getWidgets();
 
     <T> Optional<T> getContext(Class<T> contextType);
 

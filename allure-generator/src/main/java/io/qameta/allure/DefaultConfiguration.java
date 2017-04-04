@@ -12,9 +12,10 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.PluginDescriptor;
 import io.qameta.allure.core.ResultsAggregator;
 import io.qameta.allure.core.StaticAggregator;
-import io.qameta.allure.executor.ExecutorReader;
+import io.qameta.allure.executor.ExecutorPlugin;
 import io.qameta.allure.graph.GraphAggregator;
 import io.qameta.allure.history.HistoryAggregator;
+import io.qameta.allure.launch.LaunchPlugin;
 import io.qameta.allure.mail.MailAggregator;
 import io.qameta.allure.markdown.MarkdownAggregator;
 import io.qameta.allure.owner.OwnerAggregator;
@@ -51,7 +52,7 @@ public class DefaultConfiguration implements Configuration {
     }
 
     @Override
-    public List<Aggregator> getPlugins() {
+    public List<Aggregator> getAggregators() {
         return Arrays.asList(
                 new MarkdownAggregator(),
                 new SeverityAggregator(),
@@ -77,14 +78,17 @@ public class DefaultConfiguration implements Configuration {
                 new Allure2Reader(),
                 new CategoryAggregator(),
                 new HistoryAggregator(),
-                new ExecutorReader()
+                new ExecutorPlugin(),
+                new LaunchPlugin()
         );
     }
 
     @Override
-    public List<Widget> getWidgetPlugins() {
-        return Collections.singletonList(
-                new SummaryAggregator()
+    public List<Widget> getWidgets() {
+        return Arrays.asList(
+                new SummaryAggregator(),
+                new ExecutorPlugin(),
+                new LaunchPlugin()
         );
     }
 

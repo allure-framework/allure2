@@ -6,15 +6,20 @@
     {{#each items}}
     <span class="table__row">
         <div class="{{b 'table' 'col'}} executor">
-            <span class="executor-icon executor-icon__{{info.type}}">&nbsp;</span>
+            <span class="executor-icon executor-icon__{{type}}">&nbsp;</span>
             {{name}}
         </div>
-        {{#if info}}
+        {{#if buildName}}
             <div class="{{b 'table' 'col' right=true}} executor">
-                <a class="link" href="{{info.buildUrl}}">
-                    {{info.buildName}}
-                    <span class="fa fa-external-link"></span>
-                </a>
+                {{#if buildUrl}}
+                    <a class="link" href="{{buildUrl}}">
+                        {{buildName}}
+                        <span class="fa fa-external-link"></span>
+                    </a>
+                {{else}}
+                    {{buildName}}
+                {{/if}}
+
             </div>
         {{else}}
             <div class="{{b 'table' 'col' right=true}}">

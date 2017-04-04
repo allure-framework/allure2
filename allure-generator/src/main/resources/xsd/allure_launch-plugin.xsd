@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            xmlns:ns="urn:testrun.allure.qameta.io"
+            xmlns:ns="urn:launch.allure.qameta.io"
             xmlns:data="urn:allure.qameta.io"
-            targetNamespace="urn:testrun.allure.qameta.io">
+            targetNamespace="urn:launch.allure.qameta.io">
 
     <xsd:import namespace="urn:allure.qameta.io" schemaLocation="allure_report-data.xsd"/>
 
-    <xsd:element name="testRunStatistic" type="ns:TestRunStatistic"/>
-    <xsd:complexType name="TestRunStatistic">
+    <xsd:element name="launchInfo" type="ns:LaunchInfo"/>
+    <xsd:complexType name="LaunchInfo">
         <xsd:sequence>
             <xsd:element name="uid" type="xsd:string"/>
             <xsd:element name="name" type="xsd:string"/>

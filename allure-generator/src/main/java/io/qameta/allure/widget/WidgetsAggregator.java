@@ -34,7 +34,7 @@ public class WidgetsAggregator implements Aggregator {
     protected Object getData(final Configuration configuration,
                              final List<LaunchResults> launches) {
         final Map<String, Object> data = new HashMap<>();
-        configuration.getWidgetPlugins().forEach(widgetAggregator -> data.put(
+        configuration.getWidgets().forEach(widgetAggregator -> data.put(
                 widgetAggregator.getName(),
                 widgetAggregator.getData(configuration, launches)
         ));

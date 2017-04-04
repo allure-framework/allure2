@@ -14,7 +14,7 @@ import './plugins/graph';
 import './plugins/timeline';
 import './plugins/history';
 import './plugins/executor';
-import './plugins/testrun';
+import './plugins/launch';
 import './plugins/summary';
 import './plugins/severity';
 import './plugins/owner';
