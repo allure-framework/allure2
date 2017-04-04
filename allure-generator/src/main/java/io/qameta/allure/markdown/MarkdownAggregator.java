@@ -27,7 +27,7 @@ public class MarkdownAggregator implements Aggregator {
     private void processDescriptions(final List<LaunchResults> launches, final MarkdownContext context) {
         launches.stream()
                 .flatMap(launch -> launch.getResults().stream())
-                .filter(result -> isNotEmpty(result.getDescriptionHtml()) || isEmpty(result.getDescription()))
+                .filter(result -> isEmpty(result.getDescriptionHtml()) && isNotEmpty(result.getDescription()))
                 .forEach(result -> {
                     final String html = context.getValue().markdownToHtml(result.getDescription());
                     result.setDescriptionHtml(html);
