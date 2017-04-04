@@ -10,10 +10,10 @@
             <xsd:element name="id" type="xsd:string"/>
             <xsd:element name="name" type="xsd:string"/>
             <xsd:element name="description" type="xsd:string"/>
-            <xsd:element name="contexts">
+            <xsd:element name="readers">
                 <xsd:complexType>
                     <xsd:sequence>
-                        <xsd:element name="context" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                        <xsd:element name="reader" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
@@ -21,6 +21,20 @@
                 <xsd:complexType>
                     <xsd:sequence>
                         <xsd:element name="aggregator" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="widgets">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="widget" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="contexts">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="context" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>

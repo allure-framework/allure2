@@ -102,6 +102,7 @@ allprojects {
 
             dependency 'com.fasterxml.jackson.core:jackson-databind:2.8.6'
             dependency 'com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.8.6'
+            dependency 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.8.6'
 
             dependency 'org.slf4j:slf4j-nop:1.7.21'
             dependency 'org.slf4j:slf4j-api:1.7.21'

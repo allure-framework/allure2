@@ -1,4 +1,6 @@
-package io.qameta.allure.core;
+package io.qameta.allure.plugins;
+
+import io.qameta.allure.core.PluginDescriptor;
 
 import java.util.List;
 

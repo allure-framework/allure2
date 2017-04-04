@@ -54,6 +54,7 @@ dependencies {
     compile('io.qameta.allure:allure2-model-api')
     compile('org.apache.tika:tika-core')
     compile('commons-io:commons-io')
+    compile('com.fasterxml.jackson.dataformat:jackson-dataformat-yaml')
 
     testCompile('junit:junit')
     testCompile('org.assertj:assertj-core')

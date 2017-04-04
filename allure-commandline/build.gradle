@@ -36,7 +36,7 @@ build.dependsOn installDist
 
 dependencies {
 
-//    allurePlugin project(path: ':behaviors-plugin', configuration: 'allurePlugin')
+    allurePlugin project(path: ':behaviors-plugin', configuration: 'allurePlugin')
 //    allurePlugin project(path: ':junit-plugin', configuration: 'allurePlugin')
 //    allurePlugin project(path: ':packages-plugin', configuration: 'allurePlugin')
 
