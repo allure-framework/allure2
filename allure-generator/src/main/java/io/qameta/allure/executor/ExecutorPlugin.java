@@ -41,7 +41,8 @@ public class ExecutorPlugin implements Reader, Widget {
     }
 
     @Override
-    public List<ExecutorInfo> getData(Configuration configuration, List<LaunchResults> launches) {
+    public List<ExecutorInfo> getData(final Configuration configuration,
+                                      final List<LaunchResults> launches) {
         return launches.stream()
                 .map(launchResults -> launchResults.getExtra(EXECUTORS_BLOCK_NAME))
                 .filter(Optional::isPresent)

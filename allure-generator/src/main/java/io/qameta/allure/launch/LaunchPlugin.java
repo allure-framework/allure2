@@ -25,7 +25,9 @@ public class LaunchPlugin implements Reader, Widget {
     private static final String LAUNCH_JSON = "launch.json";
 
     @Override
-    public void readResults(Configuration configuration, ResultsVisitor visitor, Path directory) {
+    public void readResults(final Configuration configuration,
+                            final ResultsVisitor visitor,
+                            final Path directory) {
         final JacksonContext context = configuration.requireContext(JacksonContext.class);
         final Path executorFile = directory.resolve(LAUNCH_JSON);
         if (Files.exists(executorFile)) {
@@ -39,7 +41,8 @@ public class LaunchPlugin implements Reader, Widget {
     }
 
     @Override
-    public Object getData(Configuration configuration, List<LaunchResults> launches) {
+    public Object getData(final Configuration configuration,
+                          final List<LaunchResults> launches) {
         return launches.stream()
                 .map(this::updateLaunchInfo)
                 .filter(Optional::isPresent)
@@ -47,7 +50,7 @@ public class LaunchPlugin implements Reader, Widget {
                 .collect(Collectors.toList());
     }
 
-    private Optional<LaunchInfo> updateLaunchInfo(LaunchResults results) {
+    private Optional<LaunchInfo> updateLaunchInfo(final LaunchResults results) {
         final Optional<LaunchInfo> extra = results.getExtra(LAUNCH_BLOCK_NAME);
         extra.map(launchInfo -> {
             final Statistic statistic = new Statistic();

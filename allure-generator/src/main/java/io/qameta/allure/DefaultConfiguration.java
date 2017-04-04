@@ -35,6 +35,7 @@ import java.util.Optional;
 /**
  * @author charlie (Dmitry Baev).
  */
+@SuppressWarnings("PMD.ExcessiveImports")
 public class DefaultConfiguration implements Configuration {
 
     private final Map<Class, Object> context = new HashMap<>();

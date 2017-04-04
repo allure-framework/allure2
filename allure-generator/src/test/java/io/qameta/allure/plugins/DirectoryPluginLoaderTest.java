@@ -2,6 +2,7 @@ package io.qameta.allure.plugins;
 
 import io.qameta.allure.Aggregator;
 import io.qameta.allure.core.Plugin;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.nio.file.Path;
@@ -16,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DirectoryPluginLoaderTest {
 
     @Test
+    @Ignore
     public void shouldLoad() throws Exception {
         final DirectoryPluginLoader pluginLoader = new DirectoryPluginLoader();
         final Path directory = Paths.get("/Users/charlie/projects/allure2/allure-commandline/build/plugins/behaviors-plugin-2.0-SNAPSHOT");
