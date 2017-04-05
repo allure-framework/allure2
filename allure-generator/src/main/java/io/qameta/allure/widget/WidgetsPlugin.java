@@ -14,9 +14,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author charlie (Dmitry Baev).
+ * Plugin generates widgets.json for Overview tab.
+ *
+ * @since 2.0
  */
-public class WidgetsAggregator implements Aggregator {
+public class WidgetsPlugin implements Aggregator {
 
     @Override
     public void aggregate(final Configuration configuration,

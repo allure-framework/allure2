@@ -16,7 +16,7 @@ package io.qameta.allure;
  * @since 2.0
  */
 @FunctionalInterface
-public interface Context<T> {
+public interface Context<T> extends Extension {
 
     /**
      * Returns the context value.

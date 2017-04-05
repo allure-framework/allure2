@@ -4,6 +4,7 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.beust.jcommander.ParametersDelegate;
 import io.qameta.allure.convert.PathConverter;
+import io.qameta.allure.option.ProfileOptions;
 import io.qameta.allure.option.ResultsOptions;
 
 import java.nio.file.Path;
@@ -34,6 +35,9 @@ public class GenerateCommand {
     @ParametersDelegate
     private ResultsOptions resultsOptions = new ResultsOptions();
 
+    @ParametersDelegate
+    private ProfileOptions profileOptions = new ProfileOptions();
+
     public boolean isCleanReportDirectory() {
         return cleanReportDirectory;
     }
@@ -44,5 +48,9 @@ public class GenerateCommand {
 
     public ResultsOptions getResultsOptions() {
         return resultsOptions;
+    }
+
+    public ProfileOptions getProfileOptions() {
+        return profileOptions;
     }
 }

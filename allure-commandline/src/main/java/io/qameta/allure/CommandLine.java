@@ -59,10 +59,10 @@ public class CommandLine {
     }
 
     public static void main(final String[] args) throws InterruptedException {
-        final String allureHome = System.getenv("ALLURE_HOME");
+        final String allureHome = System.getenv("APP_HOME");
         final CommandLine commandLine;
         if (Objects.isNull(allureHome)) {
-            LOGGER.info("ALLURE_HOME is not set, using default configuration");
+            LOGGER.info("APP_HOME is not set, using default configuration");
             commandLine = new CommandLine((Path) null);
         } else {
             commandLine = new CommandLine(Paths.get(allureHome));
@@ -121,12 +121,14 @@ public class CommandLine {
                 return commands.generate(
                         generateCommand.getReportDirectory(),
                         generateCommand.getResultsOptions().getResultsDirectories(),
-                        generateCommand.isCleanReportDirectory()
+                        generateCommand.isCleanReportDirectory(),
+                        generateCommand.getProfileOptions().getProfile()
                 );
             case SERVE_COMMAND:
                 return commands.serve(
                         serveCommand.getResultsOptions().getResultsDirectories(),
-                        serveCommand.getPortOptions().getPort()
+                        serveCommand.getPortOptions().getPort(),
+                        serveCommand.getProfileOptions().getProfile()
                 );
             case OPEN_COMMAND:
                 return commands.open(

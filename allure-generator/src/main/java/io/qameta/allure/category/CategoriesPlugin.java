@@ -23,11 +23,12 @@ import java.util.List;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-
 /**
- * @author charlie (Dmitry Baev).
+ * Plugin that generates data for Categories tab.
+ *
+ * @since 2.0
  */
-public class CategoryAggregator extends AbstractTreeAggregator implements Reader {
+public class CategoriesPlugin extends AbstractTreeAggregator implements Reader {
 
     private static final Category UNKNOWN_FAILURE = new Category().withName("Unknown failure");
 

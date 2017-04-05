@@ -38,10 +38,12 @@ import static java.util.Comparator.comparingLong;
 import static java.util.Objects.nonNull;
 
 /**
- * @author charlie (Dmitry Baev).
+ * Plugin that reads results from Allure 2 data format.
+ *
+ * @since 2.0
  */
 @SuppressWarnings("PMD.ExcessiveImports")
-public class Allure2Reader implements Reader {
+public class Allure2Plugin implements Reader {
 
     private static final Comparator<StageResult> BY_START = comparingLong(a -> a.getTime().getStart());
 

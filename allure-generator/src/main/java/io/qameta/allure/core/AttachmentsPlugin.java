@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author charlie (Dmitry Baev).
+ * Plugin that stores attachments to report data folder.
+ *
+ * @since 2.0
  */
-public class AttachmentsAggregator implements Aggregator {
+public class AttachmentsPlugin implements Aggregator {
 
     @Override
     public void aggregate(final Configuration configuration,

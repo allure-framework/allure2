@@ -18,11 +18,13 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * @author charlie (Dmitry Baev).
+ * Plugin generates mail with report summary.
+ *
+ * @since 2.0
  */
-public class MailAggregator implements Aggregator {
+public class MailPlugin implements Aggregator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MailAggregator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MailPlugin.class);
 
     @Override
     public void aggregate(final Configuration configuration,

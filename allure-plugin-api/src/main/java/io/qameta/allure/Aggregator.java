@@ -14,7 +14,7 @@ import java.util.List;
  * @since 2.0
  */
 @FunctionalInterface
-public interface Aggregator {
+public interface Aggregator extends Extension {
 
     /**
      * Process report data.

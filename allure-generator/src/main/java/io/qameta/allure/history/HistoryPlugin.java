@@ -24,9 +24,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * @author charlie (Dmitry Baev).
+ * Plugin that adds history to the report.
+ *
+ * @since 2.0
  */
-public class HistoryAggregator implements Reader, Aggregator {
+public class HistoryPlugin implements Reader, Aggregator {
 
     private static final String HISTORY_BLOCK_NAME = "history";
 

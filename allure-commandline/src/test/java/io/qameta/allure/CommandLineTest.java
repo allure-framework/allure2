@@ -108,7 +108,7 @@ public class CommandLineTest {
         final Path secondResult = folder.newFolder().toPath();
         final List<Path> results = Arrays.asList(firstResult, secondResult);
 
-        when(commands.generate(report, results, false))
+        when(commands.generate(report, results, false, null))
                 .thenReturn(NO_ERROR);
 
         final Optional<ExitCode> exitCode = commandLine.parse(
@@ -119,7 +119,7 @@ public class CommandLineTest {
                 .isEmpty();
 
         final ExitCode code = commandLine.run();
-        verify(commands, times(1)).generate(report, results, false);
+        verify(commands, times(1)).generate(report, results, false, null);
         assertThat(code)
                 .isEqualTo(NO_ERROR);
     }
@@ -185,16 +185,20 @@ public class CommandLineTest {
     @Test
     public void shouldParseServeCommand() throws Exception {
         final int port = randomPort();
+        final String profile = randomString();
         final Path first = folder.newFolder().toPath();
         final Path second = folder.newFolder().toPath();
         final Optional<ExitCode> code = commandLine.parse(
-                SERVE_COMMAND, "--port", String.valueOf(port), first.toString(), second.toString()
+                SERVE_COMMAND,
+                "--port", String.valueOf(port),
+                "--profile", profile,
+                first.toString(), second.toString()
         );
 
         assertThat(code)
                 .isEmpty();
 
-        when(commands.serve(Arrays.asList(first, second), port)).thenReturn(NO_ERROR);
+        when(commands.serve(Arrays.asList(first, second), port, profile)).thenReturn(NO_ERROR);
         final ExitCode run = commandLine.run();
         assertThat(run)
                 .isEqualTo(NO_ERROR);

@@ -14,11 +14,13 @@ import java.util.List;
 import static io.qameta.allure.entity.LabelName.SEVERITY;
 
 /**
- * @author charlie (Dmitry Baev).
+ * Plugin that adds severity information to tests results.
+ *
+ * @since 2.0
  */
-public class SeverityAggregator implements Aggregator {
+public class SeverityPlugin implements Aggregator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SeverityAggregator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SeverityPlugin.class);
 
     @Override
     public void aggregate(final Configuration configuration,

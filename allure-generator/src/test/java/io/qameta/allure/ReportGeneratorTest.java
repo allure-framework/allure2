@@ -1,5 +1,6 @@
 package io.qameta.allure;
 
+import io.qameta.allure.core.Configuration;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -23,7 +24,8 @@ public class ReportGeneratorTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        final ReportGenerator generator = new ReportGenerator(new DefaultConfiguration());
+        final Configuration configuration = new ConfigurationBuilder().useDefault().build();
+        final ReportGenerator generator = new ReportGenerator(configuration);
         output = folder.newFolder().toPath();
         final Path resultsDirectory = folder.newFolder().toPath();
         unpackDummyResources("allure1data/", resultsDirectory);

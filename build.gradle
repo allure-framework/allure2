@@ -151,6 +151,11 @@ subprojects { project ->
             configurations.allurePlugin.collect { zipTree(it) }
         }
         into "$buildDir/plugins/"
+        eachFile { FileCopyDetails details ->
+            def segments = details.relativePath.segments
+            segments[0] = segments[0].replace("-${project.version}", '')
+        }
+        includeEmptyDirs = false
     }
 
     apply plugin: 'ru.vyarus.quality'

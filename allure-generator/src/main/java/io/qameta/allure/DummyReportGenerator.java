@@ -1,5 +1,6 @@
 package io.qameta.allure;
 
+import io.qameta.allure.core.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +35,7 @@ public final class DummyReportGenerator {
         }
         int lastIndex = args.length - 1;
         final Path[] files = getFiles(args);
-        final DefaultConfiguration configuration = new DefaultConfiguration();
+        final Configuration configuration = new ConfigurationBuilder().useDefault().build();
         final ReportGenerator generator = new ReportGenerator(configuration);
         generator.generate(files[lastIndex], Arrays.copyOf(files, lastIndex));
     }

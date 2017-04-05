@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @since 2.0
  */
-public interface Widget {
+public interface Widget extends Extension {
 
     /**
      * Returns widget data. The data will be marshaled to JSON and

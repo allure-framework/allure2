@@ -11,10 +11,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * @author Dmitry Baev baev@qameta.io
- *         Date: 05.03.16
+ * Plugin that generates data for XUnit tab.
+ *
+ * @since 2.0
  */
-public class XunitAggregator extends AbstractTreeAggregator {
+public class XunitPlugin extends AbstractTreeAggregator {
 
     @Override
     protected String getFileName() {

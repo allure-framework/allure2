@@ -1,6 +1,9 @@
 package io.qameta.allure;
 
 import io.qameta.allure.config.ConfigLoader;
+import io.qameta.allure.core.Configuration;
+import io.qameta.allure.core.Plugin;
+import io.qameta.allure.plugins.DirectoryPluginLoader;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -17,6 +20,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -40,12 +45,13 @@ public class Commands {
 
     public ExitCode generate(final Path reportDirectory,
                              final List<Path> resultsDirectories,
-                             final boolean clean) {
+                             final boolean clean,
+                             final String profile) {
         if (clean && Files.exists(reportDirectory)) {
             FileUtils.deleteQuietly(reportDirectory.toFile());
         }
-        ReportGenerator generator = new ReportGenerator(new DefaultConfiguration());
         try {
+            ReportGenerator generator = new ReportGenerator(createReportConfiguration(profile));
             generator.generate(reportDirectory, resultsDirectories);
         } catch (IOException e) {
             LOGGER.error("Could not generate report: {}", e);
@@ -55,7 +61,9 @@ public class Commands {
         return ExitCode.NO_ERROR;
     }
 
-    public ExitCode serve(final List<Path> resultsDirectories, final int port) {
+    public ExitCode serve(final List<Path> resultsDirectories,
+                          final int port,
+                          final String profile) {
         LOGGER.info("Generating report to temp directory...");
 
         final Path reportDirectory;
@@ -70,7 +78,8 @@ public class Commands {
         final ExitCode exitCode = generate(
                 reportDirectory,
                 resultsDirectories,
-                false
+                false,
+                profile
         );
         if (exitCode.isSuccess()) {
             return open(reportDirectory, port);
@@ -119,9 +128,32 @@ public class Commands {
     }
 
     /**
+     * Creates report configuration for a given profile.
+     *
+     * @param profile selected profile.
+     * @return created report configuration.
+     * @throws IOException if any occurs.
+     */
+    protected Configuration createReportConfiguration(final String profile) throws IOException {
+        final DirectoryPluginLoader loader = new DirectoryPluginLoader();
+        final CommandlineConfig commandlineConfig = getConfig(profile);
+        final ClassLoader classLoader = getClass().getClassLoader();
+        final List<Plugin> plugins = commandlineConfig.getPlugins().stream()
+                .map(name -> loader.loadPlugin(classLoader, allureHome.resolve("plugins").resolve(name)))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
+
+        return new ConfigurationBuilder()
+                .useDefault()
+                .fromPlugins(plugins)
+                .build();
+    }
+
+    /**
      * Set up Jetty server to serve Allure Report
      */
-    public Server setUpServer(final int port, final Path reportDirectory) {
+    protected Server setUpServer(final int port, final Path reportDirectory) {
         final Server server = new Server(port);
         ResourceHandler handler = new ResourceHandler();
         handler.setDirectoriesListed(true);
@@ -136,7 +168,7 @@ public class Commands {
     /**
      * Open the given url in default system browser.
      */
-    public void openBrowser(final URI url) throws IOException {
+    protected void openBrowser(final URI url) throws IOException {
         if (Desktop.isDesktopSupported()) {
             Desktop.getDesktop().browse(url);
         } else {

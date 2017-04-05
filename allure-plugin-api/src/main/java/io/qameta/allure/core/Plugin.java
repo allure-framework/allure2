@@ -1,25 +1,23 @@
 package io.qameta.allure.core;
 
-import io.qameta.allure.Aggregator;
-import io.qameta.allure.Context;
-import io.qameta.allure.Reader;
-import io.qameta.allure.Widget;
+import io.qameta.allure.Extension;
+import io.qameta.allure.PluginConfiguration;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 
 /**
- * @author charlie (Dmitry Baev).
+ * Base plugin interface.
+ *
+ * @since 2.0
  */
 public interface Plugin {
 
-    String getName();
+    PluginConfiguration getConfig();
 
-    List<Aggregator> getAggregators();
+    void unpackReportStatic(Path outputDirectory) throws IOException;
 
-    List<Reader> getReaders();
-
-    List<Widget> getWidgets();
-
-    List<Context> getContexts();
+    List<Extension> getExtensions();
 
 }

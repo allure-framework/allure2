@@ -1,7 +1,9 @@
 package io.qameta.allure.markdown;
 
-import io.qameta.allure.DefaultConfiguration;
+import io.qameta.allure.ConfigurationBuilder;
 import io.qameta.allure.DefaultLaunchResults;
+import io.qameta.allure.core.Configuration;
+import io.qameta.allure.core.MarkdownDescriptionsPlugin;
 import io.qameta.allure.entity.TestCaseResult;
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,17 +22,19 @@ public class MarkdownAggregatorTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
+    private final Configuration configuration = new ConfigurationBuilder().useDefault().build();
+
     @Test
     public void shouldNotFailIfEmptyResults() throws Exception {
         final Path output = folder.newFolder().toPath();
-        final MarkdownAggregator aggregator = new MarkdownAggregator();
-        aggregator.aggregate(new DefaultConfiguration(), Collections.emptyList(), output);
+        final MarkdownDescriptionsPlugin aggregator = new MarkdownDescriptionsPlugin();
+        aggregator.aggregate(configuration, Collections.emptyList(), output);
     }
 
     @Test
     public void shouldSkipResultsWithEmptyDescription() throws Exception {
         final Path output = folder.newFolder().toPath();
-        final MarkdownAggregator aggregator = new MarkdownAggregator();
+        final MarkdownDescriptionsPlugin aggregator = new MarkdownDescriptionsPlugin();
 
         final TestCaseResult result = new TestCaseResult().withName("some");
         final DefaultLaunchResults launchResults = new DefaultLaunchResults(
@@ -38,7 +42,7 @@ public class MarkdownAggregatorTest {
                 Collections.emptyMap(),
                 Collections.emptyMap()
         );
-        aggregator.aggregate(new DefaultConfiguration(), Collections.singletonList(launchResults), output);
+        aggregator.aggregate(configuration, Collections.singletonList(launchResults), output);
         assertThat(result)
                 .hasFieldOrPropertyWithValue("description", null)
                 .hasFieldOrPropertyWithValue("descriptionHtml", null);
@@ -47,7 +51,7 @@ public class MarkdownAggregatorTest {
     @Test
     public void shouldSkipResultsWithNonEmptyDescriptionHtml() throws Exception {
         final Path output = folder.newFolder().toPath();
-        final MarkdownAggregator aggregator = new MarkdownAggregator();
+        final MarkdownDescriptionsPlugin aggregator = new MarkdownDescriptionsPlugin();
 
         final TestCaseResult result = new TestCaseResult()
                 .withName("some")
@@ -58,7 +62,7 @@ public class MarkdownAggregatorTest {
                 Collections.emptyMap(),
                 Collections.emptyMap()
         );
-        aggregator.aggregate(new DefaultConfiguration(), Collections.singletonList(launchResults), output);
+        aggregator.aggregate(configuration, Collections.singletonList(launchResults), output);
         assertThat(result)
                 .hasFieldOrPropertyWithValue("description", "desc")
                 .hasFieldOrPropertyWithValue("descriptionHtml", "descHtml");
@@ -67,7 +71,7 @@ public class MarkdownAggregatorTest {
     @Test
     public void shouldProcessDescription() throws Exception {
         final Path output = folder.newFolder().toPath();
-        final MarkdownAggregator aggregator = new MarkdownAggregator();
+        final MarkdownDescriptionsPlugin aggregator = new MarkdownDescriptionsPlugin();
 
         final TestCaseResult result = new TestCaseResult()
                 .withName("some")
@@ -77,7 +81,7 @@ public class MarkdownAggregatorTest {
                 Collections.emptyMap(),
                 Collections.emptyMap()
         );
-        aggregator.aggregate(new DefaultConfiguration(), Collections.singletonList(launchResults), output);
+        aggregator.aggregate(configuration, Collections.singletonList(launchResults), output);
         assertThat(result)
                 .hasFieldOrPropertyWithValue("description", "desc")
                 .hasFieldOrPropertyWithValue("descriptionHtml", "<p>desc</p>");

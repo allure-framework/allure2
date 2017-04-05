@@ -16,7 +16,9 @@
 <div id="popup"></div>
 <script src="app.js"></script>
 <#list plugins as plugin>
-<script src="plugins/${plugin}/index.js"></script>
+    <#list plugin.jsFiles as jsFile>
+    <script src="plugins/${plugin.id}/${jsFile}"></script>
+    </#list>
 </#list>
 </body>
 </html>

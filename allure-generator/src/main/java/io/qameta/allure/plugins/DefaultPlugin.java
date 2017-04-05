@@ -1,63 +1,52 @@
 package io.qameta.allure.plugins;
 
-import io.qameta.allure.Aggregator;
-import io.qameta.allure.Context;
-import io.qameta.allure.Reader;
-import io.qameta.allure.Widget;
+import io.qameta.allure.Extension;
+import io.qameta.allure.PluginConfiguration;
 import io.qameta.allure.core.Plugin;
+import io.qameta.allure.utils.CopyVisitor;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 
 /**
- * @author charlie (Dmitry Baev).
+ * Default plugin implementation that unpack files from directory.
+ *
+ * @since 2.0
  */
 public class DefaultPlugin implements Plugin {
 
-    private final String name;
+    private final PluginConfiguration configuration;
 
-    private final List<Aggregator> aggregators;
+    private final List<Extension> extensions;
 
-    private final List<Reader> readers;
+    private final Path pluginDirectory;
 
-    private final List<Widget> widgets;
-
-    private final List<Context> contexts;
-
-    public DefaultPlugin(final String name,
-                         final List<Aggregator> aggregators,
-                         final List<Reader> readers,
-                         final List<Widget> widgets,
-                         final List<Context> contexts) {
-        this.name = name;
-        this.aggregators = aggregators;
-        this.readers = readers;
-        this.widgets = widgets;
-        this.contexts = contexts;
+    public DefaultPlugin(final PluginConfiguration configuration,
+                         final List<Extension> extensions,
+                         final Path pluginDirectory) {
+        this.configuration = configuration;
+        this.extensions = extensions;
+        this.pluginDirectory = pluginDirectory;
     }
 
     @Override
-    public String getName() {
-        return name;
+    public PluginConfiguration getConfig() {
+        return configuration;
     }
 
     @Override
-    public List<Aggregator> getAggregators() {
-        return Collections.unmodifiableList(aggregators);
+    public void unpackReportStatic(final Path outputDirectory) throws IOException {
+        final Path pluginStatic = pluginDirectory.resolve("static");
+        if (Files.exists(pluginStatic)) {
+            Files.walkFileTree(pluginStatic, new CopyVisitor(pluginStatic, outputDirectory));
+        }
     }
 
     @Override
-    public List<Reader> getReaders() {
-        return Collections.unmodifiableList(readers);
-    }
-
-    @Override
-    public List<Widget> getWidgets() {
-        return Collections.unmodifiableList(widgets);
-    }
-
-    @Override
-    public List<Context> getContexts() {
-        return Collections.unmodifiableList(contexts);
+    public List<Extension> getExtensions() {
+        return Collections.unmodifiableList(extensions);
     }
 }

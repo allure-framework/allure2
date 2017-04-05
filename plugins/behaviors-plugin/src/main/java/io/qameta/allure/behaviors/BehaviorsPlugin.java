@@ -1,4 +1,4 @@
-package io.qameta.allure.timeline;
+package io.qameta.allure.behaviors;
 
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.TestCaseResult;
@@ -9,21 +9,22 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author Dmitry Baev baev@qameta.io
- *         Date: 17.04.16
+ * The plugin adds behaviors tab to the report.
+ *
+ * @since 2.0
  */
-public class TimelineAggregator extends AbstractTreeAggregator {
+public class BehaviorsPlugin extends AbstractTreeAggregator {
 
     @Override
     protected String getFileName() {
-        return "timeline.json";
+        return "behaviors.json";
     }
 
     @Override
     protected List<TreeGroup> getGroups(final TestCaseResult result) {
         return Arrays.asList(
-                TreeGroup.oneByLabel(result, LabelName.HOST, "Default hostname"),
-                TreeGroup.oneByLabel(result, LabelName.THREAD, "Default thread")
+                TreeGroup.allByLabel(result, LabelName.FEATURE, "Default feature"),
+                TreeGroup.allByLabel(result, LabelName.STORY, "Default story")
         );
     }
 }

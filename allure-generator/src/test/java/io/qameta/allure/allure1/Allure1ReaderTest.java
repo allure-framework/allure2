@@ -1,7 +1,8 @@
 package io.qameta.allure.allure1;
 
-import io.qameta.allure.DefaultConfiguration;
+import io.qameta.allure.ConfigurationBuilder;
 import io.qameta.allure.DefaultResultsVisitor;
+import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.Label;
@@ -227,8 +228,8 @@ public class Allure1ReaderTest {
             String second = iterator.next();
             copyFile(resultsDirectory, first, second);
         }
-        Allure1Reader reader = new Allure1Reader();
-        final DefaultConfiguration configuration = new DefaultConfiguration();
+        Allure1Plugin reader = new Allure1Plugin();
+        final Configuration configuration = new ConfigurationBuilder().useDefault().build();
         final DefaultResultsVisitor resultsVisitor = new DefaultResultsVisitor(configuration);
         reader.readResults(configuration, resultsVisitor, resultsDirectory);
         return resultsVisitor.getLaunchResults();

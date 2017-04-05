@@ -12,9 +12,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @author charlie (Dmitry Baev).
+ * Plugin that stores test results to report data folder.
+ *
+ * @since 2.0
  */
-public class ResultsAggregator implements Aggregator {
+public class TestsResultsPlugin implements Aggregator {
 
     @Override
     public void aggregate(final Configuration configuration,

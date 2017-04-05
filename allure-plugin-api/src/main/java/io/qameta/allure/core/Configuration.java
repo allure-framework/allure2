@@ -9,11 +9,13 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @author charlie (Dmitry Baev).
+ * Report configuration.
+ *
+ * @since 2.0
  */
 public interface Configuration {
 
-    List<PluginDescriptor> getPluginsDescriptors();
+    List<Plugin> getPlugins();
 
     List<Aggregator> getAggregators();
 

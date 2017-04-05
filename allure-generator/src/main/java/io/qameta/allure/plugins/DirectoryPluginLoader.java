@@ -2,11 +2,8 @@ package io.qameta.allure.plugins;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import io.qameta.allure.Aggregator;
-import io.qameta.allure.Context;
+import io.qameta.allure.Extension;
 import io.qameta.allure.PluginConfiguration;
-import io.qameta.allure.Reader;
-import io.qameta.allure.Widget;
 import io.qameta.allure.core.Plugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,54 +30,33 @@ public class DirectoryPluginLoader {
         final Optional<PluginConfiguration> pluginConfiguration = loadPluginConfiguration(pluginDirectory);
         if (pluginConfiguration.isPresent()) {
             final PluginConfiguration configuration = pluginConfiguration.get();
-            if (hasJavaExtensions(configuration)) {
+            if (!configuration.getExtensions().isEmpty()) {
                 final Optional<ClassLoader> loader = createClassLoader(parent, pluginDirectory);
                 if (!loader.isPresent()) {
                     return Optional.empty();
                 }
 
                 final ClassLoader classLoader = loader.get();
-                final List<Reader> readers = configuration.getReaders().stream()
-                        .map(name -> load(classLoader, name, Reader.class))
-                        .filter(Optional::isPresent)
-                        .map(Optional::get)
-                        .collect(Collectors.toList());
-                final List<Aggregator> aggregators = configuration.getAggregators().stream()
-                        .map(name -> load(classLoader, name, Aggregator.class))
-                        .filter(Optional::isPresent)
-                        .map(Optional::get)
-                        .collect(Collectors.toList());
-                final List<Widget> widgets = configuration.getWidgets().stream()
-                        .map(name -> load(classLoader, name, Widget.class))
-                        .filter(Optional::isPresent)
-                        .map(Optional::get)
-                        .collect(Collectors.toList());
-                final List<Context> contexts = configuration.getWidgets().stream()
-                        .map(name -> load(classLoader, name, Context.class))
+                final List<Extension> extensions = configuration.getExtensions().stream()
+                        .map(name -> load(classLoader, name))
                         .filter(Optional::isPresent)
                         .map(Optional::get)
                         .collect(Collectors.toList());
 
-                return Optional.of(new DefaultPlugin(
-                        configuration.getName(),
-                        aggregators,
-                        readers,
-                        widgets,
-                        contexts
-                ));
+                return Optional.of(new DefaultPlugin(configuration, extensions, pluginDirectory));
             }
         }
         return Optional.empty();
     }
 
-    private <T> Optional<T> load(final ClassLoader classLoader, final String name, final Class<T> pluginType) {
+    private Optional<Extension> load(final ClassLoader classLoader, final String name) {
         try {
-            final T loaded = pluginType.cast(
+            final Extension loaded = Extension.class.cast(
                     classLoader.loadClass(name).newInstance()
             );
             return Optional.of(loaded);
         } catch (Exception e) {
-            LOGGER.error("Could not load {} {}: {}", pluginType.getSimpleName(), name, e);
+            LOGGER.error("Could not load extension class {}: {}", name, e);
             return Optional.empty();
         }
     }
@@ -99,13 +75,6 @@ public class DirectoryPluginLoader {
             LOGGER.error("Could not read plugin configuration: {}", e);
             return Optional.empty();
         }
-    }
-
-    private boolean hasJavaExtensions(final PluginConfiguration configuration) {
-        return !configuration.getAggregators().isEmpty()
-                || !configuration.getReaders().isEmpty()
-                || !configuration.getWidgets().isEmpty()
-                || !configuration.getContexts().isEmpty();
     }
 
     private Optional<ClassLoader> createClassLoader(final ClassLoader parent, final Path pluginDirectory) {

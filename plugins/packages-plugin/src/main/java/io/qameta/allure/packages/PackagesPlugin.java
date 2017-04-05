@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  *
  * @since 2.0
  */
-public class PackagesAggregator extends AbstractTreeAggregator {
+public class PackagesPlugin extends AbstractTreeAggregator {
 
     @Override
     protected List<TreeGroup> getGroups(final TestCaseResult result) {

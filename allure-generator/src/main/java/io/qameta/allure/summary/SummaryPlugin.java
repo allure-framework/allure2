@@ -15,9 +15,11 @@ import java.nio.file.Path;
 import java.util.List;
 
 /**
- * @author charlie (Dmitry Baev).
+ * Plugins generates Summary widget and summary export bean.
+ *
+ * @since 2.0
  */
-public class SummaryAggregator implements Aggregator, Widget {
+public class SummaryPlugin implements Aggregator, Widget {
 
     @Override
     public void aggregate(final Configuration configuration,

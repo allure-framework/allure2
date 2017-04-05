@@ -1,9 +1,7 @@
-package io.qameta.allure.markdown;
+package io.qameta.allure.core;
 
 import io.qameta.allure.Aggregator;
 import io.qameta.allure.context.MarkdownContext;
-import io.qameta.allure.core.Configuration;
-import io.qameta.allure.core.LaunchResults;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -12,9 +10,11 @@ import static org.parboiled.common.StringUtils.isEmpty;
 import static org.parboiled.common.StringUtils.isNotEmpty;
 
 /**
- * @author charlie (Dmitry Baev).
+ * Plugin that converts descriptions from markdown to html.
+ *
+ * @since 2.0
  */
-public class MarkdownAggregator implements Aggregator {
+public class MarkdownDescriptionsPlugin implements Aggregator {
 
     @Override
     public void aggregate(final Configuration configuration,

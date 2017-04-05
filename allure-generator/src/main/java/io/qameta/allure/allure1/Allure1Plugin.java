@@ -59,12 +59,14 @@ import static io.qameta.allure.utils.ListUtils.firstNonNull;
 import static org.allurefw.allure1.AllureUtils.unmarshalTestSuite;
 
 /**
- * @author charlie (Dmitry Baev).
+ * Plugin that reads results from Allure1 data format.
+ *
+ * @since 2.0
  */
 @SuppressWarnings("PMD.ExcessiveImports")
-public class Allure1Reader implements Reader {
+public class Allure1Plugin implements Reader {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Allure1Reader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Allure1Plugin.class);
     private static final String UNKNOWN = "unknown";
 
     private final ObjectMapper mapper = new ObjectMapper();

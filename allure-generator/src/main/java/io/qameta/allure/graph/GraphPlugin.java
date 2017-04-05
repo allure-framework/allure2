@@ -14,10 +14,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @author Dmitry Baev baev@qameta.io
- *         Date: 16.04.16
+ * Plugin that generates data for Graph tab.
+ *
+ * @since 2.0
  */
-public class GraphAggregator implements Aggregator {
+public class GraphPlugin implements Aggregator {
 
     @Override
     public void aggregate(final Configuration configuration,

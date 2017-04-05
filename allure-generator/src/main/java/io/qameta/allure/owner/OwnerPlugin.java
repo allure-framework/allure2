@@ -10,9 +10,11 @@ import java.nio.file.Path;
 import java.util.List;
 
 /**
- * @author charlie (Dmitry Baev).
+ * Plugin that adds owner information to test results.
+ *
+ * @since 2.0
  */
-public class OwnerAggregator implements Aggregator {
+public class OwnerPlugin implements Aggregator {
 
     private static final String OWNER_BLOCK_NAME = "owner";
 
