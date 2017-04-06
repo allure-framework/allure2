@@ -11,11 +11,13 @@
             </div>
         </{{../rowTag}}>
     {{/each}}
-    {{#if (gt total items.length)}}
-        <a class="table__row" href="#{{baseUrl}}">
-            <div class="table__col table__col_center">
-                {{showAllText}}
-            </div>
-        </a>
+    {{#if showAllText}}
+        {{#if (gt total items.length)}}
+            <a class="table__row" href="#{{baseUrl}}">
+                <div class="table__col table__col_center">
+                    {{showAllText}}
+                </div>
+            </a>
+        {{/if}}
     {{/if}}
 </div>
