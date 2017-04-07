@@ -1,0 +1,14 @@
+@import "../../variables.css";
+
+.retry {
+  &-title {
+    margin: 15px 15px 0.3em;
+  }
+  &-row {
+    padding: 7px 15px 7px $gap-size;
+    &:hover {
+      background-color: $hover-color;
+    }
+    cursor: pointer;
+  }
+}
