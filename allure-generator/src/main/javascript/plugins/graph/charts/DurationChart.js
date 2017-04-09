@@ -1,6 +1,6 @@
 import BaseChartView from '../../../components/chart/BaseChartView';
 
-import {scaleUtc, scaleSqrt} from 'd3-scale';
+import {scaleLinear, scaleSqrt} from 'd3-scale';
 import {histogram, max, median} from 'd3-array';
 import PopoverView from '../../../components/popover/PopoverView';
 import escape from '../../../util/escape';
@@ -14,7 +14,7 @@ const PAD_BOTTOM = 30;
 export default class DurationChart extends BaseChartView {
 
     initialize() {
-        this.x = scaleUtc();
+        this.x = scaleLinear();
         this.y = scaleSqrt();
         this.tooltip = new PopoverView({position: 'right'});
     }
