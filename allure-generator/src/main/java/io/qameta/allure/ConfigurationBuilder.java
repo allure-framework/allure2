@@ -19,6 +19,7 @@ import io.qameta.allure.history.HistoryPlugin;
 import io.qameta.allure.launch.LaunchPlugin;
 import io.qameta.allure.mail.MailPlugin;
 import io.qameta.allure.owner.OwnerPlugin;
+import io.qameta.allure.retry.RetryPlugin;
 import io.qameta.allure.severity.SeverityPlugin;
 import io.qameta.allure.summary.SummaryPlugin;
 import io.qameta.allure.timeline.TimelinePlugin;
@@ -49,6 +50,7 @@ public class ConfigurationBuilder {
                 new FreemarkerContext(),
                 new RandomUidContext(),
                 new MarkdownDescriptionsPlugin(),
+                new RetryPlugin(),
                 new SeverityPlugin(),
                 new OwnerPlugin(),
                 new CategoriesPlugin(),

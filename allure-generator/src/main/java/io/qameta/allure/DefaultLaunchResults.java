@@ -10,7 +10,10 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * @author charlie (Dmitry Baev).
+ * Default implementation of {@link LaunchResults}. Stores all the results
+ * into memory.
+ *
+ * @since 2.0
  */
 public class DefaultLaunchResults implements LaunchResults {
 
@@ -29,7 +32,7 @@ public class DefaultLaunchResults implements LaunchResults {
     }
 
     @Override
-    public Set<TestCaseResult> getResults() {
+    public Set<TestCaseResult> getAllResults() {
         return results;
     }
 

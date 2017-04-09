@@ -25,7 +25,7 @@ public class TestsResultsPlugin implements Aggregator {
         final JacksonContext context = configuration.requireContext(JacksonContext.class);
         final Path testCasesFolder = Files.createDirectories(outputDirectory.resolve("data/test-cases"));
         final List<TestCaseResult> results = launchesResults.stream()
-                .flatMap(launch -> launch.getResults().stream())
+                .flatMap(launch -> launch.getAllResults().stream())
                 .collect(Collectors.toList());
         for (TestCaseResult result : results) {
             final Path file = testCasesFolder.resolve(result.getSource());

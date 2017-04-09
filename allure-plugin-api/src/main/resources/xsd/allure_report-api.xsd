@@ -76,6 +76,8 @@
                     <xsd:element name="labels" type="ns:Labels" minOccurs="0"/>
                     <xsd:element name="parameters" type="ns:Parameters" minOccurs="0"/>
                     <xsd:element name="links" type="ns:Links" minOccurs="0"/>
+
+                    <xsd:element name="hidden" type="xsd:boolean"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>

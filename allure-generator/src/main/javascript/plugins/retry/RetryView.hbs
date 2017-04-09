@@ -1,0 +1,9 @@
+{{#if retries}}
+    <h3 class="history-title">Reties</h3>
+    {{#each retries}}
+        <div class="retry-row" data-uid="{{uid}}">
+            <span class="label label_status_{{status}}">{{status}}</span>
+            {{date time.start}} at {{time time.start}}
+        </div>
+    {{/each}}
+{{/if}}

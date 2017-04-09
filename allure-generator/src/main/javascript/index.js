@@ -13,6 +13,7 @@ import './plugins/xunit';
 import './plugins/graph';
 import './plugins/timeline';
 import './plugins/history';
+import './plugins/retry';
 import './plugins/executor';
 import './plugins/launch';
 import './plugins/summary';
