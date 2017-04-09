@@ -1,9 +1,9 @@
-package io.qameta.allure.plugins;
+package io.qameta.allure.plugin;
 
 import io.qameta.allure.Extension;
 import io.qameta.allure.PluginConfiguration;
 import io.qameta.allure.core.Plugin;
-import io.qameta.allure.utils.CopyVisitor;
+import io.qameta.allure.util.CopyVisitor;
 
 import java.io.IOException;
 import java.nio.file.Files;

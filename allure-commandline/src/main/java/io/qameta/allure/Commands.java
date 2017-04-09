@@ -3,7 +3,7 @@ package io.qameta.allure;
 import io.qameta.allure.config.ConfigLoader;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.Plugin;
-import io.qameta.allure.plugins.DirectoryPluginLoader;
+import io.qameta.allure.plugin.DefaultPluginLoader;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -135,7 +135,7 @@ public class Commands {
      * @throws IOException if any occurs.
      */
     protected Configuration createReportConfiguration(final String profile) throws IOException {
-        final DirectoryPluginLoader loader = new DirectoryPluginLoader();
+        final DefaultPluginLoader loader = new DefaultPluginLoader();
         final CommandlineConfig commandlineConfig = getConfig(profile);
         final ClassLoader classLoader = getClass().getClassLoader();
         final List<Plugin> plugins = commandlineConfig.getPlugins().stream()
