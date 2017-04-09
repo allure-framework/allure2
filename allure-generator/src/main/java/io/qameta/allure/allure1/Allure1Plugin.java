@@ -55,7 +55,6 @@ import static io.qameta.allure.entity.Status.BROKEN;
 import static io.qameta.allure.entity.Status.FAILED;
 import static io.qameta.allure.entity.Status.PASSED;
 import static io.qameta.allure.entity.Status.SKIPPED;
-import static io.qameta.allure.utils.ListUtils.firstNonNull;
 import static org.allurefw.allure1.AllureUtils.unmarshalTestSuite;
 
 /**
@@ -341,4 +340,13 @@ public class Allure1Plugin implements Reader {
         }
     }
 
+    @SafeVarargs
+    private static <T> T firstNonNull(final T... items) {
+        return Stream.of(items)
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException(
+                        "firstNonNull method should have at least one non null parameter"
+                ));
+    }
 }

@@ -1,4 +1,4 @@
-package io.qameta.allure.plugins;
+package io.qameta.allure.plugin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -15,16 +15,19 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * @author charlie (Dmitry Baev).
+ * Default plugin loader that load plugins from given directory.
+ *
+ * @since 2.0
  */
-public class DirectoryPluginLoader {
+public class DefaultPluginLoader {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DirectoryPluginLoader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultPluginLoader.class);
 
     public Optional<Plugin> loadPlugin(final ClassLoader parent, final Path pluginDirectory) {
         final Optional<PluginConfiguration> pluginConfiguration = loadPluginConfiguration(pluginDirectory);
@@ -44,6 +47,8 @@ public class DirectoryPluginLoader {
                         .collect(Collectors.toList());
 
                 return Optional.of(new DefaultPlugin(configuration, extensions, pluginDirectory));
+            } else {
+                return Optional.of(new DefaultPlugin(configuration, Collections.emptyList(), pluginDirectory));
             }
         }
         return Optional.empty();
