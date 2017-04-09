@@ -13,6 +13,9 @@ project(':plugins/packages-plugin').name = 'packages-plugin'
 include 'plugins/custom-logo-plugin'
 project(':plugins/custom-logo-plugin').name = 'custom-logo-plugin'
 
+include 'plugins/screen-diff-plugin'
+project(':plugins/screen-diff-plugin').name = 'screen-diff-plugin'
+
 //include 'junit-plugin'
 //include 'cucumber-json-plugin'
 //

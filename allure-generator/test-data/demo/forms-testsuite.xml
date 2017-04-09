@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns2:test-suite xmlns:ns2="urn:model.allure.qatools.yandex.ru" start="1443622429471" stop="1443622429475">
+	<name>Forms</name>
+	<title>Forms</title>
+	<test-cases>
+		<test-case start="1443622429471" stop="1443622429472" status="failed">
+			<name>buttons</name>
+			<title>buttons</title>
+			<description></description>
+			<labels>
+				<label name="testType" value="screenshotDiff" />
+			</labels>
+			<steps>
+			</steps>
+			<attachments>
+				<attachment title="actual" source="3-1-actual-attachment.png" type="image/png"/>
+				<attachment title="expected" source="3-1-expected-attachment.png" type="image/png"/>
+				<attachment title="diff" source="3-1-diff-attachment.png" type="image/png"/>
+			</attachments>
+			<failure>
+				<message>Element doesn&apos;t match</message>
+				<stack-trace>AssertionError: Element doesn&apos;t match
+    at Context.&lt;anonymous&gt; (test/test.spec.js:47:15)</stack-trace>
+			</failure>
+		</test-case>
+		<test-case start="1443622429473" stop="1443622429473" status="passed">
+			<name>language</name>
+			<title>language</title>
+			<description></description>
+			<labels>
+				<label name="testType" value="screenshotDiff" />
+			</labels>
+			<steps>
+			</steps>
+			<attachments>
+				<attachment title="actual" source="3-2-actual-attachment.png" type="image/png"/>
+			</attachments>
+		</test-case>
+		<test-case start="1443622429474" stop="1443622429474" status="passed">
+			<name>payment 1</name>
+			<title>payment 1</title>
+			<description></description>
+			<labels>
+				<label name="testType" value="screenshotDiff" />
+			</labels>
+			<steps>
+			</steps>
+			<attachments>
+				<attachment title="actual" source="3-3-actual-attachment.png" type="image/png"/>
+			</attachments>
+		</test-case>
+		<test-case start="1443622429475" stop="1443622429475" status="failed">
+			<name>payment 2</name>
+			<title>payment 2</title>
+			<description></description>
+			<labels>
+				<label name="testType" value="screenshotDiff" />
+			</labels>
+			<steps>
+			</steps>
+			<attachments>
+				<attachment title="actual" source="3-4-actual-attachment.png" type="image/png"/>
+				<attachment title="expected" source="3-4-expected-attachment.png" type="image/png"/>
+				<attachment title="diff" source="3-4-diff-attachment.png" type="image/png"/>
+			</attachments>
+			<failure>
+				<message>Element doesn&apos;t match</message>
+				<stack-trace>AssertionError: Element doesn&apos;t match
+    at Context.&lt;anonymous&gt; (test/test.spec.js:62:15)</stack-trace>
+			</failure>
+		</test-case>
+	</test-cases>
+</ns2:test-suite>
