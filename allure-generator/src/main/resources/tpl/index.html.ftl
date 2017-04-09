@@ -5,6 +5,11 @@
     <title>Allure Report</title>
     <link rel="favicon" href="favicon.ico">
     <link rel="stylesheet" href="styles.css">
+    <#list plugins as plugin>
+        <#list plugin.cssFiles as cssFile>
+            <link rel="stylesheet" href="plugins/${plugin.id}/${cssFile}">
+        </#list>
+    </#list>
 </head>
 <body>
 <div id="alert"></div>
