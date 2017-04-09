@@ -1,1 +1,0 @@
-jQuery('head').append('<link rel="stylesheet" href="plugins/custom-logo-plugin/styles.css"/>');
