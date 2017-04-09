@@ -37,6 +37,7 @@ dependencies {
 //    allurePlugin project(path: ':junit-plugin', configuration: 'allurePlugin')
     allurePlugin project(path: ':packages-plugin', configuration: 'allurePlugin')
     allurePlugin project(path: ':custom-logo-plugin', configuration: 'allurePlugin')
+    allurePlugin project(path: ':screen-diff-plugin', configuration: 'allurePlugin')
 
     compile project(':allure-generator')
     compile('com.beust:jcommander')

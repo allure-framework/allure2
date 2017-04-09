@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns2:test-suite xmlns:ns2="urn:model.allure.qatools.yandex.ru" start="1443622429476" stop="1443622429477">
+	<name>Video</name>
+	<title>Video</title>
+	<test-cases>
+		<test-case start="1443622429476" stop="1443622429477" status="passed">
+			<name>video wizard</name>
+			<title>video wizard</title>
+			<description></description>
+			<labels>
+			</labels>
+			<steps>
+			</steps>
+			<attachments>
+				<attachment title="actual" source="4-1-actual-attachment.png" type="image/png"/>
+			</attachments>
+		</test-case>
+	</test-cases>
+</ns2:test-suite>
