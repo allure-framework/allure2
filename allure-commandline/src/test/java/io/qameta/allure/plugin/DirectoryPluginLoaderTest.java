@@ -107,6 +107,37 @@ public class DirectoryPluginLoaderTest {
     }
 
     @Test
+    public void shouldLoadJarsInLibDirectory() throws Exception {
+        final Path pluginFolder = folder.newFolder().toPath();
+        add(pluginFolder, "plugin.jar", "lib/plugin.jar");
+        add(pluginFolder, "dummy-plugin.yml", "allure-plugin.yml");
+
+        final Optional<Plugin> loaded = pluginLoader.loadPlugin(getClass().getClassLoader(), pluginFolder);
+
+        assertThat(loaded)
+                .isPresent();
+
+        final Plugin plugin = loaded.get();
+        assertThat(plugin.getConfig())
+                .isNotNull()
+                .hasFieldOrPropertyWithValue("id", "packages")
+                .hasFieldOrPropertyWithValue("name", "Packages aggregator")
+                .hasFieldOrPropertyWithValue("description", "The aggregator adds packages tab to the report");
+
+        assertThat(plugin.getExtensions())
+                .isNotNull()
+                .hasSize(1);
+
+        final Extension extension = plugin.getExtensions().get(0);
+        assertThat(extension)
+                .isNotNull()
+                .isInstanceOf(Aggregator.class);
+
+        assertThat(extension.getClass().getCanonicalName())
+                .isEqualTo("io.qameta.allure.packages.PackagesPlugin");
+    }
+
+    @Test
     public void shouldProcessInvalidConfigFile() throws Exception {
         final Path pluginFolder = folder.newFolder().toPath();
         add(pluginFolder, "static-file.txt", "allure-plugin.yml");

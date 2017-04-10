@@ -3,19 +3,14 @@ description = 'Allure JUnit Plugin'
 apply plugin: 'java-library-distribution'
 apply from: "${gradleScriptDir}/bintray.gradle"
 
-jar {
-    archiveName = 'plugin.jar'
-}
-
 dependencies {
     compileOnly project(':allure-plugin-api')
     compile('org.apache.maven.surefire:surefire-report-parser')
 
     testCompile project(':allure-plugin-api')
     testCompile('junit:junit')
-    testCompile('org.hamcrest:hamcrest-all')
-    testCompile('org.mockito:mockito-all')
-    testCompile('com.github.baev:hamcrest-optional')
+    testCompile('org.assertj:assertj-core')
+    testCompile('org.mockito:mockito-core')
     testCompile("org.slf4j:slf4j-simple")
 }
 
