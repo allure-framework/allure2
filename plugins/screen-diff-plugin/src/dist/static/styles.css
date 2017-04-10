@@ -1,5 +1,5 @@
-.screen-diff__image {
-  width: 100%;
+.screen-diff__switchers {
+  margin-bottom: 1em;
 }
 
 .screen-diff__switchers label + label {
@@ -9,6 +9,10 @@
 .screen-diff__overlay {
   position: relative;
   cursor: col-resize;
+}
+
+.screen-diff__container {
+  overflow-x: auto;
 }
 
 .screen-diff__image-over {
