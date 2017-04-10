@@ -1,25 +1,28 @@
 (function () {
     function renderImage(src) {
-        return '<img class="screen-diff__image" src="data/attachments/' + src + '">';
+        return '<div class="screen-diff__container">' +
+            '<img class="screen-diff__image" src="data/attachments/' + src + '">' +
+            '</div>';
     }
 
     function renderDiffContent(type, data) {
         function findImage(name) {
-            return data.testStage.attachments.filter(function(attachment) {
+            return data.testStage.attachments.filter(function (attachment) {
                 return attachment.name === name;
             })[0];
         }
-        let diffImage = findImage('diff');
-        const actualImage = findImage('actual');
-        const expectedImage = findImage('expected');
-        if(type === 'diff') {
-            if(!diffImage) {
+
+        var diffImage = findImage('diff');
+        var actualImage = findImage('actual');
+        var expectedImage = findImage('expected');
+        if (type === 'diff') {
+            if (!diffImage) {
                 return renderImage(actualImage.source);
             }
             return renderImage(diffImage.source);
         }
-        if(type === 'overlay') {
-            return '<div class="screen-diff__overlay">' +
+        if (type === 'overlay') {
+            return '<div class="screen-diff__overlay screen-diff__container">' +
                 '<img class="screen-diff__image" src="data/attachments/' + expectedImage.source + '">' +
                 '<div class="screen-diff__image-over">' +
                 '<img class="screen-diff__image" src="data/attachments/' + actualImage.source + '">' +
@@ -28,7 +31,7 @@
         }
     }
 
-    const ScreenDiffView = Backbone.Marionette.View.extend({
+    var ScreenDiffView = Backbone.Marionette.View.extend({
         className: 'pane__section',
         events: {
             'click [name="screen-diff-type"]': 'onDiffTypeChange',
@@ -43,7 +46,7 @@
             }
         },
         template: function (data) {
-            let testType = data.labels.filter(function (label) {
+            var testType = data.labels.filter(function (label) {
                 return label.name === 'testType'
             })[0];
 
@@ -61,7 +64,7 @@
                 '</div>';
         },
         adjustImageSize: function (event) {
-            const overImage = this.$(event.target);
+            var overImage = this.$(event.target);
             overImage.width(overImage.width());
         },
         onRender: function () {
@@ -71,9 +74,10 @@
             }
         },
         onOverlayMove: function (event) {
-            const pageX = event.pageX;
-            const elementX = event.currentTarget.getBoundingClientRect().left;
-            const delta = pageX - elementX;
+            var pageX = event.pageX;
+            var containerScroll = this.$('.screen-diff__container').scrollLeft();
+            var elementX = event.currentTarget.getBoundingClientRect().left;
+            var delta = pageX - elementX + containerScroll;
             this.$('.screen-diff__image-over').width(delta);
         },
         onDiffTypeChange: function (event) {
