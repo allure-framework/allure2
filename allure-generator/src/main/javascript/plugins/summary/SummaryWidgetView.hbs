@@ -1,18 +1,20 @@
-<h2 class="{{b 'widget' 'title'}}">
-    {{#if isAggregated}}
-        Aggregated report
-        <span class="{{b 'widget' 'subtitle'}}">
-            {{testRunsCount}} test runs
-        </span>
-    {{else}}
-        {{reportName}}
-    {{/if}}
-</h2>
-
 <div class="{{b 'widget' 'flex-line'}}">
-    <div class="{{b 'widget' 'column'}} splash">
-        <div class="{{b 'splash' 'title'}}">{{statistic.total}}</div>
-        <div class="{{b 'splash' 'subtitle'}}">test cases</div>
+    <div class="{{b 'widget' 'column'}}">
+        <h2 class="{{b 'widget' 'title'}}">
+            {{#if isAggregated}}
+                Aggregated report
+                <span class="{{b 'widget' 'subtitle'}}">{{testRunsCount}} test runs</span>
+            {{else}}
+                {{reportName}} {{date time.stop}}
+            {{/if}}
+            <div class="{{b 'widget' 'subtitle'}}">
+                {{time time.start}} - {{time time.stop}} ({{duration time.duration 2}})
+            </div>
+        </h2>
+        <div class="{{b 'summary-widget' 'stats'}} splash">
+            <div class="{{b 'splash' 'title'}}">{{statistic.total}}</div>
+            <div class="{{b 'splash' 'subtitle'}}">test cases</div>
+        </div>
     </div>
     <div class="{{b 'widget' 'column'}} {{b 'summary-widget' 'chart'}}"></div>
 </div>
