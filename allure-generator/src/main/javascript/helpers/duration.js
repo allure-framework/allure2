@@ -50,7 +50,7 @@ export default function(timeInt, count) {
             return value + token.suffix;
         });
     if(typeof count !== 'number') {
-        count = 3;
+        count = 2;
     }
     return res.slice(0, count).join(' ');
 }
