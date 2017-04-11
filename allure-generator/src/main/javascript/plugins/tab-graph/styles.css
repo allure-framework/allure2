@@ -28,3 +28,7 @@
     @mixin status-bg-bright;
   }
 }
+
+.trend {
+  @mixin status-fill;
+}

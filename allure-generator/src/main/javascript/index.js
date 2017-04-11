@@ -8,6 +8,7 @@ import './pluginApi';
 
 import './plugins/default';
 import './plugins/environment';
+import './plugins/history-trend';
 
 import './plugins/tab-category';
 import './plugins/tab-xunit';
