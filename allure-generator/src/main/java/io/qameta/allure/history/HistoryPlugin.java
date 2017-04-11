@@ -44,7 +44,7 @@ public class HistoryPlugin implements Reader, Aggregator {
                             final ResultsVisitor visitor,
                             final Path directory) {
         final JacksonContext context = configuration.requireContext(JacksonContext.class);
-        final Path historyFile = directory.resolve(HISTORY_FILE_NAME);
+        final Path historyFile = directory.resolve(HISTORY_BLOCK_NAME).resolve(HISTORY_FILE_NAME);
         if (Files.exists(historyFile)) {
             try (InputStream is = Files.newInputStream(historyFile)) {
                 final Map<String, HistoryData> history = context.getValue().readValue(is, HISTORY_TYPE);
