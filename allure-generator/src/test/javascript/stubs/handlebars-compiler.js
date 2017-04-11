@@ -5,8 +5,6 @@ const path = require('path');
 const fs = new MemoryFS();
 const file = process.argv[2];
 
-console.log('SETUP HOHOHO');
-
 const compiler = webpack({
     entry: file,
     output: {
