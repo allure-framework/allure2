@@ -6,7 +6,7 @@ import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.TestCaseResult;
+import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.tree.AbstractTreeAggregator;
 import io.qameta.allure.tree.TreeGroup;
 import io.qameta.allure.tree.TreeWidgetData;
@@ -35,7 +35,7 @@ public class BehaviorsPlugin extends AbstractTreeAggregator implements Widget {
     }
 
     @Override
-    protected List<TreeGroup> getGroups(final TestCaseResult result) {
+    protected List<TreeGroup> getGroups(final TestResult result) {
         return Arrays.asList(
                 TreeGroup.allByLabel(result, LabelName.FEATURE, "Default feature"),
                 TreeGroup.allByLabel(result, LabelName.STORY, "Default story")
@@ -48,7 +48,7 @@ public class BehaviorsPlugin extends AbstractTreeAggregator implements Widget {
         final Map<String, Status> statuses = getStories(launches);
         final Map<String, Set<String>> featureStory = new HashMap<>();
         for (LaunchResults launchResults : launches) {
-            for (TestCaseResult result : launchResults.getResults()) {
+            for (TestResult result : launchResults.getResults()) {
                 final List<String> features = result.findAll(LabelName.FEATURE);
                 for (String feature : features) {
                     final Set<String> strings = featureStory.computeIfAbsent(feature, s -> new HashSet<>());

@@ -10,7 +10,7 @@ import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.Step;
-import io.qameta.allure.entity.TestCaseResult;
+import io.qameta.allure.entity.TestResult;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -57,7 +57,7 @@ public class Allure1ReaderTest {
     @Test
     @SuppressWarnings("unchecked")
     public void shouldProcessEmptyOrNullStatus() throws Exception {
-        Set<TestCaseResult> testResults = process(
+        Set<TestResult> testResults = process(
                 "allure1/empty-status-testsuite.xml", generateTestSuiteXmlName()
         ).getResults();
         assertThat(testResults, hasSize(4));
@@ -71,7 +71,7 @@ public class Allure1ReaderTest {
 
     @Test
     public void shouldReadTestSuiteXml() throws Exception {
-        Set<TestCaseResult> testResults = process(
+        Set<TestResult> testResults = process(
                 "allure1/sample-testsuite.xml", generateTestSuiteXmlName()
         ).getResults();
         assertThat(testResults, hasSize(4));
@@ -79,7 +79,7 @@ public class Allure1ReaderTest {
 
     @Test
     public void shouldReadTestSuiteJson() throws Exception {
-        Set<TestCaseResult> testResults = process(
+        Set<TestResult> testResults = process(
                 "allure1/sample-testsuite.json", generateTestSuiteJsonName()
         ).getResults();
         assertThat(testResults, hasSize(1));
@@ -92,7 +92,7 @@ public class Allure1ReaderTest {
                 "allure1/sample-attachment.txt", "sample-attachment.txt"
         );
         final Map<Path, Attachment> attachmentMap = launchResults.getAttachments();
-        final Set<TestCaseResult> results = launchResults.getResults();
+        final Set<TestResult> results = launchResults.getResults();
 
         assertThat(attachmentMap.entrySet(), hasSize(1));
         List<Attachment> attachments = results.stream()
@@ -104,7 +104,7 @@ public class Allure1ReaderTest {
         assertThat(a.getSource(), is(b.getSource()));
     }
 
-    private Stream<Attachment> extractAttachments(TestCaseResult testCaseResult) {
+    private Stream<Attachment> extractAttachments(TestResult testCaseResult) {
         Stream<StageResult> before = testCaseResult.getBeforeStages().stream();
         Stream<StageResult> test = Stream.of(testCaseResult.getTestStage());
         Stream<StageResult> after = testCaseResult.getAfterStages().stream();
@@ -144,17 +144,17 @@ public class Allure1ReaderTest {
 
     @Test
     public void shouldNotFailIfNoResultsDirectory() throws Exception {
-        Set<TestCaseResult> testResults = process().getResults();
+        Set<TestResult> testResults = process().getResults();
         assertThat(testResults, empty());
     }
 
     @Test
     public void shouldGetSuiteTitleIfExists() throws Exception {
-        Set<TestCaseResult> testCases = process(
+        Set<TestResult> testCases = process(
                 "allure1/sample-testsuite.json", generateTestSuiteJsonName()
         ).getResults();
         assertThat(testCases, hasSize(1));
-        TestCaseResult result = testCases.iterator().next();
+        TestResult result = testCases.iterator().next();
         Optional<String> suiteName = result.findOne(LabelName.SUITE);
         assertThat(suiteName, isPresent());
         assertThat(suiteName, hasValue("Passing test"));
@@ -162,11 +162,11 @@ public class Allure1ReaderTest {
 
     @Test
     public void shouldNotFailIfSuiteTitleNotExists() throws Exception {
-        Set<TestCaseResult> testCases = process(
+        Set<TestResult> testCases = process(
                 "allure1/suite-with-attachments.xml", generateTestSuiteXmlName()
         ).getResults();
         assertThat(testCases, hasSize(1));
-        TestCaseResult result = testCases.iterator().next();
+        TestResult result = testCases.iterator().next();
         Optional<String> suiteName = result.findOne(LabelName.SUITE);
         assertThat(suiteName, isPresent());
         assertThat(suiteName, hasValue("my.company.AlwaysPassingTest"));
@@ -174,11 +174,11 @@ public class Allure1ReaderTest {
 
     @Test
     public void shouldCopyLabelsFromSuite() throws Exception {
-        Set<TestCaseResult> testCases = process(
+        Set<TestResult> testCases = process(
                 "allure1/sample-testsuite.json", generateTestSuiteJsonName()
         ).getResults();
         assertThat(testCases, hasSize(1));
-        TestCaseResult result = testCases.iterator().next();
+        TestResult result = testCases.iterator().next();
         List<String> stories = result.getLabels().stream()
                 .filter(label -> "story".equals(label.getName()))
                 .map(Label::getValue)
@@ -189,11 +189,11 @@ public class Allure1ReaderTest {
 
     @Test
     public void shouldSetFlakyFromLabel() throws Exception {
-        Set<TestCaseResult> testCases = process(
+        Set<TestResult> testCases = process(
                 "allure1/suite-with-attachments.xml", generateTestSuiteXmlName()
         ).getResults();
         assertThat(testCases, hasSize(1));
-        TestCaseResult result = testCases.iterator().next();
+        TestResult result = testCases.iterator().next();
         StatusDetails details = result.getStatusDetails();
         assertThat(details, notNullValue());
         assertThat(details, hasProperty("flaky", equalTo(true)));
@@ -201,7 +201,7 @@ public class Allure1ReaderTest {
 
     @Test
     public void shouldUseTestClassLabelForPackage() throws Exception {
-        Set<TestCaseResult> testResults = process(
+        Set<TestResult> testResults = process(
                 "allure1/packages-testsuite.xml", generateTestSuiteXmlName()
         ).getResults();
         assertThat(testResults, hasSize(1));
@@ -212,11 +212,11 @@ public class Allure1ReaderTest {
 
     @Test
     public void shouldUseTestClassLabelForFullName() throws Exception {
-        Set<TestCaseResult> testResults = process(
+        Set<TestResult> testResults = process(
                 "allure1/packages-testsuite.xml", generateTestSuiteXmlName()
         ).getResults();
         assertThat(testResults, hasSize(1));
-        TestCaseResult result = testResults.iterator().next();
+        TestResult result = testResults.iterator().next();
         assertThat(result.getFullName(), is("my.company.package.subpackage.MyClass.testThree"));
     }
 

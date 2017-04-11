@@ -3,7 +3,7 @@ package io.qameta.allure.retry;
 import io.qameta.allure.Aggregator;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
-import io.qameta.allure.entity.TestCaseResult;
+import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 
 import java.io.IOException;
@@ -31,19 +31,19 @@ public class RetryPlugin implements Aggregator {
                           final List<LaunchResults> launchesResults,
                           final Path outputDirectory) throws IOException {
 
-        Map<String, List<TestCaseResult>> byHistory = launchesResults.stream()
+        Map<String, List<TestResult>> byHistory = launchesResults.stream()
                 .flatMap(results -> results.getAllResults().stream())
-                .filter(result -> Objects.nonNull(result.getTestCaseId()))
-                .collect(Collectors.toMap(TestCaseResult::getTestCaseId, Arrays::asList, this::merge));
+                .filter(result -> Objects.nonNull(result.getHistoryId()))
+                .collect(Collectors.toMap(TestResult::getHistoryId, Arrays::asList, this::merge));
         byHistory.forEach((historyId, results) -> {
-            final List<TestCaseResult> sorted = results.stream()
+            final List<TestResult> sorted = results.stream()
                     .sorted(byTime())
                     .collect(Collectors.toList());
             if (sorted.size() > 1) {
-                final TestCaseResult first = sorted.remove(0);
+                final TestResult first = sorted.remove(0);
                 final List<RetryItem> retries = new ArrayList<>();
                 first.addExtraBlock(RETRY_BLOCK_NAME, retries);
-                for (TestCaseResult result : sorted) {
+                for (TestResult result : sorted) {
                     result.setHidden(true);
                     retries.add(new RetryItem()
                             .withUid(result.getUid())
@@ -55,17 +55,17 @@ public class RetryPlugin implements Aggregator {
         });
     }
 
-    private List<TestCaseResult> merge(final List<TestCaseResult> first,
-                                       final List<TestCaseResult> second) {
-        final List<TestCaseResult> merged = new ArrayList<>();
+    private List<TestResult> merge(final List<TestResult> first,
+                                   final List<TestResult> second) {
+        final List<TestResult> merged = new ArrayList<>();
         merged.addAll(first);
         merged.addAll(second);
         return merged;
     }
 
-    private Comparator<TestCaseResult> byTime() {
+    private Comparator<TestResult> byTime() {
         return Comparator.comparing(
-                TestCaseResult::getTime,
+                TestResult::getTime,
                 Comparator.comparing(Time::getStart)
         ).reversed();
     }

@@ -1,7 +1,7 @@
 package io.qameta.allure.packages;
 
 import io.qameta.allure.entity.LabelName;
-import io.qameta.allure.entity.TestCaseResult;
+import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.tree.AbstractTreeAggregator;
 import io.qameta.allure.tree.TreeGroup;
 
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class PackagesPlugin extends AbstractTreeAggregator {
 
     @Override
-    protected List<TreeGroup> getGroups(final TestCaseResult result) {
+    protected List<TreeGroup> getGroups(final TestResult result) {
         final Optional<String> aPackage = result.findOne(LabelName.PACKAGE);
         return aPackage
                 .map(testClass -> Arrays.asList(testClass.split("\\.")))
@@ -30,7 +30,7 @@ public class PackagesPlugin extends AbstractTreeAggregator {
     }
 
     @Override
-    protected String getNodeName(final TestCaseResult result) {
+    protected String getNodeName(final TestResult result) {
         return result
                 .findOne(LabelName.TEST_METHOD)
                 .filter(method -> !method.isEmpty())

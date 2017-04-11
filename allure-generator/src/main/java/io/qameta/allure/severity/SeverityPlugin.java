@@ -3,8 +3,7 @@ package io.qameta.allure.severity;
 import io.qameta.allure.Aggregator;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
-import io.qameta.allure.entity.SeverityLevel;
-import io.qameta.allure.entity.TestCaseResult;
+import io.qameta.allure.entity.TestResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +31,7 @@ public class SeverityPlugin implements Aggregator {
 
     }
 
-    private void setSeverityLevel(final TestCaseResult result) {
+    private void setSeverityLevel(final TestResult result) {
         final SeverityLevel severityLevel = result.findOne(SEVERITY)
                 .map(this::getSeverity)
                 .orElse(SeverityLevel.NORMAL);

@@ -2,10 +2,12 @@
 <xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             xmlns:data="urn:allure.qameta.io"
+            xmlns:severity="urn:severity.allure.qameta.io"
             xmlns:ns="urn:graph.allure.qameta.io"
             targetNamespace="urn:graph.allure.qameta.io">
 
     <xsd:import namespace="urn:allure.qameta.io" schemaLocation="allure_report-data.xsd"/>
+    <xsd:import namespace="urn:severity.allure.qameta.io" schemaLocation="allure_severity-plugin.xsd"/>
 
     <xsd:element name="graphData" type="ns:GraphData"/>
     <xsd:complexType name="GraphData">
@@ -14,7 +16,7 @@
             <xsd:element name="name" type="xsd:string"/>
             <xsd:element name="time" type="data:Time"/>
             <xsd:element name="status" type="data:Status"/>
-            <xsd:element name="severity" type="data:SeverityLevel"/>
+            <xsd:element name="severity" type="severity:SeverityLevel"/>
         </xsd:sequence>
     </xsd:complexType>
 

@@ -4,7 +4,7 @@ import io.qameta.allure.ConfigurationBuilder;
 import io.qameta.allure.DefaultLaunchResults;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.MarkdownDescriptionsPlugin;
-import io.qameta.allure.entity.TestCaseResult;
+import io.qameta.allure.entity.TestResult;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -36,7 +36,7 @@ public class MarkdownAggregatorTest {
         final Path output = folder.newFolder().toPath();
         final MarkdownDescriptionsPlugin aggregator = new MarkdownDescriptionsPlugin();
 
-        final TestCaseResult result = new TestCaseResult().withName("some");
+        final TestResult result = new TestResult().withName("some");
         final DefaultLaunchResults launchResults = new DefaultLaunchResults(
                 Collections.singleton(result),
                 Collections.emptyMap(),
@@ -53,7 +53,7 @@ public class MarkdownAggregatorTest {
         final Path output = folder.newFolder().toPath();
         final MarkdownDescriptionsPlugin aggregator = new MarkdownDescriptionsPlugin();
 
-        final TestCaseResult result = new TestCaseResult()
+        final TestResult result = new TestResult()
                 .withName("some")
                 .withDescription("desc")
                 .withDescriptionHtml("descHtml");
@@ -73,7 +73,7 @@ public class MarkdownAggregatorTest {
         final Path output = folder.newFolder().toPath();
         final MarkdownDescriptionsPlugin aggregator = new MarkdownDescriptionsPlugin();
 
-        final TestCaseResult result = new TestCaseResult()
+        final TestResult result = new TestResult()
                 .withName("some")
                 .withDescription("desc");
         final DefaultLaunchResults launchResults = new DefaultLaunchResults(

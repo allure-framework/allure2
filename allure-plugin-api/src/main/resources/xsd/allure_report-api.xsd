@@ -16,44 +16,8 @@
         </xsd:appinfo>
     </xsd:annotation>
 
-    <xsd:element name="testCaseInfo" type="ns:TestCaseInfo"/>
-    <xsd:complexType name="TestCaseInfo">
-        <xsd:all>
-            <xsd:element name="uid" type="xsd:string"/>
-            <xsd:element name="name" type="xsd:string"/>
-            <xsd:element name="time" type="ns:Time"/>
-            <xsd:element name="status" type="ns:Status"/>
-            <xsd:element name="flaky" type="xsd:boolean"/>
-        </xsd:all>
-    </xsd:complexType>
-
-    <xsd:element name="testCase" type="ns:TestCase"/>
-    <xsd:complexType name="TestCase">
-        <xsd:sequence>
-            <xsd:element name="id" type="xsd:string"/>
-            <xsd:element name="name" type="xsd:string"/>
-            <xsd:element name="description" type="xsd:string" minOccurs="0"/>
-            <xsd:element name="descriptionHtml" type="xsd:string" minOccurs="0"/>
-            <xsd:element name="parametersNames">
-                <xsd:complexType>
-                    <xsd:sequence>
-                        <xsd:element name="parameterName" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
-                    </xsd:sequence>
-                </xsd:complexType>
-            </xsd:element>
-            <xsd:element name="links" type="ns:Links" minOccurs="0"/>
-            <xsd:element name="results">
-                <xsd:complexType>
-                    <xsd:sequence>
-                        <xsd:element name="result" type="ns:TestCaseInfo" minOccurs="0" maxOccurs="unbounded"/>
-                    </xsd:sequence>
-                </xsd:complexType>
-            </xsd:element>
-        </xsd:sequence>
-    </xsd:complexType>
-
-    <xsd:element name="testCaseResult" type="ns:TestCaseResult"/>
-    <xsd:complexType name="TestCaseResult">
+    <xsd:element name="testResult" type="ns:TestResult"/>
+    <xsd:complexType name="TestResult">
         <xsd:complexContent>
             <xsd:extension base="ns:ExtraElements">
                 <xsd:sequence>
@@ -61,7 +25,9 @@
                     <xsd:element name="name" type="xsd:string"/>
                     <xsd:element name="fullName" type="xsd:string"/>
 
-                    <xsd:element name="testCaseId" type="xsd:string"/>
+                    <xsd:element name="historyId" type="xsd:string"/>
+                    <xsd:element name="testId" type="xsd:string"/>
+
                     <xsd:element name="time" type="ns:Time"/>
                     <xsd:element name="status" type="ns:Status"/>
                     <xsd:element name="statusDetails" type="ns:StatusDetails" minOccurs="0"/>
@@ -95,27 +61,6 @@
             <xsd:element name="parameters" type="ns:Parameters" minOccurs="0"/>
         </xsd:sequence>
     </xsd:complexType>
-    
-    <xsd:element name="testGroup" type="ns:TestGroup"/>
-    <xsd:complexType name="TestGroup">
-        <xsd:all>
-            <xsd:element name="uid" type="xsd:string"/>
-            <xsd:element name="name" type="xsd:string"/>
-            <xsd:element name="type" type="xsd:string"/>
-            <xsd:element name="description" type="xsd:string" minOccurs="0"/>
-            <xsd:element name="descriptionHtml" type="xsd:string" minOccurs="0"/>
-            <xsd:element name="links" type="ns:Links" minOccurs="0"/>
-        </xsd:all>
-    </xsd:complexType>
-
-    <xsd:element name="testRunInfo" type="ns:TestRunInfo"/>
-    <xsd:complexType name="TestRunInfo">
-        <xsd:sequence>
-            <xsd:element name="name" type="xsd:string"/>
-            <xsd:element name="start" type="xsd:long"/>
-            <xsd:element name="stop" type="xsd:long"/>
-        </xsd:sequence>
-    </xsd:complexType>
 
     <xsd:element name="executorInfo" type="ns:ExecutorInfo"/>
     <xsd:complexType name="ExecutorInfo">
@@ -127,19 +72,6 @@
             <xsd:element name="buildUrl" type="xsd:string"/>
             <xsd:element name="reportUrl" type="xsd:string"/>
         </xsd:sequence>
-    </xsd:complexType>
-
-    <xsd:element name="testRun" type="ns:TestRun"/>
-    <xsd:complexType name="TestRun">
-        <xsd:complexContent>
-            <xsd:extension base="ns:ExtraElements">
-                <xsd:sequence>
-                    <xsd:element name="uid" type="xsd:string"/>
-                    <xsd:element name="name" type="xsd:string"/>
-                    <xsd:element name="time" type="ns:Time"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
     </xsd:complexType>
 
     <xsd:element name="link" type="ns:Link"/>
@@ -227,14 +159,6 @@
         <xsd:attribute name="unknown" type="xsd:long" use="required"/>
     </xsd:complexType>
 
-    <xsd:element name="attachment-file" type="ns:AttachmentFile"/>
-    <xsd:complexType name="AttachmentFile">
-        <xsd:attribute name="uid" type="xsd:string" use="required"/>
-        <xsd:attribute name="source" type="xsd:string" use="required"/>
-        <xsd:attribute name="size" type="xsd:long" use="required"/>
-        <xsd:attribute name="type" type="xsd:string"/>
-    </xsd:complexType>
-
     <xsd:element name="label" type="ns:Label"/>
     <xsd:complexType name="Label">
         <xsd:attribute name="name" type="xsd:string" use="required"/>
@@ -251,16 +175,6 @@
         </xsd:restriction>
     </xsd:simpleType>
 
-    <xsd:simpleType name="SeverityLevel">
-        <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="blocker"/>
-            <xsd:enumeration value="critical"/>
-            <xsd:enumeration value="normal"/>
-            <xsd:enumeration value="minor"/>
-            <xsd:enumeration value="trivial"/>
-        </xsd:restriction>
-    </xsd:simpleType>
-
     <!-- Reserved label names -->
     <xsd:simpleType name="LabelName">
         <xsd:restriction base="xsd:string">
@@ -268,7 +182,8 @@
             <xsd:enumeration value="owner"/>
             <xsd:enumeration value="severity"/>
             <xsd:enumeration value="issue"/>
-            <xsd:enumeration value="testId"/>
+
+            <xsd:enumeration value="testType"/>
 
             <!-- Suite -->
             <xsd:enumeration value="parentSuite"/>

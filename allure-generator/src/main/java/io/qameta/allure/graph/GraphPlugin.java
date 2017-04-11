@@ -4,7 +4,7 @@ import io.qameta.allure.Aggregator;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
-import io.qameta.allure.entity.TestCaseResult;
+import io.qameta.allure.entity.TestResult;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -37,7 +37,7 @@ public class GraphPlugin implements Aggregator {
         }
     }
 
-    private GraphData createData(final TestCaseResult result) {
+    private GraphData createData(final TestResult result) {
         return new GraphData()
                 .withUid(result.getUid())
                 .withName(result.getName())

@@ -13,7 +13,6 @@ import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.Step;
-import io.qameta.allure.entity.TestCaseResult;
 import io.qameta.allure.entity.Time;
 import io.qameta.allure.model.FixtureResult;
 import io.qameta.allure.model.StepResult;
@@ -62,9 +61,9 @@ public class Allure2Plugin implements Reader {
                          final Path resultsDirectory,
                          final ResultsVisitor visitor,
                          final List<TestResultContainer> groups, final TestResult result) {
-        final TestCaseResult dest = new TestCaseResult();
+        final io.qameta.allure.entity.TestResult dest = new io.qameta.allure.entity.TestResult();
         dest.setUid(uidGenerator.get());
-        dest.setTestCaseId(result.getHistoryId());
+        dest.setHistoryId(result.getHistoryId());
         dest.setFullName(result.getFullName());
         dest.setName(result.getName());
         dest.setTime(result.getStart(), result.getStop());

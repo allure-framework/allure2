@@ -8,7 +8,7 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Statistic;
-import io.qameta.allure.entity.TestCaseResult;
+import io.qameta.allure.entity.TestResult;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -72,7 +72,7 @@ public class HistoryPlugin implements Reader, Aggregator {
                 .map(launch -> {
                     final Map<String, HistoryData> history = launch.getExtra(HISTORY_BLOCK_NAME, HashMap::new);
                     launch.getResults().stream()
-                            .filter(result -> Objects.nonNull(result.getTestCaseId()))
+                            .filter(result -> Objects.nonNull(result.getHistoryId()))
                             .forEach(result -> updateHistory(history, result));
                     return history;
                 })
@@ -82,10 +82,10 @@ public class HistoryPlugin implements Reader, Aggregator {
                 });
     }
 
-    private void updateHistory(final Map<String, HistoryData> history, final TestCaseResult result) {
+    private void updateHistory(final Map<String, HistoryData> history, final TestResult result) {
         //@formatter:off
         final HistoryData data = history.computeIfAbsent(
-            result.getTestCaseId(),
+            result.getHistoryId(),
             id -> new HistoryData().withId(id).withName(result.getName())
         );
         //@formatter:on

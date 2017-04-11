@@ -16,9 +16,3 @@ plugins.forEach({
     include "plugins/$it"
     project(":plugins/$it").name = it
 })
-
-//include 'junit-plugin'
-//include 'cucumber-json-plugin'
-//
-//project(':junit-plugin').projectDir = new File(settingsDir, 'plugins/junit-plugin')
-//project(':cucumber-json-plugin').projectDir = new File(settingsDir, 'plugins/cucumber-json-plugin')

@@ -1,7 +1,7 @@
 package io.qameta.allure.xunit;
 
 import io.qameta.allure.entity.LabelName;
-import io.qameta.allure.entity.TestCaseResult;
+import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.tree.AbstractTreeAggregator;
 import io.qameta.allure.tree.TreeGroup;
 
@@ -23,7 +23,7 @@ public class XunitPlugin extends AbstractTreeAggregator {
     }
 
     @Override
-    protected List<TreeGroup> getGroups(final TestCaseResult result) {
+    protected List<TreeGroup> getGroups(final TestResult result) {
         return Stream.of(LabelName.PARENT_SUITE, LabelName.SUITE, LabelName.SUB_SUITE)
                 .map(result::findOne)
                 .filter(Optional::isPresent)

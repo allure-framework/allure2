@@ -2,7 +2,6 @@ package io.qameta.allure;
 
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
-import io.qameta.allure.core.ResultsVisitor;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -21,7 +20,7 @@ public class ReportGenerator {
         this.configuration = configuration;
     }
 
-    public LaunchResults readResults(final ResultsVisitor visitor, final Path resultsDirectory) {
+    public LaunchResults readResults(final DefaultResultsVisitor visitor, final Path resultsDirectory) {
         configuration
                 .getReaders()
                 .forEach(reader -> reader.readResults(configuration, visitor, resultsDirectory));

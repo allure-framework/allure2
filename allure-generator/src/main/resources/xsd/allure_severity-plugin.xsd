@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="urn:severity.allure.qameta.io">
+
+    <xsd:simpleType name="SeverityLevel">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="blocker"/>
+            <xsd:enumeration value="critical"/>
+            <xsd:enumeration value="normal"/>
+            <xsd:enumeration value="minor"/>
+            <xsd:enumeration value="trivial"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+</xsd:schema>

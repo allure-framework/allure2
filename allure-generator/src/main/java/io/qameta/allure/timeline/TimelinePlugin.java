@@ -1,7 +1,7 @@
 package io.qameta.allure.timeline;
 
 import io.qameta.allure.entity.LabelName;
-import io.qameta.allure.entity.TestCaseResult;
+import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.tree.AbstractTreeAggregator;
 import io.qameta.allure.tree.TreeGroup;
 
@@ -21,7 +21,7 @@ public class TimelinePlugin extends AbstractTreeAggregator {
     }
 
     @Override
-    protected List<TreeGroup> getGroups(final TestCaseResult result) {
+    protected List<TreeGroup> getGroups(final TestResult result) {
         return Arrays.asList(
                 TreeGroup.oneByLabel(result, LabelName.HOST, "Default hostname"),
                 TreeGroup.oneByLabel(result, LabelName.THREAD, "Default thread")

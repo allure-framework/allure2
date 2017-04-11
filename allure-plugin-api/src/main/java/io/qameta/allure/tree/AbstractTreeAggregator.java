@@ -6,7 +6,7 @@ import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.StatusDetails;
-import io.qameta.allure.entity.TestCaseResult;
+import io.qameta.allure.entity.TestResult;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -49,7 +49,7 @@ public abstract class AbstractTreeAggregator implements Aggregator {
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     protected void addResultToTree(final Supplier<String> uidGenerator,
                                    final TreeData treeData,
-                                   final TestCaseResult result) {
+                                   final TestResult result) {
         treeData.updateStatistic(result);
         treeData.updateTime(result);
 
@@ -104,11 +104,11 @@ public abstract class AbstractTreeAggregator implements Aggregator {
         return tree;
     }
 
-    protected String getNodeName(final TestCaseResult result) {
+    protected String getNodeName(final TestResult result) {
         return result.getName();
     }
 
     protected abstract String getFileName();
 
-    protected abstract List<TreeGroup> getGroups(final TestCaseResult result);
+    protected abstract List<TreeGroup> getGroups(final TestResult result);
 }

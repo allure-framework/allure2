@@ -8,7 +8,7 @@ import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.Step;
-import io.qameta.allure.entity.TestCaseResult;
+import io.qameta.allure.entity.TestResult;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -47,14 +47,14 @@ public class Allure2ReaderTest {
     @Test
     @SuppressWarnings("unchecked")
     public void shouldReadBeforesFromGroups() throws Exception {
-        Set<TestCaseResult> testResults = process(
+        Set<TestResult> testResults = process(
                 "allure2/simple-testcase.json", generateTestResultName(),
                 "allure2/first-testgroup.json", generateTestResultContainerName(),
                 "allure2/second-testgroup.json", generateTestResultContainerName()
         ).getResults();
 
         assertThat(testResults, hasSize(1));
-        TestCaseResult result = testResults.iterator().next();
+        TestResult result = testResults.iterator().next();
         assertThat(result.getBeforeStages(), hasSize(2));
         assertThat(result.getBeforeStages(), hasItems(
                 hasProperty("name", equalTo("mockAuthorization")),
@@ -65,14 +65,14 @@ public class Allure2ReaderTest {
     @Test
     @SuppressWarnings("unchecked")
     public void shouldReadAftersFromGroups() throws Exception {
-        Set<TestCaseResult> testResults = process(
+        Set<TestResult> testResults = process(
                 "allure2/simple-testcase.json", generateTestResultName(),
                 "allure2/first-testgroup.json", generateTestResultContainerName(),
                 "allure2/second-testgroup.json", generateTestResultContainerName()
         ).getResults();
 
         assertThat(testResults, hasSize(1));
-        TestCaseResult result = testResults.iterator().next();
+        TestResult result = testResults.iterator().next();
         assertThat(result.getAfterStages(), hasSize(2));
         assertThat(result.getAfterStages(), hasItems(
                 hasProperty("name", equalTo("cleanUpContext")),
@@ -82,7 +82,7 @@ public class Allure2ReaderTest {
 
     @Test
     public void shouldPickUpAttachmentsForTestCase() throws IOException {
-        Set<TestCaseResult> testResults = process(
+        Set<TestResult> testResults = process(
                 "allure2/simple-testcase.json", generateTestResultName(),
                 "allure2/first-testgroup.json", generateTestResultContainerName(),
                 "allure2/second-testgroup.json", generateTestResultContainerName(),
@@ -90,7 +90,7 @@ public class Allure2ReaderTest {
         ).getResults();
 
         assertThat("Test case is not found", testResults, hasSize(1));
-        TestCaseResult result = testResults.iterator().next();
+        TestResult result = testResults.iterator().next();
         List<Step> steps = result.getTestStage().getSteps();
         assertThat("Test case should have one step", steps, hasSize(1));
         List<Attachment> attachments = result.getTestStage().getSteps().iterator().next().getAttachments();
@@ -101,7 +101,7 @@ public class Allure2ReaderTest {
 
     @Test
     public void shouldPickUpAttachmentsForAfters() throws IOException {
-        Set<TestCaseResult> testResults = process(
+        Set<TestResult> testResults = process(
                 "allure2/simple-testcase.json", generateTestResultName(),
                 "allure2/first-testgroup.json", generateTestResultContainerName(),
                 "allure2/second-testgroup.json", generateTestResultContainerName(),
@@ -109,7 +109,7 @@ public class Allure2ReaderTest {
         ).getResults();
 
         assertThat("Test case is not found", testResults, hasSize(1));
-        TestCaseResult result = testResults.iterator().next();
+        TestResult result = testResults.iterator().next();
         List<StageResult> afters = result.getAfterStages();
         assertThat("Test case should have afters", afters, hasSize(2));
 
@@ -126,7 +126,7 @@ public class Allure2ReaderTest {
 
     @Test
     public void shouldDoNotOverrideAttachmentsForGroups() throws IOException {
-        Set<TestCaseResult> testResults = process(
+        Set<TestResult> testResults = process(
                 "allure2/other-testcase.json", generateTestResultName(),
                 "allure2/other-testcase.json", generateTestResultName(),
                 "allure2/second-testgroup.json", generateTestResultContainerName(),
@@ -148,7 +148,7 @@ public class Allure2ReaderTest {
 
     @Test
     public void shouldProcessEmptyStatus() throws Exception {
-        Set<TestCaseResult> testResults = process(
+        Set<TestResult> testResults = process(
                 "allure2/no-status.json", generateTestResultName()
         ).getResults();
 
@@ -158,7 +158,7 @@ public class Allure2ReaderTest {
 
     @Test
     public void shouldProcessNullStatus() throws Exception {
-        Set<TestCaseResult> testResults = process(
+        Set<TestResult> testResults = process(
                 "allure2/null-status.json", generateTestResultName()
         ).getResults();
 
@@ -168,7 +168,7 @@ public class Allure2ReaderTest {
 
     @Test
     public void shouldProcessInvalidStatus() throws Exception {
-        Set<TestCaseResult> testResults = process(
+        Set<TestResult> testResults = process(
                 "allure2/invalid-status.json", generateTestResultName()
         ).getResults();
 

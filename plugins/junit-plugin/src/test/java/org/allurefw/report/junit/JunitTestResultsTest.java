@@ -6,7 +6,7 @@ import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.TestCaseResult;
+import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.junit.JunitPlugin;
 import org.assertj.core.groups.Tuple;
 import org.junit.Before;
@@ -57,16 +57,16 @@ public class JunitTestResultsTest {
                 "TEST-org.allurefw.report.junit.JunitTestResultsTest.xml"
         );
 
-        final ArgumentCaptor<TestCaseResult> captor = ArgumentCaptor.forClass(TestCaseResult.class);
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
         verify(visitor, times(5)).visitTestResult(captor.capture());
 
 
         assertThat(captor.getAllValues())
                 .hasSize(5);
 
-        List<TestCaseResult> failed = filterByStatus(captor.getAllValues(), Status.FAILED);
-        List<TestCaseResult> skipped = filterByStatus(captor.getAllValues(), Status.SKIPPED);
-        List<TestCaseResult> passed = filterByStatus(captor.getAllValues(), Status.PASSED);
+        List<TestResult> failed = filterByStatus(captor.getAllValues(), Status.FAILED);
+        List<TestResult> skipped = filterByStatus(captor.getAllValues(), Status.SKIPPED);
+        List<TestResult> passed = filterByStatus(captor.getAllValues(), Status.PASSED);
 
         assertThat(failed)
                 .describedAs("Should parse failed status")
@@ -97,7 +97,7 @@ public class JunitTestResultsTest {
                 .isRegularFile()
                 .hasContent("some-test-log");
 
-        final ArgumentCaptor<TestCaseResult> captor = ArgumentCaptor.forClass(TestCaseResult.class);
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
         verify(visitor, times(1)).visitTestResult(captor.capture());
 
         final StageResult testStage = captor.getValue().getTestStage();
@@ -142,7 +142,7 @@ public class JunitTestResultsTest {
         }
     }
 
-    private List<TestCaseResult> filterByStatus(List<TestCaseResult> testCases, Status status) {
+    private List<TestResult> filterByStatus(List<TestResult> testCases, Status status) {
         return testCases.stream()
                 .filter(item -> status.equals(item.getStatus()))
                 .collect(Collectors.toList());

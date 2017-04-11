@@ -2,7 +2,7 @@ package io.qameta.allure.core;
 
 import io.qameta.allure.Aggregator;
 import io.qameta.allure.context.JacksonContext;
-import io.qameta.allure.entity.TestCaseResult;
+import io.qameta.allure.entity.TestResult;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -24,10 +24,10 @@ public class TestsResultsPlugin implements Aggregator {
                           final Path outputDirectory) throws IOException {
         final JacksonContext context = configuration.requireContext(JacksonContext.class);
         final Path testCasesFolder = Files.createDirectories(outputDirectory.resolve("data/test-cases"));
-        final List<TestCaseResult> results = launchesResults.stream()
+        final List<TestResult> results = launchesResults.stream()
                 .flatMap(launch -> launch.getAllResults().stream())
                 .collect(Collectors.toList());
-        for (TestCaseResult result : results) {
+        for (TestResult result : results) {
             final Path file = testCasesFolder.resolve(result.getSource());
             try (OutputStream os = Files.newOutputStream(file)) {
                 context.getValue().writeValue(os, result);

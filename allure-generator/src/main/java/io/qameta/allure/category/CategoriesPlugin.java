@@ -7,7 +7,7 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.TestCaseResult;
+import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.tree.AbstractTreeAggregator;
 import io.qameta.allure.tree.TreeGroup;
 
@@ -90,7 +90,7 @@ public class CategoriesPlugin extends AbstractTreeAggregator implements Reader {
     }
 
     @Override
-    protected List<TreeGroup> getGroups(final TestCaseResult result) {
+    protected List<TreeGroup> getGroups(final TestResult result) {
         final List<Category> categories = result.getExtraBlock(CATEGORIES);
         final String message = result.getStatusMessage().orElse("Empty message");
         return Arrays.asList(
@@ -99,7 +99,7 @@ public class CategoriesPlugin extends AbstractTreeAggregator implements Reader {
         );
     }
 
-    public static boolean matches(final TestCaseResult result, final Category category) {
+    public static boolean matches(final TestResult result, final Category category) {
         boolean matchesStatus = category.getMatchedStatuses().isEmpty()
                 || nonNull(result.getStatus())
                 && category.getMatchedStatuses().contains(result.getStatus());

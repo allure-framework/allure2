@@ -14,7 +14,7 @@ import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.Step;
-import io.qameta.allure.entity.TestCaseResult;
+import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import org.allurefw.allure1.AllureUtils;
 import org.slf4j.Logger;
@@ -49,7 +49,6 @@ import static io.qameta.allure.entity.LabelName.PARENT_SUITE;
 import static io.qameta.allure.entity.LabelName.SUB_SUITE;
 import static io.qameta.allure.entity.LabelName.SUITE;
 import static io.qameta.allure.entity.LabelName.TEST_CLASS;
-import static io.qameta.allure.entity.LabelName.TEST_ID;
 import static io.qameta.allure.entity.LabelName.TEST_METHOD;
 import static io.qameta.allure.entity.Status.BROKEN;
 import static io.qameta.allure.entity.Status.FAILED;
@@ -86,7 +85,7 @@ public class Allure1Plugin implements Reader {
                          final ResultsVisitor visitor,
                          final TestSuiteResult testSuite,
                          final ru.yandex.qatools.allure.model.TestCaseResult source) {
-        final TestCaseResult dest = new TestCaseResult();
+        final TestResult dest = new TestResult();
         final String suiteName = firstNonNull(testSuite.getTitle(), testSuite.getName(), "unknown test suite");
         final String testClass = firstNonNull(
                 findLabel(source.getLabels(), TEST_CLASS.value()),
@@ -101,7 +100,7 @@ public class Allure1Plugin implements Reader {
         );
         final String name = firstNonNull(source.getTitle(), source.getName(), "unknown test case");
 
-        dest.setTestCaseId(String.format("%s#%s", testClass, name));
+        dest.setHistoryId(String.format("%s#%s", testClass, name));
         dest.setUid(randomUid.get());
         dest.setName(name);
         dest.setFullName(String.format("%s.%s", testClass, testMethod));
@@ -129,8 +128,8 @@ public class Allure1Plugin implements Reader {
         dest.findOne(ISSUE).ifPresent(issue ->
                 dest.getLinks().add(getLink(ISSUE, issue, getIssueUrl(issue)))
         );
-        dest.findOne(TEST_ID).ifPresent(testId ->
-                dest.getLinks().add(getLink(TEST_ID, testId, getTestCaseIdUrl(testId)))
+        dest.findOne("testId").ifPresent(testId ->
+                dest.getLinks().add(new Link().withName("testId").withType("testId").withUrl(getTestCaseIdUrl(testId)))
         );
 
         //TestNG nested suite

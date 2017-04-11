@@ -9,7 +9,7 @@ import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.StatusDetails;
-import io.qameta.allure.entity.TestCaseResult;
+import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import org.apache.maven.plugins.surefire.report.ReportTestCase;
 import org.apache.maven.plugins.surefire.report.ReportTestSuite;
@@ -58,7 +58,7 @@ public class JunitPlugin implements Reader {
                             .map(attachment -> attachment.withName("System out"));
 
                     for (ReportTestCase testCase : testSuite.getTestCases()) {
-                        final TestCaseResult result = convert(context, testCase);
+                        final TestResult result = convert(context, testCase);
                         log.ifPresent(attachment -> {
                             result.setTestStage(new StageResult());
                             result.getTestStage().getAttachments().add(attachment);
@@ -71,9 +71,9 @@ public class JunitPlugin implements Reader {
                 });
     }
 
-    protected TestCaseResult convert(final RandomUidContext context, final ReportTestCase source) {
-        final TestCaseResult dest = new TestCaseResult();
-        dest.setTestCaseId(String.format("%s#%s", source.getFullClassName(), source.getName()));
+    protected TestResult convert(final RandomUidContext context, final ReportTestCase source) {
+        final TestResult dest = new TestResult();
+        dest.setHistoryId(String.format("%s#%s", source.getFullClassName(), source.getName()));
         dest.setUid(context.getValue().get());
         dest.setName(source.getName());
         dest.setTime(new Time()

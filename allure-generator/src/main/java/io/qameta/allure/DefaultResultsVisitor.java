@@ -5,8 +5,7 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Attachment;
-import io.qameta.allure.entity.TestCase;
-import io.qameta.allure.entity.TestCaseResult;
+import io.qameta.allure.entity.TestResult;
 import org.apache.tika.metadata.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,20 +40,14 @@ public class DefaultResultsVisitor implements ResultsVisitor {
 
     private final Map<Path, Attachment> attachments;
 
-    private final Set<TestCase> testCases;
-
-    private final Set<TestCaseResult> results;
-
-    private final Map<String, String> configs;
+    private final Set<TestResult> results;
 
     private final Map<String, Object> extra;
 
     public DefaultResultsVisitor(final Configuration configuration) {
         this.configuration = configuration;
-        this.attachments = new HashMap<>();
-        this.testCases = new HashSet<>();
         this.results = new HashSet<>();
-        this.configs = new HashMap<>();
+        this.attachments = new HashMap<>();
         this.extra = new HashMap<>();
     }
 
@@ -80,18 +73,8 @@ public class DefaultResultsVisitor implements ResultsVisitor {
     }
 
     @Override
-    public void visitTestCase(final TestCase testCase) {
-        testCases.add(testCase);
-    }
-
-    @Override
-    public void visitTestResult(final TestCaseResult result) {
+    public void visitTestResult(final TestResult result) {
         results.add(result);
-    }
-
-    @Override
-    public void visitConfiguration(final Map<String, String> properties) {
-        configs.putAll(properties);
     }
 
     @Override
@@ -109,7 +92,6 @@ public class DefaultResultsVisitor implements ResultsVisitor {
         //not implemented yet
     }
 
-    @Override
     public LaunchResults getLaunchResults() {
         return new DefaultLaunchResults(
                 Collections.unmodifiableSet(results),
