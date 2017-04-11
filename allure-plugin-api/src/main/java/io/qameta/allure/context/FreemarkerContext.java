@@ -4,7 +4,9 @@ import freemarker.template.Configuration;
 import io.qameta.allure.Context;
 
 /**
- * @author charlie (Dmitry Baev).
+ * Context that stores freemarker configuration.
+ *
+ * @since 2.0
  */
 public class FreemarkerContext implements Context<Configuration> {
 

@@ -14,9 +14,7 @@ dependencies {
     compile('org.slf4j:slf4j-api')
 
     testCompile('junit:junit')
-    testCompile('org.hamcrest:hamcrest-all')
-    testCompile('org.mockito:mockito-all')
-    testCompile('com.github.baev:hamcrest-optional')
+    testCompile('org.assertj:assertj-core')
     testCompile('org.slf4j:slf4j-simple')
 }
 

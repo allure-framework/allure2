@@ -6,7 +6,6 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.StageResult;
-import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
 import org.junit.Rule;
@@ -18,34 +17,20 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static io.qameta.allure.AllureUtils.generateTestResultContainerName;
 import static io.qameta.allure.AllureUtils.generateTestResultName;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.everyItem;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.iterableWithSize;
-import static org.junit.Assert.assertThat;
+import static io.qameta.allure.entity.Status.UNKNOWN;
+import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * @author charlie (Dmitry Baev).
- */
 public class Allure2ReaderTest {
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
     @Test
-    @SuppressWarnings("unchecked")
     public void shouldReadBeforesFromGroups() throws Exception {
         Set<TestResult> testResults = process(
                 "allure2/simple-testcase.json", generateTestResultName(),
@@ -53,17 +38,15 @@ public class Allure2ReaderTest {
                 "allure2/second-testgroup.json", generateTestResultContainerName()
         ).getResults();
 
-        assertThat(testResults, hasSize(1));
-        TestResult result = testResults.iterator().next();
-        assertThat(result.getBeforeStages(), hasSize(2));
-        assertThat(result.getBeforeStages(), hasItems(
-                hasProperty("name", equalTo("mockAuthorization")),
-                hasProperty("name", equalTo("loadTestConfiguration"))
-        ));
+        assertThat(testResults)
+                .hasSize(1)
+                .flatExtracting(TestResult::getBeforeStages)
+                .hasSize(2)
+                .extracting(StageResult::getName)
+                .containsExactlyInAnyOrder("mockAuthorization", "loadTestConfiguration");
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void shouldReadAftersFromGroups() throws Exception {
         Set<TestResult> testResults = process(
                 "allure2/simple-testcase.json", generateTestResultName(),
@@ -71,13 +54,12 @@ public class Allure2ReaderTest {
                 "allure2/second-testgroup.json", generateTestResultContainerName()
         ).getResults();
 
-        assertThat(testResults, hasSize(1));
-        TestResult result = testResults.iterator().next();
-        assertThat(result.getAfterStages(), hasSize(2));
-        assertThat(result.getAfterStages(), hasItems(
-                hasProperty("name", equalTo("cleanUpContext")),
-                hasProperty("name", equalTo("unloadTestConfiguration"))
-        ));
+        assertThat(testResults)
+                .hasSize(1)
+                .flatExtracting(TestResult::getAfterStages)
+                .hasSize(2)
+                .extracting(StageResult::getName)
+                .containsExactlyInAnyOrder("unloadTestConfiguration", "cleanUpContext");
     }
 
     @Test
@@ -89,14 +71,18 @@ public class Allure2ReaderTest {
                 "allure2/test-sample-attachment.txt", "test-sample-attachment.txt"
         ).getResults();
 
-        assertThat("Test case is not found", testResults, hasSize(1));
-        TestResult result = testResults.iterator().next();
-        List<Step> steps = result.getTestStage().getSteps();
-        assertThat("Test case should have one step", steps, hasSize(1));
-        List<Attachment> attachments = result.getTestStage().getSteps().iterator().next().getAttachments();
-        assertThat("Step should have an attachment", attachments, hasSize(1));
-        assertThat("Attachment's name is unexpected",
-                attachments.iterator().next().getName(), equalTo("String attachment in test"));
+        assertThat(testResults)
+                .describedAs("Test case is not found")
+                .hasSize(1)
+                .extracting(TestResult::getTestStage)
+                .flatExtracting(StageResult::getSteps)
+                .describedAs("Test case should have one step")
+                .hasSize(1)
+                .flatExtracting(Step::getAttachments)
+                .describedAs("Step should have an attachment")
+                .hasSize(1)
+                .extracting(Attachment::getName)
+                .containsExactly("String attachment in test");
     }
 
     @Test
@@ -108,20 +94,18 @@ public class Allure2ReaderTest {
                 "allure2/after-sample-attachment.txt", "after-sample-attachment.txt"
         ).getResults();
 
-        assertThat("Test case is not found", testResults, hasSize(1));
-        TestResult result = testResults.iterator().next();
-        List<StageResult> afters = result.getAfterStages();
-        assertThat("Test case should have afters", afters, hasSize(2));
-
-        List<Attachment> attachments = afters.stream()
-                .map(StageResult::getAttachments)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
-
-        assertThat("Second after method should have an attachment",
-                attachments, hasSize(1));
-        assertThat("Attachment's name is unexpected",
-                attachments.iterator().next().getName(), equalTo("String attachment in after"));
+        assertThat(testResults)
+                .describedAs("Test case is not found")
+                .hasSize(1)
+                .flatExtracting(TestResult::getAfterStages)
+                .describedAs("Test case should have afters")
+                .hasSize(2)
+                .flatExtracting(StageResult::getAttachments)
+                .describedAs("Second after method should have an attachment")
+                .hasSize(1)
+                .extracting(Attachment::getName)
+                .describedAs("Attachment's name is unexpected")
+                .containsExactly("String attachment in after");
     }
 
     @Test
@@ -133,17 +117,17 @@ public class Allure2ReaderTest {
                 "allure2/after-sample-attachment.txt", "after-sample-attachment.txt"
         ).getResults();
 
-        assertThat("Test cases is not found", testResults, hasSize(2));
-        assertThat(testResults, allOf(
-                iterableWithSize(2),
-                everyItem(hasProperty("afterStages", allOf(
-                        iterableWithSize(1),
-                        everyItem(hasProperty("attachments", allOf(
-                                iterableWithSize(1),
-                                everyItem(hasProperty("name", equalTo("String attachment in after")))
-                        )))
-                )))
-        ));
+        assertThat(testResults)
+                .describedAs("Test cases is not found")
+                .hasSize(2);
+
+        testResults.forEach(testResult -> assertThat(testResult.getAfterStages())
+                .hasSize(1)
+                .flatExtracting(StageResult::getAttachments)
+                .hasSize(1)
+                .extracting(Attachment::getName)
+                .containsExactly("String attachment in after"));
+
     }
 
     @Test
@@ -152,8 +136,10 @@ public class Allure2ReaderTest {
                 "allure2/no-status.json", generateTestResultName()
         ).getResults();
 
-        assertThat(testResults, hasSize(1));
-        assertThat(testResults, hasItem(hasProperty("status", equalTo(Status.UNKNOWN))));
+        assertThat(testResults)
+                .hasSize(1)
+                .extracting(TestResult::getStatus)
+                .containsExactly(UNKNOWN);
     }
 
     @Test
@@ -162,8 +148,10 @@ public class Allure2ReaderTest {
                 "allure2/null-status.json", generateTestResultName()
         ).getResults();
 
-        assertThat(testResults, hasSize(1));
-        assertThat(testResults, hasItem(hasProperty("status", equalTo(Status.UNKNOWN))));
+        assertThat(testResults)
+                .hasSize(1)
+                .extracting(TestResult::getStatus)
+                .containsExactly(UNKNOWN);
     }
 
     @Test
@@ -172,8 +160,10 @@ public class Allure2ReaderTest {
                 "allure2/invalid-status.json", generateTestResultName()
         ).getResults();
 
-        assertThat(testResults, hasSize(1));
-        assertThat(testResults, hasItem(hasProperty("status", equalTo(Status.UNKNOWN))));
+        assertThat(testResults)
+                .hasSize(1)
+                .extracting(TestResult::getStatus)
+                .containsExactly(UNKNOWN);
     }
 
     private LaunchResults process(String... strings) throws IOException {

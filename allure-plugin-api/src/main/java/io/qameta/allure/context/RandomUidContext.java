@@ -7,7 +7,9 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 
 /**
- * @author charlie (Dmitry Baev).
+ * This context used to generate random uids for Allure results.
+ *
+ * @since 2.0
  */
 public class RandomUidContext implements Context<Supplier<String>> {
 

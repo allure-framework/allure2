@@ -5,7 +5,9 @@ import org.pegdown.Extensions;
 import org.pegdown.PegDownProcessor;
 
 /**
- * @author charlie (Dmitry Baev).
+ * Markdown context. Can be used to process markdown files to html.
+ *
+ * @since 2.0
  */
 public class MarkdownContext implements Context<PegDownProcessor> {
 

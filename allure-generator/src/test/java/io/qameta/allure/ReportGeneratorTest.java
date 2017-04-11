@@ -12,9 +12,6 @@ import java.nio.file.Path;
 import static io.qameta.allure.testdata.TestData.unpackDummyResources;
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * @author charlie (Dmitry Baev).
- */
 public class ReportGeneratorTest {
 
     @ClassRule

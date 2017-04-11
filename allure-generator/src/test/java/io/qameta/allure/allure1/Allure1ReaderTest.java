@@ -11,6 +11,7 @@ import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
+import org.assertj.core.groups.Tuple;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -29,26 +30,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.github.npathai.hamcrestopt.OptionalMatchers.hasValue;
-import static com.github.npathai.hamcrestopt.OptionalMatchers.isPresent;
 import static io.qameta.allure.entity.Status.FAILED;
 import static io.qameta.allure.entity.Status.PASSED;
 import static io.qameta.allure.entity.Status.UNKNOWN;
 import static org.allurefw.allure1.AllureUtils.generateTestSuiteJsonName;
 import static org.allurefw.allure1.AllureUtils.generateTestSuiteXmlName;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * @author charlie (Dmitry Baev).
- */
 public class Allure1ReaderTest {
 
     @Rule
@@ -60,13 +48,15 @@ public class Allure1ReaderTest {
         Set<TestResult> testResults = process(
                 "allure1/empty-status-testsuite.xml", generateTestSuiteXmlName()
         ).getResults();
-        assertThat(testResults, hasSize(4));
-        assertThat(testResults, hasItems(
-                allOf(hasProperty("name", equalTo("testOne")), hasProperty("status", equalTo(UNKNOWN))),
-                allOf(hasProperty("name", equalTo("testTwo")), hasProperty("status", equalTo(PASSED))),
-                allOf(hasProperty("name", equalTo("testThree")), hasProperty("status", equalTo(FAILED))),
-                allOf(hasProperty("name", equalTo("testFour")), hasProperty("status", equalTo(UNKNOWN)))
-        ));
+        assertThat(testResults)
+                .hasSize(4)
+                .extracting("name", "status")
+                .containsExactlyInAnyOrder(
+                        Tuple.tuple("testOne", UNKNOWN),
+                        Tuple.tuple("testTwo", PASSED),
+                        Tuple.tuple("testThree", FAILED),
+                        Tuple.tuple("testFour", UNKNOWN)
+                );
     }
 
     @Test
@@ -74,7 +64,8 @@ public class Allure1ReaderTest {
         Set<TestResult> testResults = process(
                 "allure1/sample-testsuite.xml", generateTestSuiteXmlName()
         ).getResults();
-        assertThat(testResults, hasSize(4));
+        assertThat(testResults)
+                .hasSize(4);
     }
 
     @Test
@@ -82,7 +73,8 @@ public class Allure1ReaderTest {
         Set<TestResult> testResults = process(
                 "allure1/sample-testsuite.json", generateTestSuiteJsonName()
         ).getResults();
-        assertThat(testResults, hasSize(1));
+        assertThat(testResults)
+                .hasSize(1);
     }
 
     @Test
@@ -94,14 +86,19 @@ public class Allure1ReaderTest {
         final Map<Path, Attachment> attachmentMap = launchResults.getAttachments();
         final Set<TestResult> results = launchResults.getResults();
 
-        assertThat(attachmentMap.entrySet(), hasSize(1));
+        assertThat(attachmentMap)
+                .hasSize(1);
+
+        final Attachment storedAttachment = attachmentMap.values().iterator().next();
+
         List<Attachment> attachments = results.stream()
                 .flatMap(this::extractAttachments)
                 .collect(Collectors.toList());
-        assertThat(attachments, hasSize(1));
-        Attachment a = attachmentMap.values().iterator().next();
-        Attachment b = attachments.iterator().next();
-        assertThat(a.getSource(), is(b.getSource()));
+
+        assertThat(attachments)
+                .hasSize(1)
+                .extracting(Attachment::getSource)
+                .containsExactly(storedAttachment.getSource());
     }
 
     private Stream<Attachment> extractAttachments(TestResult testCaseResult) {
@@ -145,7 +142,8 @@ public class Allure1ReaderTest {
     @Test
     public void shouldNotFailIfNoResultsDirectory() throws Exception {
         Set<TestResult> testResults = process().getResults();
-        assertThat(testResults, empty());
+        assertThat(testResults)
+                .isEmpty();
     }
 
     @Test
@@ -153,11 +151,11 @@ public class Allure1ReaderTest {
         Set<TestResult> testCases = process(
                 "allure1/sample-testsuite.json", generateTestSuiteJsonName()
         ).getResults();
-        assertThat(testCases, hasSize(1));
-        TestResult result = testCases.iterator().next();
-        Optional<String> suiteName = result.findOne(LabelName.SUITE);
-        assertThat(suiteName, isPresent());
-        assertThat(suiteName, hasValue("Passing test"));
+        assertThat(testCases)
+                .hasSize(1)
+                .extracting(testResult -> testResult.findOne(LabelName.SUITE))
+                .extracting(Optional::get)
+                .containsExactly("Passing test");
     }
 
     @Test
@@ -165,11 +163,12 @@ public class Allure1ReaderTest {
         Set<TestResult> testCases = process(
                 "allure1/suite-with-attachments.xml", generateTestSuiteXmlName()
         ).getResults();
-        assertThat(testCases, hasSize(1));
-        TestResult result = testCases.iterator().next();
-        Optional<String> suiteName = result.findOne(LabelName.SUITE);
-        assertThat(suiteName, isPresent());
-        assertThat(suiteName, hasValue("my.company.AlwaysPassingTest"));
+
+        assertThat(testCases)
+                .hasSize(1)
+                .extracting(testResult -> testResult.findOne(LabelName.SUITE))
+                .extracting(Optional::get)
+                .containsExactly("my.company.AlwaysPassingTest");
     }
 
     @Test
@@ -177,14 +176,13 @@ public class Allure1ReaderTest {
         Set<TestResult> testCases = process(
                 "allure1/sample-testsuite.json", generateTestSuiteJsonName()
         ).getResults();
-        assertThat(testCases, hasSize(1));
-        TestResult result = testCases.iterator().next();
-        List<String> stories = result.getLabels().stream()
-                .filter(label -> "story".equals(label.getName()))
-                .map(Label::getValue)
-                .collect(Collectors.toList());
-        assertThat(stories, hasSize(2));
-        assertThat(stories, hasItems("SuccessStory", "OtherStory"));
+        assertThat(testCases)
+                .hasSize(1)
+                .flatExtracting(TestResult::getLabels)
+                .filteredOn(label -> LabelName.STORY.value().equals(label.getName()))
+                .hasSize(2)
+                .extracting(Label::getValue)
+                .containsExactlyInAnyOrder("SuccessStory", "OtherStory");
     }
 
     @Test
@@ -192,11 +190,11 @@ public class Allure1ReaderTest {
         Set<TestResult> testCases = process(
                 "allure1/suite-with-attachments.xml", generateTestSuiteXmlName()
         ).getResults();
-        assertThat(testCases, hasSize(1));
-        TestResult result = testCases.iterator().next();
-        StatusDetails details = result.getStatusDetails();
-        assertThat(details, notNullValue());
-        assertThat(details, hasProperty("flaky", equalTo(true)));
+        assertThat(testCases)
+                .hasSize(1)
+                .extracting(TestResult::getStatusDetails)
+                .extracting(StatusDetails::isFlaky)
+                .containsExactly(true);
     }
 
     @Test
@@ -204,10 +202,11 @@ public class Allure1ReaderTest {
         Set<TestResult> testResults = process(
                 "allure1/packages-testsuite.xml", generateTestSuiteXmlName()
         ).getResults();
-        assertThat(testResults, hasSize(1));
-        Optional<String> aPackage = testResults.iterator().next().findOne("package");
-        assertThat(aPackage, isPresent());
-        assertThat(aPackage, hasValue("my.company.package.subpackage.MyClass"));
+        assertThat(testResults)
+                .hasSize(1)
+                .extracting(result -> result.findOne(LabelName.PACKAGE))
+                .extracting(Optional::get)
+                .containsExactly("my.company.package.subpackage.MyClass");
     }
 
     @Test
@@ -215,9 +214,11 @@ public class Allure1ReaderTest {
         Set<TestResult> testResults = process(
                 "allure1/packages-testsuite.xml", generateTestSuiteXmlName()
         ).getResults();
-        assertThat(testResults, hasSize(1));
-        TestResult result = testResults.iterator().next();
-        assertThat(result.getFullName(), is("my.company.package.subpackage.MyClass.testThree"));
+
+        assertThat(testResults)
+                .hasSize(1)
+                .extracting(TestResult::getFullName)
+                .containsExactly("my.company.package.subpackage.MyClass.testThree");
     }
 
     private LaunchResults process(String... strings) throws IOException {

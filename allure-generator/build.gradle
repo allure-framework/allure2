@@ -48,24 +48,16 @@ testWeb.dependsOn yarn
 processResources.dependsOn buildWeb
 test.dependsOn testWeb
 
-//test.dependsOn testWeb
-
 dependencies {
     compile project(':allure-plugin-api')
     compile('org.allurefw:allure1-model')
     compile('io.qameta.allure:allure2-model-api')
     compile('org.apache.tika:tika-core')
     compile('commons-io:commons-io')
-    compile('com.fasterxml.jackson.dataformat:jackson-dataformat-yaml')
 
     testCompile('junit:junit')
     testCompile('org.assertj:assertj-core')
     testCompile('org.slf4j:slf4j-simple')
-    testCompile('org.hamcrest:hamcrest-all')
-    testCompile('org.mockito:mockito-all')
-    testCompile('com.github.baev:hamcrest-optional')
-    testCompile('ru.yandex.qatools.matchers:nio-matchers')
-    testCompile('org.zeroturnaround:zt-zip')
     testCompile('org.apache.commons:commons-lang3')
     testCompile('com.google.guava:guava')
 }
@@ -88,8 +80,7 @@ task cleanUpDemoReport(type: Delete) {
 task generateDemoReport(type: JavaExec) {
     dependsOn cleanUpDemoReport
     main = 'io.qameta.allure.DummyReportGenerator'
-    classpath = sourceSets.main.runtimeClasspath
-    systemProperties += ['allure.pluginsDirectory': file('build/plugins')]
+    classpath = sourceSets.test.runtimeClasspath
     args = [
             file("test-data/${resultsDirectory}"),
             file('build/demo-report')

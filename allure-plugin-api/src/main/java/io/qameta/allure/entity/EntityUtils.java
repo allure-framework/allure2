@@ -4,7 +4,9 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
- * @author charlie (Dmitry Baev).
+ * Contains utils for generated entities.
+ *
+ * @since 2.0
  */
 /*package private*/ final class EntityUtils {
 

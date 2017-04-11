@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author charlie (Dmitry Baev).
+ * Base class for entities that adds an ability to store extra data for beans.
+ *
+ * @since 2.0
  */
 @SuppressWarnings("unchecked")
 public class ExtraElements {

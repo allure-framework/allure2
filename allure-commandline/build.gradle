@@ -40,8 +40,9 @@ dependencies {
 
     compile project(':allure-generator')
     compile('com.beust:jcommander')
+    compile('com.fasterxml.jackson.dataformat:jackson-dataformat-yaml')
+    
     compile('org.eclipse.jetty:jetty-server')
-    compile('org.slf4j:slf4j-api')
     compile('org.slf4j:slf4j-log4j12')
 
     testCompile('junit:junit')

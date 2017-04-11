@@ -9,7 +9,9 @@ import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import io.qameta.allure.Context;
 
 /**
- * @author charlie (Dmitry Baev).
+ * Context that stores pre-configured jackson mapper.
+ *
+ * @since 2.0
  */
 public class JacksonContext implements Context<ObjectMapper> {
 

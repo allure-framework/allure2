@@ -14,9 +14,6 @@ import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * @author charlie (Dmitry Baev).
- */
 public class MarkdownAggregatorTest {
 
     @Rule
@@ -44,8 +41,8 @@ public class MarkdownAggregatorTest {
         );
         aggregator.aggregate(configuration, Collections.singletonList(launchResults), output);
         assertThat(result)
-                .hasFieldOrPropertyWithValue("description", null)
-                .hasFieldOrPropertyWithValue("descriptionHtml", null);
+                .extracting(TestResult::getDescription, TestResult::getDescriptionHtml)
+                .containsExactly(null, null);
     }
 
     @Test
@@ -64,8 +61,8 @@ public class MarkdownAggregatorTest {
         );
         aggregator.aggregate(configuration, Collections.singletonList(launchResults), output);
         assertThat(result)
-                .hasFieldOrPropertyWithValue("description", "desc")
-                .hasFieldOrPropertyWithValue("descriptionHtml", "descHtml");
+                .extracting(TestResult::getDescription, TestResult::getDescriptionHtml)
+                .containsExactly("desc", "descHtml");
     }
 
     @Test
@@ -83,8 +80,7 @@ public class MarkdownAggregatorTest {
         );
         aggregator.aggregate(configuration, Collections.singletonList(launchResults), output);
         assertThat(result)
-                .hasFieldOrPropertyWithValue("description", "desc")
-                .hasFieldOrPropertyWithValue("descriptionHtml", "<p>desc</p>");
+                .extracting(TestResult::getDescription, TestResult::getDescriptionHtml)
+                .containsExactly("desc", "<p>desc</p>");
     }
-
 }

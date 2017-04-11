@@ -109,12 +109,8 @@ allprojects {
             dependency 'org.slf4j:slf4j-log4j12:1.7.21'
 
             dependency 'junit:junit:4.12'
-            dependency 'org.hamcrest:hamcrest-all:1.3'
             dependency 'org.assertj:assertj-core:3.6.2'
-            dependency 'org.mockito:mockito-all:1.10.19'
             dependency 'org.mockito:mockito-core:2.7.19'
-            dependency 'com.github.baev:hamcrest-optional:1.0'
-            dependency 'ru.yandex.qatools.matchers:nio-matchers:1.3'
         }
     }
 
