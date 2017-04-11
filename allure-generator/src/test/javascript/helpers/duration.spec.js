@@ -21,12 +21,12 @@ describe('duration helper', function () {
     it('should humanize durations', function () {
         expect(duration(10)).toBe('10ms');
         expect(duration(MINUTE)).toBe('1m 00s');
-        expect(duration(66 * SECOND + 1)).toBe('1m 06s 001ms');
+        expect(duration(66 * SECOND + 1)).toBe('1m 06s');
         expect(duration(35 * MINUTE)).toBe('35m 00s');
-        expect(duration(HOUR)).toBe('1h 00m 00s');
-        expect(duration(5 * HOUR + 10 * MINUTE + 5 * SECOND)).toBe('5h 10m 05s');
-        expect(duration(DAY)).toBe('1d 00h 00m');
-        expect(duration(DAY + 5 * MINUTE)).toBe('1d 00h 05m');
+        expect(duration(HOUR)).toBe('1h 00m');
+        expect(duration(5 * HOUR + 10 * MINUTE + 5 * SECOND)).toBe('5h 10m');
+        expect(duration(DAY)).toBe('1d 00h');
+        expect(duration(DAY + 5 * MINUTE)).toBe('1d 00h');
     });
 
     it('should can limit count of signs', function () {
