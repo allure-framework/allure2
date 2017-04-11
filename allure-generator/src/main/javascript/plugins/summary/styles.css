@@ -1,6 +1,10 @@
-.summary-widget__chart {
+.summary-widget {
   padding: 1em 0;
-  & > div {
+  &__stats {
+    padding: 2em 0;
+  }
+
+  &__chart > div {
     position: relative;
     padding-top: 50%;
   }
