@@ -24,6 +24,7 @@ task testWeb(type: YarnTask) {
     inputs.file('.eslintrc')
 
     outputs.dir('build/resources/main')
+    outputs.dir('build/resources/test')
 
     args = ['run', 'test']
 }
@@ -45,6 +46,7 @@ task buildWeb(type: YarnTask) {
 buildWeb.dependsOn yarn
 testWeb.dependsOn yarn
 processResources.dependsOn buildWeb
+test.dependsOn testWeb
 
 //test.dependsOn testWeb
 
