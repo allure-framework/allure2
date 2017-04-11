@@ -8,7 +8,10 @@ import java.nio.file.Path;
 import java.util.Map;
 
 /**
- * @author charlie (Dmitry Baev).
+ * Visitor that stores results data to internal storage.
+ * Creates {@link LaunchResults} from all visited data.
+ *
+ * @since 2.0
  */
 public interface ResultsVisitor {
 

@@ -4,17 +4,18 @@ include 'allure-plugin-api'
 include 'allure-generator'
 include 'allure-commandline'
 
-include 'plugins/behaviors-plugin'
-project(':plugins/behaviors-plugin').name = 'behaviors-plugin'
+def plugins = [
+        'behaviors-plugin',
+        'packages-plugin',
+        'custom-logo-plugin',
+        'screen-diff-plugin',
+        'junit-plugin'
+]
 
-include 'plugins/packages-plugin'
-project(':plugins/packages-plugin').name = 'packages-plugin'
-
-include 'plugins/custom-logo-plugin'
-project(':plugins/custom-logo-plugin').name = 'custom-logo-plugin'
-
-include 'plugins/screen-diff-plugin'
-project(':plugins/screen-diff-plugin').name = 'screen-diff-plugin'
+plugins.forEach({
+    include "plugins/$it"
+    project(":plugins/$it").name = it
+})
 
 //include 'junit-plugin'
 //include 'cucumber-json-plugin'

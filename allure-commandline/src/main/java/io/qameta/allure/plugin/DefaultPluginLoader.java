@@ -13,12 +13,15 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Default plugin loader that load plugins from given directory.
@@ -34,12 +37,7 @@ public class DefaultPluginLoader {
         if (pluginConfiguration.isPresent()) {
             final PluginConfiguration configuration = pluginConfiguration.get();
             if (!configuration.getExtensions().isEmpty()) {
-                final Optional<ClassLoader> loader = createClassLoader(parent, pluginDirectory);
-                if (!loader.isPresent()) {
-                    return Optional.empty();
-                }
-
-                final ClassLoader classLoader = loader.get();
+                final ClassLoader classLoader = createClassLoader(parent, pluginDirectory);
                 final List<Extension> extensions = configuration.getExtensions().stream()
                         .map(name -> load(classLoader, name))
                         .filter(Optional::isPresent)
@@ -82,18 +80,36 @@ public class DefaultPluginLoader {
         }
     }
 
-    private Optional<ClassLoader> createClassLoader(final ClassLoader parent, final Path pluginDirectory) {
-        final Path pluginJar = pluginDirectory.resolve("plugin.jar");
-        if (Files.notExists(pluginJar)) {
-            LOGGER.error("Could not find plugin.jar in directory {}", pluginDirectory);
-            return Optional.empty();
-        }
+    private ClassLoader createClassLoader(final ClassLoader parent, final Path pluginDirectory) {
+        final Path lib = pluginDirectory.resolve("lib");
+        final URL[] urls = Stream.of(pluginDirectory, lib)
+                .filter(Files::isDirectory)
+                .flatMap(dir -> jarsInDirectory(dir).stream())
+                .toArray(URL[]::new);
+        return new URLClassLoader(urls, parent);
+    }
 
+    private List<URL> jarsInDirectory(final Path directory) {
+        final DirectoryStream.Filter<Path> pathFilter = entry ->
+                Files.isRegularFile(entry) && entry.toString().endsWith(".jar");
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(directory, pathFilter)) {
+            return StreamSupport.stream(stream.spliterator(), false)
+                    .filter(Files::isRegularFile)
+                    .map(this::toUrlSafe)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            LOGGER.error("Could not load plugin: {}", e);
+            return Collections.emptyList();
+        }
+    }
+
+    private Optional<URL> toUrlSafe(final Path path) {
         try {
-            final URL url = pluginJar.toUri().toURL();
-            return Optional.of(new URLClassLoader(new URL[]{url}, parent));
+            return Optional.of(path.toUri().toURL());
         } catch (MalformedURLException e) {
-            LOGGER.error("Could not load plugin.jar in directory {}: {}", pluginDirectory, e);
+            LOGGER.error("Could not load {}: {}", path, e);
             return Optional.empty();
         }
     }

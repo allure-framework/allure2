@@ -1,8 +1,9 @@
 package io.qameta.allure.junit;
 
-import com.google.inject.Inject;
-import io.qameta.allure.AttachmentsStorage;
-import io.qameta.allure.ResultsProcessor;
+import io.qameta.allure.Reader;
+import io.qameta.allure.context.RandomUidContext;
+import io.qameta.allure.core.Configuration;
+import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.StageResult;
@@ -16,54 +17,48 @@ import org.apache.maven.plugins.surefire.report.TestSuiteXmlParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.qameta.allure.ReportApiUtils.generateUid;
-import static io.qameta.allure.ReportApiUtils.listFiles;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.nio.file.Files.newDirectoryStream;
 
 /**
- * @author Dmitry Baev baev@qameta.io
- *         Date: 14.02.16
+ * Plugin that reads data in JUnit.xml format.
+ *
+ * @since 2.0
  */
-public class JunitResultsReader implements ResultsProcessor {
+public class JunitPlugin implements Reader {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JunitResultsReader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JunitPlugin.class);
 
     public static final BigDecimal MULTIPLICAND = new BigDecimal(1000);
 
-    private final AttachmentsStorage storage;
-
     private final TestSuiteXmlParser parser = new TestSuiteXmlParser();
 
-    @Inject
-    public JunitResultsReader(final AttachmentsStorage storage) {
-        this.storage = storage;
-    }
-
-    @Override
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-    public List<TestCaseResult> readResults(final Path source) {
-        return listFiles(source, "TEST-*.xml")
+    @Override
+    public void readResults(final Configuration configuration, final ResultsVisitor visitor, final Path directory) {
+        final RandomUidContext context = configuration.requireContext(RandomUidContext.class);
+        listResults(directory).stream()
                 .flatMap(this::parse)
-                .flatMap(testSuite -> {
-                    final Path attachmentFile = source.resolve(testSuite.getFullClassName() + ".txt");
+                .forEach(testSuite -> {
+                    final Path attachmentFile = directory.resolve(testSuite.getFullClassName() + ".txt");
                     final Optional<Attachment> log = Optional.of(attachmentFile)
                             .filter(Files::exists)
-                            .map(storage::addAttachment)
+                            .map(visitor::visitAttachmentFile)
                             .map(attachment -> attachment.withName("System out"));
 
-                    final List<TestCaseResult> results = new ArrayList<>();
                     for (ReportTestCase testCase : testSuite.getTestCases()) {
-                        final TestCaseResult result = convert(testCase);
+                        final TestCaseResult result = convert(context, testCase);
                         log.ifPresent(attachment -> {
                             result.setTestStage(new StageResult());
                             result.getTestStage().getAttachments().add(attachment);
@@ -71,17 +66,15 @@ public class JunitResultsReader implements ResultsProcessor {
                         result.addLabelIfNotExists(LabelName.SUITE, testSuite.getFullClassName());
                         result.addLabelIfNotExists(LabelName.TEST_CLASS, testSuite.getFullClassName());
                         result.addLabelIfNotExists(LabelName.PACKAGE, testSuite.getFullClassName());
-                        results.add(result);
+                        visitor.visitTestResult(result);
                     }
-                    return results.stream();
-                })
-                .collect(Collectors.toList());
+                });
     }
 
-    protected TestCaseResult convert(final ReportTestCase source) {
+    protected TestCaseResult convert(final RandomUidContext context, final ReportTestCase source) {
         final TestCaseResult dest = new TestCaseResult();
         dest.setTestCaseId(String.format("%s#%s", source.getFullClassName(), source.getName()));
-        dest.setUid(generateUid());
+        dest.setUid(context.getValue().get());
         dest.setName(source.getName());
         dest.setTime(new Time()
                 .withDuration(BigDecimal.valueOf(source.getTime()).multiply(MULTIPLICAND).longValue())
@@ -120,5 +113,23 @@ public class JunitResultsReader implements ResultsProcessor {
             LOGGER.debug("Could not parse result {}: {}", source, e);
             return Stream.empty();
         }
+    }
+
+    private static List<Path> listResults(final Path directory) {
+        List<Path> result = new ArrayList<>();
+        if (!Files.isDirectory(directory)) {
+            return result;
+        }
+
+        try (DirectoryStream<Path> directoryStream = newDirectoryStream(directory, "TEST-*.xml")) {
+            for (Path path : directoryStream) {
+                if (!Files.isDirectory(path)) {
+                    result.add(path);
+                }
+            }
+        } catch (IOException e) {
+            LOGGER.error("Could not read data from {}: {}", directory, e);
+        }
+        return result;
     }
 }
