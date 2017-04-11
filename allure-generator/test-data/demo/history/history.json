@@ -1,0 +1,604 @@
+{
+  "other.PassingTest#testPassed" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 2,
+      "unknown" : 0,
+      "total" : 2
+    },
+    "items" : [ {
+      "uid" : "e97b31dfa2eb359d",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/e97b31dfa2eb359d",
+      "status" : "passed",
+      "time" : {
+        "start" : 1412949529363,
+        "stop" : 1412949549730,
+        "duration" : 20367
+      }
+    }, {
+      "status" : "passed",
+      "time" : {
+        "start" : 1412949549730,
+        "stop" : 1412949549745,
+        "duration" : 15
+      }
+    } ]
+  },
+  "my.company.NonAsciiTest#test_raise_cyrilling (невероятный тест кодировки!)" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 2,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 2
+    },
+    "items" : [ {
+      "uid" : "8cdacdd71c63a7c7",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/8cdacdd71c63a7c7",
+      "status" : "broken",
+      "statusDetails" : "Exception: Невероятная проблема!",
+      "time" : {
+        "start" : 1412949540562,
+        "stop" : 1412949540660,
+        "duration" : 98
+      }
+    }, {
+      "status" : "broken",
+      "statusDetails" : "Exception: Невероятная проблема!",
+      "time" : {
+        "start" : 1412949558830,
+        "stop" : 1412949558866,
+        "duration" : 36
+      }
+    } ]
+  },
+  "Search tests#Wildcard search test" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 1,
+      "unknown" : 0,
+      "total" : 1
+    },
+    "items" : [ {
+      "status" : "passed",
+      "time" : {
+        "start" : 1412949558830,
+        "stop" : 1412949558866,
+        "duration" : 36
+      }
+    } ]
+  },
+  "my.company.SimpleTest#skippedSimpleTest" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 2,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 2
+    },
+    "items" : [ {
+      "uid" : "9738d6e81b17bb7",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/9738d6e81b17bb7",
+      "status" : "skipped",
+      "statusDetails" : "Test ignored (without reason)!",
+      "time" : {
+        "start" : 1412949558831,
+        "stop" : 1412949558832,
+        "duration" : 1
+      }
+    }, {
+      "status" : "skipped",
+      "statusDetails" : "Test ignored (without reason)!",
+      "time" : {
+        "start" : 1412949558830,
+        "stop" : 1412949558866,
+        "duration" : 36
+      }
+    } ]
+  },
+  "my.company.AlwaysPassingTest#testTwo" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 2,
+      "unknown" : 0,
+      "total" : 2
+    },
+    "items" : [ {
+      "uid" : "26ed546144a3aa2b",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/26ed546144a3aa2b",
+      "status" : "passed",
+      "time" : {
+        "start" : 1412949539363,
+        "stop" : 1412949539372,
+        "duration" : 9
+      }
+    }, {
+      "status" : "passed",
+      "time" : {
+        "start" : 1412949558830,
+        "stop" : 1412949558866,
+        "duration" : 36
+      }
+    } ]
+  },
+  "my.company.ManyInfoTest#lotOfStepsTest" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 2,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 2
+    },
+    "items" : [ {
+      "uid" : "fb96ec69ee610b61",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/fb96ec69ee610b61",
+      "status" : "broken",
+      "statusDetails" : "FileNotFoundException: No file found.",
+      "time" : {
+        "start" : 1412949539801,
+        "stop" : 1412949539862,
+        "duration" : 61
+      }
+    }, {
+      "status" : "broken",
+      "statusDetails" : "FileNotFoundException: No file found.",
+      "time" : {
+        "start" : 1412949558830,
+        "stop" : 1412949558866,
+        "duration" : 36
+      }
+    } ]
+  },
+  "my.company.ScreenshotTest#Empty text search" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 1,
+      "unknown" : 0,
+      "total" : 1
+    },
+    "items" : [ {
+      "uid" : "2bbb46a2cd4db271",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/2bbb46a2cd4db271",
+      "status" : "passed",
+      "time" : {
+        "start" : 1412949551164,
+        "stop" : 1412949558344,
+        "duration" : 7180
+      }
+    } ]
+  },
+  "Search tests#Usual search test" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 1,
+      "unknown" : 0,
+      "total" : 1
+    },
+    "items" : [ {
+      "status" : "passed",
+      "time" : {
+        "start" : 1412949558830,
+        "stop" : 1412949558866,
+        "duration" : 36
+      }
+    } ]
+  },
+  "my.company.AllureMigrationTest#Test what do nothing and always passed right, but have a very long title, over 100 symbols, seriously" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 2,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 2
+    },
+    "items" : [ {
+      "uid" : "798a028433530d97",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/798a028433530d97",
+      "status" : "skipped",
+      "time" : {
+        "start" : 1412949993580,
+        "stop" : 1412949993780,
+        "duration" : 200
+      }
+    }, {
+      "status" : "skipped",
+      "time" : {
+        "start" : 1412949558830,
+        "stop" : 1412949558866,
+        "duration" : 36
+      }
+    } ]
+  },
+  "my.company.AlwaysPassingTest#testOne" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 2,
+      "unknown" : 0,
+      "total" : 2
+    },
+    "items" : [ {
+      "uid" : "8d49e3090e19c43f",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/8d49e3090e19c43f",
+      "status" : "passed",
+      "time" : {
+        "start" : 1412949539363,
+        "stop" : 1412949539715,
+        "duration" : 352
+      }
+    }, {
+      "status" : "passed",
+      "time" : {
+        "start" : 1412949539715,
+        "stop" : 1412949539718,
+        "duration" : 3
+      }
+    } ]
+  },
+  "my.company.SimpleTest#failedSimpleTest" : {
+    "statistic" : {
+      "failed" : 2,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 2
+    },
+    "items" : [ {
+      "uid" : "d522275afb1a8471",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/d522275afb1a8471",
+      "status" : "failed",
+      "statusDetails" : "AssertionError: 5 is not 2 + 2\nExpected: is <4>\n     but: was <5>",
+      "time" : {
+        "start" : 1412949558829,
+        "stop" : 1412949558830,
+        "duration" : 1
+      }
+    }, {
+      "status" : "failed",
+      "statusDetails" : "AssertionError: 5 is not 2 + 2\nExpected: is <4>\n     but: was <5>",
+      "time" : {
+        "start" : 1412949558830,
+        "stop" : 1412949558866,
+        "duration" : 36
+      }
+    } ]
+  },
+  "my.company.NonAsciiTest#test_pass" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 2,
+      "unknown" : 0,
+      "total" : 2
+    },
+    "items" : [ {
+      "uid" : "135df51d59c39e68",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/135df51d59c39e68",
+      "status" : "passed",
+      "time" : {
+        "start" : 1412949540562,
+        "stop" : 1412949540565,
+        "duration" : 3
+      }
+    }, {
+      "status" : "passed",
+      "time" : {
+        "start" : 1412949558830,
+        "stop" : 1412949558866,
+        "duration" : 36
+      }
+    } ]
+  },
+  "Search tests#Empty text search" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 1,
+      "unknown" : 0,
+      "total" : 1
+    },
+    "items" : [ {
+      "status" : "passed",
+      "time" : {
+        "start" : 1412949558830,
+        "stop" : 1412949558866,
+        "duration" : 36
+      }
+    } ]
+  },
+  "my.company.AlwaysPassingTest#testFour" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 1,
+      "unknown" : 1,
+      "total" : 2
+    },
+    "items" : [ {
+      "uid" : "1ea7c7f96d4894ea",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/1ea7c7f96d4894ea",
+      "status" : "unknown",
+      "time" : {
+        "start" : 1412949539363,
+        "stop" : 1412949539730,
+        "duration" : 367
+      }
+    }, {
+      "status" : "passed",
+      "time" : {
+        "start" : 1412949558830,
+        "stop" : 1412949558866,
+        "duration" : 36
+      }
+    } ]
+  },
+  "my.company.SimpleTest#Test what do nothing and always passed right, but have a very long title, over 100 symbols, seriously" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 2,
+      "unknown" : 0,
+      "total" : 2
+    },
+    "items" : [ {
+      "uid" : "dafa0d235010d733",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/dafa0d235010d733",
+      "status" : "passed",
+      "time" : {
+        "start" : 1412949558829,
+        "stop" : 1412949558829,
+        "duration" : 0
+      }
+    }, {
+      "status" : "passed",
+      "time" : {
+        "start" : 1412949558830,
+        "stop" : 1412949558866,
+        "duration" : 36
+      }
+    } ]
+  },
+  "my.company.ManyInfoTest#Test with long assertion text" : {
+    "statistic" : {
+      "failed" : 1,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 1,
+      "unknown" : 0,
+      "total" : 2
+    },
+    "items" : [ {
+      "uid" : "541aa2bc40916161",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/541aa2bc40916161",
+      "status" : "failed",
+      "statusDetails" : "AssertionError: \nExpected: \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"ok value\\\"\\n}\"\n     but: was \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"bad value\\\"\\n}\"",
+      "time" : {
+        "start" : 1412949539800,
+        "stop" : 1412949540461,
+        "duration" : 661
+      }
+    }, {
+      "status" : "passed",
+      "statusDetails" : "AssertionError: \nExpected: \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"ok value\\\"\\n}\"\n     but: was \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"bad value\\\"\\n}\"",
+      "time" : {
+        "start" : 1412949558830,
+        "stop" : 1412949558866,
+        "duration" : 36
+      }
+    } ]
+  },
+  "my.company.BeforeClassFailTest#BeforeClassFailTest" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 2,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 2
+    },
+    "items" : [ {
+      "uid" : "f6a3cda74272ea80",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/f6a3cda74272ea80",
+      "status" : "broken",
+      "statusDetails" : "RuntimeException: bye-bye",
+      "time" : {
+        "start" : 1412949539770,
+        "stop" : 1412949539779,
+        "duration" : 9
+      }
+    }, {
+      "status" : "broken",
+      "statusDetails" : "RuntimeException: bye-bye",
+      "time" : {
+        "start" : 1412949558830,
+        "stop" : 1412949558866,
+        "duration" : 36
+      }
+    } ]
+  },
+  "my.company.AlwaysPassingTest#testThree" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 1,
+      "unknown" : 1,
+      "total" : 2
+    },
+    "items" : [ {
+      "uid" : "97a3edf2521d6be",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/97a3edf2521d6be",
+      "status" : "unknown",
+      "time" : {
+        "start" : 1412949539364,
+        "stop" : 1412949539746,
+        "duration" : 382
+      }
+    }, {
+      "status" : "passed",
+      "time" : {
+        "start" : 1412949558830,
+        "stop" : 1412949558866,
+        "duration" : 36
+      }
+    } ]
+  },
+  "Search tests#Page loading test" : {
+    "statistic" : {
+      "failed" : 1,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 1
+    },
+    "items" : [ {
+      "status" : "failed",
+      "statusDetails" : "AssertionError: Text on current page should be correct\nExpected: element text is \"Yandex\"\n     but: <[[PhantomJSDriver: phantomjs on MAC (9e679b20-5085-11e4-ad6d-87edf8da84a7)] -> css selector: title]> text is \"\"",
+      "time" : {
+        "start" : 1412949558830,
+        "stop" : 1412949558866,
+        "duration" : 36
+      }
+    } ]
+  },
+  "my.company.ManyInfoTest#<script>3443</script>" : {
+    "statistic" : {
+      "failed" : 2,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 2
+    },
+    "items" : [ {
+      "uid" : "e43b4de92b1ca911",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/e43b4de92b1ca911",
+      "status" : "failed",
+      "statusDetails" : "AlarmAssertionErrorAssertionErrorAssertionErrorAssertionErrorAssertionError: This test should be failed",
+      "time" : {
+        "start" : 1412949539801,
+        "stop" : 1412949540559,
+        "duration" : 758
+      }
+    }, {
+      "status" : "failed",
+      "statusDetails" : "AlarmAssertionErrorAssertionErrorAssertionErrorAssertionErrorAssertionError: This test should be failed",
+      "time" : {
+        "start" : 1412949558830,
+        "stop" : 1412949558866,
+        "duration" : 36
+      }
+    } ]
+  },
+  "my.company.ScreenshotTest#Page loading test" : {
+    "statistic" : {
+      "failed" : 1,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 1
+    },
+    "items" : [ {
+      "uid" : "99ebbe49adbca5ce",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/99ebbe49adbca5ce",
+      "status" : "failed",
+      "statusDetails" : "AssertionError: Text on current page should be correct\nExpected: element text is \"Yandex\"\n     but: <[[PhantomJSDriver: phantomjs on MAC (9e679b20-5085-11e4-ad6d-87edf8da84a7)] -> css selector: title]> text is \"\"",
+      "time" : {
+        "start" : 1412949551164,
+        "stop" : 1412949556298,
+        "duration" : 5134
+      }
+    } ]
+  },
+  "my.company.SimpleTest#brokenSimpleTest" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 2,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 2
+    },
+    "items" : [ {
+      "uid" : "fd5a45b76f24cdcc",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/fd5a45b76f24cdcc",
+      "status" : "broken",
+      "statusDetails" : "ArrayIndexOutOfBoundsException: 1",
+      "time" : {
+        "start" : 1412949558829,
+        "stop" : 1412949558832,
+        "duration" : 3
+      }
+    }, {
+      "status" : "broken",
+      "statusDetails" : "ArrayIndexOutOfBoundsException: 1",
+      "time" : {
+        "start" : 1412949558830,
+        "stop" : 1412949558866,
+        "duration" : 36
+      }
+    } ]
+  },
+  "my.company.ScreenshotTest#Wildcard search test" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 1,
+      "unknown" : 0,
+      "total" : 1
+    },
+    "items" : [ {
+      "uid" : "e3c4fe013914274f",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/e3c4fe013914274f",
+      "status" : "passed",
+      "time" : {
+        "start" : 1412949551164,
+        "stop" : 1412949558737,
+        "duration" : 7573
+      }
+    } ]
+  },
+  "my.company.ScreenshotTest#Usual search test" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 1,
+      "unknown" : 0,
+      "total" : 1
+    },
+    "items" : [ {
+      "uid" : "1390204629acfa78",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/1390204629acfa78",
+      "status" : "passed",
+      "time" : {
+        "start" : 1412949551164,
+        "stop" : 1412949558826,
+        "duration" : 7662
+      }
+    } ]
+  }
+}

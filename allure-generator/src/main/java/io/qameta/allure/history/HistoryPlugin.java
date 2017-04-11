@@ -7,6 +7,7 @@ import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
+import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.TestResult;
 
@@ -70,10 +71,11 @@ public class HistoryPlugin implements Reader, Aggregator {
     protected Map<String, HistoryData> getData(final List<LaunchResults> launches) {
         return launches.stream()
                 .map(launch -> {
+                    ExecutorInfo executorInfo = launch.getExtra("executor", ExecutorInfo::new);
                     final Map<String, HistoryData> history = launch.getExtra(HISTORY_BLOCK_NAME, HashMap::new);
                     launch.getResults().stream()
                             .filter(result -> Objects.nonNull(result.getHistoryId()))
-                            .forEach(result -> updateHistory(history, result));
+                            .forEach(result -> updateHistory(history, result, executorInfo));
                     return history;
                 })
                 .reduce(new HashMap<>(), (a, b) -> {
@@ -82,20 +84,30 @@ public class HistoryPlugin implements Reader, Aggregator {
                 });
     }
 
-    private void updateHistory(final Map<String, HistoryData> history, final TestResult result) {
+    private void updateHistory(final Map<String, HistoryData> history,
+                               final TestResult result,
+                               final ExecutorInfo info) {
         //@formatter:off
         final HistoryData data = history.computeIfAbsent(
             result.getHistoryId(),
-            id -> new HistoryData().withId(id).withName(result.getName())
+            id -> new HistoryData().withStatistic(new Statistic())
         );
         //@formatter:on
 
         data.updateStatistic(result);
-        result.addExtraBlock(HISTORY_BLOCK_NAME, copy(data));
+        if (!data.getItems().isEmpty()) {
+            result.addExtraBlock(HISTORY_BLOCK_NAME, copy(data));
+        }
+
         final HistoryItem newItem = new HistoryItem()
+                .withUid(result.getUid())
                 .withStatus(result.getStatus())
                 .withStatusDetails(result.getStatusMessage().orElse(null))
                 .withTime(result.getTime());
+
+        if (Objects.nonNull(info.getReportUrl())) {
+            newItem.setReportUrl(String.format("%s/#testcase/%s", info.getReportUrl(), result.getUid()));
+        }
 
         final List<HistoryItem> newItems = Stream.concat(Stream.of(newItem), data.getItems().stream())
                 .limit(5)
@@ -108,8 +120,6 @@ public class HistoryPlugin implements Reader, Aggregator {
         statistic.merge(other.getStatistic());
         final List<HistoryItem> items = new ArrayList<>(other.getItems());
         return new HistoryData()
-                .withId(other.getId())
-                .withName(other.getName())
                 .withStatistic(statistic)
                 .withItems(items);
     }
