@@ -1,9 +1,9 @@
 import {View} from 'backbone.marionette';
 import {className} from '../../decorators';
-import template from './InfoView.hbs';
+import template from './DurationView.hbs';
 
 @className('pane__section')
-class InfoView extends View {
+class DurationView extends View {
     template = template;
 
     serializeData() {
@@ -13,4 +13,4 @@ class InfoView extends View {
     }
 }
 
-export default InfoView;
+export default DurationView;

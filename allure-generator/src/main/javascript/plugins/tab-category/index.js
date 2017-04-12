@@ -1,6 +1,3 @@
-import CategoryView from './CategoryView';
-
-allure.api.addTestcaseBlock(CategoryView, {position: 'before'});
 allure.api.addTab('categories', {
     title: 'Categories', icon: 'fa fa-flag',
     route: 'categories(/:testcaseId)',

@@ -27,6 +27,7 @@ class TestcaseView extends View {
     }
 
     onRender() {
+        this.showTestcasePlugins(this.$('.testcase__content_tags'), pluginsRegistry.testcaseBlocks.tag);
         this.showTestcasePlugins(this.$('.testcase__content_before'), pluginsRegistry.testcaseBlocks.before);
         this.showChildView('execution', new ExecutionView({
             baseUrl: '#testcase/' + this.model.id,

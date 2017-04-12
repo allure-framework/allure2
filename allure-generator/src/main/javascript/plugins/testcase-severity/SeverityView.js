@@ -1,13 +1,15 @@
 import {View} from 'backbone.marionette';
-import template from './SeverityView.hbs';
 import {className} from '../../decorators/index';
+import {escapeExpression} from 'handlebars/runtime';
 
 @className('pane__section')
 class SeverityView extends View {
-    template = template;
+    template(data) {
+        return data.severity ? `Severity: ${escapeExpression(data.severity)}` : '';
+    }
 
     serializeData() {
-        var extra = this.model.get('extra');
+        const extra = this.model.get('extra');
         return {
             severity: extra ? extra.severity : null
         };

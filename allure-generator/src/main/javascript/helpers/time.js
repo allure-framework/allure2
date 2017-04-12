@@ -1,6 +1,9 @@
 import pad from 'underscore.string/pad';
 
 export default function (date) {
+    if(!date) {
+        return 'unknown';
+    }
     if(!(date instanceof Date)) {
         date = new Date(date);
     }
