@@ -3,6 +3,8 @@ package io.qameta.allure.packages;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.tree.AbstractTreeAggregator;
+import io.qameta.allure.tree.TestGroupNode;
+import io.qameta.allure.tree.TreeData;
 import io.qameta.allure.tree.TreeGroup;
 
 import java.util.Arrays;
@@ -41,4 +43,41 @@ public class PackagesPlugin extends AbstractTreeAggregator {
     protected String getFileName() {
         return "packages.json";
     }
+
+    @Override
+    protected TreeData postProcess(final TreeData treeData) {
+        treeData.getChildren().stream()
+                .filter(TestGroupNode.class::isInstance)
+                .map(TestGroupNode.class::cast)
+                .forEach(this::collapseGroupsWithOnlyOneChild);
+        return treeData;
+    }
+
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
+    protected void collapseGroupsWithOnlyOneChild(final TestGroupNode groupNode) {
+        groupNode.getChildren().stream()
+                .filter(TestGroupNode.class::isInstance)
+                .map(TestGroupNode.class::cast)
+                .forEach(this::collapseGroupsWithOnlyOneChild);
+
+        final long count = groupNode.getChildren().stream()
+                .filter(TestGroupNode.class::isInstance)
+                .count();
+
+        if (count == 1) {
+            groupNode.getChildren().stream()
+                    .filter(TestGroupNode.class::isInstance)
+                    .map(TestGroupNode.class::cast)
+                    .findAny()
+                    .ifPresent(next -> {
+                        groupNode.setName(getName(groupNode, next));
+                        groupNode.setChildren(next.getChildren());
+                    });
+        }
+    }
+
+    protected String getName(final TestGroupNode parent, final TestGroupNode child) {
+        return String.format("%s.%s", parent.getName(), child.getName());
+    }
+
 }
