@@ -25,7 +25,7 @@ import static io.qameta.allure.AllureUtils.generateTestResultName;
 import static io.qameta.allure.entity.Status.UNKNOWN;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class Allure2ReaderTest {
+public class Allure2PluginTest {
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
@@ -164,6 +164,17 @@ public class Allure2ReaderTest {
                 .hasSize(1)
                 .extracting(TestResult::getStatus)
                 .containsExactly(UNKNOWN);
+    }
+
+    @Test
+    public void shouldProcessNullStageTime() throws Exception {
+        Set<TestResult> testResults = process(
+                "allure2/other-testcase.json", generateTestResultName(),
+                "allure2/null-before-group.json", generateTestResultContainerName()
+        ).getResults();
+
+        assertThat(testResults)
+                .hasSize(1);
     }
 
     private LaunchResults process(String... strings) throws IOException {

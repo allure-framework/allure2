@@ -1,0 +1,19 @@
+{
+  "uuid": "ce89ae8efce25684a940d13c39ccc26c",
+  "children": [
+    "93542b02b4f3b5c69033c3643e0428ed"
+  ],
+  "name": "My suite",
+  "start": 1479552601299,
+  "stop": 1479552646843,
+  "befores": [
+    {
+      "name": "Allure2.NUnit3.Sample.SampleSetUpFixture",
+      "status": "passed"
+    },
+    {
+      "name": "Allure2.NUnit3.Sample.SampleSetUpFixture2",
+      "status": "passed"
+    }
+  ]
+}
