@@ -6,6 +6,7 @@ class AllurePluginsRegistry {
     tabs = [];
 
     testcaseBlocks = {
+        tag: [],
         before: [],
         after: []
     };
@@ -29,6 +30,10 @@ class AllurePluginsRegistry {
 
     addTestcaseBlock(view, {position}) {
         this.testcaseBlocks[position].push(view);
+    }
+
+    addTestcaseTag(name) {
+        this.testcaseTags.add(name);
     }
 }
 

@@ -8,21 +8,24 @@ import './pluginApi';
 
 import './plugins/default';
 import './plugins/environment';
-import './plugins/category';
-import './plugins/xunit';
-import './plugins/graph';
-import './plugins/timeline';
-import './plugins/history';
-import './plugins/retry';
-import './plugins/executor';
-import './plugins/launch';
-import './plugins/summary';
-import './plugins/severity';
-import './plugins/owner';
 
-import './plugins/testcase-info';
-import './plugins/testcase-parameters';
+import './plugins/tab-category';
+import './plugins/tab-xunit';
+import './plugins/tab-graph';
+import './plugins/tab-timeline';
+
+import './plugins/widget-executor';
+import './plugins/widget-launch';
+import './plugins/widget-summary';
+
 import './plugins/testcase-description';
+import './plugins/testcase-category';
+import './plugins/testcase-history';
+import './plugins/testcase-retry';
+import './plugins/testcase-owner';
+import './plugins/testcase-severity';
+import './plugins/testcase-duration';
+import './plugins/testcase-parameters';
 import './plugins/testcase-links';
 
 App.start();

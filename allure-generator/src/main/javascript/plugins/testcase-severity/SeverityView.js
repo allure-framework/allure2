@@ -7,7 +7,7 @@ class SeverityView extends View {
     template = template;
 
     serializeData() {
-        var extra = this.model.get('extra');
+        const extra = this.model.get('extra');
         return {
             severity: extra ? extra.severity : null
         };

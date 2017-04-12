@@ -2,7 +2,7 @@ import './styles.css';
 import {View} from 'backbone.marionette';
 import template from './SummaryWidgetView.hbs';
 import {regions} from '../../decorators';
-import StatusChart from '../graph/charts/StatusChart';
+import StatusChart from '../tab-graph/charts/StatusChart';
 
 @regions({
     chart: '.summary-widget__chart'
