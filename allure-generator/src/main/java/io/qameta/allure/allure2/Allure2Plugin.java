@@ -33,7 +33,9 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.Comparator.comparingLong;
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.naturalOrder;
+import static java.util.Comparator.nullsFirst;
 import static java.util.Objects.nonNull;
 
 /**
@@ -44,7 +46,10 @@ import static java.util.Objects.nonNull;
 @SuppressWarnings("PMD.ExcessiveImports")
 public class Allure2Plugin implements Reader {
 
-    private static final Comparator<StageResult> BY_START = comparingLong(a -> a.getTime().getStart());
+    private static final Comparator<StageResult> BY_START = comparing(
+            StageResult::getTime,
+            nullsFirst(comparing(Time::getStart, nullsFirst(naturalOrder())))
+    );
 
     @Override
     public void readResults(final Configuration configuration,
@@ -200,7 +205,9 @@ public class Allure2Plugin implements Reader {
 
     private List<StageResult> getStages(final List<TestResultContainer> parents,
                                         final Function<TestResultContainer, Stream<StageResult>> getter) {
-        return parents.stream().flatMap(getter).collect(Collectors.toList());
+        return parents.stream()
+                .flatMap(getter)
+                .collect(Collectors.toList());
     }
 
     private Stream<StageResult> getBefore(final Path source,

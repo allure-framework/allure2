@@ -37,7 +37,7 @@ import static org.allurefw.allure1.AllureUtils.generateTestSuiteJsonName;
 import static org.allurefw.allure1.AllureUtils.generateTestSuiteXmlName;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class Allure1ReaderTest {
+public class Allure1PluginTest {
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
