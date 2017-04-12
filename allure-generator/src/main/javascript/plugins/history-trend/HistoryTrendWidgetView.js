@@ -2,7 +2,7 @@ import './styles.css';
 import template from './HistoryTrendWidgetView.hbs';
 import {View} from 'backbone.marionette';
 import {className, regions} from '../../decorators/index';
-import TestTrendChart from '../graph/charts/TestTrendChart';
+import TestTrendChart from '../tab-graph/charts/TestTrendChart';
 
 @regions({
     chart: '.history-trend__chart'

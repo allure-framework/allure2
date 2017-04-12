@@ -1,11 +1,8 @@
 import {scaleLinear} from 'd3-scale';
-import {max, sum} from 'd3-array';
-import {entries, set} from 'd3-collection';
+import {max} from 'd3-array';
 import {values} from '../../../util/statuses';
 import BaseChartView from '../../../components/chart/BaseChartView';
 import {area, stack} from 'd3-shape';
-
-const Y_AMOUNT = 8;
 
 const PAD_LEFT = 50;
 const PAD_RIGHT = 15;
@@ -39,7 +36,7 @@ class TestTrendGraphView extends BaseChartView {
             .value((d, key) => d[key] || 0);
 
         const a = area()
-            .x(d =>  this.x(d.data.id))
+            .x(d => this.x(d.data.id))
             .y0(d => this.y(d[0]))
             .y1(d => this.y(d[1]));
 
@@ -48,7 +45,7 @@ class TestTrendGraphView extends BaseChartView {
 
         const maxY = max(data, d => d.total);
 
-        this.x.domain([0, data.length-1]).nice();
+        this.x.domain([0, data.length - 1]).nice();
         this.y.domain([0, maxY]);
 
         this.makeBottomAxis(this.svg.select('.chart__axis_x'), {
@@ -68,7 +65,7 @@ class TestTrendGraphView extends BaseChartView {
             top: PAD_TOP
         });
 
-       var plot =  this.svg.select('.chart__plot').attrs({transform: `translate(${PAD_LEFT},${PAD_TOP})`});
+        const plot = this.svg.select('.chart__plot').attrs({transform: `translate(${PAD_LEFT},${PAD_TOP})`});
 
         const layer = plot
             .selectAll('.layer')
@@ -85,8 +82,8 @@ class TestTrendGraphView extends BaseChartView {
     }
 
     getChartData() {
-        var length = this.options.items.length - 1;
-        this.options.items.forEach((d,i)=> d['id'] = length - i)
+        const length = this.options.items.length - 1;
+        this.options.items.forEach((d, i) => d['id'] = length - i)
         return this.options.items;
     }
 }
