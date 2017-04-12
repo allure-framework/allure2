@@ -29,6 +29,7 @@
     "babel-register": "^6.23.0",
     "case-sensitive-paths-webpack-plugin": "^1.1.4",
     "css-loader": "^0.26.2",
+    "date-fns": "^1.28.2",
     "eslint": "^3.16.1",
     "extract-text-webpack-plugin": "^2.0.0",
     "handlebars-loader": "^1.1.4",

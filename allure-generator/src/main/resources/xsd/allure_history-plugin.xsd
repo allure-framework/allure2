@@ -10,8 +10,6 @@
     <xsd:element name="historyData" type="ns:HistoryData"/>
     <xsd:complexType name="HistoryData">
         <xsd:sequence>
-            <xsd:element name="id" type="xsd:string"/>
-            <xsd:element name="name" type="xsd:string"/>
             <xsd:element name="statistic" type="data:Statistic"/>
             <xsd:element name="items">
                 <xsd:complexType>
@@ -26,9 +24,10 @@
     <xsd:element name="historyItem" type="ns:HistoryItem"/>
     <xsd:complexType name="HistoryItem">
         <xsd:sequence>
+            <xsd:element name="uid" type="xsd:string"/>
+            <xsd:element name="reportUrl" type="xsd:string"/>
             <xsd:element name="status" type="data:Status"/>
             <xsd:element name="statusDetails" type="xsd:string"/>
-            <xsd:element name="testRunName" type="xsd:string"/>
             <xsd:element name="time" type="data:Time"/>
         </xsd:sequence>
     </xsd:complexType>

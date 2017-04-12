@@ -7,9 +7,16 @@
         {{/if}}
     </div>
     {{#each history.items}}
-        <div class="history-row">
-            <span class="label label_status_{{status}}">{{status}}</span>
-            {{date time.start}} at {{time time.start}}
-        </div>
+        {{#if reportUrl}}
+            <a class="history-row link" href="{{reportUrl}}" target="_blank">
+                <span class="label label_status_{{status}}">{{status}}</span>
+                {{timeago time.stop}}
+            </a>
+        {{else}}
+            <div class="history-row">
+                <span class="label label_status_{{status}}">{{status}}</span>
+                {{timeago time.stop}}
+            </div>
+        {{/if}}
     {{/each}}
 {{/if}}
