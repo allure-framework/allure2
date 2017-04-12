@@ -83,7 +83,7 @@ class TestTrendGraphView extends BaseChartView {
 
     getChartData() {
         const length = this.options.items.length - 1;
-        this.options.items.forEach((d, i) => d['id'] = length - i)
+        this.options.items.forEach((d, i) => d['id'] = length - i);
         return this.options.items;
     }
 }
