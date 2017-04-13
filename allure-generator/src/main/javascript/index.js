@@ -8,16 +8,16 @@ import './pluginApi';
 
 import './plugins/default';
 import './plugins/environment';
-import './plugins/history-trend';
 
 import './plugins/tab-category';
 import './plugins/tab-xunit';
 import './plugins/tab-graph';
 import './plugins/tab-timeline';
 
+import './plugins/widget-summary';
 import './plugins/widget-executor';
 import './plugins/widget-launch';
-import './plugins/widget-summary';
+import './plugins/widget-history-trend';
 
 import './plugins/testcase-description';
 import './plugins/testcase-category';

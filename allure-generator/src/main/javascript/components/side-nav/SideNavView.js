@@ -1,5 +1,5 @@
 import './styles.css';
-import {className, on} from '../../decorators';
+import {className, on, behavior} from '../../decorators';
 import {findWhere} from 'underscore';
 import {View} from 'backbone.marionette';
 import TooltipView from '../tooltip/TooltipView';
@@ -11,6 +11,7 @@ import template from './SideNavView.hbs';
 import {escapeExpression as escape} from 'handlebars/runtime';
 import router from '../../router';
 
+@behavior('TooltipBehavior', {position: 'right'})
 @className('side-nav')
 class SideNavView extends View {
     template = template;
