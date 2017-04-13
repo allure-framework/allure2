@@ -16,6 +16,7 @@ import io.qameta.allure.core.TestsResultsPlugin;
 import io.qameta.allure.executor.ExecutorPlugin;
 import io.qameta.allure.graph.GraphPlugin;
 import io.qameta.allure.history.HistoryPlugin;
+import io.qameta.allure.history.HistoryTrendPlugin;
 import io.qameta.allure.launch.LaunchPlugin;
 import io.qameta.allure.mail.MailPlugin;
 import io.qameta.allure.owner.OwnerPlugin;
@@ -37,6 +38,7 @@ import java.util.List;
  * @see Configuration
  * @since 2.0
  */
+@SuppressWarnings("PMD.ExcessiveImports")
 public class ConfigurationBuilder {
 
     private final List<Extension> extensions = new ArrayList<>();
@@ -55,6 +57,7 @@ public class ConfigurationBuilder {
                 new OwnerPlugin(),
                 new CategoriesPlugin(),
                 new HistoryPlugin(),
+                new HistoryTrendPlugin(),
                 new GraphPlugin(),
                 new TimelinePlugin(),
                 new XunitPlugin(),
