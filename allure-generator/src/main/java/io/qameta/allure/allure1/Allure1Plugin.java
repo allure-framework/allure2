@@ -129,7 +129,7 @@ public class Allure1Plugin implements Reader {
                 dest.getLinks().add(getLink(ISSUE, issue, getIssueUrl(issue)))
         );
         dest.findOne("testId").ifPresent(testId ->
-                dest.getLinks().add(new Link().withName("testId").withType("testId").withUrl(getTestCaseIdUrl(testId)))
+                dest.getLinks().add(new Link().withName(testId).withType("tms").withUrl(getTestCaseIdUrl(testId)))
         );
 
         //TestNG nested suite
