@@ -21,9 +21,8 @@ class TreeView extends View {
         this.statusesKey = tabName + '.visibleStatuses';
         this.sorterSettingsKey = tabName + '.treeSorting';
         this.statusesSelect = new StatusToggleView({statusesKey: this.statusesKey});
-        //this.nodeSorter = new NodeSorterView({sorterSettingsKey: this.sorterSettingsKey});
         this.listenTo(this.state, 'change:testcase', (m, testcase) => this.highlightItem(testcase));
-       // this.listenTo(settings, 'change:' + this.statusesKey, this.render);
+        this.listenTo(settings, 'change:' + this.statusesKey, this.render);
         this.listenTo(settings, 'change:' + this.sorterSettingsKey, this.render);
 
         this.listenTo(settings, 'change:showGroupInfo', this.render);
