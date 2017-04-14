@@ -9,6 +9,10 @@ export default class SettingsModel extends Model {
                 order: 'asc'
             },
             sidebarCollapsed: false,
+            treeSorting: {
+                ascending: true,
+                sorter: 0,
+            },
             visibleStatuses: {
                 failed: true,
                 broken: true,
@@ -38,5 +42,9 @@ export default class SettingsModel extends Model {
 
     getVisibleStatuses(key) {
         return this.get(key) || this.get('visibleStatuses');
+    }
+
+    getTreeSorting(key) {
+        return this.get(key) || this.get('treeSorting');
     }
 }

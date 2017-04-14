@@ -78,4 +78,10 @@
     line-height: 30px;
     text-align: center;
   }
+  &__node-sorter > div {
+    width: 100%;
+    float: center;
+    background: $pane-overlay-bg-hover;
+    border-top: 1px solid $border-color;
+  }
 }

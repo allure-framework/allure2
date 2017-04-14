@@ -3,10 +3,14 @@ import {View} from 'backbone.marionette';
 import settings from '../../util/settings';
 import template from './TreeView.hbs';
 import StatusToggleView from '../status-toggle/StatusToggleView';
-import {on} from '../../decorators';
+import NodeSorterView from '../node-sorter/NodeSorterView';
+import {on, regions} from '../../decorators';
 import {behavior} from '../../decorators/index';
 
 @behavior('TooltipBehavior', {position: 'bottom'})
+@regions({
+    sorter: '.tree__node-sorter'
+})
 class TreeView extends View {
     template = template;
 
@@ -15,9 +19,13 @@ class TreeView extends View {
         this.baseUrl = baseUrl;
         this.tabName = tabName;
         this.statusesKey = tabName + '.visibleStatuses';
+        this.sorterSettingsKey = tabName + '.treeSorting';
         this.statusesSelect = new StatusToggleView({statusesKey: this.statusesKey});
+        this.nodeSorter = new NodeSorterView({sorterSettingsKey: this.sorterSettingsKey});
         this.listenTo(this.state, 'change:testcase', (m, testcase) => this.highlightItem(testcase));
         this.listenTo(settings, 'change:' + this.statusesKey, this.render);
+        this.listenTo(settings, 'change:' + this.sorterSettingsKey, this.render);
+
         this.listenTo(settings, 'change:showGroupInfo', this.render);
     }
 
@@ -27,6 +35,7 @@ class TreeView extends View {
 
     onRender() {
         this.highlightItem(this.state.get('testcase'));
+        this.showChildView('sorter', new NodeSorterView({sorterSettingsKey: this.sorterSettingsKey}));
     }
 
     onDestroy() {
@@ -48,6 +57,16 @@ class TreeView extends View {
         }
     }
 
+    @on('click .tree__sorter')
+    onSorterClick(e) {
+        const sortPanel = this.$('.tree__node-sorter');
+         if (sortPanel.is(':visible')) {
+            sortPanel.hide();
+         } else {
+            sortPanel.show();
+         }
+    }
+
     @on('click .tree__info')
     onInfoClick() {
         const show = settings.get('showGroupInfo');
@@ -63,6 +82,8 @@ class TreeView extends View {
 
     serializeData() {
         const statuses = settings.getVisibleStatuses(this.statusesKey);
+        const sorter = this.nodeSorter.getSorter();
+        console.log(sorter)
         const showGroupInfo = settings.get('showGroupInfo');
         return {
             baseUrl: this.baseUrl,
@@ -70,23 +91,26 @@ class TreeView extends View {
             time: this.collection.time,
             statistic: this.collection.statistic,
             tabName: this.tabName,
-            items: this.filterNodes(statuses, this.collection.toJSON())
+            items: this.filterNodes(statuses, sorter, this.collection.toJSON())
         };
     }
 
-    filterNodes(statuses, nodes) {
+    filterNodes(statuses, sorter, nodes) {
+        console.log(nodes)
         return nodes
-            .map(item => this.mapNode(statuses, item))
+            .map(item => this.mapNode(statuses, sorter, item))
             .filter(item => item.type === 'TestCaseNode' ? statuses[item.status] : item.children.length > 0)
-            .sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1);
+            .sort(sorter);
+            //.sort((a, b) => a.name < b.name ? 1 : -1);
+        console.log(x)
     }
 
-    mapNode(statuses, node) {
+    mapNode(statuses, sorter, node) {
         if (node.type === 'TestCaseNode') {
             return node;
         }
         return Object.assign({}, node, {
-            children: this.filterNodes(statuses, node.children)
+            children: this.filterNodes(statuses, sorter, node.children)
         });
     }
 }
