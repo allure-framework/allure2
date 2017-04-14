@@ -3,10 +3,14 @@ import {View} from 'backbone.marionette';
 import settings from '../../util/settings';
 import template from './TreeView.hbs';
 import StatusToggleView from '../status-toggle/StatusToggleView';
-import {on} from '../../decorators';
+import NodeSorterView from '../node-sorter/NodeSorterView';
+import {on, regions} from '../../decorators';
 import {behavior} from '../../decorators/index';
 
 @behavior('TooltipBehavior', {position: 'bottom'})
+@regions({
+    sorter: '.tree__node-sorter'
+})
 class TreeView extends View {
     template = template;
 
@@ -15,9 +19,13 @@ class TreeView extends View {
         this.baseUrl = baseUrl;
         this.tabName = tabName;
         this.statusesKey = tabName + '.visibleStatuses';
+        this.sorterSettingsKey = tabName + '.treeSorting';
         this.statusesSelect = new StatusToggleView({statusesKey: this.statusesKey});
+        //this.nodeSorter = new NodeSorterView({sorterSettingsKey: this.sorterSettingsKey});
         this.listenTo(this.state, 'change:testcase', (m, testcase) => this.highlightItem(testcase));
-        this.listenTo(settings, 'change:' + this.statusesKey, this.render);
+       // this.listenTo(settings, 'change:' + this.statusesKey, this.render);
+        this.listenTo(settings, 'change:' + this.sorterSettingsKey, this.render);
+
         this.listenTo(settings, 'change:showGroupInfo', this.render);
     }
 
@@ -26,7 +34,9 @@ class TreeView extends View {
     }
 
     onRender() {
+        console.log("reeeendeeeeer")
         this.highlightItem(this.state.get('testcase'));
+        this.showChildView('sorter', new NodeSorterView({sorterSettingsKey: this.sorterSettingsKey}));
     }
 
     onDestroy() {
@@ -46,6 +56,16 @@ class TreeView extends View {
         } else {
             this.statusesSelect.show(filter);
         }
+    }
+
+    @on('click .tree__sorter')
+    onSorterClick(e) {
+        const sortPanel = this.$('.tree__node-sorter');
+         if (sortPanel.is(':visible')) {
+            sortPanel.hide();
+         } else {
+            sortPanel.show()
+         }
     }
 
     @on('click .tree__info')

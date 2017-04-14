@@ -16,6 +16,10 @@ export default class SettingsModel extends Model {
                 unknown: true,
                 passed: true
             },
+            treeSorting: {
+                ascending: true,
+                sorter: 0,
+            },
             showGroupInfo: true
         };
     }
@@ -38,5 +42,9 @@ export default class SettingsModel extends Model {
 
     getVisibleStatuses(key) {
         return this.get(key) || this.get('visibleStatuses');
+    }
+
+    getTreeSorting(key) {
+        return this.get(key) || this.get('treeSorting');
     }
 }
