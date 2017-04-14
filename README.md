@@ -6,8 +6,6 @@
 
 Allure Report v2
 
-You can find the roadmap [here](https://github.com/allurefw/allure-report/wiki/Roadmap).
-
 [release]: https://github.com/allure-framework/allure2/releases/latest "Latest release"
 [release-badge]: https://img.shields.io/github/release/allure-framework/allure2.svg?style=flat
 
