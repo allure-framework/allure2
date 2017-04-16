@@ -226,9 +226,9 @@ public class CommandLineTest {
     }
 
     @Test
-    public void shouldHandleUnknownOptions() {
-        final String unknownOption = "-q";
-        final Optional<ExitCode> exitCode = commandLine.parse(unknownOption);
+    public void shouldHandleVerboseOptionsWithoutArgs() {
+        final String verboseOption = "-q";
+        final Optional<ExitCode> exitCode = commandLine.parse(verboseOption);
         assertThat(exitCode)
                 .isEmpty();
         final ExitCode run = commandLine.run();
