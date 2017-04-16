@@ -224,4 +224,15 @@ public class CommandLineTest {
         assertThat(run)
                 .isEqualTo(NO_ERROR);
     }
+
+    @Test
+    public void shouldHandleUnknownOptions() {
+        final String unknownOption = "-q";
+        final Optional<ExitCode> exitCode = commandLine.parse(unknownOption);
+        assertThat(exitCode)
+                .isEmpty();
+        final ExitCode run = commandLine.run();
+        assertThat(run)
+                .isEqualTo(ARGUMENT_PARSING_ERROR);
+    }
 }

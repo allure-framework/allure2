@@ -98,7 +98,7 @@ public class CommandLine {
         return Optional.empty();
     }
 
-    @SuppressWarnings("PMD.NPathComplexity")
+    @SuppressWarnings({"PMD.NPathComplexity", "PMD.ExcessiveMethodLength"})
     public ExitCode run() {
         if (mainCommand.getVerboseOptions().isQuiet()) {
             LogManager.getRootLogger().setLevel(Level.OFF);
@@ -120,6 +120,10 @@ public class CommandLine {
         }
 
         final String parsedCommand = commander.getParsedCommand();
+        if (Objects.isNull(parsedCommand)) {
+            printUsage(commander);
+            return ExitCode.ARGUMENT_PARSING_ERROR;
+        }
         switch (parsedCommand) {
             case GENERATE_COMMAND:
                 return commands.generate(
