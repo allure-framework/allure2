@@ -116,7 +116,7 @@ public class CommandLine {
         }
 
         final String parsedCommand = commander.getParsedCommand();
-        if (Objects.isNull(parsedCommand)){
+        if (Objects.isNull(parsedCommand)) {
             return ExitCode.ARGUMENT_PARSING_ERROR;
         }
         switch (parsedCommand) {
