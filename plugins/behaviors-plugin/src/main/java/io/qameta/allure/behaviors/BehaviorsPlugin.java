@@ -45,22 +45,27 @@ public class BehaviorsPlugin extends AbstractTreeAggregator implements Widget {
     @Override
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public Object getData(final Configuration configuration, final List<LaunchResults> launches) {
-        final Map<String, Status> statuses = getStories(launches);
-        final Map<String, Set<String>> featureStory = new HashMap<>();
+        final Map<String, Set<TestResult>> featureStory = new HashMap<>();
         for (LaunchResults launchResults : launches) {
             for (TestResult result : launchResults.getResults()) {
                 final List<String> features = result.findAll(LabelName.FEATURE);
                 for (String feature : features) {
-                    final Set<String> strings = featureStory.computeIfAbsent(feature, s -> new HashSet<>());
-                    strings.addAll(result.findAll(LabelName.STORY));
+                    final Set<TestResult> featureTestResults = featureStory
+                            .computeIfAbsent(feature, s -> new HashSet<>());
+                    featureTestResults.add(result);
                 }
             }
         }
 
         final List<TreeWidgetItem> items = featureStory.entrySet().stream()
-                .map(entry -> new TreeWidgetItem()
-                        .withStatistic(from(entry.getValue(), statuses))
-                        .withName(entry.getKey()))
+                .map(entry -> {
+                    final Set<String> stories = entry.getValue().stream().flatMap(
+                            result -> result.findAll(LabelName.STORY).stream()).collect(Collectors.toSet());
+                    final Map<String, Status> statusesForStories = getStories(entry.getValue());
+                    return new TreeWidgetItem()
+                            .withStatistic(from(stories, statusesForStories))
+                            .withName(entry.getKey());
+                })
                 .collect(Collectors.toList());
         return new TreeWidgetData().withItems(items).withTotal(items.size());
     }
@@ -70,15 +75,13 @@ public class BehaviorsPlugin extends AbstractTreeAggregator implements Widget {
         return "behaviors";
     }
 
-    protected Map<String, Status> getStories(final List<LaunchResults> launches) {
+    protected Map<String, Status> getStories(final Set<TestResult> featureTestResults) {
         final Map<String, Status> storyStatus = new HashMap<>();
-        launches.stream()
-                .flatMap(launchResults -> launchResults.getResults().stream())
-                .forEach(result -> {
+        featureTestResults.forEach(result -> {
                     final List<String> stories = result.findAll(LabelName.STORY);
                     stories.forEach(story -> {
                         storyStatus.putIfAbsent(story, result.getStatus());
-                        storyStatus.computeIfPresent(story, (key, value) -> max(value, result.getStatus()));
+                        storyStatus.computeIfPresent(story, (key, value) -> min(value, result.getStatus()));
                     });
                 });
 
@@ -99,7 +102,7 @@ public class BehaviorsPlugin extends AbstractTreeAggregator implements Widget {
         return statistic;
     }
 
-    protected Status max(final Status first, final Status second) {
+    protected Status min(final Status first, final Status second) {
         return Stream.of(first, second)
                 .min(Status::compareTo)
                 .orElse(Status.UNKNOWN);
