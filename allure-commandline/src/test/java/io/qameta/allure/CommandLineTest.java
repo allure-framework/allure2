@@ -45,7 +45,7 @@ public class CommandLineTest {
     public void shouldParseEmptyArguments() throws Exception {
         final Optional<ExitCode> parse = commandLine.parse();
         assertThat(parse)
-                .isEmpty();
+                .hasValue(ExitCode.ARGUMENT_PARSING_ERROR);
     }
 
     @Test

@@ -75,6 +75,10 @@ public class CommandLine {
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public Optional<ExitCode> parse(final String... args) {
+        if (args.length == 0) {
+            printUsage(commander);
+            return Optional.of(ExitCode.ARGUMENT_PARSING_ERROR);
+        }
         try {
             commander.parse(args);
         } catch (ParameterException e) {
@@ -116,9 +120,6 @@ public class CommandLine {
         }
 
         final String parsedCommand = commander.getParsedCommand();
-        if (Objects.isNull(parsedCommand)) {
-            return ExitCode.ARGUMENT_PARSING_ERROR;
-        }
         switch (parsedCommand) {
             case GENERATE_COMMAND:
                 return commands.generate(
