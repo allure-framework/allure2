@@ -1,0 +1,27 @@
+{
+  "uuid" : "17fddc8a6c144af397a428a1b07c0706",
+  "status" : "failed",
+  "parameters" : [],
+  "labels" : [
+    {
+      "name": "feature",
+      "value": "feature2"
+    },
+    {
+      "name": "story",
+      "value": "story2"
+    },
+    {
+      "name": "feature",
+      "value": "feature3"
+    },
+    {
+      "name": "story",
+      "value": "story3"
+    }
+  ],
+  "name" : "test2",
+  "start" : 1480450619944,
+  "stop" : 1480450619948,
+  "steps" : []
+}

@@ -1,5 +1,7 @@
-package io.qameta.allure;
+package io.qameta.allure.util;
 
+import io.qameta.allure.ConfigurationBuilder;
+import io.qameta.allure.ReportGenerator;
 import io.qameta.allure.core.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

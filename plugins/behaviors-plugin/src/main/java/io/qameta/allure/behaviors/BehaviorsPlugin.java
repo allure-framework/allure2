@@ -59,8 +59,8 @@ public class BehaviorsPlugin extends AbstractTreeAggregator implements Widget {
 
         final List<TreeWidgetItem> items = featureStory.entrySet().stream()
                 .map(entry -> {
-                    final Set<String> stories = entry.getValue().stream().flatMap(
-                            result -> result.findAll(LabelName.STORY).stream()).collect(Collectors.toSet());
+                    final Set<String> stories = entry.getValue().stream()
+                            .flatMap(result -> result.findAll(LabelName.STORY).stream()).collect(Collectors.toSet());
                     final Map<String, Status> statusesForStories = getStories(entry.getValue());
                     return new TreeWidgetItem()
                             .withStatistic(from(stories, statusesForStories))
@@ -78,12 +78,12 @@ public class BehaviorsPlugin extends AbstractTreeAggregator implements Widget {
     protected Map<String, Status> getStories(final Set<TestResult> featureTestResults) {
         final Map<String, Status> storyStatus = new HashMap<>();
         featureTestResults.forEach(result -> {
-                    final List<String> stories = result.findAll(LabelName.STORY);
-                    stories.forEach(story -> {
-                        storyStatus.putIfAbsent(story, result.getStatus());
-                        storyStatus.computeIfPresent(story, (key, value) -> min(value, result.getStatus()));
-                    });
-                });
+            final List<String> stories = result.findAll(LabelName.STORY);
+            stories.forEach(story -> {
+                storyStatus.putIfAbsent(story, result.getStatus());
+                storyStatus.computeIfPresent(story, (key, value) -> min(value, result.getStatus()));
+            });
+        });
 
         return storyStatus;
     }
