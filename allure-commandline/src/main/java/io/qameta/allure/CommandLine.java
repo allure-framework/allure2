@@ -75,6 +75,10 @@ public class CommandLine {
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public Optional<ExitCode> parse(final String... args) {
+        if (args.length == 0) {
+            printUsage(commander);
+            return Optional.of(ExitCode.ARGUMENT_PARSING_ERROR);
+        }
         try {
             commander.parse(args);
         } catch (ParameterException e) {
@@ -94,7 +98,7 @@ public class CommandLine {
         return Optional.empty();
     }
 
-    @SuppressWarnings("PMD.NPathComplexity")
+    @SuppressWarnings({"PMD.NPathComplexity", "PMD.ExcessiveMethodLength"})
     public ExitCode run() {
         if (mainCommand.getVerboseOptions().isQuiet()) {
             LogManager.getRootLogger().setLevel(Level.OFF);
@@ -116,6 +120,10 @@ public class CommandLine {
         }
 
         final String parsedCommand = commander.getParsedCommand();
+        if (Objects.isNull(parsedCommand)) {
+            printUsage(commander);
+            return ExitCode.ARGUMENT_PARSING_ERROR;
+        }
         switch (parsedCommand) {
             case GENERATE_COMMAND:
                 return commands.generate(

@@ -45,7 +45,7 @@ public class CommandLineTest {
     public void shouldParseEmptyArguments() throws Exception {
         final Optional<ExitCode> parse = commandLine.parse();
         assertThat(parse)
-                .isEmpty();
+                .hasValue(ExitCode.ARGUMENT_PARSING_ERROR);
     }
 
     @Test
@@ -223,5 +223,16 @@ public class CommandLineTest {
         final ExitCode run = commandLine.run();
         assertThat(run)
                 .isEqualTo(NO_ERROR);
+    }
+
+    @Test
+    public void shouldHandleVerboseOptionsWithoutArgs() {
+        final String verboseOption = "-q";
+        final Optional<ExitCode> exitCode = commandLine.parse(verboseOption);
+        assertThat(exitCode)
+                .isEmpty();
+        final ExitCode run = commandLine.run();
+        assertThat(run)
+                .isEqualTo(ARGUMENT_PARSING_ERROR);
     }
 }
