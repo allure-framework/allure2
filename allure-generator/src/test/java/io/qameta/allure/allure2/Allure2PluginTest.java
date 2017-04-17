@@ -1,16 +1,23 @@
 package io.qameta.allure.allure2;
 
+import io.qameta.allure.ConfigurationBuilder;
+import io.qameta.allure.DefaultResultsVisitor;
+import io.qameta.allure.core.Configuration;
+import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.util.TestDataProcessor;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Set;
 
 import static io.qameta.allure.AllureUtils.generateTestResultContainerName;
@@ -22,16 +29,10 @@ public class Allure2PluginTest {
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
-    private TestDataProcessor helper;
-
-    @Before
-    public void prepare() throws IOException {
-        helper = new TestDataProcessor(folder.newFolder().toPath(), new Allure2Plugin());
-    }
 
     @Test
-    public void shouldReadBeforesFromGroups() throws IOException {
-        Set<TestResult> testResults = helper.processResources(
+    public void shouldReadBeforesFromGroups() throws Exception {
+        Set<TestResult> testResults = process(
                 "allure2/simple-testcase.json", generateTestResultName(),
                 "allure2/first-testgroup.json", generateTestResultContainerName(),
                 "allure2/second-testgroup.json", generateTestResultContainerName()
@@ -47,7 +48,7 @@ public class Allure2PluginTest {
 
     @Test
     public void shouldReadAftersFromGroups() throws Exception {
-        Set<TestResult> testResults = helper.processResources(
+        Set<TestResult> testResults = process(
                 "allure2/simple-testcase.json", generateTestResultName(),
                 "allure2/first-testgroup.json", generateTestResultContainerName(),
                 "allure2/second-testgroup.json", generateTestResultContainerName()
@@ -63,7 +64,7 @@ public class Allure2PluginTest {
 
     @Test
     public void shouldPickUpAttachmentsForTestCase() throws IOException {
-        Set<TestResult> testResults = helper.processResources(
+        Set<TestResult> testResults = process(
                 "allure2/simple-testcase.json", generateTestResultName(),
                 "allure2/first-testgroup.json", generateTestResultContainerName(),
                 "allure2/second-testgroup.json", generateTestResultContainerName(),
@@ -86,7 +87,7 @@ public class Allure2PluginTest {
 
     @Test
     public void shouldPickUpAttachmentsForAfters() throws IOException {
-        Set<TestResult> testResults = helper.processResources(
+        Set<TestResult> testResults = process(
                 "allure2/simple-testcase.json", generateTestResultName(),
                 "allure2/first-testgroup.json", generateTestResultContainerName(),
                 "allure2/second-testgroup.json", generateTestResultContainerName(),
@@ -109,7 +110,7 @@ public class Allure2PluginTest {
 
     @Test
     public void shouldDoNotOverrideAttachmentsForGroups() throws IOException {
-        Set<TestResult> testResults = helper.processResources(
+        Set<TestResult> testResults = process(
                 "allure2/other-testcase.json", generateTestResultName(),
                 "allure2/other-testcase.json", generateTestResultName(),
                 "allure2/second-testgroup.json", generateTestResultContainerName(),
@@ -131,7 +132,7 @@ public class Allure2PluginTest {
 
     @Test
     public void shouldProcessEmptyStatus() throws Exception {
-        Set<TestResult> testResults = helper.processResources(
+        Set<TestResult> testResults = process(
                 "allure2/no-status.json", generateTestResultName()
         ).getResults();
 
@@ -143,7 +144,7 @@ public class Allure2PluginTest {
 
     @Test
     public void shouldProcessNullStatus() throws Exception {
-        Set<TestResult> testResults = helper.processResources(
+        Set<TestResult> testResults = process(
                 "allure2/null-status.json", generateTestResultName()
         ).getResults();
 
@@ -155,7 +156,7 @@ public class Allure2PluginTest {
 
     @Test
     public void shouldProcessInvalidStatus() throws Exception {
-        Set<TestResult> testResults = helper.processResources(
+        Set<TestResult> testResults = process(
                 "allure2/invalid-status.json", generateTestResultName()
         ).getResults();
 
@@ -167,12 +168,33 @@ public class Allure2PluginTest {
 
     @Test
     public void shouldProcessNullStageTime() throws Exception {
-        Set<TestResult> testResults = helper.processResources(
+        Set<TestResult> testResults = process(
                 "allure2/other-testcase.json", generateTestResultName(),
                 "allure2/null-before-group.json", generateTestResultContainerName()
         ).getResults();
 
         assertThat(testResults)
                 .hasSize(1);
+    }
+
+    private LaunchResults process(String... strings) throws IOException {
+        Path resultsDirectory = folder.newFolder().toPath();
+        Iterator<String> iterator = Arrays.asList(strings).iterator();
+        while (iterator.hasNext()) {
+            String first = iterator.next();
+            String second = iterator.next();
+            copyFile(resultsDirectory, first, second);
+        }
+        Allure2Plugin reader = new Allure2Plugin();
+        final Configuration configuration = new ConfigurationBuilder().useDefault().build();
+        final DefaultResultsVisitor resultsVisitor = new DefaultResultsVisitor(configuration);
+        reader.readResults(configuration, resultsVisitor, resultsDirectory);
+        return resultsVisitor.getLaunchResults();
+    }
+
+    private void copyFile(Path dir, String resourceName, String fileName) throws IOException {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourceName)) {
+            Files.copy(is, dir.resolve(fileName));
+        }
     }
 }
