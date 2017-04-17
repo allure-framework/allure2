@@ -362,7 +362,8 @@ public class Allure1Plugin implements Reader {
         } catch (NoSuchAlgorithmException e) {
             throw new AllureResultsWriteException("Unable to instantiate MD5 hash generator", e);
         }
-        final String testParams = methodName + parameters.stream().map(Parameter::getValue);
+        final String testParams = methodName + parameters.stream().map(Parameter::getValue)
+                .collect(Collectors.joining(""));
         return Base64.getUrlEncoder().encodeToString(hasher.digest(testParams.getBytes(StandardCharsets.UTF_8)));
     }
 }
