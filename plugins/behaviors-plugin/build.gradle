@@ -9,6 +9,10 @@ jar {
 
 dependencies {
     compileOnly project(':allure-plugin-api')
+
+    testCompile project(':allure-generator')
+    testCompile('junit:junit')
+    testCompile('org.assertj:assertj-core')
 }
 
 configurations.archives.artifacts.removeAll { it.archiveTask.is jar }
