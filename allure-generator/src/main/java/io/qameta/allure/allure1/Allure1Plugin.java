@@ -1,7 +1,6 @@
 package io.qameta.allure.allure1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.qameta.allure.AllureResultsWriteException;
 import io.qameta.allure.Reader;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
@@ -28,16 +27,17 @@ import ru.yandex.qatools.allure.model.TestSuiteResult;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -59,6 +59,8 @@ import static io.qameta.allure.entity.Status.BROKEN;
 import static io.qameta.allure.entity.Status.FAILED;
 import static io.qameta.allure.entity.Status.PASSED;
 import static io.qameta.allure.entity.Status.SKIPPED;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Map.Entry.comparingByValue;
 import static org.allurefw.allure1.AllureUtils.unmarshalTestSuite;
 
 /**
@@ -71,6 +73,7 @@ public class Allure1Plugin implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Allure1Plugin.class);
     private static final String UNKNOWN = "unknown";
+    private static final String MD_5 = "md5";
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -106,7 +109,9 @@ public class Allure1Plugin implements Reader {
         final String name = firstNonNull(source.getTitle(), source.getName(), "unknown test case");
 
         final List<Parameter> parameters = convert(source.getParameters(), this::hasArgumentType, this::convert);
-        dest.setHistoryId(generateHistoryId(String.format("%s#%s", testClass, name), parameters));
+        final Map<String, String> parametersMap = Objects.isNull(parameters) ? Collections.EMPTY_MAP :
+                parameters.stream().collect(Collectors.toMap(Parameter::getName, Parameter::getValue));
+        dest.setHistoryId(getHistoryId(String.format("%s#%s", testClass, name), parametersMap));
         dest.setUid(randomUid.get());
         dest.setName(name);
         dest.setFullName(String.format("%s.%s", testClass, testMethod));
@@ -355,15 +360,24 @@ public class Allure1Plugin implements Reader {
                 ));
     }
 
-    private String generateHistoryId(final String methodName, final List<Parameter> parameters) {
-        final MessageDigest hasher;
+    private static String getHistoryId(final String name, final Map<String, String> parameters) {
+        final MessageDigest digest = getMessageDigest();
+        digest.update(name.getBytes(UTF_8));
+        parameters.entrySet().stream()
+                .sorted(Map.Entry.<String, String>comparingByKey().thenComparing(comparingByValue()))
+                .forEachOrdered(entry -> {
+                    digest.update(entry.getKey().getBytes(UTF_8));
+                    digest.update(entry.getValue().getBytes(UTF_8));
+                });
+        final byte[] bytes = digest.digest();
+        return new BigInteger(1, bytes).toString(16);
+    }
+
+    private static MessageDigest getMessageDigest() {
         try {
-            hasher = MessageDigest.getInstance("MD5");
+            return MessageDigest.getInstance(MD_5);
         } catch (NoSuchAlgorithmException e) {
-            throw new AllureResultsWriteException("Unable to instantiate MD5 hash generator", e);
+            throw new IllegalStateException("Could not find md5 hashing algorithm", e);
         }
-        final String testParams = methodName + parameters.stream().map(Parameter::getValue)
-                .collect(Collectors.joining(""));
-        return Base64.getUrlEncoder().encodeToString(hasher.digest(testParams.getBytes(StandardCharsets.UTF_8)));
     }
 }
