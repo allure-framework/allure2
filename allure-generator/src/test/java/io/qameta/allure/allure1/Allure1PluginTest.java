@@ -221,6 +221,20 @@ public class Allure1PluginTest {
                 .containsExactly("my.company.package.subpackage.MyClass.testThree");
     }
 
+    @Test
+    public void shouldGenerateDifferentHistoryIdForParameterizedTests() throws Exception {
+        final String historyId1 = "56f15d234f8ad63b493afb25f7c26556";
+        final String historyId2 = "e374f6eb3cf497543291506c8c20353";
+        Set<TestResult> testResults = process(
+                "allure1/suite-with-parameters.xml", generateTestSuiteXmlName()
+        ).getResults();
+
+        assertThat(testResults)
+                .extracting(TestResult::getHistoryId)
+                .as("History ids for parameterized tests must be different")
+                .containsExactlyInAnyOrder(historyId1, historyId2);
+    }
+
     private LaunchResults process(String... strings) throws IOException {
         Path resultsDirectory = folder.newFolder().toPath();
         Iterator<String> iterator = Arrays.asList(strings).iterator();
