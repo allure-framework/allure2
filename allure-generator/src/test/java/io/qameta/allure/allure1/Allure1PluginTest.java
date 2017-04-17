@@ -11,6 +11,7 @@ import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
+import org.assertj.core.api.Condition;
 import org.assertj.core.groups.Tuple;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -219,6 +220,18 @@ public class Allure1PluginTest {
                 .hasSize(1)
                 .extracting(TestResult::getFullName)
                 .containsExactly("my.company.package.subpackage.MyClass.testThree");
+    }
+
+    @Test
+    public void shouldGenerateDifferentHistoryIdForParameterizedTests() throws Exception {
+        Set<TestResult> testResults = process(
+                "allure1/suite-with-parameters.xml", generateTestSuiteXmlName()
+        ).getResults();
+
+        Set<String> historyIds = testResults.stream().map(TestResult::getHistoryId).collect(Collectors.toSet());
+        assertThat(historyIds)
+                .as("History ids for parameterized tests must be different")
+                .hasSize(2);
     }
 
     private LaunchResults process(String... strings) throws IOException {

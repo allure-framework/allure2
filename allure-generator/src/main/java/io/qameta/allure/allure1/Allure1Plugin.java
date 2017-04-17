@@ -1,6 +1,7 @@
 package io.qameta.allure.allure1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.qameta.allure.AllureResultsWriteException;
 import io.qameta.allure.Reader;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
@@ -27,9 +28,13 @@ import ru.yandex.qatools.allure.model.TestSuiteResult;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -61,7 +66,7 @@ import static org.allurefw.allure1.AllureUtils.unmarshalTestSuite;
  *
  * @since 2.0
  */
-@SuppressWarnings("PMD.ExcessiveImports")
+@SuppressWarnings({"PMD.ExcessiveImports", "PMD.GodClass"})
 public class Allure1Plugin implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Allure1Plugin.class);
@@ -100,14 +105,15 @@ public class Allure1Plugin implements Reader {
         );
         final String name = firstNonNull(source.getTitle(), source.getName(), "unknown test case");
 
-        dest.setHistoryId(String.format("%s#%s", testClass, name));
+        final List<Parameter> parameters = convert(source.getParameters(), this::hasArgumentType, this::convert);
+        dest.setHistoryId(generateHistoryId(String.format("%s#%s", testClass, name), parameters));
         dest.setUid(randomUid.get());
         dest.setName(name);
         dest.setFullName(String.format("%s.%s", testClass, testMethod));
 
         dest.setStatus(convert(source.getStatus()));
         dest.setTime(source.getStart(), source.getStop());
-        dest.setParameters(convert(source.getParameters(), this::hasArgumentType, this::convert));
+        dest.setParameters(parameters);
         dest.setDescription(getDescription(testSuite.getDescription(), source.getDescription()));
         dest.setDescriptionHtml(getDescriptionHtml(testSuite.getDescription(), source.getDescription()));
         dest.setStatusDetails(convert(source.getFailure()));
@@ -347,5 +353,16 @@ public class Allure1Plugin implements Reader {
                 .orElseThrow(() -> new IllegalStateException(
                         "firstNonNull method should have at least one non null parameter"
                 ));
+    }
+
+    private String generateHistoryId(final String methodName, final List<Parameter> parameters) {
+        final MessageDigest hasher;
+        try {
+            hasher = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            throw new AllureResultsWriteException("Unable to instantiate MD5 hash generator", e);
+        }
+        final String testParams = methodName + parameters.stream().map(Parameter::getValue);
+        return Base64.getUrlEncoder().encodeToString(hasher.digest(testParams.getBytes(StandardCharsets.UTF_8)));
     }
 }
