@@ -34,10 +34,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -60,7 +57,7 @@ import static io.qameta.allure.entity.Status.FAILED;
 import static io.qameta.allure.entity.Status.PASSED;
 import static io.qameta.allure.entity.Status.SKIPPED;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.util.Map.Entry.comparingByValue;
+import static java.util.Comparator.comparing;
 import static org.allurefw.allure1.AllureUtils.unmarshalTestSuite;
 
 /**
@@ -109,9 +106,7 @@ public class Allure1Plugin implements Reader {
         final String name = firstNonNull(source.getTitle(), source.getName(), "unknown test case");
 
         final List<Parameter> parameters = convert(source.getParameters(), this::hasArgumentType, this::convert);
-        final Map<String, String> parametersMap = Objects.isNull(parameters) ? Collections.EMPTY_MAP :
-                parameters.stream().collect(Collectors.toMap(Parameter::getName, Parameter::getValue));
-        dest.setHistoryId(getHistoryId(String.format("%s#%s", testClass, name), parametersMap));
+        dest.setHistoryId(getHistoryId(String.format("%s#%s", testClass, name), parameters));
         dest.setUid(randomUid.get());
         dest.setName(name);
         dest.setFullName(String.format("%s.%s", testClass, testMethod));
@@ -132,7 +127,7 @@ public class Allure1Plugin implements Reader {
             dest.setTestStage(testStage);
         }
 
-        final Set<Label> set = new TreeSet<>(Comparator.comparing(Label::getName).thenComparing(Label::getValue));
+        final Set<Label> set = new TreeSet<>(comparing(Label::getName).thenComparing(Label::getValue));
         set.addAll(convert(testSuite.getLabels(), this::convert));
         set.addAll(convert(source.getLabels(), this::convert));
         dest.setLabels(new ArrayList<>(set));
@@ -360,14 +355,14 @@ public class Allure1Plugin implements Reader {
                 ));
     }
 
-    private static String getHistoryId(final String name, final Map<String, String> parameters) {
+    private static String getHistoryId(final String name, final List<Parameter> parameters) {
         final MessageDigest digest = getMessageDigest();
         digest.update(name.getBytes(UTF_8));
-        parameters.entrySet().stream()
-                .sorted(Map.Entry.<String, String>comparingByKey().thenComparing(comparingByValue()))
-                .forEachOrdered(entry -> {
-                    digest.update(entry.getKey().getBytes(UTF_8));
-                    digest.update(entry.getValue().getBytes(UTF_8));
+        parameters.stream()
+                .sorted(comparing(Parameter::getName).thenComparing(Parameter::getValue))
+                .forEachOrdered(parameter -> {
+                    digest.update(parameter.getName().getBytes(UTF_8));
+                    digest.update(parameter.getValue().getBytes(UTF_8));
                 });
         final byte[] bytes = digest.digest();
         return new BigInteger(1, bytes).toString(16);

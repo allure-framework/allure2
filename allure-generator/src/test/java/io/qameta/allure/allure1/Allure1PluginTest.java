@@ -232,7 +232,7 @@ public class Allure1PluginTest {
         assertThat(testResults)
                 .extracting(TestResult::getHistoryId)
                 .as("History ids for parameterized tests must be different")
-                .containsExactly(historyId1, historyId2);
+                .containsExactlyInAnyOrder(historyId1, historyId2);
     }
 
     private LaunchResults process(String... strings) throws IOException {
