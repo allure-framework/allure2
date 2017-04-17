@@ -3,11 +3,11 @@ import template from './WidgetStatusView.hbs';
 
 export default class WidgetStatusView extends View {
     template = template;
-    showLinks = true;
 
     serializeData() {
+        const showLinks = typeof this.showLinks !== 'undefined' ? this.showLinks : true;
         return Object.assign(super.serializeData(), {
-            rowTag: this.showLinks ? 'a' : 'span',
+            rowTag: showLinks ? 'a' : 'span',
             title: this.title,
             showAllText: this.showAllText,
             baseUrl: this.baseUrl
