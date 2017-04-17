@@ -13,7 +13,8 @@ allure.api.addTab('behaviors', {
     })
 });
 
-allure.api.addWidget('behaviors', allure.components.WidgetStatusView.extend({
+allure.api.addWidget('behaviors', Object.assign(allure.components.WidgetStatusView, {
     title: 'Features by stories',
     baseUrl: 'behaviors',
+    showLinks: false,
 }));
