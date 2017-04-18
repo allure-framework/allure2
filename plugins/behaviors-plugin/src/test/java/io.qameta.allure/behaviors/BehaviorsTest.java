@@ -69,7 +69,7 @@ public class BehaviorsTest {
     }
 
     @Test
-    public void shouldAddOneDefaultFeatureForStory() {
+    public void shouldAddOneDefaultStoryForFeature() {
         final Configuration configuration = mock(Configuration.class);
         final Statistic featureStats = new Statistic()
                 .withFailed(1);
