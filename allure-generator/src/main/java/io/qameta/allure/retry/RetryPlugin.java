@@ -16,6 +16,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.naturalOrder;
+import static java.util.Comparator.nullsFirst;
+
 /**
  * The plugin that process test retries.
  *
@@ -64,9 +68,9 @@ public class RetryPlugin implements Aggregator {
     }
 
     private Comparator<TestResult> byTime() {
-        return Comparator.comparing(
+        return comparing(
                 TestResult::getTime,
-                Comparator.comparing(Time::getStart)
+                nullsFirst(comparing(Time::getStart, nullsFirst(naturalOrder())))
         ).reversed();
     }
 }
