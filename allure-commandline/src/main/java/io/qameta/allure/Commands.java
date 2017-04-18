@@ -14,7 +14,7 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.Desktop;
+import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
@@ -32,8 +32,8 @@ import static java.lang.String.format;
 public class Commands {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Commands.class);
-    private static final String DIRECTORY_EXISTS_MESSAGE = "Target directory %s for the report is already in use," +
-            " add a '--clean' option to overwrite";
+    private static final String DIRECTORY_EXISTS_MESSAGE = "Error: Target directory %s for the report is already"
+            + " in use, add a '--clean' option to overwrite";
 
     private final Path allureHome;
 
