@@ -5,6 +5,7 @@ import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 
 /**
@@ -32,7 +33,7 @@ public class CopyVisitor extends SimpleFileVisitor<Path> {
     @Override
     public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
         final Path dest = outputDirectory.resolve(sourceDirectory.relativize(file));
-        Files.copy(file, dest);
+        Files.copy(file, dest, StandardCopyOption.REPLACE_EXISTING);
         return FileVisitResult.CONTINUE;
     }
 }

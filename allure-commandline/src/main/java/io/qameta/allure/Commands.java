@@ -1,5 +1,6 @@
 package io.qameta.allure;
 
+import com.beust.jcommander.JCommander;
 import io.qameta.allure.config.ConfigLoader;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.Plugin;
@@ -23,12 +24,16 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.lang.String.format;
+
 /**
  * @author charlie (Dmitry Baev).
  */
 public class Commands {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Commands.class);
+    private static final String DIRECTORY_EXISTS_MESSAGE = "Target directory %s for the report is already in use," +
+            " add a '--clean' option to overwrite";
 
     private final Path allureHome;
 
@@ -47,8 +52,12 @@ public class Commands {
                              final List<Path> resultsDirectories,
                              final boolean clean,
                              final String profile) {
-        if (clean && Files.exists(reportDirectory)) {
+        final boolean directoryExists = Files.exists(reportDirectory);
+        if (clean && directoryExists) {
             FileUtils.deleteQuietly(reportDirectory.toFile());
+        } else if (directoryExists) {
+            JCommander.getConsole().println(format(DIRECTORY_EXISTS_MESSAGE, reportDirectory.toAbsolutePath()));
+            return ExitCode.GENERIC_ERROR;
         }
         try {
             ReportGenerator generator = new ReportGenerator(createReportConfiguration(profile));
