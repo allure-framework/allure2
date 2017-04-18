@@ -20,7 +20,8 @@ public class ReportGenerator {
         this.configuration = configuration;
     }
 
-    public LaunchResults readResults(final DefaultResultsVisitor visitor, final Path resultsDirectory) {
+    public LaunchResults readResults(final Path resultsDirectory) {
+        final DefaultResultsVisitor visitor = new DefaultResultsVisitor(configuration);
         configuration
                 .getReaders()
                 .forEach(reader -> reader.readResults(configuration, visitor, resultsDirectory));
@@ -42,9 +43,8 @@ public class ReportGenerator {
     }
 
     private void generate(final Path outputDirectory, final Stream<Path> resultsDirectories) throws IOException {
-        final DefaultResultsVisitor visitor = new DefaultResultsVisitor(configuration);
         final List<LaunchResults> results = resultsDirectories
-                .map(path -> readResults(visitor, path))
+                .map(this::readResults)
                 .collect(Collectors.toList());
         aggregate(results, outputDirectory);
     }
