@@ -33,7 +33,7 @@ class TreeView extends View {
 
     onRender() {
         this.restoreState(this.state.get('testcase'));
-        this.showChildView('sorter', this.nodeSorter);
+        this.showChildView('sorter', new NodeSorterView({sorterSettingsKey: this.sorterSettingsKey}));
     }
 
     onDestroy() {
