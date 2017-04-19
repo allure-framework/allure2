@@ -6,6 +6,7 @@ import io.qameta.allure.entity.Attachment;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public class AttachmentsPlugin implements Aggregator {
         for (LaunchResults launch : launchesResults) {
             for (Map.Entry<Path, Attachment> entry : launch.getAttachments().entrySet()) {
                 final Path file = attachmentsFolder.resolve(entry.getValue().getSource());
-                Files.copy(entry.getKey(), file);
+                Files.copy(entry.getKey(), file, StandardCopyOption.REPLACE_EXISTING);
             }
         }
     }

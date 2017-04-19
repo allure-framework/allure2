@@ -136,6 +136,19 @@ subprojects { project ->
         options.compilerArgs += "-parameters"
     }
 
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+
+    artifacts {
+        archives javadocJar
+    }
+
     configurations {
         allurePlugin
     }

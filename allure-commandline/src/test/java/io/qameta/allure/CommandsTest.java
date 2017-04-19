@@ -4,6 +4,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -27,6 +28,18 @@ public class CommandsTest {
 
         assertThat(exitCode)
                 .isEqualTo(ExitCode.NO_ERROR);
+    }
+
+    @Test
+    public void shouldFailIfDirectoryExists() throws Exception {
+        final Path home = folder.newFolder().toPath();
+        final File reportPath = folder.newFolder();
+        final Commands commands = new Commands(home);
+        final ExitCode exitCode = commands.generate(reportPath.toPath(), null, false,
+                null);
+
+        assertThat(exitCode)
+                .isEqualTo(ExitCode.GENERIC_ERROR);
     }
 
     @Test
