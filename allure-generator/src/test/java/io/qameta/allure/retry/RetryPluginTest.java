@@ -28,9 +28,10 @@ public class RetryPluginTest {
 
     private static final String LAST_RESULT = "last";
 
+    private RetryPlugin retryPlugin = new RetryPlugin();
+
     @Test
-    public void shouldHideRetriesTestResults() throws IOException {
-        RetryPlugin retryPlugin = new RetryPlugin();
+    public void shouldMergeRetriesTestResults() throws IOException {
         String historyId = UUID.randomUUID().toString();
 
         List<LaunchResults> launchResultsList = createLaunchResults(
@@ -56,7 +57,37 @@ public class RetryPluginTest {
                 .hasFieldOrPropertyWithValue("hidden", false)
                 .hasFieldOrPropertyWithValue("statusDetails.flaky", true);
 
+        assertThat(results).as("test results with retries block")
+                .filteredOn(result -> result.getExtraBlock(RetryPlugin.RETRY_BLOCK_NAME) != null)
+                .hasSize(1);
 
+        List<RetryItem> retries = lastResult.getExtraBlock(RetryPlugin.RETRY_BLOCK_NAME);
+        assertThat(retries).as("test results retries block")
+                .isNotNull()
+                .hasSize(2);
+    }
+
+    @Test
+    public void shouldNotMergeOtherTestResults() throws IOException {
+        String firstHistoryId = UUID.randomUUID().toString();
+        String secondHistoryId = UUID.randomUUID().toString();
+
+        List<LaunchResults> launchResultsList = createLaunchResults(
+                createTestResult(FIRST_RESULT, firstHistoryId, 1L, 9L),
+                createTestResult(SECOND_RESULT, secondHistoryId, 11L, 19L)
+        );
+
+        retryPlugin.aggregate(null, launchResultsList, null);
+
+        Set<TestResult> results = launchResultsList.get(0).getAllResults();
+
+        assertThat(results).as("test results")
+                .filteredOn(TestResult::isHidden)
+                .hasSize(0);
+
+        assertThat(results).as("test results with retries block")
+                .filteredOn(result -> result.getExtraBlock(RetryPlugin.RETRY_BLOCK_NAME) != null)
+                .hasSize(0);
     }
 
     private List<LaunchResults> createLaunchResults(TestResult... input) {
