@@ -63,11 +63,9 @@ class TreeView extends View {
 
     @on('click .tree__sort')
     onSorterClick() {
-
         const sorterSettings = settings.get(this.sorterSettingsKey);
         sorterSettings.visible = !sorterSettings.visible;
         settings.save(this.sorterSettingsKey, Object.assign({}, sorterSettings));
-
     }
 
     @on('click .tree__info')
