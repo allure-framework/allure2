@@ -55,7 +55,7 @@ public class Commands {
         final boolean directoryExists = Files.exists(reportDirectory);
         if (clean && directoryExists) {
             FileUtils.deleteQuietly(reportDirectory.toFile());
-        } else if (directoryExists) {
+        } else if (directoryExists && directoryIsNotEmpty(reportDirectory)) {
             JCommander.getConsole().println(format(DIRECTORY_EXISTS_MESSAGE, reportDirectory.toAbsolutePath()));
             return ExitCode.GENERIC_ERROR;
         }
@@ -68,6 +68,10 @@ public class Commands {
         }
         LOGGER.info("Report successfully generated to {}", reportDirectory);
         return ExitCode.NO_ERROR;
+    }
+
+    private static boolean directoryIsNotEmpty(final Path reportDirectory) {
+        return Optional.ofNullable(reportDirectory.toFile().list()).map(l -> l.length).orElse(0) != 0;
     }
 
     public ExitCode serve(final List<Path> resultsDirectories,
