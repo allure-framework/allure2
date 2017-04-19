@@ -3,6 +3,7 @@ package io.qameta.allure.retry;
 import io.qameta.allure.Aggregator;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 
@@ -55,9 +56,13 @@ public class RetryPlugin implements Aggregator {
                             .withTime(result.getTime())
                     );
                 }
+                final StatusDetails details = first.getStatusDetails() != null
+                        ? first.getStatusDetails() : new StatusDetails();
+                first.setStatusDetails(details.withFlaky(true));
             }
         });
     }
+
 
     private List<TestResult> merge(final List<TestResult> first,
                                    final List<TestResult> second) {
