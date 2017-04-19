@@ -6,19 +6,16 @@
   user-select: none;
   &_enabled {
     color: $text-color;
-   }
+  }
   &__menu {
     list-style-type: none;
-    padding: 7px 15px 7px 25px;
+    padding: 0px 15px 0px 15px;
     margin: 0px;
     float: right;
   }
   &__item {
-     cursor: pointer;
+    cursor: pointer;
     display: inline;
-    padding-left: 25px;
+    padding-left: 15px;
   }
-  &__icon {
-     padding-left: 5px;
-   }
 }

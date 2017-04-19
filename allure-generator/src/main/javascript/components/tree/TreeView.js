@@ -8,13 +8,12 @@ import {on, regions} from '../../decorators';
 import {behavior} from '../../decorators/index';
 
 @behavior('TooltipBehavior', {position: 'bottom'})
-@regions({
-    sorter: '.tree__node-sorter'
-})
+@regions({sorter: '.tree__sorter'})
 class TreeView extends View {
     template = template;
 
-    initialize({state, tabName, baseUrl}) {
+    initialize({state, treeState, tabName, baseUrl}) {
+        this.treeState = treeState;
         this.state = state;
         this.baseUrl = baseUrl;
         this.tabName = tabName;
@@ -22,10 +21,9 @@ class TreeView extends View {
         this.sorterSettingsKey = tabName + '.treeSorting';
         this.statusesSelect = new StatusToggleView({statusesKey: this.statusesKey});
         this.nodeSorter = new NodeSorterView({sorterSettingsKey: this.sorterSettingsKey});
-        this.listenTo(this.state, 'change:testcase', (m, testcase) => this.highlightItem(testcase));
+        this.listenTo(this.state, 'change:testcase', (m, testcase) => this.restoreState(testcase));
         this.listenTo(settings, 'change:' + this.statusesKey, this.render);
         this.listenTo(settings, 'change:' + this.sorterSettingsKey, this.render);
-
         this.listenTo(settings, 'change:showGroupInfo', this.render);
     }
 
@@ -34,7 +32,7 @@ class TreeView extends View {
     }
 
     onRender() {
-        this.highlightItem(this.state.get('testcase'));
+        this.restoreState(this.state.get('testcase'));
         this.showChildView('sorter', new NodeSorterView({sorterSettingsKey: this.sorterSettingsKey}));
     }
 
@@ -45,6 +43,12 @@ class TreeView extends View {
     @on('click .node__title')
     onNodeClick(e) {
         this.$(e.currentTarget).parent().toggleClass('node__expanded');
+        const uid = this.$(e.currentTarget).data('uid');
+        if (uid in  this.treeState) {
+            delete this.treeState[uid];
+        } else {
+            this.treeState[uid] = true;
+        }
     }
 
     @on('click .tree__statuses')
@@ -57,14 +61,13 @@ class TreeView extends View {
         }
     }
 
-    @on('click .tree__sorter')
-    onSorterClick(e) {
-        const sortPanel = this.$('.tree__node-sorter');
-         if (sortPanel.is(':visible')) {
-            sortPanel.hide();
-         } else {
-            sortPanel.show();
-         }
+    @on('click .tree__sort')
+    onSorterClick() {
+
+        const sorterSettings = settings.get(this.sorterSettingsKey);
+        sorterSettings.visible = !sorterSettings.visible;
+        settings.save(this.sorterSettingsKey, Object.assign({}, sorterSettings));
+
     }
 
     @on('click .tree__info')
@@ -73,36 +76,34 @@ class TreeView extends View {
         settings.save('showGroupInfo', !show);
     }
 
-    highlightItem(uid) {
+    restoreState(uid) {
         this.$('[data-uid]').each((i, node) => {
             const el = this.$(node);
             el.toggleClass('node__title_active', el.data('uid') === uid);
+            el.toggleClass('node__expanded', (el.data('uid') in this.treeState));
         });
     }
 
     serializeData() {
         const statuses = settings.getVisibleStatuses(this.statusesKey);
         const sorter = this.nodeSorter.getSorter();
-        console.log(sorter)
         const showGroupInfo = settings.get('showGroupInfo');
+
         return {
             baseUrl: this.baseUrl,
             showGroupInfo: showGroupInfo,
             time: this.collection.time,
             statistic: this.collection.statistic,
             tabName: this.tabName,
-            items: this.filterNodes(statuses, sorter, this.collection.toJSON())
+            items: this.filterNodes(statuses, sorter, this.collection.toJSON()),
         };
     }
 
     filterNodes(statuses, sorter, nodes) {
-        console.log(nodes)
         return nodes
             .map(item => this.mapNode(statuses, sorter, item))
             .filter(item => item.type === 'TestCaseNode' ? statuses[item.status] : item.children.length > 0)
             .sort(sorter);
-            //.sort((a, b) => a.name < b.name ? 1 : -1);
-        console.log(x)
     }
 
     mapNode(statuses, sorter, node) {

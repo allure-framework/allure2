@@ -3,17 +3,16 @@
     {{tabName}}
     <span class="pane__controls">
         <a class="fa fa-filter {{b 'tree' 'control'}} {{b 'tree' 'statuses'}}" data-tooltip="Filter test cases by statues"></a>
-        <a class="fa fa-sort {{b 'tree' 'control'}} {{b 'tree' 'sorter'}}" data-tooltip="Sort tree nodes"></a>
         <a class="fa fa-info-circle {{b 'tree' 'control'}} {{b 'tree' 'info'}}" data-tooltip="Toggle groups info"></a>
     </span>
 </h2>
 
-<span class="{{b 'tree' 'node-sorter'}}"></span>
+<span class="{{b 'tree' 'sorter'}}"></span>
 
 <div class="tree">
     {{#if items}}
         {{#each items}}
-            {{> tree-group baseUrl=../baseUrl showGroupInfo=../showGroupInfo tabName=../tabName}}
+            {{> tree-group baseUrl=../baseUrl showGroupInfo=../showGroupInfo tabName=../tabName treeState=../treeState}}
         {{/each}}
     {{else}}
         <div class="node">
