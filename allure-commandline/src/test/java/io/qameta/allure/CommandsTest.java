@@ -31,10 +31,9 @@ public class CommandsTest {
     }
 
     @Test
-    public void shouldFailIfDirectoryIsNotEmpty() throws Exception {
+    public void shouldFailIfDirectoryExists() throws Exception {
         final Path home = folder.newFolder().toPath();
         final File reportPath = folder.newFolder();
-        Files.createFile(reportPath.toPath().resolve("File"));
         final Commands commands = new Commands(home);
         final ExitCode exitCode = commands.generate(reportPath.toPath(), null, false,
                 null);

@@ -32,7 +32,7 @@ import static java.lang.String.format;
 public class Commands {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Commands.class);
-    private static final String DIRECTORY_EXISTS_MESSAGE = "Error: Target directory %s for the report is already"
+    private static final String DIRECTORY_EXISTS_MESSAGE = "Allure: Target directory %s for the report is already"
             + " in use, add a '--clean' option to overwrite";
 
     private final Path allureHome;
@@ -55,7 +55,7 @@ public class Commands {
         final boolean directoryExists = Files.exists(reportDirectory);
         if (clean && directoryExists) {
             FileUtils.deleteQuietly(reportDirectory.toFile());
-        } else if (directoryExists && directoryIsNotEmpty(reportDirectory)) {
+        } else if (directoryExists) {
             JCommander.getConsole().println(format(DIRECTORY_EXISTS_MESSAGE, reportDirectory.toAbsolutePath()));
             return ExitCode.GENERIC_ERROR;
         }
@@ -70,10 +70,6 @@ public class Commands {
         return ExitCode.NO_ERROR;
     }
 
-    private static boolean directoryIsNotEmpty(final Path reportDirectory) {
-        return Optional.ofNullable(reportDirectory.toFile().list()).map(l -> l.length).orElse(0) != 0;
-    }
-
     public ExitCode serve(final List<Path> resultsDirectories,
                           final int port,
                           final String profile) {
@@ -81,8 +77,9 @@ public class Commands {
 
         final Path reportDirectory;
         try {
-            reportDirectory = Files.createTempDirectory("allure-commandline");
-            reportDirectory.toFile().deleteOnExit();
+            final Path tmp = Files.createTempDirectory("");
+            reportDirectory = tmp.resolve("allure-report");
+            tmp.toFile().deleteOnExit();
         } catch (IOException e) {
             LOGGER.error("Could not create temp directory: {}", e);
             return ExitCode.GENERIC_ERROR;
