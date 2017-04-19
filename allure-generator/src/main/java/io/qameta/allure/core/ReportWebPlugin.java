@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -57,7 +57,7 @@ public class ReportWebPlugin implements Aggregator {
                 .map(Plugin::getConfig)
                 .collect(Collectors.toList());
 
-        try (BufferedWriter writer = Files.newBufferedWriter(indexHtml, StandardOpenOption.CREATE)) {
+        try (BufferedWriter writer = Files.newBufferedWriter(indexHtml)) {
             final Template template = context.getValue().getTemplate("index.html.ftl");
             final Map<String, Object> dataModel = new HashMap<>();
             dataModel.put("plugins", pluginConfigurations);
@@ -70,7 +70,7 @@ public class ReportWebPlugin implements Aggregator {
     private void writeStatic(final Path outputDirectory) {
         staticFiles.forEach(resourceName -> {
             try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourceName)) {
-                Files.copy(is, outputDirectory.resolve(resourceName));
+                Files.copy(is, outputDirectory.resolve(resourceName), StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
                 LOGGER.error("Couldn't unpack report static");
             }
