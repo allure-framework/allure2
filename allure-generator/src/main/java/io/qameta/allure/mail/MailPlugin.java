@@ -13,7 +13,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,7 +32,7 @@ public class MailPlugin implements Aggregator {
         final FreemarkerContext context = configuration.requireContext(FreemarkerContext.class);
         final Path exportFolder = Files.createDirectories(outputDirectory.resolve("export"));
         final Path mailFile = exportFolder.resolve("mail.html");
-        try (BufferedWriter writer = Files.newBufferedWriter(mailFile, StandardOpenOption.CREATE)) {
+        try (BufferedWriter writer = Files.newBufferedWriter(mailFile)) {
             final Template template = context.getValue().getTemplate("mail.html.ftl");
             template.process(new HashMap<>(), writer);
         } catch (TemplateException e) {

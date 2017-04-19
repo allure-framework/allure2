@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:test-suite xmlns:ns2="urn:model.allure.qatools.yandex.ru" start="1412949538852" stop="1412949560076" version="1.4.4-SNAPSHOT">
+    <name>my.company.SimpleTest</name>
+    <test-cases>
+        <test-case start="1412949568829" stop="1412949568830" status="passed">
+            <name>failedSimpleTest</name>
+            <steps/>
+            <attachments/>
+            <labels>
+                <label name="host" value="my.cool.host.com"/>
+                <label name="thread" value="pool-1-thread-27"/>
+                <label name="owner" value="good"/>
+            </labels>
+        </test-case>
+    </test-cases>
+    <labels>
+        <label name="framework" value="JUnit"/>
+        <label name="language" value="JAVA"/>
+    </labels>
+</ns2:test-suite>

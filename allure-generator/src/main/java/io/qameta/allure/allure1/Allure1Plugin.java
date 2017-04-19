@@ -27,11 +27,13 @@ import ru.yandex.qatools.allure.model.TestSuiteResult;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -54,6 +56,8 @@ import static io.qameta.allure.entity.Status.BROKEN;
 import static io.qameta.allure.entity.Status.FAILED;
 import static io.qameta.allure.entity.Status.PASSED;
 import static io.qameta.allure.entity.Status.SKIPPED;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Comparator.comparing;
 import static org.allurefw.allure1.AllureUtils.unmarshalTestSuite;
 
 /**
@@ -61,11 +65,12 @@ import static org.allurefw.allure1.AllureUtils.unmarshalTestSuite;
  *
  * @since 2.0
  */
-@SuppressWarnings("PMD.ExcessiveImports")
+@SuppressWarnings({"PMD.ExcessiveImports", "PMD.GodClass"})
 public class Allure1Plugin implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Allure1Plugin.class);
     private static final String UNKNOWN = "unknown";
+    private static final String MD_5 = "md5";
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -100,14 +105,15 @@ public class Allure1Plugin implements Reader {
         );
         final String name = firstNonNull(source.getTitle(), source.getName(), "unknown test case");
 
-        dest.setHistoryId(String.format("%s#%s", testClass, name));
+        final List<Parameter> parameters = convert(source.getParameters(), this::hasArgumentType, this::convert);
+        dest.setHistoryId(getHistoryId(String.format("%s#%s", testClass, name), parameters));
         dest.setUid(randomUid.get());
         dest.setName(name);
         dest.setFullName(String.format("%s.%s", testClass, testMethod));
 
         dest.setStatus(convert(source.getStatus()));
         dest.setTime(source.getStart(), source.getStop());
-        dest.setParameters(convert(source.getParameters(), this::hasArgumentType, this::convert));
+        dest.setParameters(parameters);
         dest.setDescription(getDescription(testSuite.getDescription(), source.getDescription()));
         dest.setDescriptionHtml(getDescriptionHtml(testSuite.getDescription(), source.getDescription()));
         dest.setStatusDetails(convert(source.getFailure()));
@@ -121,7 +127,7 @@ public class Allure1Plugin implements Reader {
             dest.setTestStage(testStage);
         }
 
-        final Set<Label> set = new TreeSet<>(Comparator.comparing(Label::getName).thenComparing(Label::getValue));
+        final Set<Label> set = new TreeSet<>(comparing(Label::getName).thenComparing(Label::getValue));
         set.addAll(convert(testSuite.getLabels(), this::convert));
         set.addAll(convert(source.getLabels(), this::convert));
         dest.setLabels(new ArrayList<>(set));
@@ -347,5 +353,26 @@ public class Allure1Plugin implements Reader {
                 .orElseThrow(() -> new IllegalStateException(
                         "firstNonNull method should have at least one non null parameter"
                 ));
+    }
+
+    private static String getHistoryId(final String name, final List<Parameter> parameters) {
+        final MessageDigest digest = getMessageDigest();
+        digest.update(name.getBytes(UTF_8));
+        parameters.stream()
+                .sorted(comparing(Parameter::getName).thenComparing(Parameter::getValue))
+                .forEachOrdered(parameter -> {
+                    digest.update(parameter.getName().getBytes(UTF_8));
+                    digest.update(parameter.getValue().getBytes(UTF_8));
+                });
+        final byte[] bytes = digest.digest();
+        return new BigInteger(1, bytes).toString(16);
+    }
+
+    private static MessageDigest getMessageDigest() {
+        try {
+            return MessageDigest.getInstance(MD_5);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException("Could not find md5 hashing algorithm", e);
+        }
     }
 }
