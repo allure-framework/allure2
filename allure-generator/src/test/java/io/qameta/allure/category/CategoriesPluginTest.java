@@ -47,7 +47,7 @@ public class CategoriesPluginTest {
                 .withMatchedStatuses(Status.BROKEN);
 
         Map<String, Object> meta = new HashMap<>();
-        meta.put(CategoriesPlugin.CATEGORIES, Collections.singletonList(category));
+        meta.put("categories", Collections.singletonList(category));
 
         List<LaunchResults> launchResultsList = createSingleLaunchResults(
                 meta, createTestResult("asd\n", Status.BROKEN)
@@ -59,7 +59,7 @@ public class CategoriesPluginTest {
 
         Set<TestResult> results = launchResultsList.get(0).getAllResults();
         List<Category> categories = results.toArray(new TestResult[]{})[0]
-                .getExtraBlock(CategoriesPlugin.CATEGORIES);
+                .getExtraBlock("categories");
 
         assertThat(categories).as("test categories")
                 .extracting(Category::getName)

@@ -35,9 +35,9 @@ public class CategoriesPlugin extends AbstractTreeAggregator implements Reader {
 
     private static final Category UNKNOWN_ERROR = new Category().withName("Unknown error");
 
-    static final String CATEGORIES = "categories";
+    private static final String CATEGORIES = "categories";
 
-    static final String CATEGORIES_FILE_NAME = "categories.json";
+    private static final String CATEGORIES_FILE_NAME = "categories.json";
 
     //@formatter:off
     static final TypeReference<List<Category>> CATEGORIES_TYPE =
@@ -115,7 +115,7 @@ public class CategoriesPlugin extends AbstractTreeAggregator implements Reader {
         return matchesStatus && matchesMessage && matchesTrace;
     }
 
-    private static boolean matches(String message, String pattern) {
+    private static boolean matches(final String message, final String pattern) {
         return Pattern.compile(pattern, Pattern.DOTALL).matcher(message).matches();
     }
 }
