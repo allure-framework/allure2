@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -34,12 +35,12 @@ public class CategoriesPlugin extends AbstractTreeAggregator implements Reader {
 
     private static final Category UNKNOWN_ERROR = new Category().withName("Unknown error");
 
-    private static final String CATEGORIES = "categories";
+    static final String CATEGORIES = "categories";
 
-    private static final String CATEGORIES_FILE_NAME = "categories.json";
+    static final String CATEGORIES_FILE_NAME = "categories.json";
 
     //@formatter:off
-    private static final TypeReference<List<Category>> CATEGORIES_TYPE =
+    static final TypeReference<List<Category>> CATEGORIES_TYPE =
         new TypeReference<List<Category>>() {};
     //@formatter:on
 
@@ -106,11 +107,15 @@ public class CategoriesPlugin extends AbstractTreeAggregator implements Reader {
         boolean matchesMessage = isNull(category.getMessageRegex())
                 || nonNull(result.getStatusDetails())
                 && nonNull(result.getStatusDetails().getMessage())
-                && result.getStatusDetails().getMessage().matches(category.getMessageRegex());
+                && matches(result.getStatusDetails().getMessage(), category.getMessageRegex());
         boolean matchesTrace = isNull(category.getTraceRegex())
                 || nonNull(result.getStatusDetails())
                 && nonNull(result.getStatusDetails().getTrace())
-                && result.getStatusDetails().getTrace().matches(category.getTraceRegex());
+                && matches(result.getStatusDetails().getTrace(), category.getTraceRegex());
         return matchesStatus && matchesMessage && matchesTrace;
+    }
+
+    private static boolean matches(String message, String pattern) {
+        return Pattern.compile(pattern, Pattern.DOTALL).matcher(message).matches();
     }
 }
