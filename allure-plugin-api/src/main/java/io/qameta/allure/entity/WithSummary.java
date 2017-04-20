@@ -15,6 +15,8 @@ public interface WithSummary {
 
     List<Attachment> getAttachments();
 
+    List<Parameter> getParameters();
+
     @XmlElement
     default long getStepsCount() {
         final List<Step> steps = isNull(getSteps()) ? emptyList() : getSteps();
@@ -38,6 +40,7 @@ public interface WithSummary {
     default boolean hasContent() {
         final List<Attachment> attachments = isNull(getAttachments()) ? emptyList() : getAttachments();
         final List<Step> steps = isNull(getSteps()) ? emptyList() : getSteps();
-        return steps.size() + attachments.size() > 0;
+        final List<Parameter> parameters = isNull(getParameters()) ? emptyList() : getParameters();
+        return steps.size() + attachments.size() + parameters.size() > 0;
     }
 }

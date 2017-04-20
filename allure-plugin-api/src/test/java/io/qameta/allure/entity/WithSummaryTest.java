@@ -46,4 +46,11 @@ public class WithSummaryTest {
         assertThat(step.hasContent())
                 .isTrue();
     }
+
+    @Test
+    public void shouldCountParametersForHasContent() throws Exception {
+        final Step step = new Step().withParameters(new Parameter());
+        assertThat(step.hasContent())
+                .isTrue();
+    }
 }
