@@ -39,4 +39,8 @@ export default class SettingsModel extends Model {
     getVisibleStatuses(key) {
         return this.get(key) || this.get('visibleStatuses');
     }
+
+    getTreeSorting(key) {
+        return this.get(key) || {ascending: true, sorter: 0};
+    }
 }
