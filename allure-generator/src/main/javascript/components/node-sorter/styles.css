@@ -1,0 +1,21 @@
+@import "../../variables.css";
+
+.sorter {
+  overflow: hidden;
+  color: $text-muted-color;
+  user-select: none;
+  &_enabled {
+    color: $text-color;
+  }
+  &__menu {
+    list-style-type: none;
+    padding: 0px 15px 0px 15px;
+    margin: 0px;
+    float: right;
+  }
+  &__item {
+    cursor: pointer;
+    display: inline;
+    padding-left: 15px;
+  }
+}
