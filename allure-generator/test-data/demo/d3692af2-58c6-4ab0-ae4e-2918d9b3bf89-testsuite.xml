@@ -41,7 +41,9 @@
             <name>test_pass</name>
             <description type="text">Этот тест проходит</description>
             <steps/>
-            <attachments/>
+            <attachments>
+                <attachment title="hey" source="01261e59-9b21-408d-9dff-34daec2addff-attachment.txt" type="text/plain"/>
+            </attachments>
             <labels>
                 <label name="host" value="my.cool.host.com"/>
                 <label name="thread" value="pool-1-thread-9"/>
