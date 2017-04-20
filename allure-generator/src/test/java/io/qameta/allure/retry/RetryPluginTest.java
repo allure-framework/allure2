@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static io.qameta.allure.testdata.TestData.createSingleLaunchResults;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -34,7 +35,7 @@ public class RetryPluginTest {
     public void shouldMergeRetriesTestResults() throws IOException {
         String historyId = UUID.randomUUID().toString();
 
-        List<LaunchResults> launchResultsList = createLaunchResults(
+        List<LaunchResults> launchResultsList = createSingleLaunchResults(
                 createTestResult(FIRST_RESULT, historyId, 1L, 9L),
                 createTestResult(SECOND_RESULT, historyId, 11L, 19L),
                 createTestResult(LAST_RESULT, historyId, 21L, 29L)
@@ -47,7 +48,7 @@ public class RetryPluginTest {
         assertThat(results).as("test retries")
                 .filteredOn(TestResult::isHidden)
                 .extracting(TestResult::getName)
-                .containsSequence(FIRST_RESULT, SECOND_RESULT);
+                .containsExactlyInAnyOrder(FIRST_RESULT, SECOND_RESULT);
 
         TestResult lastResult = results.stream()
                 .filter(r -> !r.isHidden()).findFirst().orElseGet(null);
@@ -72,7 +73,7 @@ public class RetryPluginTest {
         String firstHistoryId = UUID.randomUUID().toString();
         String secondHistoryId = UUID.randomUUID().toString();
 
-        List<LaunchResults> launchResultsList = createLaunchResults(
+        List<LaunchResults> launchResultsList = createSingleLaunchResults(
                 createTestResult(FIRST_RESULT, firstHistoryId, 1L, 9L),
                 createTestResult(SECOND_RESULT, secondHistoryId, 11L, 19L)
         );
@@ -88,12 +89,6 @@ public class RetryPluginTest {
         assertThat(results).as("test results with retries block")
                 .filteredOn(result -> result.getExtraBlock(RetryPlugin.RETRY_BLOCK_NAME) != null)
                 .hasSize(0);
-    }
-
-    private List<LaunchResults> createLaunchResults(TestResult... input) {
-        List<LaunchResults> launchResultsList = new ArrayList<>();
-        launchResultsList.add(new DefaultLaunchResults(Arrays.stream(input).collect(Collectors.toSet()), null, null));
-        return launchResultsList;
     }
 
     private TestResult createTestResult(String name, String historyId, long start, long stop) {
