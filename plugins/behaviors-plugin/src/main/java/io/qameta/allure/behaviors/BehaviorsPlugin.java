@@ -14,6 +14,7 @@ import io.qameta.allure.tree.TreeWidgetItem;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -22,6 +23,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static io.qameta.allure.entity.ExtraStatisticMethods.comparator;
 
 /**
  * The plugin adds behaviors tab to the report.
@@ -71,8 +74,10 @@ public class BehaviorsPlugin extends AbstractTreeAggregator implements Widget {
                             .withStatistic(from(statusesForStories))
                             .withName(entry.getKey());
                 })
+                .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
+                .limit(10)
                 .collect(Collectors.toList());
-        return new TreeWidgetData().withItems(items).withTotal(items.size());
+        return new TreeWidgetData().withItems(items).withTotal(featuresToResults.entrySet().size());
     }
 
     @Override
