@@ -124,7 +124,7 @@ public class Allure1Plugin implements Reader {
                 testStage.setSteps(convert(source.getSteps(), step -> convert(directory, visitor, step)));
             }
             if (!source.getAttachments().isEmpty()) {
-                testStage.setAttachments(convert(source.getAttachments(), attach -> convert(directory, visitor, attach)));
+                testStage.setAttachments(convert(source.getAttachments(), at -> convert(directory, visitor, at)));
             }
             testStage.setStatus(convert(source.getStatus()));
             testStage.setStatusDetails(convert(source.getFailure()));
