@@ -14,7 +14,11 @@ import org.junit.rules.TemporaryFolder;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static io.qameta.allure.testdata.TestData.createSingleLaunchResults;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -69,7 +73,6 @@ public class CategoriesPluginTest {
                 .exists();
 
     }
-
 
     private TestResult createTestResult(String message, Status status) {
         return new TestResult().withStatus(status).withStatusDetails(new StatusDetails().withMessage(message));

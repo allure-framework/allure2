@@ -40,7 +40,7 @@ public class CategoriesPlugin extends AbstractTreeAggregator implements Reader {
     private static final String CATEGORIES_FILE_NAME = "categories.json";
 
     //@formatter:off
-    static final TypeReference<List<Category>> CATEGORIES_TYPE =
+    private static final TypeReference<List<Category>> CATEGORIES_TYPE =
         new TypeReference<List<Category>>() {};
     //@formatter:on
 
