@@ -47,7 +47,7 @@ public class RetryPluginTest {
         assertThat(results).as("test retries")
                 .filteredOn(TestResult::isHidden)
                 .extracting(TestResult::getName)
-                .containsSequence(FIRST_RESULT, SECOND_RESULT);
+                .containsExactlyInAnyOrder(FIRST_RESULT, SECOND_RESULT);
 
         TestResult lastResult = results.stream()
                 .filter(r -> !r.isHidden()).findFirst().orElseGet(null);
