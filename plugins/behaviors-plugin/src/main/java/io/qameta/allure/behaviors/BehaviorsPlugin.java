@@ -13,6 +13,7 @@ import io.qameta.allure.tree.TreeWidgetData;
 import io.qameta.allure.tree.TreeWidgetItem;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -29,6 +30,9 @@ import java.util.stream.Stream;
  */
 public class BehaviorsPlugin extends AbstractTreeAggregator implements Widget {
 
+    private static final String DEFAULT_FEATURE = "Default feature";
+    private static final String DEFAULT_STORY = "Default story";
+
     @Override
     protected String getFileName() {
         return "behaviors.json";
@@ -37,33 +41,34 @@ public class BehaviorsPlugin extends AbstractTreeAggregator implements Widget {
     @Override
     protected List<TreeGroup> getGroups(final TestResult result) {
         return Arrays.asList(
-                TreeGroup.allByLabel(result, LabelName.FEATURE, "Default feature"),
-                TreeGroup.allByLabel(result, LabelName.STORY, "Default story")
+                TreeGroup.allByLabel(result, LabelName.FEATURE, DEFAULT_FEATURE),
+                TreeGroup.allByLabel(result, LabelName.STORY, DEFAULT_STORY)
         );
     }
 
     @Override
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public Object getData(final Configuration configuration, final List<LaunchResults> launches) {
-        final Map<String, Set<TestResult>> featureStory = new HashMap<>();
+        final Map<String, Set<TestResult>> featuresToResults = new HashMap<>();
         for (LaunchResults launchResults : launches) {
             for (TestResult result : launchResults.getResults()) {
                 final List<String> features = result.findAll(LabelName.FEATURE);
                 for (String feature : features) {
-                    final Set<TestResult> featureTestResults = featureStory
+                    final Set<TestResult> featureTestResults = featuresToResults
                             .computeIfAbsent(feature, s -> new HashSet<>());
                     featureTestResults.add(result);
                 }
             }
         }
 
-        final List<TreeWidgetItem> items = featureStory.entrySet().stream()
+        final List<TreeWidgetItem> items = featuresToResults.entrySet().stream()
                 .map(entry -> {
-                    final Set<String> stories = entry.getValue().stream()
-                            .flatMap(result -> result.findAll(LabelName.STORY).stream()).collect(Collectors.toSet());
-                    final Map<String, Status> statusesForStories = getStories(entry.getValue());
+                    Map<String, Status> statusesForStories = getStories(entry.getValue());
+                    if (statusesForStories.isEmpty()) {
+                        statusesForStories = getDefaultStoryStatus(entry.getValue());
+                    }
                     return new TreeWidgetItem()
-                            .withStatistic(from(stories, statusesForStories))
+                            .withStatistic(from(statusesForStories))
                             .withName(entry.getKey());
                 })
                 .collect(Collectors.toList());
@@ -75,7 +80,12 @@ public class BehaviorsPlugin extends AbstractTreeAggregator implements Widget {
         return "behaviors";
     }
 
-    protected Map<String, Status> getStories(final Set<TestResult> featureTestResults) {
+    private Map<String, Status> getDefaultStoryStatus(final Set<TestResult> featureTestResults) {
+        return Collections.singletonMap(DEFAULT_STORY,
+                featureTestResults.stream().map(TestResult::getStatus).reduce(this::min).orElse(Status.UNKNOWN));
+    }
+
+    private Map<String, Status> getStories(final Set<TestResult> featureTestResults) {
         final Map<String, Status> storyStatus = new HashMap<>();
         featureTestResults.forEach(result -> {
             final List<String> stories = result.findAll(LabelName.STORY);
@@ -88,9 +98,9 @@ public class BehaviorsPlugin extends AbstractTreeAggregator implements Widget {
         return storyStatus;
     }
 
-    protected Statistic from(final Set<String> names, final Map<String, Status> statuses) {
-        final List<Status> result = names.stream()
-                .map(statuses::get)
+    protected Statistic from(final Map<String, Status> stories) {
+        final List<Status> result = stories.entrySet().stream()
+                .map(Map.Entry::getValue)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
         return from(result);
