@@ -106,7 +106,7 @@ public class HistoryPlugin implements Reader, Aggregator {
                 .withTime(result.getTime());
 
         if (Objects.nonNull(info.getReportUrl())) {
-            newItem.setReportUrl(String.format("%s/#testcase/%s", info.getReportUrl(), result.getUid()));
+            newItem.setReportUrl(String.format("%s#testcase/%s", info.getReportUrl(), result.getUid()));
         }
 
         final List<HistoryItem> newItems = Stream.concat(Stream.of(newItem), data.getItems().stream())
