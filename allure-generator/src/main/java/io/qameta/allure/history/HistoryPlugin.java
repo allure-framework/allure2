@@ -37,7 +37,8 @@ public class HistoryPlugin implements Reader, Aggregator {
 
     //@formatter:off
     private static final TypeReference<Map<String, HistoryData>> HISTORY_TYPE =
-        new TypeReference<Map<String, HistoryData>>() {};
+            new TypeReference<Map<String, HistoryData>>() {
+            };
     //@formatter:on
 
     @Override
@@ -89,8 +90,8 @@ public class HistoryPlugin implements Reader, Aggregator {
                                final ExecutorInfo info) {
         //@formatter:off
         final HistoryData data = history.computeIfAbsent(
-            result.getHistoryId(),
-            id -> new HistoryData().withStatistic(new Statistic())
+                result.getHistoryId(),
+                id -> new HistoryData().withStatistic(new Statistic())
         );
         //@formatter:on
 
@@ -124,8 +125,8 @@ public class HistoryPlugin implements Reader, Aggregator {
                 .withItems(items);
     }
 
-    private static String createReportUrl(String reportUrl, String uuid) {
-        String pattern = reportUrl.endsWith("index.html") ? "%s#testcase/%s" : "%s/#testcase/%s";
+    private static String createReportUrl(final String reportUrl, final String uuid) {
+        final String pattern = reportUrl.endsWith("index.html") ? "%s#testcase/%s" : "%s/#testcase/%s";
         return String.format(pattern, reportUrl, uuid);
     }
 }
