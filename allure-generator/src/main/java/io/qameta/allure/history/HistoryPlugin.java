@@ -106,7 +106,7 @@ public class HistoryPlugin implements Reader, Aggregator {
                 .withTime(result.getTime());
 
         if (Objects.nonNull(info.getReportUrl())) {
-            newItem.setReportUrl(String.format("%s/#testcase/%s", info.getReportUrl(), result.getUid()));
+            newItem.setReportUrl(createReportUrl(info.getReportUrl(), result.getUid()));
         }
 
         final List<HistoryItem> newItems = Stream.concat(Stream.of(newItem), data.getItems().stream())
@@ -122,5 +122,10 @@ public class HistoryPlugin implements Reader, Aggregator {
         return new HistoryData()
                 .withStatistic(statistic)
                 .withItems(items);
+    }
+
+    private static String createReportUrl(final String reportUrl, final String uuid) {
+        final String pattern = reportUrl.endsWith("index.html") ? "%s#testcase/%s" : "%s/#testcase/%s";
+        return String.format(pattern, reportUrl, uuid);
     }
 }
