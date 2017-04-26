@@ -7,6 +7,7 @@ import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.LabelName;
+import io.qameta.allure.entity.Link;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.Step;
@@ -233,6 +234,25 @@ public class Allure1PluginTest {
                 .extracting(TestResult::getHistoryId)
                 .as("History ids for parameterized tests must be different")
                 .containsExactlyInAnyOrder(historyId1, historyId2);
+    }
+
+    @Test
+    public void shouldReadPropertiesFile() throws Exception {
+        final String testName = "testFour";
+        final String link1 = "http://bugtracker.url/JIRA-1";
+        final String link2 = "http://bugtracker.url/JIRA-2";
+        final String link3 = "http://tms.url/TMS-1";
+        Set<TestResult> testResults = process(
+                "allure1/sample-testsuite.xml", generateTestSuiteXmlName(),
+                "allure1/allure.properties", "allure.properties"
+        ).getResults();
+
+        assertThat(testResults)
+                .filteredOn(testResult -> testResult.getName().equals(testName))
+                .flatExtracting(TestResult::getLinks)
+                .extracting(Link::getUrl)
+                .as("Test links should contain patterns from allure.properties file")
+                .containsExactlyInAnyOrder(link1, link2, link3);
     }
 
     private LaunchResults process(String... strings) throws IOException {
