@@ -239,9 +239,9 @@ public class Allure1PluginTest {
     @Test
     public void shouldReadPropertiesFile() throws Exception {
         final String testName = "testFour";
-        final String link1 = "http://bugtracker.url/JIRA-1";
-        final String link2 = "http://bugtracker.url/JIRA-2";
-        final String link3 = "http://tms.url/TMS-1";
+        final String link1 = "http://example.org/JIRA-1";
+        final String link2 = "http://example.org/JIRA-2";
+        final String link3 = "http://example.org/TMS-1";
         Set<TestResult> testResults = process(
                 "allure1/sample-testsuite.xml", generateTestSuiteXmlName(),
                 "allure1/allure.properties", "allure.properties"
