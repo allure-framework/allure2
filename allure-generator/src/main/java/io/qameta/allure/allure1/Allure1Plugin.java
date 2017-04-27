@@ -1,6 +1,5 @@
 package io.qameta.allure.allure1;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.Reader;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
@@ -16,17 +15,12 @@ import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
-import org.allurefw.allure1.AllureUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import ru.yandex.qatools.allure.model.Description;
 import ru.yandex.qatools.allure.model.DescriptionType;
 import ru.yandex.qatools.allure.model.Failure;
 import ru.yandex.qatools.allure.model.ParameterKind;
 import ru.yandex.qatools.allure.model.TestSuiteResult;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -58,7 +52,6 @@ import static io.qameta.allure.entity.Status.PASSED;
 import static io.qameta.allure.entity.Status.SKIPPED;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
-import static org.allurefw.allure1.AllureUtils.unmarshalTestSuite;
 
 /**
  * Plugin that reads results from Allure1 data format.
@@ -68,20 +61,18 @@ import static org.allurefw.allure1.AllureUtils.unmarshalTestSuite;
 @SuppressWarnings({"PMD.ExcessiveImports", "PMD.GodClass"})
 public class Allure1Plugin implements Reader {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Allure1Plugin.class);
     private static final String UNKNOWN = "unknown";
     private static final String MD_5 = "md5";
-
-    private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public void readResults(final Configuration configuration,
                             final ResultsVisitor visitor,
                             final Path resultsDirectory) {
         final RandomUidContext context = configuration.requireContext(RandomUidContext.class);
-        getStreamOfAllure1Results(resultsDirectory).forEach(testSuite -> testSuite.getTestCases()
-                .forEach(testCase -> convert(context.getValue(), resultsDirectory, visitor, testSuite, testCase))
-        );
+        new Allure1FilesReader(resultsDirectory).getStreamOfAllure1Results()
+                .forEach(testSuite -> testSuite.getTestCases()
+                        .forEach(testCase -> convert(context.getValue(), resultsDirectory, visitor, testSuite,
+                                testCase)));
     }
 
     @SuppressWarnings("PMD.ExcessiveMethodLength")
@@ -299,54 +290,6 @@ public class Allure1Plugin implements Reader {
                 System.getProperty("allure.tests.management.pattern", "%s"),
                 testCaseId
         );
-    }
-
-    private Stream<TestSuiteResult> getStreamOfAllure1Results(final Path source) {
-        return Stream.concat(xmlFiles(source), jsonFiles(source));
-    }
-
-    private Stream<TestSuiteResult> xmlFiles(final Path source) {
-        try {
-            return AllureUtils.listTestSuiteXmlFiles(source)
-                    .stream()
-                    .map(this::readXmlTestSuiteFile)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get);
-        } catch (IOException e) {
-            LOGGER.error("Could not list allure1 xml files", e);
-            return Stream.empty();
-        }
-    }
-
-    private Stream<TestSuiteResult> jsonFiles(final Path source) {
-        try {
-            return AllureUtils.listTestSuiteJsonFiles(source)
-                    .stream()
-                    .map(this::readJsonTestSuiteFile)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get);
-        } catch (IOException e) {
-            LOGGER.error("Could not list allure1 json files", e);
-            return Stream.empty();
-        }
-    }
-
-    private Optional<TestSuiteResult> readXmlTestSuiteFile(final Path source) {
-        try {
-            return Optional.of(unmarshalTestSuite(source));
-        } catch (IOException e) {
-            LOGGER.debug("Could not read result {}: {}", source, e);
-        }
-        return Optional.empty();
-    }
-
-    private Optional<TestSuiteResult> readJsonTestSuiteFile(final Path source) {
-        try (InputStream is = Files.newInputStream(source)) {
-            return Optional.of(mapper.readValue(is, TestSuiteResult.class));
-        } catch (IOException e) {
-            LOGGER.debug("Could not read result {}: {}", source, e);
-            return Optional.empty();
-        }
     }
 
     @SafeVarargs

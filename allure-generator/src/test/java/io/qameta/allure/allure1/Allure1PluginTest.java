@@ -12,7 +12,6 @@ import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
 import org.assertj.core.groups.Tuple;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -119,24 +118,6 @@ public class Allure1PluginTest {
         Stream<Attachment> fromSteps = step.getSteps().stream().flatMap(this::extractAttachments);
         Stream<Attachment> fromAttachments = step.getAttachments().stream();
         return Stream.concat(fromSteps, fromAttachments);
-    }
-
-    @Test
-    @Ignore("Not implemented yet")
-    public void shouldReadEnvironmentProperties() throws Exception {
-        process(
-                "allure1/sample-testsuite.json", generateTestSuiteJsonName(),
-                "allure1/environment.properties", "environment.properties"
-        );
-    }
-
-    @Test
-    @Ignore("Not implemented yet")
-    public void shouldReadEnvironmentXml() throws Exception {
-        process(
-                "allure1/sample-testsuite.json", generateTestSuiteJsonName(),
-                "allure1/environment.xml", "environment.xml"
-        );
     }
 
     @Test
