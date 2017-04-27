@@ -11,12 +11,12 @@ export default class EnvironmentWidget extends View {
 
     @on('click .environment-widget__expand')
     onExpandClick() {
-        this.listLimit = this.model.get('items').length;
+        this.listLimit = this.model.get('environmentItems').length;
         this.render();
     }
 
     serializeData() {
-        var items = this.model.get('items');
+        var items = this.model.get('environmentItems');
         return {
             items: items.slice(0, this.listLimit),
             overLimit: items.length > this.listLimit
