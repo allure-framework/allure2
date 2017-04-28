@@ -9,7 +9,6 @@ export default class TreeLayout extends PaneLayout {
     initialize({url}) {
         super.initialize();
         this.items = new TreeCollection([], {url});
-        this.treeState = new Model();
     }
 
     loadData() {
@@ -24,7 +23,6 @@ export default class TreeLayout extends PaneLayout {
             paneView.addPane('testrun', new TreeView({
                 collection: this.items,
                 state: this.state,
-                treeState: this.treeState,
                 tabName: this.options.tabName,
                 baseUrl: this.options.baseUrl
             }));

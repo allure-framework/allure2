@@ -12,8 +12,7 @@ import {behavior} from '../../decorators/index';
 class TreeView extends View {
     template = template;
 
-    initialize({state, treeState, tabName, baseUrl}) {
-        this.treeState = treeState;
+    initialize({state, tabName, baseUrl}) {
         this.state = state;
         this.baseUrl = baseUrl;
         this.tabName = tabName;
@@ -27,12 +26,8 @@ class TreeView extends View {
         this.listenTo(settings, 'change:showGroupInfo', this.render);
     }
 
-    onDomRefresh() {
-        this.$('.node__title_active').parents('.node').toggleClass('node__expanded', true);
-    }
-
     onRender() {
-        this.restoreState(this.state.get('testcase'));
+        this.restoreState();
         this.showChildView('sorter', new NodeSorterView({sorterSettingsKey: this.sorterSettingsKey}));
     }
 
@@ -44,10 +39,10 @@ class TreeView extends View {
     onNodeClick(e) {
         this.$(e.currentTarget).parent().toggleClass('node__expanded');
         const uid = this.$(e.currentTarget).data('uid');
-        if (uid in  this.treeState) {
-            delete this.treeState[uid];
+        if (this.state.has(uid)) {
+            delete this.state.unset(uid, true);
         } else {
-            this.treeState[uid] = true;
+            this.state.set(uid, true);
         }
     }
 
@@ -67,12 +62,13 @@ class TreeView extends View {
         settings.save('showGroupInfo', !show);
     }
 
-    restoreState(uid) {
+    restoreState() {
         this.$('[data-uid]').each((i, node) => {
             const el = this.$(node);
-            el.toggleClass('node__title_active', el.data('uid') === uid);
-            el.toggleClass('node__expanded', (el.data('uid') in this.treeState));
+            el.toggleClass('node__title_active', el.data('uid') === this.state.get('testcase'));
+            el.toggleClass('node__expanded', (this.state.has(el.data('uid'))));
         });
+        this.$('.node__title_active').parents('.node').toggleClass('node__expanded', true);
     }
 
     serializeData() {
