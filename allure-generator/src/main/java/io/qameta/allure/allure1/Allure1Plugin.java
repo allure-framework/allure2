@@ -60,7 +60,6 @@ import static io.qameta.allure.entity.Status.PASSED;
 import static io.qameta.allure.entity.Status.SKIPPED;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
-import static java.util.Optional.ofNullable;
 import static org.allurefw.allure1.AllureUtils.unmarshalTestSuite;
 
 /**
@@ -93,16 +92,16 @@ public class Allure1Plugin implements Reader {
 
     private Properties loadAllureProperties(final Path resultsDirectory) {
         final Path propertiesFile = resultsDirectory.resolve("allure.properties");
+        final Properties properties = new Properties();
         if (Files.exists(propertiesFile)) {
             try (final FileInputStream propFile = new FileInputStream(propertiesFile.toFile())) {
-                final Properties properties = new Properties();
                 properties.load(propFile);
-                return properties;
             } catch (IOException e) {
                 LOGGER.error("Error while reading allure.properties file: %s", e.getMessage());
             }
         }
-        return new Properties();
+        properties.putAll(System.getProperties());
+        return properties;
     }
 
     @SuppressWarnings("PMD.ExcessiveMethodLength")
@@ -311,19 +310,11 @@ public class Allure1Plugin implements Reader {
     }
 
     private String getIssueUrl(final String issue, final Properties properties) {
-        return String.format(getUrlPropertyPattern(ISSUE_URL_PROPERTY, properties), issue);
+        return String.format(properties.getProperty(ISSUE_URL_PROPERTY, "%s"), issue);
     }
 
     private String getTestCaseIdUrl(final String testCaseId, final Properties properties) {
-        return String.format(getUrlPropertyPattern(TMS_LINK_PROPERTY, properties), testCaseId);
-    }
-
-    private String getUrlPropertyPattern(final String key, final Properties allureProperties) {
-        String pattern = System.getProperty(key);
-        if (Objects.nonNull(allureProperties) && Objects.isNull(pattern)) {
-            pattern = allureProperties.getProperty(key);
-        }
-        return ofNullable(pattern).orElse("%s");
+        return String.format(properties.getProperty(TMS_LINK_PROPERTY, "%s"), testCaseId);
     }
 
     private Stream<TestSuiteResult> getStreamOfAllure1Results(final Path source) {
