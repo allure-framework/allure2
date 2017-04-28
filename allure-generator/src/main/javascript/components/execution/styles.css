@@ -42,7 +42,6 @@
   &__name {
     display: inline-flex;
     max-width: 90%;
-    white-space: nowrap;
   }
   &__content {
     margin-left: 20px;
