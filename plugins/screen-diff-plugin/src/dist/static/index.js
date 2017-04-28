@@ -15,6 +15,11 @@
         var diffImage = findImage('diff');
         var actualImage = findImage('actual');
         var expectedImage = findImage('expected');
+
+        if (! diffImage && !actualImage && !expectedImage) {
+            return 'Diff, actual and expected image haven\'t been provided.';
+        }
+
         if (type === 'diff') {
             if (!diffImage) {
                 return renderImage(actualImage.source);
