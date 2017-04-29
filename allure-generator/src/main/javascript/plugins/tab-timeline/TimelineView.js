@@ -99,15 +99,15 @@ class TimelineView extends BaseChartView {
     }
 
     doShow() {
-         this.width = this.$el. width() > 2 * PADDING ? this.$el.width() - 2 * PADDING : this.$el.width();
+        this.width = this.$el. width() > 2 * PADDING ? this.$el.width() - 2 * PADDING : this.$el.width();
 
         this.minX = this.model.get('time').start;
         this.maxX = this.model.get('time').duration;
 
-        this.chartX.domain([0, this.maxX]).nice();
+        this.chartX.domain([0, this.maxX]);
         this.chartX.range([0, this.width]);
 
-        this.brushX.domain([0, this.maxX]).nice();
+        this.brushX.domain([0, this.maxX]);
         this.brushX.range([0, this.width]);
 
         this.setupViewport();
@@ -123,7 +123,6 @@ class TimelineView extends BaseChartView {
 
         this.xChartAxis = this.makeBottomAxis(this.svgChart.select('.timeline__chart__axis_x'), {
             scale: this.chartX,
-            ticks: 8,
             tickFormat: () => '',
             tickSizeOuter: 0,
             tickSizeInner: height + BAR_HEIGHT + 6
@@ -131,7 +130,6 @@ class TimelineView extends BaseChartView {
 
         this.xBrushAxis = this.makeBottomAxis(this.svgBrush.select('.timeline__brush__axis_x'), {
             scale: this.chartX,
-            ticks: 8,
             tickFormat: d => duration(d, 2),
             tickSizeOuter: 0
         }, {
@@ -170,7 +168,7 @@ class TimelineView extends BaseChartView {
 
         const group = this.svgChart.select('.timeline__plot').append('g').attrs({
             'class': 'timeline__group',
-            transform: `translate(${PADDING}, ${offset})`
+            transform: `translate(0, ${offset})`
         });
 
         var rect = group.append('rect').attrs({

@@ -1,5 +1,5 @@
 .history-trend {
-    &__chart div {
+    &__chart > div {
         position: relative;
         padding-top: 50%;
     }
