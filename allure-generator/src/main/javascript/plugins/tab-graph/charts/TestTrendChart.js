@@ -18,7 +18,7 @@ class TestTrendGraphView extends BaseChartView {
 
     onAttach() {
         const data = this.getChartData();
-        if (data && data.length) {
+        if (data && data.length > 1) {
             this.doShow(data);
         } else {
             this.$el.html('<div class="widget__noitems">There are nothing to show</div>');
