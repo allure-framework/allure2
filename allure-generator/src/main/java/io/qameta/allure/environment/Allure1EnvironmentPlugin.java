@@ -6,12 +6,11 @@ import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Environment;
 import io.qameta.allure.entity.EnvironmentItem;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.reducing;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -22,22 +21,24 @@ public class Allure1EnvironmentPlugin implements Widget {
     public static final String ENVIRONMENT_BLOCK_NAME = "environment";
 
     @Override
-    public Environment getData(final Configuration configuration,
-                               final List<LaunchResults> launches) {
+    public List getData(final Configuration configuration,
+                        final List<LaunchResults> launches) {
         final List<Environment> launchEnvironments = launches.stream().map(launch ->
                 launch.getExtra(ENVIRONMENT_BLOCK_NAME))
                 .filter(Optional::isPresent).map(Optional::get)
                 .filter(Environment.class::isInstance)
                 .map(Environment.class::cast).collect(toList());
 
-        final Collection<EnvironmentItem> globalEnvValues = launchEnvironments.stream()
+        return launchEnvironments.stream()
                 .flatMap(env -> env.getEnvironmentItems().stream())
-                .collect(groupingBy(EnvironmentItem::getName, reducing(new EnvironmentItem(),
-                    (e1, e2) -> {
-                        e2.getValues().addAll(e1.getValues());
-                        return e2;
-                    }))).values();
-        return new Environment().withEnvironmentItems(globalEnvValues);
+                .collect(groupingBy(EnvironmentItem::getName, toList()))
+                .entrySet().stream().map(this::aggregateItem).collect(toList());
+    }
+
+    private EnvironmentItem aggregateItem(final Map.Entry<String, List<EnvironmentItem>> entry) {
+        return new EnvironmentItem()
+                .withName(entry.getKey())
+                .withValues(entry.getValue().stream().flatMap(e -> e.getValues().stream()).collect(toList()));
     }
 
     @Override

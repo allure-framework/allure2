@@ -26,6 +26,7 @@ import ru.yandex.qatools.allure.model.Description;
 import ru.yandex.qatools.allure.model.DescriptionType;
 import ru.yandex.qatools.allure.model.Failure;
 import ru.yandex.qatools.allure.model.ParameterKind;
+import ru.yandex.qatools.allure.model.TestCaseResult;
 import ru.yandex.qatools.allure.model.TestSuiteResult;
 
 import javax.xml.bind.JAXB;
@@ -72,7 +73,7 @@ import static org.allurefw.allure1.AllureUtils.unmarshalTestSuite;
  *
  * @since 2.0
  */
-@SuppressWarnings({"PMD.ExcessiveImports", "PMD.GodClass"})
+@SuppressWarnings({"PMD.ExcessiveImports", "PMD.GodClass", "PMD.TooManyMethods"})
 public class Allure1Plugin implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Allure1Plugin.class);
@@ -86,10 +87,21 @@ public class Allure1Plugin implements Reader {
                             final ResultsVisitor visitor,
                             final Path resultsDirectory) {
         final RandomUidContext context = configuration.requireContext(RandomUidContext.class);
+        final Environment environment = processEnvironment(resultsDirectory);
         getStreamOfAllure1Results(resultsDirectory).forEach(testSuite -> testSuite.getTestCases()
-                .forEach(testCase -> convert(context.getValue(), resultsDirectory, visitor, testSuite, testCase))
+                .forEach(testCase -> {
+                    convert(context.getValue(), resultsDirectory, visitor, testSuite, testCase);
+                    updateEnvironmentVariables(environment, testCase);
+                })
         );
-        processEnvironment(visitor, resultsDirectory);
+
+        visitor.visitExtra(Allure1EnvironmentPlugin.ENVIRONMENT_BLOCK_NAME, environment);
+    }
+
+    private void updateEnvironmentVariables(final Environment environment, final TestCaseResult testCase) {
+        environment.withEnvironmentItems(testCase.getParameters().stream()
+                .filter(this::hasEnvType)
+                .map(this::convertEnvironmentItem).collect(toList()));
     }
 
     @SuppressWarnings("PMD.ExcessiveMethodLength")
@@ -97,7 +109,7 @@ public class Allure1Plugin implements Reader {
                          final Path directory,
                          final ResultsVisitor visitor,
                          final TestSuiteResult testSuite,
-                         final ru.yandex.qatools.allure.model.TestCaseResult source) {
+                         final TestCaseResult source) {
         final TestResult dest = new TestResult();
         final String suiteName = firstNonNull(testSuite.getTitle(), testSuite.getName(), "unknown test suite");
         final String testClass = firstNonNull(
@@ -259,6 +271,12 @@ public class Allure1Plugin implements Reader {
         }
     }
 
+    private EnvironmentItem convertEnvironmentItem(final ru.yandex.qatools.allure.model.Parameter parameter) {
+        return new EnvironmentItem()
+                .withName(parameter.getName())
+                .withValues(parameter.getValue());
+    }
+
     private String getDescription(final Description... descriptions) {
         return Stream.of(descriptions)
                 .filter(Objects::nonNull)
@@ -392,20 +410,8 @@ public class Allure1Plugin implements Reader {
         }
     }
 
-    private List<EnvironmentItem> getEnvironmentVariables(final Path directory) {
-        return getStreamOfAllure1Results(directory)
-                .flatMap(suite -> suite.getTestCases().stream())
-                .flatMap(result -> result.getParameters().stream().filter(this::hasEnvType))
-                .map(parameter -> new EnvironmentItem()
-                        .withName(parameter.getName())
-                        .withValues(parameter.getValue())
-                ).collect(toList());
-    }
-
-    private void processEnvironment(final ResultsVisitor visitor, final Path directory) {
+    private Environment processEnvironment(final Path directory) {
         final Environment environment = new Environment();
-        final List<EnvironmentItem> testEnvVariables = getEnvironmentVariables(directory);
-        environment.withEnvironmentItems(testEnvVariables);
         final Path envPropsFile = directory.resolve("environment.properties");
         if (Files.exists(envPropsFile)) {
             try (InputStream is = Files.newInputStream(envPropsFile)) {
@@ -413,7 +419,7 @@ public class Allure1Plugin implements Reader {
                 properties.load(is);
                 environment.withEnvironmentItems(convertItems(properties));
             } catch (IOException e) {
-                visitor.error("Could not read environments.properties file " + envPropsFile, e);
+                LOGGER.error("Could not read environments.properties file " + envPropsFile, e);
             }
         }
         final Path envXmlFile = directory.resolve("environment.xml");
@@ -426,13 +432,10 @@ public class Allure1Plugin implements Reader {
                         .collect(toList());
                 environment.withEnvironmentItems(fromXml);
             } catch (Exception e) {
-                visitor.error("Could not read environment.xml file " + envXmlFile.toAbsolutePath(), e);
+                LOGGER.error("Could not read environment.xml file " + envXmlFile.toAbsolutePath(), e);
             }
         }
-
-        if (!environment.getEnvironmentItems().isEmpty()) {
-            visitor.visitExtra(Allure1EnvironmentPlugin.ENVIRONMENT_BLOCK_NAME, environment);
-        }
+        return environment;
     }
 
     private static Collection<EnvironmentItem> convertItems(final Properties properties) {

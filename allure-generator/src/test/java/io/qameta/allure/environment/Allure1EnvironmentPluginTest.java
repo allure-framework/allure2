@@ -5,7 +5,6 @@ import io.qameta.allure.DefaultResultsVisitor;
 import io.qameta.allure.allure1.Allure1Plugin;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
-import io.qameta.allure.entity.Environment;
 import io.qameta.allure.entity.EnvironmentItem;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -16,8 +15,10 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 import static org.allurefw.allure1.AllureUtils.generateTestSuiteJsonName;
 import static org.allurefw.allure1.AllureUtils.generateTestSuiteXmlName;
@@ -40,12 +41,12 @@ public class Allure1EnvironmentPluginTest {
                 new EnvironmentItem().withName("allure.test.property").withValues("1")
         };
 
-        Environment environment = process(
+        List<EnvironmentItem> environment = process(
                 "allure1/sample-testsuite.json", generateTestSuiteJsonName(),
                 "allure1/environment.properties", "environment.properties"
         );
 
-        assertThat(environment.getEnvironmentItems())
+        assertThat(environment)
                 .as("Unexpected environment properties have been read from properties file")
                 .hasSize(3)
                 .usingFieldByFieldElementComparator()
@@ -59,12 +60,12 @@ public class Allure1EnvironmentPluginTest {
                 new EnvironmentItem().withName("my.properties.url").withValues("http://yandex.ru"),
         };
 
-        Environment environment = process(
+        List<EnvironmentItem> environment = process(
                 "allure1/sample-testsuite.json", generateTestSuiteJsonName(),
                 "allure1/environment.xml", "environment.xml"
         );
 
-        assertThat(environment.getEnvironmentItems())
+        assertThat(environment)
                 .as("Unexpected environment properties have been read from xml file")
                 .hasSize(2)
                 .usingFieldByFieldElementComparator()
@@ -80,19 +81,19 @@ public class Allure1EnvironmentPluginTest {
                 new EnvironmentItem().withName("allure.test.other.property").withValues("value")
         };
 
-        Environment environment = process(
+        List<EnvironmentItem> environment = process(
                 "allure1/environment-variables-testsuite.xml", generateTestSuiteXmlName(),
                 "allure1/environment.properties", "environment.properties"
         );
 
-        assertThat(environment.getEnvironmentItems())
+        assertThat(environment)
                 .as("Unexpected environment properties have been read from test results and properties file")
                 .hasSize(4)
                 .usingFieldByFieldElementComparator()
                 .containsExactlyInAnyOrder(expected);
     }
 
-    private Environment process(String... strings) throws IOException {
+    private List<EnvironmentItem> process(String... strings) throws IOException {
         Path resultsDirectory = folder.newFolder().toPath();
         Iterator<String> iterator = Arrays.asList(strings).iterator();
         while (iterator.hasNext()) {
