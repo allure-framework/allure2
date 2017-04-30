@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Egor Borisov ehborisov@gmail.com
  */
-public class EnvironmentPluginTest {
+public class Allure1EnvironmentPluginTest {
 
     @ClassRule
     public static TemporaryFolder folder = new TemporaryFolder();
@@ -104,8 +104,7 @@ public class EnvironmentPluginTest {
         final Configuration configuration = new ConfigurationBuilder().useDefault().build();
         final DefaultResultsVisitor resultsVisitor = new DefaultResultsVisitor(configuration);
         reader.readResults(configuration, resultsVisitor, resultsDirectory);
-        EnvironmentPlugin envPlugin = new EnvironmentPlugin();
-        envPlugin.readResults(configuration, resultsVisitor, resultsDirectory);
+        Allure1EnvironmentPlugin envPlugin = new Allure1EnvironmentPlugin();
         LaunchResults results = resultsVisitor.getLaunchResults();
         return envPlugin.getData(configuration, Collections.singletonList(results));
     }

@@ -1,10 +1,13 @@
 package io.qameta.allure.allure1;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.Reader;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Attachment;
+import io.qameta.allure.entity.Environment;
+import io.qameta.allure.entity.EnvironmentItem;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.Link;
@@ -15,12 +18,20 @@ import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
+import io.qameta.allure.environment.Allure1EnvironmentPlugin;
+import org.allurefw.allure1.AllureUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.yandex.qatools.allure.model.Description;
 import ru.yandex.qatools.allure.model.DescriptionType;
 import ru.yandex.qatools.allure.model.Failure;
 import ru.yandex.qatools.allure.model.ParameterKind;
 import ru.yandex.qatools.allure.model.TestSuiteResult;
 
+import javax.xml.bind.JAXB;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,6 +42,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
@@ -52,6 +64,8 @@ import static io.qameta.allure.entity.Status.PASSED;
 import static io.qameta.allure.entity.Status.SKIPPED;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
+import static org.allurefw.allure1.AllureUtils.unmarshalTestSuite;
 
 /**
  * Plugin that reads results from Allure1 data format.
@@ -61,18 +75,21 @@ import static java.util.Comparator.comparing;
 @SuppressWarnings({"PMD.ExcessiveImports", "PMD.GodClass"})
 public class Allure1Plugin implements Reader {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Allure1Plugin.class);
     private static final String UNKNOWN = "unknown";
     private static final String MD_5 = "md5";
+
+    private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public void readResults(final Configuration configuration,
                             final ResultsVisitor visitor,
                             final Path resultsDirectory) {
         final RandomUidContext context = configuration.requireContext(RandomUidContext.class);
-        new Allure1FilesReader(resultsDirectory).getStreamOfAllure1Results()
-                .forEach(testSuite -> testSuite.getTestCases()
-                        .forEach(testCase -> convert(context.getValue(), resultsDirectory, visitor, testSuite,
-                                testCase)));
+        getStreamOfAllure1Results(resultsDirectory).forEach(testSuite -> testSuite.getTestCases()
+                .forEach(testCase -> convert(context.getValue(), resultsDirectory, visitor, testSuite, testCase))
+        );
+        processEnvironment(visitor, resultsDirectory);
     }
 
     @SuppressWarnings("PMD.ExcessiveMethodLength")
@@ -165,7 +182,7 @@ public class Allure1Plugin implements Reader {
         return Objects.isNull(source) ? null : source.stream()
                 .filter(predicate)
                 .map(converter)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     private Step convert(final Path source,
@@ -274,6 +291,10 @@ public class Allure1Plugin implements Reader {
         return ParameterKind.ARGUMENT.equals(parameter.getKind());
     }
 
+    private boolean hasEnvType(final ru.yandex.qatools.allure.model.Parameter parameter) {
+        return ParameterKind.ENVIRONMENT_VARIABLE.equals(parameter.getKind());
+    }
+
     private Link getLink(final LabelName labelName, final String value, final String url) {
         return new Link().withName(value).withType(labelName.value()).withUrl(url);
     }
@@ -290,6 +311,54 @@ public class Allure1Plugin implements Reader {
                 System.getProperty("allure.tests.management.pattern", "%s"),
                 testCaseId
         );
+    }
+
+    private Stream<TestSuiteResult> getStreamOfAllure1Results(final Path source) {
+        return Stream.concat(xmlFiles(source), jsonFiles(source));
+    }
+
+    private Stream<TestSuiteResult> xmlFiles(final Path source) {
+        try {
+            return AllureUtils.listTestSuiteXmlFiles(source)
+                    .stream()
+                    .map(this::readXmlTestSuiteFile)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get);
+        } catch (IOException e) {
+            LOGGER.error("Could not list allure1 xml files", e);
+            return Stream.empty();
+        }
+    }
+
+    private Stream<TestSuiteResult> jsonFiles(final Path source) {
+        try {
+            return AllureUtils.listTestSuiteJsonFiles(source)
+                    .stream()
+                    .map(this::readJsonTestSuiteFile)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get);
+        } catch (IOException e) {
+            LOGGER.error("Could not list allure1 json files", e);
+            return Stream.empty();
+        }
+    }
+
+    private Optional<TestSuiteResult> readXmlTestSuiteFile(final Path source) {
+        try {
+            return Optional.of(unmarshalTestSuite(source));
+        } catch (IOException e) {
+            LOGGER.debug("Could not read result {}: {}", source, e);
+        }
+        return Optional.empty();
+    }
+
+    private Optional<TestSuiteResult> readJsonTestSuiteFile(final Path source) {
+        try (InputStream is = Files.newInputStream(source)) {
+            return Optional.of(mapper.readValue(is, TestSuiteResult.class));
+        } catch (IOException e) {
+            LOGGER.debug("Could not read result {}: {}", source, e);
+            return Optional.empty();
+        }
     }
 
     @SafeVarargs
@@ -321,5 +390,56 @@ public class Allure1Plugin implements Reader {
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException("Could not find md5 hashing algorithm", e);
         }
+    }
+
+    private List<EnvironmentItem> getEnvironmentVariables(final Path directory) {
+        return getStreamOfAllure1Results(directory)
+                .flatMap(suite -> suite.getTestCases().stream())
+                .flatMap(result -> result.getParameters().stream().filter(this::hasEnvType))
+                .map(parameter -> new EnvironmentItem()
+                        .withName(parameter.getName())
+                        .withValues(parameter.getValue())
+                ).collect(toList());
+    }
+
+    private void processEnvironment(final ResultsVisitor visitor, final Path directory) {
+        final Environment environment = new Environment();
+        final List<EnvironmentItem> testEnvVariables = getEnvironmentVariables(directory);
+        environment.withEnvironmentItems(testEnvVariables);
+        final Path envPropsFile = directory.resolve("environment.properties");
+        if (Files.exists(envPropsFile)) {
+            try (InputStream is = Files.newInputStream(envPropsFile)) {
+                final Properties properties = new Properties();
+                properties.load(is);
+                environment.withEnvironmentItems(convertItems(properties));
+            } catch (IOException e) {
+                visitor.error("Could not read environments.properties file " + envPropsFile, e);
+            }
+        }
+        final Path envXmlFile = directory.resolve("environment.xml");
+        if (Files.exists(envXmlFile)) {
+            try (FileInputStream fis = new FileInputStream(envXmlFile.toFile())) {
+                final ru.yandex.qatools.commons.model.Environment result =
+                        JAXB.unmarshal(fis, ru.yandex.qatools.commons.model.Environment.class);
+                final List<EnvironmentItem> fromXml = result.getParameter().stream()
+                        .map(param -> new EnvironmentItem().withName(param.getKey()).withValues(param.getValue()))
+                        .collect(toList());
+                environment.withEnvironmentItems(fromXml);
+            } catch (Exception e) {
+                visitor.error("Could not read environment.xml file " + envXmlFile.toAbsolutePath(), e);
+            }
+        }
+
+        if (!environment.getEnvironmentItems().isEmpty()) {
+            visitor.visitExtra(Allure1EnvironmentPlugin.ENVIRONMENT_BLOCK_NAME, environment);
+        }
+    }
+
+    private static Collection<EnvironmentItem> convertItems(final Properties properties) {
+        return properties.entrySet().stream().map(e ->
+                new EnvironmentItem()
+                        .withName(String.valueOf(e.getKey()))
+                        .withValues(String.valueOf(e.getValue()))
+        ).collect(Collectors.toSet());
     }
 }
