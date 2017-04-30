@@ -76,7 +76,7 @@ public class Allure1EnvironmentPluginTest {
         EnvironmentItem[] expected = new EnvironmentItem[]{
                 new EnvironmentItem().withName("allure.test.run.id").withValues("some-id"),
                 new EnvironmentItem().withName("allure.test.run.name").withValues("some-name"),
-                new EnvironmentItem().withName("allure.test.property").withValues("2", "1"),
+                new EnvironmentItem().withName("allure.test.property").withValues("1", "2"),
                 new EnvironmentItem().withName("allure.test.other.property").withValues("value")
         };
 
