@@ -31,9 +31,9 @@ import static java.util.Objects.nonNull;
  */
 public class CategoriesPlugin extends AbstractTreeAggregator implements Reader {
 
-    private static final Category UNKNOWN_FAILURE = new Category().withName("Unknown failure");
+    private static final Category UNKNOWN_FAILURE = new Category().withName("Product defects");
 
-    private static final Category UNKNOWN_ERROR = new Category().withName("Unknown error");
+    private static final Category UNKNOWN_ERROR = new Category().withName("Test defects");
 
     private static final String CATEGORIES = "categories";
 
@@ -93,7 +93,7 @@ public class CategoriesPlugin extends AbstractTreeAggregator implements Reader {
     @Override
     protected List<TreeGroup> getGroups(final TestResult result) {
         final List<Category> categories = result.getExtraBlock(CATEGORIES);
-        final String message = result.getStatusMessage().orElse("Empty message");
+        final String message = result.getStatusMessage().orElse("Without message");
         return Arrays.asList(
                 TreeGroup.values(categories.stream().map(Category::getName).toArray(String[]::new)),
                 TreeGroup.values(message)
@@ -113,6 +113,10 @@ public class CategoriesPlugin extends AbstractTreeAggregator implements Reader {
                 && nonNull(result.getStatusDetails().getTrace())
                 && matches(result.getStatusDetails().getTrace(), category.getTraceRegex());
         return matchesStatus && matchesMessage && matchesTrace;
+    }
+
+    private static boolean notPassed(TestResult result) {
+        return !result.getStatus().equals(Status.PASSED);
     }
 
     private static boolean matches(final String message, final String pattern) {
