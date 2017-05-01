@@ -45,20 +45,20 @@
     "executors": {
       "name": "Executors",
       "unknown": "Unknown",
-      "empty": "There are no information about tests executors"
+      "empty": "There is no information about tests executors"
     },
     "launches": {
       "name": "Launches",
-      "empty": "There are no information about launches"
+      "empty": "There is no information about launches"
     }
   },
   "chart": {
     "duration": {
       "name": "Duration",
-      "empty": "There are nothing to show"
+      "empty": "There is nothing to show"
     },
     "trend": {
-      "empty": "There are nothing to show"
+      "empty": "There is nothing to show"
     },
     "severity": {
       "name": "Severity"

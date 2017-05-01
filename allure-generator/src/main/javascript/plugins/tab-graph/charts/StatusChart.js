@@ -10,13 +10,7 @@ import {select} from 'd3-selection';
 import escape from '../../../util/escape';
 import {values} from '../../../util/statuses';
 
-import t from '../../../helpers/t';
-
-const legendTpl = `<div class="chart__legend">
-    ${values.map((status) =>
-        `<p class="chart__legend-row" data-status="${status}"><span class="chart__legend-icon chart__legend-icon_status_${status}"></span> ${status}</p>`
-    ).join('')}
-</div>`;
+import translate from '../../../helpers/t';
 
 export default class StatusChart extends BaseChartView {
 
@@ -39,7 +33,7 @@ export default class StatusChart extends BaseChartView {
     setupViewport() {
         const svg = super.setupViewport();
         if(this.options.showLegend) {
-            this.$el.append(legendTpl);
+            this.$el.append(this.getLegendTpl());
         }
         return svg;
     }
@@ -98,11 +92,19 @@ export default class StatusChart extends BaseChartView {
         const value = data.value || 0;
         const part = data.part || 0;
         const status = data.name.toLowerCase();
-        const name = t(`status.${status}`, {});
+        const name = translate(`status.${status}`, {});
         return escape`
             ${value} tests (${this.formatNumber(part * 100)}%)<br>
             ${name}
         `;
+    }
+
+    getLegendTpl() {
+        return `<div class="chart__legend">
+    ${values.map((status) =>
+            `<p class="chart__legend-row" data-status="${status}"><span class="chart__legend-icon chart__legend-icon_status_${status}"></span> ${translate('status.' + status)}</p>`
+        ).join('')}
+</div>`;
     }
 
     @on('mouseleave .chart__legend-row')

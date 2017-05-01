@@ -1,5 +1,5 @@
 import {SafeString} from 'handlebars/runtime';
-import t from './t';
+import translate from './t';
 
 const icons = {
     flaky: {
@@ -30,5 +30,5 @@ const icons = {
 
 export default function (value, extraClasses='') {
     const icon = icons[value];
-    return icon ? new SafeString(`<span class="${icon.className} ${extraClasses}" data-tooltip="${t(icon.tooltip)}"></span>`) : '';
+    return icon ? new SafeString(`<span class="${icon.className} ${extraClasses}" data-tooltip="${translate(icon.tooltip)}"></span>`) : '';
 }

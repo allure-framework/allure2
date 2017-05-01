@@ -5,7 +5,7 @@ import {histogram, max, median} from 'd3-array';
 import PopoverView from '../../../components/popover/PopoverView';
 import escape from '../../../util/escape';
 import duration from '../../../helpers/duration';
-import t from '../../../helpers/t';
+import translate from '../../../helpers/t';
 
 const PAD_LEFT = 50;
 const PAD_RIGHT = 15;
@@ -31,7 +31,7 @@ export default class DurationChart extends BaseChartView {
         if (this.data.length) {
             this.doShow();
         } else {
-            this.$el.html(`<div class="widget__noitems">${t('chart.duration.empty')}</div>`);
+            this.$el.html(`<div class="widget__noitems">${translate('chart.duration.empty')}</div>`);
         }
 
         super.onAttach();
