@@ -6,7 +6,7 @@ export default class EnvironmentWidget extends View {
     template = template;
 
     initialize() {
-        this.listLimit = 10;
+        this.listLimit = 5;
     }
 
     @on('click .environment-widget__expand')
