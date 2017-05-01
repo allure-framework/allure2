@@ -1,9 +1,15 @@
 import './styles.css';
 import {View} from 'backbone';
 import {axisLeft, axisBottom} from 'd3-axis';
-import {select, event as currentEvent} from 'd3-selection'; 
+import {select, event as currentEvent} from 'd3-selection';
+import template from './BaseChartView.hbs';
+
 
 export default class BaseChartView extends View {
+    PAD_LEFT = 50;
+    PAD_RIGHT = 15;
+    PAD_TOP = 7;
+    PAD_BOTTOM = 30;
 
     constructor(options) {
         super(options);
@@ -24,22 +30,33 @@ export default class BaseChartView extends View {
     }
 
     setupViewport() {
-        this.$el.html(`<svg class="chart__svg">
-            <g class="chart__axis chart__axis_x"></g>
-            <g class="chart__axis chart__axis_y"></g>
-            <g class="chart__plot"></g>
-        </svg>`);
-        return select(this.$el[0]).select('svg');
+        this.viewBoxWidth = this.$el.outerWidth();
+        this.viewBoxHeight = this.$el.outerHeight();
+        this.width = this.viewBoxWidth - this.PAD_LEFT - this.PAD_RIGHT;
+        this.height = this.viewBoxHeight - this.PAD_BOTTOM - this.PAD_TOP;
+        this.$el.html(template(this));
+        this.svg = select(this.$el[0]).select('.chart__svg');
+        this.plot = this.svg.select('.chart__plot');
     }
 
-    makeLeftAxis(element, options, translate){
+    makeLeftAxis(options){
         const axis = axisLeft();
-        return this.makeAxis(axis, element, options, translate);
+        return this.makeAxis(
+            axis,
+            this.svg.select('.chart__axis_x'),
+            options,
+            {left: this.PAD_LEFT, top: this.PAD_TOP}
+        );
     }
 
-    makeBottomAxis(element, options, translate){
+    makeBottomAxis(options){
         const axis = axisBottom();
-        return this.makeAxis(axis, element, options, translate);
+        return this.makeAxis(
+            axis,
+            this.svg.select('.chart__axis_y'),
+            options,
+            {left:this.PAD_LEFT, top:this.PAD_TOP + this.height}
+        );
     }
 
     makeAxis(axis, element, options, {left = 0, top = 0} = {}) {

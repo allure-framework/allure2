@@ -2,11 +2,9 @@ import BaseChartView from '../../../components/chart/BaseChartView';
 import TooltipView from '../../../components/tooltip/TooltipView';
 import {on} from '../../../decorators';
 import {omit} from 'underscore';
-
 import {arc, pie} from 'd3-shape';
 import {interpolate} from 'd3-interpolate';
 import {select} from 'd3-selection';
-
 import escape from '../../../util/escape';
 import {values} from '../../../util/statuses';
 
@@ -31,11 +29,11 @@ export default class StatusChart extends BaseChartView {
     }
 
     setupViewport() {
-        const svg = super.setupViewport();
+        super.setupViewport();
         if(this.options.showLegend) {
             this.$el.append(this.getLegendTpl());
         }
-        return svg;
+        return this.svg;
     }
 
     onAttach() {
