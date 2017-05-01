@@ -27,7 +27,6 @@ import ru.yandex.qatools.allure.model.TestCaseResult;
 import ru.yandex.qatools.allure.model.TestSuiteResult;
 
 import javax.xml.bind.JAXB;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
@@ -112,7 +111,7 @@ public class Allure1Plugin implements Reader {
         final Path propertiesFile = resultsDirectory.resolve("allure.properties");
         final Properties properties = new Properties();
         if (Files.exists(propertiesFile)) {
-            try (final FileInputStream propFile = new FileInputStream(propertiesFile.toFile())) {
+            try (InputStream propFile = Files.newInputStream(propertiesFile)) {
                 properties.load(propFile);
             } catch (IOException e) {
                 LOGGER.error("Error while reading allure.properties file: %s", e.getMessage());
@@ -445,7 +444,7 @@ public class Allure1Plugin implements Reader {
         final Path envXmlFile = directory.resolve("environment.xml");
         final Map<String, String> items = new HashMap<>();
         if (Files.exists(envXmlFile)) {
-            try (FileInputStream fis = new FileInputStream(envXmlFile.toFile())) {
+            try (InputStream fis = Files.newInputStream(envXmlFile)) {
                 JAXB.unmarshal(fis, ru.yandex.qatools.commons.model.Environment.class).getParameter().forEach(p ->
                         items.put(p.getKey(), p.getValue())
                 );
