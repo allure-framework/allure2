@@ -1,5 +1,5 @@
 <h2 class="widget__title">
-    Executors
+    {{t 'widget.executors.name'}}
 </h2>
 <div class="table table_hover widget__table">
 {{#if items}}
@@ -23,7 +23,7 @@
             </div>
         {{else}}
             <div class="{{b 'table' 'col' right=true}}">
-                Unknown
+                {{t 'widget.executors.unknown'}}
             </div>
         {{/if}}
     </span>
@@ -31,7 +31,7 @@
 {{else}}
     <div class="table__row">
         <div class="{{b 'table' 'col' center=true}}">
-            There are no information about tests executors
+            {{t 'widget.executors.empty'}}
         </div>
     </div>
 {{/if}}

@@ -1,10 +1,10 @@
 allure.api.addTab('xUnit', {
-    title: 'xUnit',
+    title: 'tab.xunit.name',
     icon: 'fa fa-briefcase',
     route: 'xUnit(/:testcaseId)',
     onEnter: (...routeParams) => new allure.components.TreeLayout({
         routeParams: routeParams,
-        tabName: 'xUnit',
+        tabName: 'tab.xunit.name',
         baseUrl: 'xUnit',
         url: 'data/xunit.json'
     })

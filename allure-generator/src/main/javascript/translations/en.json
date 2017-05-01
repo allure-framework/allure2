@@ -1,74 +1,155 @@
 {
-  "TEST_RUN": "Test run",
-  "STARTED_AT": "Started {{date}} at {{time}}",
-  "Title": "Title",
-  "Duration": "Duration",
-  "Status": "Status",
-  "Count": "Count",
-  "Defect": "Defect",
-  "FAILED": "FAILED",
-  "BROKEN": "BROKEN",
-  "CANCELED": "CANCELED",
-  "PENDING": "PENDING",
-  "PASSED": "PASSED",
-  "Failed": "Failed",
-  "Broken": "Broken",
-  "Canceled": "Canceled",
-  "Pending": "Pending",
-  "Passed": "Passed",
-  "Total": "Total {{statistic}}",
-  "failed": "failed {{statistic}}",
-  "broken": "broken {{statistic}}",
-  "canceled": "canceled {{statistic}}",
-  "pending": "pending {{statistic}}",
-  "passed": "passed {{statistic}}",
-  "BLOCKER": "BLOCKER",
-  "CRITICAL": "CRITICAL",
-  "NORMAL": "NORMAL",
-  "MINOR": "MINOR",
-  "TRIVIAL": "TRIVIAL",
-  "tooltip": {
-    "EXPAND": "Expand",
-    "COLLAPSE": "Collapse",
-    "CLOSE": "Close",
-    "ATTACHMENT_IMAGE": "Attachment image"
+  "status": {
+    "failed": "Failed",
+    "broken": "Broken",
+    "passed": "Passed",
+    "skipped": "Skipped",
+    "unknown": "Unknown",
+    "flaky": "Test is flaky"
   },
-  "index": {
-    "FEEDBACK": "Provide Feedback",
-    "MAIL": "Mail list",
-    "DATA_SIZE": "Data size:",
-    "GENERATED": "Generated in:",
-    "VERSION": "Version:",
-    "COLLAPSE": "Collapse",
-    "OVERVIEW": "Overview"
+  "sorter": {
+    "name": "name",
+    "duration": "duration",
+    "status": "status"
   },
-  "overview": {
-    "TOP": "Top defects",
-    "ALL": "Show all",
-    "TOTAL": "total"
+  "tab": {
+    "overview": {
+      "name": "Overview"
+    },
+    "categories": {
+      "name": "Categories"
+    },
+    "xunit": {
+      "name": "xUnit"
+    },
+    "graph": {
+      "name": "Graphs"
+    },
+    "timeline": {
+      "name": "Timeline",
+      "selected": "Selected {{count}} test ({{percent}}%) with duration above {{duration}}",
+      "selected_plural": "Selected {{count}} tests ({{percent}}%) with duration above {{duration}}"
+    }
   },
-  "attachment": {
-    "ATTACHMENT": "Attachment",
-    "NOT_FOUND": "Attachment not found"
+  "widget": {
+    "summary": {
+      "aggregatedName": "Aggregated report",
+      "launches": "launch",
+      "launches_plural": "launches",
+      "testCases": "test case",
+      "testCases_plural": "test cases"
+    },
+    "trend": {
+      "name": "Trend"
+    },
+    "executors": {
+      "name": "Executors",
+      "unknown": "Unknown",
+      "empty": "There are no information about tests executors"
+    },
+    "launches": {
+      "name": "Launches",
+      "empty": "There are no information about launches"
+    }
   },
-  "list": {
-    "TEST_CASES": "Test cases ({{amount}} total{{visible == amount ? ')' : ', '+visible+' shown)'}}",
-    "MORE": "Show more"
+  "chart": {
+    "duration": {
+      "name": "Duration",
+      "empty": "There are nothing to show"
+    },
+    "trend": {
+      "empty": "There are nothing to show"
+    },
+    "severity": {
+      "name": "Severity"
+    },
+    "status": {
+      "name": "Status"
+    }
   },
-  "testcase": {
-    "TESTCASE": "Testcase",
-    "SEVERITY": "Severity: {{severity}}",
-    "ISSUES": "Issues:",
-    "TEST_ID": "Test ID:",
-    "TEST_PASSED": "The test has passed!",
-    "RAW": "Raw",
-    "STACKTRACE": "Stacktrace",
-    "SUBSTEPS": "(1)({{count}} sub-step);(0,2-inf)({{count}} sub-steps);",
-    "ATTACHMENTS": "(1)({{count}} attachment);(0,2-inf)({{count}} attachments);",
-    "PARAMETERS": "(1)({{count}} parameter);(0,2-inf)({{count}} parameters);"
+  "testCase": {
+    "status": {
+      "empty": "Empty status details",
+      "trace": "Show trace"
+    },
+    "categories": {
+      "name": "Categories"
+    },
+    "description": {
+      "name": "Description"
+    },
+    "duration": {
+      "name": "Duration"
+    },
+    "history": {
+      "name": "History",
+      "successRate": "Success rate"
+    },
+    "owner": {
+      "name": "Owner"
+    },
+    "retries": {
+      "name": "Retries"
+    },
+    "parameters": {
+      "name": "Parameters"
+    },
+    "links": {
+      "name": "Links"
+    },
+    "severity": {
+      "name": "Severity"
+    },
+    "execution": {
+      "name": "Execution",
+      "setup": "Set up",
+      "teardown": "Tear down",
+      "body": "Test body"
+    },
+    "stats": {
+      "count": {
+        "steps": "{{count}} sub-step",
+        "steps_plural": "{{count}} sub-steps",
+        "attachments": "{{count}} attachment",
+        "attachments_plural": "{{count}} attachments",
+        "parameters": "{{count}} parameter",
+        "parameters_plural": "{{count}} parameters"
+      }
+    }
   },
-  "testcases": "test cases",
-  "total": {
-    "TITLE": "Total"
+  "controls": {
+    "collapse": "Collapse",
+    "expand": "Expand",
+    "language": "Change language",
+    "clipboard": "Copy to clipboard",
+    "backto": "Back to"
+  },
+  "errors": {
+    "missedAttachment": "Attachment not found"
+  },
+  "component": {
+    "tree": {
+      "filter": "Filter test cases by statues",
+      "groups": "Toggle groups info",
+      "empty": "There are no items",
+      "time": {
+        "total" : {
+          "name": "Total",
+          "tooltip": "Duration from first test started to last test finished"
+        },
+        "max": {
+          "name": "Max",
+          "tooltip": "Longest test duration"
+        },
+        "sum": {
+          "name": "Sum",
+          "tooltip": "Sum of all tests durations"
+        }
+      }
+    },
+    "widgetStatus": {
+      "total": "{{count}} item total",
+      "total_plural": "{{count}} items total"
+    }
   }
 }

@@ -10,6 +10,8 @@ import {select} from 'd3-selection';
 import escape from '../../../util/escape';
 import {values} from '../../../util/statuses';
 
+import t from '../../../helpers/t';
+
 const legendTpl = `<div class="chart__legend">
     ${values.map((status) =>
         `<p class="chart__legend-row" data-status="${status}"><span class="chart__legend-icon chart__legend-icon_status_${status}"></span> ${status}</p>`
@@ -95,9 +97,11 @@ export default class StatusChart extends BaseChartView {
     getTooltipContent({data}) {
         const value = data.value || 0;
         const part = data.part || 0;
+        const status = data.name.toLowerCase();
+        const name = t(`status.${status}`, {});
         return escape`
             ${value} tests (${this.formatNumber(part * 100)}%)<br>
-            ${data.name}
+            ${name}
         `;
     }
 

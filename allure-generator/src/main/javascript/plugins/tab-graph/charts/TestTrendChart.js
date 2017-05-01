@@ -3,6 +3,7 @@ import {max} from 'd3-array';
 import {values} from '../../../util/statuses';
 import BaseChartView from '../../../components/chart/BaseChartView';
 import {area, stack} from 'd3-shape';
+import t from '../../../helpers/t';
 
 const PAD_LEFT = 50;
 const PAD_RIGHT = 15;
@@ -21,7 +22,7 @@ class TestTrendGraphView extends BaseChartView {
         if (data && data.length > 1) {
             this.doShow(data);
         } else {
-            this.$el.html('<div class="widget__noitems">There are nothing to show</div>');
+            this.$el.html('<div class="widget__noitems">' + t('chart.trend.empty', {}) + '</div>');
         }
         super.onAttach();
     }

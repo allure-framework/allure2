@@ -1,7 +1,7 @@
 {{#if history}}
-    <h3 class="history-title">History</h3>
+    <h3 class="history-title">{{t 'testCase.history.name'}}</h3>
     <div class="history-success-rate">
-        success rate {{successRate}}
+        {{t 'testCase.history.successRate'}} {{successRate}}
         {{# if history.statistic.total}}
             ({{history.statistic.passed}} of {{history.statistic.total}})
         {{/if}}

@@ -3,15 +3,15 @@
     {{~#if hasContent}}
     (
          {{~#if parameters.length ~}}
-            {{~t 'testcase.PARAMETERS' postProcess='interval' count=parameters.length~}}
+            {{~t 'testCase.stats.count.parameters' count=parameters.length~}}
              <span class="step-stats__info_separator">,&nbsp;</span>
          {{~/if~}}
          {{~#if stepsCount ~}}
-            {{~t 'testcase.SUBSTEPS' postProcess='interval' count=stepsCount~}}
+            {{~t 'testCase.stats.count.steps' count=stepsCount~}}
             <span class="step-stats__info_separator">,&nbsp;</span>
         {{~/if~}}
         {{~#if attachmentsCount ~}}
-            {{~t 'testcase.ATTACHMENTS' postProcess='interval' count=attachmentsCount~}}
+            {{~t 'testCase.stats.count.attachments' count=attachmentsCount~}}
             <span class="step-stats__info_separator">,&nbsp;</span>
         {{~/if~}}
     )

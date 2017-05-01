@@ -2,8 +2,8 @@
     <div class="{{b 'widget' 'column'}}">
         <h2 class="{{b 'widget' 'title'}}">
             {{#if isAggregated}}
-                Aggregated report
-                <span class="{{b 'widget' 'subtitle'}}">{{testRunsCount}} test runs</span>
+                {{t 'widget.summary.aggregatedName'}}
+                <span class="{{b 'widget' 'subtitle'}}">{{launchesCount}} {{t 'widget.summary.launches' count=launchesCount}}</span>
             {{else}}
                 {{reportName}} {{date time.stop}}
             {{/if}}
@@ -13,7 +13,7 @@
         </h2>
         <div class="{{b 'summary-widget' 'stats'}} splash">
             <div class="{{b 'splash' 'title'}}">{{statistic.total}}</div>
-            <div class="{{b 'splash' 'subtitle'}}">test cases</div>
+            <div class="{{b 'splash' 'subtitle'}}">{{t 'widget.summary.testCases' count=statistic.total}}</div>
         </div>
     </div>
     <div class="{{b 'widget' 'column'}} {{b 'summary-widget' 'chart'}}"></div>

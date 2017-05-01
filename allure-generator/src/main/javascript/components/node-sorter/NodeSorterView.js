@@ -12,15 +12,15 @@ class NodeSorterView extends View {
 
     sorters = [
         {
-            key: 'name',
+            key: 'sorter.name',
             sorter: (a, b) => {return a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1;}
         },
         {
-            key: 'duration',
+            key: 'sorter.duration',
             sorter: (a, b) => {return a.time.duration < b.time.duration ? -1 : 1;}
         },
         {
-            key: 'status',
+            key: 'sorter.status',
             sorter: (a, b) => {
                 if ('status' in a && 'status' in b){
                     return values.indexOf(a.status) > values.indexOf(b.status) ? -1 : 1;
