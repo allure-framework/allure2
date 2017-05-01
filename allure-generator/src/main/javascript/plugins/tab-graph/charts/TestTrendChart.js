@@ -22,7 +22,7 @@ class TestTrendGraphView extends BaseChartView {
         if (data && data.length > 1) {
             this.doShow(data);
         } else {
-            this.$el.html('<div class="widget__noitems">' + t('chart.trend.empty', {}) + '</div>');
+            this.$el.html(`<div class="widget__noitems">${t('chart.trend.empty')}</div>`);
         }
         super.onAttach();
     }

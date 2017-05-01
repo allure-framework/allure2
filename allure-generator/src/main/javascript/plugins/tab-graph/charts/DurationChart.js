@@ -31,7 +31,7 @@ export default class DurationChart extends BaseChartView {
         if (this.data.length) {
             this.doShow();
         } else {
-            this.$el.html('<div class="widget__noitems">' + t('chart.duration.empty', {}) + '</div>');
+            this.$el.html(`<div class="widget__noitems">${t('chart.duration.empty')}</div>`);
         }
 
         super.onAttach();
