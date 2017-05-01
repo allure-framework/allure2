@@ -50,6 +50,11 @@
     "launches": {
       "name": "Launches",
       "empty": "There is no information about launches"
+    },
+    "environment": {
+      "name": "Environment",
+      "empty": "There is no environment variables",
+      "showAll": "Show all environment variables"
     }
   },
   "chart": {

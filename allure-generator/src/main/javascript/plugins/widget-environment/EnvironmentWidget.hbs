@@ -1,5 +1,5 @@
 <h2 class="widget__title">
-    Environment
+    {{t 'widget.environment.name'}}
 </h2>
 {{#if items}}
     <div class="table  table_hover widget__table">
@@ -17,11 +17,11 @@
     {{/each}}
     {{#if overLimit}}
         <a class="{{b "table" "row"}} clickable environment-widget__expand">
-            <div class="{{b "table" "col" center=true}}">Show all environment variables</div>
+            <div class="{{b "table" "col" center=true}}">{{t 'widget.environment.showAll'}}</div>
         </a>
     {{/if}}
     </div>
 
 {{else}}
-    <div class="widget__noitems">There are no environment variables</div>
+    <div class="widget__noitems">{{t 'widget.environment.empty'}}</div>
 {{/if}}
