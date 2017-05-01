@@ -11,4 +11,9 @@
         <key>my.properties.url</key>
         <value>http://yandex.ru</value>
     </parameter>
+    <parameter>
+        <name>Stacking parameter</name>
+        <key>allure.test.property</key>
+        <value>3</value>
+    </parameter>
 </qa:environment>

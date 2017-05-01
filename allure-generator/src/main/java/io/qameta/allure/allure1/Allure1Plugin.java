@@ -6,7 +6,6 @@ import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Attachment;
-import io.qameta.allure.entity.EnvironmentItem;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.Link;
@@ -17,7 +16,6 @@ import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
-import io.qameta.allure.environment.Allure1EnvironmentPlugin;
 import org.allurefw.allure1.AllureUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +37,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
@@ -78,6 +78,7 @@ public class Allure1Plugin implements Reader {
     private static final Logger LOGGER = LoggerFactory.getLogger(Allure1Plugin.class);
     private static final String UNKNOWN = "unknown";
     private static final String MD_5 = "md5";
+    public static final String ENVIRONMENT_BLOCK_NAME = "environment";
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -86,21 +87,22 @@ public class Allure1Plugin implements Reader {
                             final ResultsVisitor visitor,
                             final Path resultsDirectory) {
         final RandomUidContext context = configuration.requireContext(RandomUidContext.class);
-        final List<EnvironmentItem> environment = processEnvironment(resultsDirectory);
+
+        final Map<String, String> environment = processEnvironment(resultsDirectory);
         getStreamOfAllure1Results(resultsDirectory).forEach(testSuite -> testSuite.getTestCases()
                 .forEach(testCase -> {
                     convert(context.getValue(), resultsDirectory, visitor, testSuite, testCase);
-                    updateEnvironmentVariables(environment, testCase);
+                    getEnvironmentParameters(testCase).forEach(param ->
+                            environment.put(param.getName(), param.getValue())
+                    );
                 })
         );
 
-        visitor.visitExtra(Allure1EnvironmentPlugin.ENVIRONMENT_BLOCK_NAME, environment);
+        visitor.visitExtra(ENVIRONMENT_BLOCK_NAME, environment);
     }
 
-    private void updateEnvironmentVariables(final List<EnvironmentItem> environment, final TestCaseResult testCase) {
-        environment.addAll(testCase.getParameters().stream()
-                .filter(this::hasEnvType)
-                .map(this::convertEnvironmentItem).collect(toList()));
+    private List<ru.yandex.qatools.allure.model.Parameter> getEnvironmentParameters(final TestCaseResult testCase) {
+        return testCase.getParameters().stream().filter(this::hasEnvType).collect(toList());
     }
 
     @SuppressWarnings("PMD.ExcessiveMethodLength")
@@ -270,12 +272,6 @@ public class Allure1Plugin implements Reader {
         }
     }
 
-    private EnvironmentItem convertEnvironmentItem(final ru.yandex.qatools.allure.model.Parameter parameter) {
-        return new EnvironmentItem()
-                .withName(parameter.getName())
-                .withValues(parameter.getValue());
-    }
-
     private String getDescription(final Description... descriptions) {
         return Stream.of(descriptions)
                 .filter(Objects::nonNull)
@@ -409,47 +405,41 @@ public class Allure1Plugin implements Reader {
         }
     }
 
-    private List<EnvironmentItem> processEnvironment(final Path directory) {
-        final List<EnvironmentItem> environment = new ArrayList<>();
-        processEnvironmentProperties(directory, environment);
-        processEnvironmentXml(directory, environment);
+    private Map<String, String> processEnvironment(final Path directory) {
+        final Map<String, String> environment = processEnvironmentProperties(directory);
+        environment.putAll(processEnvironmentXml(directory));
         return environment;
     }
 
-    private void processEnvironmentProperties(final Path directory, final List<EnvironmentItem> environment) {
+    private Map<String, String> processEnvironmentProperties(final Path directory) {
         final Path envPropsFile = directory.resolve("environment.properties");
+        final Map<String, String> items = new HashMap<>();
         if (Files.exists(envPropsFile)) {
             try (InputStream is = Files.newInputStream(envPropsFile)) {
                 final Properties properties = new Properties();
                 properties.load(is);
-                environment.addAll(convertItems(properties));
+                properties.entrySet().forEach(e ->
+                        items.put(String.valueOf(e.getKey()), String.valueOf(e.getValue()))
+                );
             } catch (IOException e) {
                 LOGGER.error("Could not read environments.properties file " + envPropsFile, e);
             }
         }
+        return items;
     }
 
-    private void processEnvironmentXml(final Path directory, final List<EnvironmentItem> environment) {
+    private Map<String, String> processEnvironmentXml(final Path directory) {
         final Path envXmlFile = directory.resolve("environment.xml");
+        final Map<String, String> items = new HashMap<>();
         if (Files.exists(envXmlFile)) {
             try (FileInputStream fis = new FileInputStream(envXmlFile.toFile())) {
-                final ru.yandex.qatools.commons.model.Environment result =
-                        JAXB.unmarshal(fis, ru.yandex.qatools.commons.model.Environment.class);
-                final List<EnvironmentItem> fromXml = result.getParameter().stream()
-                        .map(param -> new EnvironmentItem().withName(param.getKey()).withValues(param.getValue()))
-                        .collect(toList());
-                environment.addAll(fromXml);
+                JAXB.unmarshal(fis, ru.yandex.qatools.commons.model.Environment.class).getParameter().forEach(p ->
+                        items.put(p.getKey(), p.getValue())
+                );
             } catch (Exception e) {
                 LOGGER.error("Could not read environment.xml file " + envXmlFile.toAbsolutePath(), e);
             }
         }
-    }
-
-    private static Collection<EnvironmentItem> convertItems(final Properties properties) {
-        return properties.entrySet().stream().map(e ->
-                new EnvironmentItem()
-                        .withName(String.valueOf(e.getKey()))
-                        .withValues(String.valueOf(e.getValue()))
-        ).collect(Collectors.toSet());
+        return items;
     }
 }

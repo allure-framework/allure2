@@ -14,9 +14,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -41,10 +40,10 @@ public class Allure1EnvironmentPluginTest {
                 new EnvironmentItem().withName("allure.test.property").withValues("1")
         };
 
-        List<EnvironmentItem> environment = process(
+        List<EnvironmentItem> environment = process(Arrays.asList(
                 "allure1/sample-testsuite.json", generateTestSuiteJsonName(),
                 "allure1/environment.properties", "environment.properties"
-        );
+        ));
 
         assertThat(environment)
                 .as("Unexpected environment properties have been read from properties file")
@@ -58,16 +57,17 @@ public class Allure1EnvironmentPluginTest {
         EnvironmentItem[] expected = new EnvironmentItem[]{
                 new EnvironmentItem().withName("my.properties.browser").withValues("Firefox"),
                 new EnvironmentItem().withName("my.properties.url").withValues("http://yandex.ru"),
+                new EnvironmentItem().withName("allure.test.property").withValues("3"),
         };
 
-        List<EnvironmentItem> environment = process(
+        List<EnvironmentItem> environment = process(Arrays.asList(
                 "allure1/sample-testsuite.json", generateTestSuiteJsonName(),
                 "allure1/environment.xml", "environment.xml"
-        );
+        ));
 
         assertThat(environment)
                 .as("Unexpected environment properties have been read from xml file")
-                .hasSize(2)
+                .hasSize(3)
                 .usingFieldByFieldElementComparator()
                 .containsExactlyInAnyOrder(expected);
     }
@@ -75,39 +75,47 @@ public class Allure1EnvironmentPluginTest {
     @Test
     public void shouldStackParameterValues() throws Exception {
         EnvironmentItem[] expected = new EnvironmentItem[]{
+                new EnvironmentItem().withName("my.properties.browser").withValues("Firefox"),
+                new EnvironmentItem().withName("my.properties.url").withValues("http://yandex.ru"),
                 new EnvironmentItem().withName("allure.test.run.id").withValues("some-id"),
                 new EnvironmentItem().withName("allure.test.run.name").withValues("some-name"),
-                new EnvironmentItem().withName("allure.test.property").withValues("1", "2"),
+                new EnvironmentItem().withName("allure.test.property").withValues("2", "3"),
                 new EnvironmentItem().withName("allure.test.other.property").withValues("value")
         };
 
-        List<EnvironmentItem> environment = process(
+        List<EnvironmentItem> environment = process(Arrays.asList(
                 "allure1/environment-variables-testsuite.xml", generateTestSuiteXmlName(),
-                "allure1/environment.properties", "environment.properties"
+                "allure1/environment.properties", "environment.properties"),
+                Arrays.asList("allure1/sample-testsuite.xml", generateTestSuiteXmlName(),
+                        "allure1/environment.xml", "environment.xml")
         );
+
 
         assertThat(environment)
                 .as("Unexpected environment properties have been read from test results and properties file")
-                .hasSize(4)
+                .hasSize(6)
                 .usingFieldByFieldElementComparator()
                 .containsExactlyInAnyOrder(expected);
     }
 
-    private List<EnvironmentItem> process(String... strings) throws IOException {
-        Path resultsDirectory = folder.newFolder().toPath();
-        Iterator<String> iterator = Arrays.asList(strings).iterator();
-        while (iterator.hasNext()) {
-            String first = iterator.next();
-            String second = iterator.next();
-            copyFile(resultsDirectory, first, second);
-        }
-        Allure1Plugin reader = new Allure1Plugin();
+    private List<EnvironmentItem> process(List<String>... results) throws IOException {
+        List<LaunchResults> launches = new ArrayList<>();
         final Configuration configuration = new ConfigurationBuilder().useDefault().build();
-        final DefaultResultsVisitor resultsVisitor = new DefaultResultsVisitor(configuration);
-        reader.readResults(configuration, resultsVisitor, resultsDirectory);
+        Allure1Plugin reader = new Allure1Plugin();
+        for (List<String> result : results) {
+            Path resultsDirectory = folder.newFolder().toPath();
+            Iterator<String> iterator = result.iterator();
+            while (iterator.hasNext()) {
+                String first = iterator.next();
+                String second = iterator.next();
+                copyFile(resultsDirectory, first, second);
+            }
+            final DefaultResultsVisitor resultsVisitor = new DefaultResultsVisitor(configuration);
+            reader.readResults(configuration, resultsVisitor, resultsDirectory);
+            launches.add(resultsVisitor.getLaunchResults());
+        }
         Allure1EnvironmentPlugin envPlugin = new Allure1EnvironmentPlugin();
-        LaunchResults results = resultsVisitor.getLaunchResults();
-        return envPlugin.getData(configuration, Collections.singletonList(results));
+        return envPlugin.getData(configuration, launches);
     }
 
     private void copyFile(Path dir, String resourceName, String fileName) throws IOException {
