@@ -31,9 +31,9 @@ import static java.util.Objects.nonNull;
  */
 public class CategoriesPlugin extends AbstractTreeAggregator implements Reader {
 
-    private static final Category UNKNOWN_FAILURE = new Category().withName("Product defects");
+    private static final Category FAILED_TESTS = new Category().withName("Product defects");
 
-    private static final Category UNKNOWN_ERROR = new Category().withName("Test defects");
+    private static final Category BROKEN_TESTS = new Category().withName("Test defects");
 
     private static final String CATEGORIES = "categories";
 
@@ -74,15 +74,20 @@ public class CategoriesPlugin extends AbstractTreeAggregator implements Reader {
                     }
                 });
                 if (resultCategories.isEmpty() && Status.FAILED.equals(result.getStatus())) {
-                    result.getExtraBlock(CATEGORIES, new ArrayList<Category>()).add(UNKNOWN_FAILURE);
+                    result.getExtraBlock(CATEGORIES, new ArrayList<Category>()).add(FAILED_TESTS);
                 }
                 if (resultCategories.isEmpty() && Status.BROKEN.equals(result.getStatus())) {
-                    result.getExtraBlock(CATEGORIES, new ArrayList<Category>()).add(UNKNOWN_ERROR);
+                    result.getExtraBlock(CATEGORIES, new ArrayList<Category>()).add(BROKEN_TESTS);
                 }
             });
         });
 
         super.aggregate(configuration, launchesResults, outputDirectory);
+    }
+
+    @Override
+    protected boolean shouldProcess(final TestResult result) {
+        return !result.getExtraBlock(CATEGORIES, new ArrayList<Category>()).isEmpty();
     }
 
     @Override
@@ -113,10 +118,6 @@ public class CategoriesPlugin extends AbstractTreeAggregator implements Reader {
                 && nonNull(result.getStatusDetails().getTrace())
                 && matches(result.getStatusDetails().getTrace(), category.getTraceRegex());
         return matchesStatus && matchesMessage && matchesTrace;
-    }
-
-    private static boolean notPassed(TestResult result) {
-        return !result.getStatus().equals(Status.PASSED);
     }
 
     private static boolean matches(final String message, final String pattern) {
