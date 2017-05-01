@@ -50,6 +50,10 @@ public abstract class AbstractTreeAggregator implements Aggregator {
     protected void addResultToTree(final Supplier<String> uidGenerator,
                                    final TreeData treeData,
                                    final TestResult result) {
+        if (!shouldProcess(result)) {
+            return;
+        }
+
         treeData.updateStatistic(result);
         treeData.updateTime(result);
 
@@ -106,6 +110,10 @@ public abstract class AbstractTreeAggregator implements Aggregator {
 
     protected String getNodeName(final TestResult result) {
         return result.getName();
+    }
+
+    protected boolean shouldProcess(final TestResult result) {
+        return true;
     }
 
     protected abstract String getFileName();

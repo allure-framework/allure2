@@ -79,6 +79,8 @@ public class Allure1Plugin implements Reader {
     private static final String UNKNOWN = "unknown";
     private static final String MD_5 = "md5";
     public static final String ENVIRONMENT_BLOCK_NAME = "environment";
+    private static final String ISSUE_URL_PROPERTY = "allure.issues.tracker.pattern";
+    private static final String TMS_LINK_PROPERTY = "allure.tests.management.pattern";
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -86,12 +88,13 @@ public class Allure1Plugin implements Reader {
     public void readResults(final Configuration configuration,
                             final ResultsVisitor visitor,
                             final Path resultsDirectory) {
+        final Properties allureProperties = loadAllureProperties(resultsDirectory);
         final RandomUidContext context = configuration.requireContext(RandomUidContext.class);
 
         final Map<String, String> environment = processEnvironment(resultsDirectory);
         getStreamOfAllure1Results(resultsDirectory).forEach(testSuite -> testSuite.getTestCases()
                 .forEach(testCase -> {
-                    convert(context.getValue(), resultsDirectory, visitor, testSuite, testCase);
+                    convert(context.getValue(), resultsDirectory, visitor, testSuite, testCase, allureProperties);
                     getEnvironmentParameters(testCase).forEach(param ->
                             environment.put(param.getName(), param.getValue())
                     );
@@ -105,12 +108,27 @@ public class Allure1Plugin implements Reader {
         return testCase.getParameters().stream().filter(this::hasEnvType).collect(toList());
     }
 
+    private Properties loadAllureProperties(final Path resultsDirectory) {
+        final Path propertiesFile = resultsDirectory.resolve("allure.properties");
+        final Properties properties = new Properties();
+        if (Files.exists(propertiesFile)) {
+            try (final FileInputStream propFile = new FileInputStream(propertiesFile.toFile())) {
+                properties.load(propFile);
+            } catch (IOException e) {
+                LOGGER.error("Error while reading allure.properties file: %s", e.getMessage());
+            }
+        }
+        properties.putAll(System.getProperties());
+        return properties;
+    }
+
     @SuppressWarnings("PMD.ExcessiveMethodLength")
     private void convert(final Supplier<String> randomUid,
                          final Path directory,
                          final ResultsVisitor visitor,
                          final TestSuiteResult testSuite,
-                         final TestCaseResult source) {
+                         final TestCaseResult source,
+                         final Properties properties) {
         final TestResult dest = new TestResult();
         final String suiteName = firstNonNull(testSuite.getTitle(), testSuite.getName(), "unknown test suite");
         final String testClass = firstNonNull(
@@ -156,11 +174,12 @@ public class Allure1Plugin implements Reader {
         set.addAll(convert(testSuite.getLabels(), this::convert));
         set.addAll(convert(source.getLabels(), this::convert));
         dest.setLabels(new ArrayList<>(set));
-        dest.findOne(ISSUE).ifPresent(issue ->
-                dest.getLinks().add(getLink(ISSUE, issue, getIssueUrl(issue)))
+        dest.findAll(ISSUE).forEach(issue ->
+                dest.getLinks().add(getLink(ISSUE, issue, getIssueUrl(issue, properties)))
         );
         dest.findOne("testId").ifPresent(testId ->
-                dest.getLinks().add(new Link().withName(testId).withType("tms").withUrl(getTestCaseIdUrl(testId)))
+                dest.getLinks().add(new Link().withName(testId).withType("tms")
+                        .withUrl(getTestCaseIdUrl(testId, properties)))
         );
 
         //TestNG nested suite
@@ -312,18 +331,12 @@ public class Allure1Plugin implements Reader {
         return new Link().withName(value).withType(labelName.value()).withUrl(url);
     }
 
-    private String getIssueUrl(final String issue) {
-        return String.format(
-                System.getProperty("allure.issues.tracker.pattern", "%s"),
-                issue
-        );
+    private String getIssueUrl(final String issue, final Properties properties) {
+        return String.format(properties.getProperty(ISSUE_URL_PROPERTY, "%s"), issue);
     }
 
-    private String getTestCaseIdUrl(final String testCaseId) {
-        return String.format(
-                System.getProperty("allure.tests.management.pattern", "%s"),
-                testCaseId
-        );
+    private String getTestCaseIdUrl(final String testCaseId, final Properties properties) {
+        return String.format(properties.getProperty(TMS_LINK_PROPERTY, "%s"), testCaseId);
     }
 
     private Stream<TestSuiteResult> getStreamOfAllure1Results(final Path source) {

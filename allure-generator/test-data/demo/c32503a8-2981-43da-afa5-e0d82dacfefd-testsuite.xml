@@ -171,6 +171,12 @@ Expected: "{\n\"name\": \"test\",\n\"value\": \"ok value\"\n}"
                     <name>step[Last]</name>
                     <title>"Last" step</title>
                 </step>
+                <step start="1412949539859" stop="1412949539860" status="passed">
+                    <name>veryLongStep</name>
+                    <title>
+                        Very long step with many info. Very long step with many info. Very long step with many info.
+                    </title>
+                </step>
                 <step start="1412949539858" stop="1412949539862" status="broken">
                     <name>makeThisTestBroken</name>
                     <title>Make this test broken</title>
