@@ -23,9 +23,10 @@ import ru.yandex.qatools.allure.model.Description;
 import ru.yandex.qatools.allure.model.DescriptionType;
 import ru.yandex.qatools.allure.model.Failure;
 import ru.yandex.qatools.allure.model.ParameterKind;
+import ru.yandex.qatools.allure.model.TestCaseResult;
 import ru.yandex.qatools.allure.model.TestSuiteResult;
 
-import java.io.FileInputStream;
+import javax.xml.bind.JAXB;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
@@ -35,7 +36,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
@@ -60,6 +63,7 @@ import static io.qameta.allure.entity.Status.PASSED;
 import static io.qameta.allure.entity.Status.SKIPPED;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
 import static org.allurefw.allure1.AllureUtils.unmarshalTestSuite;
 
 /**
@@ -67,12 +71,13 @@ import static org.allurefw.allure1.AllureUtils.unmarshalTestSuite;
  *
  * @since 2.0
  */
-@SuppressWarnings({"PMD.ExcessiveImports", "PMD.GodClass"})
+@SuppressWarnings({"PMD.ExcessiveImports", "PMD.GodClass", "PMD.TooManyMethods"})
 public class Allure1Plugin implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Allure1Plugin.class);
     private static final String UNKNOWN = "unknown";
     private static final String MD_5 = "md5";
+    public static final String ENVIRONMENT_BLOCK_NAME = "environment";
     private static final String ISSUE_URL_PROPERTY = "allure.issues.tracker.pattern";
     private static final String TMS_LINK_PROPERTY = "allure.tests.management.pattern";
 
@@ -84,17 +89,29 @@ public class Allure1Plugin implements Reader {
                             final Path resultsDirectory) {
         final Properties allureProperties = loadAllureProperties(resultsDirectory);
         final RandomUidContext context = configuration.requireContext(RandomUidContext.class);
+
+        final Map<String, String> environment = processEnvironment(resultsDirectory);
         getStreamOfAllure1Results(resultsDirectory).forEach(testSuite -> testSuite.getTestCases()
-                .forEach(testCase -> convert(context.getValue(), resultsDirectory, visitor, testSuite, testCase,
-                        allureProperties))
+                .forEach(testCase -> {
+                    convert(context.getValue(), resultsDirectory, visitor, testSuite, testCase, allureProperties);
+                    getEnvironmentParameters(testCase).forEach(param ->
+                            environment.put(param.getName(), param.getValue())
+                    );
+                })
         );
+
+        visitor.visitExtra(ENVIRONMENT_BLOCK_NAME, environment);
+    }
+
+    private List<ru.yandex.qatools.allure.model.Parameter> getEnvironmentParameters(final TestCaseResult testCase) {
+        return testCase.getParameters().stream().filter(this::hasEnvType).collect(toList());
     }
 
     private Properties loadAllureProperties(final Path resultsDirectory) {
         final Path propertiesFile = resultsDirectory.resolve("allure.properties");
         final Properties properties = new Properties();
         if (Files.exists(propertiesFile)) {
-            try (final FileInputStream propFile = new FileInputStream(propertiesFile.toFile())) {
+            try (InputStream propFile = Files.newInputStream(propertiesFile)) {
                 properties.load(propFile);
             } catch (IOException e) {
                 LOGGER.error("Error while reading allure.properties file: %s", e.getMessage());
@@ -109,7 +126,7 @@ public class Allure1Plugin implements Reader {
                          final Path directory,
                          final ResultsVisitor visitor,
                          final TestSuiteResult testSuite,
-                         final ru.yandex.qatools.allure.model.TestCaseResult source,
+                         final TestCaseResult source,
                          final Properties properties) {
         final TestResult dest = new TestResult();
         final String suiteName = firstNonNull(testSuite.getTitle(), testSuite.getName(), "unknown test suite");
@@ -196,7 +213,7 @@ public class Allure1Plugin implements Reader {
         return Objects.isNull(source) ? null : source.stream()
                 .filter(predicate)
                 .map(converter)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     private Step convert(final Path source,
@@ -305,6 +322,10 @@ public class Allure1Plugin implements Reader {
         return ParameterKind.ARGUMENT.equals(parameter.getKind());
     }
 
+    private boolean hasEnvType(final ru.yandex.qatools.allure.model.Parameter parameter) {
+        return ParameterKind.ENVIRONMENT_VARIABLE.equals(parameter.getKind());
+    }
+
     private Link getLink(final LabelName labelName, final String value, final String url) {
         return new Link().withName(value).withType(labelName.value()).withUrl(url);
     }
@@ -394,5 +415,43 @@ public class Allure1Plugin implements Reader {
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException("Could not find md5 hashing algorithm", e);
         }
+    }
+
+    private Map<String, String> processEnvironment(final Path directory) {
+        final Map<String, String> environment = processEnvironmentProperties(directory);
+        environment.putAll(processEnvironmentXml(directory));
+        return environment;
+    }
+
+    private Map<String, String> processEnvironmentProperties(final Path directory) {
+        final Path envPropsFile = directory.resolve("environment.properties");
+        final Map<String, String> items = new HashMap<>();
+        if (Files.exists(envPropsFile)) {
+            try (InputStream is = Files.newInputStream(envPropsFile)) {
+                final Properties properties = new Properties();
+                properties.load(is);
+                properties.entrySet().forEach(e ->
+                        items.put(String.valueOf(e.getKey()), String.valueOf(e.getValue()))
+                );
+            } catch (IOException e) {
+                LOGGER.error("Could not read environments.properties file " + envPropsFile, e);
+            }
+        }
+        return items;
+    }
+
+    private Map<String, String> processEnvironmentXml(final Path directory) {
+        final Path envXmlFile = directory.resolve("environment.xml");
+        final Map<String, String> items = new HashMap<>();
+        if (Files.exists(envXmlFile)) {
+            try (InputStream fis = Files.newInputStream(envXmlFile)) {
+                JAXB.unmarshal(fis, ru.yandex.qatools.commons.model.Environment.class).getParameter().forEach(p ->
+                        items.put(p.getKey(), p.getValue())
+                );
+            } catch (Exception e) {
+                LOGGER.error("Could not read environment.xml file " + envXmlFile.toAbsolutePath(), e);
+            }
+        }
+        return items;
     }
 }

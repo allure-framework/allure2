@@ -10,7 +10,7 @@
             </div>
             <div class="{{b "table" "col"}} long-line">
                 {{#each values}}
-                    {{linky this}}
+                    {{linky this}}{{#unless @last}},<br>{{/unless}}
                 {{/each}}
             </div>
         </div>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:test-suite xmlns:ns2="urn:model.allure.qatools.yandex.ru" start="1493298290117" stop="1493298292217" version="1.4.4-SNAPSHOT">
+    <name>org.sample.Test</name>
+    <test-cases>
+        <test-case start="1493298290117" stop="1493298290565" status="passed">
+            <name>test1</name>
+            <parameters>
+                <parameter name="allure.test.property" value="2" kind="environment-variable"/>
+            </parameters>
+        </test-case>
+        <test-case start="1493298290733" stop="1493298291135" status="passed">
+            <name>test2</name>
+            <parameters>
+                <parameter name="allure.test.other.property" value="value" kind="environment-variable"/>
+            </parameters>
+        </test-case>
+    </test-cases>
+</ns2:test-suite>
