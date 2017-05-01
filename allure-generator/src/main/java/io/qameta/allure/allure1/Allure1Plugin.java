@@ -6,7 +6,6 @@ import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Attachment;
-import io.qameta.allure.entity.Environment;
 import io.qameta.allure.entity.EnvironmentItem;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.LabelName;
@@ -87,7 +86,7 @@ public class Allure1Plugin implements Reader {
                             final ResultsVisitor visitor,
                             final Path resultsDirectory) {
         final RandomUidContext context = configuration.requireContext(RandomUidContext.class);
-        final Environment environment = processEnvironment(resultsDirectory);
+        final List<EnvironmentItem> environment = processEnvironment(resultsDirectory);
         getStreamOfAllure1Results(resultsDirectory).forEach(testSuite -> testSuite.getTestCases()
                 .forEach(testCase -> {
                     convert(context.getValue(), resultsDirectory, visitor, testSuite, testCase);
@@ -98,8 +97,8 @@ public class Allure1Plugin implements Reader {
         visitor.visitExtra(Allure1EnvironmentPlugin.ENVIRONMENT_BLOCK_NAME, environment);
     }
 
-    private void updateEnvironmentVariables(final Environment environment, final TestCaseResult testCase) {
-        environment.withEnvironmentItems(testCase.getParameters().stream()
+    private void updateEnvironmentVariables(final List<EnvironmentItem> environment, final TestCaseResult testCase) {
+        environment.addAll(testCase.getParameters().stream()
                 .filter(this::hasEnvType)
                 .map(this::convertEnvironmentItem).collect(toList()));
     }
@@ -410,18 +409,27 @@ public class Allure1Plugin implements Reader {
         }
     }
 
-    private Environment processEnvironment(final Path directory) {
-        final Environment environment = new Environment();
+    private List<EnvironmentItem> processEnvironment(final Path directory) {
+        final List<EnvironmentItem> environment = new ArrayList<>();
+        processEnvironmentProperties(directory, environment);
+        processEnvironmentXml(directory, environment);
+        return environment;
+    }
+
+    private void processEnvironmentProperties(final Path directory, final List<EnvironmentItem> environment) {
         final Path envPropsFile = directory.resolve("environment.properties");
         if (Files.exists(envPropsFile)) {
             try (InputStream is = Files.newInputStream(envPropsFile)) {
                 final Properties properties = new Properties();
                 properties.load(is);
-                environment.withEnvironmentItems(convertItems(properties));
+                environment.addAll(convertItems(properties));
             } catch (IOException e) {
                 LOGGER.error("Could not read environments.properties file " + envPropsFile, e);
             }
         }
+    }
+
+    private void processEnvironmentXml(final Path directory, final List<EnvironmentItem> environment) {
         final Path envXmlFile = directory.resolve("environment.xml");
         if (Files.exists(envXmlFile)) {
             try (FileInputStream fis = new FileInputStream(envXmlFile.toFile())) {
@@ -430,12 +438,11 @@ public class Allure1Plugin implements Reader {
                 final List<EnvironmentItem> fromXml = result.getParameter().stream()
                         .map(param -> new EnvironmentItem().withName(param.getKey()).withValues(param.getValue()))
                         .collect(toList());
-                environment.withEnvironmentItems(fromXml);
+                environment.addAll(fromXml);
             } catch (Exception e) {
                 LOGGER.error("Could not read environment.xml file " + envXmlFile.toAbsolutePath(), e);
             }
         }
-        return environment;
     }
 
     private static Collection<EnvironmentItem> convertItems(final Properties properties) {
