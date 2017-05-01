@@ -40,7 +40,7 @@ class TreeView extends View {
         this.$(e.currentTarget).parent().toggleClass('node__expanded');
         const uid = this.$(e.currentTarget).data('uid');
         if (this.state.has(uid)) {
-            this.state.unset(uid, true);
+            this.state.unset(uid);
         } else {
             this.state.set(uid, true);
         }
