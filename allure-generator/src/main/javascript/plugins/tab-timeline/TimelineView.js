@@ -2,6 +2,7 @@ import './styles.css';
 import BaseChartView from '../../components/chart/BaseChartView';
 import {className} from '../../decorators';
 import duration from '../../helpers/duration';
+import translate from '../../helpers/t';
 
 import {scaleLinear, scaleBand} from 'd3-scale';
 import {select, event as currentEvent} from 'd3-selection';
@@ -80,13 +81,16 @@ class TimelineView extends BaseChartView {
                 })
             );
 
+        const opts = {
+            count: this.data.selectedTestCases,
+            percent: (100 * this.data.selectedTestCases / this.model.get('statistic').total).toFixed(2),
+            duration: duration(this.selectedDuration)
+        };
         this.slider.insert('g')
             .append('text')
             .attr('transform', `translate(${this.width/2}, 20)`)
             .attr('class', 'timeline__slider_text')
-            .text(`Selected ${this.data.selectedTestCases}
-                (${(100*this.data.selectedTestCases/this.model.get('statistic').total).toFixed(2)}%)
-                tests with duration above ${duration(this.selectedDuration)}`);
+            .text(translate('tab.timeline.selected', {hash: opts}));
 
         this.slider.insert('g')
             .attr('class', 'timeline__slider_text')

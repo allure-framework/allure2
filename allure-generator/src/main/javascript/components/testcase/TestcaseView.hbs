@@ -1,7 +1,7 @@
 <a class="pane__overlay" href="#testcase/{{uid}}"></a>
 {{#if fullName}}
     <div class="pane__subtitle long-line line-ellipsis">
-        <span class="fa fa-files-o fullname__copy" data-tooltip="Copy to clipboard"></span>
+        <span class="fa fa-files-o fullname__copy" data-tooltip="{{t 'controls.clipboard'}}"></span>
         <span class="fullname__body">{{fullName}}</span>
 {{/if}}
 </div>
@@ -9,9 +9,9 @@
     {{#if statusDetails.flaky}}
         {{allure-icon 'flaky'}}
     {{/if}}
-    <span class="label label_status_{{status}}">{{status}}</span>
+    <span class="label label_status_{{status}}">{{t statusName}}</span>
     <span class="pane__controls">
-        <a class="fa fa-expand pane__expand" data-tooltip="Expand" href="#testcase/{{uid}}?expanded=true"></a>
+        <a class="fa fa-expand pane__expand" data-tooltip="{{t 'controls.expand'}}" href="#testcase/{{uid}}?expanded=true"></a>
     </span>
     {{name}}
 </h2>
@@ -20,10 +20,10 @@
     {{#if statusDetails.message}}
         <pre class="alert__code"><code>{{statusDetails.message}}</code></pre>
     {{else}}
-        Empty status details
+        {{t 'testCase.status.empty'}}
     {{/if}}
     {{#if statusDetails.trace}}
-        <div class="testcase__trace-toggle clickable" data-tooltip="Show trace">
+        <div class="testcase__trace-toggle clickable" data-tooltip="{{t 'testCase.status.trace'}}">
             <i class="fa fa-ellipsis-h fa-lg" aria-hidden="true"></i>
         </div>
         <pre class="alert__code testcase__trace"><code>{{statusDetails.trace}}</code></pre>

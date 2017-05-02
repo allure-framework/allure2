@@ -1,74 +1,169 @@
 {
-  "TEST_RUN": "Тестовый прогон",
-  "STARTED_AT": "Старт {{date}} в {{time}}",
-  "Title": "Название",
-  "Duration": "Длительность",
-  "Status": "Статус",
-  "Count": "Кол-во",
-  "Defect": "Дефект",
-  "FAILED": "ПРОВАЛЕНО",
-  "BROKEN": "СЛОМАНО",
-  "CANCELED": "ОТМЕНЕНО",
-  "PENDING": "ПРОПУЩЕНО",
-  "PASSED": "УСПЕШНО",
-  "Failed": "Провалено",
-  "Broken": "Сломано",
-  "Canceled": "Отменено",
-  "Pending": "Пропущено",
-  "Passed": "Успешно",
-  "Total": "Всего {{statistic}}",
-  "failed": "провалено {{statistic}}",
-  "broken": "сломано {{statistic}}",
-  "canceled": "отменено {{statistic}}",
-  "pending": "пропущено {{statistic}}",
-  "passed": "успешно {{statistic}}",
-  "BLOCKER": "БЛОКИРУЮЩАЯ",
-  "CRITICAL": "КРИТИЧНАЯ",
-  "NORMAL": "НОРМАЛЬНАЯ",
-  "MINOR": "НЕЗНАЧИТЕЛЬНАЯ",
-  "TRIVIAL": "ТРИВИАЛЬНАЯ",
-  "tooltip": {
-    "EXPAND": "Развернуть",
-    "COLLAPSE": "Свернуть",
-    "CLOSE": "Закрыть",
-    "ATTACHMENT_IMAGE": "Изображение"
+  "status": {
+    "failed": "Не прошло",
+    "broken": "Сломалось",
+    "passed": "Прошло",
+    "skipped": "Пропущено",
+    "unknown": "Неизвестно",
+    "flaky": "Нестабильный тест"
   },
-  "index": {
-    "FEEDBACK": "Обратная связь",
-    "MAIL": "Написать письмо",
-    "GENERATED": "Сформировано за:",
-    "VERSION": "Версия:",
-    "DATA_SIZE": "Объем данных:",
-    "COLLAPSE": "Свернуть",
-    "OVERVIEW": "Обзор"
+  "sorter": {
+    "name": "имя",
+    "duration": "длительность",
+    "status": "статус"
   },
-  "overview": {
-    "TOP": "TOP дефекты",
-    "ALL": "Показать все",
-    "TOTAL": "всего"
+  "tab": {
+    "overview": {
+      "name": "Обзор"
+    },
+    "categories": {
+      "name": "Категории"
+    },
+    "xunit": {
+      "name": "Тест сюиты"
+    },
+    "graph": {
+      "name": "Графики"
+    },
+    "timeline": {
+      "name": "Временная шкала",
+      "selected_0": "Выбран {{count}} тест ({{percent}}%) с длительностью выше {{duration}}",
+      "selected_1": "Выбрано {{count}} теста ({{percent}}%) с длительностью выше {{duration}}",
+      "selected_2": "Выбрано {{count}} тестов ({{percent}}%) с длительностью выше {{duration}}"
+    }
   },
-  "attachment": {
-    "ATTACHMENT": "Приложение",
-    "NOT_FOUND": "Приложение не найдено"
+  "widget": {
+    "summary": {
+      "aggregatedName": "Аггрегированый отчет",
+      "launches_0": "запуск тестов",
+      "launches_1": "запуска тестов",
+      "launches_2": "запусков тестов",
+      "testCases_0": "тестовый сценарий",
+      "testCases_1": "тестовых сценария",
+      "testCases_2": "тестовых сценариев"
+    },
+    "trend": {
+      "name": "Тренд"
+    },
+    "executors": {
+      "name": "Система выполнения тестов",
+      "unknown": "Неизвестно",
+      "empty": "Данные о системе выполнения тестов отсутствуют"
+    },
+    "launches": {
+      "name": "Запуски тестов",
+      "empty": "Отсутствует информация про запуски"
+    },
+    "environment": {
+      "name": "Окружение",
+      "empty": "Отсутстует информация про окружение",
+      "showAll": "Показать все"
+    }
   },
-  "list": {
-    "TEST_CASES": "Тестовые случаи ({{amount}} всего{{visible == amount ? ')' : ', '+visible+' отображено)'}}",
-    "MORE": "Показать еще"
+  "chart": {
+    "duration": {
+      "name": "Длительность тестов",
+      "empty": "Нет данных"
+    },
+    "trend": {
+      "empty": "Нет данных"
+    },
+    "severity": {
+      "name": "Важность тестов"
+    },
+    "status": {
+      "name": "Статусы тестов"
+    }
   },
-  "testcase": {
-    "TESTCASE": "Тестовый сценарий",
-    "SEVERITY": "Серьезность: {{severity}}",
-    "ISSUES": "Задачи",
-    "TEST_ID": "ID теста:",
-    "TEST_PASSED": "Тест пройден успешно!",
-    "RAW": "Исходник",
-    "STACKTRACE": "Трассировка",
-    "SUBSTEPS": "{substeps, plural, one{# подшаг} few{# подшага} other{# подшагов}}",
-    "ATTACHMENTS": "{attachments, plural, one{# приложение} few{# приложения} other{# приложений}}",
-    "PARAMETERS": "Параметры"
+  "testCase": {
+    "status": {
+      "empty": "Дополнительная информация о статусе отсутствует",
+      "trace": "Показать трейс"
+    },
+    "categories": {
+      "name": "Категории"
+    },
+    "description": {
+      "name": "Описание"
+    },
+    "duration": {
+      "name": "Длительность"
+    },
+    "history": {
+      "name": "История",
+      "successRate": "Success rate"
+    },
+    "owner": {
+      "name": "Ответственный"
+    },
+    "retries": {
+      "name": "Перезапуски"
+    },
+    "parameters": {
+      "name": "Параметры"
+    },
+    "links": {
+      "name": "Ссылки"
+    },
+    "severity": {
+      "name": "Важность"
+    },
+    "execution": {
+      "name": "Выполнение",
+      "setup": "Подготовка",
+      "teardown": "Завершение",
+      "body": "Тело теста"
+    },
+    "stats": {
+      "count": {
+        "steps_0": "{{count}} вложенный шаг",
+        "steps_1": "{{count}} вложенных шага",
+        "steps_2": "{{count}} вложенных шагов",
+        "attachments_0": "{{count}} вложение",
+        "attachments_1": "{{count}} вложения",
+        "attachments_2": "{{count}} вложений",
+        "parameters_0": "{{count}} параметр",
+        "parameters_1": "{{count}} параметра",
+        "parameters_2": "{{count}} параметров"
+      }
+    }
   },
-  "testcases": "тест кейсов",
-  "total": {
-    "TITLE": "Итого"
+  "controls": {
+    "collapse": "Свернуть",
+    "expand": "Развернуть",
+    "language": "Сменить язык",
+    "clipboard": "Скопировать в буфер обмена",
+    "backto": "Вернуться на"
+  },
+  "errors": {
+    "missedAttachment": "Вложение не найдено"
+  },
+  "component": {
+    "tree": {
+      "filter": "Фильтрация по статусам",
+      "groups": "Показывать информацию о группах",
+      "empty": "Нет данных",
+      "unknown": "Неизвестная группа",
+      "time": {
+        "total" : {
+          "name": "Итого",
+          "tooltip": "Время с начала первого теста до конца последнего"
+        },
+        "max": {
+          "name": "Самый долгий",
+          "tooltip": "Длительность самого долгого теста в группе"
+        },
+        "sum": {
+          "name": "Суммарно",
+          "tooltip": "Сумма длительностей всех тестов в группе"
+        }
+      }
+    },
+    "widgetStatus": {
+      "total_0": "Всего {{count}} элемент",
+      "total_1": "Всего {{count}} элемента",
+      "total_2": "Всего {{count}} элементов"
+    }
   }
 }
+

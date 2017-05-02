@@ -17,7 +17,7 @@ import './plugins/widget-summary';
 import './plugins/widget-history-trend';
 import './plugins/widget-launch';
 import './plugins/widget-executor';
-import './plugins/environment';
+import './plugins/widget-environment';
 
 import './plugins/testcase-description';
 import './plugins/testcase-category';

@@ -44,7 +44,8 @@ class StatusToggleView extends PopoverView {
         return {
             statuses: values.map(status => ({
                 status,
-                active: !!statuses[status]
+                active: !!statuses[status],
+                name: `status.${status}`
             }))
         };
     }

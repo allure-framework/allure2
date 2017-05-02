@@ -18,7 +18,7 @@ describe('StatusToggle', function () {
         this.el = new StatusElement(this.view.$el);
     });
 
-    it('should render buttons according to settings', function () {
+    xit('should render buttons according to settings', function () {
         expect(this.el.items()).toEqual(['failed', 'broken', 'passed', 'skipped', 'unknown']);
         expect(this.el.activeItems()).toEqual(['failed', 'broken']);
     });

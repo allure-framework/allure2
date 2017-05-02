@@ -1,5 +1,5 @@
 import {View} from 'backbone.marionette';
-import {on} from '../../../decorators';
+import {on} from '../../decorators';
 import template from './EnvironmentWidget.hbs';
 
 export default class EnvironmentWidget extends View {
@@ -16,7 +16,7 @@ export default class EnvironmentWidget extends View {
     }
 
     serializeData() {
-        var items = this.model.get('items');
+        const items = this.model.get('items');
         return {
             items: items.slice(0, this.listLimit),
             overLimit: items.length > this.listLimit

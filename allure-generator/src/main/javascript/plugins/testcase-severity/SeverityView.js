@@ -1,11 +1,12 @@
 import {View} from 'backbone.marionette';
 import {className} from '../../decorators/index';
 import {escapeExpression} from 'handlebars/runtime';
+import translate from '../../helpers/t';
 
 @className('pane__section')
 class SeverityView extends View {
     template(data) {
-        return data.severity ? `Severity: ${escapeExpression(data.severity)}` : '';
+        return data.severity ? `${translate('testCase.severity.name')}: ${escapeExpression(data.severity)}` : '';
     }
 
     serializeData() {

@@ -22,7 +22,7 @@ class SummaryWidgetView extends View {
         const length = testRuns && testRuns.length;
         return Object.assign(super.serializeData(), {
             isAggregated: length > 1,
-            testRunsCount: length
+            launchesCount: length
         });
     }
 }

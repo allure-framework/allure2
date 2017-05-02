@@ -1,33 +1,34 @@
 import {SafeString} from 'handlebars/runtime';
+import translate from './t';
 
 const icons = {
     flaky: {
         className: 'fa fa-bomb',
-        tooltip: 'Test is flaky'
+        tooltip: 'status.flaky'
     },
     failed: {
         className: 'fa fa-times-circle fa-fw text_status_failed',
-        tooltip: 'Failed'
+        tooltip: 'status.failed'
     },
     broken: {
         className: 'fa fa-exclamation-circle fa-fw text_status_broken',
-        tooltip: 'Broken'
+        tooltip: 'status.broken'
     },
     passed: {
         className: 'fa fa-check-circle fa-fw text_status_passed',
-        tooltip: 'Passed'
+        tooltip: 'status.passed'
     },
     skipped: {
         className: 'fa fa-minus-circle fa-fw text_status_skipped',
-        tooltip: 'Skipped'
+        tooltip: 'status.skipped'
     },
     unknown: {
         className: 'fa fa-question-circle fa-fw text_status_unknown',
-        tooltip: 'Unknown'
+        tooltip: 'status.unknown'
     }
 };
 
 export default function (value, extraClasses='') {
     const icon = icons[value];
-    return icon ? new SafeString(`<span class="${icon.className} ${extraClasses}" data-tooltip="${icon.tooltip}"></span>`) : '';
+    return icon ? new SafeString(`<span class="${icon.className} ${extraClasses}" data-tooltip="${translate(icon.tooltip)}"></span>`) : '';
 }

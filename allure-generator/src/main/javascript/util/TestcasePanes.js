@@ -2,6 +2,7 @@ import TestcaseModel from '../data/testcase/TestcaseModel';
 import TestcaseView from '../components/testcase/TestcaseView';
 import AttachmentView from '../components/attachment/AttachmentView';
 import ErrorSplashView from '../components/error-splash/ErrorSplashView';
+import translate from '../helpers/t';
 
 export default class TestcasePanes {
     constructor(state, paneView) {
@@ -37,7 +38,7 @@ export default class TestcasePanes {
             );
         } else {
             this.paneView.updatePane('attachment', changed, () =>
-                new ErrorSplashView({code: 404, message: 'Attachment not found'})
+                new ErrorSplashView({code: 404, message: translate('errors.missedAttachment', {})})
             );
         }
         this.paneView.updatePanesPositions();
