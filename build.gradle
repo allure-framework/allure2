@@ -175,4 +175,10 @@ subprojects { project ->
         codenarcVersion = '0.26.0'
         excludeSources = fileTree('build/generated-sources')
     }
+
+    apply plugin: 'jacoco'
+
+    jacoco {
+        toolVersion = '0.7.9'
+    }
 }
