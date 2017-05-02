@@ -29,7 +29,7 @@ public class ReportWebPlugin implements Aggregator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReportWebPlugin.class);
 
-    private final List<String> staticFiles = Arrays.asList("app.js", "styles.css");
+    private final List<String> staticFiles = Arrays.asList("app.js", "styles.css", "favicon.ico");
 
     @Override
     public void aggregate(final Configuration configuration,
