@@ -150,6 +150,11 @@
           "name": "Sum",
           "tooltip": "Sum of all tests durations"
         }
+      },
+      "filtered": {
+        "total": "{{count}} test result",
+        "total_plural": "{{count}} test results",
+        "shown": "{{count}} shown"
       }
     },
     "widgetStatus": {
