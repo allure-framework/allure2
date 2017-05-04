@@ -62,6 +62,7 @@
   &__table {
     border-top: 1px solid $border-color;
     margin: 0 -$gap-size;
+    word-break: break-all;
     .table__row:last-child {
       border-bottom: 0;
     }
