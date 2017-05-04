@@ -12,6 +12,7 @@ import 'd3-selection-multi';
 import escape from '../../util/escape';
 import TooltipView from '../../components/tooltip/TooltipView';
 import template from './TimelineView.hbs';
+import {axisBottom} from 'd3-axis';
 
 
 const HOST_TITLE_HEIGHT = 20;
@@ -30,9 +31,7 @@ class TimelineView extends BaseChartView {
         this.chartX = scaleLinear();
         this.brushX = scaleLinear();
         this.brush = brushX().on('brush', this.onBrushChange.bind(this));
-
         this.tooltip = new TooltipView({position: 'bottom'});
-
         this.minDuration = this.model.get('time').minDuration;
         this.maxDuration = this.model.get('time').maxDuration;
         this.selectedDuration = this.minDuration;
@@ -66,7 +65,7 @@ class TimelineView extends BaseChartView {
         this.handle = this.slider.insert('circle')
             .attrs({
                 class: 'timeline__slider_handle',
-                cx:  sliderScale(this.selectedDuration),
+                cx: sliderScale(this.selectedDuration),
                 r: 8
             })
             .call(drag()
@@ -103,7 +102,7 @@ class TimelineView extends BaseChartView {
     }
 
     doShow() {
-        this.width = this.$el. width() > 2 * PADDING ? this.$el.width() - 2 * PADDING : this.$el.width();
+        this.width = this.$el.width() > 2 * PADDING ? this.$el.width() - 2 * PADDING : this.$el.width();
 
         this.minX = this.model.get('time').start;
         this.maxX = this.model.get('time').duration;
@@ -125,21 +124,30 @@ class TimelineView extends BaseChartView {
         select(this.$el[0]).select('.timeline__brush')
             .style('top', () => { return Math.min(this.$el.height() - BRUSH_HEIGHT, height + 2*PADDING) + 'px'; });
 
-        this.xChartAxis = this.makeBottomAxis(this.svgChart.select('.timeline__chart__axis_x'), {
-            scale: this.chartX,
-            tickFormat: () => '',
-            tickSizeOuter: 0,
-            tickSizeInner: height + BAR_HEIGHT + 6
-        });
+        this.xChartAxis = this.makeAxis(
+            axisBottom(),
+            this.svgChart.select('.timeline__chart__axis_x'),
+            {
+                scale: this.chartX,
+                tickFormat: () => '',
+                tickSizeOuter: 0,
+                tickSizeInner: height + BAR_HEIGHT + 6
+            }
+        );
 
-        this.xBrushAxis = this.makeBottomAxis(this.svgBrush.select('.timeline__brush__axis_x'), {
-            scale: this.chartX,
-            tickFormat: d => duration(d, 2),
-            tickSizeOuter: 0
-        }, {
-            top: BRUSH_HEIGHT + BAR_GAP + 6,
-            left: PADDING
-        });
+        this.xBrushAxis = this.makeAxis(
+            axisBottom(),
+            this.svgBrush.select('.timeline__brush__axis_x'),
+            {
+                scale: this.chartX,
+                tickFormat: d => duration(d, 2),
+                tickSizeOuter: 0
+            },
+            {
+                top: BRUSH_HEIGHT + BAR_GAP + 6,
+                left: PADDING
+            }
+        );
 
         this.brush.extent([[0, 0], [this.width, BRUSH_HEIGHT]]);
         this.svgBrush.append('g')

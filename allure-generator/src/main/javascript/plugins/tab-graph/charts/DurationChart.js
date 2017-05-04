@@ -1,5 +1,4 @@
 import BaseChartView from '../../../components/chart/BaseChartView';
-
 import {scaleLinear, scaleSqrt} from 'd3-scale';
 import {histogram, max, median} from 'd3-array';
 import PopoverView from '../../../components/popover/PopoverView';
@@ -7,10 +6,6 @@ import escape from '../../../util/escape';
 import duration from '../../../helpers/duration';
 import translate from '../../../helpers/t';
 
-const PAD_LEFT = 50;
-const PAD_RIGHT = 15;
-const PAD_TOP = 7;
-const PAD_BOTTOM = 30;
 
 export default class DurationChart extends BaseChartView {
 
@@ -18,33 +13,34 @@ export default class DurationChart extends BaseChartView {
         this.x = scaleLinear();
         this.y = scaleSqrt();
         this.tooltip = new PopoverView({position: 'right'});
+        this.data = this.getChartData();
     }
 
-    onAttach() {
-        this.data = this.collection.toJSON().map(testcase => ({
+    getChartData() {
+        return this.data = this.collection.toJSON().map(testcase => ({
             value: testcase.time.duration,
             name: testcase.name
         })).filter(testcase => {
             return testcase.value !== null;
         });
+    }
 
+    onAttach() {
         if (this.data.length) {
             this.doShow();
         } else {
             this.$el.html(`<div class="widget__noitems">${translate('chart.duration.empty')}</div>`);
         }
-
         super.onAttach();
     }
 
     doShow() {
-        const width = this.$el.outerWidth() - PAD_LEFT - PAD_RIGHT;
-        const height = this.$el.outerHeight() - PAD_BOTTOM - PAD_TOP;
+        this.setupViewport();
+
+        this.x.range([0, this.width]);
+        this.y.range([this.height, 0], 1);
 
         const maxDuration = max(this.data, d => d.value);
-        this.x.range([0, width]);
-        this.y.range([height, 0], 1);
-
         this.x.domain([0, Math.max(maxDuration, 10)]).nice();
 
         const bins = histogram()
@@ -62,33 +58,26 @@ export default class DurationChart extends BaseChartView {
 
         this.y.domain([0, maxY]).nice();
 
-        this.svg = this.setupViewport();
-        this.makeBottomAxis(this.svg.select('.chart__axis_x'), {
+        this.makeBottomAxis({
             scale: this.x,
             tickFormat: time => duration(time, 1)
-        }, {
-            top: PAD_TOP + height,
-            left: PAD_LEFT
         });
-        this.makeLeftAxis(this.svg.select('.chart__axis_y'), {
+
+        this.makeLeftAxis({
             scale: this.y,
             ticks: Math.min(10, maxY)
-        }, {
-            left: PAD_LEFT,
-            top: PAD_TOP
         });
-        this.svg.select('.chart__plot').attrs({transform: `translate(${PAD_LEFT},${PAD_TOP})`});
 
         const median_ = this.y(median(bins, d => d.y));
-        var bars = this.svg.select('.chart__plot').selectAll('.chart__bar')
+        var bars = this.plot.selectAll('.chart__bar')
             .data(bins).enter()
             .append('rect').classed('chart__bar', true);
 
         bars.attrs({
             x: d => this.x(d.x0) + 2,
             y: median_,
-            width: d => this.x(d.x1)-this.x(d.x0)-3,
-            height: height - median_
+            width: d => this.x(d.x1) - this.x(d.x0)-3,
+            height: this.height - median_
         });
 
         this.bindTooltip(bars);
@@ -99,7 +88,7 @@ export default class DurationChart extends BaseChartView {
 
         bars.attrs({
             y: d => this.y(d.y),
-            height: d => height - this.y(d.y)
+            height: d => this.height - this.y(d.y)
         });
     }
 
