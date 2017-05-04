@@ -53,7 +53,7 @@
     },
     "environment": {
       "name": "Environment",
-      "empty": "There is no environment variables",
+      "empty": "There are no environment variables",
       "showAll": "Show all environment variables"
     }
   },
