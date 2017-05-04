@@ -6,6 +6,7 @@
   cursor: pointer;
   position: relative;
   font-size: smaller;
+  display: flex;
   &:hover {
     background: $hover-color;
   }
@@ -15,11 +16,14 @@
     }
   }
   &__link {
-    float: right;
+    position: relative;
     min-width: 70px;
   }
   &__icon {
     left: 11px;
     position: absolute;
+  }
+  &__name {
+     flex: 1;
   }
 }
