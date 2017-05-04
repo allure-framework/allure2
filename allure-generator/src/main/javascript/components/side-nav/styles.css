@@ -22,10 +22,12 @@
     line-height: 40px;
     font-weight: bold;
     background: url('allure_logo.svg') no-repeat left center;
-    background-size: 40px;
     padding-left: 40px;
     margin-bottom: 10px;
     margin-left: 12px;
+    transition: all 0.3s;
+    background-size: auto auto;
+
   }
   
   &__brand-text {

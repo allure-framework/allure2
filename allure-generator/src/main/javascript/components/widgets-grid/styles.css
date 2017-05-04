@@ -11,10 +11,12 @@
   overflow: auto;
   display: flex;
   &__col {
+    flex: 1 0 0%;
     width: 50%;
     min-width: $min-pane-size;
   }
   &__col + &__col {
+    flex: 1 0 0%;
     padding-left: $gap-size;
   }
 }
