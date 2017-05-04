@@ -29,14 +29,17 @@
   }
   &__subtitle {
     color: $text-muted-color;
-    padding-left: 15px;
+    padding-left: 5px;
     margin: 10px 0;
+    font-weight:initial;
+    font-size: 18px;
   }
   &__title {
     padding: 0 15px 10px;
     margin: 7px 0 0;
     border-bottom: 1px solid $border-color;
     font-size: 24px;
+    font-weight: bold;
     &_borderless {
       border: none;
     }

@@ -53,7 +53,7 @@
     },
     "environment": {
       "name": "Environment",
-      "empty": "There is no environment variables",
+      "empty": "There are no environment variables",
       "showAll": "Show all environment variables"
     }
   },
@@ -150,11 +150,20 @@
           "name": "Sum",
           "tooltip": "Sum of all tests durations"
         }
+      },
+      "filtered": {
+        "total": "{{count}} test result",
+        "total_plural": "{{count}} test results",
+        "shown": "{{count}} shown"
       }
     },
     "widgetStatus": {
       "total": "{{count}} item total",
       "total_plural": "{{count}} items total"
+    },
+    "statusToggle": {
+      "showCases": "Show test results with {{status}} status",
+      "hideCases": "Hide test results with {{status}} status"
     }
   }
 }

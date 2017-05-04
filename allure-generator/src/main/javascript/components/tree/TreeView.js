@@ -8,7 +8,7 @@ import {on, regions} from '../../decorators';
 import {behavior} from '../../decorators/index';
 
 @behavior('TooltipBehavior', {position: 'bottom'})
-@regions({sorter: '.tree__sorter'})
+@regions({sorter: '.tree__sorter', filter: '.tree__filter'})
 class TreeView extends View {
     template = template;
 
@@ -18,7 +18,6 @@ class TreeView extends View {
         this.tabName = tabName;
         this.statusesKey = tabName + '.visibleStatuses';
         this.sorterSettingsKey = tabName + '.treeSorting';
-        this.statusesSelect = new StatusToggleView({statusesKey: this.statusesKey});
         this.nodeSorter = new NodeSorterView({sorterSettingsKey: this.sorterSettingsKey});
         this.listenTo(this.state, 'change:testcase', (m, testcase) => this.restoreState(testcase));
         this.listenTo(settings, 'change:' + this.statusesKey, this.render);
@@ -29,10 +28,7 @@ class TreeView extends View {
     onRender() {
         this.restoreState();
         this.showChildView('sorter', new NodeSorterView({sorterSettingsKey: this.sorterSettingsKey}));
-    }
-
-    onDestroy() {
-        this.statusesSelect.hide();
+        this.showChildView('filter', new StatusToggleView({statusesKey: this.statusesKey, statistic: this.collection.statistic}));
     }
 
     @on('click .node__title')
@@ -43,16 +39,6 @@ class TreeView extends View {
             this.state.unset(uid);
         } else {
             this.state.set(uid, true);
-        }
-    }
-
-    @on('click .tree__statuses')
-    onFilterClick(e) {
-        const filter = this.$(e.currentTarget);
-        if(this.statusesSelect.isVisible()) {
-            this.statusesSelect.hide();
-        } else {
-            this.statusesSelect.show(filter);
         }
     }
 
@@ -75,6 +61,10 @@ class TreeView extends View {
         const statuses = settings.getVisibleStatuses(this.statusesKey);
         const sorter = this.nodeSorter.getSorter();
         const showGroupInfo = settings.get('showGroupInfo');
+        const totalCases = this.collection.statistic.total;
+        const shownCases = Object.keys(statuses).reduce((all, current) =>{
+            return all + (statuses[current] ? this.collection.statistic[current] : 0);
+        }, 0);
 
         return {
             baseUrl: this.baseUrl,
@@ -83,6 +73,8 @@ class TreeView extends View {
             statistic: this.collection.statistic,
             tabName: this.tabName,
             items: this.filterNodes(statuses, sorter, this.collection.toJSON()),
+            shownCases: shownCases,
+            totalCases: totalCases
         };
     }
 

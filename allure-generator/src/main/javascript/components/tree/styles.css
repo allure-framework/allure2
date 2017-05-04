@@ -70,16 +70,16 @@
 }
 
 .tree {
-  &__control {
-    cursor: pointer;
-    width: 30px;
-    line-height: 30px;
-    text-align: center;
+  &__ctrl {
+    display: flex;
+    padding: 0px $gap-size 0px $gap-size;
+    border-top: 1px solid $border-color;
+    background: $pane-overlay-bg-hover;
   }
-  &__sorter > div {
-     width: 100%;
-     float: center;
-     background: $pane-overlay-bg-hover;
-     border-top: 1px solid $border-color;
+  &__filter, &__sorter {
+    position: relative;
+  }
+  &__strut {
+    flex: 1;
   }
 }
