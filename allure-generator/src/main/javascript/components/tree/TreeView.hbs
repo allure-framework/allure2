@@ -2,12 +2,15 @@
 <h2 class="{{b 'pane' 'title' borderless=true}}">
     {{t tabName}}
     <span class="pane__controls">
-        <a class="fa fa-filter {{b 'tree' 'control'}} {{b 'tree' 'statuses'}}" data-tooltip="{{t 'component.tree.filter'}}"></a>
         <a class="fa fa-info-circle {{b 'tree' 'control'}} {{b 'tree' 'info'}}" data-tooltip="{{t 'component.tree.groups'}}"></a>
     </span>
 </h2>
 
-<span class="{{b 'tree' 'sorter'}}"></span>
+<div class="tree__ctrl">
+    <div class="{{b 'tree' 'sorter'}}"></div>
+    <div class="{{b 'tree' 'strut'}}"></div>
+    <div class="{{b 'tree' 'filter'}}"></div>
+</div>
 
 <div class="tree">
     {{#if items}}

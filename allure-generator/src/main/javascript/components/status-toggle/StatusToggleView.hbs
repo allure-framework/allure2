@@ -1,5 +1,13 @@
-<ul class="{{b 'status-toggle' 'menu'}}">
+<div class="{{b 'status-toggle' 'items'}}">
     {{#each statuses}}
-        <li class="{{b 'status-toggle' 'item' status=status active=active}}" data-status="{{status}}">{{t name}}</li>
+        {{#if count}}
+            <div class="{{b 'status-toggle' 'item'}}">
+            {{#if active}}
+                <span class="y-label y-label_status_{{status}}" data-status="{{status}}">{{count}}</span>
+            {{else}}
+                <span class="n-label n-label_status_{{status}}" data-status="{{status}}">{{count}}</span>
+            {{/if}}
+            </div>
+        {{/if}}
     {{/each}}
-</ul>
+</div>

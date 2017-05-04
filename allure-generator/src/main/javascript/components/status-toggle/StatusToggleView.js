@@ -1,42 +1,18 @@
 import './styles.css';
-import $ from 'jquery';
 import {on, className} from '../../decorators';
 import settings from '../../util/settings';
 import template from './StatusToggleView.hbs';
-import PopoverView from '../popover/PopoverView';
 import {values} from '../../util/statuses';
+import {View} from 'backbone.marionette';
 
-@className('status-toggle popover')
-class StatusToggleView extends PopoverView {
+@className('status-toggle')
+class StatusToggleView extends View{
     template = template;
 
-    initialize({statusesKey}) {
+    initialize({statusesKey, statistic}) {
         this.statusesKey = statusesKey;
-        super.initialize({position: 'bottom-left', offset: -1});
-        this.onDocumentClick = this.onDocumentClick.bind(this);
-    }
-
-    onDocumentClick(e) {
-        if(!this.$(e.target).length) {
-            this.hide();
-        }
-    }
-    
-    setContent() {
-        this.$el.html(template(this.serializeData()));
-    }
-
-    show(anchor) {
-        super.show(null, anchor);
-        this.delegateEvents();
-        setTimeout(() => {
-            $(document).on('click', this.onDocumentClick);
-        });
-    }
-
-    hide() {
-        $(document).off('click', this.onDocumentClick);
-        super.hide();
+        this.statistic = statistic;
+        this.listenTo(settings, 'change:' + this.statusesKey, this.render);
     }
 
     serializeData() {
@@ -45,17 +21,16 @@ class StatusToggleView extends PopoverView {
             statuses: values.map(status => ({
                 status,
                 active: !!statuses[status],
-                name: `status.${status}`
+                count: this.statistic[status.toLowerCase()]
             }))
         };
     }
 
-    @on('click .status-toggle__item')
-    onCheckChange(e) {
+    @on('click .y-label, .n-label')
+    onToggleStatus(e) {
         const el = this.$(e.currentTarget);
-        el.toggleClass('status-toggle__item_active');
         const name = el.data('status');
-        const checked = el.hasClass('status-toggle__item_active');
+        const checked = el.hasClass('n-label');
         const statuses = settings.getVisibleStatuses(this.statusesKey);
         settings.save(this.statusesKey, Object.assign({}, statuses, {[name]: checked}));
     }
