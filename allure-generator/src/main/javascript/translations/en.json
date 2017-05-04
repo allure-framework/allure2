@@ -160,6 +160,10 @@
     "widgetStatus": {
       "total": "{{count}} item total",
       "total_plural": "{{count}} items total"
+    },
+    "statusToggle": {
+      "showCases": "Show test results with {{status}} status",
+      "hideCases": "Hide test results with {{status}} status"
     }
   }
 }
