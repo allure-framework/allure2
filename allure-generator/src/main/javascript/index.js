@@ -31,6 +31,6 @@ import './plugins/testcase-duration';
 import './plugins/testcase-parameters';
 import './plugins/testcase-links';
 
-App.start();
-
 window.jQuery = $;
+
+$(document).ready(() => App.start());
