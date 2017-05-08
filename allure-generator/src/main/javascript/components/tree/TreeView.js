@@ -61,9 +61,9 @@ class TreeView extends View {
         const statuses = settings.getVisibleStatuses(this.statusesKey);
         const sorter = this.nodeSorter.getSorter();
         const showGroupInfo = settings.get('showGroupInfo');
-        const totalCases = this.collection.statistic.total;
+        const totalCases = this.collection.statistic ? this.collection.statistic.total : 0;
         const shownCases = Object.keys(statuses).reduce((all, current) =>{
-            return all + (statuses[current] ? this.collection.statistic[current] : 0);
+            return all + (this.collection.statistic && statuses[current] ? this.collection.statistic[current] : 0);
         }, 0);
 
         return {

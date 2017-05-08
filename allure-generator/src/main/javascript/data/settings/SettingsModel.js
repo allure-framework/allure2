@@ -16,7 +16,7 @@ export default class SettingsModel extends Model {
                 unknown: true,
                 passed: true
             },
-            showGroupInfo: true
+            showGroupInfo: false
         };
     }
 

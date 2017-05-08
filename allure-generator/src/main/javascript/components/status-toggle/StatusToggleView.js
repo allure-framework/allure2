@@ -8,7 +8,7 @@ import translate from '../../helpers/t';
 
 
 @className('status-toggle')
-class StatusToggleView extends View{
+class StatusToggleView extends View {
     template = template;
 
     initialize({statusesKey, statistic}) {
@@ -22,9 +22,9 @@ class StatusToggleView extends View{
         return {
             statuses: values.map(status => ({
                 status,
-                statusName:  translate(`status.${status}`, {}),
+                statusName: translate(`status.${status}`, {}),
                 active: !!statuses[status],
-                count: this.statistic[status.toLowerCase()]
+                count: this.statistic ? this.statistic[status.toLowerCase()] : 0
             }))
         };
     }

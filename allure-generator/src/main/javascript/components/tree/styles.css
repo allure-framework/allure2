@@ -6,6 +6,7 @@
   display: block;
   text-decoration: none;
   color: $text-color;
+
   .node {
     margin-left: 20px;
   }
@@ -81,5 +82,9 @@
   }
   &__strut {
     flex: 1;
+  }
+  &__empty {
+    border-top: 1px solid #ECEFF1;
+    padding: 8px 0px 0px 15px;
   }
 }
