@@ -163,7 +163,7 @@
     },
     "statusToggle": {
       "showCases": "显示{{status}}状态的用例",
-      "hideCases": "隐藏{{status}}状态的用例",
+      "hideCases": "隐藏{{status}}状态的用例"
     }
   }
 }
