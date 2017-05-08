@@ -7,9 +7,12 @@
 
     function renderDiffContent(type, data) {
         function findImage(name) {
-            return data.testStage.attachments.filter(function (attachment) {
-                return attachment.name === name;
-            })[0];
+            if (data.testStage && data.testStage.attachments) {
+                return data.testStage.attachments.filter(function (attachment) {
+                    return attachment.name === name;
+                })[0];
+            }
+            return null;
         }
 
         var diffImage = findImage('diff');

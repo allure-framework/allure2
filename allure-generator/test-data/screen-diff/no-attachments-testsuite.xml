@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns2:test-suite xmlns:ns2="urn:model.allure.qatools.yandex.ru" start="1443622429476" stop="1443622429477">
+    <name>NoAttachment</name>
+    <title>No Attachment</title>
+    <test-cases>
+        <test-case start="1443622429476" stop="1443622429477" status="passed">
+            <name>testWithoutBody</name>
+            <title>Test without body</title>
+            <description></description>
+            <labels>
+                <label name="testType" value="screenshotDiff"/>
+            </labels>
+            <steps>
+            </steps>
+            <attachments>
+            </attachments>
+        </test-case>
+        <test-case start="1443622429476" stop="1443622429477" status="passed">
+            <name>testWithoutAttachments</name>
+            <title>Test without attachments</title>
+            <description></description>
+            <labels>
+                <label name="testType" value="screenshotDiff"/>
+            </labels>
+            <steps>
+                <step start="1412949558831" stop="1412949558832" status="pending">
+                    <name>First step</name>
+                    <attachments/>
+                </step>
+            </steps>
+            <attachments>
+            </attachments>
+        </test-case>
+    </test-cases>
+</ns2:test-suite>
