@@ -13,9 +13,10 @@
 [CONTRIBUTING.md]: .github/CONTRIBUTING.md
 [docs]: https://docs.qameta.io/allure/2.0/
 
-## Allure Report [![release-badge][]][release] [![bintray-badge][]][bintray]
 
 ![Allure Report](.github/readme-img.png)
+
+## Allure Report [![release-badge][]][release] [![bintray-badge][]][bintray]
 
 Allure Framework is a flexible lightweight multi-language test report tool that not only 
 shows a very concise representation of what have been tested in a neat web report form, 
