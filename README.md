@@ -10,16 +10,12 @@
 [bintray-badge]: https://img.shields.io/bintray/v/qameta/generic/allure2.svg?style=flat
 [build]: https://ci.qameta.in/job/allure2_deploy/lastBuild "Jenkins build"
 [build-badge]: https://ci.qameta.in/buildStatus/icon?job=allure2_deploy
-[CONTRIBUTING.md]: https://github.com/allure-framework/allure2/blob/master/.github/CONTRIBUTING.md
+[CONTRIBUTING.md]: .github/CONTRIBUTING.md
 [docs]: https://docs.qameta.io/allure/2.0/
 
-### Allure Report
+## Allure Report [![release-badge][]][release] [![bintray-badge][]][bintray]
 
-[![release-badge][]][release]
-[![bintray-badge][]][bintray]
-[![build-badge][]][build]
-
-Allure Report v2
+![Allure Report](.github/readme-img.png)
 
 Allure Framework is a flexible lightweight multi-language test report tool that not only 
 shows a very concise representation of what have been tested in a neat web report form, 
@@ -49,7 +45,7 @@ Please see [CONTRIBUTING.md][]
 ### Staying in Touch
 
 Follow [@QametaSoftware][twitter] and its [team members][twitter-team] on Twitter. In-depth articles can
-be found at [Qameta Blog][https://qameta.io/blog]. Also feel free to join our 
+be found at [Qameta Blog][blog]. Also feel free to join our 
 [Gitter room][gitter] ([ru][gitter-ru]).
 
 ### License
