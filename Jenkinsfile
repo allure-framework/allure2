@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        label 'java'
-    }
+    agent { label 'java' }
     stages {
         stage("Build") {
             steps {
@@ -21,12 +19,12 @@ pipeline {
         stage("Demo") {
             steps {
                 sh 'allure-commandline/build/install/allure/bin/allure generate ' +
-                        'allure-generator/test-data/demo -o build/report-demo'
+                        'allure-generator/test-data/demo --clean -o build/report-demo'
                 publishHTML([reportName  : 'Demo Report', reportDir: 'build/report-demo', reportFiles: 'index.html',
                              reportTitles: '', allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false])
 
                 sh 'allure-commandline/build/install/allure/bin/allure generate ' +
-                        'allure-generator/test-data/demo2 -o build/report-demo2'
+                        'allure-generator/test-data/demo2 --clean -o build/report-demo2'
                 publishHTML([reportName  : 'Demo2 Report', reportDir: 'build/report-demo2', reportFiles: 'index.html',
                              reportTitles: '', allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false])
             }
