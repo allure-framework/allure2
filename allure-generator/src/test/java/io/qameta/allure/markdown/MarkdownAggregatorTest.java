@@ -81,6 +81,6 @@ public class MarkdownAggregatorTest {
         aggregator.aggregate(configuration, Collections.singletonList(launchResults), output);
         assertThat(result)
                 .extracting(TestResult::getDescription, TestResult::getDescriptionHtml)
-                .containsExactly("desc", "<p>desc</p>");
+                .containsExactly("desc", "<p>desc</p>\n");
     }
 }

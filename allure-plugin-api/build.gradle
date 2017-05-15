@@ -6,7 +6,7 @@ apply from: "${gradleScriptDir}/bintray.gradle"
 apply plugin: 'maven'
 
 dependencies {
-    compile('org.pegdown:pegdown')
+    compile('com.vladsch.flexmark:flexmark')
     compile('org.freemarker:freemarker')
     compile('com.fasterxml.jackson.core:jackson-databind')
     compile('com.fasterxml.jackson.module:jackson-module-jaxb-annotations')
