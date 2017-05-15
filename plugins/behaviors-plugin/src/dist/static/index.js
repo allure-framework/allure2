@@ -42,6 +42,20 @@ allure.api.addTranslation('zh', {
     }
 });
 
+allure.api.addTranslation('de', {
+    tab: {
+        behaviors: {
+            name: 'Verhalten'
+        }
+    },
+    widget: {
+        behaviors: {
+            name: 'Features nach Stories',
+            showAll: 'Zeige alle'
+        }
+    }
+});
+
 allure.api.addTab('behaviors', {
     title: 'tab.behaviors.name', icon: 'fa fa-list',
     route: 'behaviors(/:testcaseId)',
