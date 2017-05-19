@@ -58,18 +58,19 @@ apply plugin: "nebula.ospackage"
 task cliDeb(type: Deb) {
     dependsOn = ['build']
     packageName = 'allure'
-    version = '2.0.1'
+    version = project.version
     packager = 'Allure team'
     maintainer = 'Allure team'
 
     from('build/install/allure') {
-        into 'usr/share/allure/allure-commandline'
+        into 'usr/share/allure'
     }
-    link('/usr/bin/allure', '/usr/share/allure/allure-commandline/bin/allure')
+    link('/usr/bin/allure', '/usr/share/allure/bin/allure')
 }
 
 bintray {
     pkg {
-        repo = 'generic'
+        websiteUrl = 'https://bintray.com/qameta/debian'
+        repo = 'debian'
     }
 }
