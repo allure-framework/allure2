@@ -86,8 +86,8 @@ allprojects {
             dependency 'org.zeroturnaround:zt-zip:1.11'
             dependency 'org.apache.commons:commons-lang3:3.5'
             dependency 'org.eclipse.jetty:jetty-server:9.2.2.v20140723'
-            dependency 'org.pegdown:pegdown:1.6.0'
             dependency 'org.freemarker:freemarker:2.3.23'
+            dependency 'com.vladsch.flexmark:flexmark:0.19.4'
 
             dependency 'org.jvnet.jaxb2_commons:jaxb2-basics-ant:1.11.1'
             dependency 'org.jvnet.jaxb2_commons:jaxb2-basics:1.11.1'
