@@ -1,6 +1,7 @@
 import {addTranslation} from './translation';
 import router from '../router';
 import {showView, notFound} from '../app';
+import translate from '../helpers/t.js';
 
 class AllurePluginsRegistry {
     tabs = [];
@@ -26,6 +27,10 @@ class AllurePluginsRegistry {
 
     addTranslation(lang, json) {
         addTranslation(lang, json);
+    }
+
+    translate(name, options) {
+        translate(name, options);
     }
 
     addTestcaseBlock(view, {position}) {
