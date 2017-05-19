@@ -1,4 +1,5 @@
 plugins:
+  - junit-plugin
   - behaviors-plugin
   - packages-plugin
   - screen-diff-plugin
