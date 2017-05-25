@@ -5,7 +5,7 @@ import settings from 'util/settings';
 import {values} from 'util/statuses';
 
 
-describe('Tree', function () {
+describe('Tree', () => {
     const tabName = 'Tab Name';
     const sorterSettingsKey = tabName + '.treeSorting';
     const filterSettingsKey = tabName + '.visibleStatuses';
@@ -116,12 +116,12 @@ describe('Tree', function () {
         ]
     });
 
-    describe('empty data', function () {
-        beforeEach(function () {
+    describe('empty data', function() {
+        beforeEach(() => {
             this.el = renderView({});
         });
 
-        it('should render correctly', function () {
+        it('should render correctly', () => {
             expect(this.el.nodes().length).toBe(0);
             sortTree({ascending: false});
             filterTree({failed: true, broken: false, passed: false, skipped: false, unknown: false});
@@ -130,26 +130,26 @@ describe('Tree', function () {
         });
     });
 
-    describe('sorting', function () {
+    describe('sorting', function() {
 
-        beforeEach(function () {
+        beforeEach(() => {
             settings.unset(sorterSettingsKey);
             settings.unset(filterSettingsKey);
             settings.unset(infoSettingsKey);
             this.el = renderView(data);
         });
 
-        it('should render all nodes', function () {
+        it('should render all nodes', () => {
             expect(this.el.nodes().length).toBe(7);
         });
 
-        it('should be sorted by name by default', function () {
+        it('should be sorted by name by default', () => {
             expect(this.el.node(0).text()).toMatch(/A group node/);
             expect(this.el.node(1).text()).toMatch(/First node/);
             expect(this.el.node(3).text()).toMatch(/Third node/);
         });
 
-        it('should be able to sort by name', function () {
+        it('should be able to sort by name', () => {
             sortTree({ascending: false});
             expect(this.el.node(0).text()).toMatch(/B group node/);
             expect(this.el.node(2).text()).toMatch(/A group node/);
@@ -160,7 +160,7 @@ describe('Tree', function () {
             expect(this.el.node(1).text()).toMatch(/First node/);
         });
 
-        it('should be able to sort by duration', function () {
+        it('should be able to sort by duration', () => {
             sortTree({sorter: 1, ascending: false});
             expect(this.el.node(0).text()).toMatch(/A group node/);
             expect(this.el.node(1).text()).toMatch(/First node/);
@@ -169,7 +169,7 @@ describe('Tree', function () {
             expect(this.el.node(0).text()).toMatch(/B group node/);
         });
 
-        it('should be able to sort by status', function () {
+        it('should be able to sort by status', () => {
             sortTree({sorter: 2, ascending: false});
             expect(this.el.node(0).text()).toMatch(/A group node/);
             expect(this.el.node(1).text()).toMatch(/Second node/);
@@ -180,16 +180,16 @@ describe('Tree', function () {
         });
     });
 
-    describe('filtering', function () {
+    describe('filtering', function() {
 
-        beforeEach(function () {
+        beforeEach(() => {
             settings.unset(sorterSettingsKey);
             settings.unset(filterSettingsKey);
             settings.unset(infoSettingsKey);
             this.el = renderView(data);
         });
 
-        it('should hiding nodes', function () {
+        it('should hiding nodes', () => {
             filterTree({failed: false, broken: false, passed: false, skipped: false, unknown: false});
             expect(this.el.nodes().length).toBe(0);
 
@@ -206,15 +206,15 @@ describe('Tree', function () {
 
     });
 
-    describe('groupInfo', function () {
+    describe('groupInfo', function() {
 
-        beforeEach(function () {
+        beforeEach(() => {
             settings.unset(sorterSettingsKey);
             settings.unset(filterSettingsKey);
             this.el = renderView(data);
         });
 
-        it('should hiding nodes', function () {
+        it('should hiding nodes', () => {
             settings.save(infoSettingsKey, true);
             expect(this.el.nodes().length).toBe(9);
 

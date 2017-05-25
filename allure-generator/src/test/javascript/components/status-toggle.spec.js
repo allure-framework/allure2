@@ -11,19 +11,19 @@ describe('StatusToggle', function () {
         this.passed = () => el.find('.status-toggle__item').find('.n-label_status_passed, .y-label_status_passed');
     }
 
-    beforeEach(function () {
+    beforeEach(() => {
         settings.set(statusesKey, {failed: true, broken: true, passed: false, skipped: false, unknown: false});
         this.view = new StatusToggleView({statusesKey, statistic});
         this.view.render();
         this.el = new StatusElement(this.view.$el);
     });
 
-    it('should render buttons according to settings and statistics', function () {
+    it('should render buttons according to settings and statistics', () => {
         expect(this.el.items()).toEqual(Object.values(statistic));
         expect(this.el.activeItems()).toEqual(['4', '3']);
     });
 
-    it('should update model on click', function () {
+    it('should update model on click', () => {
         this.el.passed().click();
         expect(settings.get(statusesKey)).toEqual({failed: true, broken: true, passed: true, skipped:false, unknown: false});
 

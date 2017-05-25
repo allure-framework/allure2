@@ -11,7 +11,7 @@ describe('WidgetsGridView', function() {
         this.widgetById = (id) => el.find(`[data-id=${id}]`);
     }
 
-    beforeEach(function() {
+    beforeEach(() => {
         settings.clear();
         pluginsRegistry.widgets = {
             a: View,
@@ -32,19 +32,19 @@ describe('WidgetsGridView', function() {
         this.el = new PageObject(this.view.$el);
     });
 
-    it('should render widgets by columns', function() {
+    it('should render widgets by columns', () => {
         expect(this.el.widgetsAtCol(0)).toHaveLength(3);
         expect(this.el.widgetsAtCol(1)).toHaveLength(2);
     });
 
-    it('should arrange widgets by default', function() {
+    it('should arrange widgets by default', () => {
         expect(this.view.getWidgetsArrangement()).toEqual([
             ['a', 'c', 'e'],
             ['b', 'd']
         ]);
     });
 
-    it('should arrange widgets by saved value', function() {
+    it('should arrange widgets by saved value', () => {
         settings.set('widgets', [['a', 'b', 'c', 'd'], ['e']]);
         expect(this.view.getWidgetsArrangement()).toEqual([
             ['a', 'b', 'c', 'd'],
@@ -52,7 +52,7 @@ describe('WidgetsGridView', function() {
         ]);
     });
 
-    it('should add remaining widgets and ignore missing', function() {
+    it('should add remaining widgets and ignore missing', () => {
         settings.set('widgets', [['a', 'x', 'c'], ['d', 'e']]);
         expect(this.view.getWidgetsArrangement()).toEqual([
             ['a', 'c', 'b'],
