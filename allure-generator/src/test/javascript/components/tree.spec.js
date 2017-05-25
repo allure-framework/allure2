@@ -5,7 +5,7 @@ import settings from 'util/settings';
 import {values} from 'util/statuses';
 
 
-describe('Tree', () => {
+describe('Tree', function () {
     const tabName = 'Tab Name';
     const sorterSettingsKey = tabName + '.treeSorting';
     const filterSettingsKey = tabName + '.visibleStatuses';
@@ -15,7 +15,7 @@ describe('Tree', () => {
         return Math.random().toString(36).substring(2);
     }
 
-    function rootNode({children=[]} = {}) {
+    function rootNode({children = []} = {}) {
         return {
             statistic: children.reduce((acc, curr) => {
                 values.forEach(status => {
@@ -28,13 +28,15 @@ describe('Tree', () => {
                 minDuration: 0,
                 maxDuration: 0,
                 sumDuration: 0,
-                duration: children.reduce((acc, curr) => { return acc + curr.time.duration; }, 0)
+                duration: children.reduce((acc, curr) => {
+                    return acc + curr.time.duration;
+                }, 0)
             },
             children: children
         };
     }
 
-    function groupNode({name='', children=[], uid=fakeUid()} = {}) {
+    function groupNode({name = '', children = [], uid = fakeUid()} = {}) {
         return Object.assign(
             rootNode({children: children}),
             {
@@ -45,9 +47,9 @@ describe('Tree', () => {
         );
     }
 
-    function caseNode({name='TestCaseNode', status='passed', uid=fakeUid(), duration=1} = {}) {
+    function caseNode({name = 'TestCaseNode', status = 'passed', uid = fakeUid(), duration = 1} = {}) {
         return {
-            type : 'TestCaseNode',
+            type: 'TestCaseNode',
             name: name,
             uid: uid,
             status: status,
@@ -62,14 +64,14 @@ describe('Tree', () => {
         this.node = (i) => this.nodes().eq(i);
     }
 
-    function sortTree({sorter=0, ascending=true} = {}){
+    function sortTree({sorter = 0, ascending = true} = {}) {
         settings.save(sorterSettingsKey, {
             sorter: sorter,
             ascending: ascending
         });
     }
 
-    function filterTree({failed=true, broken=true, passed=true, skipped=true, unknown=true}) {
+    function filterTree({failed = true, broken = true, passed = true, skipped = true, unknown = true}) {
         settings.save(filterSettingsKey, {
             failed: failed,
             broken: broken,
@@ -116,7 +118,7 @@ describe('Tree', () => {
         ]
     });
 
-    describe('empty data', function() {
+    describe('empty data', () => {
         beforeEach(() => {
             this.el = renderView({});
         });
@@ -130,7 +132,7 @@ describe('Tree', () => {
         });
     });
 
-    describe('sorting', function() {
+    describe('sorting', () => {
 
         beforeEach(() => {
             settings.unset(sorterSettingsKey);
@@ -180,7 +182,7 @@ describe('Tree', () => {
         });
     });
 
-    describe('filtering', function() {
+    describe('filtering', () => {
 
         beforeEach(() => {
             settings.unset(sorterSettingsKey);
@@ -206,7 +208,7 @@ describe('Tree', () => {
 
     });
 
-    describe('groupInfo', function() {
+    describe('groupInfo', () => {
 
         beforeEach(() => {
             settings.unset(sorterSettingsKey);
