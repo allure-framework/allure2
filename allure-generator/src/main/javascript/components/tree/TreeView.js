@@ -1,6 +1,8 @@
 import './styles.css';
 import {View} from 'backbone.marionette';
+import router from '../../router';
 import settings from '../../util/settings';
+import hotkeys from '../../util/hotkeys';
 import template from './TreeView.hbs';
 import StatusToggleView from '../status-toggle/StatusToggleView';
 import NodeSorterView from '../node-sorter/NodeSorterView';
@@ -23,6 +25,8 @@ class TreeView extends View {
         this.listenTo(settings, 'change:' + this.statusesKey, this.render);
         this.listenTo(settings, 'change:' + this.sorterSettingsKey, this.render);
         this.listenTo(settings, 'change:showGroupInfo', this.render);
+        this.listenTo(hotkeys, 'key:up', this.onKeyUp, this);
+        this.listenTo(hotkeys, 'key:down', this.onKeyDown, this);
     }
 
     onRender() {
@@ -46,6 +50,26 @@ class TreeView extends View {
     onInfoClick() {
         const show = settings.get('showGroupInfo');
         settings.save('showGroupInfo', !show);
+    }
+
+    onKeyUp(event) {
+        const currentCaseUid = this.state.get('testcase');
+        if(currentCaseUid) {
+            this.selectTestcase(this.collection.getPreviousTestcase(currentCaseUid));
+        }
+    }
+
+    onKeyDown(event) {
+        const currentCaseUid = this.state.get('testcase');
+        if(currentCaseUid) {
+            this.selectTestcase(this.collection.getNextTestcase(currentCaseUid));
+        }
+    }
+
+    selectTestcase(testcase) {
+        if(testcase) {
+            router.toUrl(`${this.baseUrl}/${testcase.uid}`);
+        }
     }
 
     restoreState() {
