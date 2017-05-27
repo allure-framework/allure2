@@ -1,7 +1,6 @@
 @import "../../variables.css";
 
 .attachment-row {
-  width: 90%;
   padding: 5px $gap-size 5px 25px;
   cursor: pointer;
   position: relative;
