@@ -8,6 +8,8 @@
             <attachments/>
             <parameters>
                 <parameter name="first" kind="argument"/>
+                <parameter name="third"/>
+                <parameter/>
                 <parameter name="second" value="some-value" kind="argument"/>
             </parameters>
             <labels>
