@@ -8,6 +8,7 @@ import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.Link;
+import io.qameta.allure.entity.Parameter;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.Step;
@@ -234,6 +235,25 @@ public class Allure1PluginTest {
                 .extracting(Link::getUrl)
                 .as("Test links should contain patterns from allure.properties file")
                 .containsExactlyInAnyOrder(link1, link2, link3);
+    }
+
+    @Test
+    public void shouldProcessNullParameters() throws Exception {
+        final Set<TestResult> results = process(
+                "allure1/empty-parameter-value.xml", generateTestSuiteXmlName()
+        ).getResults();
+
+        assertThat(results)
+                .hasSize(1)
+                .flatExtracting(TestResult::getParameters)
+                .hasSize(4)
+                .extracting(Parameter::getName, Parameter::getValue)
+                .containsExactlyInAnyOrder(
+                        Tuple.tuple("parameterArgument", null),
+                        Tuple.tuple("parameter", "default"),
+                        Tuple.tuple("invalid", null),
+                        Tuple.tuple(null, null)
+                );
     }
 
     private LaunchResults process(String... strings) throws IOException {

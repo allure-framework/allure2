@@ -36,6 +36,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,6 +64,8 @@ import static io.qameta.allure.entity.Status.PASSED;
 import static io.qameta.allure.entity.Status.SKIPPED;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
+import static java.util.Comparator.naturalOrder;
+import static java.util.Comparator.nullsFirst;
 import static java.util.stream.Collectors.toList;
 import static org.allurefw.allure1.AllureUtils.unmarshalTestSuite;
 
@@ -77,9 +80,13 @@ public class Allure1Plugin implements Reader {
     private static final Logger LOGGER = LoggerFactory.getLogger(Allure1Plugin.class);
     private static final String UNKNOWN = "unknown";
     private static final String MD_5 = "md5";
-    public static final String ENVIRONMENT_BLOCK_NAME = "environment";
     private static final String ISSUE_URL_PROPERTY = "allure.issues.tracker.pattern";
     private static final String TMS_LINK_PROPERTY = "allure.tests.management.pattern";
+    private static final Comparator<Parameter> PARAMETER_COMPARATOR =
+            comparing(Parameter::getName, nullsFirst(naturalOrder()))
+                    .thenComparing(Parameter::getValue, nullsFirst(naturalOrder()));
+
+    public static final String ENVIRONMENT_BLOCK_NAME = "environment";
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -319,7 +326,7 @@ public class Allure1Plugin implements Reader {
     }
 
     private boolean hasArgumentType(final ru.yandex.qatools.allure.model.Parameter parameter) {
-        return ParameterKind.ARGUMENT.equals(parameter.getKind());
+        return Objects.isNull(parameter.getKind()) || ParameterKind.ARGUMENT.equals(parameter.getKind());
     }
 
     private boolean hasEnvType(final ru.yandex.qatools.allure.model.Parameter parameter) {
@@ -400,10 +407,10 @@ public class Allure1Plugin implements Reader {
         final MessageDigest digest = getMessageDigest();
         digest.update(name.getBytes(UTF_8));
         parameters.stream()
-                .sorted(comparing(Parameter::getName).thenComparing(Parameter::getValue))
+                .sorted(PARAMETER_COMPARATOR)
                 .forEachOrdered(parameter -> {
-                    digest.update(parameter.getName().getBytes(UTF_8));
-                    digest.update(parameter.getValue().getBytes(UTF_8));
+                    digest.update(Objects.toString(parameter.getName()).getBytes(UTF_8));
+                    digest.update(Objects.toString(parameter.getValue()).getBytes(UTF_8));
                 });
         final byte[] bytes = digest.digest();
         return new BigInteger(1, bytes).toString(16);

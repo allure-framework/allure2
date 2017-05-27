@@ -6,6 +6,12 @@
             <name>testFour</name>
             <steps/>
             <attachments/>
+            <parameters>
+                <parameter name="first" kind="argument"/>
+                <parameter name="third"/>
+                <parameter/>
+                <parameter name="second" value="some-value" kind="argument"/>
+            </parameters>
             <labels>
                 <label name="host" value="my.cool.host.com"/>
                 <label name="thread" value="pool-1-thread-4"/>
@@ -18,6 +24,10 @@
             <name>testOne</name>
             <steps/>
             <attachments/>
+            <parameters>
+                <parameter name="first" value="a" kind="argument"/>
+                <parameter name="second" value="b" kind="argument"/>
+            </parameters>
             <labels>
                 <label name="host" value="my.cool.host.com"/>
                 <label name="thread" value="pool-1-thread-1"/>
