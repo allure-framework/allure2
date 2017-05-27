@@ -74,7 +74,8 @@ class TreeView extends View {
             tabName: this.tabName,
             items: this.filterNodes(statuses, sorter, this.collection.toJSON()),
             shownCases: shownCases,
-            totalCases: totalCases
+            totalCases: totalCases,
+            filtered: shownCases !== totalCases
         };
     }
 
