@@ -1,0 +1,22 @@
+[ {
+  "failed" : 4,
+  "broken" : 2,
+  "skipped" : 1,
+  "passed" : 0,
+  "unknown" : 0,
+  "total" : 7
+}, {
+  "failed" : 2,
+  "broken" : 2,
+  "skipped" : 1,
+  "passed" : 2,
+  "unknown" : 0,
+  "total" : 7
+}, {
+  "failed" : 2,
+  "broken" : 2,
+  "skipped" : 1,
+  "passed" : 2,
+  "unknown" : 0,
+  "total" : 7
+} ]

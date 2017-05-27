@@ -1,0 +1,264 @@
+{
+  "5ddfdee9b71494f6ddbdab05beb3cfae" : {
+    "statistic" : {
+      "failed" : 1,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 2,
+      "unknown" : 0,
+      "total" : 3
+    },
+    "items" : [ {
+      "uid" : "eff0da0999b22417",
+      "status" : "failed",
+      "statusDetails" : "[Dummy status] \nExpecting:\n <true>\nto be equal to:\n <false>\nbut was not.",
+      "time" : {
+        "start" : 1494783330225,
+        "stop" : 1494783330245,
+        "duration" : 20
+      }
+    }, {
+      "uid" : "735bc51d89bf5b4d",
+      "status" : "passed",
+      "time" : {
+        "start" : 1494780336999,
+        "stop" : 1494780337015,
+        "duration" : 16
+      }
+    }, {
+      "uid" : "eed0a254b4ac4f3",
+      "status" : "passed",
+      "time" : {
+        "start" : 1494780336999,
+        "stop" : 1494780337015,
+        "duration" : 16
+      }
+    } ]
+  },
+  "ca613e761e382fa94f7cf4d22f0bd4ed" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 3,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 3
+    },
+    "items" : [ {
+      "uid" : "f6730755ef76781c",
+      "status" : "broken",
+      "statusDetails" : "Unable to parse some value",
+      "time" : {
+        "start" : 1494783330302,
+        "stop" : 1494783330303,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "f09650d6123f9f6e",
+      "status" : "broken",
+      "statusDetails" : "Unable to parse some value",
+      "time" : {
+        "start" : 1494780337381,
+        "stop" : 1494780337383,
+        "duration" : 2
+      }
+    }, {
+      "uid" : "97303c83c1144b50",
+      "status" : "broken",
+      "statusDetails" : "Unable to parse some value",
+      "time" : {
+        "start" : 1494780337381,
+        "stop" : 1494780337383,
+        "duration" : 2
+      }
+    } ]
+  },
+  "43b42ce3e76e8235a67cb29a361bf6a3" : {
+    "statistic" : {
+      "failed" : 3,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 3
+    },
+    "items" : [ {
+      "uid" : "d8c89067496e7dc5",
+      "status" : "failed",
+      "statusDetails" : "[Dummy status] \nExpecting:\n <true>\nto be equal to:\n <false>\nbut was not.",
+      "time" : {
+        "start" : 1494783330258,
+        "stop" : 1494783330260,
+        "duration" : 2
+      }
+    }, {
+      "uid" : "99780c122e1bae9f",
+      "status" : "failed",
+      "statusDetails" : "[Dummy status] \nExpecting:\n <true>\nto be equal to:\n <false>\nbut was not.",
+      "time" : {
+        "start" : 1494780337026,
+        "stop" : 1494780337276,
+        "duration" : 250
+      }
+    }, {
+      "uid" : "8f0de2fec29089b8",
+      "status" : "failed",
+      "statusDetails" : "[Dummy status] \nExpecting:\n <true>\nto be equal to:\n <false>\nbut was not.",
+      "time" : {
+        "start" : 1494780337026,
+        "stop" : 1494780337276,
+        "duration" : 250
+      }
+    } ]
+  },
+  "2f606d2d8857f6a9131d00f9a3152a24" : {
+    "statistic" : {
+      "failed" : 1,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 2,
+      "unknown" : 0,
+      "total" : 3
+    },
+    "items" : [ {
+      "uid" : "dd96838ce89964b2",
+      "status" : "failed",
+      "statusDetails" : "[Dummy str] \nExpecting:\n <\"test\">\nto be equal to:\n <\"test1\">\nbut was not.",
+      "time" : {
+        "start" : 1494783329576,
+        "stop" : 1494783330196,
+        "duration" : 620
+      }
+    }, {
+      "uid" : "7bf1ffd1864f4060",
+      "status" : "passed",
+      "time" : {
+        "start" : 1494780336737,
+        "stop" : 1494780336968,
+        "duration" : 231
+      }
+    }, {
+      "uid" : "1cabbe9d460c8d21",
+      "status" : "passed",
+      "time" : {
+        "start" : 1494780336737,
+        "stop" : 1494780336968,
+        "duration" : 231
+      }
+    } ]
+  },
+  "6d69e11d95f261316faab31813f6aad7" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 3,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 3
+    },
+    "items" : [ {
+      "uid" : "31e76f39457e091e",
+      "status" : "skipped",
+      "statusDetails" : "Unable to prepare method",
+      "time" : {
+        "start" : 1494783330375,
+        "stop" : 1494783330376,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "d4105dd67b6f82f",
+      "status" : "skipped",
+      "statusDetails" : "Unable to prepare method",
+      "time" : {
+        "start" : 1494780337433,
+        "stop" : 1494780337437,
+        "duration" : 4
+      }
+    }, {
+      "uid" : "b2a58c8efe69b38b",
+      "status" : "skipped",
+      "statusDetails" : "Unable to prepare method",
+      "time" : {
+        "start" : 1494780337433,
+        "stop" : 1494780337437,
+        "duration" : 4
+      }
+    } ]
+  },
+  "dc287117b2b065af7cf0ad787db9b717" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 3,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 3
+    },
+    "items" : [ {
+      "uid" : "c2be20ae7613df66",
+      "status" : "broken",
+      "statusDetails" : "Unable to find \"Cancel\" button",
+      "time" : {
+        "start" : 1494783330287,
+        "stop" : 1494783330294,
+        "duration" : 7
+      }
+    }, {
+      "uid" : "5889d2c6f89e51b2",
+      "status" : "broken",
+      "statusDetails" : "Unable to find \"Cancel\" button",
+      "time" : {
+        "start" : 1494780337370,
+        "stop" : 1494780337375,
+        "duration" : 5
+      }
+    }, {
+      "uid" : "4db3981239f770f7",
+      "status" : "broken",
+      "statusDetails" : "Unable to find \"Cancel\" button",
+      "time" : {
+        "start" : 1494780337370,
+        "stop" : 1494780337375,
+        "duration" : 5
+      }
+    } ]
+  },
+  "1d855b03e4398ed4b69cc9a1ef46ecd5" : {
+    "statistic" : {
+      "failed" : 3,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 3
+    },
+    "items" : [ {
+      "uid" : "840b29f08625f972",
+      "status" : "failed",
+      "statusDetails" : "[Popup is displayed] \nExpecting:\n <false>\nto be equal to:\n <true>\nbut was not.",
+      "time" : {
+        "start" : 1494783330275,
+        "stop" : 1494783330280,
+        "duration" : 5
+      }
+    }, {
+      "uid" : "7a2830823f41bbe1",
+      "status" : "failed",
+      "statusDetails" : "[Popup is displayed] \nExpecting:\n <false>\nto be equal to:\n <true>\nbut was not.",
+      "time" : {
+        "start" : 1494780337284,
+        "stop" : 1494780337340,
+        "duration" : 56
+      }
+    }, {
+      "uid" : "93cba5f8fa7f828a",
+      "status" : "failed",
+      "statusDetails" : "[Popup is displayed] \nExpecting:\n <false>\nto be equal to:\n <true>\nbut was not.",
+      "time" : {
+        "start" : 1494780337284,
+        "stop" : 1494780337340,
+        "duration" : 56
+      }
+    } ]
+  }
+}
