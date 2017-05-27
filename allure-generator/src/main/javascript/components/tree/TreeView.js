@@ -20,13 +20,19 @@ class TreeView extends View {
         this.tabName = tabName;
         this.statusesKey = tabName + '.visibleStatuses';
         this.sorterSettingsKey = tabName + '.treeSorting';
-        this.nodeSorter = new NodeSorterView({sorterSettingsKey: this.sorterSettingsKey});
         this.listenTo(this.state, 'change:testcase', (m, testcase) => this.restoreState(testcase));
         this.listenTo(settings, 'change:' + this.statusesKey, this.render);
         this.listenTo(settings, 'change:' + this.sorterSettingsKey, this.render);
         this.listenTo(settings, 'change:showGroupInfo', this.render);
         this.listenTo(hotkeys, 'key:up', this.onKeyUp, this);
         this.listenTo(hotkeys, 'key:down', this.onKeyDown, this);
+    }
+
+    onBeforeRender() {
+        this.collection.applyFilterAndSorting(
+            settings.getVisibleStatuses(this.statusesKey),
+            settings.getTreeSorting(this.sorterSettingsKey)
+        );
     }
 
     onRender() {
@@ -53,6 +59,7 @@ class TreeView extends View {
     }
 
     onKeyUp(event) {
+        event.preventDefault();
         const currentCaseUid = this.state.get('testcase');
         if(currentCaseUid) {
             this.selectTestcase(this.collection.getPreviousTestcase(currentCaseUid));
@@ -60,6 +67,7 @@ class TreeView extends View {
     }
 
     onKeyDown(event) {
+        event.preventDefault();
         const currentCaseUid = this.state.get('testcase');
         if(currentCaseUid) {
             this.selectTestcase(this.collection.getNextTestcase(currentCaseUid));
@@ -82,13 +90,9 @@ class TreeView extends View {
     }
 
     serializeData() {
-        const statuses = settings.getVisibleStatuses(this.statusesKey);
-        const sorter = this.nodeSorter.getSorter();
         const showGroupInfo = settings.get('showGroupInfo');
-        const totalCases = this.collection.statistic ? this.collection.statistic.total : 0;
-        const shownCases = Object.keys(statuses).reduce((all, current) =>{
-            return all + (this.collection.statistic && statuses[current] ? this.collection.statistic[current] : 0);
-        }, 0);
+        const shownCases = this.collection.testcases.length;
+        const totalCases = this.collection.allTestcases.length;
 
         return {
             baseUrl: this.baseUrl,
@@ -96,27 +100,11 @@ class TreeView extends View {
             time: this.collection.time,
             statistic: this.collection.statistic,
             tabName: this.tabName,
-            items: this.filterNodes(statuses, sorter, this.collection.toJSON()),
+            items: this.collection.toJSON(),
             shownCases: shownCases,
             totalCases: totalCases,
             filtered: shownCases !== totalCases
         };
-    }
-
-    filterNodes(statuses, sorter, nodes) {
-        return nodes
-            .map(item => this.mapNode(statuses, sorter, item))
-            .filter(item => item.type === 'TestCaseNode' ? statuses[item.status] : item.children.length > 0)
-            .sort(sorter);
-    }
-
-    mapNode(statuses, sorter, node) {
-        if (node.type === 'TestCaseNode') {
-            return node;
-        }
-        return Object.assign({}, node, {
-            children: this.filterNodes(statuses, sorter, node.children)
-        });
     }
 }
 

@@ -32,8 +32,9 @@ function compare(a, b, nodeCmp, groupCmp) {
     }
 }
 
-function nodeComparator(key, direction) {
-    switch (key) {
+export default function getComparator({sorter, ascending}) {
+    const direction =  ascending ? 1 : -1;
+    switch (sorter) {
         case 'sorter.name':
             return (a, b) => direction * compare(a, b, byName, byName);
         case 'sorter.duration':
@@ -44,5 +45,3 @@ function nodeComparator(key, direction) {
             return () => 0;
     }
 }
-
-export default nodeComparator;

@@ -9,7 +9,7 @@ const codes = {
 
 class HotkeysService extends BaseObject {
     initialize() {
-        $(document).on('keyup', this.keyHandler.bind(this))
+        $(document).on('keydown', this.keyHandler.bind(this));
     }
 
     keyHandler(event) {
