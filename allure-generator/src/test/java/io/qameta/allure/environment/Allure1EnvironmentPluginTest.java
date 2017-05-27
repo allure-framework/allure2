@@ -40,10 +40,12 @@ public class Allure1EnvironmentPluginTest {
                 new EnvironmentItem().withName("allure.test.property").withValues("1")
         };
 
-        List<EnvironmentItem> environment = process(Arrays.asList(
-                "allure1/sample-testsuite.json", generateTestSuiteJsonName(),
-                "allure1/environment.properties", "environment.properties"
-        ));
+        List<EnvironmentItem> environment = process(
+                Arrays.asList(
+                        "allure1/sample-testsuite.json", generateTestSuiteJsonName(),
+                        "allure1/environment.properties", "environment.properties"
+                )
+        );
 
         assertThat(environment)
                 .as("Unexpected environment properties have been read from properties file")
@@ -60,10 +62,12 @@ public class Allure1EnvironmentPluginTest {
                 new EnvironmentItem().withName("allure.test.property").withValues("3"),
         };
 
-        List<EnvironmentItem> environment = process(Arrays.asList(
-                "allure1/sample-testsuite.json", generateTestSuiteJsonName(),
-                "allure1/environment.xml", "environment.xml"
-        ));
+        List<EnvironmentItem> environment = process(
+                Arrays.asList(
+                        "allure1/sample-testsuite.json", generateTestSuiteJsonName(),
+                        "allure1/environment.xml", "environment.xml"
+                )
+        );
 
         assertThat(environment)
                 .as("Unexpected environment properties have been read from xml file")
@@ -83,11 +87,15 @@ public class Allure1EnvironmentPluginTest {
                 new EnvironmentItem().withName("allure.test.other.property").withValues("value")
         };
 
-        List<EnvironmentItem> environment = process(Arrays.asList(
-                "allure1/environment-variables-testsuite.xml", generateTestSuiteXmlName(),
-                "allure1/environment.properties", "environment.properties"),
-                Arrays.asList("allure1/sample-testsuite.xml", generateTestSuiteXmlName(),
-                        "allure1/environment.xml", "environment.xml")
+        List<EnvironmentItem> environment = process(
+                Arrays.asList(
+                        "allure1/environment-variables-testsuite.xml", generateTestSuiteXmlName(),
+                        "allure1/environment.properties", "environment.properties"
+                ),
+                Arrays.asList(
+                        "allure1/sample-testsuite.xml", generateTestSuiteXmlName(),
+                        "allure1/environment.xml", "environment.xml"
+                )
         );
 
 
@@ -98,7 +106,8 @@ public class Allure1EnvironmentPluginTest {
                 .containsExactlyInAnyOrder(expected);
     }
 
-    private List<EnvironmentItem> process(List<String>... results) throws IOException {
+    @SafeVarargs
+    private final List<EnvironmentItem> process(List<String>... results) throws IOException {
         List<LaunchResults> launches = new ArrayList<>();
         final Configuration configuration = new ConfigurationBuilder().useDefault().build();
         Allure1Plugin reader = new Allure1Plugin();

@@ -20,8 +20,8 @@ import static java.util.stream.Collectors.toList;
 public class Allure1EnvironmentPlugin implements Widget {
 
     @Override
-    public List getData(final Configuration configuration,
-                        final List<LaunchResults> launches) {
+    public List<EnvironmentItem> getData(final Configuration configuration,
+                                         final List<LaunchResults> launches) {
         final List<Map.Entry<String, String>> launchEnvironments = launches.stream()
                 .flatMap(launch -> launch.getExtra(ENVIRONMENT_BLOCK_NAME,
                         (Supplier<Map<String, String>>) HashMap::new).entrySet().stream())
