@@ -1,5 +1,10 @@
 pipeline {
     agent { label 'java' }
+    parameters {
+        booleanParam(name: 'RELEASE', defaultValue: false, description: 'Perform release?')
+        string(name: 'RELEASE_VERSION', defaultValue: '', description: 'Release version')
+        string(name: 'NEXT_VERSION', defaultValue: '', description: 'Next version (without SNAPSHOT)')
+    }
     stages {
         stage("Build") {
             steps {
@@ -27,6 +32,20 @@ pipeline {
                         'allure-generator/test-data/demo2 --clean -o build/report-demo2'
                 publishHTML([reportName  : 'Demo2 Report', reportDir: 'build/report-demo2', reportFiles: 'index.html',
                              reportTitles: '', allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false])
+            }
+        }
+        stage('Release') {
+            when { expression { return params.RELEASE } }
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'qameta-ci_bintray',
+                        usernameVariable: 'BINTRAY_USER', passwordVariable: 'BINTRAY_API_KEY')]) {
+                    sshagent(['qameta-ci_ssh']) {
+                        sh 'git checkout master && git pull origin master'
+                        sh "./gradlew release -Prelease.useAutomaticVersion=true " +
+                                "-Prelease.releaseVersion=${RELEASE_VERSION} " +
+                                "-Prelease.newVersion=${NEXT_VERSION}-SNAPSHOT"
+                    }
+                }
             }
         }
     }
