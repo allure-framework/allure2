@@ -41,6 +41,6 @@ export default class SettingsModel extends Model {
     }
 
     getTreeSorting(key) {
-        return this.get(key) || {ascending: true, sorter: 0};
+        return this.get(key) || {ascending: true, sorter: 'sorter.name'};
     }
 }

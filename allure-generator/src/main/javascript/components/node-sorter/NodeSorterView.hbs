@@ -1,6 +1,6 @@
 <div class="sorter">
-{{#each sorter}}
-    <div class="{{b 'sorter' 'item'}}" data-index="{{index}}" data-asc={{asc}}>
+{{#each sorters}}
+    <div class="{{b 'sorter' 'item'}}" data-name="{{name}}" data-asc={{asc}}>
         <span class="{{b 'sorter' enabled=(or asc desc)}} {{b 'sorter' 'name'}}">{{t name}}</span>
         <span class="fa-stack {{b 'sorter' 'icon'}}">
             <i class="fa fa-sort-asc fa-stack-1x {{b 'sorter' enabled=asc}}"/>
