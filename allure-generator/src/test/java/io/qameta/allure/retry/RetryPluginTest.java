@@ -1,21 +1,19 @@
 package io.qameta.allure.retry;
 
-import io.qameta.allure.DefaultLaunchResults;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
+import static io.qameta.allure.retry.RetryPlugin.RETRY_BLOCK_NAME;
 import static io.qameta.allure.testdata.TestData.createSingleLaunchResults;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 
 /**
  * eroshenkoam
@@ -59,10 +57,10 @@ public class RetryPluginTest {
                 .hasFieldOrPropertyWithValue("statusDetails.flaky", true);
 
         assertThat(results).as("test results with retries block")
-                .filteredOn(result -> result.getExtraBlock(RetryPlugin.RETRY_BLOCK_NAME) != null)
+                .filteredOn(result -> result.hasExtraBlock(RETRY_BLOCK_NAME))
                 .hasSize(1);
 
-        List<RetryItem> retries = lastResult.getExtraBlock(RetryPlugin.RETRY_BLOCK_NAME);
+        List<RetryItem> retries = lastResult.getExtraBlock(RETRY_BLOCK_NAME);
         assertThat(retries).as("test results retries block")
                 .isNotNull()
                 .hasSize(2);
@@ -87,8 +85,30 @@ public class RetryPluginTest {
                 .hasSize(0);
 
         assertThat(results).as("test results with retries block")
-                .filteredOn(result -> result.getExtraBlock(RetryPlugin.RETRY_BLOCK_NAME) != null)
+                .flatExtracting(result -> result.getExtraBlock(RETRY_BLOCK_NAME))
                 .hasSize(0);
+    }
+
+    @Test
+    public void shouldSkipHiddenResults() throws Exception {
+        String historyId = UUID.randomUUID().toString();
+        List<LaunchResults> launchResultsList = createSingleLaunchResults(
+                createTestResult(FIRST_RESULT, historyId, 1L, 9L),
+                createTestResult(SECOND_RESULT, historyId, 11L, 19L),
+                createTestResult(LAST_RESULT, historyId, 21L, 29L).withHidden(true)
+        );
+        retryPlugin.aggregate(null, launchResultsList, null);
+        Set<TestResult> results = launchResultsList.get(0).getAllResults();
+
+        assertThat(results)
+                .filteredOn(TestResult::isHidden)
+                .extracting(TestResult::getName)
+                .containsExactlyInAnyOrder(FIRST_RESULT, LAST_RESULT);
+
+        assertThat(results)
+                .filteredOn(result -> !result.isHidden())
+                .extracting("name", "statusDetails.flaky")
+                .containsExactlyInAnyOrder(tuple(SECOND_RESULT, true));
     }
 
     private TestResult createTestResult(String name, String historyId, long start, long stop) {

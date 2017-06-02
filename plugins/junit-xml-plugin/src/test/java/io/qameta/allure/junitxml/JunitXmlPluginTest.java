@@ -1,13 +1,14 @@
-package org.allurefw.report.junit;
+package io.qameta.allure.junitxml;
 
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Attachment;
+import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
+import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.junit.JunitPlugin;
 import org.assertj.core.groups.Tuple;
 import org.junit.Before;
 import org.junit.Rule;
@@ -22,6 +23,7 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,7 +36,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class JunitTestResultsTest {
+public class JunitXmlPluginTest {
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
@@ -113,6 +115,25 @@ public class JunitTestResultsTest {
                 .containsExactly(Tuple.tuple("System out", "some-uid"));
     }
 
+    @Test
+    public void shouldAddLabels() throws Exception {
+        process(
+                "junitdata/TEST-test.SampleTest.xml", "TEST-test.SampleTest.xml"
+        );
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(1)).visitTestResult(captor.capture());
+
+        assertThat(captor.getAllValues())
+                .hasSize(1)
+                .flatExtracting(TestResult::getLabels)
+                .extracting(Label::getName, Label::getValue)
+                .containsExactlyInAnyOrder(
+                        Tuple.tuple("suite", "test.SampleTest"),
+                        Tuple.tuple("package", "test.SampleTest"),
+                        Tuple.tuple("testClass", "test.SampleTest")
+                );
+    }
 
     @Test
     public void shouldSkipInvalidXml() throws Exception {
@@ -123,6 +144,38 @@ public class JunitTestResultsTest {
         verify(visitor, times(0)).visitTestResult(any());
     }
 
+    @Test
+    public void shouldProcessTestsWithRetry() throws Exception {
+        process(
+                "junitdata/TEST-test.RetryTest.xml", "TEST-test.SampleTest.xml"
+        );
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(4)).visitTestResult(captor.capture());
+
+        final List<TestResult> results = captor.getAllValues();
+        assertThat(results)
+                .extracting(TestResult::getName, TestResult::getStatus, TestResult::isHidden, TestResult::getHistoryId)
+                .containsExactlyInAnyOrder(
+                        Tuple.tuple("searchTest", Status.BROKEN, false, "my.company.tests.SearchTest#searchTest"),
+                        Tuple.tuple("searchTest", Status.BROKEN, true, "my.company.tests.SearchTest#searchTest"),
+                        Tuple.tuple("searchTest", Status.BROKEN, true, "my.company.tests.SearchTest#searchTest"),
+                        Tuple.tuple("searchTest", Status.FAILED, true, "my.company.tests.SearchTest#searchTest")
+                );
+
+        assertThat(results)
+                .extracting(TestResult::getStatusDetails)
+                .filteredOn(Objects::nonNull)
+                .hasSize(4)
+                .extracting(StatusDetails::getMessage, StatusDetails::getTrace)
+                .containsExactlyInAnyOrder(
+                        Tuple.tuple("message-root", "trace-root"),
+                        Tuple.tuple("message-retried-1", "trace-retried-1"),
+                        Tuple.tuple("message-retried-2", "trace-retried-2"),
+                        Tuple.tuple("message-retried-3", "trace-retried-3")
+                );
+    }
+
     private void process(String... strings) throws IOException {
         Path resultsDirectory = folder.newFolder().toPath();
         Iterator<String> iterator = Arrays.asList(strings).iterator();
@@ -131,7 +184,7 @@ public class JunitTestResultsTest {
             String second = iterator.next();
             copyFile(resultsDirectory, first, second);
         }
-        JunitPlugin reader = new JunitPlugin();
+        JunitXmlPlugin reader = new JunitXmlPlugin();
 
         reader.readResults(configuration, visitor, resultsDirectory);
     }
