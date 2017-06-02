@@ -5,7 +5,7 @@
 * In case of any problems with Allure Jenkins plugin** please use the following repository 
 * to create an issue: https://github.com/jenkinsci/allure-plugin/issues
 *
-* Make sure you have a clear name for your issue. The name should starts with a capital 
+* Make sure you have a clear name for your issue. The name should start with a capital 
 * letter and no dot is required in the end of the sentence. An example of good issue names:
 *
 * - The report is broken in IE11
