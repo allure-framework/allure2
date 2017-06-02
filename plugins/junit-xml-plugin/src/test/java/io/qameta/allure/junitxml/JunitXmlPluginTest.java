@@ -1,4 +1,4 @@
-package org.allurefw.report.junit;
+package io.qameta.allure.junitxml;
 
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
@@ -7,7 +7,6 @@ import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.junit.JunitPlugin;
 import org.assertj.core.groups.Tuple;
 import org.junit.Before;
 import org.junit.Rule;
@@ -34,7 +33,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class JunitTestResultsTest {
+public class JunitXmlPluginTest {
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
@@ -131,7 +130,7 @@ public class JunitTestResultsTest {
             String second = iterator.next();
             copyFile(resultsDirectory, first, second);
         }
-        JunitPlugin reader = new JunitPlugin();
+        JunitXmlPlugin reader = new JunitXmlPlugin();
 
         reader.readResults(configuration, visitor, resultsDirectory);
     }

@@ -1,4 +1,4 @@
-package io.qameta.allure.junit;
+package io.qameta.allure.junitxml;
 
 import io.qameta.allure.Reader;
 import io.qameta.allure.context.RandomUidContext;
@@ -36,9 +36,9 @@ import static java.nio.file.Files.newDirectoryStream;
  *
  * @since 2.0
  */
-public class JunitPlugin implements Reader {
+public class JunitXmlPlugin implements Reader {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JunitPlugin.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JunitXmlPlugin.class);
 
     public static final BigDecimal MULTIPLICAND = new BigDecimal(1000);
 
