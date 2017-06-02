@@ -2,11 +2,11 @@
 * Note: for support questions, please use Stackoverflow or Gitter**. 
 * This repository's issues are reserved for feature requests and bug reports.
 *
-* In case of problems with Allure Jenkins plugin** please use the following repository 
+* In case of any problems with Allure Jenkins plugin** please use the following repository 
 * to create an issue: https://github.com/jenkinsci/allure-plugin/issues
 *
-* Make sure you have a clear name for your issue. The name should starts with capital 
-* letter and no dot required in the end of the sentence. An example of good issue names:
+* Make sure you have a clear name for your issue. The name should starts with a capital 
+* letter and no dot is required in the end of the sentence. An example of good issue names:
 *
 * - The report is broken in IE11
 * - Add an ability to disable default plugins
@@ -41,5 +41,5 @@
 
 [//]: # (
 * e.g. detailed explanation, stacktraces, related issues, suggestions 
-* how to fix, links for us to have context, eg. Stackoverflow, Gitter etc
+* how to fix, links for us to have more context, eg. Stackoverflow, Gitter etc
 )
