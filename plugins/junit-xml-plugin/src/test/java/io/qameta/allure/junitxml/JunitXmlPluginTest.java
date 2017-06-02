@@ -7,6 +7,7 @@ import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
+import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.TestResult;
 import org.assertj.core.groups.Tuple;
 import org.junit.Before;
@@ -22,6 +23,7 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -140,6 +142,38 @@ public class JunitXmlPluginTest {
         );
 
         verify(visitor, times(0)).visitTestResult(any());
+    }
+
+    @Test
+    public void shouldProcessTestsWithRetry() throws Exception {
+        process(
+                "junitdata/TEST-test.RetryTest.xml", "TEST-test.SampleTest.xml"
+        );
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(4)).visitTestResult(captor.capture());
+
+        final List<TestResult> results = captor.getAllValues();
+        assertThat(results)
+                .extracting(TestResult::getName, TestResult::getStatus, TestResult::isHidden, TestResult::getHistoryId)
+                .containsExactlyInAnyOrder(
+                        Tuple.tuple("searchTest", Status.BROKEN, false, "my.company.tests.SearchTest#searchTest"),
+                        Tuple.tuple("searchTest", Status.BROKEN, true, "my.company.tests.SearchTest#searchTest"),
+                        Tuple.tuple("searchTest", Status.BROKEN, true, "my.company.tests.SearchTest#searchTest"),
+                        Tuple.tuple("searchTest", Status.FAILED, true, "my.company.tests.SearchTest#searchTest")
+                );
+
+        assertThat(results)
+                .extracting(TestResult::getStatusDetails)
+                .filteredOn(Objects::nonNull)
+                .hasSize(4)
+                .extracting(StatusDetails::getMessage, StatusDetails::getTrace)
+                .containsExactlyInAnyOrder(
+                        Tuple.tuple("message-root", "trace-root"),
+                        Tuple.tuple("message-retried-1", "trace-retried-1"),
+                        Tuple.tuple("message-retried-2", "trace-retried-2"),
+                        Tuple.tuple("message-retried-3", "trace-retried-3")
+                );
     }
 
     private void process(String... strings) throws IOException {

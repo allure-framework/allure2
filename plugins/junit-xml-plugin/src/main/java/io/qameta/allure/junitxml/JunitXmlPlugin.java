@@ -23,7 +23,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -36,6 +38,7 @@ import static java.util.Objects.nonNull;
  *
  * @since 2.0
  */
+@SuppressWarnings("PMD.ExcessiveImports")
 public class JunitXmlPlugin implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JunitXmlPlugin.class);
@@ -44,11 +47,23 @@ public class JunitXmlPlugin implements Reader {
 
     private static final String TEST_SUITE_ELEMENT_NAME = "testsuite";
     private static final String TEST_CASE_ELEMENT_NAME = "testcase";
-    private static final String SKIPPED_ELEMENT_NAME = "skipped";
+    private static final String CLASS_NAME_ATTRIBUTE_NAME = "classname";
+    private static final String NAME_ATTRIBUTE_NAME = "name";
+    private static final String TIME_ATTRIBUTE_NAME = "time";
     private static final String FAILURE_ELEMENT_NAME = "failure";
     private static final String ERROR_ELEMENT_NAME = "error";
-    private static final String MESSAGE_ELEMENT_NAME = "message";
-    private static final String TIME_ATTRIBUTE_NAME = "time";
+    private static final String SKIPPED_ELEMENT_NAME = "skipped";
+    private static final String MESSAGE_ATTRIBUTE_NAME = "message";
+    private static final String RERUN_FAILURE_ELEMENT_NAME = "rerunFailure";
+    private static final String RERUN_ERROR_ELEMENT_NAME = "rerunError";
+
+    private static final Map<String, Status> RETRIES;
+
+    static {
+        RETRIES = new HashMap<>();
+        RETRIES.put(RERUN_FAILURE_ELEMENT_NAME, Status.FAILED);
+        RETRIES.put(RERUN_ERROR_ELEMENT_NAME, Status.BROKEN);
+    }
 
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     @Override
@@ -77,19 +92,11 @@ public class JunitXmlPlugin implements Reader {
 
     private void parseTestCase(final XmlElement testCaseElement, final Path resultsDirectory,
                                final Path parsedFile, final RandomUidContext context, final ResultsVisitor visitor) {
-        final String className = testCaseElement.getAttribute("classname");
-        final String name = testCaseElement.getAttribute("name");
+        final String className = testCaseElement.getAttribute(CLASS_NAME_ATTRIBUTE_NAME);
         final Status status = getStatus(testCaseElement);
-        final String historyId = String.format("%s#%s", className, name);
-        final TestResult result = new TestResult();
-        if (nonNull(className) && nonNull(name)) {
-            result.setHistoryId(historyId);
-        }
-        result.setUid(context.getValue().get());
-        result.setName(isNull(name) ? "Unknown test case" : name);
+        final TestResult result = createStatuslessTestResult(testCaseElement, parsedFile, context);
         result.setStatus(status);
         result.setStatusDetails(getStatusDetails(testCaseElement));
-        result.setTime(getTime(testCaseElement, parsedFile));
 
         final Path attachmentFile = resultsDirectory.resolve(className + ".txt");
         Optional.of(attachmentFile)
@@ -98,13 +105,40 @@ public class JunitXmlPlugin implements Reader {
                 .map(attachment1 -> attachment1.withName("System out"))
                 .ifPresent(attachment -> result.setTestStage(new StageResult().withAttachments(attachment)));
 
+        visitor.visitTestResult(result);
+
+        RETRIES.forEach((elementName, retryStatus) -> testCaseElement.get(elementName).forEach(failure -> {
+            final TestResult retried = createStatuslessTestResult(testCaseElement, parsedFile, context);
+            retried.setHidden(true);
+            retried.setStatus(retryStatus);
+            retried.setStatusDetails(new StatusDetails()
+                    .withMessage(failure.getAttribute(MESSAGE_ATTRIBUTE_NAME))
+                    .withTrace(failure.getValue())
+                    .withFlaky(true)
+            );
+            visitor.visitTestResult(retried);
+        }));
+    }
+
+    private TestResult createStatuslessTestResult(final XmlElement testCaseElement, final Path parsedFile,
+                                                  final RandomUidContext context) {
+        final String className = testCaseElement.getAttribute(CLASS_NAME_ATTRIBUTE_NAME);
+        final String name = testCaseElement.getAttribute(NAME_ATTRIBUTE_NAME);
+        final String historyId = String.format("%s#%s", className, name);
+        final TestResult result = new TestResult();
+        if (nonNull(className) && nonNull(name)) {
+            result.setHistoryId(historyId);
+        }
+        result.setUid(context.getValue().get());
+        result.setName(isNull(name) ? "Unknown test case" : name);
+        result.setTime(getTime(testCaseElement, parsedFile));
+
         if (nonNull(className)) {
             result.addLabelIfNotExists(LabelName.SUITE, className);
             result.addLabelIfNotExists(LabelName.TEST_CLASS, className);
             result.addLabelIfNotExists(LabelName.PACKAGE, className);
         }
-
-        visitor.visitTestResult(result);
+        return result;
     }
 
     private Status getStatus(final XmlElement testCaseElement) {
@@ -129,7 +163,7 @@ public class JunitXmlPlugin implements Reader {
                 .flatMap(Collection::stream)
                 .findFirst()
                 .map(element -> new StatusDetails()
-                        .withMessage(element.getAttribute(MESSAGE_ELEMENT_NAME))
+                        .withMessage(element.getAttribute(MESSAGE_ATTRIBUTE_NAME))
                         .withTrace(element.getValue())
                         .withFlaky(flaky))
                 .orElseGet(() -> new StatusDetails().withFlaky(flaky));
@@ -153,7 +187,8 @@ public class JunitXmlPlugin implements Reader {
     }
 
     private boolean isFlaky(final XmlElement testCaseElement) {
-        return testCaseElement.contains("rerunError") || testCaseElement.contains("rerunFailure");
+        return testCaseElement.contains(RERUN_ERROR_ELEMENT_NAME)
+                || testCaseElement.contains(RERUN_FAILURE_ELEMENT_NAME);
     }
 
     private static List<Path> listResults(final Path directory) {
