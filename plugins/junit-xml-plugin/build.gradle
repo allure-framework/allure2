@@ -5,7 +5,7 @@ apply from: "${gradleScriptDir}/bintray.gradle"
 
 dependencies {
     compileOnly project(':allure-plugin-api')
-    compile('org.apache.maven.surefire:surefire-report-parser')
+    compile('xmlwise:xmlwise:1.2.11')
 
     testCompile project(':allure-plugin-api')
     testCompile('junit:junit')

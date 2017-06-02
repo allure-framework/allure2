@@ -4,6 +4,7 @@ import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Attachment;
+import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
@@ -112,6 +113,25 @@ public class JunitXmlPluginTest {
                 .containsExactly(Tuple.tuple("System out", "some-uid"));
     }
 
+    @Test
+    public void shouldAddLabels() throws Exception {
+        process(
+                "junitdata/TEST-test.SampleTest.xml", "TEST-test.SampleTest.xml"
+        );
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(1)).visitTestResult(captor.capture());
+
+        assertThat(captor.getAllValues())
+                .hasSize(1)
+                .flatExtracting(TestResult::getLabels)
+                .extracting(Label::getName, Label::getValue)
+                .containsExactlyInAnyOrder(
+                        Tuple.tuple("suite", "test.SampleTest"),
+                        Tuple.tuple("package", "test.SampleTest"),
+                        Tuple.tuple("testClass", "test.SampleTest")
+                );
+    }
 
     @Test
     public void shouldSkipInvalidXml() throws Exception {
