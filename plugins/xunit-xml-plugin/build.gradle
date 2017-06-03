@@ -1,4 +1,4 @@
-description = 'Allure JUnit Plugin'
+description = 'Allure Xunit.net XML v2 Plugin'
 
 apply plugin: 'java-library-distribution'
 apply from: "${gradleScriptDir}/bintray.gradle"

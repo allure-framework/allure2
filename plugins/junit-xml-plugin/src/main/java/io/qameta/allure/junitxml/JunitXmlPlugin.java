@@ -10,12 +10,14 @@ import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
+import io.qameta.allure.parser.XmlElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import xmlwise.XmlElement;
-import xmlwise.XmlParseException;
-import xmlwise.Xmlwise;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.DirectoryStream;
@@ -76,7 +78,10 @@ public class JunitXmlPlugin implements Reader {
                                 final RandomUidContext context, final ResultsVisitor visitor) {
         try {
             LOGGER.debug("Parsing file {}", parsedFile);
-            final XmlElement testSuiteElement = Xmlwise.loadXml(parsedFile.toFile());
+            final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            final DocumentBuilder builder = factory.newDocumentBuilder();
+
+            final XmlElement testSuiteElement = new XmlElement(builder.parse(parsedFile.toFile()).getDocumentElement());
             final String elementName = testSuiteElement.getName();
             if (!TEST_SUITE_ELEMENT_NAME.equals(elementName)) {
                 LOGGER.debug("File {} is not a valid JUnit xml. Unknown root element {}", parsedFile, elementName);
@@ -85,7 +90,7 @@ public class JunitXmlPlugin implements Reader {
 
             testSuiteElement.get(TEST_CASE_ELEMENT_NAME)
                     .forEach(element -> parseTestCase(element, resultsDirectory, parsedFile, context, visitor));
-        } catch (XmlParseException | IOException e) {
+        } catch (SAXException | ParserConfigurationException | IOException e) {
             LOGGER.error("Could not parse file {}: {}", parsedFile, e);
         }
     }
@@ -176,7 +181,7 @@ public class JunitXmlPlugin implements Reader {
                         .multiply(MULTIPLICAND)
                         .longValue();
                 return new Time().withDuration(duration);
-            } catch (XmlParseException e) {
+            } catch (Exception e) {
                 LOGGER.debug(
                         "Could not parse time attribute for element {} in file {}",
                         testCaseElement, parsedFile, e

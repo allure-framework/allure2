@@ -1,0 +1,639 @@
+<?xml version="1.0" encoding="utf-8"?>
+<assemblies>
+    <assembly name="D:\Jenkins\Core\workspace\USG-Dummys-Service\TestSuite\bin\Release\Report.TestSuite.DLL"
+              environment="64-bit .NET 4.0.30319.42000 [collection-per-class, parallel (2 threads)]"
+              test-framework="xUnit.net 2.1.0.3179" run-date="2016-05-04" run-time="21:43:53"
+              config-file="D:\Jenkins\Core\workspace\USG-Dummys-Service\TestSuite\bin\Release\Report.TestSuite.dll.config"
+              total="148" passed="146" failed="2" skipped="0" time="11.979" errors="0">
+        <errors/>
+        <collection total="6" passed="6" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.ConnectorResultTranslatorTests" time="0.052">
+            <test name="Report.TestSuite.ConnectorResultTranslatorTests.TestConnectorResultTranslatorMultipleConnectorsNonRepeatingDummys"
+                  type="Report.TestSuite.ConnectorResultTranslatorTests"
+                  method="TestConnectorResultTranslatorMultipleConnectorsNonRepeatingDummys" time="0.0445156"
+                  result="Pass"/>
+            <test name="Report.TestSuite.ConnectorResultTranslatorTests.TestConnectorResultTranslatorMultipleConnectorsRepeatingDummys"
+                  type="Report.TestSuite.ConnectorResultTranslatorTests"
+                  method="TestConnectorResultTranslatorMultipleConnectorsRepeatingDummys" time="0.0020256"
+                  result="Pass"/>
+            <test name="Report.TestSuite.ConnectorResultTranslatorTests.TestConnectorResultTranslatorSingleConnector"
+                  type="Report.TestSuite.ConnectorResultTranslatorTests"
+                  method="TestConnectorResultTranslatorSingleConnector" time="0.0014074" result="Pass"/>
+            <test name="Report.TestSuite.ConnectorResultTranslatorTests.TestConnectorResultTranslatorNullResults"
+                  type="Report.TestSuite.ConnectorResultTranslatorTests"
+                  method="TestConnectorResultTranslatorNullResults" time="0.0001753" result="Pass"/>
+            <test name="Report.TestSuite.ConnectorResultTranslatorTests.TestConnectorResultTranslatorMultipleSuppliersConnectorsAndDummys"
+                  type="Report.TestSuite.ConnectorResultTranslatorTests"
+                  method="TestConnectorResultTranslatorMultipleSuppliersConnectorsAndDummys" time="0.0039707"
+                  result="Pass"/>
+            <test name="Report.TestSuite.ConnectorResultTranslatorTests.TestConnectorResultTranslatorEmptyResults"
+                  type="Report.TestSuite.ConnectorResultTranslatorTests"
+                  method="TestConnectorResultTranslatorEmptyResults" time="0.0003935" result="Pass"/>
+        </collection>
+        <collection total="3" passed="3" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.RateRulesDataContractTranslatorFixture" time="0.106">
+            <test name="Report.TestSuite.RateRulesDataContractTranslatorFixture.TestRateRulesResponseTranslator_PerBookingRates"
+                  type="Report.TestSuite.RateRulesDataContractTranslatorFixture"
+                  method="TestRateRulesResponseTranslator_PerBookingRates" time="0.0827783" result="Pass"/>
+            <test name="Report.TestSuite.RateRulesDataContractTranslatorFixture.TestRateRulesResponseTranslator_PerRoomRates"
+                  type="Report.TestSuite.RateRulesDataContractTranslatorFixture"
+                  method="TestRateRulesResponseTranslator_PerRoomRates" time="0.0208451" result="Pass"/>
+            <test name="Report.TestSuite.RateRulesDataContractTranslatorFixture.TestRateRulesRequestTranslator"
+                  type="Report.TestSuite.RateRulesDataContractTranslatorFixture" method="TestRateRulesRequestTranslator"
+                  time="0.0021791" result="Pass"/>
+        </collection>
+        <collection total="2" passed="2" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.Core.ResultStoreTranslatorFixture" time="0.007">
+            <test name="Report.TestSuite.Core.ResultStoreTranslatorFixture.NullConnectorResultShouldTranslateToNullEntity"
+                  type="Report.TestSuite.Core.ResultStoreTranslatorFixture"
+                  method="NullConnectorResultShouldTranslateToNullEntity" time="0.0004689" result="Pass"/>
+            <test name="Report.TestSuite.Core.ResultStoreTranslatorFixture.ValidConnectorResultShouldTranslateToResultStore"
+                  type="Report.TestSuite.Core.ResultStoreTranslatorFixture"
+                  method="ValidConnectorResultShouldTranslateToResultStore" time="0.0064919" result="Pass"/>
+        </collection>
+        <collection total="3" passed="3" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.Core.RoomRatesConnectorResultTranslatorFixture"
+                    time="0.127">
+            <test name="Report.TestSuite.Core.RoomRatesConnectorResultTranslatorFixture.TestCollateConnectorResults_PerBookingRatesOnly"
+                  type="Report.TestSuite.Core.RoomRatesConnectorResultTranslatorFixture"
+                  method="TestCollateConnectorResults_PerBookingRatesOnly" time="0.0958359" result="Pass"/>
+            <test name="Report.TestSuite.Core.RoomRatesConnectorResultTranslatorFixture.TestCollateConnectorResults_PerRoomRatesOnly"
+                  type="Report.TestSuite.Core.RoomRatesConnectorResultTranslatorFixture"
+                  method="TestCollateConnectorResults_PerRoomRatesOnly" time="0.0280953" result="Pass"/>
+            <test name="Report.TestSuite.Core.RoomRatesConnectorResultTranslatorFixture.TestCollateConnectorResults_PerBookingAndPerRoomRatesCollation"
+                  type="Report.TestSuite.Core.RoomRatesConnectorResultTranslatorFixture"
+                  method="TestCollateConnectorResults_PerBookingAndPerRoomRatesCollation" time="0.0027109"
+                  result="Pass"/>
+        </collection>
+        <collection total="2" passed="1" failed="1" skipped="0"
+                    name="Test collection for Report.TestSuite.Connector.RoomRateFixture" time="3.585">
+            <test name="Report.TestSuite.Connector.RoomRateFixture.GetRoomRatesAsync_WithValidRequest_ShouldSucceed"
+                  type="Report.TestSuite.Connector.RoomRateFixture"
+                  method="GetRoomRatesAsync_WithValidRequest_ShouldSucceed" time="3.5745462" result="Fail">
+                <failure exception-type="Xunit.Sdk.NotNullException">
+                    <message><![CDATA[Assert.NotNull() Failure]]></message>
+                    <stack-trace><![CDATA[   at Report.TestSuite.Connector.RoomRateFixture.<GetRoomRatesAsync_WithValidRequest_ShouldSucceed>d__0.MoveNext() in D:\Jenkins\Core\workspace\USG-Dummys-Service\TestSuite\Connector\RoomRateFixture.cs:line 30
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.ValidateEnd(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.GetResult()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.ValidateEnd(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.GetResult()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.ValidateEnd(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.GetResult()]]></stack-trace>
+                </failure>
+            </test>
+            <test name="Report.TestSuite.Connector.RoomRateFixture.GetRoomRatesAsync_WithEmptyUrl_ShouldThrowException"
+                  type="Report.TestSuite.Connector.RoomRateFixture"
+                  method="GetRoomRatesAsync_WithEmptyUrl_ShouldThrowException" time="0.0106279" result="Pass"/>
+        </collection>
+        <collection total="8" passed="8" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.StructureMapServiceLocatorFixture" time="0.274">
+            <test name="Report.TestSuite.StructureMapServiceLocatorFixture.ConstructorDependenciesShouldResolveSpecificTypes"
+                  type="Report.TestSuite.StructureMapServiceLocatorFixture"
+                  method="ConstructorDependenciesShouldResolveSpecificTypes" time="0.1565481" result="Pass"/>
+            <test name="Report.TestSuite.StructureMapServiceLocatorFixture.NoDefaultRegistrationShouldThrowException"
+                  type="Report.TestSuite.StructureMapServiceLocatorFixture"
+                  method="NoDefaultRegistrationShouldThrowException" time="0.0540453" result="Pass"/>
+            <test name="Report.TestSuite.StructureMapServiceLocatorFixture.GetAllInstancesShouldReturnEmptyWhenNoTypeRegistered"
+                  type="Report.TestSuite.StructureMapServiceLocatorFixture"
+                  method="GetAllInstancesShouldReturnEmptyWhenNoTypeRegistered" time="0.0091928" result="Pass"/>
+            <test name="Report.TestSuite.StructureMapServiceLocatorFixture.GetServiceShouldReturnNullForUnregistreredType"
+                  type="Report.TestSuite.StructureMapServiceLocatorFixture"
+                  method="GetServiceShouldReturnNullForUnregistreredType" time="0.0021057" result="Pass"/>
+            <test name="Report.TestSuite.StructureMapServiceLocatorFixture.NamedRegistrationsShouldResolveNamedInstance"
+                  type="Report.TestSuite.StructureMapServiceLocatorFixture"
+                  method="NamedRegistrationsShouldResolveNamedInstance" time="0.0120832" result="Pass"/>
+            <test name="Report.TestSuite.StructureMapServiceLocatorFixture.GetAllInstancesShouldGiveAllRegisteredInstances"
+                  type="Report.TestSuite.StructureMapServiceLocatorFixture"
+                  method="GetAllInstancesShouldGiveAllRegisteredInstances" time="0.0147459" result="Pass"/>
+            <test name="Report.TestSuite.StructureMapServiceLocatorFixture.ConstructorDependenciesWithoutDefaultRegistrationShouldFail"
+                  type="Report.TestSuite.StructureMapServiceLocatorFixture"
+                  method="ConstructorDependenciesWithoutDefaultRegistrationShouldFail" time="0.0100182" result="Pass"/>
+            <test name="Report.TestSuite.StructureMapServiceLocatorFixture.DefaultRegistrationsShouldResolveDefaultInstance"
+                  type="Report.TestSuite.StructureMapServiceLocatorFixture"
+                  method="DefaultRegistrationsShouldResolveDefaultInstance" time="0.015277" result="Pass"/>
+        </collection>
+        <collection total="1" passed="1" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.Core.ActorFixtures.ConfigManagerActorFixture"
+                    time="0.189">
+            <test name="Report.TestSuite.Core.ActorFixtures.ConfigManagerActorFixture.ConfigManagerActorFixture_AllDependanciesCallTest"
+                  type="Report.TestSuite.Core.ActorFixtures.ConfigManagerActorFixture"
+                  method="ConfigManagerActorFixture_AllDependanciesCallTest" time="0.1888284" result="Pass"/>
+        </collection>
+        <collection total="8" passed="8" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.Core.SearchRequestValidatorFixture" time="0.253">
+            <test name="Report.TestSuite.Core.SearchRequestValidatorFixture.SearchRequestValidatorFixture_MaxStayTest"
+                  type="Report.TestSuite.Core.SearchRequestValidatorFixture"
+                  method="SearchRequestValidatorFixture_MaxStayTest" time="0.2092437" result="Pass"/>
+            <test name="Report.TestSuite.Core.SearchRequestValidatorFixture.SearchRequestValidatorFixture_NotValidObjectsTest"
+                  type="Report.TestSuite.Core.SearchRequestValidatorFixture"
+                  method="SearchRequestValidatorFixture_NotValidObjectsTest" time="0.0023012" result="Pass"/>
+            <test name="Report.TestSuite.Core.SearchRequestValidatorFixture.SearchRequestValidatorFixture_SameDayBookingAllowedTest"
+                  type="Report.TestSuite.Core.SearchRequestValidatorFixture"
+                  method="SearchRequestValidatorFixture_SameDayBookingAllowedTest" time="0.0019968" result="Pass"/>
+            <test name="Report.TestSuite.Core.SearchRequestValidatorFixture.SearchRequestValidatorFixture_RateTypeValidationTest"
+                  type="Report.TestSuite.Core.SearchRequestValidatorFixture"
+                  method="SearchRequestValidatorFixture_RateTypeValidationTest" time="0.0158987" result="Pass"/>
+            <test name="Report.TestSuite.Core.SearchRequestValidatorFixture.SearchRequestValidatorFixture_MultiRoomValidation"
+                  type="Report.TestSuite.Core.SearchRequestValidatorFixture"
+                  method="SearchRequestValidatorFixture_MultiRoomValidation" time="0.0135901" result="Pass"/>
+            <test name="Report.TestSuite.Core.SearchRequestValidatorFixture.SearchRequestValidatorFixture_MaxPassengersTest"
+                  type="Report.TestSuite.Core.SearchRequestValidatorFixture"
+                  method="SearchRequestValidatorFixture_MaxPassengersTest" time="0.0031176" result="Pass"/>
+            <test name="Report.TestSuite.Core.SearchRequestValidatorFixture.SearchRequestValidatorFixture_SupportedCultureTest"
+                  type="Report.TestSuite.Core.SearchRequestValidatorFixture"
+                  method="SearchRequestValidatorFixture_SupportedCultureTest" time="0.005112" result="Pass"/>
+            <test name="Report.TestSuite.Core.SearchRequestValidatorFixture.SearchRequestValidatorFixture_AdvancebookingTest"
+                  type="Report.TestSuite.Core.SearchRequestValidatorFixture"
+                  method="SearchRequestValidatorFixture_AdvancebookingTest" time="0.001909" result="Pass"/>
+        </collection>
+        <collection total="5" passed="5" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.Host.SearchResponseProcessorFixture" time="0.039">
+            <test name="Report.TestSuite.Host.SearchResponseProcessorFixture.SearchItineraryCleanupTest"
+                  type="Report.TestSuite.Host.SearchResponseProcessorFixture" method="SearchItineraryCleanupTest"
+                  time="0.0320947" result="Pass"/>
+            <test name="Report.TestSuite.Host.SearchResponseProcessorFixture.FilterDummys_WtihNullFilter_ShouldNotAffectResult"
+                  type="Report.TestSuite.Host.SearchResponseProcessorFixture"
+                  method="FilterDummys_WtihNullFilter_ShouldNotAffectResult" time="0.0021293" result="Pass"/>
+            <test name="Report.TestSuite.Host.SearchResponseProcessorFixture.FilterDummys_WithEmptyFilter_ShouldNotAffectResult"
+                  type="Report.TestSuite.Host.SearchResponseProcessorFixture"
+                  method="FilterDummys_WithEmptyFilter_ShouldNotAffectResult" time="0.0008012" result="Pass"/>
+            <test name="Report.TestSuite.Host.SearchResponseProcessorFixture.FilterDummys_WtihResponseContainingLessDummysThanFilter_ShouldFilteredResults"
+                  type="Report.TestSuite.Host.SearchResponseProcessorFixture"
+                  method="FilterDummys_WtihResponseContainingLessDummysThanFilter_ShouldFilteredResults"
+                  time="0.0022488" result="Pass"/>
+            <test name="Report.TestSuite.Host.SearchResponseProcessorFixture.FilterDummys_WithValidFilters_ShouldKeepDummyIdsFromFilterOnly"
+                  type="Report.TestSuite.Host.SearchResponseProcessorFixture"
+                  method="FilterDummys_WithValidFilters_ShouldKeepDummyIdsFromFilterOnly" time="0.0020238"
+                  result="Pass"/>
+        </collection>
+        <collection total="7" passed="7" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.Host.Validators.RoomRates.StatefulRequestValidatorTests"
+                    time="0.005">
+            <test name="Report.TestSuite.Host.Validators.RoomRates.StatefulRequestValidatorTests.ValidateRequestWithInvalidSuppliers"
+                  type="Report.TestSuite.Host.Validators.RoomRates.StatefulRequestValidatorTests"
+                  method="ValidateRequestWithInvalidSuppliers" time="0.0011606" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.RoomRates.StatefulRequestValidatorTests.ValidateRequestWithNullSuppliers"
+                  type="Report.TestSuite.Host.Validators.RoomRates.StatefulRequestValidatorTests"
+                  method="ValidateRequestWithNullSuppliers" time="0.0006716" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.RoomRates.StatefulRequestValidatorTests.ValidateRequestWithInvalidDummyId"
+                  type="Report.TestSuite.Host.Validators.RoomRates.StatefulRequestValidatorTests"
+                  method="ValidateRequestWithInvalidDummyId" time="0.000697" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.RoomRates.StatefulRequestValidatorTests.ValidateRequestWithValidRequest"
+                  type="Report.TestSuite.Host.Validators.RoomRates.StatefulRequestValidatorTests"
+                  method="ValidateRequestWithValidRequest" time="0.000445" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.RoomRates.StatefulRequestValidatorTests.ValidateRequestWithEmptySuppliers"
+                  type="Report.TestSuite.Host.Validators.RoomRates.StatefulRequestValidatorTests"
+                  method="ValidateRequestWithEmptySuppliers" time="0.0007192" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.RoomRates.StatefulRequestValidatorTests.ValidateRequestWithNullRequest"
+                  type="Report.TestSuite.Host.Validators.RoomRates.StatefulRequestValidatorTests"
+                  method="ValidateRequestWithNullRequest" time="0.0005487" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.RoomRates.StatefulRequestValidatorTests.ValidateRequestWithInvalidSessionId"
+                  type="Report.TestSuite.Host.Validators.RoomRates.StatefulRequestValidatorTests"
+                  method="ValidateRequestWithInvalidSessionId" time="0.0006644" result="Pass"/>
+        </collection>
+        <collection total="1" passed="1" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.Core.RoomRates.DummyRoomRatesManagerFixture"
+                    time="4.278">
+            <test name="Report.TestSuite.Core.RoomRates.DummyRoomRatesManagerFixture.RoomRatesFlow_WithValidInputs_ShouldReturnResponse"
+                  type="Report.TestSuite.Core.RoomRates.DummyRoomRatesManagerFixture"
+                  method="RoomRatesFlow_WithValidInputs_ShouldReturnResponse" time="4.278429" result="Pass"/>
+        </collection>
+        <collection total="1" passed="1" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.Core.ActorFixtures.ConnectorSearchActorFixture"
+                    time="2.749">
+            <test name="Report.TestSuite.Core.ActorFixtures.ConnectorSearchActorFixture.ConnectorSearchActorFixture_AllDependanciesMethodCallTest"
+                  type="Report.TestSuite.Core.ActorFixtures.ConnectorSearchActorFixture"
+                  method="ConnectorSearchActorFixture_AllDependanciesMethodCallTest" time="2.7493691" result="Pass"/>
+        </collection>
+        <collection total="8" passed="8" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.DependencyFixture.DefaultSessionStateManagerFixture"
+                    time="5.086">
+            <test name="Report.TestSuite.DependencyFixture.DefaultSessionStateManagerFixture.TestResultStore_ReadSearchResult_ShouldNotReturnResults"
+                  type="Report.TestSuite.DependencyFixture.DefaultSessionStateManagerFixture"
+                  method="TestResultStore_ReadSearchResult_ShouldNotReturnResults" time="2.9488958" result="Pass"/>
+            <test name="Report.TestSuite.DependencyFixture.DefaultSessionStateManagerFixture.TestResultStore_ReadSearchResult_ShouldReturnSingleResult"
+                  type="Report.TestSuite.DependencyFixture.DefaultSessionStateManagerFixture"
+                  method="TestResultStore_ReadSearchResult_ShouldReturnSingleResult" time="1.0832373" result="Pass"/>
+            <test name="Report.TestSuite.DependencyFixture.DefaultSessionStateManagerFixture.TestResultStore_ReadRoomRatesResult_ShouldNotReturnResults"
+                  type="Report.TestSuite.DependencyFixture.DefaultSessionStateManagerFixture"
+                  method="TestResultStore_ReadRoomRatesResult_ShouldNotReturnResults" time="0.7386118" result="Pass"/>
+            <test name="Report.TestSuite.DependencyFixture.DefaultSessionStateManagerFixture.TestResultStore_ReadRoomRatesResult_ShouldReturnSingleResult"
+                  type="Report.TestSuite.DependencyFixture.DefaultSessionStateManagerFixture"
+                  method="TestResultStore_ReadRoomRatesResult_ShouldReturnSingleResult" time="0.2705279" result="Pass"/>
+            <test name="Report.TestSuite.DependencyFixture.DefaultSessionStateManagerFixture.TestResultStore_ReadSearchResult_PartiallyFaulted"
+                  type="Report.TestSuite.DependencyFixture.DefaultSessionStateManagerFixture"
+                  method="TestResultStore_ReadSearchResult_PartiallyFaulted" time="0.025981" result="Pass"/>
+            <test name="Report.TestSuite.DependencyFixture.DefaultSessionStateManagerFixture.TestResultStore_SaveSearchResult_ShouldSucceed"
+                  type="Report.TestSuite.DependencyFixture.DefaultSessionStateManagerFixture"
+                  method="TestResultStore_SaveSearchResult_ShouldSucceed" time="0.0029877" result="Pass"/>
+            <test name="Report.TestSuite.DependencyFixture.DefaultSessionStateManagerFixture.TestResultStore_SaveRoomRatesResult_ShouldSucceed"
+                  type="Report.TestSuite.DependencyFixture.DefaultSessionStateManagerFixture"
+                  method="TestResultStore_SaveRoomRatesResult_ShouldSucceed" time="0.0020413" result="Pass"/>
+            <test name="Report.TestSuite.DependencyFixture.DefaultSessionStateManagerFixture.TestResultStore_ReadRoomRatesResult_PartiallyFaulted"
+                  type="Report.TestSuite.DependencyFixture.DefaultSessionStateManagerFixture"
+                  method="TestResultStore_ReadRoomRatesResult_PartiallyFaulted" time="0.0141552" result="Pass"/>
+        </collection>
+        <collection total="5" passed="5" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.ConnectorRequestCreatorTests" time="0.014">
+            <test name="Report.TestSuite.ConnectorRequestCreatorTests.TestCreateConnectorRequestsShouldReturnMultipleRequests"
+                  type="Report.TestSuite.ConnectorRequestCreatorTests"
+                  method="TestCreateConnectorRequestsShouldReturnMultipleRequests" time="0.0082665" result="Pass"/>
+            <test name="Report.TestSuite.ConnectorRequestCreatorTests.TestCreateConnectorRequestsNoRateCodes"
+                  type="Report.TestSuite.ConnectorRequestCreatorTests" method="TestCreateConnectorRequestsNoRateCodes"
+                  time="0.003851" result="Pass"/>
+            <test name="Report.TestSuite.ConnectorRequestCreatorTests.TestCreateConnectorRequestsNoRateCodesDummysWithinLimitShouldReturnSingleRequest"
+                  type="Report.TestSuite.ConnectorRequestCreatorTests"
+                  method="TestCreateConnectorRequestsNoRateCodesDummysWithinLimitShouldReturnSingleRequest"
+                  time="0.0006882" result="Pass"/>
+            <test name="Report.TestSuite.ConnectorRequestCreatorTests.TestCreateConnectorRequestsNoLimitsOnDummysAndRateCodesShouldReturnSingleRequest"
+                  type="Report.TestSuite.ConnectorRequestCreatorTests"
+                  method="TestCreateConnectorRequestsNoLimitsOnDummysAndRateCodesShouldReturnSingleRequest"
+                  time="0.0006611" result="Pass"/>
+            <test name="Report.TestSuite.ConnectorRequestCreatorTests.TestCreateConnectorRequestsDummysAndRateCodesWithinLimitShouldReturnSingleRequest"
+                  type="Report.TestSuite.ConnectorRequestCreatorTests"
+                  method="TestCreateConnectorRequestsDummysAndRateCodesWithinLimitShouldReturnSingleRequest"
+                  time="0.0006953" result="Pass"/>
+        </collection>
+        <collection total="2" passed="2" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.Host.Validators.Search.MockUSGTest" time="1.404">
+            <test name="Report.TestSuite.Host.Validators.Search.MockUSGTest.InitWithValidRequestShouldReturnSessionId"
+                  type="Report.TestSuite.Host.Validators.Search.MockUSGTest"
+                  method="InitWithValidRequestShouldReturnSessionId" time="1.3311588" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.Search.MockUSGTest.SearchResultShouldReturnSuccessResponse"
+                  type="Report.TestSuite.Host.Validators.Search.MockUSGTest"
+                  method="SearchResultShouldReturnSuccessResponse" time="0.0724219" result="Pass"/>
+        </collection>
+        <collection total="1" passed="1" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.Core.ActorFixtures.DummySearchBroadcastActorFixture"
+                    time="4.426">
+            <test name="Report.TestSuite.Core.ActorFixtures.DummySearchBroadcastActorFixture.DummySearchBroadcastActorFixture_AllDependanciesMethodCallTest"
+                  type="Report.TestSuite.Core.ActorFixtures.DummySearchBroadcastActorFixture"
+                  method="DummySearchBroadcastActorFixture_AllDependanciesMethodCallTest" time="4.425723"
+                  result="Pass"/>
+        </collection>
+        <collection total="8" passed="8" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.Core.RoomRates.RequestValidationWithMetatdataFixture"
+                    time="0.043">
+            <test name="Report.TestSuite.Core.RoomRates.RequestValidationWithMetatdataFixture.Validate_MultiRoomValidation_ShouldSucceed"
+                  type="Report.TestSuite.Core.RoomRates.RequestValidationWithMetatdataFixture"
+                  method="Validate_MultiRoomValidation_ShouldSucceed" time="0.0225823" result="Pass"/>
+            <test name="Report.TestSuite.Core.RoomRates.RequestValidationWithMetatdataFixture.Validate_NotValidObjects_ShouldReturnFalse"
+                  type="Report.TestSuite.Core.RoomRates.RequestValidationWithMetatdataFixture"
+                  method="Validate_NotValidObjects_ShouldReturnFalse" time="0.0020141" result="Pass"/>
+            <test name="Report.TestSuite.Core.RoomRates.RequestValidationWithMetatdataFixture.Validate_WithSameDayBookingAllowed_ShouldSucceed"
+                  type="Report.TestSuite.Core.RoomRates.RequestValidationWithMetatdataFixture"
+                  method="Validate_WithSameDayBookingAllowed_ShouldSucceed" time="0.0025681" result="Pass"/>
+            <test name="Report.TestSuite.Core.RoomRates.RequestValidationWithMetatdataFixture.Validate_WithRateType_ShouldSucceed"
+                  type="Report.TestSuite.Core.RoomRates.RequestValidationWithMetatdataFixture"
+                  method="Validate_WithRateType_ShouldSucceed" time="0.0066564" result="Pass"/>
+            <test name="Report.TestSuite.Core.RoomRates.RequestValidationWithMetatdataFixture.Validate_WithAdvanceBooking_ShouldSucceed"
+                  type="Report.TestSuite.Core.RoomRates.RequestValidationWithMetatdataFixture"
+                  method="Validate_WithAdvanceBooking_ShouldSucceed" time="0.0018109" result="Pass"/>
+            <test name="Report.TestSuite.Core.RoomRates.RequestValidationWithMetatdataFixture.Validate_WithMaxPassengers_ShouldSucceed"
+                  type="Report.TestSuite.Core.RoomRates.RequestValidationWithMetatdataFixture"
+                  method="Validate_WithMaxPassengers_ShouldSucceed" time="0.002652" result="Pass"/>
+            <test name="Report.TestSuite.Core.RoomRates.RequestValidationWithMetatdataFixture.Validate_WithSupportedCulture_ShouldSucceed"
+                  type="Report.TestSuite.Core.RoomRates.RequestValidationWithMetatdataFixture"
+                  method="Validate_WithSupportedCulture_ShouldSucceed" time="0.0023925" result="Pass"/>
+            <test name="Report.TestSuite.Core.RoomRates.RequestValidationWithMetatdataFixture.Validate_WithMaxStay_ShouldSucceed"
+                  type="Report.TestSuite.Core.RoomRates.RequestValidationWithMetatdataFixture"
+                  method="Validate_WithMaxStay_ShouldSucceed" time="0.0019595" result="Pass"/>
+        </collection>
+        <collection total="12" passed="12" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.Host.Validators.RoomRates.StatelessRequestValidatorTests"
+                    time="0.008">
+            <test name="Report.TestSuite.Host.Validators.RoomRates.StatelessRequestValidatorTests.ValidateRequestWithZeroAdultOccupancies"
+                  type="Report.TestSuite.Host.Validators.RoomRates.StatelessRequestValidatorTests"
+                  method="ValidateRequestWithZeroAdultOccupancies" time="0.0015914" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.RoomRates.StatelessRequestValidatorTests.ValidateRequestWithInvalidDummyId"
+                  type="Report.TestSuite.Host.Validators.RoomRates.StatelessRequestValidatorTests"
+                  method="ValidateRequestWithInvalidDummyId" time="0.0006852" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.RoomRates.StatelessRequestValidatorTests.ValidateRequestWithNullCriteria"
+                  type="Report.TestSuite.Host.Validators.RoomRates.StatelessRequestValidatorTests"
+                  method="ValidateRequestWithNullCriteria" time="0.0005665" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.RoomRates.StatelessRequestValidatorTests.ValidateRequestWithInvalidCheckOutDate"
+                  type="Report.TestSuite.Host.Validators.RoomRates.StatelessRequestValidatorTests"
+                  method="ValidateRequestWithInvalidCheckOutDate" time="0.00063" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.RoomRates.StatelessRequestValidatorTests.ValidateRequestWithEmptySuppliers"
+                  type="Report.TestSuite.Host.Validators.RoomRates.StatelessRequestValidatorTests"
+                  method="ValidateRequestWithEmptySuppliers" time="0.0006028" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.RoomRates.StatelessRequestValidatorTests.ValidateRequestWithNullOccupancies"
+                  type="Report.TestSuite.Host.Validators.RoomRates.StatelessRequestValidatorTests"
+                  method="ValidateRequestWithNullOccupancies" time="0.0006452" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.RoomRates.StatelessRequestValidatorTests.ValidateRequestWithNullSuppliers"
+                  type="Report.TestSuite.Host.Validators.RoomRates.StatelessRequestValidatorTests"
+                  method="ValidateRequestWithNullSuppliers" time="0.0005452" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.RoomRates.StatelessRequestValidatorTests.ValidateRequestWithNullRequest"
+                  type="Report.TestSuite.Host.Validators.RoomRates.StatelessRequestValidatorTests"
+                  method="ValidateRequestWithNullRequest" time="0.0004647" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.RoomRates.StatelessRequestValidatorTests.ValidateRequestWithInvalidCheckInDate"
+                  type="Report.TestSuite.Host.Validators.RoomRates.StatelessRequestValidatorTests"
+                  method="ValidateRequestWithInvalidCheckInDate" time="0.0006425" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.RoomRates.StatelessRequestValidatorTests.ValidateRequestWithInvalidSuppliers"
+                  type="Report.TestSuite.Host.Validators.RoomRates.StatelessRequestValidatorTests"
+                  method="ValidateRequestWithInvalidSuppliers" time="0.0006113" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.RoomRates.StatelessRequestValidatorTests.ValidateRequestWithInvalidStayPeriod"
+                  type="Report.TestSuite.Host.Validators.RoomRates.StatelessRequestValidatorTests"
+                  method="ValidateRequestWithInvalidStayPeriod" time="0.0007806" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.RoomRates.StatelessRequestValidatorTests.ValidateRequestWithEmptyOccupancies"
+                  type="Report.TestSuite.Host.Validators.RoomRates.StatelessRequestValidatorTests"
+                  method="ValidateRequestWithEmptyOccupancies" time="0.0006323" result="Pass"/>
+        </collection>
+        <collection total="8" passed="8" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.Core.RoomRates.ResponseProcessorFixture" time="0.040">
+            <test name="Report.TestSuite.Core.RoomRates.ResponseProcessorFixture.CleanupRoomRatesResultTest_RateOccupancyMissingForOneRoomOption_RoomOptionIsRemoved"
+                  type="Report.TestSuite.Core.RoomRates.ResponseProcessorFixture"
+                  method="CleanupRoomRatesResultTest_RateOccupancyMissingForOneRoomOption_RoomOptionIsRemoved"
+                  time="0.0191551" result="Pass"/>
+            <test name="Report.TestSuite.Core.RoomRates.ResponseProcessorFixture.FilterRateByType_WithFilterOnOneSupplierOfThree_ShouldFilterOnlyRatesForThatOneSupplier"
+                  type="Report.TestSuite.Core.RoomRates.ResponseProcessorFixture"
+                  method="FilterRateByType_WithFilterOnOneSupplierOfThree_ShouldFilterOnlyRatesForThatOneSupplier"
+                  time="0.014931" result="Pass"/>
+            <test name="Report.TestSuite.Core.RoomRates.ResponseProcessorFixture.FilterRateByType_EmptyRate_ShouldReturnNull"
+                  type="Report.TestSuite.Core.RoomRates.ResponseProcessorFixture"
+                  method="FilterRateByType_EmptyRate_ShouldReturnNull" time="0.0007666" result="Pass"/>
+            <test name="Report.TestSuite.Core.RoomRates.ResponseProcessorFixture.CleanupRoomRatesResultTest_NoRatesAvailable_AllRoomOptionsCleared"
+                  type="Report.TestSuite.Core.RoomRates.ResponseProcessorFixture"
+                  method="CleanupRoomRatesResultTest_NoRatesAvailable_AllRoomOptionsCleared" time="0.00055"
+                  result="Pass"/>
+            <test name="Report.TestSuite.Core.RoomRates.ResponseProcessorFixture.CleanupRoomRatesResultTest_OneRoomOptionWithUnavailabelRoom_RoomOptionAndRateOccupancyRemoved"
+                  type="Report.TestSuite.Core.RoomRates.ResponseProcessorFixture"
+                  method="CleanupRoomRatesResultTest_OneRoomOptionWithUnavailabelRoom_RoomOptionAndRateOccupancyRemoved"
+                  time="0.0019158" result="Pass"/>
+            <test name="Report.TestSuite.Core.RoomRates.ResponseProcessorFixture.FilterRateByType_WithFilterOnThreeSupplierOfThree_ShouldFilterRatesForAllThreeSuppliers"
+                  type="Report.TestSuite.Core.RoomRates.ResponseProcessorFixture"
+                  method="FilterRateByType_WithFilterOnThreeSupplierOfThree_ShouldFilterRatesForAllThreeSuppliers"
+                  time="0.0016623" result="Pass"/>
+            <test name="Report.TestSuite.Core.RoomRates.ResponseProcessorFixture.FilterRateByType_WithEmptyFilter_ShouldNotAffectResult"
+                  type="Report.TestSuite.Core.RoomRates.ResponseProcessorFixture"
+                  method="FilterRateByType_WithEmptyFilter_ShouldNotAffectResult" time="0.000588" result="Pass"/>
+            <test name="Report.TestSuite.Core.RoomRates.ResponseProcessorFixture.FilterRateByType_WithNullFilter_ShouldNotAffectResult"
+                  type="Report.TestSuite.Core.RoomRates.ResponseProcessorFixture"
+                  method="FilterRateByType_WithNullFilter_ShouldNotAffectResult" time="0.0005434" result="Pass"/>
+        </collection>
+        <collection total="3" passed="3" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.Core.SearchRequestTranslatorFixture" time="0.024">
+            <test name="Report.TestSuite.Core.SearchRequestTranslatorFixture.NullRequestShouldTRanslateToNull"
+                  type="Report.TestSuite.Core.SearchRequestTranslatorFixture" method="NullRequestShouldTRanslateToNull"
+                  time="0.0021507" result="Pass"/>
+            <test name="Report.TestSuite.Core.SearchRequestTranslatorFixture.ValidCircleRequestShouldTranslateToConnectorRequest"
+                  type="Report.TestSuite.Core.SearchRequestTranslatorFixture"
+                  method="ValidCircleRequestShouldTranslateToConnectorRequest" time="0.0204028" result="Pass"/>
+            <test name="Report.TestSuite.Core.SearchRequestTranslatorFixture.SearchByCityConnectorIsNotImplemented"
+                  type="Report.TestSuite.Core.SearchRequestTranslatorFixture"
+                  method="SearchByCityConnectorIsNotImplemented" time="0.0010167" result="Pass"/>
+        </collection>
+        <collection total="4" passed="4" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.DependencyFixture.MetaDataManagerFixture" time="2.846">
+            <test name="Report.TestSuite.DependencyFixture.MetaDataManagerFixture.GetMetadataAsync_ForInvalidConnectorIdentifier_ShouldReturnNull"
+                  type="Report.TestSuite.DependencyFixture.MetaDataManagerFixture"
+                  method="GetMetadataAsync_ForInvalidConnectorIdentifier_ShouldReturnNull" time="1.8205723"
+                  result="Pass"/>
+            <test name="Report.TestSuite.DependencyFixture.MetaDataManagerFixture.GetMetadataAsync_WithValidConnectorIdentifiers_ShouldReturnMetadata"
+                  type="Report.TestSuite.DependencyFixture.MetaDataManagerFixture"
+                  method="GetMetadataAsync_WithValidConnectorIdentifiers_ShouldReturnMetadata" time="1.0174196"
+                  result="Pass"/>
+            <test name="Report.TestSuite.DependencyFixture.MetaDataManagerFixture.GetMetadataAsync_WithEmptyConnectorIdentifiers_ShouldThrowException"
+                  type="Report.TestSuite.DependencyFixture.MetaDataManagerFixture"
+                  method="GetMetadataAsync_WithEmptyConnectorIdentifiers_ShouldThrowException" time="0.0042758"
+                  result="Pass"/>
+            <test name="Report.TestSuite.DependencyFixture.MetaDataManagerFixture.GetMetadataAsync_WithNullConnectorIdentifiers_ShouldThrowException"
+                  type="Report.TestSuite.DependencyFixture.MetaDataManagerFixture"
+                  method="GetMetadataAsync_WithNullConnectorIdentifiers_ShouldThrowException" time="0.00376"
+                  result="Pass"/>
+        </collection>
+        <collection total="4" passed="4" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.Content.DummyContentTestFixture" time="0.127">
+            <test name="Report.TestSuite.Content.DummyContentTestFixture.AlwaysGetDummyContentByRectangleBound"
+                  type="Report.TestSuite.Content.DummyContentTestFixture" method="AlwaysGetDummyContentByRectangleBound"
+                  time="0.1131009" result="Pass"/>
+            <test name="Report.TestSuite.Content.DummyContentTestFixture.AlwaysGetDummyContentByDummyIds"
+                  type="Report.TestSuite.Content.DummyContentTestFixture" method="AlwaysGetDummyContentByDummyIds"
+                  time="0.0052463" result="Pass"/>
+            <test name="Report.TestSuite.Content.DummyContentTestFixture.AlwaysGetDummyContentBySupplierDummyIds"
+                  type="Report.TestSuite.Content.DummyContentTestFixture"
+                  method="AlwaysGetDummyContentBySupplierDummyIds" time="0.00428" result="Pass"/>
+            <test name="Report.TestSuite.Content.DummyContentTestFixture.AlwaysGetDummyContentByCircleBound"
+                  type="Report.TestSuite.Content.DummyContentTestFixture" method="AlwaysGetDummyContentByCircleBound"
+                  time="0.0039226" result="Pass"/>
+        </collection>
+        <collection total="5" passed="5" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.RoomRatesConnectorRequestCreatorTests" time="0.182">
+            <test name="Report.TestSuite.RoomRatesConnectorRequestCreatorTests.TestCreateConnectorRequests_MultipleSupplierDummyIds_NoRateCodes"
+                  type="Report.TestSuite.RoomRatesConnectorRequestCreatorTests"
+                  method="TestCreateConnectorRequests_MultipleSupplierDummyIds_NoRateCodes" time="0.1780784"
+                  result="Pass"/>
+            <test name="Report.TestSuite.RoomRatesConnectorRequestCreatorTests.TestCreateConnectorRequests_SingleSupplierDummyId_RateCodesWithinLimit_ShouldReturnSingleRequest"
+                  type="Report.TestSuite.RoomRatesConnectorRequestCreatorTests"
+                  method="TestCreateConnectorRequests_SingleSupplierDummyId_RateCodesWithinLimit_ShouldReturnSingleRequest"
+                  time="0.0014286" result="Pass"/>
+            <test name="Report.TestSuite.RoomRatesConnectorRequestCreatorTests.TestCreateConnectorRequests_SingleSupplierDummyId_NoRateCodes_ShouldReturnSingleRequest"
+                  type="Report.TestSuite.RoomRatesConnectorRequestCreatorTests"
+                  method="TestCreateConnectorRequests_SingleSupplierDummyId_NoRateCodes_ShouldReturnSingleRequest"
+                  time="0.0006736" result="Pass"/>
+            <test name="Report.TestSuite.RoomRatesConnectorRequestCreatorTests.TestCreateConnectorRequests_SingleSupplierDummyId_NoLimitOnRateCodes_ShouldReturnSingleRequest"
+                  type="Report.TestSuite.RoomRatesConnectorRequestCreatorTests"
+                  method="TestCreateConnectorRequests_SingleSupplierDummyId_NoLimitOnRateCodes_ShouldReturnSingleRequest"
+                  time="0.0007236" result="Pass"/>
+            <test name="Report.TestSuite.RoomRatesConnectorRequestCreatorTests.TestCreateConnectorRequests_ShouldReturnMultipleRequests"
+                  type="Report.TestSuite.RoomRatesConnectorRequestCreatorTests"
+                  method="TestCreateConnectorRequests_ShouldReturnMultipleRequests" time="0.0013599" result="Pass"/>
+        </collection>
+        <collection total="2" passed="2" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.Content.DummyContentMappingManagerFixture" time="0.043">
+            <test name="Report.TestSuite.Content.DummyContentMappingManagerFixture.MapMasterDummyIds_WithAllDummysAreMapped_ShouldNotCallContentService"
+                  type="Report.TestSuite.Content.DummyContentMappingManagerFixture"
+                  method="MapMasterDummyIds_WithAllDummysAreMapped_ShouldNotCallContentService" time="0.0045643"
+                  result="Pass"/>
+            <test name="Report.TestSuite.Content.DummyContentMappingManagerFixture.MapMasterDummyIds_WithOneDummyIsNotMapped_ShouldCallContentServiceAndMapThatDummy"
+                  type="Report.TestSuite.Content.DummyContentMappingManagerFixture"
+                  method="MapMasterDummyIds_WithOneDummyIsNotMapped_ShouldCallContentServiceAndMapThatDummy"
+                  time="0.0383927" result="Pass"/>
+        </collection>
+        <collection total="1" passed="1" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.Core.ActorFixtures.DummyContentManagerActorFixture"
+                    time="0.053">
+            <test name="Report.TestSuite.Core.ActorFixtures.DummyContentManagerActorFixture.DummyContentManagerActorFixture_AllDependanciesCallTest"
+                  type="Report.TestSuite.Core.ActorFixtures.DummyContentManagerActorFixture"
+                  method="DummyContentManagerActorFixture_AllDependanciesCallTest" time="0.0525753" result="Pass"/>
+        </collection>
+        <collection total="4" passed="4" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.Core.SessionStateTranslatorFixture" time="0.023">
+            <test name="Report.TestSuite.Core.SessionStateTranslatorFixture.TestToSessionEntity_OptionalFieldsAbsent"
+                  type="Report.TestSuite.Core.SessionStateTranslatorFixture"
+                  method="TestToSessionEntity_OptionalFieldsAbsent" time="0.0015791" result="Pass"/>
+            <test name="Report.TestSuite.Core.SessionStateTranslatorFixture.TestToEntityFromSession_OptionalFieldsAbsent"
+                  type="Report.TestSuite.Core.SessionStateTranslatorFixture"
+                  method="TestToEntityFromSession_OptionalFieldsAbsent" time="0.0059176" result="Pass"/>
+            <test name="Report.TestSuite.Core.SessionStateTranslatorFixture.TestToEntityFromSession_AllFieldsWithValues"
+                  type="Report.TestSuite.Core.SessionStateTranslatorFixture"
+                  method="TestToEntityFromSession_AllFieldsWithValues" time="0.0116282" result="Pass"/>
+            <test name="Report.TestSuite.Core.SessionStateTranslatorFixture.TestToSessionEntity_AllFieldsWithValues"
+                  type="Report.TestSuite.Core.SessionStateTranslatorFixture"
+                  method="TestToSessionEntity_AllFieldsWithValues" time="0.0037712" result="Pass"/>
+        </collection>
+        <collection total="2" passed="2" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.Host.DummyControllerTests" time="0.667">
+            <test name="Report.TestSuite.Host.DummyControllerTests.StatefullRoomRateTest"
+                  type="Report.TestSuite.Host.DummyControllerTests" method="StatefullRoomRateTest" time="0.5207545"
+                  result="Pass"/>
+            <test name="Report.TestSuite.Host.DummyControllerTests.StatelessRoomRateTest"
+                  type="Report.TestSuite.Host.DummyControllerTests" method="StatelessRoomRateTest" time="0.1459538"
+                  result="Pass"/>
+        </collection>
+        <collection total="15" passed="15" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.Host.Validators.Search.RequestValidatorTest"
+                    time="0.034">
+            <test name="Report.TestSuite.Host.Validators.Search.RequestValidatorTest.ValidateRequestWithNullOccupancies"
+                  type="Report.TestSuite.Host.Validators.Search.RequestValidatorTest"
+                  method="ValidateRequestWithNullOccupancies" time="0.025043" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.Search.RequestValidatorTest.ValidateRequestWithInvalidStayPeriod"
+                  type="Report.TestSuite.Host.Validators.Search.RequestValidatorTest"
+                  method="ValidateRequestWithInvalidStayPeriod" time="0.0012228" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.Search.RequestValidatorTest.ValidateRequestWithInvalidCheckOutDate"
+                  type="Report.TestSuite.Host.Validators.Search.RequestValidatorTest"
+                  method="ValidateRequestWithInvalidCheckOutDate" time="0.0005963" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.Search.RequestValidatorTest.ValidateRequestWithBothCircleAndRectangleBounds"
+                  type="Report.TestSuite.Host.Validators.Search.RequestValidatorTest"
+                  method="ValidateRequestWithBothCircleAndRectangleBounds" time="0.0014672" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.Search.RequestValidatorTest.ValidateRequestWithInvalidCheckInDate"
+                  type="Report.TestSuite.Host.Validators.Search.RequestValidatorTest"
+                  method="ValidateRequestWithInvalidCheckInDate" time="0.0006559" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.Search.RequestValidatorTest.ValidateRequestWithNullSuppliers"
+                  type="Report.TestSuite.Host.Validators.Search.RequestValidatorTest"
+                  method="ValidateRequestWithNullSuppliers" time="0.0005309" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.Search.RequestValidatorTest.ValidateRequestWithEmptyOccupancies"
+                  type="Report.TestSuite.Host.Validators.Search.RequestValidatorTest"
+                  method="ValidateRequestWithEmptyOccupancies" time="0.000586" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.Search.RequestValidatorTest.ValidateRequestWithBothCircleAndRectangleNullBounds"
+                  type="Report.TestSuite.Host.Validators.Search.RequestValidatorTest"
+                  method="ValidateRequestWithBothCircleAndRectangleNullBounds" time="0.0005865" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.Search.RequestValidatorTest.ValidateRequestWithInvalidRectangle"
+                  type="Report.TestSuite.Host.Validators.Search.RequestValidatorTest"
+                  method="ValidateRequestWithInvalidRectangle" time="0.0008266" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.Search.RequestValidatorTest.ValidateRequestWithNullCriteria"
+                  type="Report.TestSuite.Host.Validators.Search.RequestValidatorTest"
+                  method="ValidateRequestWithNullCriteria" time="0.0005309" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.Search.RequestValidatorTest.ValidateRequestWithNullRequest"
+                  type="Report.TestSuite.Host.Validators.Search.RequestValidatorTest"
+                  method="ValidateRequestWithNullRequest" time="0.0004517" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.Search.RequestValidatorTest.ValidateRequestWithValidInput"
+                  type="Report.TestSuite.Host.Validators.Search.RequestValidatorTest"
+                  method="ValidateRequestWithValidInput" time="0.000242" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.Search.RequestValidatorTest.ValidateRequestWithEmptySuppliers"
+                  type="Report.TestSuite.Host.Validators.Search.RequestValidatorTest"
+                  method="ValidateRequestWithEmptySuppliers" time="0.0005575" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.Search.RequestValidatorTest.ValidateRequestWithInvalidCircle"
+                  type="Report.TestSuite.Host.Validators.Search.RequestValidatorTest"
+                  method="ValidateRequestWithInvalidCircle" time="0.0005828" result="Pass"/>
+            <test name="Report.TestSuite.Host.Validators.Search.RequestValidatorTest.ValidateRequestWithNullBounds"
+                  type="Report.TestSuite.Host.Validators.Search.RequestValidatorTest"
+                  method="ValidateRequestWithNullBounds" time="0.0005324" result="Pass"/>
+        </collection>
+        <collection total="2" passed="2" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.DependencyFixture.MockMetadataManagerFixture"
+                    time="0.314">
+            <test name="Report.TestSuite.DependencyFixture.MockMetadataManagerFixture.MetadataManagerFixture_GetMetadataForInValidConnectorIdentifier"
+                  type="Report.TestSuite.DependencyFixture.MockMetadataManagerFixture"
+                  method="MetadataManagerFixture_GetMetadataForInValidConnectorIdentifier" time="0.0061511"
+                  result="Pass"/>
+            <test name="Report.TestSuite.DependencyFixture.MockMetadataManagerFixture.MetadataManagerFixture_GetMetadataForValidConnectorIdentifier"
+                  type="Report.TestSuite.DependencyFixture.MockMetadataManagerFixture"
+                  method="MetadataManagerFixture_GetMetadataForValidConnectorIdentifier" time="0.3082291"
+                  result="Pass"/>
+        </collection>
+        <collection total="6" passed="5" failed="1" skipped="0"
+                    name="Test collection for Report.TestSuite.Core.ActorFixtures.DummySearchManagerFixture"
+                    time="8.685">
+            <test name="Report.TestSuite.Core.ActorFixtures.DummySearchManagerFixture.DummySearchManagerFixture_SupplierConfingManagerThrowsException"
+                  type="Report.TestSuite.Core.ActorFixtures.DummySearchManagerFixture"
+                  method="DummySearchManagerFixture_SupplierConfingManagerThrowsException" time="6.8374538"
+                  result="Pass"/>
+            <test name="Report.TestSuite.Core.ActorFixtures.DummySearchManagerFixture.DummySearchManagerFixture_TenantConfigManagerThrowsException"
+                  type="Report.TestSuite.Core.ActorFixtures.DummySearchManagerFixture"
+                  method="DummySearchManagerFixture_TenantConfigManagerThrowsException" time="0.2489129" result="Pass"/>
+            <test name="Report.TestSuite.Core.ActorFixtures.DummySearchManagerFixture.DummySearchManagerFixture_DummyContentManagerThrowsException"
+                  type="Report.TestSuite.Core.ActorFixtures.DummySearchManagerFixture"
+                  method="DummySearchManagerFixture_DummyContentManagerThrowsException" time="1.0618542" result="Pass"/>
+            <test name="Report.TestSuite.Core.ActorFixtures.DummySearchManagerFixture.DummySearchManagerFixture_DummySearchTest"
+                  type="Report.TestSuite.Core.ActorFixtures.DummySearchManagerFixture"
+                  method="DummySearchManagerFixture_DummySearchTest" time="0.248917" result="Pass"/>
+            <test name="Report.TestSuite.Core.ActorFixtures.DummySearchManagerFixture.DummySearchManagerFixture_PartialFailureTest"
+                  type="Report.TestSuite.Core.ActorFixtures.DummySearchManagerFixture"
+                  method="DummySearchManagerFixture_PartialFailureTest" time="0.1542482" result="Fail">
+                <failure exception-type="Xunit.Sdk.TrueException">
+                    <message><![CDATA[Assert.True() Failure\r\nExpected: True\r\nActual:   False]]></message>
+                    <stack-trace><![CDATA[   at Report.TestSuite.Core.ActorFixtures.DummySearchManagerFixture.<DummySearchManagerFixture_PartialFailureTest>d__17.MoveNext() in D:\Jenkins\Core\workspace\USG-Dummys-Service\TestSuite\Core\DummySearchManagerFixture.cs:line 265
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.ValidateEnd(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.GetResult()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.ValidateEnd(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.GetResult()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.ValidateEnd(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.GetResult()]]></stack-trace>
+                </failure>
+            </test>
+            <test name="Report.TestSuite.Core.ActorFixtures.DummySearchManagerFixture.DummySearchManagerFixture_MetadataManagerThrowsException"
+                  type="Report.TestSuite.Core.ActorFixtures.DummySearchManagerFixture"
+                  method="DummySearchManagerFixture_MetadataManagerThrowsException" time="0.1331905" result="Pass"/>
+        </collection>
+        <collection total="8" passed="8" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.ResultStateManagerFixture" time="5.370">
+            <test name="Report.TestSuite.ResultStateManagerFixture.TestPurgeStateShouldSucceed"
+                  type="Report.TestSuite.ResultStateManagerFixture" method="TestPurgeStateShouldSucceed"
+                  time="3.6312434" result="Pass"/>
+            <test name="Report.TestSuite.ResultStateManagerFixture.TestCreateStateShouldSucceed"
+                  type="Report.TestSuite.ResultStateManagerFixture" method="TestCreateStateShouldSucceed"
+                  time="0.0096823" result="Pass"/>
+            <test name="Report.TestSuite.ResultStateManagerFixture.TestPurgeStateShouldThrowException"
+                  type="Report.TestSuite.ResultStateManagerFixture" method="TestPurgeStateShouldThrowException"
+                  time="0.0072011" result="Pass"/>
+            <test name="Report.TestSuite.ResultStateManagerFixture.TestGetStatusBeforeInitialize"
+                  type="Report.TestSuite.ResultStateManagerFixture" method="TestGetStatusBeforeInitialize"
+                  time="0.1401411" result="Pass"/>
+            <test name="Report.TestSuite.ResultStateManagerFixture.TestGetStatusBeforeCreationShouldThrowException"
+                  type="Report.TestSuite.ResultStateManagerFixture"
+                  method="TestGetStatusBeforeCreationShouldThrowException" time="0.1088615" result="Pass"/>
+            <test name="Report.TestSuite.ResultStateManagerFixture.TestParallelWrites"
+                  type="Report.TestSuite.ResultStateManagerFixture" method="TestParallelWrites" time="1.3714943"
+                  result="Pass"/>
+            <test name="Report.TestSuite.ResultStateManagerFixture.TestResultStateManagerFullFlow"
+                  type="Report.TestSuite.ResultStateManagerFixture" method="TestResultStateManagerFullFlow"
+                  time="0.0798079" result="Pass"/>
+            <test name="Report.TestSuite.ResultStateManagerFixture.TestSaveStatusShouldSucceed"
+                  type="Report.TestSuite.ResultStateManagerFixture" method="TestSaveStatusShouldSucceed" time="0.021951"
+                  result="Pass"/>
+        </collection>
+        <collection total="1" passed="1" failed="0" skipped="0"
+                    name="Test collection for Report.TestSuite.Core.ActorFixtures.DummySearchCordinatorActorFixture"
+                    time="4.615">
+            <test name="Report.TestSuite.Core.ActorFixtures.DummySearchCordinatorActorFixture.DummySearchCordinatorActorFixture_AllDependanciesMethodCallTest"
+                  type="Report.TestSuite.Core.ActorFixtures.DummySearchCordinatorActorFixture"
+                  method="DummySearchCordinatorActorFixture_AllDependanciesMethodCallTest" time="4.6148357"
+                  result="Pass"/>
+        </collection>
+    </assembly>
+</assemblies>

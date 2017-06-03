@@ -27,6 +27,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -174,6 +175,25 @@ public class JunitXmlPluginTest {
                         Tuple.tuple("message-retried-2", "trace-retried-2"),
                         Tuple.tuple("message-retried-3", "trace-retried-3")
                 );
+    }
+
+    @Test
+    public void shouldReadCdataMessage() throws Exception {
+        process(
+                "junitdata/TEST-test.CdataMessage.xml", "TEST-test.SampleTest.xml"
+        );
+
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(1)).visitTestResult(captor.capture());
+
+        assertThat(captor.getAllValues())
+                .extracting(TestResult::getStatusDetails)
+                .extracting(StatusDetails::getMessage, StatusDetails::getTrace)
+                .containsExactlyInAnyOrder(
+                        tuple("some-message", "some-trace")
+                );
+
     }
 
     private void process(String... strings) throws IOException {
