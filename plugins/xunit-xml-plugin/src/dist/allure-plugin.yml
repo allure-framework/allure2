@@ -1,0 +1,5 @@
+id: xunit-xml
+name: XUnit XML v2 Plugin
+description: The plugin that adds support for results in Xunit.net xml data format.
+extensions:
+  - io.qameta.allure.xunitxml.XunitXmlPlugin

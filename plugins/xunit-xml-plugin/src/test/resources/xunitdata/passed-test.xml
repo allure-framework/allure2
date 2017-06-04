@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<assemblies>
+    <assembly>
+        <collection>
+            <test name="Some test"
+                  type="org.example.XunitTest"
+                  method="passedTest" time="0.0445156"
+                  result="Pass"/>
+        </collection>
+    </assembly>
+</assemblies>
