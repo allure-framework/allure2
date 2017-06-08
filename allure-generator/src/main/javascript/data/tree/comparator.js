@@ -8,6 +8,10 @@ function byDuration(a, b) {
     return a.time.duration < b.time.duration ? -1 : 1;
 }
 
+function byMaxDuration(a, b) {
+    return a.time.maxDuration < b.time.maxDuration ? -1 : 1;
+}
+
 function byNodeStatus(a, b) {
     return values.indexOf(a.status) > values.indexOf(b.status) ? -1 : 1;
 }
@@ -38,7 +42,7 @@ export default function getComparator({sorter, ascending}) {
         case 'sorter.name':
             return (a, b) => direction * compare(a, b, byName, byName);
         case 'sorter.duration':
-            return (a, b) => direction * compare(a, b, byDuration, byDuration);
+            return (a, b) => direction * compare(a, b, byDuration, byMaxDuration);
         case 'sorter.status':
             return (a, b) => direction * compare(a, b, byNodeStatus, byGroupStatuses);
         default:
