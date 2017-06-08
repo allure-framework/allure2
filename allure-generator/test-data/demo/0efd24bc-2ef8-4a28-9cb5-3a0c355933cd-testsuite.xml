@@ -25,8 +25,18 @@
             <steps/>
             <attachments/>
             <parameters>
-                <parameter name="first" value="a" kind="argument"/>
-                <parameter name="second" value="b" kind="argument"/>
+                <parameter name="arg0" value="jkasdkjas jkfbasdjkfb jlasbdfj
+                 kajsndkjan JKDNJaksn da
+                 daskjdb jkansdkjn aklsNDK aklsd
+                 kajsBDKJanjks dnkjasnBJKD JKAsnd kla
+                 naskjdbkjs DJKASN KJDNKJ ANSKLD a
+                 dsdnfkjsdnJFKNASJKFNKJ SANDFJK ASDNLKFN ASKLDF
+                 AJKSDNLK Asjdklajskl djkasBFKJsdbnfkladsnklfmdskl fnasdmnf
+                 sDFKASBDKJFN AKJSDNFKJ ANSDJKFNJK SADNKLFNASDKL NFKJASDNF basdljfb asbdfmb asdljbfl sabdlnfblkasd blfkbasdlk fbknasdbkfl as" kind="argument"/>
+                <parameter name="arg1" value="jkasdbkfj asdkjlf jksadbfjnbsnfjksdfkl jdksfghjegkfn kasfm anskdfnkasf" kind="argument"/>
+                <parameter name="arg2" value="kjb jabsjfdb ajksnbdfk nasjkdfba kdsnbknasdn kjfsdlfn kjasd f nakls dfnasdf" kind="argument"/>
+                <parameter name="arg3" value="njkasndka bsanf asbdfbk jsadnf;kasnjdfb sadkfnkadjs nf;kas ndf;kjasdf" kind="argument"/>
+                <parameter name="arg4" value="kjnjdnfksdf sdf" kind="argument"/>
             </parameters>
             <labels>
                 <label name="host" value="my.cool.host.com"/>
