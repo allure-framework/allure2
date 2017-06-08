@@ -1,4 +1,6 @@
 (function () {
+    var settings = allure.getPluginSettings('screen-diff', {diffType: 'diff'});
+
     function renderImage(src) {
         return '<div class="screen-diff__container">' +
             '<img class="screen-diff__image" src="data/attachments/' + src + '">' +
@@ -45,12 +47,9 @@
             'click [name="screen-diff-type"]': 'onDiffTypeChange',
             'mousemove .screen-diff__overlay': 'onOverlayMove'
         },
-        initialize: function () {
-            this.diffType = 'diff';
-        },
         templateContext: function () {
             return {
-                diffType: this.diffType
+                diffType: settings.get('diffType')
             }
         },
         template: function (data) {
@@ -76,8 +75,9 @@
             overImage.width(overImage.width());
         },
         onRender: function () {
-            this.$('[name="screen-diff-type"][value="' + this.diffType + '"]').prop('checked', true);
-            if (this.diffType === 'overlay') {
+            const diffType = settings.get('diffType');
+            this.$('[name="screen-diff-type"][value="' + diffType + '"]').prop('checked', true);
+            if (diffType === 'overlay') {
                 this.$('.screen-diff__image-over img').on('load', this.adjustImageSize.bind(this));
             }
         },
@@ -89,7 +89,7 @@
             this.$('.screen-diff__image-over').width(delta);
         },
         onDiffTypeChange: function (event) {
-            this.diffType = event.target.value;
+            settings.save('diffType', event.target.value);
             this.render();
         }
     });
