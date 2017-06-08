@@ -1,9 +1,11 @@
 package io.qameta.allure;
 
+import io.qameta.allure.option.ConfigOptions;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.mockito.ArgumentCaptor;
 
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -19,6 +21,8 @@ import static io.qameta.allure.ExitCode.NO_ERROR;
 import static io.qameta.allure.testdata.TestData.randomPort;
 import static io.qameta.allure.testdata.TestData.randomString;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -108,7 +112,7 @@ public class CommandLineTest {
         final Path secondResult = folder.newFolder().toPath();
         final List<Path> results = Arrays.asList(firstResult, secondResult);
 
-        when(commands.generate(report, results, false, null))
+        when(commands.generate(eq(report), eq(results), eq(false), any(ConfigOptions.class)))
                 .thenReturn(NO_ERROR);
 
         final Optional<ExitCode> exitCode = commandLine.parse(
@@ -119,7 +123,7 @@ public class CommandLineTest {
                 .isEmpty();
 
         final ExitCode code = commandLine.run();
-        verify(commands, times(1)).generate(report, results, false, null);
+        verify(commands, times(1)).generate(eq(report), eq(results), eq(false), any(ConfigOptions.class));
         assertThat(code)
                 .isEqualTo(NO_ERROR);
     }
@@ -198,10 +202,17 @@ public class CommandLineTest {
         assertThat(code)
                 .isEmpty();
 
-        when(commands.serve(Arrays.asList(first, second), port, profile)).thenReturn(NO_ERROR);
+        final ArgumentCaptor<ConfigOptions> captor = ArgumentCaptor.forClass(ConfigOptions.class);
+
+        when(commands.serve(eq(Arrays.asList(first, second)), eq(port), captor.capture())).thenReturn(NO_ERROR);
         final ExitCode run = commandLine.run();
         assertThat(run)
                 .isEqualTo(NO_ERROR);
+
+        assertThat(captor.getAllValues())
+                .hasSize(1)
+                .extracting(ConfigOptions::getProfile)
+                .containsExactly(profile);
     }
 
     @Test
@@ -219,7 +230,7 @@ public class CommandLineTest {
         assertThat(exitCode)
                 .isEmpty();
 
-        when(commands.listPlugins(null)).thenReturn(NO_ERROR);
+        when(commands.listPlugins(any(ConfigOptions.class))).thenReturn(NO_ERROR);
         final ExitCode run = commandLine.run();
         assertThat(run)
                 .isEqualTo(NO_ERROR);

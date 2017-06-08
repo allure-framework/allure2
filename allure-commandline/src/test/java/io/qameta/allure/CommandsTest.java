@@ -1,5 +1,6 @@
 package io.qameta.allure;
 
+import io.qameta.allure.option.ConfigOptions;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -11,6 +12,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -24,7 +27,9 @@ public class CommandsTest {
     public void shouldNotFailWhenListPluginsWithoutConfig() throws Exception {
         final Path home = folder.newFolder().toPath();
         final Commands commands = new Commands(home);
-        final ExitCode exitCode = commands.listPlugins("some-profile");
+        final ConfigOptions options = mock(ConfigOptions.class);
+        when(options.getProfile()).thenReturn("some-profile");
+        final ExitCode exitCode = commands.listPlugins(options);
 
         assertThat(exitCode)
                 .isEqualTo(ExitCode.NO_ERROR);
@@ -47,8 +52,10 @@ public class CommandsTest {
         final Path home = folder.newFolder().toPath();
         createConfig(home, "allure-test.yml");
 
+        final ConfigOptions options = mock(ConfigOptions.class);
+        when(options.getProfile()).thenReturn("test");
         final Commands commands = new Commands(home);
-        final ExitCode exitCode = commands.listPlugins("test");
+        final ExitCode exitCode = commands.listPlugins(options);
 
         assertThat(exitCode)
                 .isEqualTo(ExitCode.NO_ERROR);
@@ -59,8 +66,11 @@ public class CommandsTest {
         final Path home = folder.newFolder().toPath();
         createConfig(home, "allure-test.yml");
 
+        final ConfigOptions options = mock(ConfigOptions.class);
+        when(options.getProfile()).thenReturn("test");
+
         final Commands commands = new Commands(home);
-        final CommandlineConfig config = commands.getConfig("test");
+        final CommandlineConfig config = commands.getConfig(options);
         assertThat(config)
                 .isNotNull();
 
