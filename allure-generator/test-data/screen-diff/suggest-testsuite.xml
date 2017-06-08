@@ -8,6 +8,7 @@
 			<title>suggest</title>
 			<description></description>
 			<labels>
+				<label name="testType" value="screenshotDiff"/>
 			</labels>
 			<steps>
 			</steps>
@@ -27,6 +28,7 @@
 			<title>autocorrect</title>
 			<description></description>
 			<labels>
+				<label name="testType" value="screenshotDiff"/>
 			</labels>
 			<steps>
 			</steps>

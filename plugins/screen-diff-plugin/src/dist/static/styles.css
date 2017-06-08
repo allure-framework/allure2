@@ -18,6 +18,8 @@
 .screen-diff__image-over {
   top: 0;
   left: 0;
+  bottom: 0;
+  background: #fff;
   position: absolute;
   overflow: hidden;
   box-shadow: 2px 0 1px -1px #aaa;
