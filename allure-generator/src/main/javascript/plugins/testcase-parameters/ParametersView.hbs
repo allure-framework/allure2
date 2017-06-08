@@ -1,10 +1,10 @@
 {{#if parameters.length}}
 <h3>{{t 'testCase.parameters.name'}}</h3>
     {{#each parameters}}
-        <div class="testcase-environment">
+        <div class="testcase-environment long-line line-ellipsis">
             <span class="testcase-environment__key">{{#if name}}{{name}}{{else}}&lt;null&gt;{{/if}}</span>:
             {{#if value}}
-                {{linky value}}
+                <span>{{linky value}}</span>
             {{else}}
                 null
             {{/if}}
