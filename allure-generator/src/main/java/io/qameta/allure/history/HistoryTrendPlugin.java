@@ -87,10 +87,9 @@ public class HistoryTrendPlugin implements Reader, Aggregator, Widget {
                 .flatMap(results -> results.getResults().stream())
                 .map(TestResult::getStatus)
                 .collect(Statistic::new, ExtraStatisticMethods::update, ExtraStatisticMethods::merge);
-        final ExecutorInfo latest = extractLatestExecutor(launchesResults);
         final HistoryTrendItem item = new HistoryTrendItem()
                 .withStatistics(statistic)
-                .withExecutorInfo(latest);
+                .withExecutorInfo(extractLatestExecutor(launchesResults));
 
         final List<HistoryTrendItem> data = launchesResults.stream()
                 .map(results -> results.getExtra(HISTORY_TREND, ArrayList<HistoryTrendItem>::new))
@@ -113,6 +112,7 @@ public class HistoryTrendPlugin implements Reader, Aggregator, Widget {
                 .filter(ExecutorInfo.class::isInstance)
                 .map(ExecutorInfo.class::cast)
                 .collect(Collectors.toList());
-        return Collections.max(executors, Comparator.comparing(e -> Integer.valueOf(e.getBuildId())));
+        return executors.isEmpty() ? null : Collections.max(executors,
+                Comparator.comparing(e -> Integer.valueOf(e.getBuildId())));
     }
 }
