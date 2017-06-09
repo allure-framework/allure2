@@ -8,7 +8,9 @@ import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
+import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.ExtraStatisticMethods;
+import io.qameta.allure.entity.HistoryTrendItem;
 import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.TestResult;
 
@@ -18,7 +20,10 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -33,8 +38,8 @@ public class HistoryTrendPlugin implements Reader, Aggregator, Widget {
     private static final String HISTORY_TREND = "history-trend";
 
     //@formatter:off
-    private static final TypeReference<List<Statistic>> HISTORY_TYPE =
-        new TypeReference<List<Statistic>>() {};
+    private static final TypeReference<List<HistoryTrendItem>> HISTORY_TYPE =
+        new TypeReference<List<HistoryTrendItem>>() {};
     //@formatter:on
 
     @Override
@@ -46,7 +51,7 @@ public class HistoryTrendPlugin implements Reader, Aggregator, Widget {
 
         if (Files.exists(historyFile)) {
             try (InputStream is = Files.newInputStream(historyFile)) {
-                final List<Statistic> history = context.getValue().readValue(is, HISTORY_TYPE);
+                final List<HistoryTrendItem> history = context.getValue().readValue(is, HISTORY_TYPE);
                 visitor.visitExtra(HISTORY_TREND, history);
             } catch (IOException e) {
                 visitor.error("Could not read history-trend file " + historyFile, e);
@@ -58,8 +63,7 @@ public class HistoryTrendPlugin implements Reader, Aggregator, Widget {
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
                           final Path outputDirectory) throws IOException {
-        final List<Statistic> limited = getHistoryTrendData(launchesResults);
-
+        final List<HistoryTrendItem> limited = getHistoryTrendData(launchesResults);
         final JacksonContext context = configuration.requireContext(JacksonContext.class);
         final Path historyFolder = Files.createDirectories(outputDirectory.resolve("history"));
         final Path historyFile = historyFolder.resolve(HISTORY_TREND_JSON);
@@ -78,22 +82,37 @@ public class HistoryTrendPlugin implements Reader, Aggregator, Widget {
         return HISTORY_TREND;
     }
 
-    private List<Statistic> getHistoryTrendData(final List<LaunchResults> launchesResults) {
+    private List<HistoryTrendItem> getHistoryTrendData(final List<LaunchResults> launchesResults) {
         final Statistic statistic = launchesResults.stream()
                 .flatMap(results -> results.getResults().stream())
                 .map(TestResult::getStatus)
                 .collect(Statistic::new, ExtraStatisticMethods::update, ExtraStatisticMethods::merge);
+        final ExecutorInfo latest = extractLatestExecutor(launchesResults);
+        final HistoryTrendItem item = new HistoryTrendItem()
+                .withStatistics(statistic)
+                .withExecutorInfo(latest);
 
-        final List<Statistic> data = launchesResults.stream()
-                .map(results -> results.getExtra(HISTORY_TREND, ArrayList<Statistic>::new))
+        final List<HistoryTrendItem> data = launchesResults.stream()
+                .map(results -> results.getExtra(HISTORY_TREND, ArrayList<HistoryTrendItem>::new))
                 .reduce(new ArrayList<>(), (first, second) -> {
                     first.addAll(second);
                     return first;
                 });
 
         return Stream.concat(
-                Stream.of(statistic),
+                Stream.of(item),
                 data.stream()
         ).limit(20).collect(Collectors.toList());
+    }
+
+    private static ExecutorInfo extractLatestExecutor(final List<LaunchResults> launches) {
+        final List<ExecutorInfo> executors = launches.stream()
+                .map(launch -> launch.getExtra("executor"))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .filter(ExecutorInfo.class::isInstance)
+                .map(ExecutorInfo.class::cast)
+                .collect(Collectors.toList());
+        return Collections.max(executors, Comparator.comparing(e -> Integer.valueOf(e.getBuildId())));
     }
 }
