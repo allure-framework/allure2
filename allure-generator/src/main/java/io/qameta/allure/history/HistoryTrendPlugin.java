@@ -20,7 +20,6 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -88,8 +87,8 @@ public class HistoryTrendPlugin implements Reader, Aggregator, Widget {
                 .map(TestResult::getStatus)
                 .collect(Statistic::new, ExtraStatisticMethods::update, ExtraStatisticMethods::merge);
         final HistoryTrendItem item = new HistoryTrendItem()
-                .withStatistics(statistic)
-                .withExecutorInfo(extractLatestExecutor(launchesResults));
+                .withStatistics(statistic);
+        extractLatestExecutor(launchesResults).ifPresent(item::setExecutorInfo);
 
         final List<HistoryTrendItem> data = launchesResults.stream()
                 .map(results -> results.getExtra(HISTORY_TREND, ArrayList<HistoryTrendItem>::new))
@@ -104,15 +103,15 @@ public class HistoryTrendPlugin implements Reader, Aggregator, Widget {
         ).limit(20).collect(Collectors.toList());
     }
 
-    private static ExecutorInfo extractLatestExecutor(final List<LaunchResults> launches) {
-        final List<ExecutorInfo> executors = launches.stream()
+    private static Optional<ExecutorInfo> extractLatestExecutor(final List<LaunchResults> launches) {
+        final Comparator<ExecutorInfo> comparator = Comparator.comparing(e -> Integer.valueOf(e.getBuildId()));
+        return launches.stream()
                 .map(launch -> launch.getExtra("executor"))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .filter(ExecutorInfo.class::isInstance)
                 .map(ExecutorInfo.class::cast)
-                .collect(Collectors.toList());
-        return executors.isEmpty() ? null : Collections.max(executors,
-                Comparator.comparing(e -> Integer.valueOf(e.getBuildId())));
+                .sorted(comparator.reversed())
+                .findFirst();
     }
 }
