@@ -1,3 +1,3 @@
 import EnvironmentWidget from './EnvironmentWidget';
 
-allure.api.addWidget('environment', EnvironmentWidget);
+allure.api.addWidget('widgets', 'environment', EnvironmentWidget);

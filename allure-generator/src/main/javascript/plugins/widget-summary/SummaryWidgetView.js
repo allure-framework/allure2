@@ -2,7 +2,8 @@ import './styles.css';
 import {View} from 'backbone.marionette';
 import template from './SummaryWidgetView.hbs';
 import {regions} from '../../decorators';
-import StatusChart from '../tab-graph/charts/StatusChart';
+import PieChartView from '../../components/graph-pie-chart/PieChartView';
+
 
 @regions({
     chart: '.summary-widget__chart'
@@ -10,9 +11,13 @@ import StatusChart from '../tab-graph/charts/StatusChart';
 class SummaryWidgetView extends View {
     template = template;
 
+    initialize(){
+        this.model = this.model.getWidgetData('summary');
+    }
+
     onRender() {
-        this.showChildView('chart', new StatusChart({
-            statistic: this.model.get('statistic'),
+        this.showChildView('chart', new PieChartView({
+            model: this.model,
             showLegend: false
         }));
     }

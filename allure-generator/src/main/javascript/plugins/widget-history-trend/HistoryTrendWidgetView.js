@@ -2,7 +2,7 @@ import './styles.css';
 import template from './HistoryTrendWidgetView.hbs';
 import {View} from 'backbone.marionette';
 import {className, regions} from '../../decorators/index';
-import TestTrendChart from '../tab-graph/charts/TestTrendChart';
+import TrendChartView from '../../components/graph-trend-chart/TrendChartView';
 
 @regions({
     chart: '.history-trend__chart'
@@ -11,8 +11,12 @@ import TestTrendChart from '../tab-graph/charts/TestTrendChart';
 class HistoryTrendWidgetView extends View {
     template = template;
 
+    initialize() {
+        this.model = this.model.getWidgetData('history-trend');
+    }
+
     onRender() {
-        this.showChildView('chart', new TestTrendChart({
+        this.showChildView('chart', new TrendChartView({
             items: this.model.get('items')
         }));
     }

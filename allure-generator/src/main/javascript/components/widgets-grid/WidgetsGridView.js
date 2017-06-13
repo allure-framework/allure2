@@ -5,6 +5,8 @@ import Sortable from 'sortablejs';
 import settings from '../../util/settings';
 import {className} from '../../decorators';
 import pluginsRegistry from '../../util/pluginsRegistry';
+//import {fetchAndShow} from '../../util/loading';
+
 
 const widgetTpl = (id) => `<div class="widget island" data-id="${id}">
     <div class="widget__handle">
@@ -16,13 +18,15 @@ const colTpl = '<div class="widgets-grid__col"></div>';
 
 @className('widgets-grid')
 class WidgetsGridView extends View {
-    template() {
-        return '';
+    template = () => '';
+
+    initialize() {
+        this.widgets = pluginsRegistry.widgets[this.options.tabName];
     }
 
     onRender() {
         this.getWidgetsArrangement().map(col => {
-            return col.map(widgetName => [widgetName, pluginsRegistry.widgets[widgetName]]);
+            return col.map(widgetName => [widgetName, this.widgets[widgetName]]);
         }).forEach(widgetCol => {
             const col = $(colTpl);
             this.$el.append(col);
@@ -40,10 +44,11 @@ class WidgetsGridView extends View {
 
     getWidgetsArrangement() {
         const savedData = settings.get('widgets') || [[], []];
+
         const storedWidgets = savedData.map(col => {
-            return col.filter(widgetName => pluginsRegistry.widgets[widgetName]);
+            return col.filter(widgetName => this.widgets[widgetName]);
         });
-        Object.keys(pluginsRegistry.widgets).forEach(widgetName => {
+        Object.keys(this.widgets).forEach(widgetName => {
             if (storedWidgets.every(col => col.indexOf(widgetName) === -1)) {
                 const freeColumn = storedWidgets.reduce((smallestCol, col) =>
                     col.length < smallestCol.length ? col : smallestCol
@@ -61,13 +66,12 @@ class WidgetsGridView extends View {
     }
 
     addWidget(col, name, Widget) {
-        let data = this.model.getWidgetData(name);
-        data.set('widget', name);
-
         const el = $(widgetTpl(name));
         col.append(el);
+
         this.addRegion(name, {el: el.find('.widget__body')});
-        this.getRegion(name).show(new Widget({model: data}));
+       /// fetchAndShow(this, name, this.model, new Widget({model: this.model}))
+        this.getRegion(name).show(new Widget({model: this.model}));
     }
 }
 

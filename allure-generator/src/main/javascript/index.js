@@ -15,6 +15,10 @@ import './plugins/tab-xunit';
 import './plugins/tab-graph';
 import './plugins/tab-timeline';
 
+import './plugins/widget-status';
+import './plugins/widget-severity';
+import './plugins/widget-duration';
+
 import './plugins/widget-summary';
 import './plugins/widget-history-trend';
 import './plugins/widget-launch';

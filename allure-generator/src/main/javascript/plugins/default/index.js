@@ -1,4 +1,4 @@
-import OverviewLayout from '../../layouts/overview/OverivewLayout';
+import OverviewLayout from '../../layouts/overview/OverviewLayout';
 
 allure.api.addTab('', {
     title: 'tab.overview.name', icon: 'fa fa-home',

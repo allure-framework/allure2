@@ -1,3 +1,3 @@
 import HistoryTrendWidgetView from './HistoryTrendWidgetView';
 
-allure.api.addWidget('history-trend', HistoryTrendWidgetView);
+allure.api.addWidget('widgets', 'history-trend', HistoryTrendWidgetView);

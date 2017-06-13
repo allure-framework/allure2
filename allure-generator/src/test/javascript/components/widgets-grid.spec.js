@@ -14,11 +14,13 @@ describe('WidgetsGridView', function() {
     beforeEach(() => {
         settings.clear();
         pluginsRegistry.widgets = {
-            a: View,
-            b: View,
-            c: View,
-            d: View,
-            e: View
+            group: {
+                a: View,
+                b: View,
+                c: View,
+                d: View,
+                e: View
+            }
         };
         this.model = new WidgetsModel({
             plugins: {
@@ -27,7 +29,7 @@ describe('WidgetsGridView', function() {
                 c: {}
             }
         });
-        this.view = new WidgetsGridView({model: this.model}).render();
+        this.view = new WidgetsGridView({model: this.model, tabName: 'group'}).render();
         this.view.onRender();
         this.el = new PageObject(this.view.$el);
     });

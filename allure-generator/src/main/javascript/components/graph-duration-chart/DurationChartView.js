@@ -1,23 +1,21 @@
-import BaseChartView from '../../../components/chart/BaseChartView';
+import BaseChartView from '../../components/graph-base/BaseChartView';
 import {scaleLinear, scaleSqrt} from 'd3-scale';
-import {histogram, max, median} from 'd3-array';
-import PopoverView from '../../../components/popover/PopoverView';
-import escape from '../../../util/escape';
-import duration from '../../../helpers/duration';
-import translate from '../../../helpers/t';
+import {histogram, max} from 'd3-array';
+import PopoverView from '../../components/popover/PopoverView';
+import escape from '../../util/escape';
+import duration from '../../helpers/duration';
+import translate from '../../helpers/t';
 
 
 export default class DurationChart extends BaseChartView {
 
     initialize() {
-        this.x = scaleLinear();
-        this.y = scaleSqrt();
-        this.tooltip = new PopoverView({position: 'right'});
-        this.data = this.getChartData();
+        this.collection = this.model;
+        this.getChartData();
     }
 
     getChartData() {
-        return this.data = this.collection.toJSON().map(testcase => ({
+        this.data = this.collection.toJSON().map(testcase => ({
             value: testcase.time.duration,
             name: testcase.name
         })).filter(testcase => {
@@ -26,7 +24,7 @@ export default class DurationChart extends BaseChartView {
     }
 
     onAttach() {
-        if (this.data.length) {
+        if (this.data && this.data.length) {
             this.doShow();
         } else {
             this.$el.html(`<div class="widget__noitems">${translate('chart.duration.empty')}</div>`);
@@ -35,6 +33,10 @@ export default class DurationChart extends BaseChartView {
     }
 
     doShow() {
+        this.x = scaleLinear();
+        this.y = scaleSqrt();
+        this.tooltip = new PopoverView({position: 'right'});
+
         this.setupViewport();
 
         this.x.range([0, this.width]);
@@ -44,18 +46,17 @@ export default class DurationChart extends BaseChartView {
         this.x.domain([0, Math.max(maxDuration, 10)]).nice();
 
         const bins = histogram()
-           .value(d => d.value)
-           .domain(this.x.domain())
-           .thresholds(this.x.ticks())(this.data)
-           .map(bin => ({
-               x0: bin.x0,
-               x1: bin.x1,
-               y: bin.length,
-               testcases: bin
-        }));
+            .value(d => d.value)
+            .domain(this.x.domain())
+            .thresholds(this.x.ticks())(this.data)
+            .map(bin => ({
+                x0: bin.x0,
+                x1: bin.x1,
+                y: bin.length,
+                testcases: bin
+            }));
 
         const maxY = max(bins, d => d.y);
-
         this.y.domain([0, maxY]).nice();
 
         this.makeBottomAxis({
@@ -68,19 +69,19 @@ export default class DurationChart extends BaseChartView {
             ticks: Math.min(10, maxY)
         });
 
-        const median_ = this.y(median(bins, d => d.y));
-        var bars = this.plot.selectAll('.chart__bar')
+        let bars = this.plot.selectAll('.chart__bar')
             .data(bins).enter()
             .append('rect').classed('chart__bar', true);
 
+        this.bindTooltip(bars);
+
         bars.attrs({
             x: d => this.x(d.x0) + 2,
-            y: median_,
-            width: d => this.x(d.x1) - this.x(d.x0)-3,
-            height: this.height - median_
+            y: this.height,
+            width: d => Math.max(this.x(d.x1) - this.x(d.x0) - 2, 0),
+            height: 0
         });
 
-        this.bindTooltip(bars);
 
         if(this.firstRender) {
             bars = bars.transition().duration(500);
@@ -90,8 +91,8 @@ export default class DurationChart extends BaseChartView {
             y: d => this.y(d.y),
             height: d => this.height - this.y(d.y)
         });
-    }
 
+    }
 
     getTooltipContent({testcases}) {
         const LIST_LIMIT = 10;
