@@ -43,10 +43,20 @@
                     <xsd:element name="parameters" type="ns:Parameters" minOccurs="0"/>
                     <xsd:element name="links" type="ns:Links" minOccurs="0"/>
 
+                    <xsd:element name="groupLinks" type="ns:GroupLinks" minOccurs="0"/>
                     <xsd:element name="hidden" type="xsd:boolean"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="groupLink" type="ns:GroupLink"/>
+    <xsd:complexType name="GroupLink">
+        <xsd:sequence>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="url" type="xsd:string"/>
+            <xsd:element name="groupType" type="xsd:string"/>
+        </xsd:sequence>
     </xsd:complexType>
 
     <xsd:element name="stageResult" type="ns:StageResult"/>
@@ -253,6 +263,12 @@
     <xsd:complexType name="Links">
         <xsd:sequence>
             <xsd:element name="link" type="ns:Link" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="GroupLinks">
+        <xsd:sequence>
+            <xsd:element name="groupLink" type="ns:GroupLink" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
     </xsd:complexType>
 

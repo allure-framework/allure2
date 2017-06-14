@@ -3,11 +3,13 @@ package io.qameta.allure.behaviors;
 import io.qameta.allure.Widget;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.entity.GroupLink;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.tree.AbstractTreeAggregator;
+import io.qameta.allure.tree.TestGroupNode;
 import io.qameta.allure.tree.TreeGroup;
 import io.qameta.allure.tree.TreeWidgetData;
 import io.qameta.allure.tree.TreeWidgetItem;
@@ -35,6 +37,15 @@ public class BehaviorsPlugin extends AbstractTreeAggregator implements Widget {
 
     private static final String DEFAULT_FEATURE = "Default feature";
     private static final String DEFAULT_STORY = "Default story";
+
+    @Override
+    protected void afterGroupAdded(final TestGroupNode groupNode, final TestResult result) {
+        result.getGroupLinks().add(new GroupLink()
+                .withGroupType("behaviors")
+                .withName(groupNode.getName())
+                .withUrl("/#behaviors/" + groupNode.getUid())
+        );
+    }
 
     @Override
     protected String getFileName() {
