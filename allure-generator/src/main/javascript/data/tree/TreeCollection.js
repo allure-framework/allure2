@@ -18,11 +18,12 @@ export default class TreeCollection extends Collection {
     }
 
     parse({time, statistic, children}) {
-        this.allTestcases = this.getFlattenTestcases(children);
-        this.allNodes = children;
+        const items = children || [];
+        this.allTestcases = this.getFlattenTestcases(items);
+        this.allNodes = items;
         this.time = time;
         this.statistic = statistic;
-        return children;
+        return items;
     }
 
     applyFilterAndSorting(statuses, sortSettings) {
