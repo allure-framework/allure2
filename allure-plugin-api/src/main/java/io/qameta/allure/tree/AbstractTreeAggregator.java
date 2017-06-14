@@ -5,6 +5,8 @@ import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.entity.GroupTime;
+import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.TestResult;
 
@@ -39,7 +41,11 @@ public abstract class AbstractTreeAggregator implements Aggregator {
 
     protected TreeData getData(final Supplier<String> uidGenerator,
                                final List<LaunchResults> launches) {
-        final TreeData tree = new TreeData();
+        final TreeData tree = new TreeData()
+                .withTime(new GroupTime())
+                .withStatistic(new Statistic())
+                .withChildren(new ArrayList<>());
+
         launches.stream()
                 .flatMap(launch -> launch.getResults().stream())
                 .forEach(result -> addResultToTree(uidGenerator, tree, result));
