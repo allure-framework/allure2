@@ -10,12 +10,14 @@ describe('Tree', function () {
     const sorterSettingsKey = tabName + '.treeSorting';
     const filterSettingsKey = tabName + '.visibleStatuses';
     const infoSettingsKey = 'showGroupInfo';
+    let view;
+    let page;
 
     function fakeUid() {
         return Math.random().toString(36).substring(2);
     }
 
-    function rootNode({children=[]} = {}) {
+    function rootNode({children = []} = {}) {
         return {
             statistic: children.reduce((acc, curr) => {
                 values.forEach(status => {
@@ -28,13 +30,15 @@ describe('Tree', function () {
                 minDuration: 0,
                 maxDuration: 0,
                 sumDuration: 0,
-                duration: children.reduce((acc, curr) => { return acc + curr.time.duration; }, 0)
+                duration: children.reduce((acc, curr) => {
+                    return acc + curr.time.duration;
+                }, 0)
             },
             children: children
         };
     }
 
-    function groupNode({name='', children=[], uid=fakeUid()} = {}) {
+    function groupNode({name = '', children = [], uid = fakeUid()} = {}) {
         return Object.assign(
             rootNode({children: children}),
             {
@@ -45,9 +49,9 @@ describe('Tree', function () {
         );
     }
 
-    function caseNode({name='TestCaseNode', status='passed', uid=fakeUid(), duration=1} = {}) {
+    function caseNode({name = 'TestCaseNode', status = 'passed', uid = fakeUid(), duration = 1} = {}) {
         return {
-            type : 'TestCaseNode',
+            type: 'TestCaseNode',
             name: name,
             uid: uid,
             status: status,
@@ -62,14 +66,11 @@ describe('Tree', function () {
         this.node = (i) => this.nodes().eq(i);
     }
 
-    function sortTree({sorter=0, ascending=true} = {}){
-        settings.save(sorterSettingsKey, {
-            sorter: sorter,
-            ascending: ascending
-        });
+    function sortTree({sorter = 'sorter.name', ascending = true}) {
+        settings.save(sorterSettingsKey, {sorter, ascending});
     }
 
-    function filterTree({failed=true, broken=true, passed=true, skipped=true, unknown=true}) {
+    function filterTree({failed = true, broken = true, passed = true, skipped = true, unknown = true}) {
         settings.save(filterSettingsKey, {
             failed: failed,
             broken: broken,
@@ -91,9 +92,9 @@ describe('Tree', function () {
             baseUrl: 'XUnit',
         });
         view.render();
-        view.onRender();
+        const page = new PageObject(view.$el);
 
-        return new PageObject(view.$el);
+        return {view, page};
     }
 
     const data = rootNode({
@@ -116,107 +117,97 @@ describe('Tree', function () {
         ]
     });
 
-    describe('empty data', function () {
-        beforeEach(function () {
-            this.el = renderView({});
-        });
+    beforeEach(() => {
+        settings.unset(sorterSettingsKey);
+        settings.unset(filterSettingsKey);
+        settings.unset(infoSettingsKey);
+        ({view, page} = renderView(data));
+    });
 
-        it('should render correctly', function () {
-            expect(this.el.nodes().length).toBe(0);
+    afterEach(() => {
+        view.destroy();
+    });
+
+    describe('empty data', () => {
+
+        it('should render correctly', () => {
+            const {view, page} = renderView({children: []});
+            expect(page.nodes().length).toBe(0);
             sortTree({ascending: false});
             filterTree({failed: true, broken: false, passed: false, skipped: false, unknown: false});
             settings.save(infoSettingsKey, true);
-            expect(this.el.nodes().length).toBe(0);
+            expect(page.nodes().length).toBe(0);
+            view.destroy();
         });
     });
 
-    describe('sorting', function () {
+    describe('sorting', () => {
 
-        beforeEach(function () {
-            settings.unset(sorterSettingsKey);
-            settings.unset(filterSettingsKey);
-            settings.unset(infoSettingsKey);
-            this.el = renderView(data);
+        it('should render all nodes', () => {
+            expect(page.nodes().length).toBe(7);
         });
 
-        it('should render all nodes', function () {
-            expect(this.el.nodes().length).toBe(7);
+        it('should be sorted by name by default', () => {
+            expect(page.node(0).text()).toMatch(/A group node/);
+            expect(page.node(1).text()).toMatch(/First node/);
+            expect(page.node(3).text()).toMatch(/Third node/);
         });
 
-        it('should be sorted by name by default', function () {
-            expect(this.el.node(0).text()).toMatch(/A group node/);
-            expect(this.el.node(1).text()).toMatch(/First node/);
-            expect(this.el.node(3).text()).toMatch(/Third node/);
-        });
-
-        it('should be able to sort by name', function () {
+        it('should be able to sort by name', () => {
             sortTree({ascending: false});
-            expect(this.el.node(0).text()).toMatch(/B group node/);
-            expect(this.el.node(2).text()).toMatch(/A group node/);
-            expect(this.el.node(3).text()).toMatch(/Third node/);
+            expect(page.node(0).text()).toMatch(/B group node/);
+            expect(page.node(2).text()).toMatch(/A group node/);
+            expect(page.node(3).text()).toMatch(/Third node/);
 
             sortTree({ascending: true});
-            expect(this.el.node(0).text()).toMatch(/A group node/);
-            expect(this.el.node(1).text()).toMatch(/First node/);
+            expect(page.node(0).text()).toMatch(/A group node/);
+            expect(page.node(1).text()).toMatch(/First node/);
         });
 
-        it('should be able to sort by duration', function () {
-            sortTree({sorter: 1, ascending: false});
-            expect(this.el.node(0).text()).toMatch(/A group node/);
-            expect(this.el.node(1).text()).toMatch(/First node/);
+        it('should be able to sort by duration', () => {
+            sortTree({sorter: 'sorter.duration', ascending: false});
+            expect(page.node(0).text()).toMatch(/A group node/);
+            expect(page.node(1).text()).toMatch(/First node/);
 
-            sortTree({sorter: 1, ascending: true});
-            expect(this.el.node(0).text()).toMatch(/B group node/);
+            sortTree({sorter: 'sorter.duration', ascending: true});
+            expect(page.node(0).text()).toMatch(/B group node/);
         });
 
-        it('should be able to sort by status', function () {
-            sortTree({sorter: 2, ascending: false});
-            expect(this.el.node(0).text()).toMatch(/A group node/);
-            expect(this.el.node(1).text()).toMatch(/Second node/);
+        it('should be able to sort by status', () => {
+            sortTree({sorter: 'sorter.status', ascending: false});
+            expect(page.node(0).text()).toMatch(/A group node/);
+            expect(page.node(1).text()).toMatch(/Second node/);
 
-            sortTree({sorter: 2, ascending: true});
-            expect(this.el.node(0).text()).toMatch(/A group node/);
-            expect(this.el.node(1).text()).toMatch(/Third node/);
+            sortTree({sorter: 'sorter.status', ascending: true});
+            expect(page.node(0).text()).toMatch(/A group node/);
+            expect(page.node(1).text()).toMatch(/Third node/);
         });
     });
 
-    describe('filtering', function () {
+    describe('filtering', () => {
 
-        beforeEach(function () {
-            settings.unset(sorterSettingsKey);
-            settings.unset(filterSettingsKey);
-            settings.unset(infoSettingsKey);
-            this.el = renderView(data);
-        });
-
-        it('should hiding nodes', function () {
+        it('should hiding nodes', () => {
             filterTree({failed: false, broken: false, passed: false, skipped: false, unknown: false});
-            expect(this.el.nodes().length).toBe(0);
+            expect(page.nodes().length).toBe(0);
 
             filterTree({failed: false, broken: false, passed: false, skipped: false, unknown: true});
-            expect(this.el.nodes().length).toBe(3);
-            expect(this.el.node(0).text()).toMatch(/B group node/);
-            expect(this.el.node(2).text()).toMatch(/Other node/);
+            expect(page.nodes().length).toBe(3);
+            expect(page.node(0).text()).toMatch(/B group node/);
+            expect(page.node(2).text()).toMatch(/Other node/);
 
             filterTree({failed: true, broken: false, passed: false, skipped: false, unknown: false});
-            expect(this.el.nodes().length).toBe(2);
-            expect(this.el.node(0).text()).toMatch(/A group node/);
-            expect(this.el.node(1).text()).toMatch(/Second node/);
+            expect(page.nodes().length).toBe(2);
+            expect(page.node(0).text()).toMatch(/A group node/);
+            expect(page.node(1).text()).toMatch(/Second node/);
         });
 
     });
 
-    describe('groupInfo', function () {
+    describe('groupInfo', () => {
 
-        beforeEach(function () {
-            settings.unset(sorterSettingsKey);
-            settings.unset(filterSettingsKey);
-            this.el = renderView(data);
-        });
-
-        it('should hiding nodes', function () {
+        it('should hiding nodes', () => {
             settings.save(infoSettingsKey, true);
-            expect(this.el.nodes().length).toBe(9);
+            expect(page.nodes().length).toBe(9);
 
         });
     });

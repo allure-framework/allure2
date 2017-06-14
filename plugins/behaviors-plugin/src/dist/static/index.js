@@ -28,6 +28,34 @@ allure.api.addTranslation('ru', {
     }
 });
 
+allure.api.addTranslation('zh', {
+    tab: {
+        behaviors: {
+            name: '功能'
+        }
+    },
+    widget: {
+        behaviors: {
+            name: '特性场景',
+            showAll: '显示所有'
+        }
+    }
+});
+
+allure.api.addTranslation('de', {
+    tab: {
+        behaviors: {
+            name: 'Verhalten'
+        }
+    },
+    widget: {
+        behaviors: {
+            name: 'Features nach Stories',
+            showAll: 'Zeige alle'
+        }
+    }
+});
+
 allure.api.addTab('behaviors', {
     title: 'tab.behaviors.name', icon: 'fa fa-list',
     route: 'behaviors(/:testcaseId)',

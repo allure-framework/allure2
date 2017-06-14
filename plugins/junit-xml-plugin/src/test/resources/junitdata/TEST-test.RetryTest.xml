@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="my.company.tests.SearchTest" time="0.201" tests="3" errors="3" skipped="0" failures="0">
+    <testcase name="searchTest" classname="my.company.tests.SearchTest" time="0.201">
+        <error message="message-root" type="java.lang.IllegalStateException">trace-root</error>
+        <rerunError message="message-retried-1" type="java.lang.IllegalStateException">trace-retried-1</rerunError>
+        <rerunError message="message-retried-2" type="java.lang.IllegalStateException">trace-retried-2</rerunError>
+        <rerunFailure message="message-retried-3" type="java.lang.AssertionError">trace-retried-3</rerunFailure>
+    </testcase>
+</testsuite>

@@ -73,12 +73,14 @@
 .tree {
   &__ctrl {
     display: flex;
-    padding: 0px $gap-size 0px $gap-size;
+    flex-wrap: wrap;
     border-top: 1px solid $border-color;
     background: $pane-overlay-bg-hover;
   }
   &__filter, &__sorter {
+    padding: 0px $gap-size 0px $gap-size;
     position: relative;
+    white-space: nowrap;
   }
   &__strut {
     flex: 1;

@@ -1,0 +1,27 @@
+description = 'Allure Xunit.net XML v2 Plugin'
+
+apply plugin: 'java-library-distribution'
+apply from: "${gradleScriptDir}/bintray.gradle"
+
+dependencies {
+    compileOnly project(':allure-plugin-api')
+
+    testCompile project(':allure-plugin-api')
+    testCompile('junit:junit')
+    testCompile('org.assertj:assertj-core')
+    testCompile('org.mockito:mockito-core')
+    testCompile("org.slf4j:slf4j-simple")
+}
+
+configurations.archives.artifacts.removeAll { it.archiveTask.is jar }
+
+artifacts {
+    allurePlugin distZip
+}
+
+bintray {
+    configurations = ['allurePlugin']
+    pkg {
+        repo = 'generic'
+    }
+}

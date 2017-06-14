@@ -1,4 +1,6 @@
 plugins:
+  - junit-xml-plugin
+  - xunit-xml-plugin
   - behaviors-plugin
   - packages-plugin
   - screen-diff-plugin
