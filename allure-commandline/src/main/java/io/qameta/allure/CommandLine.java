@@ -130,13 +130,13 @@ public class CommandLine {
                         generateCommand.getReportDirectory(),
                         generateCommand.getResultsOptions().getResultsDirectories(),
                         generateCommand.isCleanReportDirectory(),
-                        generateCommand.getProfileOptions().getProfile()
+                        generateCommand.getConfigOptions()
                 );
             case SERVE_COMMAND:
                 return commands.serve(
                         serveCommand.getResultsOptions().getResultsDirectories(),
                         serveCommand.getPortOptions().getPort(),
-                        serveCommand.getProfileOptions().getProfile()
+                        serveCommand.getConfigOptions()
                 );
             case OPEN_COMMAND:
                 return commands.open(
@@ -144,7 +144,7 @@ public class CommandLine {
                         openCommand.getPortOptions().getPort()
                 );
             case PLUGIN_COMMAND:
-                return commands.listPlugins(pluginCommand.getProfileOptions().getProfile());
+                return commands.listPlugins(pluginCommand.getConfigOptions());
             default:
                 printUsage(commander);
                 return ExitCode.ARGUMENT_PARSING_ERROR;

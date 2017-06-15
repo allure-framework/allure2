@@ -4,6 +4,7 @@ import com.beust.jcommander.JCommander;
 import io.qameta.allure.config.ConfigLoader;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.Plugin;
+import io.qameta.allure.option.ConfigOptions;
 import io.qameta.allure.plugin.DefaultPluginLoader;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.server.Handler;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -41,17 +43,38 @@ public class Commands {
         this.allureHome = allureHome;
     }
 
-    public CommandlineConfig getConfig(final String profile) throws IOException {
-        if (Objects.isNull(allureHome) || Files.notExists(allureHome)) {
-            return new CommandlineConfig();
+    public CommandlineConfig getConfig(final ConfigOptions configOptions) throws IOException {
+        return getConfigFile(configOptions)
+                .map(ConfigLoader::new)
+                .map(ConfigLoader::load)
+                .orElseGet(CommandlineConfig::new);
+    }
+
+    public Optional<Path> getConfigFile(final ConfigOptions configOptions) {
+        if (Objects.nonNull(configOptions.getConfigPath())) {
+            return Optional.of(Paths.get(configOptions.getConfigPath()));
         }
-        return new ConfigLoader(allureHome, profile).load();
+        if (Objects.nonNull(configOptions.getConfigDirectory())) {
+            return Optional.of(Paths.get(configOptions.getConfigDirectory())
+                    .resolve(getConfigFileName(configOptions.getProfile())));
+        }
+        if (Objects.nonNull(allureHome)) {
+            return Optional.of(allureHome.resolve("config")
+                    .resolve(getConfigFileName(configOptions.getProfile())));
+        }
+        return Optional.empty();
+    }
+
+    public String getConfigFileName(final String profile) {
+        return Objects.isNull(profile)
+                ? "allure.yml"
+                : format("allure-%s.yml", profile);
     }
 
     public ExitCode generate(final Path reportDirectory,
                              final List<Path> resultsDirectories,
                              final boolean clean,
-                             final String profile) {
+                             final ConfigOptions profile) {
         final boolean directoryExists = Files.exists(reportDirectory);
         if (clean && directoryExists) {
             FileUtils.deleteQuietly(reportDirectory.toFile());
@@ -72,7 +95,7 @@ public class Commands {
 
     public ExitCode serve(final List<Path> resultsDirectories,
                           final int port,
-                          final String profile) {
+                          final ConfigOptions configOptions) {
         LOGGER.info("Generating report to temp directory...");
 
         final Path reportDirectory;
@@ -89,7 +112,7 @@ public class Commands {
                 reportDirectory,
                 resultsDirectories,
                 false,
-                profile
+                configOptions
         );
         if (exitCode.isSuccess()) {
             return open(reportDirectory, port);
@@ -126,9 +149,9 @@ public class Commands {
         return ExitCode.NO_ERROR;
     }
 
-    public ExitCode listPlugins(final String profile) {
+    public ExitCode listPlugins(final ConfigOptions configOptions) {
         try {
-            final CommandlineConfig config = getConfig(profile);
+            final CommandlineConfig config = getConfig(configOptions);
             config.getPlugins().forEach(LOGGER::info);
         } catch (IOException e) {
             LOGGER.error("Can't read config: {}", e);
@@ -144,7 +167,7 @@ public class Commands {
      * @return created report configuration.
      * @throws IOException if any occurs.
      */
-    protected Configuration createReportConfiguration(final String profile) throws IOException {
+    protected Configuration createReportConfiguration(final ConfigOptions profile) throws IOException {
         final DefaultPluginLoader loader = new DefaultPluginLoader();
         final CommandlineConfig commandlineConfig = getConfig(profile);
         final ClassLoader classLoader = getClass().getClassLoader();
