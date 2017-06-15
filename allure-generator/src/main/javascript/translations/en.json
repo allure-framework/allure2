@@ -134,7 +134,7 @@
   },
   "component": {
     "tree": {
-      "filter": "Filter test cases by statues",
+      "filter": "Filter test cases by status",
       "groups": "Toggle groups info",
       "empty": "There are no items",
       "time": {

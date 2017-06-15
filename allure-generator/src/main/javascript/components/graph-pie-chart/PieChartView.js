@@ -1,27 +1,33 @@
-import BaseChartView from '../../../components/chart/BaseChartView';
-import TooltipView from '../../../components/tooltip/TooltipView';
-import {on} from '../../../decorators';
+import BaseChartView from '../../components/graph-base/BaseChartView';
+import TooltipView from '../../components/tooltip/TooltipView';
+import {on} from '../../decorators';
 import {omit} from 'underscore';
 import {arc, pie} from 'd3-shape';
 import {interpolate} from 'd3-interpolate';
 import {select} from 'd3-selection';
-import escape from '../../../util/escape';
-import {values} from '../../../util/statuses';
+import escape from '../../util/escape';
+import {values} from '../../util/statuses';
+import translate from '../../helpers/t';
 
-import translate from '../../../helpers/t';
 
-export default class StatusChart extends BaseChartView {
+class PieChartView extends BaseChartView {
 
-    initialize() {
+    initialize(options) {
+        this.options = options;
+        this.model = this.options.model;
+        this.showLegend = this.options ?  this.options.showLegend || false : false;
+
         this.arc = arc();
         this.pie = pie().sort(null).value(d => d.value);
         this.tooltip = new TooltipView({position: 'center'});
+        this.getChartData();
     }
 
     getChartData() {
-        const {total} = this.options.statistic;
-        const stats = omit(this.options.statistic, 'total');
-        return Object.keys(stats).map(key => ({
+        this.statistic = this.model.get('statistic');
+        const {total} = this.statistic;
+        const stats = omit(this.statistic, 'total');
+        this.data = Object.keys(stats).map(key => ({
             name: key.toUpperCase(),
             value: stats[key],
             part: stats[key] / total
@@ -30,19 +36,19 @@ export default class StatusChart extends BaseChartView {
 
     setupViewport() {
         super.setupViewport();
-        if(this.options.showLegend) {
+        if(this.showLegend) {
             this.$el.append(this.getLegendTpl());
         }
         return this.svg;
     }
 
     onAttach() {
-        const data = this.getChartData();
+        const data = this.data;
         const width = this.$el.outerWidth();
-        const radius = width / 4;
+        const radius = width/4 - 10;
         var leftOffset = width / 2;
 
-        if(this.options.showLegend) {
+        if(this.showLegend) {
             leftOffset -= 70;
         }
         this.arc.innerRadius(0.8 * radius).outerRadius(radius);
@@ -82,7 +88,7 @@ export default class StatusChart extends BaseChartView {
     }
 
     getChartTitle() {
-        const {passed, total} = this.options.statistic;
+        const {passed, total} = this.statistic;
         return this.formatNumber((passed || 0) / total * 100) + '%';
     }
 
@@ -100,7 +106,8 @@ export default class StatusChart extends BaseChartView {
     getLegendTpl() {
         return `<div class="chart__legend">
     ${values.map((status) =>
-            `<p class="chart__legend-row" data-status="${status}"><span class="chart__legend-icon chart__legend-icon_status_${status}"></span> ${translate('status.' + status)}</p>`
+            `<div class="chart__legend-row" data-status="${status}">
+<span class="chart__legend-icon chart__legend-icon_status_${status}"></span> ${translate('status.' + status)}</div>`
         ).join('')}
 </div>`;
     }
@@ -119,3 +126,5 @@ export default class StatusChart extends BaseChartView {
         this.showTooltip(data, sector);
     }
 }
+
+export default PieChartView;

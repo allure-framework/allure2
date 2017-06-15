@@ -1,39 +1,43 @@
-import BaseChartView from '../../../components/chart/BaseChartView';
-import PopoverView from '../../../components/popover/PopoverView';
-import escape from '../../../util/escape';
-import {values} from '../../../util/statuses';
+import BaseChartView from '../../components/graph-base/BaseChartView';
+import PopoverView from '../../components/popover/PopoverView';
+import escape from '../../util/escape';
+import {values} from '../../util/statuses';
 import {scaleBand, scaleSqrt} from 'd3-scale';
 import {max} from 'd3-array';
 
 
 const severities = ['blocker', 'critical', 'normal', 'minor', 'trivial'];
 
-export default class SeverityChart extends BaseChartView {
+export default class SeverityChartView extends BaseChartView {
 
     initialize() {
         this.x = scaleBand().domain(severities);
         this.y = scaleSqrt();
         this.status = scaleBand().domain(values);
         this.tooltip = new PopoverView({position: 'right'});
+
+        this.collection = this.model;
+
+        this.getChartData();
     }
 
     getChartData() {
-        return severities.map(severity =>
+        this.data = severities.map(severity =>
             values.map(status => {
                 const testcases = this.collection.where({status, severity}).map(model => model.toJSON());
                 return {
                     value: testcases.length,
-                         testcases,
-                         severity,
-                         status
+                    testcases,
+                    severity,
+                    status
                 };
             })
         );
     }
 
     onAttach() {
+        const data = this.data;
         this.setupViewport();
-        const data = this.getChartData();
 
         this.x.range([0, this.width]);
         this.y.range([this.height, 0], 1);
@@ -72,7 +76,7 @@ export default class SeverityChart extends BaseChartView {
         this.bindTooltip(bars);
 
         if(this.firstRender) {
-           bars = bars.transition().duration(500);
+             bars = bars.transition().duration(500);
         }
 
         bars.attrs({

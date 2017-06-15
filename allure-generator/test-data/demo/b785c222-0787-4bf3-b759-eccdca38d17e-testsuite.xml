@@ -40,6 +40,9 @@ Expected: is &lt;4&gt;
                 <label name="host" value="my.cool.host.com"/>
                 <label name="thread" value="pool-1-thread-27"/>
                 <label name="owner" value="good"/>
+                <label name="tag" value="first tag"/>
+                <label name="tag" value="second tag"/>
+                <label name="tag" value=""/>
             </labels>
         </test-case>
         <test-case start="1412949558829" stop="1412949558829" status="passed">

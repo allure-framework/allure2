@@ -1,12 +1,13 @@
+import './styles.css';
 import {scaleLinear} from 'd3-scale';
 import {max} from 'd3-array';
-import {values} from '../../../util/statuses';
-import BaseChartView from '../../../components/chart/BaseChartView';
+import {values} from '../../util/statuses';
+import BaseChartView from '../../components/graph-base/BaseChartView';
 import {area, stack} from 'd3-shape';
-import translate from '../../../helpers/t';
+import translate from '../../helpers/t';
 
 
-class TestTrendGraphView extends BaseChartView {
+class TrendChartView extends BaseChartView {
 
     initialize() {
         this.x = scaleLinear();
@@ -62,7 +63,7 @@ class TestTrendGraphView extends BaseChartView {
 
         const layer = this.plot
             .selectAll('.layer')
-            .data(s(data))
+            .data(s(data).reverse())
             .enter()
             .append('g')
             .attr('class', 'layer');
@@ -70,9 +71,10 @@ class TestTrendGraphView extends BaseChartView {
         layer.append('path')
             .attr('class', 'area')
             .attr('d', a)
-            .attr('class', d => 'trend_status_' + d.key)
-            .style('opacity', .8);
+            .attr('class', d => 'trend__area_status_' + d.key)
+            .style('opacity', .85);
     }
+
 }
 
-export default TestTrendGraphView;
+export default TrendChartView;

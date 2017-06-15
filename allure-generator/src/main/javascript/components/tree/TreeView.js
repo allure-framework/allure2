@@ -93,7 +93,6 @@ class TreeView extends View {
         const showGroupInfo = settings.get('showGroupInfo');
         const shownCases = this.collection.testcases.length;
         const totalCases = this.collection.allTestcases.length;
-
         return {
             baseUrl: this.baseUrl,
             showGroupInfo: showGroupInfo,

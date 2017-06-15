@@ -1,3 +1,3 @@
 import LaunchesWidgetView from './LaunchesWidgetView';
 
-allure.api.addWidget('launches', LaunchesWidgetView);
+allure.api.addWidget('widgets', 'launches', LaunchesWidgetView);

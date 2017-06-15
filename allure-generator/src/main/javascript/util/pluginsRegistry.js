@@ -21,8 +21,11 @@ class AllurePluginsRegistry {
         router.on('route:' + tabName, showView(onEnter));
     }
 
-    addWidget(name, Widget) {
-        this.widgets[name] = Widget;
+    addWidget(tabName, widgetName, Widget) {
+        if (!this.widgets[tabName]) {
+            this.widgets[tabName] = {};
+        }
+        this.widgets[tabName][widgetName] = Widget;
     }
 
     addTranslation(lang, json) {
