@@ -1,5 +1,5 @@
 import './styles.css';
-import BaseChartView from '../../components/chart/BaseChartView';
+import BaseChartView from '../../components/graph-base/BaseChartView';
 import {className} from '../../decorators';
 import duration from '../../helpers/duration';
 import translate from '../../helpers/t';

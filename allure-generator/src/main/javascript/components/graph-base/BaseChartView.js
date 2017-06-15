@@ -8,7 +8,7 @@ import template from './BaseChartView.hbs';
 export default class BaseChartView extends View {
     PAD_LEFT = 50;
     PAD_RIGHT = 15;
-    PAD_TOP = 7;
+    PAD_TOP = 10;
     PAD_BOTTOM = 30;
 
     constructor(options) {
@@ -30,8 +30,8 @@ export default class BaseChartView extends View {
     }
 
     setupViewport() {
-        this.viewBoxWidth = this.$el.outerWidth();
-        this.viewBoxHeight = this.$el.outerHeight();
+        this.viewBoxWidth = Math.floor(this.$el.outerWidth());
+        this.viewBoxHeight = Math.floor(this.$el.outerHeight());
         this.width = this.viewBoxWidth - this.PAD_LEFT - this.PAD_RIGHT;
         this.height = this.viewBoxHeight - this.PAD_BOTTOM - this.PAD_TOP;
         this.$el.html(template(this));
@@ -82,7 +82,8 @@ export default class BaseChartView extends View {
     }
 
     bindTooltip(selection) {
-        selection.on('mouseenter', this.onItemOver.bind(this))
+        selection
+            .on('mouseenter', this.onItemOver.bind(this))
             .on('mouseleave', this.hideTooltip.bind(this));
     }
 }

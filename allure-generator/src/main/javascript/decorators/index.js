@@ -20,3 +20,8 @@ export function regions(regions) {
     };
 }
 
+export function options(options) {
+    return function (target) {
+        target.prototype.options = Object.assign(options, target.options);
+    };
+}
