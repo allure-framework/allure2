@@ -96,7 +96,8 @@ public abstract class AbstractTreeAggregator implements Aggregator {
                 .withName(getNodeName(result))
                 .withStatus(result.getStatus())
                 .withTime(result.getTime())
-                .withFlaky(isFlaky);
+                .withFlaky(isFlaky)
+                .withParameters(result.getParameters());
         for (WithChildren currentLevelGroup : currentLevelGroups) {
             currentLevelGroup.getChildren().add(testCaseNode);
         }

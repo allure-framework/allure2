@@ -1,14 +1,31 @@
 <a class="node node__leaf" href="#{{baseUrl}}/{{uid}}">
-    <div class="node__title long-line" data-uid="{{uid}}">
-        <span class="node__anchor">
+    <div class="node__title" data-uid="{{uid}}">
+        <div class="node__anchor">
             {{allure-icon status 'fa-lg'}}
-        </span>
+        </div>
         {{#if flaky}}
             {{allure-icon 'flaky'}}
         {{/if}}
-        {{name}}
-        <span class="node__stats">
-            {{duration time.duration}}
-        </span>
+        <div class="node__name">
+            {{name}}
+        </div>
+        {{#if parameters}}
+
+        <div class="node__parameters long-line line-ellipsis">
+            <span>&nbsp</span>
+            {{#each parameters}}
+                {{#if value}}
+                    {{value}}
+                {{~else}}
+                    null
+                {{~/if~}}
+                <span class="node__parameters_separator">,</span>
+            {{/each}}
+        </div>
+        {{/if}}
+        <div class="tree__strut">&nbsp</div>
+        <div class="node__stats">
+            {{~duration time.duration~}}
+        </div>
     </div>
 </a>
