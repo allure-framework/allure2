@@ -8,4 +8,8 @@
   font-size: 80%;
   border-radius: 3px;
   @mixin status-bg-bright;
+
+  &__info {
+    background: #3c58e4;
+  }
 }
