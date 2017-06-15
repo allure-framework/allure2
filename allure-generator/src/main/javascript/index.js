@@ -26,6 +26,7 @@ import './plugins/widget-executor';
 import './plugins/widget-environment';
 
 import './plugins/testcase-description';
+import './plugins/testcase-tags';
 import './plugins/testcase-category';
 import './plugins/testcase-history';
 import './plugins/testcase-retry';

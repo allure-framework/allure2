@@ -184,6 +184,7 @@
             <xsd:enumeration value="owner"/>
             <xsd:enumeration value="severity"/>
             <xsd:enumeration value="issue"/>
+            <xsd:enumeration value="tag"/>
 
             <xsd:enumeration value="testType"/>
 
