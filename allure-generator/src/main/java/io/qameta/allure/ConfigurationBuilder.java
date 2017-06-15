@@ -24,6 +24,7 @@ import io.qameta.allure.owner.OwnerPlugin;
 import io.qameta.allure.retry.RetryPlugin;
 import io.qameta.allure.severity.SeverityPlugin;
 import io.qameta.allure.summary.SummaryPlugin;
+import io.qameta.allure.tags.TagsPlugin;
 import io.qameta.allure.timeline.TimelinePlugin;
 import io.qameta.allure.widget.WidgetsPlugin;
 import io.qameta.allure.xunit.XunitPlugin;
@@ -54,6 +55,7 @@ public class ConfigurationBuilder {
                 new RandomUidContext(),
                 new MarkdownDescriptionsPlugin(),
                 new RetryPlugin(),
+                new TagsPlugin(),
                 new SeverityPlugin(),
                 new OwnerPlugin(),
                 new CategoriesPlugin(),
