@@ -22,13 +22,16 @@
     position: absolute;
   }
   &__stats {
+    display: block;
     float: right;
+    white-space: nowrap;
   }
   &__title {
     overflow: hidden;
     line-height: 1.2em;
     padding: 7px $gap-size 7px 25px;
     flex: 1;
+    display: flex;
     cursor: pointer;
     border-top: 1px solid #ECEFF1;
     position: relative;
@@ -55,7 +58,13 @@
   &__time {
     padding: 5px;
   }
-
+  &__parameters {
+    color: $text-muted-color;
+    min-width: 2ch;
+    &_separator:last-child {
+      display: none;
+    }
+  }
   &__children {
     display: none;
     .node__expanded > & {
