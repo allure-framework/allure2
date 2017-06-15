@@ -3,6 +3,7 @@ package io.qameta.allure.retry;
 import io.qameta.allure.Aggregator;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -47,26 +49,26 @@ public class RetryPlugin implements Aggregator {
 
     private Consumer<TestResult> addRetries(final List<TestResult> results) {
         return latest -> {
-            final List<RetryItem> retries = new ArrayList<>();
-            latest.addExtraBlock(RETRY_BLOCK_NAME, retries);
-            results.stream()
+            final List<RetryItem> retries = results.stream()
                     .sorted(byTime())
                     .filter(result -> !latest.equals(result))
-                    .forEach(addRetry(latest, retries));
+                    .map(retry -> retry.withHidden(true))
+                    .map(retry -> new RetryItem()
+                            .withStatus(retry.getStatus())
+                            .withStatusDetails(retry.getStatusDetailsSafe().getMessage())
+                            .withTime(retry.getTime())
+                            .withUid(retry.getUid()))
+                    .collect(Collectors.toList());
+            latest.addExtraBlock(RETRY_BLOCK_NAME, retries);
+            final Set<Status> statuses = retries.stream()
+                    .map(RetryItem::getStatus)
+                    .distinct()
+                    .collect(Collectors.toSet());
 
-        };
-    }
+            statuses.remove(Status.PASSED);
+            statuses.remove(Status.SKIPPED);
 
-    private Consumer<TestResult> addRetry(final TestResult latest, final List<RetryItem> retries) {
-        return retried -> {
-            retried.setHidden(true);
-            retried.getStatusDetailsSafe().setFlaky(true);
-            retries.add(new RetryItem()
-                    .withUid(retried.getUid())
-                    .withStatus(retried.getStatus())
-                    .withTime(retried.getTime())
-            );
-            latest.getStatusDetailsSafe().setFlaky(true);
+            latest.getStatusDetailsSafe().setFlaky(!statuses.isEmpty());
         };
     }
 

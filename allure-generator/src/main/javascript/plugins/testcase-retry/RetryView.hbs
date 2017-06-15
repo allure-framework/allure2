@@ -3,7 +3,8 @@
     {{#each retries}}
         <div class="retry-row" data-uid="{{uid}}">
             <span class="label label_status_{{status}}">{{status}}</span>
-            {{date time.start}} at {{time time.start}}
+            <span>{{date time.start}} at {{time time.start}}</span>
+            <div class="retry__message">{{statusDetails}}</div>
         </div>
     {{/each}}
 {{/if}}
