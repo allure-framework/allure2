@@ -40,12 +40,13 @@ import static java.util.stream.StreamSupport.stream;
  *
  * @since 2.0
  */
+@SuppressWarnings("PMD.ExcessiveImports")
 public class HistoryTrendPlugin implements Reader, Aggregator, Widget {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HistoryTrendPlugin.class);
 
-    static final String HISTORY_TREND_JSON = "history-trend.json";
-    static final String HISTORY_TREND = "history-trend";
+    public static final String HISTORY_TREND_JSON = "history-trend.json";
+    public static final String HISTORY_TREND = "history-trend";
 
     @Override
     public void readResults(final Configuration configuration,
@@ -100,7 +101,8 @@ public class HistoryTrendPlugin implements Reader, Aggregator, Widget {
                 false);
     }
 
-    private Optional<HistoryTrendItem> parseItem(final Path historyFile, final ObjectMapper mapper, final JsonNode child) {
+    private Optional<HistoryTrendItem> parseItem(final Path historyFile,
+                                                 final ObjectMapper mapper, final JsonNode child) {
         try {
 
             if (Objects.nonNull(child.get("total"))) {
@@ -141,11 +143,15 @@ public class HistoryTrendPlugin implements Reader, Aggregator, Widget {
 
     private List<HistoryTrendItem> getHistoryItems(final List<LaunchResults> launchesResults) {
         return launchesResults.stream()
-                .map(results -> results.getExtra(HISTORY_TREND, () -> (List<HistoryTrendItem>) new ArrayList<HistoryTrendItem>()))
+                .map(this::getPreviousTrendData)
                 .reduce(new ArrayList<>(), (first, second) -> {
                     first.addAll(second);
                     return first;
                 });
+    }
+
+    private List<HistoryTrendItem> getPreviousTrendData(final LaunchResults results) {
+        return results.getExtra(HISTORY_TREND, ArrayList::new);
     }
 
     private static Optional<ExecutorInfo> extractLatestExecutor(final List<LaunchResults> launches) {
