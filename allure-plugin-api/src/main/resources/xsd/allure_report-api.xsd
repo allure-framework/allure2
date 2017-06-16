@@ -68,10 +68,13 @@
             <xsd:element name="name" type="xsd:string"/>
             <xsd:element name="type" type="xsd:string"/>
             <xsd:element name="url" type="xsd:string"/>
+
+            <xsd:element name="buildOrder" type="xsd:long" nillable="true"/>
             <xsd:element name="buildName" type="xsd:string"/>
             <xsd:element name="buildUrl" type="xsd:string"/>
+
+            <xsd:element name="reportName" type="xsd:string"/>
             <xsd:element name="reportUrl" type="xsd:string"/>
-            <xsd:element name="buildId" type="xsd:string"/>
         </xsd:sequence>
     </xsd:complexType>
 
@@ -160,14 +163,6 @@
         <xsd:attribute name="skipped" type="xsd:long" use="required"/>
         <xsd:attribute name="passed" type="xsd:long" use="required"/>
         <xsd:attribute name="unknown" type="xsd:long" use="required"/>
-    </xsd:complexType>
-
-    <xsd:element name="historyTrendItem" type="ns:HistoryTrendItem"/>
-    <xsd:complexType name="HistoryTrendItem">
-        <xsd:all>
-            <xsd:element name="statistics" type="ns:Statistic"/>
-            <xsd:element name="executorInfo" type="ns:ExecutorInfo"/>
-        </xsd:all>
     </xsd:complexType>
 
     <xsd:element name="label" type="ns:Label"/>

@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  */
 public class ExecutorPlugin implements Reader, Widget {
 
-    private static final String EXECUTORS_BLOCK_NAME = "executor";
+    public static final String EXECUTORS_BLOCK_NAME = "executor";
     private static final String EXECUTOR_JSON = "executor.json";
 
     @Override

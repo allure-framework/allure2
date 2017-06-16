@@ -57,6 +57,7 @@ dependencies {
 
     testCompile('junit:junit')
     testCompile('org.assertj:assertj-core')
+    testCompile('org.mockito:mockito-core')
     testCompile('org.slf4j:slf4j-simple')
     testCompile('org.apache.commons:commons-lang3')
     testCompile('com.google.guava:guava')
