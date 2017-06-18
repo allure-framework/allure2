@@ -47,7 +47,7 @@ class TrendChartView extends BaseChartView {
         const maxY = max(data, d => d.total);
 
         this.x.domain(data.map(d => d.name));
-        this.y.domain([0, maxY]);
+        this.y.domain([0, maxY]).nice();
 
         const s = stack()
             .keys(values)
