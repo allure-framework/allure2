@@ -107,7 +107,7 @@ class TrendChartView extends BaseChartView {
 
         this.plot.selectAll('.edge')
             .append('rect')
-            .style('opacity', .10)
+            .style('opacity', .0)
             .attr('class', 'report-edge')
             .attr('x', (d, i) => i > 0 ? this.x(d.name) - this.x.step() / 2 : 0)
             .attr('y', 0)
