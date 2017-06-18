@@ -43,7 +43,7 @@ export default class BaseChartView extends View {
         const axis = axisLeft();
         return this.makeAxis(
             axis,
-            this.svg.select('.chart__axis_x'),
+            this.svg.select('.chart__axis_y'),
             options,
             {left: this.PAD_LEFT, top: this.PAD_TOP}
         );
@@ -53,7 +53,7 @@ export default class BaseChartView extends View {
         const axis = axisBottom();
         return this.makeAxis(
             axis,
-            this.svg.select('.chart__axis_y'),
+            this.svg.select('.chart__axis_x'),
             options,
             {left:this.PAD_LEFT, top:this.PAD_TOP + this.height}
         );

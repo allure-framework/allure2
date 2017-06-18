@@ -7,9 +7,10 @@ import translate from '../../helpers/t';
 import BaseChartView from '../../components/graph-base/BaseChartView';
 import TooltipView from '../../components/tooltip/TooltipView';
 import trendTooltip from './trend-tooltip.hbs';
-
+import {omit} from 'underscore';
 
 class TrendChartView extends BaseChartView {
+    PAD_BOTTOM = 50;
 
     initialize() {
         this.x = scalePoint();
@@ -21,7 +22,9 @@ class TrendChartView extends BaseChartView {
         return this.options.items.map((item, i) => ({
             ...item,
             id:  item.buildOrder ? `build_${item.buildOrder}` : `item_${i}`,
-            name: item.buildOrder ? `#${item.buildOrder}` : `${i+1}(?)`
+            name: item.buildOrder ? `#${item.buildOrder}` : `${this.options.items.length - i}(?)`,
+            total: item.statistic.total,
+            statistic: omit(item.statistic, 'total')
         }));
     }
 
@@ -41,7 +44,7 @@ class TrendChartView extends BaseChartView {
         this.x.range([0, this.width]);
         this.y.range([this.height, 0]);
 
-        const maxY = max(data, d => d.statistic.total);
+        const maxY = max(data, d => d.total);
 
         this.x.domain(data.map(d => d.name));
         this.y.domain([0, maxY]);
@@ -64,6 +67,13 @@ class TrendChartView extends BaseChartView {
         this.makeLeftAxis({
             scale: this.y,
         });
+
+        this.svg.selectAll('.chart__axis_x')
+            .selectAll('text')
+            .style('text-anchor', 'end')
+            .attr('dx', '-.8em')
+            .attr('dy', '-.6em')
+            .attr('transform', 'rotate(-90)');
 
         const layer = this.plot
             .selectAll('.layer')
@@ -98,7 +108,7 @@ class TrendChartView extends BaseChartView {
             .append('line')
             .attr('id', d => d.id)
             .attr('x1', d => this.x(d.name))
-            .attr('y1', d => this.y(d.statistic.total))
+            .attr('y1', d => this.y(d.total))
             .attr('x2', d => this.x(d.name))
             .attr('y2', this.y(0))
             .attr('stroke', 'white')
