@@ -22,7 +22,7 @@ class TrendChartView extends BaseChartView {
         return this.options.items.map((item, i) => ({
             ...item,
             id:  item.buildOrder ? `build_${item.buildOrder}` : `item_${i}`,
-            name: item.buildOrder ? `#${item.buildOrder}` : `${this.options.items.length - i}(?)`,
+            name: item.buildOrder ? `#${item.buildOrder}` : '',
             total: item.statistic.total,
             statistic: omit(item.statistic, 'total')
         }));
@@ -39,14 +39,14 @@ class TrendChartView extends BaseChartView {
     }
 
     doShow(data) {
-        data = data.reverse();
+        data = data.slice().reverse();
         this.setupViewport();
         this.x.range([0, this.width]);
         this.y.range([this.height, 0]);
 
         const maxY = max(data, d => d.total);
 
-        this.x.domain(data.map(d => d.name));
+        this.x.domain(data.map(d => d.id));
         this.y.domain([0, maxY]).nice();
 
         const s = stack()
@@ -56,16 +56,17 @@ class TrendChartView extends BaseChartView {
             });
 
         const a = area()
-            .x(d => this.x(d.data.name))
+            .x(d => this.x(d.data.id))
             .y0(d => this.y(d[0]))
             .y1(d => this.y(d[1]));
 
         this.makeBottomAxis({
             scale: this.x,
+            tickFormat: (d, i) => data[i].name
         });
 
         this.makeLeftAxis({
-            scale: this.y,
+            scale: this.y
         });
 
         this.svg.selectAll('.chart__axis_x')
@@ -107,9 +108,9 @@ class TrendChartView extends BaseChartView {
         this.plot.selectAll('.edge')
             .append('line')
             .attr('id', d => d.id)
-            .attr('x1', d => this.x(d.name))
+            .attr('x1', d => this.x(d.id))
             .attr('y1', d => this.y(d.total))
-            .attr('x2', d => this.x(d.name))
+            .attr('x2', d => this.x(d.id))
             .attr('y2', this.y(0))
             .attr('stroke', 'white')
             .attr('stroke-width', 1)
@@ -119,10 +120,10 @@ class TrendChartView extends BaseChartView {
             .append('rect')
             .style('opacity', .0)
             .attr('class', 'report-edge')
-            .attr('x', (d, i) => i > 0 ? this.x(d.name) - this.x.step() / 2 : 0)
+            .attr('x', (d, i) => i > 0 ? this.x(d.id) - this.x.step() / 2 : 0)
             .attr('y', 0)
             .attr('height', this.height)
-            .attr('width', (d, i) => i === 0 || this.x(d.name) === this.width ? this.x.step() / 2 : this.x.step())
+            .attr('width', (d, i) => i === 0 || this.x(d.id) === this.width ? this.x.step() / 2 : this.x.step())
             .on('mouseover', (d) => {
                 const anchor = this.plot.select(`.report-line#${d.id}`).node();
                 this.showTooltip(d, anchor);
