@@ -31,4 +31,14 @@
             <xsd:element name="time" type="data:Time"/>
         </xsd:sequence>
     </xsd:complexType>
+
+    <xsd:element name="historyTrendItem" type="ns:HistoryTrendItem"/>
+    <xsd:complexType name="HistoryTrendItem">
+        <xsd:all>
+            <xsd:element name="statistic" type="data:Statistic"/>
+            <xsd:element name="buildOrder" type="xsd:long" nillable="true"/>
+            <xsd:element name="reportUrl" type="xsd:string"/>
+            <xsd:element name="reportName" type="xsd:string"/>
+        </xsd:all>
+    </xsd:complexType>
 </xsd:schema>

@@ -1,0 +1,54 @@
+[
+  {
+    "statistic": {
+      "failed": 4,
+      "broken": 4,
+      "skipped": 2,
+      "passed": 8,
+      "unknown": 2,
+      "total": 20
+    },
+    "buildOrder": 7,
+    "reportUrl": "some/report#7",
+    "reportName": "some"
+  },
+  {
+    "statistic": {
+      "failed": 4,
+      "broken": 2,
+      "skipped": 2,
+      "passed": 4,
+      "unknown": 0,
+      "total": 12
+    },
+    "buildOrder": 6,
+    "reportUrl": "some/report#6",
+    "reportName": "some"
+  },
+  {
+    "statistic": {
+      "failed": 4,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 8,
+      "unknown": 0,
+      "total": 12
+    },
+    "buildOrder": 5,
+    "reportUrl": "some/report#5",
+    "reportName": "some"
+  },
+  {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 1,
+      "unknown": 0,
+      "total": 1
+    },
+    "buildOrder": 4,
+    "reportUrl": "some/report#4",
+    "reportName": "some"
+  }
+]

@@ -15,6 +15,12 @@ $tooltip-color: #fff;
     position: absolute;
     border: 8px solid transparent;
   }
+  &_position_top:before {
+    border-top-color: $tooltip-bg;
+    top: 100%;
+    left: 50%;
+    margin-left: -8px;
+  }
   &_position_right:before {
     border-right-color: $tooltip-bg;
     top: 4px;

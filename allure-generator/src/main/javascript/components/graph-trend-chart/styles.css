@@ -4,4 +4,11 @@
   &__area {
     @mixin status-fill;
   }
+  &__tooltip {
+    display: block;
+    white-space: nowrap;
+    &_label {
+      display: inline-block;
+    }
+  }
 }

@@ -68,8 +68,12 @@
             <xsd:element name="name" type="xsd:string"/>
             <xsd:element name="type" type="xsd:string"/>
             <xsd:element name="url" type="xsd:string"/>
+
+            <xsd:element name="buildOrder" type="xsd:long" nillable="true"/>
             <xsd:element name="buildName" type="xsd:string"/>
             <xsd:element name="buildUrl" type="xsd:string"/>
+
+            <xsd:element name="reportName" type="xsd:string"/>
             <xsd:element name="reportUrl" type="xsd:string"/>
         </xsd:sequence>
     </xsd:complexType>
