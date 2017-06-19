@@ -25,6 +25,12 @@ export const POSITION = {
             left: left + width + offset
         };
     },
+    'left': function({top, left, height, width}, {offset}, tipSize) {
+        return {
+            top: top + height / 2 - tipSize.height / 2,
+            left: left - offset - tipSize.width
+        };
+    },
     'bottom': function({top, left, height, width}, {offset}, tipSize) {
         return {
             top: top + height + offset,
