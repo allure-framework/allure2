@@ -13,7 +13,7 @@
 [CONTRIBUTING.md]: .github/CONTRIBUTING.md
 [docs]: https://docs.qameta.io/allure/2.0/
 
-## Allure Report [![build-badge][]][build] [![release-badge][]][release] [![bintray-badge][]][bintray]
+# Allure Report [![build-badge][]][build] [![release-badge][]][release] [![bintray-badge][]][bintray]
 
 Allure Framework is a flexible lightweight multi-language test report tool that not only 
 shows a very concise representation of what have been tested in a neat web report form, 
@@ -22,7 +22,7 @@ information from everyday execution of tests.
 
 ![Allure Report](.github/readme-img.png)
 
-### Download 
+## Download 
 
 You can use one of the following ways to get Allure:
 
@@ -34,20 +34,20 @@ You can use one of the following ways to get Allure:
     $ brew install allure
     ```
 
-### Documentation 
+## Documentation 
 
 All the documentation is available [on our site][docs].
     
-### Contributing 
+## Contributing 
 
 Please see [CONTRIBUTING.md][]
 
-### Staying in Touch
+## Staying in Touch
 
 Follow [@QametaSoftware][twitter] and its [team members][twitter-team] on Twitter. In-depth articles can
 be found at [Qameta Blog][blog]. Also feel free to join our 
 [Gitter room][gitter] ([ru][gitter-ru]).
 
-### License
+## License
 
 The Allure Framework is released under version 2.0 of the [Apache License][license].
