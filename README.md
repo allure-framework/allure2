@@ -4,24 +4,23 @@
 [gitter-ru]: https://gitter.im/allure-framework/allure-ru
 [twitter]: https://twitter.com/QametaSoftware "Qameta Software"
 [twitter-team]: https://twitter.com/QametaSoftware/lists/team/members "Team"
-[release]: https://github.com/allure-framework/allure2/releases/latest "Latest release"
-[release-badge]: https://img.shields.io/github/release/allure-framework/allure2.svg?style=flat
+[build]: https://ci.qameta.io/job/allure2/job/master "Build"
+[build-badge]: https://ci.qameta.io/buildStatus/icon?job=allure2/master
 [bintray]: https://bintray.com/qameta/generic/allure2 "Bintray"
 [bintray-badge]: https://img.shields.io/bintray/v/qameta/generic/allure2.svg?style=flat
-[build]: https://ci.qameta.in/job/allure2_deploy/lastBuild "Jenkins build"
-[build-badge]: https://ci.qameta.in/buildStatus/icon?job=allure2_deploy
+[release]: https://github.com/allure-framework/allure2/releases/latest "Latest release"
+[release-badge]: https://img.shields.io/github/release/allure-framework/allure2.svg?style=flat
 [CONTRIBUTING.md]: .github/CONTRIBUTING.md
 [docs]: https://docs.qameta.io/allure/2.0/
 
-
-![Allure Report](.github/readme-img.png)
-
-## Allure Report [![release-badge][]][release] [![bintray-badge][]][bintray]
+## Allure Report [![build-badge][]][build] [![release-badge][]][release] [![bintray-badge][]][bintray]
 
 Allure Framework is a flexible lightweight multi-language test report tool that not only 
 shows a very concise representation of what have been tested in a neat web report form, 
 but allows everyone participating in the development process to extract maximum of useful 
 information from everyday execution of tests.
+
+![Allure Report](.github/readme-img.png)
 
 ### Download 
 
