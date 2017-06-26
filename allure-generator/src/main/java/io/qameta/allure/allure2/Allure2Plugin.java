@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -79,7 +80,7 @@ public class Allure2Plugin implements Reader {
 
         dest.setLinks(convert(result.getLinks(), this::convert));
         dest.setLabels(convert(result.getLabels(), this::convert));
-        dest.setParameters(convert(result.getParameters(), this::convert));
+        dest.setParameters(getParameters(result));
 
         if (hasTestStage(result)) {
             dest.setTestStage(getTestStage(resultsDirectory, visitor, result));
@@ -186,6 +187,15 @@ public class Allure2Plugin implements Reader {
                 .withStart(start)
                 .withStop(stop)
                 .withDuration(nonNull(start) && nonNull(stop) ? stop - start : null);
+    }
+
+    private List<Parameter> getParameters(final TestResult result) {
+        final TreeSet<Parameter> parametersSet = new TreeSet<>(
+                comparing(Parameter::getName, nullsFirst(naturalOrder()))
+                        .thenComparing(Parameter::getValue, nullsFirst(naturalOrder()))
+        );
+        parametersSet.addAll(convert(result.getParameters(), this::convert));
+        return new ArrayList<>(parametersSet);
     }
 
     private StageResult getTestStage(final Path source,
