@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -78,7 +79,7 @@ public class Commands {
         final boolean directoryExists = Files.exists(reportDirectory);
         if (clean && directoryExists) {
             FileUtils.deleteQuietly(reportDirectory.toFile());
-        } else if (directoryExists) {
+        } else if (directoryExists && isDirectoryNotEmpty(reportDirectory)) {
             JCommander.getConsole().println(format(DIRECTORY_EXISTS_MESSAGE, reportDirectory.toAbsolutePath()));
             return ExitCode.GENERIC_ERROR;
         }
@@ -207,6 +208,15 @@ public class Commands {
         } else {
             LOGGER.error("Can not open browser because this capability is not supported on "
                     + "your platform. You can use the link below to open the report manually.");
+        }
+    }
+
+    private boolean isDirectoryNotEmpty(final Path path) {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
+            return stream.iterator().hasNext();
+        } catch (IOException e) {
+            LOGGER.warn("Could not scan report directory {}", path, e);
+            return false;
         }
     }
 }

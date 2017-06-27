@@ -2,7 +2,6 @@ package io.qameta.allure.option;
 
 import com.beust.jcommander.Parameter;
 import io.qameta.allure.convert.PathConverter;
-import io.qameta.allure.validator.DirectoryExistsValidator;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -21,8 +20,7 @@ public class ResultsOptions {
 
     @Parameter(
             description = "The directories with allure results",
-            converter = PathConverter.class,
-            validateWith = DirectoryExistsValidator.class
+            converter = PathConverter.class
     )
     private List<Path> resultsDirectories = new ArrayList<>(singletonList(Paths.get("allure-results")));
 
