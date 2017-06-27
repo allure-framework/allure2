@@ -5,14 +5,10 @@ import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
-import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.tree2.Classifier;
 import io.qameta.allure.tree2.DefaultTree;
-import io.qameta.allure.tree2.TestResultTreeGroup;
 import io.qameta.allure.tree2.TestResultTreeLeaf;
 import io.qameta.allure.tree2.Tree;
-import io.qameta.allure.tree2.TreeGroup;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -21,8 +17,11 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import static io.qameta.allure.entity.LabelName.PARENT_SUITE;
+import static io.qameta.allure.entity.LabelName.SUB_SUITE;
+import static io.qameta.allure.entity.LabelName.SUITE;
+import static io.qameta.allure.tree2.TreeUtils.groupByLabels;
 
 /**
  * Plugin that generates data for Suites tab.
@@ -48,7 +47,7 @@ public class SuitesPlugin implements Aggregator {
                                            final List<LaunchResults> launchResults) {
         final Tree<TestResult> xunit = new DefaultTree<>(
                 "suites",
-                testResult -> bySuites(uidGenerator, testResult),
+                testResult -> groupByLabels(uidGenerator, testResult, PARENT_SUITE, SUITE, SUB_SUITE),
                 TestResultTreeLeaf::create
         );
 
@@ -57,24 +56,5 @@ public class SuitesPlugin implements Aggregator {
                 .flatMap(Collection::stream)
                 .forEach(xunit::add);
         return xunit;
-    }
-
-    protected List<Classifier<TestResult>> bySuites(final Supplier<String> uidGenerator,
-                                                    final TestResult testResult) {
-        return Stream.of(LabelName.PARENT_SUITE, LabelName.SUITE, LabelName.SUB_SUITE)
-                .map(testResult::findAll)
-                .filter(strings -> !strings.isEmpty())
-                .map(names -> new Classifier<TestResult>() {
-                    @Override
-                    public List<String> classify(final TestResult item) {
-                        return names;
-                    }
-
-                    @Override
-                    public TreeGroup factory(final String name, final TestResult item) {
-                        return new TestResultTreeGroup(name, uidGenerator.get());
-                    }
-                })
-                .collect(Collectors.toList());
     }
 }
