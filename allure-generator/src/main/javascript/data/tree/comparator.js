@@ -5,11 +5,17 @@ function byName(a, b) {
 }
 
 function byDuration(a, b) {
-    return a.time.duration < b.time.duration ? -1 : 1;
+    if (a.time && a.time.duration && b.time && b.time.duration) {
+        return a.time.duration < b.time.duration ? -1 : 1;
+    }
+    return 1;
 }
 
 function byMaxDuration(a, b) {
-    return a.time.maxDuration < b.time.maxDuration ? -1 : 1;
+    if (a.time && a.time.maxDuration && b.time && b.time.maxDuration) {
+        return a.time.maxDuration < b.time.maxDuration ? -1 : 1;
+    }
+    return 1;
 }
 
 function byNodeStatus(a, b) {
