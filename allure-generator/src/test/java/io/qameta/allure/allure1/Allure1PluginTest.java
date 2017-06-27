@@ -37,6 +37,7 @@ import static io.qameta.allure.entity.Status.UNKNOWN;
 import static org.allurefw.allure1.AllureUtils.generateTestSuiteJsonName;
 import static org.allurefw.allure1.AllureUtils.generateTestSuiteXmlName;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 
 public class Allure1PluginTest {
 
@@ -67,6 +68,24 @@ public class Allure1PluginTest {
         ).getResults();
         assertThat(testResults)
                 .hasSize(4);
+    }
+
+    @Test
+    public void shouldExcludeDuplicatedParams() throws Exception {
+        Set<TestResult> testResults = process(
+                "allure1/duplicated-params.xml", generateTestSuiteXmlName()
+        ).getResults();
+        assertThat(testResults)
+                .hasSize(1)
+                .flatExtracting(TestResult::getParameters)
+                .hasSize(4)
+                .extracting(Parameter::getName, Parameter::getValue)
+                .containsExactlyInAnyOrder(
+                        tuple("name", "value"),
+                        tuple("name2", "value"),
+                        tuple("name", "value2"),
+                        tuple("name2", "value2")
+                );
     }
 
     @Test

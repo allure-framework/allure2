@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -47,7 +48,7 @@ public abstract class AbstractTreeAggregator implements Aggregator {
                 .withChildren(new ArrayList<>());
 
         launches.stream()
-                .flatMap(launch -> launch.getResults().stream())
+                .flatMap(this::getTestResults)
                 .forEach(result -> addResultToTree(uidGenerator, tree, result));
         return postProcess(tree);
     }
@@ -121,6 +122,10 @@ public abstract class AbstractTreeAggregator implements Aggregator {
 
     protected boolean shouldProcess(final TestResult result) {
         return true;
+    }
+
+    protected Stream<TestResult> getTestResults(final LaunchResults launchResults) {
+        return launchResults.getResults().stream();
     }
 
     protected abstract String getFileName();

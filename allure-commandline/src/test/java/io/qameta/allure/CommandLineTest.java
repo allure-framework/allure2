@@ -89,20 +89,10 @@ public class CommandLineTest {
     }
 
     @Test
-    public void shouldValidateResultsDirectoryExists() throws Exception {
+    public void shouldAllowResultsDirectoriesThatNotExists() throws Exception {
         final Optional<ExitCode> exitCode = commandLine.parse(GENERATE_COMMAND, randomString(), randomString());
         assertThat(exitCode)
-                .isPresent()
-                .hasValue(ExitCode.ARGUMENT_PARSING_ERROR);
-    }
-
-    @Test
-    public void shouldNotFailIfResultsAreRegularFile() throws Exception {
-        final Path results = folder.newFile().toPath();
-        final Optional<ExitCode> exitCode = commandLine.parse(GENERATE_COMMAND, results.toString());
-        assertThat(exitCode)
-                .isPresent()
-                .hasValue(ExitCode.ARGUMENT_PARSING_ERROR);
+                .isEmpty();
     }
 
     @Test

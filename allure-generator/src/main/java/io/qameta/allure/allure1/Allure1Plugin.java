@@ -150,7 +150,7 @@ public class Allure1Plugin implements Reader {
         );
         final String name = firstNonNull(source.getTitle(), source.getName(), "unknown test case");
 
-        final List<Parameter> parameters = convert(source.getParameters(), this::hasArgumentType, this::convert);
+        final List<Parameter> parameters = getParameters(source);
         dest.setHistoryId(getHistoryId(String.format("%s#%s", testClass, name), parameters));
         dest.setUid(randomUid.get());
         dest.setName(name);
@@ -295,6 +295,15 @@ public class Allure1Plugin implements Reader {
             default:
                 return Status.UNKNOWN;
         }
+    }
+
+    private List<Parameter> getParameters(final TestCaseResult source) {
+        final TreeSet<Parameter> parametersSet = new TreeSet<>(
+                comparing(Parameter::getName, nullsFirst(naturalOrder()))
+                        .thenComparing(Parameter::getValue, nullsFirst(naturalOrder()))
+        );
+        parametersSet.addAll(convert(source.getParameters(), this::hasArgumentType, this::convert));
+        return new ArrayList<>(parametersSet);
     }
 
     private String getDescription(final Description... descriptions) {
