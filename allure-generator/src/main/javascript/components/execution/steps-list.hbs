@@ -22,10 +22,10 @@
                     {{/each}}
                 </div>
             {{/if}}
+            {{> steps-list steps=steps baseUrl=../baseUrl}}
             {{#each attachments}}
                 {{> ../../blocks/attachment-row/attachment-row . baseUrl=../../baseUrl}}
             {{/each}}
-            {{> steps-list steps=steps baseUrl=../baseUrl}}
         </div>
     </div>
 {{/each}}
