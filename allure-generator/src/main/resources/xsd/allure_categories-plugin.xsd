@@ -16,6 +16,7 @@
             <xsd:element name="messageRegex" type="xsd:string"/>
             <xsd:element name="traceRegex" type="xsd:string"/>
             <xsd:element name="matchedStatuses" type="ns:Statuses"/>
+            <xsd:element name="flaky" type="xsd:boolean"/>
         </xsd:sequence>
     </xsd:complexType>
 

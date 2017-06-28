@@ -117,7 +117,9 @@ public class CategoriesPlugin extends AbstractTreeAggregator implements Reader {
                 || nonNull(result.getStatusDetails())
                 && nonNull(result.getStatusDetails().getTrace())
                 && matches(result.getStatusDetails().getTrace(), category.getTraceRegex());
-        return matchesStatus && matchesMessage && matchesTrace;
+        boolean matchesFlaky = nonNull(result.getStatusDetails())
+                && result.getStatusDetails().isFlaky() == category.isFlaky();
+        return matchesStatus && matchesMessage && matchesTrace && matchesFlaky;
     }
 
     private static boolean matches(final String message, final String pattern) {
