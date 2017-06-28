@@ -3,7 +3,9 @@ package io.qameta.allure.history;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
+import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
+import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.testdata.TestData;
@@ -16,11 +18,16 @@ import org.mockito.ArgumentCaptor;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import static io.qameta.allure.history.HistoryTrendPlugin.HISTORY_TREND;
+import static io.qameta.allure.executor.ExecutorPlugin.EXECUTORS_BLOCK_NAME;
+import static io.qameta.allure.history.HistoryTrendPlugin.HISTORY_TREND_BLOCK_NAME;
 import static io.qameta.allure.history.HistoryTrendPlugin.HISTORY_TREND_JSON;
+import static io.qameta.allure.testdata.TestData.createLaunchResults;
 import static io.qameta.allure.testdata.TestData.createSingleLaunchResults;
 import static io.qameta.allure.testdata.TestData.randomHistoryTrendItems;
 import static io.qameta.allure.testdata.TestData.randomTestResult;
@@ -60,7 +67,7 @@ public class HistoryTrendPluginTest {
 
         final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.forClass(List.class);
         verify(visitor, times(1))
-                .visitExtra(eq(HISTORY_TREND), captor.capture());
+                .visitExtra(eq(HISTORY_TREND_BLOCK_NAME), captor.capture());
 
         assertThat(captor.getValue())
                 .hasSize(4)
@@ -88,7 +95,7 @@ public class HistoryTrendPluginTest {
 
         final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.forClass(List.class);
         verify(visitor, times(1))
-                .visitExtra(eq(HISTORY_TREND), captor.capture());
+                .visitExtra(eq(HISTORY_TREND_BLOCK_NAME), captor.capture());
 
         assertThat(captor.getValue())
                 .hasSize(4)
@@ -150,7 +157,7 @@ public class HistoryTrendPluginTest {
 
         final List<HistoryTrendItem> history = randomHistoryTrendItems();
         final List<HistoryTrendItem> data = new HistoryTrendPlugin().getData(configuration, createSingleLaunchResults(
-                singletonMap(HistoryTrendPlugin.HISTORY_TREND, history),
+                singletonMap(HISTORY_TREND_BLOCK_NAME, history),
                 randomTestResult().withStatus(Status.PASSED),
                 randomTestResult().withStatus(Status.FAILED),
                 randomTestResult().withStatus(Status.FAILED)
@@ -168,5 +175,69 @@ public class HistoryTrendPluginTest {
         assertThat(next)
                 .containsExactlyElementsOf(history);
 
+    }
+
+    @Test
+    public void shouldFindLatestExecutor() throws Exception {
+        final Configuration configuration = mock(Configuration.class);
+
+        final Map<String, Object> extra1 = new HashMap<>();
+        final List<HistoryTrendItem> history1 = randomHistoryTrendItems();
+        extra1.put(HISTORY_TREND_BLOCK_NAME, history1);
+        extra1.put(EXECUTORS_BLOCK_NAME, new ExecutorInfo().withBuildOrder(1L));
+        final Map<String, Object> extra2 = new HashMap<>();
+        final List<HistoryTrendItem> history2 = randomHistoryTrendItems();
+        extra2.put(HISTORY_TREND_BLOCK_NAME, history2);
+        extra2.put(EXECUTORS_BLOCK_NAME, new ExecutorInfo().withBuildOrder(7L));
+
+        final List<LaunchResults> launchResults = Arrays.asList(
+                createLaunchResults(extra1,
+                        randomTestResult().withStatus(Status.PASSED),
+                        randomTestResult().withStatus(Status.FAILED),
+                        randomTestResult().withStatus(Status.FAILED)
+                ),
+                createLaunchResults(extra2,
+                        randomTestResult().withStatus(Status.PASSED),
+                        randomTestResult().withStatus(Status.FAILED),
+                        randomTestResult().withStatus(Status.FAILED)
+                )
+        );
+
+        final List<HistoryTrendItem> data = new HistoryTrendPlugin().getData(configuration, launchResults);
+
+        assertThat(data)
+                .hasSize(1 + history1.size() + history2.size());
+
+        final HistoryTrendItem historyTrendItem = data.get(0);
+
+        assertThat(historyTrendItem)
+                .hasFieldOrPropertyWithValue("buildOrder", 7L);
+    }
+
+    @Test
+    public void shouldProcessNullBuildOrder() throws Exception {
+        final Configuration configuration = mock(Configuration.class);
+
+        final List<HistoryTrendItem> history = randomHistoryTrendItems();
+        final Map<String, Object> extra = new HashMap<>();
+        extra.put(HISTORY_TREND_BLOCK_NAME, history);
+        extra.put(EXECUTORS_BLOCK_NAME, new ExecutorInfo().withBuildOrder(null));
+
+        final List<LaunchResults> launchResults = Arrays.asList(
+                createLaunchResults(extra,
+                        randomTestResult().withStatus(Status.PASSED),
+                        randomTestResult().withStatus(Status.FAILED),
+                        randomTestResult().withStatus(Status.FAILED)
+                ),
+                createLaunchResults(extra,
+                        randomTestResult().withStatus(Status.PASSED),
+                        randomTestResult().withStatus(Status.FAILED),
+                        randomTestResult().withStatus(Status.FAILED)
+                )
+        );
+        final List<HistoryTrendItem> data = new HistoryTrendPlugin().getData(configuration, launchResults);
+
+        assertThat(data)
+                .hasSize(1 + 2 * history.size());
     }
 }

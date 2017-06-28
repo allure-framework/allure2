@@ -39,8 +39,12 @@ public final class TestData {
 
     public static List<LaunchResults> createSingleLaunchResults(Map<String, Object> extra, TestResult... input) {
         List<LaunchResults> launchResultsList = new ArrayList<>();
-        launchResultsList.add(new DefaultLaunchResults(Arrays.stream(input).collect(Collectors.toSet()), null, extra));
+        launchResultsList.add(createLaunchResults(extra, input));
         return launchResultsList;
+    }
+
+    public static DefaultLaunchResults createLaunchResults(final Map<String, Object> extra, final TestResult... input) {
+        return new DefaultLaunchResults(Arrays.stream(input).collect(Collectors.toSet()), null, extra);
     }
 
     public static void unpackFile(final String name, final Path output) throws IOException {
