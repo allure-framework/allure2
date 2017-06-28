@@ -17,14 +17,14 @@ public class TestResultTreeLeaf extends DefaultTreeLeaf {
 
     private final Time time;
 
-    private final boolean isFlaky;
+    private final boolean flaky;
 
     public TestResultTreeLeaf(final TestResult testResult) {
         super(testResult.getName());
         this.uid = testResult.getUid();
         this.status = testResult.getStatus();
         this.time = testResult.getTime();
-        this.isFlaky = testResult.getStatusDetailsSafe().isFlaky();
+        this.flaky = testResult.getStatusDetailsSafe().isFlaky();
     }
 
     public String getUid() {
@@ -40,7 +40,7 @@ public class TestResultTreeLeaf extends DefaultTreeLeaf {
     }
 
     public boolean isFlaky() {
-        return isFlaky;
+        return flaky;
     }
 
     public static Optional<TestResultTreeLeaf> create(final TestResult testResult) {

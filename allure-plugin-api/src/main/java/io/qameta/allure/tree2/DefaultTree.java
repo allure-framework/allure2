@@ -43,7 +43,12 @@ public class DefaultTree<T> extends DefaultTreeGroup implements Tree<T> {
         final Classifier<T> classifier = classifiers.get(index);
         return classifier.classify(item).stream()
                 .flatMap(name -> {
-                    final TreeGroup child = (TreeGroup) node.computeIfAbsent(name, key -> classifier.factory(key, item));
+                    // @formatter:off
+                    final TreeGroup child = (TreeGroup) node.computeIfAbsent(
+                        name,
+                        key -> classifier.factory(key, item)
+                    );
+                    // @formatter:on
                     node.addChild(child);
                     return getEndNodes(item, child, classifiers, index + 1);
                 });
