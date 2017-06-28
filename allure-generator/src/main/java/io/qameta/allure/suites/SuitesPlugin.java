@@ -43,13 +43,17 @@ public class SuitesPlugin implements Aggregator {
         }
     }
 
+    @SuppressWarnings("PMD.DefaultPackage")
     /* default */ Tree<TestResult> getData(final Supplier<String> uidGenerator,
                                            final List<LaunchResults> launchResults) {
+
+        // @formatter:off
         final Tree<TestResult> xunit = new DefaultTree<>(
-                "suites",
-                testResult -> groupByLabels(uidGenerator, testResult, PARENT_SUITE, SUITE, SUB_SUITE),
-                TestResultTreeLeaf::create
+            "suites",
+            testResult -> groupByLabels(uidGenerator, testResult, PARENT_SUITE, SUITE, SUB_SUITE),
+            TestResultTreeLeaf::create
         );
+        // @formatter:on
 
         launchResults.stream()
                 .map(LaunchResults::getResults)
