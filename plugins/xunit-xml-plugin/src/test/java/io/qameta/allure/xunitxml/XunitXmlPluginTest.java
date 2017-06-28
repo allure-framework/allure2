@@ -58,8 +58,9 @@ public class XunitXmlPluginTest {
     {
         return new String[][]{
                 {"xunitdata/failed-test.xml", "failed-test.xml",
-                        "Assert.True() Failure\\r\\nExpected: True\\r\\nActual:   False\r\ntest output\n", "FAILED-TRACE"},
-                {"xunitdata/passed-test.xml", "passed-test.xml", "test output\n", null}
+                        "Assert.True() Failure\\r\\nExpected: True\\r\\nActual:   False"+
+                                System.getProperty("line.separator")+"test output\\n", "FAILED-TRACE"},
+                {"xunitdata/passed-test.xml", "passed-test.xml", "test output\\n", null}
         };
     }
 

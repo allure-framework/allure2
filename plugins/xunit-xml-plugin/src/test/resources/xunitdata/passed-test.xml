@@ -6,8 +6,7 @@
                   type="org.example.XunitTest"
                   method="passedTest" time="0.0445156"
                   result="Pass">
-                <output><![CDATA[test output
-]]></output>
+                <output><![CDATA[test output\n]]></output>
             </test>
         </collection>
     </assembly>

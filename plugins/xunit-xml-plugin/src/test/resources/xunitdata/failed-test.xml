@@ -5,8 +5,7 @@
             <test name="org.example.FailedTest"
                   type="Some failed test"
                   method="failedTest" time="0.1542482" result="Fail">
-                <output><![CDATA[test output
-]]></output>
+                <output><![CDATA[test output\n]]></output>
                 <failure exception-type="Xunit.Sdk.TrueException">
                     <message><![CDATA[Assert.True() Failure\r\nExpected: True\r\nActual:   False]]></message>
                     <stack-trace><![CDATA[FAILED-TRACE]]></stack-trace>
