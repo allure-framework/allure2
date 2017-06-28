@@ -32,6 +32,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static io.qameta.allure.executor.ExecutorPlugin.EXECUTORS_BLOCK_NAME;
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.naturalOrder;
+import static java.util.Comparator.nullsFirst;
 import static java.util.Spliterators.spliteratorUnknownSize;
 import static java.util.stream.StreamSupport.stream;
 
@@ -46,7 +49,7 @@ public class HistoryTrendPlugin implements Reader, Aggregator, Widget {
     private static final Logger LOGGER = LoggerFactory.getLogger(HistoryTrendPlugin.class);
 
     public static final String HISTORY_TREND_JSON = "history-trend.json";
-    public static final String HISTORY_TREND = "history-trend";
+    public static final String HISTORY_TREND_BLOCK_NAME = "history-trend";
 
     @Override
     public void readResults(final Configuration configuration,
@@ -65,7 +68,7 @@ public class HistoryTrendPlugin implements Reader, Aggregator, Widget {
                         .map(Optional::get)
                         .collect(Collectors.toList());
 
-                visitor.visitExtra(HISTORY_TREND, history);
+                visitor.visitExtra(HISTORY_TREND_BLOCK_NAME, history);
             } catch (IOException e) {
                 visitor.error("Could not read history-trend file " + historyFile, e);
             }
@@ -92,7 +95,7 @@ public class HistoryTrendPlugin implements Reader, Aggregator, Widget {
 
     @Override
     public String getName() {
-        return HISTORY_TREND;
+        return HISTORY_TREND_BLOCK_NAME;
     }
 
     private Stream<JsonNode> getStream(final JsonNode jsonNode) {
@@ -151,11 +154,11 @@ public class HistoryTrendPlugin implements Reader, Aggregator, Widget {
     }
 
     private List<HistoryTrendItem> getPreviousTrendData(final LaunchResults results) {
-        return results.getExtra(HISTORY_TREND, ArrayList::new);
+        return results.getExtra(HISTORY_TREND_BLOCK_NAME, ArrayList::new);
     }
 
     private static Optional<ExecutorInfo> extractLatestExecutor(final List<LaunchResults> launches) {
-        final Comparator<ExecutorInfo> comparator = Comparator.comparingLong(ExecutorInfo::getBuildOrder);
+        final Comparator<ExecutorInfo> comparator = comparing(ExecutorInfo::getBuildOrder, nullsFirst(naturalOrder()));
         return launches.stream()
                 .map(launch -> launch.getExtra(EXECUTORS_BLOCK_NAME))
                 .filter(Optional::isPresent)
