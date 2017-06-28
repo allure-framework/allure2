@@ -1,0 +1,45 @@
+description = 'Allure Debian'
+
+apply from: "${gradleScriptDir}/bintray.gradle"
+apply plugin: "nebula.ospackage"
+
+configurations {
+    allureZip
+}
+
+dependencies {
+    allureZip project(path: ':allure-commandline', configuration: 'allureZip')
+}
+
+task unpackAllureCommandline(type: Sync) {
+    dependsOn configurations.allureZip
+    from {
+        configurations.allureZip.collect { zipTree(it) }
+    }
+    into "$project.buildDir/allure"
+}
+
+task allureDeb(type: Deb) {
+    dependsOn unpackAllureCommandline
+
+    packageName = 'allure'
+    version = project.version
+    packager = 'Allure Framework'
+    maintainer = 'Allure Framework'
+
+    requires('openjdk-8-jre-headless')
+
+    from("$project.buildDir/allure/allure-${version}") {
+        into 'usr/share/allure'
+    }
+
+    link('/usr/bin/allure', '/usr/share/allure/bin/allure')
+}
+
+build.dependsOn allureDeb
+
+bintray {
+    pkg {
+        repo = 'debian'
+    }
+}

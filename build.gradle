@@ -9,6 +9,7 @@ buildscript {
     dependencies {
         classpath 'io.spring.gradle:dependency-management-plugin:1.0.3.RELEASE'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath 'com.netflix.nebula:gradle-ospackage-plugin:4.4.0'
         classpath 'com.github.jacobono:gradle-jaxb-plugin:1.3.6'
         classpath 'com.moowork.gradle:gradle-node-plugin:1.2.0'
         classpath 'com.bmuschko:gradle-docker-plugin:3.0.7'

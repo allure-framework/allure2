@@ -3,6 +3,7 @@ rootProject.name = 'allure2'
 include 'allure-plugin-api'
 include 'allure-generator'
 include 'allure-commandline'
+include 'allure-debian'
 
 def plugins = [
         'behaviors-plugin',
