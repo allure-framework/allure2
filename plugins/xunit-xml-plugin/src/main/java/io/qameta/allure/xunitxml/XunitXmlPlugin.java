@@ -50,6 +50,7 @@ public class XunitXmlPlugin implements Reader {
     private static final String FAILURE_ELEMENT_NAME = "failure";
     private static final String MESSAGE_ELEMENT_NAME = "message";
     private static final String STACK_TRACE_ELEMENT_NAME = "stack-trace";
+    private static final String OUTPUT_ELEMENT_NAME = "output";
     private static final String TRAIT_ELEMENT_NAME = "trait";
     private static final String TRAITS_ELEMENT_NAME = "traits";
 
@@ -142,7 +143,7 @@ public class XunitXmlPlugin implements Reader {
     }
 
     private Optional<StatusDetails> getStatusDetails(final XmlElement testElement) {
-        return testElement.getFirst(FAILURE_ELEMENT_NAME)
+        Optional<StatusDetails> statusDetails = testElement.getFirst(FAILURE_ELEMENT_NAME)
                 .map(failure -> {
                     final StatusDetails details = new StatusDetails();
                     failure.getFirst(MESSAGE_ELEMENT_NAME)
@@ -154,6 +155,20 @@ public class XunitXmlPlugin implements Reader {
                             .ifPresent(details::setTrace);
                     return details;
                 });
+
+        Optional<String> output = testElement.getFirst(OUTPUT_ELEMENT_NAME)
+                                             .map(XmlElement::getValue);
+        return output.isPresent() ? addOutputToStatusDetails(statusDetails, output) : statusDetails;
+    }
+
+    private Optional<StatusDetails> addOutputToStatusDetails(final Optional<StatusDetails> statusDetails,
+                                                             final Optional<String> output) {
+        StringBuilder message = new StringBuilder();
+        statusDetails.ifPresent(s -> message.append(s.getMessage()).append(System.getProperty("line.separator")));
+        Optional<StatusDetails> updatedStatusDetails =
+                statusDetails.isPresent() ? statusDetails : Optional.of(new StatusDetails());
+        updatedStatusDetails.ifPresent(s -> s.setMessage(message.append(output.get()).toString()));
+        return updatedStatusDetails;
     }
 
     private Optional<List<Parameter>> getParameters(final XmlElement testElement) {

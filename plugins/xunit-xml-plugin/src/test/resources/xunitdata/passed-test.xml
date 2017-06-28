@@ -5,7 +5,10 @@
             <test name="Some test"
                   type="org.example.XunitTest"
                   method="passedTest" time="0.0445156"
-                  result="Pass"/>
+                  result="Pass">
+                <output><![CDATA[test output
+]]></output>
+            </test>
         </collection>
     </assembly>
 </assemblies>
