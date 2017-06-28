@@ -1,0 +1,6 @@
+{{#if groupLinks}}
+    <h3 class="pane__section-title">{{t 'testCase.groups.name'}}</h3>
+    {{#each groupLinks}}
+        <a class="link" href="{{url}}">{{name}}</a>
+    {{/each}}
+{{/if}}

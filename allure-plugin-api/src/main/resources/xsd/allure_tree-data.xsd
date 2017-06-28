@@ -71,6 +71,7 @@
     <xsd:complexType name="TreeWidgetItem">
         <xsd:sequence>
             <xsd:element name="uid" type="xsd:string"/>
+            <xsd:element name="url" type="xsd:string"/>
             <xsd:element name="name" type="xsd:string"/>
             <xsd:element name="statistic" type="api:Statistic"/>
         </xsd:sequence>

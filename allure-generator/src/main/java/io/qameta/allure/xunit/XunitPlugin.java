@@ -1,8 +1,10 @@
 package io.qameta.allure.xunit;
 
+import io.qameta.allure.entity.GroupLink;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.tree.AbstractTreeAggregator;
+import io.qameta.allure.tree.TestGroupNode;
 import io.qameta.allure.tree.TreeGroup;
 
 import java.util.List;
@@ -30,5 +32,14 @@ public class XunitPlugin extends AbstractTreeAggregator {
                 .map(Optional::get)
                 .map(TreeGroup::values)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    protected void afterGroupAdded(final TestGroupNode groupNode, final TestResult result) {
+        result.getGroupLinks().add(new GroupLink()
+                .withGroupType("xunit")
+                .withName(groupNode.getName())
+                .withUrl("/#xUnit/" + groupNode.getUid())
+        );
     }
 }

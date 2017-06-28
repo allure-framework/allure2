@@ -84,6 +84,7 @@ public abstract class AbstractTreeAggregator implements Aggregator {
                             });
                     groupNode.updateStatistic(result);
                     groupNode.updateTime(result);
+                    afterGroupAdded(groupNode, result);
                     nextLevelGroups.add(groupNode);
                 }
             }
@@ -110,6 +111,11 @@ public abstract class AbstractTreeAggregator implements Aggregator {
                 .map(TestGroupNode.class::cast)
                 .filter(group -> Objects.equals(groupName, group.getName()))
                 .findAny();
+    }
+
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
+    protected void afterGroupAdded(final TestGroupNode groupNode, final TestResult result) {
+        //do nothing by default.
     }
 
     protected TreeData postProcess(final TreeData tree) {

@@ -33,6 +33,7 @@ import './plugins/testcase-retry';
 import './plugins/testcase-owner';
 import './plugins/testcase-severity';
 import './plugins/testcase-duration';
+import './plugins/testcase-groups';
 import './plugins/testcase-parameters';
 import './plugins/testcase-links';
 

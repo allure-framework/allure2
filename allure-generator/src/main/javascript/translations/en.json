@@ -86,6 +86,9 @@
     "duration": {
       "name": "Duration"
     },
+    "groups": {
+      "name": "Groups"
+    },
     "history": {
       "name": "History",
       "successRate": "Success rate"
