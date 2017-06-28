@@ -23,11 +23,11 @@ import io.qameta.allure.mail.MailPlugin;
 import io.qameta.allure.owner.OwnerPlugin;
 import io.qameta.allure.retry.RetryPlugin;
 import io.qameta.allure.severity.SeverityPlugin;
+import io.qameta.allure.suites.SuitesPlugin;
 import io.qameta.allure.summary.SummaryPlugin;
 import io.qameta.allure.tags.TagsPlugin;
 import io.qameta.allure.timeline.TimelinePlugin;
 import io.qameta.allure.widget.WidgetsPlugin;
-import io.qameta.allure.suites.SuitesPlugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
