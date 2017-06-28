@@ -27,7 +27,7 @@ import io.qameta.allure.summary.SummaryPlugin;
 import io.qameta.allure.tags.TagsPlugin;
 import io.qameta.allure.timeline.TimelinePlugin;
 import io.qameta.allure.widget.WidgetsPlugin;
-import io.qameta.allure.xunit.XunitPlugin;
+import io.qameta.allure.suites.SuitesPlugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,7 +63,7 @@ public class ConfigurationBuilder {
                 new HistoryTrendPlugin(),
                 new GraphPlugin(),
                 new TimelinePlugin(),
-                new XunitPlugin(),
+                new SuitesPlugin(),
                 new ReportWebPlugin(),
                 new TestsResultsPlugin(),
                 new AttachmentsPlugin(),

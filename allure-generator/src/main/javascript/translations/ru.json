@@ -19,7 +19,7 @@
     "categories": {
       "name": "Категории"
     },
-    "xunit": {
+    "suites": {
       "name": "Тест сюиты"
     },
     "graph": {
