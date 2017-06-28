@@ -34,16 +34,18 @@ public class CategoriesPluginTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
+    private Configuration configuration;
+
     private Path reportPath;
 
     @Before
     public void setUp() throws IOException {
         reportPath = Paths.get(folder.newFolder("report").getAbsolutePath());
+        configuration = new ConfigurationBuilder().useDefault().build();
     }
 
     @Test
     public void shouldWork() throws IOException {
-        Configuration configuration = new ConfigurationBuilder().useDefault().build();
 
         Category category = new Category()
                 .withName(CATEGORY_NAME)
@@ -67,15 +69,51 @@ public class CategoriesPluginTest {
 
         assertThat(categories).as("test categories")
                 .extracting(Category::getName)
-                .containsExactly(CATEGORY_NAME);
+                .containsExactly(category.getName());
 
         assertThat(reportPath.resolve("data").resolve("categories.json"))
                 .exists();
 
     }
 
+    @Test
+    public void flakyTestsCanBeAddedToCategory() throws IOException {
+        Category category = new Category()
+                .withName(CATEGORY_NAME)
+                .withMatchedStatuses(Status.FAILED)
+                .withFlaky(true);
+
+        Map<String, Object> meta = new HashMap<>();
+        meta.put("categories", Collections.singletonList(category));
+
+        List<LaunchResults> launchResultsList = createSingleLaunchResults(
+                meta, createTestResult("asd\n", Status.FAILED, true)
+        );
+
+        CategoriesPlugin plugin = new CategoriesPlugin();
+
+        plugin.aggregate(configuration, launchResultsList, reportPath);
+
+        Set<TestResult> results = launchResultsList.get(0).getAllResults();
+        List<Category> categories = results.toArray(new TestResult[]{})[0]
+                .getExtraBlock("categories");
+
+        assertThat(categories).as("test categories")
+                .extracting(Category::getName)
+                .containsExactly(category.getName());
+
+        assertThat(reportPath.resolve("data").resolve("categories.json"))
+                .exists();
+    }
+
     private TestResult createTestResult(String message, Status status) {
-        return new TestResult().withStatus(status).withStatusDetails(new StatusDetails().withMessage(message));
+        return createTestResult(message, status, false);
+    }
+
+    private TestResult createTestResult(String message, Status status, boolean flaky) {
+        return new TestResult().withStatus(status).withStatusDetails(
+                new StatusDetails().withMessage(message).withFlaky(flaky)
+        );
     }
 
 
