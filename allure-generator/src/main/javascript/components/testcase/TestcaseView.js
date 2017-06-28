@@ -14,7 +14,7 @@ const SEVERITY_ICONS = {
     trivial: 'fa fa-long-arrow-down'
 };
 
-@behavior('TooltipBehavior', {position: 'bottom'})
+@behavior('TooltipBehavior', {position: 'left'})
 @regions({
     execution: '.testcase__execution'
 })
