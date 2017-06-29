@@ -9,10 +9,15 @@ import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import org.assertj.core.groups.Tuple;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.experimental.theories.DataPoints;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
 import org.junit.rules.TemporaryFolder;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
 import java.io.IOException;
@@ -31,6 +36,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author charlie (Dmitry Baev).
  */
+@RunWith(Theories.class)
 public class XunitXmlPluginTest {
 
     @Rule
@@ -45,6 +51,17 @@ public class XunitXmlPluginTest {
         configuration = mock(Configuration.class);
         when(configuration.requireContext(RandomUidContext.class)).thenReturn(new RandomUidContext());
         visitor = mock(ResultsVisitor.class);
+    }
+
+    @DataPoints
+    public static String[][] input()
+    {
+        return new String[][]{
+                {"xunitdata/failed-test.xml", "failed-test.xml",
+                        String.format("%s%n","Assert.True() Failure\\r\\nExpected: True\\r\\nActual:   False")+
+                                "test output\\n", "FAILED-TRACE"},
+                {"xunitdata/passed-test.xml", "passed-test.xml", "test output\\n", null}
+        };
     }
 
     @Test
@@ -121,11 +138,12 @@ public class XunitXmlPluginTest {
                 );
     }
 
-    @Test
-    public void shouldSetStatusDetails() throws Exception {
+    @Theory
+    public void shouldSetStatusDetails(String[] inputs) throws Exception {
+        Assume.assumeTrue(inputs.length == 4);
         process(
-                "xunitdata/failed-test.xml",
-                "failed-test.xml"
+                inputs[0],
+                inputs[1]
         );
 
         final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
@@ -136,7 +154,7 @@ public class XunitXmlPluginTest {
                 .extracting(TestResult::getStatusDetails)
                 .extracting(StatusDetails::getMessage, StatusDetails::getTrace)
                 .containsExactlyInAnyOrder(
-                        Tuple.tuple("Assert.True() Failure\\r\\nExpected: True\\r\\nActual:   False", "FAILED-TRACE")
+                        Tuple.tuple(inputs[2], inputs[3])
                 );
     }
 
