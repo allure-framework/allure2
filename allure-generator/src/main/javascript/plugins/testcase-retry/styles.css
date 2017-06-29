@@ -11,7 +11,4 @@
     }
     cursor: pointer;
   }
-  &__message {
-    padding: 10px 0;
-  }
 }
