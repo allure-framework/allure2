@@ -158,17 +158,19 @@ public class XunitXmlPlugin implements Reader {
 
         Optional<String> output = testElement.getFirst(OUTPUT_ELEMENT_NAME)
                                              .map(XmlElement::getValue);
-        return output.isPresent() ? addOutputToStatusDetails(statusDetails, output) : statusDetails;
-    }
-
-    private Optional<StatusDetails> addOutputToStatusDetails(final Optional<StatusDetails> statusDetails,
-                                                             final Optional<String> output) {
-        StringBuilder message = new StringBuilder();
-        statusDetails.ifPresent(s -> message.append(s.getMessage()).append(System.getProperty("line.separator")));
         Optional<StatusDetails> updatedStatusDetails =
                 statusDetails.isPresent() ? statusDetails : Optional.of(new StatusDetails());
-        updatedStatusDetails.ifPresent(s -> s.setMessage(message.append(output.get()).toString()));
-        return updatedStatusDetails;
+        return output.isPresent() ? addOutputToStatusDetails(updatedStatusDetails.get(), output.get()) : statusDetails;
+    }
+
+    private Optional<StatusDetails> addOutputToStatusDetails(final StatusDetails statusDetails,
+                                                             final String output) {
+        StringBuilder message = new StringBuilder();
+        if(statusDetails.getMessage() != null && !statusDetails.getMessage().isEmpty()) {
+            message.append(String.format("%s%n", statusDetails.getMessage()));
+        }
+        statusDetails.setMessage(message.append(output).toString());
+        return Optional.ofNullable(statusDetails);
     }
 
     private Optional<List<Parameter>> getParameters(final XmlElement testElement) {
