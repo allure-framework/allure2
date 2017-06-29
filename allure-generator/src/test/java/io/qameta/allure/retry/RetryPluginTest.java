@@ -1,6 +1,7 @@
 package io.qameta.allure.retry;
 
 import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import org.junit.Test;
@@ -111,8 +112,54 @@ public class RetryPluginTest {
                 .containsExactlyInAnyOrder(tuple(SECOND_RESULT, true));
     }
 
+    @Test
+    public void shouldNotMarkLatestAsFlakyIfRetriesArePassed() throws Exception {
+        String historyId = UUID.randomUUID().toString();
+        List<LaunchResults> launchResultsList = createSingleLaunchResults(
+                createTestResult(FIRST_RESULT, historyId, 1L, 9L).withStatus(Status.PASSED),
+                createTestResult(SECOND_RESULT, historyId, 11L, 19L).withStatus(Status.PASSED)
+        );
+        retryPlugin.aggregate(null, launchResultsList, null);
+        Set<TestResult> results = launchResultsList.get(0).getAllResults();
+
+        assertThat(results)
+                .filteredOn(TestResult::isHidden)
+                .extracting(TestResult::getName)
+                .containsExactlyInAnyOrder(FIRST_RESULT);
+
+        assertThat(results)
+                .filteredOn(result -> !result.isHidden())
+                .extracting("name", "statusDetails.flaky")
+                .containsExactlyInAnyOrder(tuple(SECOND_RESULT, false));
+    }
+
+    @Test
+    public void shouldNotMarkLatestAsFlakyIfRetriesSkipped() throws Exception {
+        String historyId = UUID.randomUUID().toString();
+        List<LaunchResults> launchResultsList = createSingleLaunchResults(
+                createTestResult(FIRST_RESULT, historyId, 1L, 9L).withStatus(Status.SKIPPED),
+                createTestResult(SECOND_RESULT, historyId, 11L, 19L).withStatus(Status.PASSED),
+                createTestResult(LAST_RESULT, historyId, 12L, 20L).withHidden(true).withStatus(Status.PASSED)
+        );
+        retryPlugin.aggregate(null, launchResultsList, null);
+        Set<TestResult> results = launchResultsList.get(0).getAllResults();
+
+        assertThat(results)
+                .filteredOn(TestResult::isHidden)
+                .extracting(TestResult::getName)
+                .containsExactlyInAnyOrder(FIRST_RESULT, LAST_RESULT);
+
+        assertThat(results)
+                .filteredOn(result -> !result.isHidden())
+                .extracting("name", "statusDetails.flaky")
+                .containsExactlyInAnyOrder(tuple(SECOND_RESULT, false));
+    }
+
     private TestResult createTestResult(String name, String historyId, long start, long stop) {
-        return new TestResult().withName(name).withHistoryId(historyId).
-                withTime(new Time().withStart(start).withStop(stop));
+        return new TestResult()
+                .withName(name)
+                .withHistoryId(historyId)
+                .withStatus(Status.BROKEN)
+                .withTime(new Time().withStart(start).withStop(stop));
     }
 }
