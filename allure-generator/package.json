@@ -54,7 +54,6 @@
     "backbone-decorators": "^0.0.6",
     "backbone.marionette": "^3.3.1",
     "backbone.wreqr": "^1.4.0",
-    "clipboard-js": "^0.3.3",
     "d3-array": "^1.2.0",
     "d3-axis": "^1.0.7",
     "d3-brush": "^1.0.4",
