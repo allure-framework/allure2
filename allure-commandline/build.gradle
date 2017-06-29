@@ -54,8 +54,24 @@ dependencies {
 
 configurations.archives.artifacts.removeAll { it.archiveTask.is jar }
 
+apply plugin: "nebula.ospackage"
+
+task cliDeb(type: Deb) {
+    dependsOn = ['build']
+    packageName = 'allure'
+    version = project.version
+    packager = 'Allure team'
+    maintainer = 'Allure team'
+
+    from('build/install/allure') {
+        into 'usr/share/allure'
+    }
+    link('/usr/bin/allure', '/usr/share/allure/bin/allure')
+}
+
 bintray {
     pkg {
-        repo = 'generic'
+        websiteUrl = 'https://bintray.com/qameta/debian'
+        repo = 'debian'
     }
 }
