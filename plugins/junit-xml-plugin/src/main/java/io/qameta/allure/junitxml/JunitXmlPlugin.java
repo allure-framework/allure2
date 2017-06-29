@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -103,8 +104,7 @@ public class JunitXmlPlugin implements Reader {
         result.setStatus(status);
         result.setStatusDetails(getStatusDetails(testCaseElement));
 
-        final Path attachmentFile = resultsDirectory.resolve(className + ".txt");
-        Optional.of(attachmentFile)
+        getLogFile(resultsDirectory, className)
                 .filter(Files::exists)
                 .map(visitor::visitAttachmentFile)
                 .map(attachment1 -> attachment1.withName("System out"))
@@ -123,6 +123,17 @@ public class JunitXmlPlugin implements Reader {
             );
             visitor.visitTestResult(retried);
         }));
+    }
+
+    private Optional<Path> getLogFile(final Path resultsDirectory, final String className) {
+        try {
+            return Optional.ofNullable(className)
+                    .map(name -> name + ".txt")
+                    .map(resultsDirectory::resolve);
+        } catch (InvalidPathException e) {
+            LOGGER.debug("Can not find log file: invalid className {}", className, e);
+            return Optional.empty();
+        }
     }
 
     private TestResult createStatuslessTestResult(final XmlElement testCaseElement, final Path parsedFile,
