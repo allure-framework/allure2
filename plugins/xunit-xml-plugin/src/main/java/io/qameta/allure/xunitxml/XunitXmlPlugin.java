@@ -166,7 +166,7 @@ public class XunitXmlPlugin implements Reader {
     private Optional<StatusDetails> addOutputToStatusDetails(final StatusDetails statusDetails,
                                                              final String output) {
         StringBuilder message = new StringBuilder();
-        if(statusDetails.getMessage() != null && !statusDetails.getMessage().isEmpty()) {
+        if (statusDetails.getMessage() != null && !statusDetails.getMessage().isEmpty()) {
             message.append(String.format("%s%n", statusDetails.getMessage()));
         }
         statusDetails.setMessage(message.append(output).toString());
