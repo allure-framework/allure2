@@ -143,7 +143,7 @@ public class XunitXmlPlugin implements Reader {
     }
 
     private Optional<StatusDetails> getStatusDetails(final XmlElement testElement) {
-        Optional<StatusDetails> statusDetails = testElement.getFirst(FAILURE_ELEMENT_NAME)
+        final StatusDetails statusDetails = testElement.getFirst(FAILURE_ELEMENT_NAME)
                 .map(failure -> {
                     final StatusDetails details = new StatusDetails();
                     failure.getFirst(MESSAGE_ELEMENT_NAME)
@@ -154,23 +154,18 @@ public class XunitXmlPlugin implements Reader {
                             .map(XmlElement::getValue)
                             .ifPresent(details::setTrace);
                     return details;
+                }).orElse(new StatusDetails());
+
+        testElement.getFirst(OUTPUT_ELEMENT_NAME)
+                .map(XmlElement::getValue)
+                .ifPresent(output -> {
+                    if (nonNull(statusDetails.getMessage())) {
+                        statusDetails.setMessage(String.format("%s%n%s", statusDetails.getMessage(), output));
+                    } else {
+                        statusDetails.setMessage(output);
+                    }
                 });
-
-        Optional<String> output = testElement.getFirst(OUTPUT_ELEMENT_NAME)
-                                             .map(XmlElement::getValue);
-        Optional<StatusDetails> updatedStatusDetails =
-                statusDetails.isPresent() ? statusDetails : Optional.of(new StatusDetails());
-        return output.isPresent() ? addOutputToStatusDetails(updatedStatusDetails.get(), output.get()) : statusDetails;
-    }
-
-    private Optional<StatusDetails> addOutputToStatusDetails(final StatusDetails statusDetails,
-                                                             final String output) {
-        StringBuilder message = new StringBuilder();
-        if (statusDetails.getMessage() != null && !statusDetails.getMessage().isEmpty()) {
-            message.append(String.format("%s%n", statusDetails.getMessage()));
-        }
-        statusDetails.setMessage(message.append(output).toString());
-        return Optional.ofNullable(statusDetails);
+        return Optional.of(statusDetails);
     }
 
     private Optional<List<Parameter>> getParameters(final XmlElement testElement) {
