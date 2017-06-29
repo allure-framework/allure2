@@ -31,7 +31,8 @@ You can use one of the following ways to get Allure:
 * Using Homebrew: 
 
     ```bash
-    $ brew tap qameta/allure
+    $ brew untap qameta/allure
+    $ brew update
     $ brew install allure
     ```
 
