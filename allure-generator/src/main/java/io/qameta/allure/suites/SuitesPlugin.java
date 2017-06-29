@@ -1,4 +1,4 @@
-package io.qameta.allure.xunit;
+package io.qameta.allure.suites;
 
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.TestResult;
@@ -11,15 +11,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Plugin that generates data for XUnit tab.
+ * Plugin that generates data for Suites tab.
  *
  * @since 2.0
  */
-public class XunitPlugin extends AbstractTreeAggregator {
+public class SuitesPlugin extends AbstractTreeAggregator {
 
     @Override
     protected String getFileName() {
-        return "xunit.json";
+        return "suites.json";
     }
 
     @Override

@@ -4,7 +4,7 @@ import {on, regions, behavior} from '../../decorators';
 import pluginsRegistry from '../../util/pluginsRegistry';
 import template from './TestcaseView.hbs';
 import ExecutionView from '../execution/ExecutionView';
-import clipboard from 'clipboard-js';
+import copy from '../../util/clipboard';
 
 const SEVERITY_ICONS = {
     blocker: 'fa fa-exclamation-triangle',
@@ -14,7 +14,7 @@ const SEVERITY_ICONS = {
     trivial: 'fa fa-long-arrow-down'
 };
 
-@behavior('TooltipBehavior', {position: 'bottom'})
+@behavior('TooltipBehavior', {position: 'left'})
 @regions({
     execution: '.testcase__execution'
 })
@@ -69,7 +69,7 @@ class TestcaseView extends View {
 
     @on('click .fullname__copy')
     onFullNameCopyClick() {
-        clipboard.copy(this.model.get('fullName'));
+        copy(this.model.get('fullName'));
     }
 }
 

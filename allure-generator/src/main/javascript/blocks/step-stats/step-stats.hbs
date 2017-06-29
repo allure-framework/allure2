@@ -17,5 +17,5 @@
     )
     {{~/if~}}
     </span>
-    <span class="step-stats__info_time">{{duration time.duration}}</span>
+    <span class="step-stats__info_time" data-tooltip="{{date time.start}} {{time time.start true}}&nbsp;&ndash;&nbsp;{{time time.stop true}}">{{duration time.duration}}</span>
 </span>

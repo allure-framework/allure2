@@ -11,6 +11,7 @@
 [release]: https://github.com/allure-framework/allure2/releases/latest "Latest release"
 [release-badge]: https://img.shields.io/github/release/allure-framework/allure2.svg?style=flat
 [CONTRIBUTING.md]: .github/CONTRIBUTING.md
+[CODE_OF_CONDUCT.md]: CODE_OF_CONDUCT.md
 [docs]: https://docs.qameta.io/allure/2.0/
 
 # Allure Report [![build-badge][]][build] [![release-badge][]][release] [![bintray-badge][]][bintray]
@@ -30,7 +31,8 @@ You can use one of the following ways to get Allure:
 * Using Homebrew: 
 
     ```bash
-    $ brew tap qameta/allure
+    $ brew untap qameta/allure
+    $ brew update
     $ brew install allure
     ```
 
@@ -47,6 +49,10 @@ Please see [CONTRIBUTING.md][]
 Follow [@QametaSoftware][twitter] and its [team members][twitter-team] on Twitter. In-depth articles can
 be found at [Qameta Blog][blog]. Also feel free to join our 
 [Gitter room][gitter] ([ru][gitter-ru]).
+
+## Code of Conduct
+
+Please note that this project is released with a [Contributor Code of Conduct][CODE_OF_CONDUCT.md]. By participating in this project you agree to abide by its terms.
 
 ## License
 

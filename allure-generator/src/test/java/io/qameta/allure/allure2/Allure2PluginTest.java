@@ -5,6 +5,7 @@ import io.qameta.allure.DefaultResultsVisitor;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Attachment;
+import io.qameta.allure.entity.Parameter;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
@@ -24,6 +25,7 @@ import static io.qameta.allure.AllureUtils.generateTestResultContainerName;
 import static io.qameta.allure.AllureUtils.generateTestResultName;
 import static io.qameta.allure.entity.Status.UNKNOWN;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 
 public class Allure2PluginTest {
 
@@ -60,6 +62,25 @@ public class Allure2PluginTest {
                 .hasSize(2)
                 .extracting(StageResult::getName)
                 .containsExactlyInAnyOrder("unloadTestConfiguration", "cleanUpContext");
+    }
+
+    @Test
+    public void shouldExcludeDuplicatedParams() throws Exception {
+        Set<TestResult> testResults = process(
+                "allure2/duplicated-params.json", generateTestResultName()
+        ).getResults();
+
+        assertThat(testResults)
+                .hasSize(1)
+                .flatExtracting(TestResult::getParameters)
+                .hasSize(4)
+                .extracting(Parameter::getName, Parameter::getValue)
+                .containsExactlyInAnyOrder(
+                        tuple("name", "value"),
+                        tuple("name2", "value"),
+                        tuple("name", "value2"),
+                        tuple("name2", "value2")
+                );
     }
 
     @Test

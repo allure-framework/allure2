@@ -11,7 +11,7 @@ import './pluginApi';
 import './plugins/default';
 
 import './plugins/tab-category';
-import './plugins/tab-xunit';
+import './plugins/tab-suites';
 import './plugins/tab-graph';
 import './plugins/tab-timeline';
 

@@ -19,7 +19,7 @@
     "categories": {
       "name": "类别"
     },
-    "xunit": {
+    "suites": {
       "name": "测试套"
     },
     "graph": {
