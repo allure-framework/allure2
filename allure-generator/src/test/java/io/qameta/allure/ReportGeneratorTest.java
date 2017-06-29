@@ -57,7 +57,7 @@ public class ReportGeneratorTest {
 
     @Test
     public void shouldGenerateXunitJson() throws Exception {
-        assertThat(output.resolve("data/xunit.json"))
+        assertThat(output.resolve("data/suites.json"))
                 .isRegularFile();
     }
 

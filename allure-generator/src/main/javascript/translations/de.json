@@ -19,8 +19,8 @@
     "categories": {
       "name": "Kategorien"
     },
-    "xunit": {
-      "name": "xUnit"
+    "suites": {
+      "name": "Suiten"
     },
     "graph": {
       "name": "Grafiken"
