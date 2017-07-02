@@ -1,4 +1,4 @@
-package io.qameta.allure.xunit;
+package io.qameta.allure.suites;
 
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.TestResult;
@@ -15,11 +15,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class XunitPluginTest {
+public class SuitesPluginTest {
 
     @Test
     public void shouldCreateTree() throws Exception {
-        final XunitPlugin xunitPlugin = new XunitPlugin();
+        final SuitesPlugin xunitPlugin = new SuitesPlugin();
 
         final TestResult first = new TestResult()
                 .withName("first")
