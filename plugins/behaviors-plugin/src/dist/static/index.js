@@ -70,7 +70,7 @@ allure.api.addTab('behaviors', {
     })
 });
 
-allure.api.addWidget('behaviors', allure.components.WidgetStatusView.extend({
+allure.api.addWidget('widgets', 'behaviors', allure.components.WidgetStatusView.extend({
     title: 'widget.behaviors.name',
     baseUrl: 'behaviors',
     showLinks: false,

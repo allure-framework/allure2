@@ -4,6 +4,10 @@ import template from './WidgetStatusView.hbs';
 export default class WidgetStatusView extends View {
     template = template;
 
+    initialize() {
+        this.model = this.model.getWidgetData('behaviors');
+    }
+
     serializeData() {
         const showLinks = typeof this.showLinks !== 'undefined' ? this.showLinks : true;
         return Object.assign(super.serializeData(), {
