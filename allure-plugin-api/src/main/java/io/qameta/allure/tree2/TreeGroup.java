@@ -1,7 +1,7 @@
 package io.qameta.allure.tree2;
 
 import java.util.Objects;
-import java.util.SortedSet;
+import java.util.Set;
 import java.util.function.Function;
 
 /**
@@ -9,7 +9,7 @@ import java.util.function.Function;
  */
 public interface TreeGroup extends TreeNode {
 
-    SortedSet<TreeNode> getChildren();
+    Set<TreeNode> getChildren();
 
     <T extends TreeNode> void addChild(T node);
 

@@ -1,83 +1,81 @@
 package io.qameta.allure.behaviors;
 
+import io.qameta.allure.Aggregator;
 import io.qameta.allure.Widget;
+import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
-import io.qameta.allure.entity.LabelName;
-import io.qameta.allure.entity.Statistic;
-import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.tree.AbstractTreeAggregator;
-import io.qameta.allure.tree.TreeGroup;
 import io.qameta.allure.tree.TreeWidgetData;
 import io.qameta.allure.tree.TreeWidgetItem;
+import io.qameta.allure.tree2.DefaultTree;
+import io.qameta.allure.tree2.TestResultTreeGroup;
+import io.qameta.allure.tree2.TestResultTreeLeaf;
+import io.qameta.allure.tree2.Tree;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static io.qameta.allure.entity.ExtraStatisticMethods.comparator;
+import static io.qameta.allure.entity.LabelName.FEATURE;
+import static io.qameta.allure.entity.LabelName.STORY;
+import static io.qameta.allure.tree2.TreeUtils.calculateStatisticByChildren;
+import static io.qameta.allure.tree2.TreeUtils.groupByLabels;
 
 /**
  * The plugin adds behaviors tab to the report.
  *
  * @since 2.0
  */
-public class BehaviorsPlugin extends AbstractTreeAggregator implements Widget {
-
-    private static final String DEFAULT_FEATURE = "Default feature";
-    private static final String DEFAULT_STORY = "Default story";
+public class BehaviorsPlugin implements Aggregator, Widget {
 
     @Override
-    protected String getFileName() {
-        return "behaviors.json";
-    }
-
-    @Override
-    protected List<TreeGroup> getGroups(final TestResult result) {
-        return Arrays.asList(
-                TreeGroup.allByLabel(result, LabelName.FEATURE, DEFAULT_FEATURE),
-                TreeGroup.allByLabel(result, LabelName.STORY, DEFAULT_STORY)
-        );
-    }
-
-    @Override
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-    public Object getData(final Configuration configuration, final List<LaunchResults> launches) {
-        final Map<String, Set<TestResult>> featuresToResults = new HashMap<>();
-        for (LaunchResults launchResults : launches) {
-            for (TestResult result : launchResults.getResults()) {
-                final List<String> features = result.findAll(LabelName.FEATURE);
-                for (String feature : features) {
-                    final Set<TestResult> featureTestResults = featuresToResults
-                            .computeIfAbsent(feature, s -> new HashSet<>());
-                    featureTestResults.add(result);
-                }
-            }
+    public void aggregate(final Configuration configuration,
+                          final List<LaunchResults> launchesResults,
+                          final Path outputDirectory) throws IOException {
+        final JacksonContext jacksonContext = configuration.requireContext(JacksonContext.class);
+        final Path dataFolder = Files.createDirectories(outputDirectory.resolve("data"));
+        final Path dataFile = dataFolder.resolve("behaviors.json");
+        try (OutputStream os = Files.newOutputStream(dataFile)) {
+            jacksonContext.getValue().writeValue(os, getData(launchesResults));
         }
+    }
 
-        final List<TreeWidgetItem> items = featuresToResults.entrySet().stream()
-                .map(entry -> {
-                    Map<String, Status> statusesForStories = getStories(entry.getValue());
-                    if (statusesForStories.isEmpty()) {
-                        statusesForStories = getDefaultStoryStatus(entry.getValue());
-                    }
-                    return new TreeWidgetItem()
-                            .withStatistic(from(statusesForStories))
-                            .withName(entry.getKey());
-                })
+    @SuppressWarnings("PMD.DefaultPackage")
+    /* default */ Tree<TestResult> getData(final List<LaunchResults> launchResults) {
+
+        // @formatter:off
+        final Tree<TestResult> behaviors = new DefaultTree<>(
+            "behaviors",
+            testResult -> groupByLabels(testResult, FEATURE, STORY),
+            TestResultTreeLeaf::create
+        );
+        // @formatter:on
+
+        launchResults.stream()
+                .map(LaunchResults::getResults)
+                .flatMap(Collection::stream)
+                .forEach(behaviors::add);
+        return behaviors;
+    }
+
+    @Override
+    public Object getData(final Configuration configuration, final List<LaunchResults> launches) {
+        final Tree<TestResult> data = getData(launches);
+        final List<TreeWidgetItem> items = data.getChildren().stream()
+                .filter(TestResultTreeGroup.class::isInstance)
+                .map(TestResultTreeGroup.class::cast)
+                .map(this::toWidgetItem)
                 .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
                 .limit(10)
                 .collect(Collectors.toList());
-        return new TreeWidgetData().withItems(items).withTotal(featuresToResults.entrySet().size());
+        return new TreeWidgetData().withItems(items).withTotal(data.getChildren().size());
     }
 
     @Override
@@ -85,41 +83,9 @@ public class BehaviorsPlugin extends AbstractTreeAggregator implements Widget {
         return "behaviors";
     }
 
-    private Map<String, Status> getDefaultStoryStatus(final Set<TestResult> featureTestResults) {
-        return Collections.singletonMap(DEFAULT_STORY,
-                featureTestResults.stream().map(TestResult::getStatus).reduce(this::min).orElse(Status.UNKNOWN));
-    }
-
-    private Map<String, Status> getStories(final Set<TestResult> featureTestResults) {
-        final Map<String, Status> storyStatus = new HashMap<>();
-        featureTestResults.forEach(result -> {
-            final List<String> stories = result.findAll(LabelName.STORY);
-            stories.forEach(story -> {
-                storyStatus.putIfAbsent(story, result.getStatus());
-                storyStatus.computeIfPresent(story, (key, value) -> min(value, result.getStatus()));
-            });
-        });
-
-        return storyStatus;
-    }
-
-    protected Statistic from(final Map<String, Status> stories) {
-        final List<Status> result = stories.entrySet().stream()
-                .map(Map.Entry::getValue)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-        return from(result);
-    }
-
-    protected Statistic from(final List<Status> statuses) {
-        final Statistic statistic = new Statistic();
-        statuses.forEach(statistic::update);
-        return statistic;
-    }
-
-    protected Status min(final Status first, final Status second) {
-        return Stream.of(first, second)
-                .min(Status::compareTo)
-                .orElse(Status.UNKNOWN);
+    protected TreeWidgetItem toWidgetItem(final TestResultTreeGroup group) {
+        return new TreeWidgetItem()
+                .withName(group.getName())
+                .withStatistic(calculateStatisticByChildren(group));
     }
 }

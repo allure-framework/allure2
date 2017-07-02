@@ -2,7 +2,6 @@ package io.qameta.allure.timeline;
 
 import io.qameta.allure.Aggregator;
 import io.qameta.allure.context.JacksonContext;
-import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.LabelName;
@@ -17,7 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Supplier;
 
 import static io.qameta.allure.tree2.TreeUtils.groupByLabels;
 
@@ -34,23 +32,21 @@ public class TimelinePlugin implements Aggregator {
                           final Path outputDirectory) throws IOException {
 
         final JacksonContext jacksonContext = configuration.requireContext(JacksonContext.class);
-        final RandomUidContext uidContext = configuration.requireContext(RandomUidContext.class);
         final Path dataFolder = Files.createDirectories(outputDirectory.resolve("data"));
         final Path dataFile = dataFolder.resolve("timeline.json");
         try (OutputStream os = Files.newOutputStream(dataFile)) {
-            jacksonContext.getValue().writeValue(os, getData(uidContext.getValue(), launchesResults));
+            jacksonContext.getValue().writeValue(os, getData(launchesResults));
         }
 
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
-    /* default */ Tree<TestResult> getData(final Supplier<String> uidGenerator,
-                                           final List<LaunchResults> launchResults) {
+    /* default */ Tree<TestResult> getData(final List<LaunchResults> launchResults) {
 
         // @formatter:off
         final Tree<TestResult> timeline = new DefaultTree<>(
             "timeline",
-            testResult -> groupByLabels(uidGenerator, testResult, LabelName.HOST, LabelName.THREAD),
+            testResult -> groupByLabels(testResult, LabelName.HOST, LabelName.THREAD),
             TestResultTreeLeaf::create
         );
         // @formatter:on

@@ -31,9 +31,7 @@ public class SuitesPluginTest {
                 .withName("third")
                 .withLabels(new Label().withName("suite").withValue("s2"));
 
-        Supplier<String> uidGenerator = () -> UUID.randomUUID().toString();
         final Tree<TestResult> tree = xunitPlugin.getData(
-                uidGenerator,
                 TestData.createSingleLaunchResults(first, second, third)
         );
 

@@ -1,11 +1,7 @@
 package io.qameta.allure.tree2;
 
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import static java.util.Comparator.comparing;
-import static java.util.Comparator.naturalOrder;
-import static java.util.Comparator.nullsFirst;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -14,9 +10,7 @@ public class DefaultTreeGroup implements TreeGroup {
 
     private final String name;
 
-    private final SortedSet<TreeNode> children = new TreeSet<>(
-            comparing(TreeNode::getName, nullsFirst(naturalOrder()))
-    );
+    private final Set<TreeNode> children = new HashSet<>();
 
     public DefaultTreeGroup(final String name) {
         this.name = name;
@@ -28,7 +22,7 @@ public class DefaultTreeGroup implements TreeGroup {
     }
 
     @Override
-    public SortedSet<TreeNode> getChildren() {
+    public Set<TreeNode> getChildren() {
         return children;
     }
 

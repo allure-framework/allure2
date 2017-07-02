@@ -46,6 +46,30 @@ public interface ExtraStatisticMethods {
         //do nothing
     }
 
+    default long get(final Status status) {
+        switch (status) {
+            case FAILED:
+                return getFailed();
+            case BROKEN:
+                return getBroken();
+            case PASSED:
+                return getPassed();
+            case SKIPPED:
+                return getSkipped();
+            default:
+                return getUnknown();
+        }
+    }
+
+    default Status getStatus() {
+        for (final Status status : Status.values()) {
+            if (get(status) > 0) {
+                return status;
+            }
+        }
+        return Status.UNKNOWN;
+    }
+
     default void update(final WithStatus withStatus) {
         if (Objects.isNull(withStatus)) {
             return;
