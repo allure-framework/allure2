@@ -175,8 +175,8 @@ describe('Tree', function () {
 
         it('should be able to sort by status', () => {
             sortTree({sorter: 'sorter.status', ascending: false});
-            expect(page.node(0).text()).toMatch(/A group node/);
-            expect(page.node(1).text()).toMatch(/Second node/);
+            expect(page.node(0).text()).toMatch(/B group node/);
+            expect(page.node(1).text()).toMatch(/Node in B group/);
 
             sortTree({sorter: 'sorter.status', ascending: true});
             expect(page.node(0).text()).toMatch(/A group node/);
