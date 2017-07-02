@@ -24,21 +24,21 @@ function byNodeStatus(a, b) {
 
 function byGroupStatuses(a, b) {
     return values.reduce((all, cur) => {
-        return ((a.statistic[cur] !== b.statistic[cur]) && all === 0) ? b.statistic[cur] > a.statistic[cur] : all;
+        return ((a.statistic[cur] !== b.statistic[cur]) && all === 0) ? b.statistic[cur] - a.statistic[cur] : all;
     }, 0);
 }
 
-function compare(a, b, nodeCmp, groupCmp) {
-    if ('status' in a && 'statistic' in b) {
-        return () => 1;
-    } else if ('statistic' in a && 'status' in b) {
-        return () => -1;
-    } else if ('statistic' in a && 'statistic' in b) {
-        return groupCmp(a, b);
-    } else if ('status' in a && 'status' in b) {
-        return nodeCmp(a, b);
+function compare(a, b, nodeCmp, groupCmp, direction) {
+    if (a.hasOwnProperty('children') && !b.hasOwnProperty('children')) {
+        return -1;
+    } else if (!a.hasOwnProperty('children') && b.hasOwnProperty('children')) {
+        return 1;
+    } else if (a.hasOwnProperty('children') && b.hasOwnProperty('children')) {
+        return direction * groupCmp(a, b);
+    } else if (!a.hasOwnProperty('children') && !b.hasOwnProperty('children')) {
+        return direction * nodeCmp(a, b);
     } else {
-        return () => 0;
+        return 0;
     }
 }
 
@@ -46,12 +46,12 @@ export default function getComparator({sorter, ascending}) {
     const direction =  ascending ? 1 : -1;
     switch (sorter) {
         case 'sorter.name':
-            return (a, b) => direction * compare(a, b, byName, byName);
+            return (a, b) => compare(a, b, byName, byName, direction);
         case 'sorter.duration':
-            return (a, b) => direction * compare(a, b, byDuration, byMaxDuration);
+            return (a, b) => compare(a, b, byDuration, byMaxDuration, direction);
         case 'sorter.status':
-            return (a, b) => direction * compare(a, b, byNodeStatus, byGroupStatuses);
+            return (a, b) => compare(a, b, byNodeStatus, byGroupStatuses, direction);
         default:
-            return () => 0;
+            return 0;
     }
 }
