@@ -49,7 +49,6 @@ public class DefaultTree<T> extends DefaultTreeGroup implements Tree<T> {
                         key -> classifier.factory(key, item)
                     );
                     // @formatter:on
-                    node.addChild(child);
                     return getEndNodes(item, child, classifiers, index + 1);
                 });
     }

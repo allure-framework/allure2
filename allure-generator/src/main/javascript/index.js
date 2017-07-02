@@ -21,9 +21,9 @@ import './plugins/widget-duration';
 
 import './plugins/widget-summary';
 import './plugins/widget-history-trend';
-import './plugins/widget-launch';
-import './plugins/widget-executor';
+import './plugins/widget-suites';
 import './plugins/widget-environment';
+import './plugins/widget-executor';
 
 import './plugins/testcase-description';
 import './plugins/testcase-tags';

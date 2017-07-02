@@ -31,7 +31,7 @@ public final class TreeUtils {
 
                     @Override
                     public TreeGroup factory(final String name, final TestResult item) {
-                        return new TestResultTreeGroup(name, uidGenerator.get());
+                        return new TestResultTreeGroup(name, name);
                     }
                 })
                 .collect(Collectors.toList());

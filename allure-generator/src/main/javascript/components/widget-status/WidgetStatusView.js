@@ -4,8 +4,8 @@ import template from './WidgetStatusView.hbs';
 export default class WidgetStatusView extends View {
     template = template;
 
-    initialize() {
-        this.model = this.model.getWidgetData('behaviors');
+    initialize({name, model}) {
+        this.model = model.getWidgetData(name);
     }
 
     serializeData() {
