@@ -1,13 +1,11 @@
 package io.qameta.allure.tree2;
 
-import io.qameta.allure.entity.Parameter;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -25,14 +23,25 @@ public class TestResultTreeLeaf extends DefaultTreeLeaf {
     private final List<String> parameters;
 
     public TestResultTreeLeaf(final TestResult testResult) {
-        super(testResult.getName());
-        this.uid = testResult.getUid();
-        this.status = testResult.getStatus();
-        this.time = testResult.getTime();
-        this.flaky = testResult.getStatusDetailsSafe().isFlaky();
-        this.parameters = testResult.getParameters().stream()
-                .map(Parameter::getValue)
-                .collect(Collectors.toList());
+        this(
+                testResult.getName(),
+                testResult.getUid(),
+                testResult.getStatus(),
+                testResult.getTime(),
+                testResult.getStatusDetailsSafe().isFlaky(),
+                testResult.getParameterValues()
+        );
+    }
+
+    public TestResultTreeLeaf(final String name, final String uid,
+                              final Status status, final Time time,
+                              final boolean flaky, final List<String> parameters) {
+        super(name);
+        this.uid = uid;
+        this.status = status;
+        this.time = time;
+        this.flaky = flaky;
+        this.parameters = parameters;
     }
 
     public String getUid() {

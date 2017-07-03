@@ -22,17 +22,7 @@ public final class TreeUtils {
         return Stream.of(labelNames)
                 .map(testResult::findAll)
                 .filter(strings -> !strings.isEmpty())
-                .map(names -> new Classifier<TestResult>() {
-                    @Override
-                    public List<String> classify(final TestResult item) {
-                        return names;
-                    }
-
-                    @Override
-                    public TreeGroup factory(final String name, final TestResult item) {
-                        return new TestResultTreeGroup(name, name);
-                    }
-                })
+                .map(TestResultClassifier::new)
                 .collect(Collectors.toList());
     }
 

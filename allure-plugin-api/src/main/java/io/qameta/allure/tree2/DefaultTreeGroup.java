@@ -8,9 +8,9 @@ import java.util.Set;
  */
 public class DefaultTreeGroup implements TreeGroup {
 
-    private final String name;
+    private String name;
 
-    private final Set<TreeNode> children = new HashSet<>();
+    private Set<TreeNode> children = new HashSet<>();
 
     public DefaultTreeGroup(final String name) {
         this.name = name;
@@ -29,5 +29,13 @@ public class DefaultTreeGroup implements TreeGroup {
     @Override
     public void addChild(final TreeNode node) {
         children.add(node);
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public void setChildren(final Set<TreeNode> children) {
+        this.children = children;
     }
 }

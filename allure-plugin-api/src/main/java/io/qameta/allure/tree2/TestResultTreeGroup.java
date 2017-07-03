@@ -5,7 +5,7 @@ package io.qameta.allure.tree2;
  */
 public class TestResultTreeGroup extends DefaultTreeGroup {
 
-    private final String uid;
+    private String uid;
 
     public TestResultTreeGroup(final String name, final String uid) {
         super(name);
@@ -14,5 +14,9 @@ public class TestResultTreeGroup extends DefaultTreeGroup {
 
     public String getUid() {
         return uid;
+    }
+
+    public void setUid(final String uid) {
+        this.uid = uid;
     }
 }
