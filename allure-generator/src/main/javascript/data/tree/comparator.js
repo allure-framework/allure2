@@ -24,7 +24,7 @@ function byNodeStatus(a, b) {
 
 function byGroupStatuses(a, b) {
     return values.reduce((all, cur) => {
-        return ((a.statistic[cur] !== b.statistic[cur]) && all === 0) ? b.statistic[cur] - a.statistic[cur] : all;
+        return ((a.statistic[cur] !== b.statistic[cur]) && all === 0) ? a.statistic[cur] - b.statistic[cur] : all;
     }, 0);
 }
 
