@@ -29,13 +29,13 @@ function byGroupStatuses(a, b) {
 }
 
 function compare(a, b, nodeCmp, groupCmp, direction) {
-    if (a.hasOwnProperty('children') && !b.hasOwnProperty('children')) {
+    if (a.children && !b.children) {
         return -1;
-    } else if (!a.hasOwnProperty('children') && b.hasOwnProperty('children')) {
+    } else if (!a.children && b.children) {
         return 1;
-    } else if (a.hasOwnProperty('children') && b.hasOwnProperty('children')) {
+    } else if (a.children && b.children) {
         return direction * groupCmp(a, b);
-    } else if (!a.hasOwnProperty('children') && !b.hasOwnProperty('children')) {
+    } else if (!a.children && !b.children) {
         return direction * nodeCmp(a, b);
     } else {
         return 0;
