@@ -1,7 +1,6 @@
 import {Collection} from 'backbone';
 import {flatten} from 'underscore';
 import {values} from '../../util/statuses';
-import getComparator from './comparator';
 
 export default class TreeCollection extends Collection {
 
@@ -28,21 +27,21 @@ export default class TreeCollection extends Collection {
 
     }
 
-    applyFilterAndSorting(statuses, sortSettings) {
+    applyFilterAndSorting(filter, sorter) {
         const newChildren = this.getFilteredAndSortedChildren(
             this.allNodes,
-            statuses,
-            getComparator(sortSettings)
+            filter,
+            sorter
         );
         this.reset(newChildren);
         this.testcases = this.getFlattenTestcases(newChildren);
     }
 
-    getFilteredAndSortedChildren(children, statuses, sorter) {
+    getFilteredAndSortedChildren(children, filter, sorter) {
         return children
             .map(child => {
                 if (child.children) {
-                    const newChildren = this.getFilteredAndSortedChildren(child.children, statuses, sorter);
+                    const newChildren = this.getFilteredAndSortedChildren(child.children, filter, sorter);
                     return {
                         ...child,
                         children: newChildren,
@@ -52,12 +51,7 @@ export default class TreeCollection extends Collection {
                 }
                 return child;
             })
-            .filter(child => {
-                if (child.children) {
-                    return child.children.length > 0;
-                }
-                return statuses[child.status];
-            })
+            .filter(filter)
             .sort(sorter);
     }
 
