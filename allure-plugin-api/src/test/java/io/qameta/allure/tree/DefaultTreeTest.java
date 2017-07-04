@@ -1,4 +1,4 @@
-package io.qameta.allure.tree2;
+package io.qameta.allure.tree;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.entity.Label;
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 import static io.qameta.allure.entity.LabelName.FEATURE;
 import static io.qameta.allure.entity.LabelName.STORY;
-import static io.qameta.allure.tree2.TreeUtils.groupByLabels;
+import static io.qameta.allure.tree.TreeUtils.groupByLabels;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**

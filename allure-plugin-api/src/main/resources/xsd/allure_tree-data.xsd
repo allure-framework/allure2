@@ -7,52 +7,6 @@
 
     <xsd:import namespace="urn:entity.allure.qameta.io" schemaLocation="allure_report-api.xsd"/>
 
-    <xsd:element name="treeData" type="ns:TreeData"/>
-    <xsd:complexType name="TreeData">
-        <xsd:sequence>
-            <xsd:element name="statistic" type="api:Statistic"/>
-            <xsd:element name="time" type="api:GroupTime"/>
-            <xsd:element name="children" minOccurs="0">
-                <xsd:complexType>
-                    <xsd:sequence>
-                        <xsd:element name="child" type="ns:TreeNode" minOccurs="0" maxOccurs="unbounded"/>
-                    </xsd:sequence>
-                </xsd:complexType>
-            </xsd:element>
-        </xsd:sequence>
-    </xsd:complexType>
-
-    <xsd:element name="testGroupNode" type="ns:TestGroupNode"/>
-    <xsd:complexType name="TestGroupNode">
-        <xsd:all>
-            <xsd:element name="uid" type="xsd:string"/>
-            <xsd:element name="name" type="xsd:string"/>
-            <xsd:element name="time" type="api:GroupTime"/>
-            <xsd:element name="statistic" type="api:Statistic"/>
-            <xsd:element name="children" minOccurs="0">
-                <xsd:complexType>
-                    <xsd:sequence>
-                        <xsd:element name="child" type="ns:TreeNode" minOccurs="0" maxOccurs="unbounded"/>
-                    </xsd:sequence>
-                </xsd:complexType>
-            </xsd:element>
-        </xsd:all>
-    </xsd:complexType>
-
-    <xsd:element name="testCaseNode" type="ns:TestCaseNode"/>
-    <xsd:complexType name="TestCaseNode">
-        <xsd:all>
-            <xsd:element name="uid" type="xsd:string"/>
-            <xsd:element name="name" type="xsd:string"/>
-            <xsd:element name="time" type="api:Time"/>
-            <xsd:element name="status" type="api:Status"/>
-            <xsd:element name="flaky" type="xsd:boolean"/>
-            <xsd:element name="parameters" type="api:Parameters" minOccurs="0"/>
-        </xsd:all>
-    </xsd:complexType>
-
-    <xsd:complexType name="TreeNode"/>
-
     <xsd:element name="treeWidgetData" type="ns:TreeWidgetData"/>
     <xsd:complexType name="TreeWidgetData">
         <xsd:sequence>

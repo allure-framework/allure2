@@ -4,7 +4,7 @@ import io.qameta.allure.DefaultLaunchResults;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.tree2.Tree;
+import io.qameta.allure.tree.Tree;
 import org.junit.Test;
 
 import java.util.Collections;

@@ -1,4 +1,4 @@
-package io.qameta.allure.tree2;
+package io.qameta.allure.tree;
 
 /**
  * @author charlie (Dmitry Baev).

@@ -3,12 +3,9 @@ package io.qameta.allure.suites;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.testdata.TestData;
-import io.qameta.allure.tree2.Tree;
-import io.qameta.allure.tree2.TreeNode;
+import io.qameta.allure.tree.Tree;
+import io.qameta.allure.tree.TreeNode;
 import org.junit.Test;
-
-import java.util.UUID;
-import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

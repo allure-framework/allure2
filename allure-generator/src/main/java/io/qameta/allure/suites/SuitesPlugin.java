@@ -6,12 +6,12 @@ import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.tree.DefaultTree;
+import io.qameta.allure.tree.TestResultTreeGroup;
+import io.qameta.allure.tree.TestResultTreeLeaf;
+import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeWidgetData;
 import io.qameta.allure.tree.TreeWidgetItem;
-import io.qameta.allure.tree2.DefaultTree;
-import io.qameta.allure.tree2.TestResultTreeGroup;
-import io.qameta.allure.tree2.TestResultTreeLeaf;
-import io.qameta.allure.tree2.Tree;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -26,8 +26,8 @@ import static io.qameta.allure.entity.ExtraStatisticMethods.comparator;
 import static io.qameta.allure.entity.LabelName.PARENT_SUITE;
 import static io.qameta.allure.entity.LabelName.SUB_SUITE;
 import static io.qameta.allure.entity.LabelName.SUITE;
-import static io.qameta.allure.tree2.TreeUtils.calculateStatisticByLeafs;
-import static io.qameta.allure.tree2.TreeUtils.groupByLabels;
+import static io.qameta.allure.tree.TreeUtils.calculateStatisticByLeafs;
+import static io.qameta.allure.tree.TreeUtils.groupByLabels;
 
 /**
  * Plugin that generates data for Suites tab.

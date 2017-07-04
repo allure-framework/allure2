@@ -1,4 +1,4 @@
-package io.qameta.allure.tree2;
+package io.qameta.allure.tree;
 
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;

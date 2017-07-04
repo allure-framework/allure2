@@ -6,9 +6,9 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.tree2.DefaultTree;
-import io.qameta.allure.tree2.TestResultTreeLeaf;
-import io.qameta.allure.tree2.Tree;
+import io.qameta.allure.tree.DefaultTree;
+import io.qameta.allure.tree.TestResultTreeLeaf;
+import io.qameta.allure.tree.Tree;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -17,7 +17,7 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 
-import static io.qameta.allure.tree2.TreeUtils.groupByLabels;
+import static io.qameta.allure.tree.TreeUtils.groupByLabels;
 
 /**
  * Plugin that generates data for Timeline tab.
