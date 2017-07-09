@@ -2,6 +2,12 @@ import {Collection} from 'backbone';
 import {flatten} from 'underscore';
 import {values} from '../../util/statuses';
 
+function updateTime(timeA, timeB, field, operation) {
+    if (timeB && timeB[field]) {
+        timeA[field] = operation(timeA[field], timeB[field]);
+    }
+}
+
 export default class TreeCollection extends Collection {
 
     initialize(models, {url}) {
@@ -78,7 +84,6 @@ export default class TreeCollection extends Collection {
             if (item.children) {
                 values.forEach(value => {
                     statistic[value] += item.statistic ? item.statistic[value] : 0;
-
                 });
             } else {
                 statistic[item.status]++;
@@ -98,24 +103,18 @@ export default class TreeCollection extends Collection {
         };
         items.forEach(item => {
             if (item.children) {
-                TreeCollection.updateTime(time, item.time, 'maxDuration', Math.max);
-                TreeCollection.updateTime(time, item.time, 'minDuration', Math.min);
-                TreeCollection.updateTime(time, item.time, 'sumDuration', (a, b) => a + b);
+                updateTime(time, item.time, 'maxDuration', Math.max);
+                updateTime(time, item.time, 'minDuration', Math.min);
+                updateTime(time, item.time, 'sumDuration', (a, b) => a + b);
             } else if (item.time && item.time.duration) {
                 time.maxDuration = Math.max(time.maxDuration, item.time.duration);
                 time.minDuration = Math.min(time.minDuration, item.time.duration);
                 time.sumDuration = time.sumDuration + item.time.duration;
             }
-            TreeCollection.updateTime(time, item.time, 'start', Math.min);
-            TreeCollection.updateTime(time, item.time, 'stop', Math.max);
+            updateTime(time, item.time, 'start', Math.min);
+            updateTime(time, item.time, 'stop', Math.max);
             time.duration = time.stop - time.start;
         });
         return time;
-    }
-
-    static updateTime(timeA, timeB, field, operation) {
-        if (timeB && timeB[field]) {
-            timeA[field] = operation(timeA[field], timeB[field]);
-        }
     }
 }
