@@ -55,6 +55,10 @@
       "name": "环境",
       "empty": "没有环境变量",
       "showAll": "显示所有环境变量"
+    },
+    "suites": {
+      "name": "测试套",
+      "showAll": "显示所有测试套"
     }
   },
   "chart": {

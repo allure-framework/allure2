@@ -6,6 +6,8 @@ import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.tree.Tree;
+import io.qameta.allure.tree.TreeNode;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -14,13 +16,17 @@ import org.junit.rules.TemporaryFolder;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static io.qameta.allure.category.CategoriesPlugin.BROKEN_TESTS;
+import static io.qameta.allure.category.CategoriesPlugin.CATEGORIES_BLOCK_NAME;
+import static io.qameta.allure.category.CategoriesPlugin.FAILED_TESTS;
 import static io.qameta.allure.testdata.TestData.createSingleLaunchResults;
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -45,6 +51,116 @@ public class CategoriesPluginTest {
     }
 
     @Test
+    public void shouldDefaultCategoriesToResults() throws Exception {
+        final CategoriesPlugin categoriesPlugin = new CategoriesPlugin();
+
+        final TestResult first = new TestResult()
+                .withName("first")
+                .withStatus(Status.FAILED)
+                .withStatusDetails(new StatusDetails().withMessage("A"));
+        final TestResult second = new TestResult()
+                .withName("second")
+                .withStatus(Status.BROKEN)
+                .withStatusDetails(new StatusDetails().withMessage("B"));
+
+        categoriesPlugin.addCategoriesForResults(createSingleLaunchResults(first, second));
+
+        assertThat(first.getExtraBlock(CATEGORIES_BLOCK_NAME, new ArrayList<Category>()))
+                .hasSize(1)
+                .extracting(Category::getName)
+                .containsExactlyInAnyOrder(FAILED_TESTS.getName());
+
+        assertThat(second.getExtraBlock(CATEGORIES_BLOCK_NAME, new ArrayList<Category>()))
+                .hasSize(1)
+                .extracting(Category::getName)
+                .containsExactlyInAnyOrder(BROKEN_TESTS.getName());
+
+    }
+
+    @Test
+    public void shouldSetCustomCategoriesToResults() throws Exception {
+        final String categoryName = "Some category";
+        Category category = new Category()
+                .withName(categoryName)
+                .withMessageRegex(".*")
+                .withMatchedStatuses(Status.BROKEN);
+
+        Map<String, Object> meta = new HashMap<>();
+        meta.put("categories", singletonList(category));
+
+        final CategoriesPlugin categoriesPlugin = new CategoriesPlugin();
+
+        final TestResult first = new TestResult()
+                .withName("first")
+                .withStatus(Status.FAILED)
+                .withStatusDetails(new StatusDetails().withMessage("A"));
+        final TestResult second = new TestResult()
+                .withName("second")
+                .withStatus(Status.BROKEN)
+                .withStatusDetails(new StatusDetails().withMessage("B"));
+
+        categoriesPlugin.addCategoriesForResults(createSingleLaunchResults(meta, first, second));
+
+        assertThat(first.getExtraBlock(CATEGORIES_BLOCK_NAME, new ArrayList<Category>()))
+                .hasSize(1)
+                .extracting(Category::getName)
+                .containsExactlyInAnyOrder(FAILED_TESTS.getName());
+
+        assertThat(second.getExtraBlock(CATEGORIES_BLOCK_NAME, new ArrayList<Category>()))
+                .hasSize(1)
+                .extracting(Category::getName)
+                .containsExactlyInAnyOrder(categoryName);
+    }
+
+    @Test
+    public void shouldCreateTree() throws Exception {
+        final CategoriesPlugin categoriesPlugin = new CategoriesPlugin();
+
+        final TestResult first = new TestResult()
+                .withName("first")
+                .withStatus(Status.BROKEN)
+                .withStatusDetails(new StatusDetails().withMessage("M1"));
+        final TestResult second = new TestResult()
+                .withName("second")
+                .withStatus(Status.FAILED)
+                .withStatusDetails(new StatusDetails().withMessage("M2"));
+        final TestResult third = new TestResult()
+                .withName("third")
+                .withStatus(Status.BROKEN)
+                .withStatusDetails(new StatusDetails().withMessage("M3"));
+        final TestResult other = new TestResult()
+                .withName("other")
+                .withStatus(Status.PASSED)
+                .withStatusDetails(new StatusDetails().withMessage("M4"));
+
+        first.addExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().withName("C1")));
+        second.addExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().withName("C2")));
+        third.addExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().withName("C1")));
+        other.addExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().withName("C3")));
+
+        final List<LaunchResults> launchResults = createSingleLaunchResults(first, second, third, other);
+        final Tree<TestResult> tree = categoriesPlugin.getData(launchResults);
+
+        assertThat(tree.getChildren())
+                .hasSize(3)
+                .extracting(TreeNode::getName)
+                .containsExactlyInAnyOrder("C1", "C2", "C3");
+
+        assertThat(tree.getChildren())
+                .filteredOn("name", "C1")
+                .flatExtracting("children")
+                .extracting("name")
+                .containsExactlyInAnyOrder("M1", "M3");
+
+        assertThat(tree.getChildren())
+                .filteredOn("name", "C1")
+                .flatExtracting("children")
+                .flatExtracting("children")
+                .extracting("name")
+                .containsExactlyInAnyOrder("first", "third");
+    }
+
+    @Test
     public void shouldWork() throws IOException {
 
         Category category = new Category()
@@ -53,7 +169,7 @@ public class CategoriesPluginTest {
                 .withMatchedStatuses(Status.BROKEN);
 
         Map<String, Object> meta = new HashMap<>();
-        meta.put("categories", Collections.singletonList(category));
+        meta.put("categories", singletonList(category));
 
         List<LaunchResults> launchResultsList = createSingleLaunchResults(
                 meta, createTestResult("asd\n", Status.BROKEN)
@@ -84,7 +200,7 @@ public class CategoriesPluginTest {
                 .withFlaky(true);
 
         Map<String, Object> meta = new HashMap<>();
-        meta.put("categories", Collections.singletonList(category));
+        meta.put("categories", singletonList(category));
 
         List<LaunchResults> launchResultsList = createSingleLaunchResults(
                 meta, createTestResult("asd\n", Status.FAILED, true)

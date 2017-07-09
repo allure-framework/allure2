@@ -55,6 +55,10 @@
       "name": "Umgebung",
       "empty": "Keine Umgebungsvariablen verfügbar",
       "showAll": "Zeige alle Umgebungsvariablen"
+    },
+    "suites": {
+      "name": "Suiten",
+      "showAll": "Zeige alle Suiten"
     }
   },
   "chart": {

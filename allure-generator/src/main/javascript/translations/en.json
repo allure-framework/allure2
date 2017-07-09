@@ -55,6 +55,10 @@
       "name": "Environment",
       "empty": "There are no environment variables",
       "showAll": "Show all environment variables"
+    },
+    "suites": {
+      "name": "Suites",
+      "showAll": "Show all suites"
     }
   },
   "chart": {

@@ -15,7 +15,6 @@
          opacity: 0.3;
          stroke-dasharray: 1,4;
          shape-rendering: crispEdges;
-
        }
      }
   }
@@ -23,7 +22,7 @@
     opacity: 0.7;
   }
 
-  &__host {
+  &__group_title {
     font-size: 12px;
     fill: #838383;
     dominant-baseline: central;

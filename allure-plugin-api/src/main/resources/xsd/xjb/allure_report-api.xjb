@@ -18,6 +18,7 @@
         <inheritance:implements>io.qameta.allure.entity.WithLabels</inheritance:implements>
         <inheritance:implements>io.qameta.allure.entity.WithStatusDetails</inheritance:implements>
         <inheritance:implements>io.qameta.allure.entity.WithLinks</inheritance:implements>
+        <inheritance:implements>io.qameta.allure.entity.WithParameters</inheritance:implements>
 
         <inheritance:implements>io.qameta.allure.entity.WithSource</inheritance:implements>
     </jaxb:bindings>

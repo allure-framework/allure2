@@ -6,6 +6,8 @@ import hotkeys from '../../util/hotkeys';
 import template from './TreeView.hbs';
 import StatusToggleView from '../status-toggle/StatusToggleView';
 import NodeSorterView from '../node-sorter/NodeSorterView';
+import getComparator from '../../data/tree/comparator';
+import {byStatuses} from '../../data/tree/filter';
 import {on, regions} from '../../decorators';
 import {behavior} from '../../decorators/index';
 
@@ -29,10 +31,11 @@ class TreeView extends View {
     }
 
     onBeforeRender() {
-        this.collection.applyFilterAndSorting(
-            settings.getVisibleStatuses(this.statusesKey),
-            settings.getTreeSorting(this.sorterSettingsKey)
-        );
+        const visibleStatuses = settings.getVisibleStatuses(this.statusesKey);
+        const filter = byStatuses(visibleStatuses);
+        const sortSettings = settings.getTreeSorting(this.sorterSettingsKey);
+        const sorter = getComparator(sortSettings);
+        this.collection.applyFilterAndSorting(filter, sorter);
     }
 
     onRender() {

@@ -14,8 +14,8 @@
         <div class="node__parameters long-line line-ellipsis">
             <span>&nbsp</span>
             {{#each parameters}}
-                {{#if value}}
-                    {{value}}
+                {{#if this}}
+                    {{this}}
                 {{~else}}
                     null
                 {{~/if~}}

@@ -21,7 +21,6 @@ public class ExtraElements {
 
     public <T> T getExtraBlock(final String blockName, final T defaultValue) {
         return (T) extra.computeIfAbsent(blockName, name -> defaultValue);
-
     }
 
     public <T> T getExtraBlock(final String blockName) {

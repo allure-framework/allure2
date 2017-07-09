@@ -1,9 +1,11 @@
-{{#if (eq type 'TestGroupNode')}}
+{{#if children}}
     <div class="node" data-uid="{{uid}}">
         <div class="node__title long-line" data-uid="{{uid}}">
             <span class="node__arrow block__arrow arrow"></span>
             {{#if name}}
-                {{name}}
+                <div class="node__name">
+                    {{name}}
+                </div>
             {{else}}
                 {{t 'component.tree.unknown'}}
             {{/if}}
