@@ -5,7 +5,7 @@ import {className} from '../../decorators';
 import {makeArray} from '../../util/arrays';
 import {on} from '../../decorators';
 import $ from 'jquery';
-import AttachmentView from '../attachment/AttachmentView'
+import AttachmentView from '../attachment/AttachmentView';
 
 @className('execution')
 class ExecutionView extends View {
@@ -53,7 +53,7 @@ class ExecutionView extends View {
         const name = `attachment__${attachmentUid}`;
 
         if($(e.currentTarget).hasClass('attachment-row_selected')) {
-            this.getRegion(name).destroy()
+            this.getRegion(name).destroy();
         } else {
             this.addRegion(name, {el: this.$(`.${name}`)});
             this.getRegion(name).show(new AttachmentView({

@@ -1,7 +1,7 @@
 import './styles.css';
 import $ from 'jquery';
 import {View} from 'backbone.marionette';
-import template from './ModalView.hbs'
+import template from './ModalView.hbs';
 import {className, regions, on} from '../../decorators/index';
 
 
@@ -14,13 +14,12 @@ class ModalView extends View {
     static container = $(document.body);
 
     onRender() {
-        console.log("onrender")
         this.constructor.container.append(this.$el);
-        this.showChildView('content', this.options.childView)
+        this.showChildView('content', this.options.childView);
     }
 
     @on('click .modal__close')
-    onClose(e) {
+    onClose() {
         this.destroy();
     }
 
@@ -29,7 +28,7 @@ class ModalView extends View {
             cls: this.className,
             title: this.options.title,
             backUrl: this.options.backUrl
-        }
+        };
     }
 }
 
