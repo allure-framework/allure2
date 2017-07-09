@@ -1,11 +1,16 @@
-<div class="attachment-row" data-uid="{{uid}}">
-    <div class="attachment-row__icon">
-        <span class="{{fileicon type}}" data-tooltip="{{type}}"></span>
+<div>
+    <div class="attachment-row" data-uid="{{uid}}">
+        <div class="attachment-row__icon">
+            <span class="{{fileicon type}}" data-tooltip="{{type}}"></span>
+        </div>
+        <div class="attachment-row__name">{{name}}</div>
+        <div class="attachment-row__link">
+            <a class="link" href="data/attachments/{{source}}" target="_blank"
+               data-tooltip="Open attachment in new tab">
+                <span class="fa fa-save"></span> {{filesize size}}
+            </a>
+        </div>
     </div>
-    <div class="attachment-row__name">{{name}}</div>
-    <div class="attachment-row__link">
-    <a class="link" href="data/attachments/{{source}}" target="_blank" data-tooltip="Open attachment in new tab">
-        <span class="fa fa-save"></span> {{filesize size}}
-    </a>
+    <div class="attachment-row__preview {{b 'attachment' uid }}">
     </div>
 </div>

@@ -1,4 +1,4 @@
-<h2 class="pane__title attachment__title">
+<!--h2 class="pane__title attachment__title">
     <a href="data/attachments/{{attachment.source}}" class="link" target="_blank">
         <span class="{{fileicon attachment.type}}"></span>
         {{attachment.name}}
@@ -8,16 +8,14 @@
         <a class="fa fa-compress pane__collapse" data-tooltip="Collapse" href="#{{route.baseUrl}}/{{attachment.uid}}"></a>
         <a class="fa fa-close" data-tooltip="Close" href="#{{route.baseUrl}}"></a>
     </span>
-</h2>
+</h2-->
 
 {{#if (eq type "code")}}
-    <div class="pane__section">
+    <div>
         <pre class="attachment__code">{{content}}</pre>
     </div>
 {{else if (eq type "text")}}
-    <div class="pane__section">
-        <pre class="attachment__code">{{content}}</pre>
-    </div>
+    <pre class="attachment__code">{{content}}</pre>
 {{else if (eq type "table")}}
     <table class="table attachment__table">
         <tbody>
@@ -35,11 +33,9 @@
         <img class="attachment__media" src="{{sourceUrl}}"/>
     </div>
 {{else if (eq type "svg")}}
-    <div class="pane__section">
-        <object class="attachment__embed" type="image/svg+xml" data="{{sourceUrl}}">Your browser does not support SVG</object>
-    </div>
+    <object class="attachment__embed" type="image/svg+xml" data="{{sourceUrl}}">Your browser does not support SVG</object>
 {{else if (eq type "video")}}
-    <div class="pane__section attachment__media-container">
+    <div class="attachment__media-container">
         <video class="attachment__media" controls>
             <source src="{{sourceUrl}}" type="{{attachment.type}}">
             Your browser does not support video tag
@@ -56,5 +52,6 @@
         </p>
     {{/each}}
 {{else}}
-    <iframe class="attachment__iframe" frameborder="0" src="{{sourceUrl}}"></iframe>
+    <span class="fa fa-download"></span>
+    <a class="link" href="src="{{sourceUrl}}"download>Click to download attachment</a>
 {{/if}}

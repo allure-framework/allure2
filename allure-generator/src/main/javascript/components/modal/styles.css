@@ -1,0 +1,22 @@
+@import "../../variables.css";
+
+.modal {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  margin: 0 auto;
+  background: #fff;
+  opacity: 0.96;
+  z-index: 2;
+
+  &__body {
+    top: 0;
+    margin: 0 40px 0 40px;
+    padding-top: 5px;
+    border-left: 1px solid $border-color;
+    border-right: 1px solid $border-color;
+    opacity: 0.99;
+    background: #fff;
+  }
+}

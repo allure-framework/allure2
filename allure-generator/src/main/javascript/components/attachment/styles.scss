@@ -1,9 +1,6 @@
 @import "../../variables.scss";
 
 .attachment {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
   &__title {
     flex-shrink: 0;
   }
@@ -13,8 +10,7 @@
   }
   &__code {
     font: 14px normal "Courier New" monospace;
-    white-space: pre-wrap;
-    word-break: break-word;
+    white-space: pre;
     margin: 0;
     padding: 0;
   }
@@ -47,5 +43,10 @@
     .pane_expanded & {
       cursor: zoom-out;
     }
+  }
+  &__ctrl {
+    position: fixed;
+    top:0;
+    heigth: 100px;
   }
 }

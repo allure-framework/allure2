@@ -3,9 +3,12 @@
 .attachment-row {
   padding: 5px $gap-size 5px 25px;
   cursor: pointer;
-  position: relative;
   font-size: smaller;
   display: flex;
+  position: relative;
+
+  position: sticky;
+  top: 0px;
   &:hover {
     background: $hover-color;
   }
@@ -24,5 +27,8 @@
   }
   &__name {
      flex: 1;
+  }
+  &__preview {
+    margin: 5px $gap-size 5px 25px;
   }
 }
