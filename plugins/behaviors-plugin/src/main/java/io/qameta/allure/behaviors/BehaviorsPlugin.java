@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static io.qameta.allure.entity.ExtraStatisticMethods.comparator;
+import static io.qameta.allure.entity.LabelName.EPIC;
 import static io.qameta.allure.entity.LabelName.FEATURE;
 import static io.qameta.allure.entity.LabelName.STORY;
 import static io.qameta.allure.tree.TreeUtils.calculateStatisticByChildren;
@@ -53,7 +54,7 @@ public class BehaviorsPlugin implements Aggregator, Widget {
         // @formatter:off
         final Tree<TestResult> behaviors = new DefaultTree<>(
             "behaviors",
-            testResult -> groupByLabels(testResult, FEATURE, STORY),
+            testResult -> groupByLabels(testResult, EPIC, FEATURE, STORY),
             TestResultTreeLeaf::create
         );
         // @formatter:on
