@@ -14,7 +14,7 @@
 [CODE_OF_CONDUCT.md]: CODE_OF_CONDUCT.md
 [docs]: https://docs.qameta.io/allure/2.0/
 
-# Allure Report [![build-badge][]][build] [![release-badge][]][release] [![bintray-badge][]][bintray] [![Twitter Follow](https://img.shields.io/twitter/follow/qametasoftware.svg?style=social&label=Follow)]()
+# Allure Report [![build-badge][]][build] [![release-badge][]][release] [![bintray-badge][]][bintray]
 
 Allure Framework is a flexible lightweight multi-language test report tool that not only 
 shows a very concise representation of what have been tested in a neat web report form, 
