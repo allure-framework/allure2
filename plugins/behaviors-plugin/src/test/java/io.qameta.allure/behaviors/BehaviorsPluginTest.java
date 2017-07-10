@@ -66,6 +66,31 @@ public class BehaviorsPluginTest {
                 .containsExactly(Tuple.tuple(2L, 0L));
     }
 
+    @Test
+    public void shouldGroupByEpic() throws Exception {
+        final Configuration configuration = mock(Configuration.class);
+
+        final Set<TestResult> testResults = new HashSet<>();
+        testResults.add(new TestResult()
+                .withStatus(Status.PASSED)
+                .withLabels(epic("e1"), feature("f1"), story("s1")));
+        testResults.add(new TestResult()
+                .withStatus(Status.FAILED)
+                .withLabels(epic("e2"), feature("f2"), story("s2")));
+
+        LaunchResults results = new DefaultLaunchResults(testResults, Collections.emptyMap(), Collections.emptyMap());
+
+        TreeWidgetData behaviorsData = (TreeWidgetData) new BehaviorsPlugin().getData(configuration,
+                Collections.singletonList(results));
+
+        assertThat(behaviorsData.getItems())
+                .extracting("name")
+                .containsExactlyInAnyOrder("e1", "e2");
+    }
+
+    private Label epic(final String value) {
+        return new Label().withName("epic").withValue(value);
+    }
 
     private Label feature(final String value) {
         return new Label().withName("feature").withValue(value);
