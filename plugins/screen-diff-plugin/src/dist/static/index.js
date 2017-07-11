@@ -93,5 +93,5 @@
             this.render();
         }
     });
-    allure.api.addTestcaseBlock(ScreenDiffView, {position: 'before'});
+    allure.api.addTestResultBlock(ScreenDiffView, {position: 'before'});
 })();
