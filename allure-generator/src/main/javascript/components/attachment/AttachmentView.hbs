@@ -11,29 +11,31 @@
 </h2-->
 
 {{#if (eq type "code")}}
-    <div>
-        <pre class="attachment__code">{{content}}</pre>
-    </div>
-{{else if (eq type "text")}}
     <pre class="attachment__code">{{content}}</pre>
+{{else if (eq type "text")}}
+    <pre class="attachment__text">{{content}}</pre>
 {{else if (eq type "table")}}
-    <table class="table attachment__table">
-        <tbody>
-        {{#each content}}
-            <tr>
-                {{#each .}}
-                    <td>{{.}}</td>
-                {{/each}}
-            </tr>
-        {{/each}}
-        </tbody>
-    </table>
+    <div class="attachment__table-container">
+        <table class="table attachment__table">
+            <tbody>
+            {{#each content}}
+                <tr>
+                    {{#each .}}
+                        <td>{{.}}</td>
+                    {{/each}}
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
 {{else if (eq type "image")}}
-    <div class="pane__section attachment__media-container">
+    <div class="attachment__media-container">
         <img class="attachment__media" src="{{sourceUrl}}"/>
     </div>
 {{else if (eq type "svg")}}
-    <object class="attachment__embed" type="image/svg+xml" data="{{sourceUrl}}">Your browser does not support SVG</object>
+    <object class="attachment__embed" type="image/svg+xml" data="{{sourceUrl}}">
+        Your browser does not support SVG
+    </object>
 {{else if (eq type "video")}}
     <div class="attachment__media-container">
         <video class="attachment__media" controls>

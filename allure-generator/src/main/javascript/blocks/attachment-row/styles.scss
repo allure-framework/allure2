@@ -31,4 +31,8 @@
   &__preview {
     margin: 5px $gap-size 5px 25px;
   }
+  &__content{
+    border-left: 3px solid $hover-color;
+    padding-left: 5px;
+  }
 }
