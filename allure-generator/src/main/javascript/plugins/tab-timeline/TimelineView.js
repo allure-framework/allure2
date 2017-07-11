@@ -37,7 +37,7 @@ class TimelineView extends BaseChartView {
         this.maxDuration = this.collection.time.maxDuration;
         this.selectedDuration = this.minDuration;
         this.data = this.collection.toJSON();
-        this.total = this.collection.allTestcases.length;
+        this.total = this.collection.allResults.length;
         this.timeOffset = (d) => (d - this.collection.time.start);
     }
 
@@ -85,10 +85,10 @@ class TimelineView extends BaseChartView {
                 })
             );
 
-        const selectedTestcases = this.collection.testcases.length;
+        const selectedResults = this.collection.testResults.length;
         const opts = {
-            count: selectedTestcases,
-            percent: (100 * selectedTestcases / this.total).toFixed(2),
+            count: selectedResults,
+            percent: (100 * selectedResults / this.total).toFixed(2),
             duration: duration(this.selectedDuration)
         };
 
@@ -197,17 +197,17 @@ class TimelineView extends BaseChartView {
 
                 offset += this.drawTestGroups(item.children, groupHeight, group, false);
             });
-            offset += this.drawTestCases(items.filter((item) => !item.children), parent, offset);
+            offset += this.drawTestResults(items.filter((item) => !item.children), parent, offset);
             return offset;
     }
 
-    drawTestCases(items, parent) {
+    drawTestResults(items, parent) {
         if (items.length) {
             let bars = parent
                 .selectAll('.timeline__item')
                 .data(items).enter()
                 .append('a')
-                .attr('xlink:href', d => '#testcase/' + d.uid)
+                .attr('xlink:href', d => '#testresult/' + d.uid)
                 .append('rect')
                 .attrs({
                     'class': d => `timeline__item chart__fill_status_${d.status}`,

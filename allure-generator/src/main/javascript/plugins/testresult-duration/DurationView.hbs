@@ -1,0 +1,7 @@
+{{#if time}}
+    <span data-tooltip="{{date time.start}} {{time time.start}}&nbsp;&ndash;&nbsp;{{time time.stop}}">
+        {{t 'testResult.duration.name'}}:
+        <span class="fa fa-clock-o"></span>
+        {{duration time.duration 2}}
+    </span>
+{{/if}}

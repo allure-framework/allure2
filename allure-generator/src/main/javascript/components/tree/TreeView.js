@@ -22,7 +22,7 @@ class TreeView extends View {
         this.tabName = tabName;
         this.statusesKey = tabName + '.visibleStatuses';
         this.sorterSettingsKey = tabName + '.treeSorting';
-        this.listenTo(this.state, 'change:testcase', (m, testcase) => this.restoreState(testcase));
+        this.listenTo(this.state, 'change:testResult', (m, testResult) => this.restoreState(testResult));
         this.listenTo(settings, 'change:' + this.statusesKey, this.render);
         this.listenTo(settings, 'change:' + this.sorterSettingsKey, this.render);
         this.listenTo(settings, 'change:showGroupInfo', this.render);
@@ -63,30 +63,30 @@ class TreeView extends View {
 
     onKeyUp(event) {
         event.preventDefault();
-        const currentCaseUid = this.state.get('testcase');
-        if(currentCaseUid) {
-            this.selectTestcase(this.collection.getPreviousTestcase(currentCaseUid));
+        const current = this.state.get('testResult');
+        if(current) {
+            this.selectTestResult(this.collection.getPreviousTestResult(current));
         }
     }
 
     onKeyDown(event) {
         event.preventDefault();
-        const currentCaseUid = this.state.get('testcase');
-        if(currentCaseUid) {
-            this.selectTestcase(this.collection.getNextTestcase(currentCaseUid));
+        const current = this.state.get('testResult');
+        if(current) {
+            this.selectTestResult(this.collection.getNextTestResult(current));
         }
     }
 
-    selectTestcase(testcase) {
-        if(testcase) {
-            router.toUrl(`${this.baseUrl}/${testcase.uid}`);
+    selectTestResult(testResult) {
+        if(testResult) {
+            router.toUrl(`${this.baseUrl}/${testResult.uid}`);
         }
     }
 
     restoreState() {
         this.$('[data-uid]').each((i, node) => {
             const el = this.$(node);
-            el.toggleClass('node__title_active', el.data('uid') === this.state.get('testcase'));
+            el.toggleClass('node__title_active', el.data('uid') === this.state.get('testResult'));
             el.toggleClass('node__expanded', (this.state.has(el.data('uid'))));
         });
         this.$('.node__title_active').parents('.node').toggleClass('node__expanded', true);
@@ -94,8 +94,8 @@ class TreeView extends View {
 
     serializeData() {
         const showGroupInfo = settings.get('showGroupInfo');
-        const shownCases = this.collection.testcases.length;
-        const totalCases = this.collection.allTestcases.length;
+        const shownCases = this.collection.testResults.length;
+        const totalCases = this.collection.allResults.length;
         return {
             baseUrl: this.baseUrl,
             showGroupInfo: showGroupInfo,

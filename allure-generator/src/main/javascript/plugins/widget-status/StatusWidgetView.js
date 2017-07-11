@@ -19,8 +19,8 @@ export default class StatusWidgetView extends View {
     }
 
     getStatusChartData() {
-        const statistic =  this.model.reduce((stats, testcase) => {
-            stats[testcase.get('status').toLowerCase()]++;
+        const statistic =  this.model.reduce((stats, testResult) => {
+            stats[testResult.get('status').toLowerCase()]++;
             return stats;
         }, {
             total: this.model.length,

@@ -36,8 +36,8 @@
       "aggregatedName": "汇总报告",
       "launches": "启动",
       "launches_plural": "启动",
-      "testCases": "测试用例",
-      "testCases_plural": "测试用例"
+      "testResults": "测试用例",
+      "testResults_plural": "测试用例"
     },
     "trend": {
       "name": "趋势"
@@ -76,7 +76,7 @@
       "name": "状态"
     }
   },
-  "testCase": {
+  "testResult": {
     "status": {
       "empty": "状态详情为空",
       "trace": "展示堆栈"

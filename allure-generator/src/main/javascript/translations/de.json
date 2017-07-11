@@ -36,8 +36,8 @@
       "aggregatedName": "Aggregierter Report",
       "launches": "Durchlauf",
       "launches_plural": "Durchläufe",
-      "testCases": "Testfall",
-      "testCases_plural": "Testfälle"
+      "testResults": "Testfall",
+      "testResults_plural": "Testfälle"
     },
     "trend": {
       "name": "Trend"
@@ -76,7 +76,7 @@
       "name": "Status"
     }
   },
-  "testCase": {
+  "testResult": {
     "status": {
       "empty": "Keine Status Details",
       "trace": "Zeige Stracktrace"

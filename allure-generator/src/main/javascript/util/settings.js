@@ -2,7 +2,7 @@ import createSettingsModel from '../data/settings/createSettingsModel';
 
 const GlobalSettingsModel = createSettingsModel(null, {
   language: 'en',
-  testCaseSorting: {
+  testResultSorting: {
     field: 'index',
     order: 'asc'
   },

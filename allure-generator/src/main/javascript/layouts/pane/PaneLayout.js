@@ -1,7 +1,7 @@
 import {Model} from 'backbone';
 import AppLayout from '../../layouts/application/AppLayout';
 import PaneSetView from '../../components/pane-set/PaneSetView';
-import TestcasePanes from '../../util/TestcasePanes';
+import TestResultPanes from '../../util/TestResultPanes';
 
 export default class PaneLayout extends AppLayout {
 
@@ -16,7 +16,7 @@ export default class PaneLayout extends AppLayout {
     }
 
     onViewReady() {
-        this.testcase = new TestcasePanes(this.state, this.getChildView('content'));
+        this.testResult = new TestResultPanes(this.state, this.getChildView('content'));
         this.onRouteUpdate(...this.options.routeParams);
     }
 

@@ -14,10 +14,10 @@ export default class TreeCollection extends Collection {
         this.url = url;
     }
 
-    getFlattenTestcases(children) {
+    getFlattenTestResults(children) {
         return flatten(children.map(child => {
             if (child.children) {
-                return this.getFlattenTestcases(child.children);
+                return this.getFlattenTestResults(child.children);
             }
             return child;
         }));
@@ -25,10 +25,10 @@ export default class TreeCollection extends Collection {
 
     parse({children}) {
         const items = children || [];
-        this.allTestcases = this.getFlattenTestcases(items);
+        this.allResults = this.getFlattenTestResults(items);
         this.allNodes = items;
-        this.time = this.calculateTime(this.allTestcases);
-        this.statistic = this.calculateStatistic(this.allTestcases);
+        this.time = this.calculateTime(this.allResults);
+        this.statistic = this.calculateStatistic(this.allResults);
         return items;
 
     }
@@ -40,7 +40,7 @@ export default class TreeCollection extends Collection {
             sorter
         );
         this.reset(newChildren);
-        this.testcases = this.getFlattenTestcases(newChildren);
+        this.testResults = this.getFlattenTestResults(newChildren);
     }
 
     getFilteredAndSortedChildren(children, filter, sorter) {
@@ -61,17 +61,17 @@ export default class TreeCollection extends Collection {
             .sort(sorter);
     }
 
-    getNextTestcase(testcaseUid) {
-        const index = this.testcases.findIndex(testcase => testcase.uid === testcaseUid);
-        if (index < this.testcases.length - 1) {
-            return this.testcases[index + 1];
+    getNextTestResult(testResultUid) {
+        const index = this.testResults.findIndex(testResult => testResult.uid === testResultUid);
+        if (index < this.testResults.length - 1) {
+            return this.testResults[index + 1];
         }
     }
 
-    getPreviousTestcase(testcaseUid) {
-        const index = this.testcases.findIndex(testcase => testcase.uid === testcaseUid);
+    getPreviousTestResult(testResultUid) {
+        const index = this.testResults.findIndex(testResult => testResult.uid === testResultUid);
         if (index > 0) {
-            return this.testcases[index - 1];
+            return this.testResults[index - 1];
         }
     }
 

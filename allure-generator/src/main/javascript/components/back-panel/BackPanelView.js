@@ -4,7 +4,7 @@ import {className} from '../../decorators';
 import template from './BackPanelView.hbs';
 
 @className('back-panel')
-class TestcaseBackPanelView extends View {
+class TestResultBackPanelView extends View {
     template = template;
 
     templateContext() {
@@ -16,4 +16,4 @@ class TestcaseBackPanelView extends View {
     }
 }
 
-export default TestcaseBackPanelView;
+export default TestResultBackPanelView;

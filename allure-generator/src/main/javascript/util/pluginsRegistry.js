@@ -6,7 +6,7 @@ import translate from '../helpers/t.js';
 class AllurePluginsRegistry {
     tabs = [];
 
-    testcaseBlocks = {
+    testResultBlocks = {
         tag: [],
         before: [],
         after: []
@@ -36,12 +36,8 @@ class AllurePluginsRegistry {
         translate(name, options);
     }
 
-    addTestcaseBlock(view, {position}) {
-        this.testcaseBlocks[position].push(view);
-    }
-
-    addTestcaseTag(name) {
-        this.testcaseTags.add(name);
+    addTestResultBlock(view, {position}) {
+        this.testResultBlocks[position].push(view);
     }
 }
 
