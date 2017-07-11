@@ -5,7 +5,7 @@
         <span class="fullname__body">{{fullName}}</span>
 {{/if}}
 </div>
-<h2 class="pane__title">
+<h2 class="pane__title {{#unless statusDetails.message}}pane__title_borderless{{/unless}}">
     {{#if statusDetails.flaky}}
         {{allure-icon 'flaky'}}
     {{/if}}
@@ -16,17 +16,15 @@
     <span class="long-line">{{name}}</span>
 </h2>
 
-<div class="testcase__failure alert message message_status_{{status}}">
+<div class="testcase__failure message message_status_{{status}}">
     {{#if statusDetails.message}}
-        <pre class="alert__code"><code>{{statusDetails.message}}</code></pre>
-    {{else}}
-        {{t 'testCase.status.empty'}}
+        <pre class="alert alert__code"><code>{{statusDetails.message}}</code></pre>
     {{/if}}
     {{#if statusDetails.trace}}
         <div class="testcase__trace-toggle clickable" data-tooltip="{{t 'testCase.status.trace'}}">
             <i class="fa fa-ellipsis-h fa-lg" aria-hidden="true"></i>
         </div>
-        <pre class="alert__code testcase__trace"><code>{{statusDetails.trace}}</code></pre>
+        <pre class="alert alert__code testcase__trace"><code>{{statusDetails.trace}}</code></pre>
     {{/if}}
 </div>
 

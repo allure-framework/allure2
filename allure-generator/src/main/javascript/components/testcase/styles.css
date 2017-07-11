@@ -5,16 +5,17 @@
   &__trace {
     border-top: 1px solid $border-color;
     padding-top: 10px;
-    margin-top: 10px;
+    margin-top: 0;
     display: none;
     &_visible {
       display: block;
     }
   }
   &__trace-toggle {
-    margin-top: 5px;
+    margin-top: 0;
     text-align: center;
     padding-top: 5px;
+    padding-bottom: 5px;
     color: $text-muted-color;
     &:hover {
       background-color: $hover-color;
@@ -24,7 +25,7 @@
     color: $color-skipped;
   }
   &__failure {
-    padding-bottom: 10px;
+    padding-bottom: 0;
   }
 }
 
