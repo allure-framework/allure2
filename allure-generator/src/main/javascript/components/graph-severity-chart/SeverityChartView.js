@@ -24,10 +24,10 @@ export default class SeverityChartView extends BaseChartView {
     getChartData() {
         this.data = severities.map(severity =>
             values.map(status => {
-                const testcases = this.collection.where({status, severity}).map(model => model.toJSON());
+                const testResult = this.collection.where({status, severity}).map(model => model.toJSON());
                 return {
-                    value: testcases.length,
-                    testcases,
+                    value: testResult.length,
+                    testResult,
                     severity,
                     status
                 };
@@ -87,13 +87,13 @@ export default class SeverityChartView extends BaseChartView {
     }
 
 
-    getTooltipContent({value, severity, status, testcases}) {
+    getTooltipContent({value, severity, status, testResults}) {
         const LIST_LIMIT = 10;
-        const items = testcases.slice(0, LIST_LIMIT);
-        const overLimit = testcases.length - items.length;
+        const items = testResults.slice(0, LIST_LIMIT);
+        const overLimit = testResults.length - items.length;
         return `<b>${value} ${severity.toLowerCase()} test cases ${status.toLowerCase()}</b><br>
             <ul class="popover__list">
-                ${items.map(testcase => escape`<li>${testcase.name}</li>`).join('')}
+                ${items.map(testResult => escape`<li>${testResult.name}</li>`).join('')}
             </ul>
             ${overLimit ? `...and ${overLimit} more` : ''}
         `;

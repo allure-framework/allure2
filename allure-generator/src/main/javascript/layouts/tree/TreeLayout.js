@@ -26,12 +26,12 @@ export default class TreeLayout extends PaneLayout {
                 baseUrl: this.options.baseUrl
             }));
         }
-        this.testcase.updatePanes(this.options.baseUrl, changed);
+        this.testResult.updatePanes(this.options.baseUrl, changed);
         paneView.updatePanesPositions();
     }
 
-    onRouteUpdate(testcase, attachment) {
+    onRouteUpdate(testResult, attachment) {
         const expanded = router.getUrlParams().expanded === 'true';
-        this.state.set({testcase, attachment, expanded});
+        this.state.set({testResult, attachment, expanded});
     }
 }

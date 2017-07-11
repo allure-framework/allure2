@@ -1,5 +1,0 @@
-.testcase-link {
-  &:not(:last-child):after {
-    content: ',';
-  }
-}

@@ -1,0 +1,36 @@
+<a class="pane__overlay" href="#testresult/{{uid}}"></a>
+{{#if fullName}}
+    <div class="pane__subtitle long-line line-ellipsis">
+        <span class="fa fa-files-o fullname__copy" data-tooltip="{{t 'controls.clipboard'}}"></span>
+        <span class="fullname__body">{{fullName}}</span>
+{{/if}}
+</div>
+<h2 class="pane__title">
+    {{#if statusDetails.flaky}}
+        {{allure-icon 'flaky'}}
+    {{/if}}
+    <span class="label label_status_{{status}}">{{t statusName}}</span>
+    <span class="pane__controls">
+        <a class="fa fa-expand pane__expand" data-tooltip="{{t 'controls.expand'}}" href="#testresult/{{uid}}?expanded=true"></a>
+    </span>
+    <span class="long-line">{{name}}</span>
+</h2>
+
+<div class="testresult__failure alert message message_status_{{status}}">
+    {{#if statusDetails.message}}
+        <pre class="alert__code"><code>{{statusDetails.message}}</code></pre>
+    {{else}}
+        {{t 'testResult.status.empty'}}
+    {{/if}}
+    {{#if statusDetails.trace}}
+        <div class="testresult__trace-toggle clickable" data-tooltip="{{t 'testResult.status.trace'}}">
+            <i class="fa fa-ellipsis-h fa-lg" aria-hidden="true"></i>
+        </div>
+        <pre class="alert__code testresult__trace"><code>{{statusDetails.trace}}</code></pre>
+    {{/if}}
+</div>
+
+<div class="testresult__content_tags"></div>
+<div class="testresult__content_before"></div>
+<div class="testresult__execution"></div>
+<div class="testresult__content_after"></div>

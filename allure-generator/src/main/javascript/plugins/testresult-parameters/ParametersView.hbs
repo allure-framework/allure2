@@ -1,0 +1,13 @@
+{{#if parameters.length}}
+<h3>{{t 'testResult.parameters.name'}}</h3>
+    {{#each parameters}}
+        <div class="environment long-line line-ellipsis">
+            <span class="environment__key">{{#if name}}{{name}}{{else}}&lt;null&gt;{{/if}}</span>:
+            {{#if value}}
+                <span>{{linky value}}</span>
+            {{else}}
+                null
+            {{/if}}
+        </div>
+    {{/each}}
+{{/if}}
