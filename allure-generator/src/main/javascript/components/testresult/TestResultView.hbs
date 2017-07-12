@@ -1,7 +1,7 @@
 <a class="pane__overlay" href="#testresult/{{uid}}"></a>
 {{#if fullName}}
     <div class="pane__subtitle long-line line-ellipsis">
-        <span class="fa fa-files-o fullname__copy" data-tooltip="{{t 'controls.clipboard'}}"></span>
+        <span class="fa fa-files-o clickable" data-copy="{{fullName}}"></span>
         <span class="fullname__body">{{fullName}}</span>
 {{/if}}
 </div>

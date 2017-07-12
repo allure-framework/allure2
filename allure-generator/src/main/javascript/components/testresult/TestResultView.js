@@ -4,7 +4,6 @@ import {on, regions, behavior} from '../../decorators';
 import pluginsRegistry from '../../util/pluginsRegistry';
 import template from './TestResultView.hbs';
 import ExecutionView from '../execution/ExecutionView';
-import copy from '../../util/clipboard';
 
 const SEVERITY_ICONS = {
     blocker: 'fa fa-exclamation-triangle',
@@ -15,6 +14,7 @@ const SEVERITY_ICONS = {
 };
 
 @behavior('TooltipBehavior', {position: 'left'})
+@behavior('ClipboardBehavior')
 @regions({
     execution: '.testresult__execution'
 })
@@ -65,11 +65,6 @@ class TestResultView extends View {
     @on('click .fullname__body')
     onFillNameBopyClick() {
         this.$('.pane__subtitle').toggleClass('line-ellipsis', false);
-    }
-
-    @on('click .fullname__copy')
-    onFullNameCopyClick() {
-        copy(this.model.get('fullName'));
     }
 }
 

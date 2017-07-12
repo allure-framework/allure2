@@ -131,6 +131,8 @@
     "expand": "Expand",
     "language": "Change language",
     "clipboard": "Copy to clipboard",
+    "clipboardSuccess": "Successfully copied",
+    "clipboardError": "Can not copy value to clipboard. Seems like this feature is not supported for your browser",
     "backto": "Back to"
   },
   "errors": {
