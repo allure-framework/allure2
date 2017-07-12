@@ -14,7 +14,7 @@ const SEVERITY_ICONS = {
 };
 
 @behavior('TooltipBehavior', {position: 'left'})
-@behavior('ClipboardBehavior', {position: 'left'})
+@behavior('ClipboardBehavior')
 @regions({
     execution: '.testresult__execution'
 })

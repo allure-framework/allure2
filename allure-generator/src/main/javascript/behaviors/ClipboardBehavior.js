@@ -7,7 +7,9 @@ import translate from '../helpers/t';
 export default class ClipboardBehavior extends Behavior {
 
     initialize() {
-        this.tooltip = new TooltipView(this.options);
+        this.tooltip = new TooltipView({
+            position: 'left'
+        });
     }
 
     @on('mouseenter [data-copy]')
