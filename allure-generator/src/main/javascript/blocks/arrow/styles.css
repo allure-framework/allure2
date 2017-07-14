@@ -9,8 +9,20 @@
   }
 }
 
-.arrow {
+[dir=ltr] .arrow {
   width: 14px;
   height: 14px;
   background: url(./arrow.svg) center no-repeat;
+}
+
+[dir=rtl] .arrow {
+  width: 14px;
+  height: 14px;
+  background: url(./arrow.svg) center no-repeat;
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: FlipH;
+  -ms-filter: "FlipH";
 }

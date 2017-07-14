@@ -2,6 +2,7 @@ import './styles.css';
 import {View} from 'backbone.marionette';
 import $ from 'jquery';
 import {className} from '../../decorators';
+import i18next from 'i18next';
 
 const paneTpl = '<div class="pane"></div>';
 
@@ -60,7 +61,12 @@ class PaneSetView extends View {
                 width = 50 - leftOffset;
                 pane.removeClass('pane_expanded');
             }
-            pane.css({left: left + '%', width: width + '%'});
+			if(i18next.dir() == "rtl"){
+				pane.css({right: left + '%', width: width + '%'});
+			} else {
+				pane.css({left: left + '%', width: width + '%'});
+			}
+			
         });
     }
 

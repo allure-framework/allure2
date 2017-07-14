@@ -71,12 +71,17 @@
       display: block;
     }
   }
-  &__expanded > &__title > &__arrow {
-    transform: rotate(90deg);
-  }
   &:focus {
     outline: 0;
   }
+}
+
+[dir=rtl] .node__expanded > .node__title > .node__arrow {
+  transform: rotate(90deg);
+}
+
+[dir=ltr] .node__expanded > .node__title > .node__arrow {
+  transform: rotate(90deg);
 }
 
 .tree {

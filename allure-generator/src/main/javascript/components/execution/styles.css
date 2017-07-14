@@ -47,12 +47,17 @@
     margin-left: 20px;
     display: none;
   }
-  &_expanded > &__title > &__arrow {
-    transform: rotate(90deg);
-  }
   &_expanded > &__content {
     display: block;
   }
+}
+
+[dir=rtl] .step_expanded > .step__title > .step__arrow {
+  transform: rotate(90deg);
+}
+
+[dir=ltr] .step_expanded > .step__title > .step__arrow {
+  transform: rotate(90deg);
 }
 
 .parameters {

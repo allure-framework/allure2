@@ -9,7 +9,8 @@ const postcssLoader = {
         plugins: [
             require('postcss-import'),
             require('precss')({'import': {disable: true}}),
-            require('autoprefixer')
+            require('autoprefixer'),
+			require('postcss-rtl')
         ]
     }
 };
