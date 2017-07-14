@@ -6,9 +6,8 @@ import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.tree.DefaultTree;
+import io.qameta.allure.tree.TestResultTree;
 import io.qameta.allure.tree.TestResultTreeGroup;
-import io.qameta.allure.tree.TestResultTreeLeaf;
 import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeWidgetData;
 import io.qameta.allure.tree.TreeWidgetItem;
@@ -52,10 +51,9 @@ public class BehaviorsPlugin implements Aggregator, Widget {
     /* default */ Tree<TestResult> getData(final List<LaunchResults> launchResults) {
 
         // @formatter:off
-        final Tree<TestResult> behaviors = new DefaultTree<>(
+        final Tree<TestResult> behaviors = new TestResultTree(
             "behaviors",
-            testResult -> groupByLabels(testResult, EPIC, FEATURE, STORY),
-            TestResultTreeLeaf::create
+            testResult -> groupByLabels(testResult, EPIC, FEATURE, STORY)
         );
         // @formatter:on
 

@@ -27,14 +27,14 @@ class TestResultView extends View {
     }
 
     onRender() {
-        this.showTestResultPlugins(this.$('.testresult__content_tags'), pluginsRegistry.testResultBlocks.tag);
-        this.showTestResultPlugins(this.$('.testresult__content_before'), pluginsRegistry.testResultBlocks.before);
-        this.showChildView('execution', new ExecutionView({
-            baseUrl: '#testresult/' + this.model.id,
-            state: this.state,
-            model: this.model
-        }));
-        this.showTestResultPlugins(this.$('.testresult__content_after'), pluginsRegistry.testResultBlocks.after);
+        // this.showTestResultPlugins(this.$('.testresult__content_tags'), pluginsRegistry.testResultBlocks.tag);
+        // this.showTestResultPlugins(this.$('.testresult__content_before'), pluginsRegistry.testResultBlocks.before);
+        // this.showChildView('execution', new ExecutionView({
+        //     baseUrl: '#testresult/' + this.model.id,
+        //     state: this.state,
+        //     model: this.model
+        // }));
+        // this.showTestResultPlugins(this.$('.testresult__content_after'), pluginsRegistry.testResultBlocks.after);
     }
 
     onDestroy() {

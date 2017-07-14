@@ -1,5 +1,5 @@
 import {Collection} from 'backbone';
-import {flatten} from 'underscore';
+import {flatten, findWhere} from 'underscore';
 import {values} from '../../util/statuses';
 
 function updateTime(timeA, timeB, field, operation) {
@@ -12,6 +12,29 @@ export default class TreeCollection extends Collection {
 
     initialize(models, {url}) {
         this.url = url;
+    }
+
+    findNode(path, uid = null, children = this.allNodes) {
+        if (!path || path.length === 0) {
+            return uid;
+        }
+        const found = findWhere(children, {name: path[0]});
+        if (found) {
+            return this.findNode(path.slice(1), found.uid, found.children);
+        }
+        return null;
+    }
+
+    getLeaf(path) {
+        return (path.length > 0 && this.isLeaf(path[path.length - 1]))
+            ? path[path.length - 1]
+            : null;
+    }
+
+    isLeaf(uid) {
+        return this.allResults
+            .map(result => result.uid)
+            .includes(uid);
     }
 
     getFlattenTestResults(children) {

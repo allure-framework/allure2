@@ -1,37 +1,41 @@
-import PaneLayout from '../pane/PaneLayout';
+import AppLayout from '../application/AppLayout';
+import TreeViewPanes from '../../components/tree-panes/TreeViewPanes';
+import TestResultModel from '../../data/testresult/TestResultModel';
+import TestResultView from '../../components/testresult/TestResultView';
 import TreeCollection from '../../data/tree/TreeCollection';
-import TreeView from '../../components/tree/TreeView';
-import router from '../../router';
 
-export default class TreeLayout extends PaneLayout {
+export default class TreeLayout extends AppLayout {
 
     initialize({url}) {
         super.initialize();
-        this.items = new TreeCollection([], {url});
+        this.tree = new TreeCollection([], {url});
     }
 
     loadData() {
-        return this.items.fetch();
+        return this.tree.fetch();
     }
 
-    onStateChange() {
-        const changed = Object.assign({}, this.state.changed);
-        const paneView = this.getChildView('content');
-        paneView.expanded = this.state.get('expanded');
-        if (!paneView.getRegion('testrun')) {
-            paneView.addPane('testrun', new TreeView({
-                collection: this.items,
-                state: this.state,
-                tabName: this.options.tabName,
-                baseUrl: this.options.baseUrl
-            }));
-        }
-        this.testResult.updatePanes(this.options.baseUrl, changed);
-        paneView.updatePanesPositions();
+    getContentView() {
+        const {params, baseUrl} = this.options;
+        const path = params ? params.split('/') : [];
+        const treeSorters = [];
+        const tabName = 'Suites';
+        const tree = this.tree;
+        const leafModel = TestResultModel;
+        const leafView = TestResultView;
+
+        return new TreeViewPanes({
+            path,
+            tree,
+            treeSorters,
+            tabName,
+            baseUrl,
+            leafModel,
+            leafView
+        });
     }
 
-    onRouteUpdate(testResult, attachment) {
-        const expanded = router.getUrlParams().expanded === 'true';
-        this.state.set({testResult, attachment, expanded});
+    onRouteUpdate(testResult) {
+        this.state.set({testResult});
     }
 }

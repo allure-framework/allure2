@@ -6,12 +6,13 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.tree.Classifier;
-import io.qameta.allure.tree.DefaultTree;
-import io.qameta.allure.tree.TestResultClassifier;
+import io.qameta.allure.tree.DefaultTreeLayer;
+import io.qameta.allure.tree.TestResultGroupFactory;
+import io.qameta.allure.tree.TestResultTree;
 import io.qameta.allure.tree.TestResultTreeGroup;
 import io.qameta.allure.tree.TestResultTreeLeaf;
 import io.qameta.allure.tree.Tree;
+import io.qameta.allure.tree.TreeLayer;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -21,7 +22,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -46,13 +46,12 @@ public class PackagesPlugin implements Aggregator {
     @SuppressWarnings("PMD.DefaultPackage")
     /* default */ Tree<TestResult> getData(final List<LaunchResults> launchResults) {
 
-        // @formatter:off
-        final Tree<TestResult> packages = new DefaultTree<>(
-            "packages",
-            this::groupByPackages,
-            this::createLeaf
+        final Tree<TestResult> packages = new TestResultTree(
+                "packages",
+                this::groupByPackages,
+                new TestResultGroupFactory(),
+                (parent, item) -> createLeaf(item)
         );
-        // @formatter:on
 
         launchResults.stream()
                 .map(LaunchResults::getResults)
@@ -62,12 +61,12 @@ public class PackagesPlugin implements Aggregator {
         return collapseGroupsWithOnlyOneChild(packages);
     }
 
-    protected List<Classifier<TestResult>> groupByPackages(final TestResult testResult) {
+    protected List<TreeLayer> groupByPackages(final TestResult testResult) {
         return testResult.findOne(LabelName.PACKAGE)
                 .map(packageName -> Arrays.asList(packageName.split("\\.")))
                 .orElseGet(Collections::emptyList)
                 .stream()
-                .map(TestResultClassifier::new)
+                .map(DefaultTreeLayer::new)
                 .collect(Collectors.toList());
     }
 
@@ -107,17 +106,17 @@ public class PackagesPlugin implements Aggregator {
         return String.format("%s.%s", parent.getName(), child.getName());
     }
 
-    private Optional<TestResultTreeLeaf> createLeaf(final TestResult testResult) {
+    private TestResultTreeLeaf createLeaf(final TestResult testResult) {
         final String name = testResult
                 .findOne(LabelName.TEST_METHOD)
                 .filter(method -> !method.isEmpty())
                 .orElseGet(testResult::getName);
-        return Optional.of(new TestResultTreeLeaf(
+        return new TestResultTreeLeaf(
                 name,
                 testResult.getUid(),
                 testResult.getStatus(), testResult.getTime(),
                 testResult.getStatusDetailsSafe().isFlaky(),
                 testResult.getParameterValues()
-        ));
+        );
     }
 }

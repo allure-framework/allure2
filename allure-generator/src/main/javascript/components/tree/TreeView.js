@@ -16,13 +16,13 @@ import {behavior} from '../../decorators/index';
 class TreeView extends View {
     template = template;
 
-    initialize({state, tabName, baseUrl}) {
-        this.state = state;
+    initialize({treeState, tabName, baseUrl}) {
+        this.treeState = treeState;
         this.baseUrl = baseUrl;
         this.tabName = tabName;
         this.statusesKey = tabName + '.visibleStatuses';
         this.sorterSettingsKey = tabName + '.treeSorting';
-        this.listenTo(this.state, 'change:testResult', (m, testResult) => this.restoreState(testResult));
+        this.listenTo(this.treeState, 'change:uid', (m, uid) => this.restoreState(uid));
         this.listenTo(settings, 'change:' + this.statusesKey, this.render);
         this.listenTo(settings, 'change:' + this.sorterSettingsKey, this.render);
         this.listenTo(settings, 'change:showGroupInfo', this.render);
@@ -30,72 +30,56 @@ class TreeView extends View {
         this.listenTo(hotkeys, 'key:down', this.onKeyDown, this);
     }
 
-    onBeforeRender() {
-        const visibleStatuses = settings.getVisibleStatuses(this.statusesKey);
-        const filter = byStatuses(visibleStatuses);
-        const sortSettings = settings.getTreeSorting(this.sorterSettingsKey);
-        const sorter = getComparator(sortSettings);
-        this.collection.applyFilterAndSorting(filter, sorter);
+    onRender() {
+        this.changeSelectedCase();
     }
 
-    onRender() {
-        this.restoreState();
-        this.showChildView('sorter', new NodeSorterView({sorterSettingsKey: this.sorterSettingsKey}));
-        this.showChildView('filter', new StatusToggleView({statusesKey: this.statusesKey, statistic: this.collection.statistic}));
+    restoreState() {
+        this.$('[data-uid]').each((i, node) => {
+            const el = this.$(node);
+            el.toggleClass('node__title_active', el.data('uid') === this.treeState.get('uid'));
+            el.toggleClass('node__expanded', (this.treeState.has(el.data('uid'))));
+        });
+        this.$('.node__title_active').parents('.node').toggleClass('node__expanded', true);
+    }
+
+    changeSelectedCase() {
+        const {suffix} = this.options;
+        const previous = this.treeState.previous('uid');
+        if (previous) {
+            const el = this.$(`[data-uid='${previous}']`);
+            el.toggleClass('node__title_active', false);
+        }
+
+        const current = this.treeState.get('uid');
+        console.log('CURRENT ' + current)
+        if (current) {
+            const el = this.$(`[data-uid='${current}']`);
+            el.toggleClass('node__title_active', true);
+            history.navigate(this.baseUrl + '/' + current + (suffix ? '/' + suffix : ''));
+            this.$('.node__title_active').parents('.node').toggleClass('node__expanded', true);
+        }
     }
 
     @on('click .node__title')
     onNodeClick(e) {
         this.$(e.currentTarget).parent().toggleClass('node__expanded');
         const uid = this.$(e.currentTarget).data('uid');
-        if (this.state.has(uid)) {
-            this.state.unset(uid);
+        if (this.treeState.has(uid)) {
+            this.treeState.unset(uid);
         } else {
-            this.state.set(uid, true);
+            this.treeState.set(uid, true);
         }
     }
 
-    @on('click .tree__info')
-    onInfoClick() {
-        const show = settings.get('showGroupInfo');
-        settings.save('showGroupInfo', !show);
-    }
-
-    onKeyUp(event) {
-        event.preventDefault();
-        const current = this.state.get('testResult');
-        if(current) {
-            this.selectTestResult(this.collection.getPreviousTestResult(current));
-        }
-    }
-
-    onKeyDown(event) {
-        event.preventDefault();
-        const current = this.state.get('testResult');
-        if(current) {
-            this.selectTestResult(this.collection.getNextTestResult(current));
-        }
-    }
-
-    selectTestResult(testResult) {
-        if(testResult) {
-            router.toUrl(`${this.baseUrl}/${testResult.uid}`);
-        }
-    }
-
-    restoreState() {
-        this.$('[data-uid]').each((i, node) => {
-            const el = this.$(node);
-            el.toggleClass('node__title_active', el.data('uid') === this.state.get('testResult'));
-            el.toggleClass('node__expanded', (this.state.has(el.data('uid'))));
-        });
-        this.$('.node__title_active').parents('.node').toggleClass('node__expanded', true);
-    }
+    // @on('click .tree__info')
+    // onInfoClick() {
+    //     const show = settings.get('showGroupInfo');
+    //     settings.save('showGroupInfo', !show);
+    // }
 
     serializeData() {
         const showGroupInfo = settings.get('showGroupInfo');
-        const shownCases = this.collection.testResults.length;
-        const totalCases = this.collection.allResults.length;
         return {
             baseUrl: this.baseUrl,
             showGroupInfo: showGroupInfo,
@@ -103,9 +87,9 @@ class TreeView extends View {
             statistic: this.collection.statistic,
             tabName: this.tabName,
             items: this.collection.toJSON(),
-            shownCases: shownCases,
-            totalCases: totalCases,
-            filtered: shownCases !== totalCases
+            shownCases: 0,
+            totalCases: 0,
+            filtered: false
         };
     }
 }
