@@ -61,7 +61,7 @@ class PaneSetView extends View {
                 width = 50 - leftOffset;
                 pane.removeClass('pane_expanded');
             }
-			if(i18next.dir() == "rtl"){
+			if(i18next.dir() === 'rtl'){
 				pane.css({right: left + '%', width: width + '%'});
 			} else {
 				pane.css({left: left + '%', width: width + '%'});
