@@ -1,0 +1,10 @@
+@import "../../variables.scss";
+
+.link {
+  color: $link-color;
+  transition: color 0.15s ease-out;
+  text-decoration: none;
+  &:hover {
+    color: $link-color-hover;
+  }
+}

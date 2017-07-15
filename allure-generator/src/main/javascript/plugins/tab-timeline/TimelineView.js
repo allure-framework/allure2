@@ -1,4 +1,4 @@
-import './styles.css';
+import './styles.scss';
 import BaseChartView from '../../components/graph-base/BaseChartView';
 import {className} from '../../decorators';
 import duration from '../../helpers/duration';

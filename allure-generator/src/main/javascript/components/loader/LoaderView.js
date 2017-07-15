@@ -1,4 +1,4 @@
-import './styles.css';
+import './styles.scss';
 import {View} from 'backbone.marionette';
 import {options} from '../../decorators';
 import template from './LoaderView.hbs';

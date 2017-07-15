@@ -1,4 +1,4 @@
-import './styles.css';
+import './styles.scss';
 import {View} from 'backbone.marionette';
 import {on, regions, behavior} from '../../decorators';
 import pluginsRegistry from '../../util/pluginsRegistry';

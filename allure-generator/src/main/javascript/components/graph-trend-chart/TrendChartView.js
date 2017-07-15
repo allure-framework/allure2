@@ -1,4 +1,4 @@
-import './styles.css';
+import './styles.scss';
 import {scaleLinear, scalePoint} from 'd3-scale';
 import {max} from 'd3-array';
 import {area, stack} from 'd3-shape';

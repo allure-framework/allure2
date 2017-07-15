@@ -1,0 +1,63 @@
+@import "../../variables.scss";
+
+.table {
+  &__row, &__head {
+    display: flex;
+  }
+  &__row {
+    border-bottom: 1px solid $border-color;
+    text-decoration: none;
+    color: $text-color;
+  }
+  &__head {
+    border-bottom: 1px solid $border-accent-color;
+    font-weight: bold;
+  }
+  &__col {
+    line-height: 1.5em;
+    padding: 10px 15px;
+    flex: 1;
+    &_center {
+      text-align: center;
+    }
+    &_right {
+      text-align: right;
+      justify-content: flex-end;
+    }
+    &_sortable {
+      cursor: pointer;
+      display: flex;
+      & > span {
+        overflow: hidden;
+        padding-right: 5px;
+      }
+      &:after {
+        flex-shrink: 0;
+        vertical-align: middle;
+        content: ' ';
+        display: inline-block;
+        width: 12px;
+        height: 18px;
+        background: url(./sort-icon.svg) center no-repeat;
+        background-size: contain;
+      }
+    }
+    &_sorted_down:after {
+      background-image: url(./sort-down-icon.svg);
+    }
+    &_sorted_up:after {
+      background-image: url(./sort-up-icon.svg);
+    }
+  }
+  &_hover {
+    .table__row:not([disabled]):hover {
+      background: $hover-color;
+    }
+  }
+  .table__row_summary {
+    background: $summary-color;
+  }
+  .table__row_active {
+    background: $selected-color;
+  }
+}

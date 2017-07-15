@@ -1,4 +1,4 @@
-import './styles.css';
+import './styles.scss';
 import {View} from 'backbone.marionette';
 import {regions, className} from '../../decorators';
 import template from './AppLayout.hbs';

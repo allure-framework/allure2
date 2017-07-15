@@ -1,4 +1,4 @@
-import './styles.css';
+import './styles.scss';
 import {on, className} from '../../decorators';
 import settings from '../../util/settings';
 import template from './StatusToggleView.hbs';
