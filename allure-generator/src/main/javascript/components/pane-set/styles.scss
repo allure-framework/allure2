@@ -1,0 +1,81 @@
+@import "../../variables.scss";
+
+.pane {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: $pane-bg-color;
+  width: 50%;
+  overflow-y: scroll;
+  transition: left 0.3s, width 0.3s;
+  z-index: 1;
+  padding-bottom: 100px;
+  &_leave, &_enter {
+    left: 100% !important;
+  }
+  &_overlaid &__overlay {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: $pane-overlay-bg;
+    z-index: 2;
+    &:hover {
+      background: $pane-overlay-bg-hover;
+    }
+  }
+  &__subtitle {
+    color: $text-muted-color;
+    padding-left: 5px;
+    margin: 10px 0;
+    font-weight:initial;
+    font-size: 18px;
+  }
+  &__title {
+    padding: 0 15px 10px;
+    margin: 7px 0 0;
+    border-bottom: 1px solid $border-color;
+    font-size: 24px;
+    font-weight: bold;
+    &_borderless {
+      border: none;
+    }
+  }
+  &__controls {
+    float: right;
+    padding-right: 0.5em;
+    & > a {
+      text-decoration: none;
+      color: $text-color;
+      opacity: 0.7;
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+  &__section {
+    margin: $gap-size 0;
+    padding: 0 $gap-size;
+  }
+  &__section-title {
+    margin: 0 0 $gap-size;
+  }
+  &__collapse, &__expand {
+    display: none;
+  }
+  &:last-child {
+    &.pane_expanded .pane__collapse {
+      display: inline;
+    }
+    &:not(.pane_expanded) .pane__expand {
+      display: inline;
+    }
+  }
+}
+
+.pane + .pane {
+  box-shadow: 0 0 1px $pane-shadow-color;
+}

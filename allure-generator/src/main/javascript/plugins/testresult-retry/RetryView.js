@@ -1,4 +1,4 @@
-import './styles.css';
+import './styles.scss';
 import {View} from 'backbone.marionette';
 import template from './RetryView.hbs';
 import {on} from '../../decorators';

@@ -1,0 +1,34 @@
+@import "../../variables.scss";
+
+.language-select {
+  z-index: 1;
+  &.popover {
+    padding: 0;
+  }
+  &__menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  &__item {
+    padding: 0.5em 0.8em;
+    border-bottom: 1px solid $border-color;
+    cursor: pointer;
+    &::before {
+      content: ' ';
+      display: inline-block;
+      background: url(checkmark.svg) center no-repeat;
+      background-size: contain;
+      width: 0.8em;
+      height: 0.8em;
+      margin-right: 0.5em;
+      visibility: hidden;
+    }
+    &_active::before {
+      visibility: visible;
+    }
+    &:hover {
+      background: $hover-color;
+    }
+  }
+}

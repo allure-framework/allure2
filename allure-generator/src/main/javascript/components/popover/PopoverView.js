@@ -1,4 +1,4 @@
-import './styles.css';
+import './styles.scss';
 import TooltipView from '../tooltip/TooltipView';
 import {className} from '../../decorators';
 

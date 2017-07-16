@@ -1,0 +1,14 @@
+@import "../../mixins.scss";
+
+.trend {
+  &__area {
+    @include status-fill();
+  }
+  &__tooltip {
+    display: block;
+    white-space: nowrap;
+    &_label {
+      display: inline-block;
+    }
+  }
+}
