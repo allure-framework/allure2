@@ -1,4 +1,4 @@
-import './styles.css';
+import './styles.scss';
 import {View} from 'backbone';
 import {axisLeft, axisBottom} from 'd3-axis';
 import {select, event as currentEvent} from 'd3-selection';

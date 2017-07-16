@@ -1,4 +1,4 @@
-import './styles.css';
+import './styles.scss';
 import {View} from 'backbone';
 import {className} from '../../decorators';
 import bem from 'b_';

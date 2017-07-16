@@ -8,7 +8,7 @@ apply plugin: 'maven'
 apply plugin: 'com.moowork.node'
 
 node {
-    version = '7.10.0'
+    version = '8.1.3'
     yarnVersion = '0.24.6'
     download = true
 }

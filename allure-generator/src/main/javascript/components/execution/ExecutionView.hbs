@@ -1,8 +1,8 @@
 {{#if hasContent}}
-    <h3 class="execution__title">{{t 'testCase.execution.name'}}</h3>
+    <h3 class="execution__title">{{t 'testResult.execution.name'}}</h3>
     <div class="execution__content">
-        {{> stages-block stages=before name=(t 'testCase.execution.setup') baseUrl=baseUrl expanded=false}}
-        {{> stages-block stages=test name=(t 'testCase.execution.body') baseUrl=baseUrl expanded=true}}
-        {{> stages-block stages=after name=(t 'testCase.execution.teardown') baseUrl=baseUrl expanded=false}}
+        {{> stages-block stages=before name=(t 'testResult.execution.setup') baseUrl=baseUrl expanded=false}}
+        {{> stages-block stages=test name=(t 'testResult.execution.body') baseUrl=baseUrl expanded=true}}
+        {{> stages-block stages=after name=(t 'testResult.execution.teardown') baseUrl=baseUrl expanded=false}}
     </div>
 {{/if}}

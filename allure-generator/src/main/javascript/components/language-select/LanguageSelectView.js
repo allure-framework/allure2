@@ -1,4 +1,4 @@
-import './styles.css';
+import './styles.scss';
 import PopoverView from '../popover/PopoverView';
 import {className, on} from '../../decorators';
 import template from './LanguageSelectView.hbs';

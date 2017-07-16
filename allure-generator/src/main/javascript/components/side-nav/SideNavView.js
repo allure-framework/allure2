@@ -1,4 +1,4 @@
-import './styles.css';
+import './styles.scss';
 import {className, on} from '../../decorators';
 import {findWhere} from 'underscore';
 import {View} from 'backbone.marionette';

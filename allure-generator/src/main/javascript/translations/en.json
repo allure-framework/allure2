@@ -36,8 +36,8 @@
       "aggregatedName": "Aggregated report",
       "launches": "launch",
       "launches_plural": "launches",
-      "testCases": "test case",
-      "testCases_plural": "test cases"
+      "testResults": "test case",
+      "testResults_plural": "test cases"
     },
     "trend": {
       "name": "Trend"
@@ -76,7 +76,7 @@
       "name": "Status"
     }
   },
-  "testCase": {
+  "testResult": {
     "status": {
       "empty": "Empty status details",
       "trace": "Show trace"
@@ -131,6 +131,8 @@
     "expand": "Expand",
     "language": "Change language",
     "clipboard": "Copy to clipboard",
+    "clipboardSuccess": "Successfully copied",
+    "clipboardError": "Can not copy value to clipboard. Seems like this feature is not supported for your browser",
     "backto": "Back to"
   },
   "errors": {

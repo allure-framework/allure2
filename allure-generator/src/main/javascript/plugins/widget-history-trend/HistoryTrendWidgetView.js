@@ -1,4 +1,4 @@
-import './styles.css';
+import './styles.scss';
 import template from './HistoryTrendWidgetView.hbs';
 import {View} from 'backbone.marionette';
 import {className, regions} from '../../decorators/index';

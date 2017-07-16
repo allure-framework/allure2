@@ -15,11 +15,11 @@ export default class DurationChart extends BaseChartView {
     }
 
     getChartData() {
-        this.data = this.collection.toJSON().map(testcase => ({
-            value: testcase.time.duration,
-            name: testcase.name
-        })).filter(testcase => {
-            return testcase.value !== null;
+        this.data = this.collection.toJSON().map(testResult => ({
+            value: testResult.time.duration,
+            name: testResult.name
+        })).filter(testResult => {
+            return testResult.value !== null;
         });
     }
 
@@ -53,7 +53,7 @@ export default class DurationChart extends BaseChartView {
                 x0: bin.x0,
                 x1: bin.x1,
                 y: bin.length,
-                testcases: bin
+                testResults: bin
             }));
 
         const maxY = max(bins, d => d.y);
@@ -94,13 +94,13 @@ export default class DurationChart extends BaseChartView {
 
     }
 
-    getTooltipContent({testcases}) {
+    getTooltipContent({testResults}) {
         const LIST_LIMIT = 10;
-        const items = testcases.slice(0, LIST_LIMIT);
-        const overLimit = testcases.length - items.length;
-        return `<b>${testcases.length} test cases</b><br>
+        const items = testResults.slice(0, LIST_LIMIT);
+        const overLimit = testResults.length - items.length;
+        return `<b>${testResults.length} test cases</b><br>
             <ul class="popover__list">
-                ${items.map(testcase => escape`<li>${testcase.name}</li>`).join('')}
+                ${items.map(testResult => escape`<li>${testResult.name}</li>`).join('')}
             </ul>
             ${overLimit ? `...and ${overLimit} more` : ''}
         `;

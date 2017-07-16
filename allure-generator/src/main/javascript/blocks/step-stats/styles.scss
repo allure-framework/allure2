@@ -1,0 +1,18 @@
+@import "../../variables.scss";
+
+.step-stats {
+  &__info {
+    color: $text-muted-color;
+    font-size: small;
+    vertical-align: bottom;
+    &_time {
+      float: right;
+    }
+    &_separator:last-child {
+      display:none;
+    }
+    & > span {
+      white-space: nowrap;
+    }
+  }
+}

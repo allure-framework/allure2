@@ -3,8 +3,8 @@ import $ from 'jquery';
 
 import 'file-loader?name=favicon.ico!./favicon.ico';
 
-import './blocks/arrow/styles.css';
-import './blocks/executor-icon/styles.css';
+import './blocks/arrow/styles.scss';
+import './blocks/executor-icon/styles.scss';
 
 import './pluginApi';
 
@@ -25,16 +25,16 @@ import './plugins/widget-suites';
 import './plugins/widget-environment';
 import './plugins/widget-executor';
 
-import './plugins/testcase-description';
-import './plugins/testcase-tags';
-import './plugins/testcase-category';
-import './plugins/testcase-history';
-import './plugins/testcase-retry';
-import './plugins/testcase-owner';
-import './plugins/testcase-severity';
-import './plugins/testcase-duration';
-import './plugins/testcase-parameters';
-import './plugins/testcase-links';
+import './plugins/testresult-description';
+import './plugins/testresult-tags';
+import './plugins/testresult-category';
+import './plugins/testresult-history';
+import './plugins/testresult-retry';
+import './plugins/testresult-owner';
+import './plugins/testresult-severity';
+import './plugins/testresult-duration';
+import './plugins/testresult-parameters';
+import './plugins/testresult-links';
 
 window.jQuery = $;
 

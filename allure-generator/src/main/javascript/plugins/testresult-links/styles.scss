@@ -1,0 +1,5 @@
+.testresult-link {
+  &:not(:last-child):after {
+    content: ',';
+  }
+}

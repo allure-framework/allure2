@@ -1,0 +1,65 @@
+@import "../../mixins.scss";
+
+.chart {
+  margin-right: $gap-size;
+  margin-bottom: $gap-size;
+  margin-top: $gap-size;
+  position: relative;
+  flex: 1;
+  &__title {
+    margin-top: 0;
+    margin-bottom: $gap-size;
+    font-size: 18px;
+  }
+  &__caption {
+      text-anchor: middle;
+  }
+  &__body > div {
+    padding-top: 50%;
+    position: relative;
+  }
+  &__svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  &__legend {
+    position: absolute;
+    height: 50%;
+    top: 10%;
+    right: 10%;
+    display: grid;
+  }
+  &__legend-icon {
+    position: relative;
+    top: -1px;
+    border-radius: 3px;
+    display: inline-block;
+    vertical-align: middle;
+    width: 20px;
+    height: 16px;
+    margin-right: 5px;
+    @include status-bg-bright();
+  }
+
+  &__bar {
+    shape-rendering: crispEdges;
+    fill: steelblue;
+  }
+  &__arc {
+    stroke: #FFF;
+    stop-opacity: 0;
+  }
+  &__fill {
+    @include status-fill();
+  }
+  &__axis {
+    path, line {
+      shape-rendering: crispEdges;
+      stroke: #000;
+      fill: none;
+    }
+  }
+}

@@ -1,0 +1,26 @@
+@import "../../variables.scss";
+
+.loader {
+  margin: auto;
+  text-align: center;
+  &__mask {
+    position: relative;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+  }
+  &__text {
+    font-size: 14px;
+    margin-top: 1em;
+  }
+}
+
+.loader_container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -19px;
+  margin-top: -19px;
+}

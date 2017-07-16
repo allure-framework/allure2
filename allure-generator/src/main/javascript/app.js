@@ -1,12 +1,12 @@
 import 'font-awesome/css/font-awesome.css';
-import './styles.css';
-import './blocks/table/styles.css';
+import './styles.scss';
+import './blocks/table/styles.scss';
 import {Application, Behaviors} from 'backbone.marionette';
 import {history} from 'backbone';
 import router from './router';
 import * as behaviors from './behaviors';
 import ErrorLayout from './layouts/error/ErrorLayout';
-import TestcaseLayout from './layouts/testcase/TestcaseLayout';
+import TestResultLayout from './layouts/testresult/TestResultLayout';
 import i18next, { initTranslations } from './util/translation';
 
 //https://github.com/d3/d3-timer/pull/21
@@ -55,7 +55,7 @@ App.on('start', () => {
     });
 
     router.on('route:notFound', showView(notFound));
-    router.on('route:testcasePage', showView((...routeParams) => new TestcaseLayout({routeParams})));
+    router.on('route:testresultPage', showView((...routeParams) => new TestResultLayout({routeParams})));
 });
 
 export default App;

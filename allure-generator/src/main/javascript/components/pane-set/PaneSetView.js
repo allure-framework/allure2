@@ -1,4 +1,4 @@
-import './styles.css';
+import './styles.scss';
 import {View} from 'backbone.marionette';
 import $ from 'jquery';
 import {className} from '../../decorators';

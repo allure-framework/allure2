@@ -1,0 +1,10 @@
+@import "../../mixins.scss";
+
+.alert {
+  padding: $gap-size;
+  &__code {
+    margin: 0;
+    word-break: break-word;
+  }
+  @include status-bg();
+}
