@@ -36,8 +36,8 @@
       "aggregatedName": "דוח",
       "launches": "חבילת הרצה",
       "launches_plural": "חבילת והרצה",
-      "testCases": "מקרה בדיקה",
-      "testCases_plural": "מקרי בדיקה"
+      "testResults": "תוצאת בדיקה",
+      "testResults_plural": "תוצאות בדיקה"
     },
     "trend": {
       "name": "מגמת ריצות"
@@ -76,7 +76,7 @@
       "name": "סטטוס"
     }
   },
-  "testCase": {
+  "testResult": {
     "status": {
       "empty": "לא קיימים פרטים על מצב מקרה הבדיקה",
       "trace": "הצג מידע נוסף"
