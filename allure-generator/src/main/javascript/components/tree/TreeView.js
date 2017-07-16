@@ -1,18 +1,17 @@
 import './styles.scss';
 import {View} from 'backbone.marionette';
-import router from '../../router';
 import settings from '../../util/settings';
 import hotkeys from '../../util/hotkeys';
 import template from './TreeView.hbs';
-import StatusToggleView from '../status-toggle/StatusToggleView';
-import NodeSorterView from '../node-sorter/NodeSorterView';
-import getComparator from '../../data/tree/comparator';
-import {byStatuses} from '../../data/tree/filter';
-import {on, regions} from '../../decorators';
+import {on, regions, className} from '../../decorators';
 import {behavior} from '../../decorators/index';
 
+@className('tree')
 @behavior('TooltipBehavior', {position: 'bottom'})
-@regions({sorter: '.tree__sorter', filter: '.tree__filter'})
+@regions({
+    sorter: '.tree__sorter',
+    filter: '.tree__filter'
+})
 class TreeView extends View {
     template = template;
 
@@ -22,7 +21,7 @@ class TreeView extends View {
         this.tabName = tabName;
         this.statusesKey = tabName + '.visibleStatuses';
         this.sorterSettingsKey = tabName + '.treeSorting';
-        this.listenTo(this.treeState, 'change:uid', (m, uid) => this.restoreState(uid));
+        this.listenTo(this.treeState, 'change:treeNode', (_, treeNode) => this.restoreState(treeNode));
         this.listenTo(settings, 'change:' + this.statusesKey, this.render);
         this.listenTo(settings, 'change:' + this.sorterSettingsKey, this.render);
         this.listenTo(settings, 'change:showGroupInfo', this.render);
@@ -34,41 +33,53 @@ class TreeView extends View {
         this.changeSelectedCase();
     }
 
-    restoreState() {
-        this.$('[data-uid]').each((i, node) => {
-            const el = this.$(node);
-            el.toggleClass('node__title_active', el.data('uid') === this.treeState.get('uid'));
-            el.toggleClass('node__expanded', (this.treeState.has(el.data('uid'))));
-        });
-        this.$('.node__title_active').parents('.node').toggleClass('node__expanded', true);
-    }
-
-    changeSelectedCase() {
-        const {suffix} = this.options;
-        const previous = this.treeState.previous('uid');
+    restoreState(treeNode) {
+        const previous = this.treeState.previous('treeNode');
         if (previous) {
-            const el = this.$(`[data-uid='${previous}']`);
+            const el = this.findElement(previous);
             el.toggleClass('node__title_active', false);
         }
 
-        const current = this.treeState.get('uid');
-        console.log('CURRENT ' + current)
-        if (current) {
-            const el = this.$(`[data-uid='${current}']`);
-            el.toggleClass('node__title_active', true);
-            history.navigate(this.baseUrl + '/' + current + (suffix ? '/' + suffix : ''));
-            this.$('.node__title_active').parents('.node').toggleClass('node__expanded', true);
+        const el = this.findElement(treeNode);
+        el.toggleClass('node__title_active', true);
+        this.$('.node__title_active').parents('.node').toggleClass('node__expanded', true);
+    }
+
+    findElement(treeNode) {
+        if (treeNode.testResult) {
+            return this.$(`[data-uid='${treeNode.testResult}'][data-parentUid='${treeNode.testGroup}']`);
+        } else {
+            return this.$(`[data-uid='${treeNode.testGroup}']`);
         }
+    }
+
+    changeSelectedCase() {
+        // const {suffix} = this.options;
+        // const previous = this.treeState.previous('testResult');
+        // if (previous) {
+        //     const el = this.$(`[data-uid='${previous}']`);
+        //     el.toggleClass('node__title_active', false);
+        // }
+        //
+        // const testGroup = this.treeState.get('testGroup');
+        // const testResult = this.treeState.get('testResult');
+        // if (testResult) {
+        //     const group = this.$(`[data-uid='${testGroup}']`);
+        //     const el = group.find(`[data-uid='${testResult}']`);
+        //     el.toggleClass('node__title_active', true);
+        //     history.navigate(this.baseUrl + '/' + testResult + (suffix ? '/' + suffix : ''));
+        //     this.$('.node__title_active').parents('.node').toggleClass('node__expanded', true);
+        // }
     }
 
     @on('click .node__title')
     onNodeClick(e) {
         this.$(e.currentTarget).parent().toggleClass('node__expanded');
-        const uid = this.$(e.currentTarget).data('uid');
-        if (this.treeState.has(uid)) {
-            this.treeState.unset(uid);
-        } else {
-            this.treeState.set(uid, true);
+        const testResult = this.$(e.currentTarget).data('uid');
+        const testGroup = this.$(e.currentTarget).data('parentUid');
+        if (testGroup && testResult) {
+            this.treeState.unset('treeNode');
+            this.treeState.set('treeNode', {testGroup, testResult});
         }
     }
 
@@ -78,11 +89,11 @@ class TreeView extends View {
     //     settings.save('showGroupInfo', !show);
     // }
 
-    serializeData() {
-        const showGroupInfo = settings.get('showGroupInfo');
+    templateContext() {
         return {
+            cls: this.className,
             baseUrl: this.baseUrl,
-            showGroupInfo: showGroupInfo,
+            showGroupInfo: settings.get('showGroupInfo'),
             time: this.collection.time,
             statistic: this.collection.statistic,
             tabName: this.tabName,

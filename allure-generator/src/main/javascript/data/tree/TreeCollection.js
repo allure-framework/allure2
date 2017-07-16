@@ -14,27 +14,8 @@ export default class TreeCollection extends Collection {
         this.url = url;
     }
 
-    findNode(path, uid = null, children = this.allNodes) {
-        if (!path || path.length === 0) {
-            return uid;
-        }
-        const found = findWhere(children, {name: path[0]});
-        if (found) {
-            return this.findNode(path.slice(1), found.uid, found.children);
-        }
-        return null;
-    }
-
-    getLeaf(path) {
-        return (path.length > 0 && this.isLeaf(path[path.length - 1]))
-            ? path[path.length - 1]
-            : null;
-    }
-
-    isLeaf(uid) {
-        return this.allResults
-            .map(result => result.uid)
-            .includes(uid);
+    findLeaf(parentUid, uid) {
+        return findWhere(this.allResults, {parentUid, uid});
     }
 
     getFlattenTestResults(children) {

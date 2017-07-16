@@ -3,12 +3,15 @@ import TreeViewPanes from '../../components/tree-panes/TreeViewPanes';
 import TestResultModel from '../../data/testresult/TestResultModel';
 import TestResultView from '../../components/testresult/TestResultView';
 import TreeCollection from '../../data/tree/TreeCollection';
+import {Model} from 'backbone';
+import SideBySideView from '../../components/side-by-side/SideBySideView';
 
 export default class TreeLayout extends AppLayout {
 
     initialize({url}) {
         super.initialize();
         this.tree = new TreeCollection([], {url});
+        this.treeState = new Model();
     }
 
     loadData() {
@@ -16,26 +19,30 @@ export default class TreeLayout extends AppLayout {
     }
 
     getContentView() {
-        const {params, baseUrl} = this.options;
-        const path = params ? params.split('/') : [];
-        const treeSorters = [];
-        const tabName = 'Suites';
-        const tree = this.tree;
-        const leafModel = TestResultModel;
-        const leafView = TestResultView;
+        // const {testGroup, testResult, baseUrl} = this.options;
+        // const treeSorters = [];
+        // const tabName = 'Suites';
+        // const tree = this.tree;
+        // const leafModel = TestResultModel;
+        // const leafView = TestResultView;
+        // const treeState = this.treeState;
 
-        return new TreeViewPanes({
-            path,
-            tree,
-            treeSorters,
-            tabName,
-            baseUrl,
-            leafModel,
-            leafView
-        });
+        // return new TreeViewPanes({
+        //     treeState,
+        //     testGroup,
+        //     testResult,
+        //     tree,
+        //     treeSorters,
+        //     tabName,
+        //     baseUrl,
+        //     leafModel,
+        //     leafView
+        // });
+        //
+        return new SideBySideView();
     }
 
-    onRouteUpdate(testResult) {
-        this.state.set({testResult});
+    onRouteUpdate(testGroup, testResult) {
+        this.treeState.set('treeNode', {testGroup, testResult});
     }
 }

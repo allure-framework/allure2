@@ -1,6 +1,6 @@
 import './styles.scss';
 import {View} from 'backbone.marionette';
-import {on, regions, behavior} from '../../decorators';
+import {on, regions, behavior, className} from '../../decorators';
 import pluginsRegistry from '../../util/pluginsRegistry';
 import template from './TestResultView.hbs';
 import ExecutionView from '../execution/ExecutionView';
@@ -13,6 +13,7 @@ const SEVERITY_ICONS = {
     trivial: 'fa fa-long-arrow-down'
 };
 
+@className('testresult')
 @behavior('TooltipBehavior', {position: 'left'})
 @behavior('ClipboardBehavior')
 @regions({

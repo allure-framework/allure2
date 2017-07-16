@@ -13,7 +13,7 @@ public class TestResultTree extends AbstractTree<TestResult, TestResultTreeGroup
 
     public TestResultTree(final String name, final TreeClassifier<TestResult> treeClassifier,
                           final TreeGroupFactory<TestResult, TestResultTreeGroup> groupFactory,
-                          final TreeLeafFactory<TestResult, TestResultTreeLeaf> leafFactory) {
+                          final TreeLeafFactory<TestResult, TestResultTreeGroup, TestResultTreeLeaf> leafFactory) {
         super(new TestResultTreeGroup(name, name),
                 treeClassifier, groupFactory, leafFactory);
     }

@@ -64,11 +64,13 @@
     "d3-selection-multi": "^1.0.1",
     "d3-shape": "^1.2.0",
     "filesize": "^3.5.10",
+    "flexboxgrid": "^6.3.1",
     "font-awesome": "^4.7.0",
     "handlebars": "^4.0.10",
     "highlight.js": "^9.11.0",
     "i18next": "^8.3.0",
     "jquery": "^3.2.1",
+    "jquery-ui-dist": "^1.12.1",
     "normalize-css": "^2.3.1",
     "sortablejs": "^1.5.1",
     "underscore": "^1.8.3"

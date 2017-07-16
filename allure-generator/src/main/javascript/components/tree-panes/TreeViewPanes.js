@@ -16,26 +16,33 @@ class TreeViewPanes extends View {
         super.initialize(options);
 
         this.panes = new PaneSetView();
-        this.treeState = new Model();
-        this.listenTo(this.treeState, 'change:id', this.showLeaf);
+        this.treeState = this.options.treeState || new Model();
+        this.listenTo(this.treeState, 'change:treeNode', this.showLeaf);
     }
 
     showLeaf() {
-        const uid = this.treeState.get('uid');
-        const {leafModel, leafView, baseUrl} = this.options;
-        const leaf = new leafModel({uid});
-        leaf.set({uid});
-        leaf.fetch().then(() => {
-            this.panes.addPane('leaf', new leafView({
-                model: leaf,
-                baseUrl: baseUrl + '/' + uid
-            }));
+        const {tree, leafModel, leafView, baseUrl} = this.options;
+        const treeNode = this.treeState.get('treeNode');
+        const found = tree.findLeaf(treeNode.testGroup, treeNode.testResult);
+        console.log(found)
+        if (found) {
+            const leaf = new leafModel({
+                uid: treeNode.testResult
+            });
+            leaf.fetch().then(() => {
+                this.panes.addPane('leaf', new leafView({
+                    model: leaf,
+                    baseUrl: `${baseUrl}/${treeNode.testGroup}/${treeNode.testResult}`
+                }));
+                this.panes.updatePanesPositions();
+            });
+        } else {
             this.panes.updatePanesPositions();
-        });
+        }
     }
 
     onRender() {
-        const {path, tree, treeSorters, tabName, baseUrl} = this.options;
+        const {testGroup, testResult, tree, treeSorters, tabName, baseUrl} = this.options;
         this.showChildView('content', this.panes);
         this.panes.addPane('tree', new TreeView({
             collection: tree,
@@ -44,15 +51,10 @@ class TreeViewPanes extends View {
             tabName: tabName,
             baseUrl: baseUrl
         }));
-        if (path.length > 0) {
-            const uid = tree.findNode(path);
-            console.log(uid);
-            if (uid) {
-                this.treeState.set('uid', uid);
-            } else {
-                this.panes.addPane('notFound', new ErrorSplashView({code: 404, message: `Path ${path} not found`}));
-                this.panes.updatePanesPositions();
-            }
+        if (testGroup || testResult) {
+            this.treeState.set('treeNode', {testGroup, testResult});
+        } else {
+            this.panes.updatePanesPositions();
         }
     }
 }

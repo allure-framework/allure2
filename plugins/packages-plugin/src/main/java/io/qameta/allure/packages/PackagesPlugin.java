@@ -50,7 +50,7 @@ public class PackagesPlugin implements Aggregator {
                 "packages",
                 this::groupByPackages,
                 new TestResultGroupFactory(),
-                (parent, item) -> createLeaf(item)
+                this::createLeaf
         );
 
         launchResults.stream()
@@ -106,12 +106,13 @@ public class PackagesPlugin implements Aggregator {
         return String.format("%s.%s", parent.getName(), child.getName());
     }
 
-    private TestResultTreeLeaf createLeaf(final TestResult testResult) {
+    private TestResultTreeLeaf createLeaf(final TestResultTreeGroup parent, final TestResult testResult) {
         final String name = testResult
                 .findOne(LabelName.TEST_METHOD)
                 .filter(method -> !method.isEmpty())
                 .orElseGet(testResult::getName);
         return new TestResultTreeLeaf(
+                parent.getUid(),
                 name,
                 testResult.getUid(),
                 testResult.getStatus(), testResult.getTime(),

@@ -16,10 +16,10 @@ public abstract class AbstractTree<T, S extends TreeGroup, U extends TreeLeaf> i
 
     private final TreeGroupFactory<T, S> groupFactory;
 
-    private final TreeLeafFactory<T, U> leafFactory;
+    private final TreeLeafFactory<T, S, U> leafFactory;
 
     public AbstractTree(final S root, final TreeClassifier<T> treeClassifier,
-                        final TreeGroupFactory<T, S> groupFactory, final TreeLeafFactory<T, U> leafFactory) {
+                        final TreeGroupFactory<T, S> groupFactory, final TreeLeafFactory<T, S, U> leafFactory) {
         this.root = root;
         this.treeClassifier = treeClassifier;
         this.groupFactory = groupFactory;
@@ -35,9 +35,9 @@ public abstract class AbstractTree<T, S extends TreeGroup, U extends TreeLeaf> i
                 });
     }
 
-    protected Stream<TreeGroup> getEndNodes(final T item, final S node,
-                                            final List<TreeLayer> classifiers,
-                                            final int index) {
+    protected Stream<S> getEndNodes(final T item, final S node,
+                                    final List<TreeLayer> classifiers,
+                                    final int index) {
         if (index >= classifiers.size()) {
             return Stream.of(node);
         }

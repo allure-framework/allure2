@@ -1,6 +1,33 @@
 package io.qameta.allure;
 
+import io.qameta.allure.allure1.Allure1Plugin;
+import io.qameta.allure.allure2.Allure2Plugin;
+import io.qameta.allure.category.CategoriesPlugin;
+import io.qameta.allure.context.FreemarkerContext;
+import io.qameta.allure.context.JacksonContext;
+import io.qameta.allure.context.MarkdownContext;
+import io.qameta.allure.context.RandomUidContext;
+import io.qameta.allure.core.AttachmentsPlugin;
 import io.qameta.allure.core.Configuration;
+import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.core.MarkdownDescriptionsPlugin;
+import io.qameta.allure.core.ReportWebPlugin;
+import io.qameta.allure.core.TestsResultsPlugin;
+import io.qameta.allure.environment.Allure1EnvironmentPlugin;
+import io.qameta.allure.executor.ExecutorPlugin;
+import io.qameta.allure.graph.GraphPlugin;
+import io.qameta.allure.history.HistoryPlugin;
+import io.qameta.allure.history.HistoryTrendPlugin;
+import io.qameta.allure.launch.LaunchPlugin;
+import io.qameta.allure.mail.MailPlugin;
+import io.qameta.allure.owner.OwnerPlugin;
+import io.qameta.allure.retry.RetryPlugin;
+import io.qameta.allure.severity.SeverityPlugin;
+import io.qameta.allure.suites.SuitesPlugin;
+import io.qameta.allure.summary.SummaryPlugin;
+import io.qameta.allure.tags.TagsPlugin;
+import io.qameta.allure.timeline.TimelinePlugin;
+import io.qameta.allure.widget.WidgetsPlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,15 +35,52 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Artem Eroshenko eroshenkoam@qameta.io
  *         Date: 1/22/14
  */
+@SuppressWarnings("PMD.ExcessiveImports")
 public final class DummyReportGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DummyReportGenerator.class);
     private static final int MIN_ARGUMENTS_COUNT = 2;
+    private static final List<Extension> EXTENSIONS = Arrays.asList(
+            new JacksonContext(),
+            new MarkdownContext(),
+            new FreemarkerContext(),
+            new RandomUidContext(),
+            new MarkdownDescriptionsPlugin(),
+            new RetryPlugin(),
+            new TagsPlugin(),
+            new SeverityPlugin(),
+            new OwnerPlugin(),
+            new CategoriesPlugin(),
+            new HistoryPlugin(),
+            new HistoryTrendPlugin(),
+            new GraphPlugin(),
+            new TimelinePlugin(),
+            new SuitesPlugin(),
+            new TestsResultsPlugin(),
+            new AttachmentsPlugin(),
+            new MailPlugin(),
+            new WidgetsPlugin(),
+            new SummaryPlugin(),
+            new ExecutorPlugin(),
+            new LaunchPlugin(),
+            new Allure1Plugin(),
+            new Allure1EnvironmentPlugin(),
+            new Allure2Plugin(),
+            new ReportWebPlugin() {
+                @Override
+                public void aggregate(final Configuration configuration,
+                                      final List<LaunchResults> launchesResults,
+                                      final Path outputDirectory) throws IOException {
+                    writeIndexHtml(configuration, outputDirectory);
+                }
+            }
+    );
 
     private DummyReportGenerator() {
         throw new IllegalStateException("Do not instance");
@@ -35,7 +99,7 @@ public final class DummyReportGenerator {
         }
         int lastIndex = args.length - 1;
         final Path[] files = getFiles(args);
-        final Configuration configuration = new ConfigurationBuilder().useDefault().build();
+        final Configuration configuration = new ConfigurationBuilder().fromExtensions(EXTENSIONS).build();
         final ReportGenerator generator = new ReportGenerator(configuration);
         generator.generate(files[lastIndex], Arrays.copyOf(files, lastIndex));
     }

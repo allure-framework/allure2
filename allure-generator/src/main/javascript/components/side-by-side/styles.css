@@ -1,0 +1,33 @@
+@import "../../variables.css";
+
+.side-by-side {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: auto;
+
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+.panel-left {
+  flex: 0 0 auto;
+  padding: 10px;
+  width: 50%;
+  max-width: 70%;
+  min-width: 30%;
+  border-right: 1px solid $border-accent-color;
+}
+
+.panel-right {
+  flex: 1 1 auto;
+}

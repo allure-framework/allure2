@@ -40,7 +40,7 @@ public class ReportWebPlugin implements Aggregator {
         writeStatic(outputDirectory);
     }
 
-    private void writePluginsStatic(final Configuration configuration,
+    protected void writePluginsStatic(final Configuration configuration,
                                     final Path outputDirectory) throws IOException {
         final Path pluginsFolder = outputDirectory.resolve("plugins");
         for (Plugin plugin : configuration.getPlugins()) {
@@ -49,7 +49,7 @@ public class ReportWebPlugin implements Aggregator {
         }
     }
 
-    private void writeIndexHtml(final Configuration configuration,
+    protected void writeIndexHtml(final Configuration configuration,
                                 final Path outputDirectory) throws IOException {
         final FreemarkerContext context = configuration.requireContext(FreemarkerContext.class);
         final Path indexHtml = outputDirectory.resolve("index.html");
@@ -67,7 +67,7 @@ public class ReportWebPlugin implements Aggregator {
         }
     }
 
-    private void writeStatic(final Path outputDirectory) {
+    protected void writeStatic(final Path outputDirectory) {
         staticFiles.forEach(resourceName -> {
             try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourceName)) {
                 Files.copy(is, outputDirectory.resolve(resourceName), StandardCopyOption.REPLACE_EXISTING);

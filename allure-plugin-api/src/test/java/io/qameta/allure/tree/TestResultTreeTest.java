@@ -6,8 +6,6 @@ import io.qameta.allure.entity.TestResult;
 import org.junit.Test;
 
 import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static io.qameta.allure.entity.LabelName.FEATURE;
 import static io.qameta.allure.entity.LabelName.STORY;
@@ -28,10 +26,6 @@ public class TestResultTreeTest {
 
         assertThat(tree.getChildren())
                 .hasSize(0);
-
-        final ObjectMapper mapper = new ObjectMapper();
-        final String value = mapper.writeValueAsString(tree);
-        System.out.println(value);
     }
 
     @Test
@@ -89,14 +83,6 @@ public class TestResultTreeTest {
                 .flatExtracting("children")
                 .extracting("name")
                 .containsExactlyInAnyOrder("second");
-    }
-
-    private List<TreeLayer> byLetters(final String item) {
-        return item.chars()
-                .mapToObj(value -> String.valueOf((char) value))
-                .map(String::valueOf)
-                .map(DefaultTreeLayer::new)
-                .collect(Collectors.toList());
     }
 
     private Label feature(final String value) {
