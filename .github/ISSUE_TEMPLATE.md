@@ -45,3 +45,6 @@
 . e.g. detailed explanation, stacktraces, related issues, suggestions 
 . how to fix, links for us to have more context, eg. Stackoverflow, Gitter etc
 )
+
+<!-- Love allure-report? Please consider supporting our collective:
+👉  https://opencollective.com/allure-report/donate -->
