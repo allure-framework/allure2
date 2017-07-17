@@ -1,71 +1,61 @@
 import './styles.scss';
 import {View} from 'backbone.marionette';
-import {on, regions, behavior, className} from '../../decorators';
-import pluginsRegistry from '../../util/pluginsRegistry';
+import {regions, behavior, className} from '../../decorators';
 import template from './TestResultView.hbs';
-import ExecutionView from '../execution/ExecutionView';
+import {Model} from 'backbone';
+import TestResultOverviewView from '../testresult-overview/TestResultOverviewView';
+import TestResultExecutionView from '../testresult-execution/TestResultExecutionView';
+import TestResultHistoryView from '../testresult-history/TestResultHistoryView';
+import ErrorSplashView from '../error-splash/ErrorSplashView';
 
-const SEVERITY_ICONS = {
-    blocker: 'fa fa-exclamation-triangle',
-    critical: 'fa fa-exclamation',
-    normal: 'fa fa-file-o',
-    minor: 'fa fa-arrow-down',
-    trivial: 'fa fa-long-arrow-down'
-};
+const subViews = [
+    {tab: '', name: 'Overview', View: TestResultOverviewView},
+    {tab: 'execution', name: 'Execution', View: TestResultExecutionView},
+    {tab: 'history', name: 'History', View: TestResultHistoryView}
+];
 
-@className('testresult')
+@className('test-result')
 @behavior('TooltipBehavior', {position: 'left'})
 @behavior('ClipboardBehavior')
 @regions({
-    execution: '.testresult__execution'
+    content: '.test-result__content'
 })
 class TestResultView extends View {
     template = template;
 
-    initialize({state}) {
-        this.state = state;
-        this.plugins = [];
+    initialize({routeState}) {
+        this.routeState = routeState;
+        this.state = new Model();
+        this.tabName =  this.routeState.get('testResultTab') || '';
+        this.listenTo(this.routeState, 'change:testResultTab', (_, tabName) => this.onTabChange(tabName));
     }
 
     onRender() {
-        // this.showTestResultPlugins(this.$('.testresult__content_tags'), pluginsRegistry.testResultBlocks.tag);
-        // this.showTestResultPlugins(this.$('.testresult__content_before'), pluginsRegistry.testResultBlocks.before);
-        // this.showChildView('execution', new ExecutionView({
-        //     baseUrl: '#testresult/' + this.model.id,
-        //     state: this.state,
-        //     model: this.model
-        // }));
-        // this.showTestResultPlugins(this.$('.testresult__content_after'), pluginsRegistry.testResultBlocks.after);
+        const subView = subViews.find(view => view.tab === this.tabName);
+        this.showChildView('content', !subView
+            ? new ErrorSplashView({code: 404, message: `Tab "${this.tabName}" not found`})
+            : new subView.View(this.options)
+        );
     }
 
-    onDestroy() {
-        this.plugins.forEach(plugin => plugin.destroy());
+    onTabChange(tabName) {
+        this.tabName = tabName || '';
+        this.render();
     }
 
-    showTestResultPlugins(container, plugins) {
-        plugins.forEach((Plugin) => {
-            const plugin = new Plugin({model: this.model});
-            plugin.$el.appendTo(container);
-            this.plugins.push(plugin);
-            plugin.render();
-        });
-    }
-
-    serializeData() {
-        return Object.assign({
-            severityIcon: SEVERITY_ICONS[this.model.get('severity')],
-            statusName: `status.${this.model.get('status')}`
-        }, super.serializeData());
-    }
-
-    @on('click .testresult__trace-toggle')
-    onStacktraceClick() {
-        this.$('.testresult__failure').toggleClass('testresult__failure_expanded');
-    }
-
-    @on('click .fullname__body')
-    onFillNameBopyClick() {
-        this.$('.pane__subtitle').toggleClass('line-ellipsis', false);
+    templateContext() {
+        const {baseUrl} = this.options;
+        return {
+            cls: this.className,
+            statusName: `status.${this.model.get('status')}`,
+            links: subViews.map(view => {
+                return {
+                    href: `${baseUrl}/${view.tab}`,
+                    name: view.name,
+                    active: view.tab === this.tabName
+                };
+            })
+        };
     }
 }
 

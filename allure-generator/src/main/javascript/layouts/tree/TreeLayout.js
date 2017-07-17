@@ -1,17 +1,14 @@
 import AppLayout from '../application/AppLayout';
-import TreeViewPanes from '../../components/tree-panes/TreeViewPanes';
-import TestResultModel from '../../data/testresult/TestResultModel';
-import TestResultView from '../../components/testresult/TestResultView';
 import TreeCollection from '../../data/tree/TreeCollection';
 import {Model} from 'backbone';
-import SideBySideView from '../../components/side-by-side/SideBySideView';
+import TestResultTreeView from '../../components/testresult-tree/TestResultTreeView';
 
 export default class TreeLayout extends AppLayout {
 
     initialize({url}) {
         super.initialize();
         this.tree = new TreeCollection([], {url});
-        this.treeState = new Model();
+        this.routeState = new Model();
     }
 
     loadData() {
@@ -19,30 +16,17 @@ export default class TreeLayout extends AppLayout {
     }
 
     getContentView() {
-        // const {testGroup, testResult, baseUrl} = this.options;
-        // const treeSorters = [];
-        // const tabName = 'Suites';
-        // const tree = this.tree;
-        // const leafModel = TestResultModel;
-        // const leafView = TestResultView;
-        // const treeState = this.treeState;
-
-        // return new TreeViewPanes({
-        //     treeState,
-        //     testGroup,
-        //     testResult,
-        //     tree,
-        //     treeSorters,
-        //     tabName,
-        //     baseUrl,
-        //     leafModel,
-        //     leafView
-        // });
-        //
-        return new SideBySideView();
+        const {baseUrl, tabName} = this.options;
+        return new TestResultTreeView({tree: this.tree, routeState: this.routeState, tabName, baseUrl});
     }
 
-    onRouteUpdate(testGroup, testResult) {
-        this.treeState.set('treeNode', {testGroup, testResult});
+    onViewReady() {
+        const {testGroup, testResult, testResultTab} = this.options;
+        this.onRouteUpdate(testGroup, testResult, testResultTab);
+    }
+
+    onRouteUpdate(testGroup, testResult, testResultTab) {
+        this.routeState.set('treeNode', {testGroup, testResult});
+        this.routeState.set('testResultTab', testResultTab);
     }
 }

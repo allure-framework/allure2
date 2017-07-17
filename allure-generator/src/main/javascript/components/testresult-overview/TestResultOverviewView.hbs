@@ -1,0 +1,37 @@
+<div class="{{b "alert" "wide" status=status}}">
+    {{#with statusDetails}}
+        {{~> ../../blocks/status-details/status-details . status=../status}}
+    {{/with}}
+</div>
+
+{{#if duration}}
+    <div class="pane__section">
+        Duration:
+        <span class="fa fa-clock-o"></span>
+        {{duration duration 2}}
+    </div>
+{{/if}}
+
+{{#if descriptionHtml}}
+    <div class="pane__section">
+        <h3 class="pane__section-title">Description</h3>
+        <p class="description__text preformated-text">{{{descriptionHtml}}}</p>
+    </div>
+{{/if}}
+
+{{#if links}}
+    <div class="pane__section">
+        <h3 class="pane__section-title">Links</h3>
+        {{#each links}}
+            <span class="{{b ../cls 'link'}}">
+                {{#if (eq type "issue")}}
+                    <span class="fa fa-bug"></span>
+                {{/if}}
+                {{#if (eq type "tms")}}
+                    <span class="fa fa-database"></span>
+                {{/if}}
+                <a class="link" href="{{this.url}}" target="_blank">{{name}}</a>
+            </span>
+        {{/each}}
+    </div>
+{{/if}}

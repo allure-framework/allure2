@@ -5,8 +5,7 @@
   width: 100%;
   padding: 0;
   margin: 0;
-  overflow: auto;
-
+  overflow: hidden;
 }
 
 .container {
@@ -20,14 +19,14 @@
 }
 
 .panel-left {
+  overflow: auto;
   flex: 0 0 auto;
-  padding: 10px;
-  width: 50%;
-  max-width: 70%;
-  min-width: 30%;
+  width: 600px;
   border-right: 1px solid $border-accent-color;
 }
 
 .panel-right {
+  overflow: auto;
   flex: 1 1 auto;
+  word-break: break-all;
 }

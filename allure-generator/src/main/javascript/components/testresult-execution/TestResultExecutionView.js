@@ -1,18 +1,18 @@
-import './styles.scss';
-import {View} from 'backbone.marionette';
-import template from './ExecutionView.hbs';
-import {className} from '../../decorators';
-import {makeArray} from '../../util/arrays';
-import {on} from '../../decorators';
 import $ from 'jquery';
+import './styles.scss';
 import AttachmentView from '../attachment/AttachmentView';
+import template from './TestResultExecutionView.hbs';
+import {className, on} from '../../decorators';
+import {makeArray} from '../../util/arrays';
+import {Model} from 'backbone';
+import {View} from 'backbone.marionette';
 
-@className('execution')
-class ExecutionView extends View {
+@className('test-result-execution')
+class TestResultExecutionView extends View {
     template = template;
 
-    initialize({state}) {
-        this.state = state;
+    initialize() {
+        this.state = new Model();
         this.listenTo(this.state, 'change:attachment', this.highlightSelectedAttachment, this);
     }
 
@@ -76,4 +76,4 @@ class ExecutionView extends View {
     }
 }
 
-export default ExecutionView;
+export default TestResultExecutionView;

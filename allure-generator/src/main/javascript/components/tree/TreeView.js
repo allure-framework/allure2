@@ -3,8 +3,11 @@ import {View} from 'backbone.marionette';
 import settings from '../../util/settings';
 import hotkeys from '../../util/hotkeys';
 import template from './TreeView.hbs';
-import {on, regions, className} from '../../decorators';
-import {behavior} from '../../decorators/index';
+import {behavior, className, on, regions} from '../../decorators';
+import getComparator from '../../data/tree/comparator';
+import {byStatuses} from '../../data/tree/filter';
+import NodeSorterView from '../node-sorter/NodeSorterView';
+import StatusToggleView from '../status-toggle/StatusToggleView';
 
 @className('tree')
 @behavior('TooltipBehavior', {position: 'bottom'})
@@ -15,13 +18,13 @@ import {behavior} from '../../decorators/index';
 class TreeView extends View {
     template = template;
 
-    initialize({treeState, tabName, baseUrl}) {
-        this.treeState = treeState;
+    initialize({routeState, tabName, baseUrl}) {
+        this.routeState = routeState;
         this.baseUrl = baseUrl;
         this.tabName = tabName;
         this.statusesKey = tabName + '.visibleStatuses';
         this.sorterSettingsKey = tabName + '.treeSorting';
-        this.listenTo(this.treeState, 'change:treeNode', (_, treeNode) => this.restoreState(treeNode));
+        this.listenTo(this.routeState, 'change:treeNode', (_, treeNode) => this.changeSelectedNode(treeNode));
         this.listenTo(settings, 'change:' + this.statusesKey, this.render);
         this.listenTo(settings, 'change:' + this.sorterSettingsKey, this.render);
         this.listenTo(settings, 'change:showGroupInfo', this.render);
@@ -29,12 +32,26 @@ class TreeView extends View {
         this.listenTo(hotkeys, 'key:down', this.onKeyDown, this);
     }
 
-    onRender() {
-        this.changeSelectedCase();
+    onBeforeRender() {
+        const visibleStatuses = settings.getVisibleStatuses(this.statusesKey);
+        const filter = byStatuses(visibleStatuses);
+        const sortSettings = settings.getTreeSorting(this.sorterSettingsKey);
+        const sorter = getComparator(sortSettings);
+        this.collection.applyFilterAndSorting(filter, sorter);
     }
 
-    restoreState(treeNode) {
-        const previous = this.treeState.previous('treeNode');
+    onRender() {
+        this.showChildView('sorter', new NodeSorterView({
+            sorterSettingsKey: this.sorterSettingsKey
+        }));
+        this.showChildView('filter', new StatusToggleView({
+            statusesKey: this.statusesKey,
+            statistic: this.collection.statistic
+        }));
+    }
+
+    changeSelectedNode(treeNode) {
+        const previous = this.routeState.previous('treeNode');
         if (previous) {
             const el = this.findElement(previous);
             el.toggleClass('node__title_active', false);
@@ -53,41 +70,16 @@ class TreeView extends View {
         }
     }
 
-    changeSelectedCase() {
-        // const {suffix} = this.options;
-        // const previous = this.treeState.previous('testResult');
-        // if (previous) {
-        //     const el = this.$(`[data-uid='${previous}']`);
-        //     el.toggleClass('node__title_active', false);
-        // }
-        //
-        // const testGroup = this.treeState.get('testGroup');
-        // const testResult = this.treeState.get('testResult');
-        // if (testResult) {
-        //     const group = this.$(`[data-uid='${testGroup}']`);
-        //     const el = group.find(`[data-uid='${testResult}']`);
-        //     el.toggleClass('node__title_active', true);
-        //     history.navigate(this.baseUrl + '/' + testResult + (suffix ? '/' + suffix : ''));
-        //     this.$('.node__title_active').parents('.node').toggleClass('node__expanded', true);
-        // }
-    }
-
     @on('click .node__title')
     onNodeClick(e) {
         this.$(e.currentTarget).parent().toggleClass('node__expanded');
-        const testResult = this.$(e.currentTarget).data('uid');
-        const testGroup = this.$(e.currentTarget).data('parentUid');
-        if (testGroup && testResult) {
-            this.treeState.unset('treeNode');
-            this.treeState.set('treeNode', {testGroup, testResult});
-        }
     }
 
-    // @on('click .tree__info')
-    // onInfoClick() {
-    //     const show = settings.get('showGroupInfo');
-    //     settings.save('showGroupInfo', !show);
-    // }
+    @on('click .tree__info')
+    onInfoClick() {
+        const show = settings.get('showGroupInfo');
+        settings.save('showGroupInfo', !show);
+    }
 
     templateContext() {
         return {

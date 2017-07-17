@@ -1,0 +1,25 @@
+<div class="{{b cls}}">
+    {{#if history}}
+        <div class="{{b cls 'success-rate'}}">
+            {{t 'testResult.history.successRate'}} {{successRate}}
+            {{# if history.statistic.total}}
+                ({{history.statistic.passed}} of {{history.statistic.total}})
+            {{/if}}
+        </div>
+        {{#each history.items}}
+            {{#if reportUrl}}
+                <a class="{{b cls 'row'}} link" href="{{reportUrl}}" target="_blank">
+                    <span class="label label_status_{{status}}">{{status}}</span>
+                    {{timeago time.stop}}
+                </a>
+            {{else}}
+                <div class="{{b cls 'row'}}">
+                    <span class="label label_status_{{status}}">{{status}}</span>
+                    {{timeago time.stop}}
+                </div>
+            {{/if}}
+        {{/each}}
+    {{else}}
+        No information about test history is available.
+    {{/if}}
+</div>
