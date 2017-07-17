@@ -1,4 +1,4 @@
-import './styles.css';
+import './styles.scss';
 import $ from 'jquery';
 import {View} from 'backbone.marionette';
 import template from './ModalView.hbs';

@@ -3,12 +3,11 @@ import $ from 'jquery';
 import 'jquery-ui-dist/jquery-ui.min';
 import 'file-loader?name=favicon.ico!./favicon.ico';
 
-import './blocks/table/styles.scss';
-import './blocks/executor-icon/styles.css';
 import './blocks/arrow/styles.scss';
 import './blocks/executor-icon/styles.scss';
-import './blocks/tabs/styles.css';
-import './blocks/status-details/styles.css';
+import './blocks/status-details/styles.scss';
+import './blocks/table/styles.scss';
+import './blocks/tabs/styles.scss';
 
 import './pluginApi';
 

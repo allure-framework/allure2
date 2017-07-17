@@ -1,10 +1,10 @@
-@import "../../mixins.css";
+@import "../../mixins.scss";
 
 .status-details {
   padding: 10px;
   overflow: auto;
-  @mixin status-border;
-  @mixin status-bg-light;
+  @include status-border();
+  @include status-bg-light();
   &__message {
     padding-left: $gap-size;
   }
@@ -23,7 +23,7 @@
     margin-top: 5px;
     padding-top: 5px;
     text-align: center;
-    @mixin status-text;
+    @include status-text();
     &:hover {
       background-color: $hover-color;
     }

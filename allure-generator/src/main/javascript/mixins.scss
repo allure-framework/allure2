@@ -36,7 +36,7 @@
   }
 }
 
-@mixin status-bg-light {
+@mixin status-bg-light() {
   &_status_failed {
     background: $background-light-failed;
   }
@@ -54,7 +54,7 @@
   }
 }
 
-@mixin status-bg-bright {
+@mixin status-bg-bright() {
   &_status_failed {
     background: $color-failed;
   }
