@@ -1,4 +1,5 @@
 import './styles.scss';
+import split from 'split.js';
 import {View} from 'backbone.marionette';
 import {className, regions} from '../../decorators';
 import template from './SideBySideView.hbs';
@@ -12,10 +13,7 @@ class SideBySideView extends View {
     template = template;
 
     onAttach() {
-        this.$('.panel-left').resizable({
-            containment: '.container',
-            handles: 'e'
-        });
+        split(['.panel-left', '.panel-right']);
     }
 
     onRender() {

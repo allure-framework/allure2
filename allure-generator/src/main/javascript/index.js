@@ -1,6 +1,5 @@
 import App from './app';
 import $ from 'jquery';
-import 'jquery-ui-dist/jquery-ui.min';
 import 'file-loader?name=favicon.ico!./favicon.ico';
 
 import './blocks/arrow/styles.scss';

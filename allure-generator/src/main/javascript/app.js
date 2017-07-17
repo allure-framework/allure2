@@ -1,4 +1,3 @@
-import 'jquery-ui-dist/jquery-ui.min.css';
 import 'font-awesome/css/font-awesome.css';
 import './styles.scss';
 import {Application, Behaviors} from 'backbone.marionette';
