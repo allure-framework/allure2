@@ -9,6 +9,7 @@
   &__content {
     position: relative;
     flex: 1;
+    overflow: hidden;
   }
   &__header {
     background: $header-bg;
