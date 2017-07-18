@@ -7,6 +7,7 @@ import * as behaviors from './behaviors';
 import ErrorLayout from './layouts/error/ErrorLayout';
 import TestResultLayout from './layouts/testresult/TestResultLayout';
 import i18next, { initTranslations } from './util/translation';
+import translate from './helpers/t';
 
 //https://github.com/d3/d3-timer/pull/21
 if(typeof window.requestAnimationFrame === 'function') {
@@ -26,7 +27,7 @@ function noTabChange() {
 export function showView(factory) {
     return (...args) => {
         const current = App.getView();
-        if (current && noTabChange()) {
+        if (current && noTabChange() && current.shouldKeepState(...args)) {
             current.onRouteUpdate(...args);
         } else {
             App.showView(factory(...args));
@@ -35,7 +36,7 @@ export function showView(factory) {
 }
 
 export function notFound() {
-    return new ErrorLayout({code: 404, message: 'Not Found'});
+    return new ErrorLayout({code: 404, message: translate('errors.notFound')});
 }
 
 const App = new Application({
@@ -52,7 +53,7 @@ App.on('start', () => {
     });
 
     router.on('route:notFound', showView(notFound));
-    router.on('route:testresultPage', showView((...routeParams) => new TestResultLayout({routeParams})));
+    router.on('route:testresultPage', showView((uid, tabName) => new TestResultLayout({uid, tabName})));
 });
 
 export default App;

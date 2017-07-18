@@ -8,7 +8,7 @@ class AppRouter extends Router {
     constructor() {
         super({
             routes: {
-                'testresult/:uid(/:attachment)': 'testresultPage',
+                'testresult/:uid(/)(:tabName)': 'testresultPage',
                 '*default': 'notFound'
             }
         });

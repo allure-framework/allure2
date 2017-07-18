@@ -135,7 +135,8 @@
     "backto": "Back to"
   },
   "errors": {
-    "missedAttachment": "Attachment not found"
+    "missedAttachment": "Attachment not found",
+    "notFound": "Not found"
   },
   "component": {
     "tree": {

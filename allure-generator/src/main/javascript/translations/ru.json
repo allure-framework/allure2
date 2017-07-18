@@ -141,7 +141,8 @@
     "backto": "Вернуться на"
   },
   "errors": {
-    "missedAttachment": "Вложение не найдено"
+    "missedAttachment": "Вложение не найдено",
+    "notFound": "Не найдено"
   },
   "component": {
     "tree": {

@@ -133,7 +133,8 @@
     "backto": "返回"
   },
   "errors": {
-    "missedAttachment": "没有找到附件"
+    "missedAttachment": "没有找到附件",
+    "notFound": "没有找到"
   },
   "component": {
     "tree": {

@@ -133,7 +133,8 @@
     "backto": "Zurück zu"
   },
   "errors": {
-    "missedAttachment": "Anhang nicht gefunden"
+    "missedAttachment": "Anhang nicht gefunden",
+    "notFound": "Nicht gefunden"
   },
   "component": {
     "tree": {

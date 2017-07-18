@@ -1,27 +1,36 @@
-import PaneLayout from '../pane/PaneLayout';
-import BackPanelView from '../../components/back-panel/BackPanelView';
-import router from '../../router';
+import AppLayout from '../application/AppLayout';
+import TestResultView from '../../components/testresult/TestResultView';
+import {Model} from 'backbone';
+import TestResultModel from '../../data/testresult/TestResultModel';
 
-export default class TestResultLayout extends PaneLayout {
+export default class TestResultLayout extends AppLayout {
+
+    initialize({uid}) {
+        super.initialize();
+        this.uid = uid;
+        this.model = new TestResultModel({uid});
+        this.routeState = new Model();
+    }
+
     loadData() {
-        return Promise.resolve();
+        return this.model.fetch();
     }
 
-    onStateChange() {
-        const changed = Object.assign({}, this.state.changed);
-        const paneView = this.getChildView('content');
-        if(router.previousUrl && !(router.previousUrl.indexOf('testResult') === 0) && !paneView.getRegion('back')) {
-            paneView.addPane('back', new BackPanelView({
-                url: router.previousUrl
-            }));
-        }
-        paneView.expanded = this.state.get('expanded') || !this.state.get('attachment');
-        this.testResult.updatePanes('testResult', changed);
-        paneView.updatePanesPositions();
+    getContentView() {
+        const baseUrl = `#testresult/${this.uid}`;
+        return new TestResultView({baseUrl, model: this.model, routeState: this.routeState});
     }
 
-    onRouteUpdate(testResult, attachment) {
-        const expanded = router.getUrlParams().expanded === 'true';
-        this.state.set({testResult, attachment, expanded});
+    onViewReady() {
+        const {uid, tabName} = this.options;
+        this.onRouteUpdate(uid, tabName);
+    }
+
+    onRouteUpdate(uid, tabName) {
+        this.routeState.set('testResultTab', tabName);
+    }
+
+    shouldKeepState(uid) {
+        return this.uid === uid;
     }
 }
