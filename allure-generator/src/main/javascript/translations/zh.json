@@ -54,11 +54,10 @@
     "environment": {
       "name": "环境",
       "empty": "没有环境变量",
-      "showAll": "显示所有环境变量"
+      "showAll": "显示所有"
     },
     "suites": {
-      "name": "测试套",
-      "showAll": "显示所有测试套"
+      "name": "测试套"
     }
   },
   "chart": {
@@ -162,6 +161,7 @@
       }
     },
     "widgetStatus": {
+      "showAll": "显示所有",
       "total": "总共{{count}}项",
       "total_plural": "总共{{count}}项"
     },

@@ -54,11 +54,10 @@
     "environment": {
       "name": "Environment",
       "empty": "There are no environment variables",
-      "showAll": "Show all environment variables"
+      "showAll": "Show all"
     },
     "suites": {
-      "name": "Suites",
-      "showAll": "Show all suites"
+      "name": "Suites"
     }
   },
   "chart": {
@@ -164,6 +163,7 @@
       }
     },
     "widgetStatus": {
+      "showAll": "Show all",
       "total": "{{count}} item total",
       "total_plural": "{{count}} items total"
     },

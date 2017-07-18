@@ -59,6 +59,7 @@ class TreeView extends View {
 
         const el = this.findElement(treeNode);
         el.toggleClass('node__title_active', true);
+        el.toggleClass('node__expanded', true);
         this.$('.node__title_active').parents('.node').toggleClass('node__expanded', true);
     }
 

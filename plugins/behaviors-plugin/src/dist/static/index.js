@@ -75,6 +75,5 @@ allure.api.addWidget('widgets', 'behaviors', allure.components.WidgetStatusView.
     rowTag: 'a',
     title: 'widget.behaviors.name',
     baseUrl: 'behaviors',
-    showLinks: true,
-    showAllText: 'widget.behaviors.showAll'
+    showLinks: true
 }));

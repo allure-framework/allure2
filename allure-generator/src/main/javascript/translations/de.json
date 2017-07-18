@@ -54,11 +54,10 @@
     "environment": {
       "name": "Umgebung",
       "empty": "Keine Umgebungsvariablen verfügbar",
-      "showAll": "Zeige alle Umgebungsvariablen"
+      "showAll": "Zeige alle"
     },
     "suites": {
-      "name": "Suiten",
-      "showAll": "Zeige alle Suiten"
+      "name": "Suiten"
     }
   },
   "chart": {
@@ -162,6 +161,7 @@
       }
     },
     "widgetStatus": {
+      "showAll": "Zeige alle",
       "total": "{{count}} Eintrag insgesamt",
       "total_plural": "{{count}} Einträge insgesamt"
     },

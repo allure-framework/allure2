@@ -11,13 +11,11 @@
             </div>
         </{{../rowTag}}>
     {{/each}}
-    {{#if showAllText}}
-        {{#if (gt total items.length)}}
-            <a class="table__row" href="#{{baseUrl}}">
-                <div class="table__col table__col_center">
-                    {{t showAllText}}
-                </div>
-            </a>
-        {{/if}}
+    {{#if showAll}}
+        <a class="table__row" href="#{{baseUrl}}">
+            <div class="table__col table__col_center">
+                {{t 'component.widgetStatus.showAll'}}
+            </div>
+        </a>
     {{/if}}
 </div>
