@@ -140,7 +140,7 @@
   },
   "component": {
     "tree": {
-      "filter": "Filter test cases by status",
+      "filter": "Filter by status",
       "groups": "Toggle groups info",
       "empty": "There are no items",
       "time": {
