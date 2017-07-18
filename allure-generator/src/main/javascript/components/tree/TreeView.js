@@ -9,6 +9,7 @@ import {byStatuses} from '../../data/tree/filter';
 import NodeSorterView from '../node-sorter/NodeSorterView';
 import StatusToggleView from '../status-toggle/StatusToggleView';
 import router from '../../router';
+import {Model} from 'backbone';
 
 @className('tree')
 @behavior('TooltipBehavior', {position: 'bottom'})
@@ -20,17 +21,34 @@ class TreeView extends View {
     template = template;
 
     initialize({routeState, tabName, baseUrl}) {
+        this.state = new Model();
         this.routeState = routeState;
         this.baseUrl = baseUrl;
         this.tabName = tabName;
         this.statusesKey = tabName + '.visibleStatuses';
         this.sorterSettingsKey = tabName + '.treeSorting';
-        this.listenTo(this.routeState, 'change:treeNode', (_, treeNode) => this.changeSelectedNode(treeNode));
+        this.setState();
+        this.listenTo(this.routeState, 'change:treeNode', this.selectNode);
+        this.listenTo(this.routeState, 'change:testResultTab', this.render);
         this.listenTo(settings, 'change:' + this.statusesKey, this.render);
         this.listenTo(settings, 'change:' + this.sorterSettingsKey, this.render);
         this.listenTo(settings, 'change:showGroupInfo', this.render);
         this.listenTo(hotkeys, 'key:up', this.onKeyUp, this);
         this.listenTo(hotkeys, 'key:down', this.onKeyDown, this);
+        this.listenTo(hotkeys, 'key:esc', this.onKeyBack, this);
+        this.listenTo(hotkeys, 'key:left', this.onKeyBack, this);
+    }
+
+    setState() {
+        const treeNode = this.routeState.get('treeNode');
+        if (treeNode && treeNode.testResult) {
+            const uid = treeNode.testResult;
+            this.state.set(uid, true);
+        }
+        if (treeNode && treeNode.testGroup) {
+            const uid = treeNode.testGroup;
+            this.state.set(uid, true);
+        }
     }
 
     onBeforeRender() {
@@ -42,6 +60,7 @@ class TreeView extends View {
     }
 
     onRender() {
+        this.selectNode();
         this.showChildView('sorter', new NodeSorterView({
             sorterSettingsKey: this.sorterSettingsKey
         }));
@@ -51,17 +70,39 @@ class TreeView extends View {
         }));
     }
 
-    changeSelectedNode(treeNode) {
+    selectNode() {
         const previous = this.routeState.previous('treeNode');
-        if (previous) {
-            const el = this.findElement(previous);
-            el.toggleClass('node__title_active', false);
-        }
+        this.toggleNode(previous, false);
+        const current = this.routeState.get('treeNode');
+        this.toggleNode(current, true);
+        this.restoreState();
+    }
 
-        const el = this.findElement(treeNode);
-        el.toggleClass('node__title_active', true);
-        el.toggleClass('node__expanded', true);
+    toggleNode(node, active = true) {
+        if (node) {
+            const el = this.findElement(node);
+            el.toggleClass('node__title_active', active);
+            this.changeState(node.testResult);
+            this.changeState(node.testGroup);
+        }
+    }
+
+    changeState(uid, active = true) {
+        if (active) {
+            this.state.set(uid, true);
+        } else  {
+            this.state.unset(uid);
+        }
+    }
+
+    restoreState() {
+        this.$('[data-uid]').each((i, node) => {
+            const el = this.$(node);
+            const uid = el.data('uid');
+            el.toggleClass('node__expanded', this.state.has(uid));
+        });
         this.$('.node__title_active').parents('.node').toggleClass('node__expanded', true);
+        this.$('.node__expanded').parents('.node').toggleClass('node__expanded', true);
     }
 
     findElement(treeNode) {
@@ -74,7 +115,9 @@ class TreeView extends View {
 
     @on('click .node__title')
     onNodeClick(e) {
-        this.$(e.currentTarget).parent().toggleClass('node__expanded');
+        const uid = this.$(e.currentTarget).data('uid');
+        this.changeState(uid, !this.state.has(uid));
+        this.restoreState();
     }
 
     @on('click .tree__info')
@@ -88,6 +131,8 @@ class TreeView extends View {
         const current = this.routeState.get('treeNode');
         if(current && current.testResult) {
             this.selectTestResult(this.collection.getPreviousTestResult(current.testResult));
+        } else {
+            this.selectTestResult(this.collection.getLastTestResult());
         }
     }
 
@@ -96,6 +141,21 @@ class TreeView extends View {
         const current = this.routeState.get('treeNode');
         if(current && current.testResult) {
             this.selectTestResult(this.collection.getNextTestResult(current.testResult));
+        } else {
+            this.selectTestResult(this.collection.getFirstTestResult());
+        }
+    }
+
+    onKeyBack(event) {
+        event.preventDefault();
+        const current = this.routeState.get('treeNode');
+        if (!current) {
+            return;
+        }
+        if (current.testGroup && current.testResult) {
+            router.toUrl(`${this.baseUrl}/${current.testGroup}`);
+        } else if (current.testGroup) {
+            router.toUrl(`${this.baseUrl}`);
         }
     }
 
@@ -116,6 +176,7 @@ class TreeView extends View {
             uid: this.collection.uid,
             tabName: this.tabName,
             items: this.collection.toJSON(),
+            testResultTab: this.routeState.get('testResultTab') || '',
             shownCases: 0,
             totalCases: 0,
             filtered: false

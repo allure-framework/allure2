@@ -66,6 +66,18 @@ export default class TreeCollection extends Collection {
             .sort(sorter);
     }
 
+    getFirstTestResult() {
+        if (this.testResults.length > 0 ) {
+            return this.testResults[0];
+        }
+    }
+
+    getLastTestResult() {
+        if (this.testResults.length > 0 ) {
+            return this.testResults[this.testResults.length - 1];
+        }
+    }
+
     getNextTestResult(testResultUid) {
         const index = this.testResults.findIndex(testResult => testResult.uid === testResultUid);
         if (index < this.testResults.length - 1) {
