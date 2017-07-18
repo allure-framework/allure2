@@ -8,6 +8,7 @@ import getComparator from '../../data/tree/comparator';
 import {byStatuses} from '../../data/tree/filter';
 import NodeSorterView from '../node-sorter/NodeSorterView';
 import StatusToggleView from '../status-toggle/StatusToggleView';
+import router from '../../router';
 
 @className('tree')
 @behavior('TooltipBehavior', {position: 'bottom'})
@@ -80,6 +81,29 @@ class TreeView extends View {
     onInfoClick() {
         const show = settings.get('showGroupInfo');
         settings.save('showGroupInfo', !show);
+    }
+
+    onKeyUp(event) {
+        event.preventDefault();
+        const current = this.routeState.get('treeNode');
+        if(current && current.testResult) {
+            this.selectTestResult(this.collection.getPreviousTestResult(current.testResult));
+        }
+    }
+
+    onKeyDown(event) {
+        event.preventDefault();
+        const current = this.routeState.get('treeNode');
+        if(current && current.testResult) {
+            this.selectTestResult(this.collection.getNextTestResult(current.testResult));
+        }
+    }
+
+    selectTestResult(testResult) {
+        if(testResult) {
+            const tab = this.routeState.get('testResultTab') || '';
+            router.toUrl(`${this.baseUrl}/${testResult.parentUid}/${testResult.uid}/${tab}`);
+        }
     }
 
     templateContext() {
