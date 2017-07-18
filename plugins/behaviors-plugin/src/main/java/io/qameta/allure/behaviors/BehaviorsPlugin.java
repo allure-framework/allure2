@@ -84,6 +84,7 @@ public class BehaviorsPlugin implements Aggregator, Widget {
 
     protected TreeWidgetItem toWidgetItem(final TestResultTreeGroup group) {
         return new TreeWidgetItem()
+                .withUid(group.getUid())
                 .withName(group.getName())
                 .withStatistic(calculateStatisticByChildren(group));
     }

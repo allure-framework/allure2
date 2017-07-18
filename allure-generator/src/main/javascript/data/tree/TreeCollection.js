@@ -27,8 +27,9 @@ export default class TreeCollection extends Collection {
         }));
     }
 
-    parse({children}) {
+    parse({uid, children}) {
         const items = children || [];
+        this.uid = uid;
         this.allResults = this.getFlattenTestResults(items);
         this.allNodes = items;
         this.time = this.calculateTime(this.allResults);

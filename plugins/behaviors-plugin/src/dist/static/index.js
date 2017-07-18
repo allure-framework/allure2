@@ -58,11 +58,12 @@ allure.api.addTranslation('de', {
 
 allure.api.addTab('behaviors', {
     title: 'tab.behaviors.name', icon: 'fa fa-list',
-    route: 'behaviors(/:testcaseId)',
-    onEnter: (function () {
-        var routeParams = Array.prototype.slice.call(arguments);
+    route: 'behaviors(/)(:testGroup)(/)(:testResult)(/)(:testResultTab)(/)',
+    onEnter: (function (testGroup, testResult, testResultTab) {
         return new allure.components.TreeLayout({
-            routeParams: routeParams,
+            testGroup,
+            testResult,
+            testResultTab,
             tabName: 'tab.behaviors.name',
             baseUrl: 'behaviors',
             url: 'data/behaviors.json'

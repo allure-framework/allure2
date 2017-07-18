@@ -8,6 +8,7 @@ import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -24,9 +25,9 @@ public final class TreeUtils {
 
     public static String createGroupUid(final String parentUid, final String groupName) {
         final MessageDigest md = getMessageDigest();
-        md.update(parentUid.getBytes(UTF_8));
-        md.update(groupName.getBytes(UTF_8));
-        return DatatypeConverter.printHexBinary(md.digest());
+        md.update(Objects.toString(parentUid).getBytes(UTF_8));
+        md.update(Objects.toString(groupName).getBytes(UTF_8));
+        return DatatypeConverter.printHexBinary(md.digest()).toLowerCase();
     }
 
     public static List<TreeLayer> groupByLabels(final TestResult testResult,

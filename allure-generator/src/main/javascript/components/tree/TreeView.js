@@ -88,6 +88,7 @@ class TreeView extends View {
             showGroupInfo: settings.get('showGroupInfo'),
             time: this.collection.time,
             statistic: this.collection.statistic,
+            uid: this.collection.uid,
             tabName: this.tabName,
             items: this.collection.toJSON(),
             shownCases: 0,

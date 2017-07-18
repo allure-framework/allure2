@@ -10,7 +10,7 @@ import java.util.stream.Stream;
  */
 public abstract class AbstractTree<T, S extends TreeGroup, U extends TreeLeaf> implements Tree<T> {
 
-    private final S root;
+    protected final S root;
 
     private final TreeClassifier<T> treeClassifier;
 
