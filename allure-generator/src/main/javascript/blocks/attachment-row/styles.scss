@@ -6,9 +6,9 @@
   font-size: smaller;
   display: flex;
   position: relative;
-
   position: sticky;
-  top: 0px;
+  top: 0;
+
   &:hover {
     background: $hover-color;
   }

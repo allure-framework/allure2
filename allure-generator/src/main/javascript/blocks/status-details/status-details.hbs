@@ -1,13 +1,16 @@
-<div class="{{b "status-details" status=status}}">
-    {{#if message}}
-        <pre class="status-details__message"><code>{{message}}</code></pre>
-    {{else}}
-        <pre class="status-details__message">Empty status details</pre>
-    {{/if}}
-    {{#if trace}}
-        <div class="{{b 'status-details' 'trace-toggle' status=status}} clickable" data-tooltip="Display trace">
-            <i class="fa fa-ellipsis-h fa-lg" aria-hidden="true"></i>
+<div>
+    <div class="{{b "status-details" status=status}}">
+        <div class="status-details__content">
+            {{#if trace}}
+                <div class="{{b 'status-details' 'trace-toggle' status=status}} clickable" data-tooltip="Display trace">
+                    <div class="status-details__message alert__code"><code>{{message}}</code></div>
+                </div>
+            {{else}}
+                <pre class="status-details__message"><code>{{message}}</code></pre>
+            {{/if}}
+
+            <div class="{{b 'status-details' 'trace'}} alert__code"><code>{{trace}}</code>
+            </div>
         </div>
-        <pre class="{{b 'status-details' 'trace'}} alert__code"><code>{{trace}}</code></pre>
-    {{/if}}
+    </div>
 </div>
