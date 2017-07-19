@@ -1,6 +1,7 @@
 import './styles.scss';
 import {View} from 'backbone.marionette';
 import template from './HistoryView.hbs';
+import {className} from '../../decorators';
 
 function formatNumber(number) {
     return (Math.floor(number * 100) / 100).toString();
@@ -14,6 +15,7 @@ function getSuccessRate(history) {
     return formatNumber((passed || 0) / total * 100) + '%';
 }
 
+@className('test-result-history')
 class HistoryView extends View {
     template = template;
 
@@ -21,6 +23,7 @@ class HistoryView extends View {
         const extra = this.model.get('extra');
         const history = extra ? extra.history : null;
         return {
+            cls: this.className,
             history: history,
             successRate: getSuccessRate(history)
         };

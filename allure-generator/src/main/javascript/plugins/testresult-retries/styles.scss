@@ -1,10 +1,7 @@
 @import "../../variables.scss";
 
-.retry {
-  &-title {
-    margin: 15px 15px 0.3em;
-  }
-  &-row {
+.test-result-retries {
+  &__row {
     padding: 7px 15px 7px $gap-size;
     &:hover {
       background-color: $hover-color;

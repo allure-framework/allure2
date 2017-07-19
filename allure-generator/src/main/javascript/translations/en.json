@@ -80,6 +80,9 @@
       "empty": "Empty status details",
       "trace": "Show trace"
     },
+    "overview": {
+      "name": "Overview"
+    },
     "categories": {
       "name": "Categories"
     },
@@ -97,7 +100,8 @@
       "name": "Owner"
     },
     "retries": {
-      "name": "Retries"
+      "name": "Retries",
+      "empty": "There is no information available about test retries"
     },
     "parameters": {
       "name": "Parameters"

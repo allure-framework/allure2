@@ -80,6 +80,9 @@
       "empty": "状态详情为空",
       "trace": "展示堆栈"
     },
+    "overview": {
+      "name": "总览"
+    },
     "categories": {
       "name": "类别"
     },

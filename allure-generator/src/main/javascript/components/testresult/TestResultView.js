@@ -5,13 +5,12 @@ import template from './TestResultView.hbs';
 import {Model} from 'backbone';
 import TestResultOverviewView from '../testresult-overview/TestResultOverviewView';
 import TestResultExecutionView from '../testresult-execution/TestResultExecutionView';
-import TestResultHistoryView from '../testresult-history/TestResultHistoryView';
 import ErrorSplashView from '../error-splash/ErrorSplashView';
+import pluginsRegistry from '../../util/pluginsRegistry';
 
 const subViews = [
-    {tab: '', name: 'Overview', View: TestResultOverviewView},
-    {tab: 'execution', name: 'Execution', View: TestResultExecutionView},
-    {tab: 'history', name: 'History', View: TestResultHistoryView}
+    {id: '', name: 'testResult.overview.name', View: TestResultOverviewView},
+    {id: 'execution', name: 'testResult.execution.name', View: TestResultExecutionView}
 ];
 
 @className('test-result')
@@ -25,13 +24,14 @@ class TestResultView extends View {
 
     initialize({routeState}) {
         this.routeState = routeState;
+        this.tabs = subViews.concat(pluginsRegistry.testResultTabs);
         this.state = new Model();
         this.tabName =  this.routeState.get('testResultTab') || '';
         this.listenTo(this.routeState, 'change:testResultTab', (_, tabName) => this.onTabChange(tabName));
     }
 
     onRender() {
-        const subView = subViews.find(view => view.tab === this.tabName);
+        const subView = this.tabs.find(view => view.id === this.tabName);
         this.showChildView('content', !subView
             ? new ErrorSplashView({code: 404, message: `Tab "${this.tabName}" not found`})
             : new subView.View(this.options)
@@ -48,11 +48,11 @@ class TestResultView extends View {
         return {
             cls: this.className,
             statusName: `status.${this.model.get('status')}`,
-            links: subViews.map(view => {
+            links: this.tabs.map(view => {
                 return {
-                    href: `${baseUrl}/${view.tab}`,
+                    href: `${baseUrl}/${view.id}`,
                     name: view.name,
-                    active: view.tab === this.tabName
+                    active: view.id === this.tabName
                 };
             })
         };

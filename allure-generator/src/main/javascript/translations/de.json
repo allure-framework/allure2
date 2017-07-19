@@ -80,6 +80,9 @@
       "empty": "Keine Status Details",
       "trace": "Zeige Stracktrace"
     },
+    "overview": {
+      "name": "Übersicht"
+    },
     "categories": {
       "name": "Kategorien"
     },

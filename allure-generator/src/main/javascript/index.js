@@ -32,7 +32,7 @@ import './plugins/testresult-description';
 import './plugins/testresult-tags';
 import './plugins/testresult-category';
 import './plugins/testresult-history';
-import './plugins/testresult-retry';
+import './plugins/testresult-retries';
 import './plugins/testresult-owner';
 import './plugins/testresult-severity';
 import './plugins/testresult-duration';
