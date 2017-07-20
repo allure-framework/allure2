@@ -58,6 +58,9 @@
     },
     "suites": {
       "name": "Suites"
+    },
+    "categories": {
+      "name": "Categories"
     }
   },
   "chart": {

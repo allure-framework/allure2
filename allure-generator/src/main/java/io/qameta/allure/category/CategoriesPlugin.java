@@ -3,6 +3,7 @@ package io.qameta.allure.category;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.qameta.allure.Aggregator;
 import io.qameta.allure.Reader;
+import io.qameta.allure.Widget;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
@@ -11,8 +12,11 @@ import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.tree.DefaultTreeLayer;
 import io.qameta.allure.tree.TestResultTree;
+import io.qameta.allure.tree.TestResultTreeGroup;
 import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeLayer;
+import io.qameta.allure.tree.TreeWidgetData;
+import io.qameta.allure.tree.TreeWidgetItem;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,11 +27,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static io.qameta.allure.entity.ExtraStatisticMethods.comparator;
+import static io.qameta.allure.tree.TreeUtils.calculateStatisticByLeafs;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -36,7 +43,7 @@ import static java.util.Objects.nonNull;
  *
  * @since 2.0
  */
-public class CategoriesPlugin implements Aggregator, Reader {
+public class CategoriesPlugin implements Aggregator, Reader, Widget {
 
     public static final String CATEGORIES_BLOCK_NAME = "categories";
 
@@ -148,5 +155,30 @@ public class CategoriesPlugin implements Aggregator, Reader {
 
     private static boolean matches(final String message, final String pattern) {
         return Pattern.compile(pattern, Pattern.DOTALL).matcher(message).matches();
+    }
+
+    @Override
+    public Object getData(final Configuration configuration, final List<LaunchResults> launches) {
+        final Tree<TestResult> data = getData(launches);
+        final List<TreeWidgetItem> items = data.getChildren().stream()
+                .filter(TestResultTreeGroup.class::isInstance)
+                .map(TestResultTreeGroup.class::cast)
+                .map(this::toWidgetItem)
+                .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
+                .limit(10)
+                .collect(Collectors.toList());
+        return new TreeWidgetData().withItems(items).withTotal(data.getChildren().size());
+    }
+
+    @Override
+    public String getName() {
+        return "categories";
+    }
+
+    protected TreeWidgetItem toWidgetItem(final TestResultTreeGroup group) {
+        return new TreeWidgetItem()
+                .withUid(group.getUid())
+                .withName(group.getName())
+                .withStatistic(calculateStatisticByLeafs(group));
     }
 }
