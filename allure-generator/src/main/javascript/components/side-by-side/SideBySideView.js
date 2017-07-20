@@ -6,14 +6,14 @@ import template from './SideBySideView.hbs';
 
 @className('side-by-side')
 @regions({
-    left: '.panel-left__content',
-    right: '.panel-right__content'
+    left: '.side-by-side__left',
+    right: '.side-by-side__right'
 })
 class SideBySideView extends View {
     template = template;
 
     onAttach() {
-        split(['.panel-left', '.panel-right']);
+        split(['.side-by-side__left', '.side-by-side__right']);
     }
 
     onRender() {

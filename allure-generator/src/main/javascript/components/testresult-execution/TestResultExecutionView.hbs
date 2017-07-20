@@ -5,5 +5,7 @@
         {{> stages-block stages=after name=(t 'testResult.execution.teardown') baseUrl=baseUrl expanded=false}}
     </div>
 {{else}}
-    No information about test execution is available.
+    <div class="{{b 'pane' 'section'}}">
+        No information about test execution is available.
+    </div>
 {{/if}}

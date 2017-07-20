@@ -9,16 +9,16 @@
   display: flex;
   flex-direction: row;
   position: absolute;
-}
 
-.panel-left {
-  overflow: auto;
-  flex: 0 0 auto;
-}
+  &__left {
+    overflow: auto;
+    flex: 0 0 auto;
+  }
 
-.panel-right {
-  overflow: auto;
-  flex: 1 1 auto;
+  &__right {
+    overflow: auto;
+    flex: 1 1 auto;
+  }
 }
 
 .gutter {
