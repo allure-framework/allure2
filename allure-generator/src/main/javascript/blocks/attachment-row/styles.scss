@@ -29,10 +29,10 @@
      flex: 1;
   }
   &__preview {
-    margin: 5px $gap-size 5px 0;
+    margin: 2px 5px 2px 0;
   }
   &__content{
     border-left: 3px solid $hover-color;
-    padding-left: $gap-size;
+    padding-left: 5px;
   }
 }

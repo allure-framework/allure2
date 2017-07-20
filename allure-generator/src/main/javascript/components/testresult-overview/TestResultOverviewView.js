@@ -44,7 +44,7 @@ class TestResultOverviewView extends View {
                 ...statusDetails,
                 message: statusDetails.message || 'Empty status details'
             }
-        }
+        };
     }
 }
 
