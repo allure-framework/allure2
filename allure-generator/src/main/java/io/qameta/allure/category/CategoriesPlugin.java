@@ -43,6 +43,7 @@ import static java.util.Objects.nonNull;
  *
  * @since 2.0
  */
+@SuppressWarnings("PMD.ExcessiveImports")
 public class CategoriesPlugin implements Aggregator, Reader, Widget {
 
     public static final String CATEGORIES_BLOCK_NAME = "categories";
@@ -89,6 +90,39 @@ public class CategoriesPlugin implements Aggregator, Reader, Widget {
         }
     }
 
+    @Override
+    public String getName() {
+        return "categories";
+    }
+
+    @Override
+    public Object getData(final Configuration configuration, final List<LaunchResults> launches) {
+        final Tree<TestResult> data = getData(launches);
+        final List<TreeWidgetItem> items = data.getChildren().stream()
+                .filter(TestResultTreeGroup.class::isInstance)
+                .map(TestResultTreeGroup.class::cast)
+                .map(this::toWidgetItem)
+                .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
+                .limit(10)
+                .collect(Collectors.toList());
+        return new TreeWidgetData().withItems(items).withTotal(data.getChildren().size());
+    }
+
+    @SuppressWarnings("PMD.DefaultPackage")
+    /* default */ Tree<TestResult> getData(final List<LaunchResults> launchResults) {
+
+
+        // @formatter:off
+        final Tree<TestResult> categories = new TestResultTree("categories", this::groupByCategories);
+        // @formatter:on
+
+        launchResults.stream()
+                .map(LaunchResults::getResults)
+                .flatMap(Collection::stream)
+                .forEach(categories::add);
+        return categories;
+    }
+
     @SuppressWarnings("PMD.DefaultPackage")
     /* default */ void addCategoriesForResults(final List<LaunchResults> launchesResults) {
         launchesResults.forEach(launch -> {
@@ -108,21 +142,6 @@ public class CategoriesPlugin implements Aggregator, Reader, Widget {
                 }
             });
         });
-    }
-
-    @SuppressWarnings("PMD.DefaultPackage")
-    /* default */ Tree<TestResult> getData(final List<LaunchResults> launchResults) {
-
-
-        // @formatter:off
-        final Tree<TestResult> categories = new TestResultTree("categories", this::groupByCategories);
-        // @formatter:on
-
-        launchResults.stream()
-                .map(LaunchResults::getResults)
-                .flatMap(Collection::stream)
-                .forEach(categories::add);
-        return categories;
     }
 
     protected List<TreeLayer> groupByCategories(final TestResult testResult) {
@@ -155,24 +174,6 @@ public class CategoriesPlugin implements Aggregator, Reader, Widget {
 
     private static boolean matches(final String message, final String pattern) {
         return Pattern.compile(pattern, Pattern.DOTALL).matcher(message).matches();
-    }
-
-    @Override
-    public Object getData(final Configuration configuration, final List<LaunchResults> launches) {
-        final Tree<TestResult> data = getData(launches);
-        final List<TreeWidgetItem> items = data.getChildren().stream()
-                .filter(TestResultTreeGroup.class::isInstance)
-                .map(TestResultTreeGroup.class::cast)
-                .map(this::toWidgetItem)
-                .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
-                .limit(10)
-                .collect(Collectors.toList());
-        return new TreeWidgetData().withItems(items).withTotal(data.getChildren().size());
-    }
-
-    @Override
-    public String getName() {
-        return "categories";
     }
 
     protected TreeWidgetItem toWidgetItem(final TestResultTreeGroup group) {
