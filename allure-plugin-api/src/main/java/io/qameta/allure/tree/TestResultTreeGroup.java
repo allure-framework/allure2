@@ -7,7 +7,7 @@ public class TestResultTreeGroup extends DefaultTreeGroup {
 
     private String uid;
 
-    public TestResultTreeGroup(final String name, final String uid) {
+    public TestResultTreeGroup(final String uid, final String name) {
         super(name);
         this.uid = uid;
     }

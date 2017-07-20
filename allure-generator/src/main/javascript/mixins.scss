@@ -36,6 +36,24 @@
   }
 }
 
+@mixin status-bg-light() {
+  &_status_failed {
+    background: $background-light-failed;
+  }
+  &_status_broken {
+    background: $background-light-broken;
+  }
+  &_status_passed {
+    background: $background-light-passed;
+  }
+  &_status_skipped {
+    background: $background-light-skipped;
+  }
+  &_status_unknown {
+    background: $background-light-unknown;
+  }
+}
+
 @mixin status-bg-bright() {
   &_status_failed {
     background: $color-failed;

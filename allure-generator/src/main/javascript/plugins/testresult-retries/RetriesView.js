@@ -1,17 +1,20 @@
 import './styles.scss';
 import {View} from 'backbone.marionette';
-import template from './RetryView.hbs';
+import template from './RetriesView.hbs';
 import {on} from '../../decorators';
 import router from '../../router';
 import $ from 'jquery';
+import {className} from '../../decorators/index';
 
-class RetryView extends View {
+@className('test-result-retries')
+class RetriesView extends View {
     template = template;
 
     serializeData() {
         const extra = this.model.get('extra');
         const retries = extra ? extra.retries : null;
         return {
+            cls: this.className,
             retries: retries
         };
     }
@@ -24,4 +27,4 @@ class RetryView extends View {
 
 }
 
-export default RetryView;
+export default RetriesView;

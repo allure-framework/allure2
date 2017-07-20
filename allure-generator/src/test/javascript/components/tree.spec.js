@@ -65,7 +65,7 @@ describe('Tree', function () {
         view = new TreeView({
             collection: items,
             state: new Model(),
-            treeState: new Model(),
+            routeState: new Model(),
             tabName: tabName,
             baseUrl: 'XUnit',
         }).render();

@@ -125,7 +125,7 @@ public class HistoryPlugin implements Reader, Aggregator {
     }
 
     private static String createReportUrl(final String reportUrl, final String uuid) {
-        final String pattern = reportUrl.endsWith("index.html") ? "%s#testcase/%s" : "%s/#testcase/%s";
+        final String pattern = reportUrl.endsWith("index.html") ? "%s#testresult/%s" : "%s/#testresult/%s";
         return String.format(pattern, reportUrl, uuid);
     }
 }

@@ -6,9 +6,8 @@ import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.tree.DefaultTree;
+import io.qameta.allure.tree.TestResultTree;
 import io.qameta.allure.tree.TestResultTreeGroup;
-import io.qameta.allure.tree.TestResultTreeLeaf;
 import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeWidgetData;
 import io.qameta.allure.tree.TreeWidgetItem;
@@ -52,10 +51,9 @@ public class SuitesPlugin implements Aggregator, Widget {
     /* default */ Tree<TestResult> getData(final List<LaunchResults> launchResults) {
 
         // @formatter:off
-        final Tree<TestResult> xunit = new DefaultTree<>(
+        final Tree<TestResult> xunit = new TestResultTree(
             "suites",
-            testResult -> groupByLabels(testResult, PARENT_SUITE, SUITE, SUB_SUITE),
-            TestResultTreeLeaf::create
+            testResult -> groupByLabels(testResult, PARENT_SUITE, SUITE, SUB_SUITE)
         );
         // @formatter:on
 
@@ -86,6 +84,7 @@ public class SuitesPlugin implements Aggregator, Widget {
 
     protected TreeWidgetItem toWidgetItem(final TestResultTreeGroup group) {
         return new TreeWidgetItem()
+                .withUid(group.getUid())
                 .withName(group.getName())
                 .withStatistic(calculateStatisticByLeafs(group));
     }

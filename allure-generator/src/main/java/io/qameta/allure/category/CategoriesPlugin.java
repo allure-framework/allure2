@@ -9,11 +9,10 @@ import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.tree.Classifier;
-import io.qameta.allure.tree.DefaultTree;
-import io.qameta.allure.tree.TestResultClassifier;
-import io.qameta.allure.tree.TestResultTreeLeaf;
+import io.qameta.allure.tree.DefaultTreeLayer;
+import io.qameta.allure.tree.TestResultTree;
 import io.qameta.allure.tree.Tree;
+import io.qameta.allure.tree.TreeLayer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,13 +20,13 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -107,40 +106,27 @@ public class CategoriesPlugin implements Aggregator, Reader {
     @SuppressWarnings("PMD.DefaultPackage")
     /* default */ Tree<TestResult> getData(final List<LaunchResults> launchResults) {
 
+
         // @formatter:off
-        final Tree<TestResult> xunit = new DefaultTree<>(
-            "suites",
-            this::groupByCategories,
-            this::createLeaf
-        );
+        final Tree<TestResult> categories = new TestResultTree("categories", this::groupByCategories);
         // @formatter:on
 
         launchResults.stream()
                 .map(LaunchResults::getResults)
                 .flatMap(Collection::stream)
-                .forEach(xunit::add);
-        return xunit;
+                .forEach(categories::add);
+        return categories;
     }
 
-    protected List<Classifier<TestResult>> groupByCategories(final TestResult testResult) {
-        final Stream<TestResultClassifier> categories = testResult
+    protected List<TreeLayer> groupByCategories(final TestResult testResult) {
+        final Set<String> categories = testResult
                 .<List<Category>>getExtraBlock(CATEGORIES_BLOCK_NAME, new ArrayList<>())
                 .stream()
                 .map(Category::getName)
-                .map(TestResultClassifier::new);
-        final Stream<TestResultClassifier> message = Stream.of(testResult.getStatusMessage().orElse("Without message"))
-                .map(TestResultClassifier::new);
-
-        return Stream.concat(categories, message)
-                .collect(Collectors.toList());
-    }
-
-    protected Optional<TestResultTreeLeaf> createLeaf(final TestResult testResult) {
-        if (testResult.<List<Category>>getExtraBlock(CATEGORIES_BLOCK_NAME, new ArrayList<>()).isEmpty()) {
-            return Optional.empty();
-        } else {
-            return TestResultTreeLeaf.create(testResult);
-        }
+                .collect(Collectors.toSet());
+        final TreeLayer categoriesLayer = new DefaultTreeLayer(categories);
+        final TreeLayer messageLayer = new DefaultTreeLayer(testResult.getStatusMessage().orElse("Without message"));
+        return Arrays.asList(categoriesLayer, messageLayer);
     }
 
     public static boolean matches(final TestResult result, final Category category) {

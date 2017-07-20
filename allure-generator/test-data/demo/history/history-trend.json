@@ -1,29 +1,63 @@
 [ {
-  "failed" : 4,
-  "broken" : 4,
-  "skipped" : 2,
-  "passed" : 8,
-  "unknown" : 2,
-  "total" : 20
+  "statistic" : {
+    "failed" : 4,
+    "broken" : 4,
+    "skipped" : 2,
+    "passed" : 9,
+    "unknown" : 2,
+    "total" : 21
+  },
+  "buildOrder" : 12,
+  "reportUrl" : "http://example.org/build#13/AllureReport"
 }, {
-  "failed" : 4,
-  "broken" : 2,
-  "skipped" : 2,
-  "passed" : 4,
-  "unknown" : 0,
-  "total" : 12
+  "statistic" : {
+    "failed" : 4,
+    "broken" : 4,
+    "skipped" : 2,
+    "passed" : 9,
+    "unknown" : 2,
+    "total" : 21
+  },
+  "buildOrder" : 11,
+  "reportUrl" : "http://example.org/build#13/AllureReport"
 }, {
-  "failed" : 4,
-  "broken" : 0,
-  "skipped" : 0,
-  "passed" : 8,
-  "unknown" : 0,
-  "total" : 12
+  "statistic" : {
+    "failed" : 4,
+    "broken" : 4,
+    "skipped" : 2,
+    "passed" : 8,
+    "unknown" : 2,
+    "total" : 20
+  },
+  "buildOrder" : 10
 }, {
-  "failed" : 0,
-  "broken" : 0,
-  "skipped" : 0,
-  "passed" : 1,
-  "unknown" : 0,
-  "total" : 1
+  "statistic" : {
+    "failed" : 4,
+    "broken" : 2,
+    "skipped" : 2,
+    "passed" : 4,
+    "unknown" : 0,
+    "total" : 12
+  },
+  "buildOrder" : 9
+}, {
+  "statistic" : {
+    "failed" : 4,
+    "broken" : 0,
+    "skipped" : 0,
+    "passed" : 8,
+    "unknown" : 0,
+    "total" : 12
+  },
+  "buildOrder" : 8
+}, {
+  "statistic" : {
+    "failed" : 0,
+    "broken" : 0,
+    "skipped" : 0,
+    "passed" : 1,
+    "unknown" : 0,
+    "total" : 1
+  },
+  "buildOrder" : 7
 } ]

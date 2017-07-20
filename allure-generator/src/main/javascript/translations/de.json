@@ -54,11 +54,10 @@
     "environment": {
       "name": "Umgebung",
       "empty": "Keine Umgebungsvariablen verfügbar",
-      "showAll": "Zeige alle Umgebungsvariablen"
+      "showAll": "Zeige alle"
     },
     "suites": {
-      "name": "Suiten",
-      "showAll": "Zeige alle Suiten"
+      "name": "Suiten"
     }
   },
   "chart": {
@@ -80,6 +79,9 @@
     "status": {
       "empty": "Keine Status Details",
       "trace": "Zeige Stracktrace"
+    },
+    "overview": {
+      "name": "Übersicht"
     },
     "categories": {
       "name": "Kategorien"
@@ -134,7 +136,8 @@
     "backto": "Zurück zu"
   },
   "errors": {
-    "missedAttachment": "Anhang nicht gefunden"
+    "missedAttachment": "Anhang nicht gefunden",
+    "notFound": "Nicht gefunden"
   },
   "component": {
     "tree": {
@@ -162,6 +165,7 @@
       }
     },
     "widgetStatus": {
+      "showAll": "Zeige alle",
       "total": "{{count}} Eintrag insgesamt",
       "total_plural": "{{count}} Einträge insgesamt"
     },

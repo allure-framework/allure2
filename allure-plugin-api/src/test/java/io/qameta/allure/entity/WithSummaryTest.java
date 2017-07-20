@@ -53,4 +53,71 @@ public class WithSummaryTest {
         assertThat(step.hasContent())
                 .isTrue();
     }
+
+    @Test
+    public void shouldCountMessageForHasContent() throws Exception {
+        final Step step = createStep("hey");
+        assertThat(step.hasContent())
+                .isTrue();
+    }
+
+    @Test
+    public void shouldCalculateDisplayMessageFlagIfNoChildren() throws Exception {
+        final Step step = createStep("hey");
+
+        assertThat(step.shouldDisplayMessage())
+                .isTrue();
+    }
+
+    @Test
+    public void shouldCalculateDisplayMessageFlagIfNoMessage() throws Exception {
+        final Step step = new Step()
+                .withStatusDetails(new StatusDetails());
+
+        assertThat(step.shouldDisplayMessage())
+                .isFalse();
+    }
+
+    @Test
+    public void shouldCalculateShouldMessageFlagIfChildHasTheSameMessage() throws Exception {
+        final Step step = createStep("hey")
+                .withSteps(
+                        createStep("hey"),
+                        createStep("oy"),
+                        new Step()
+                );
+
+        assertThat(step.shouldDisplayMessage())
+                .isFalse();
+    }
+
+    @Test
+    public void shouldCalculateDisplayMessageFlagIfChildrenHasDifferentMessages() throws Exception {
+        final Step step = createStep("hey")
+                .withSteps(
+                        createStep("ay"),
+                        createStep("oy"),
+                        new Step()
+                );
+
+        assertThat(step.shouldDisplayMessage())
+                .isTrue();
+    }
+
+    @Test
+    public void shouldCalculateDisplayMessageFlagInSubChild() throws Exception {
+        final Step step = createStep("hey")
+                .withSteps(
+                        createStep("ay").withSteps(createStep("hey")),
+                        createStep("oy"),
+                        new Step()
+                );
+
+        assertThat(step.shouldDisplayMessage())
+                .isFalse();
+    }
+
+    protected Step createStep(final String message) {
+        return new Step().withStatusDetails(new StatusDetails().withMessage(message));
+    }
 }

@@ -1,17 +1,10 @@
 @import "../../variables.scss";
 
-.history {
-  &-title {
-    margin: 15px 15px 0.3em;
+.test-result-history {
+  &__row {
+    padding: 7px 15px 7px 0;
   }
-  &-row {
-    display: block;
-    padding: 7px 15px 7px $gap-size;
-    &:hover {
-      background-color: $hover-color;
-    }
-  }
-  &-success-rate {
-    margin: 0 15px 0.3em;
+  &__success-rate {
+    padding-bottom: 10px;
   }
 }

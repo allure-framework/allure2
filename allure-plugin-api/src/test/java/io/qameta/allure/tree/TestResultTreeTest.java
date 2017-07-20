@@ -6,9 +6,6 @@ import io.qameta.allure.entity.TestResult;
 import org.junit.Test;
 
 import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static io.qameta.allure.entity.LabelName.FEATURE;
 import static io.qameta.allure.entity.LabelName.STORY;
@@ -18,64 +15,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class DefaultTreeTest {
+public class TestResultTreeTest {
 
     @Test
     public void shouldCreateEmptyTree() throws Exception {
-        final Tree<String> tree = new DefaultTree<>(
+        final Tree<TestResult> tree = new TestResultTree(
                 "default",
-                s -> Collections.emptyList(),
-                s -> Optional.empty()
+                item -> Collections.emptyList()
         );
 
         assertThat(tree.getChildren())
                 .hasSize(0);
-
-        final ObjectMapper mapper = new ObjectMapper();
-        final String value = mapper.writeValueAsString(tree);
-        System.out.println(value);
-    }
-
-    @Test
-    public void shouldSkipItemsWithoutClassifier() throws Exception {
-        final Tree<String> tree = new DefaultTree<>(
-                "default",
-                s -> Collections.emptyList(),
-                s -> Optional.of(new DefaultTreeLeaf(s))
-        );
-
-        tree.add("hello");
-        tree.add("hey");
-        tree.add("wo");
-
-        assertThat(tree.getChildren())
-                .hasSize(3);
-    }
-
-    @Test
-    public void shouldAddItems() throws Exception {
-        final Tree<String> tree = new DefaultTree<>(
-                "default",
-                this::byLetters,
-                s -> Optional.of(new DefaultTreeLeaf(s))
-        );
-
-        tree.add("hello");
-        tree.add("hey");
-        tree.add("wo");
-
-        assertThat(tree.getChildren())
-                .hasSize(2)
-                .extracting(TreeNode::getName)
-                .containsExactlyInAnyOrder("h", "w");
     }
 
     @Test
     public void shouldCrossGroup() throws Exception {
-        final Tree<TestResult> behaviors = new DefaultTree<>(
+        final Tree<TestResult> behaviors = new TestResultTree(
                 "behaviors",
-                testResult -> groupByLabels(testResult, FEATURE, STORY),
-                TestResultTreeLeaf::create
+                testResult -> groupByLabels(testResult, FEATURE, STORY)
         );
 
         final TestResult first = new TestResult()
@@ -126,24 +83,6 @@ public class DefaultTreeTest {
                 .flatExtracting("children")
                 .extracting("name")
                 .containsExactlyInAnyOrder("second");
-    }
-
-    private List<Classifier<String>> byLetters(final String item) {
-        return item.chars()
-                .mapToObj(value -> String.valueOf((char) value))
-                .map(String::valueOf)
-                .map(string -> new Classifier<String>() {
-                    @Override
-                    public List<String> classify(final String item) {
-                        return Collections.singletonList(string);
-                    }
-
-                    @Override
-                    public TreeGroup factory(final String name, final String item) {
-                        return new DefaultTreeGroup(name);
-                    }
-                })
-                .collect(Collectors.toList());
     }
 
     private Label feature(final String value) {

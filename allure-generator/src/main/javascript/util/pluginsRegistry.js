@@ -5,6 +5,7 @@ import translate from '../helpers/t.js';
 
 class AllurePluginsRegistry {
     tabs = [];
+    testResultTabs = [];
 
     testResultBlocks = {
         tag: [],
@@ -38,6 +39,10 @@ class AllurePluginsRegistry {
 
     addTestResultBlock(view, {position}) {
         this.testResultBlocks[position].push(view);
+    }
+
+    addTestResultTab(id, name, View) {
+        this.testResultTabs.push({id, name, View});
     }
 }
 

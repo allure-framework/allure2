@@ -156,23 +156,27 @@ public class Allure1Plugin implements Reader {
         dest.setName(name);
         dest.setFullName(String.format("%s.%s", testClass, testMethod));
 
-        dest.setStatus(convert(source.getStatus()));
+        final Status status = convert(source.getStatus());
+        dest.setStatus(status);
         dest.setTime(source.getStart(), source.getStop());
         dest.setParameters(parameters);
         dest.setDescription(getDescription(testSuite.getDescription(), source.getDescription()));
         dest.setDescriptionHtml(getDescriptionHtml(testSuite.getDescription(), source.getDescription()));
-        dest.setStatusDetails(convert(source.getFailure()));
+        final StatusDetails statusDetails = convert(source.getFailure());
+        dest.setStatusDetails(statusDetails);
 
         if (!source.getSteps().isEmpty() || !source.getAttachments().isEmpty()) {
             StageResult testStage = new StageResult();
             if (!source.getSteps().isEmpty()) {
-                testStage.setSteps(convert(source.getSteps(), step -> convert(directory, visitor, step)));
+                testStage.setSteps(
+                        convert(source.getSteps(), step -> convert(directory, visitor, step, status, statusDetails))
+                );
             }
             if (!source.getAttachments().isEmpty()) {
                 testStage.setAttachments(convert(source.getAttachments(), at -> convert(directory, visitor, at)));
             }
-            testStage.setStatus(convert(source.getStatus()));
-            testStage.setStatusDetails(convert(source.getFailure()));
+            testStage.setStatus(status);
+            testStage.setStatusDetails(statusDetails);
             dest.setTestStage(testStage);
         }
 
@@ -225,16 +229,24 @@ public class Allure1Plugin implements Reader {
 
     private Step convert(final Path source,
                          final ResultsVisitor visitor,
-                         final ru.yandex.qatools.allure.model.Step s) {
-        return new Step()
+                         final ru.yandex.qatools.allure.model.Step s,
+                         final Status testStatus,
+                         final StatusDetails details) {
+        final Status status = convert(s.getStatus());
+        final Step current = new Step()
                 .withName(s.getTitle() == null ? s.getName() : s.getTitle())
                 .withTime(new Time()
                         .withStart(s.getStart())
                         .withStop(s.getStop())
                         .withDuration(s.getStop() - s.getStart()))
-                .withStatus(convert(s.getStatus()))
-                .withSteps(convert(s.getSteps(), step -> convert(source, visitor, step)))
+                .withStatus(status)
+                .withSteps(convert(s.getSteps(), step -> convert(source, visitor, step, testStatus, details)))
                 .withAttachments(convert(s.getAttachments(), attach -> convert(source, visitor, attach)));
+        //Copy test status details to each step with the same status
+        if (Objects.equals(status, testStatus)) {
+            current.setStatusDetails(details);
+        }
+        return current;
     }
 
     private StatusDetails convert(final Failure failure) {
@@ -446,9 +458,7 @@ public class Allure1Plugin implements Reader {
             try (InputStream is = Files.newInputStream(envPropsFile)) {
                 final Properties properties = new Properties();
                 properties.load(is);
-                properties.entrySet().forEach(e ->
-                        items.put(String.valueOf(e.getKey()), String.valueOf(e.getValue()))
-                );
+                properties.forEach((key, value) -> items.put(String.valueOf(key), String.valueOf(value)));
             } catch (IOException e) {
                 LOGGER.error("Could not read environments.properties file " + envPropsFile, e);
             }
