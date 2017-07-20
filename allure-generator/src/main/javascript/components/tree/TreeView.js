@@ -162,7 +162,7 @@ class TreeView extends View {
     selectTestResult(testResult) {
         if(testResult) {
             const tab = this.routeState.get('testResultTab') || '';
-            router.toUrl(`${this.baseUrl}/${testResult.parentUid}/${testResult.uid}/${tab}`);
+            router.toUrl(`${this.baseUrl}/${testResult.parentUid}/${testResult.uid}/${tab}`, {replace: true});
         }
     }
 
