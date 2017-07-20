@@ -61,6 +61,9 @@
     },
     "suites": {
       "name": "Тест суиты"
+    },
+    "categories": {
+      "name": "Категории"
     }
   },
   "chart": {

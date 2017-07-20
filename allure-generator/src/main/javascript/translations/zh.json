@@ -58,6 +58,9 @@
     },
     "suites": {
       "name": "测试套"
+    },
+    "categories": {
+      "name": "类别"
     }
   },
   "chart": {

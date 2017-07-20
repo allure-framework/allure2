@@ -25,6 +25,7 @@ import './plugins/widget-duration';
 import './plugins/widget-summary';
 import './plugins/widget-history-trend';
 import './plugins/widget-suites';
+import './plugins/widget-categories';
 import './plugins/widget-environment';
 import './plugins/widget-executor';
 
