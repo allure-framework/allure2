@@ -6,9 +6,9 @@
   font-size: smaller;
   display: flex;
   position: relative;
-
   position: sticky;
-  top: 0px;
+  top: 0;
+
   &:hover {
     background: $hover-color;
   }
@@ -29,7 +29,7 @@
      flex: 1;
   }
   &__preview {
-    margin: 5px $gap-size 5px 25px;
+    margin: 2px 5px 2px 0;
   }
   &__content{
     border-left: 3px solid $hover-color;

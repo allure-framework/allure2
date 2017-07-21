@@ -1,29 +1,28 @@
 @import "../../mixins.scss";
 
 .status-details {
-  padding: 10px;
   overflow: auto;
   @include status-border();
   @include status-bg-light();
+  &__expanded > &__content > &__trace {
+    display: block;
+  }
+  &__expanded > &__content {
+    display: inline-block;
+  }
   &__message {
-    padding-left: $gap-size;
+    padding: $gap-size;
   }
   &__trace {
     float: left;
-    padding-top: 10px;
-    margin-top: 10px;
-    border-top: 1px solid $pane-bg-color;
     display: none;
-    &_expanded {
-      display: block;
-    }
+    padding: $gap-size;
+    border-top: 1px solid $pane-bg-color;
   }
-
+  &__content {
+    display: block;
+  }
   &__trace-toggle {
-    margin-top: 5px;
-    padding-top: 5px;
-    text-align: center;
-    @include status-text();
     &:hover {
       background-color: $hover-color;
     }

@@ -7,6 +7,7 @@ import {makeArray} from '../../util/arrays';
 import {Model} from 'backbone';
 import {View} from 'backbone.marionette';
 
+
 @className('test-result-execution')
 class TestResultExecutionView extends View {
     template = template;
@@ -73,6 +74,11 @@ class TestResultExecutionView extends View {
     @on('click .parameters__table_cell')
     onParameterClick(e) {
         this.$(e.target).siblings().addBack().toggleClass('line-ellipsis');
+    }
+
+    @on('click .status-details__trace-toggle')
+    onStacktraceClick(e) {
+        this.$(e.currentTarget).closest('.status-details').toggleClass('status-details__expanded');
     }
 }
 
