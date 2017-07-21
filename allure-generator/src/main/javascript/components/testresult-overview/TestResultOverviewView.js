@@ -37,13 +37,8 @@ class TestResultOverviewView extends View {
     }
 
     templateContext() {
-        const statusDetails = this.model.get('statusDetails');
         return {
-            cls: this.className,
-            statusDetails: {
-                ...statusDetails,
-                message: statusDetails.message || 'Empty status details'
-            }
+            cls: this.className
         };
     }
 }

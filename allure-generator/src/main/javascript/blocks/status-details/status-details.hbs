@@ -1,16 +1,13 @@
 <div>
     <div class="{{b "status-details" status=status}}">
         <div class="status-details__content">
-            {{#if trace}}
-                <div class="{{b 'status-details' 'trace-toggle' status=status}} clickable" data-tooltip="Display trace">
-                    <div class="status-details__message alert__code"><code>{{message}}</code></div>
+            {{#if message}}
+                <div class="{{b 'status-details' 'trace-toggle' status=status}} clickable" data-tooltip="{{t 'testResult.status.trace'}}">
+                    <pre class="status-details__message"><code>{{message}}</code></pre>
                 </div>
-            {{else}}
-                <pre class="status-details__message"><code>{{message}}</code></pre>
-            {{/if}}
 
-            <div class="{{b 'status-details' 'trace'}} alert__code"><code>{{trace}}</code>
-            </div>
+                <pre class="{{b 'status-details' 'trace'}}"><code>{{#if trace}}{{trace}}{{else}}{{t 'testResult.status.empty'}}{{/if}}</code></pre>
+            {{/if}}
         </div>
     </div>
 </div>
