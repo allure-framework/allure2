@@ -155,7 +155,7 @@ public class Allure1PluginTest {
         ).getResults();
         assertThat(testCases)
                 .hasSize(1)
-                .extracting(testResult -> testResult.findOne(LabelName.SUITE))
+                .extracting(testResult -> testResult.findOneLabel(LabelName.SUITE))
                 .extracting(Optional::get)
                 .containsExactly("Passing test");
     }
@@ -168,7 +168,7 @@ public class Allure1PluginTest {
 
         assertThat(testCases)
                 .hasSize(1)
-                .extracting(testResult -> testResult.findOne(LabelName.SUITE))
+                .extracting(testResult -> testResult.findOneLabel(LabelName.SUITE))
                 .extracting(Optional::get)
                 .containsExactly("my.company.AlwaysPassingTest");
     }
@@ -206,7 +206,7 @@ public class Allure1PluginTest {
         ).getResults();
         assertThat(testResults)
                 .hasSize(1)
-                .extracting(result -> result.findOne(LabelName.PACKAGE))
+                .extracting(result -> result.findOneLabel(LabelName.PACKAGE))
                 .extracting(Optional::get)
                 .containsExactly("my.company.package.subpackage.MyClass");
     }

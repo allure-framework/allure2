@@ -33,7 +33,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static io.qameta.allure.entity.ExtraStatisticMethods.comparator;
+import static io.qameta.allure.entity.Statistic.comparator;
 import static io.qameta.allure.tree.TreeUtils.calculateStatisticByLeafs;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -48,9 +48,9 @@ public class CategoriesPlugin implements Aggregator, Reader, Widget {
 
     public static final String CATEGORIES_BLOCK_NAME = "categories";
 
-    public static final Category FAILED_TESTS = new Category().withName("Product defects");
+    public static final Category FAILED_TESTS = new Category().setName("Product defects");
 
-    public static final Category BROKEN_TESTS = new Category().withName("Test defects");
+    public static final Category BROKEN_TESTS = new Category().setName("Test defects");
 
     private static final String CATEGORIES_FILE_NAME = "categories.json";
 
@@ -105,7 +105,7 @@ public class CategoriesPlugin implements Aggregator, Reader, Widget {
                 .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
                 .limit(10)
                 .collect(Collectors.toList());
-        return new TreeWidgetData().withItems(items).withTotal(data.getChildren().size());
+        return new TreeWidgetData().setItems(items).setTotal(data.getChildren().size());
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
@@ -178,8 +178,8 @@ public class CategoriesPlugin implements Aggregator, Reader, Widget {
 
     protected TreeWidgetItem toWidgetItem(final TestResultTreeGroup group) {
         return new TreeWidgetItem()
-                .withUid(group.getUid())
-                .withName(group.getName())
-                .withStatistic(calculateStatisticByLeafs(group));
+                .setUid(group.getUid())
+                .setName(group.getName())
+                .setStatistic(calculateStatisticByLeafs(group));
     }
 }

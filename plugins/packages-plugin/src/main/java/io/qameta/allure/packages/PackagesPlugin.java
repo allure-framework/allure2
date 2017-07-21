@@ -62,7 +62,7 @@ public class PackagesPlugin implements Aggregator {
     }
 
     protected List<TreeLayer> groupByPackages(final TestResult testResult) {
-        return testResult.findOne(LabelName.PACKAGE)
+        return testResult.findOneLabel(LabelName.PACKAGE)
                 .map(packageName -> Arrays.asList(packageName.split("\\.")))
                 .orElseGet(Collections::emptyList)
                 .stream()
@@ -108,7 +108,7 @@ public class PackagesPlugin implements Aggregator {
 
     private TestResultTreeLeaf createLeaf(final TestResultTreeGroup parent, final TestResult testResult) {
         final String name = testResult
-                .findOne(LabelName.TEST_METHOD)
+                .findOneLabel(LabelName.TEST_METHOD)
                 .filter(method -> !method.isEmpty())
                 .orElseGet(testResult::getName);
         return new TestResultTreeLeaf(

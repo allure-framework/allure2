@@ -7,6 +7,7 @@ import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeNode;
 import org.junit.Test;
 
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -19,14 +20,14 @@ public class SuitesPluginTest {
         final SuitesPlugin xunitPlugin = new SuitesPlugin();
 
         final TestResult first = new TestResult()
-                .withName("first")
-                .withLabels(new Label().withName("suite").withValue("s1"));
+                .setName("first")
+                .setLabels(singletonList(new Label().setName("suite").setValue("s1")));
         final TestResult second = new TestResult()
-                .withName("second")
-                .withLabels(new Label().withName("suite").withValue("s1"));
+                .setName("second")
+                .setLabels(singletonList(new Label().setName("suite").setValue("s1")));
         final TestResult third = new TestResult()
-                .withName("third")
-                .withLabels(new Label().withName("suite").withValue("s2"));
+                .setName("third")
+                .setLabels(singletonList(new Label().setName("suite").setValue("s2")));
 
         final Tree<TestResult> tree = xunitPlugin.getData(
                 TestData.createSingleLaunchResults(first, second, third)

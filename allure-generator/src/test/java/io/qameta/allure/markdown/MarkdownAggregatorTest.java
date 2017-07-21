@@ -33,7 +33,7 @@ public class MarkdownAggregatorTest {
         final Path output = folder.newFolder().toPath();
         final MarkdownDescriptionsPlugin aggregator = new MarkdownDescriptionsPlugin();
 
-        final TestResult result = new TestResult().withName("some");
+        final TestResult result = new TestResult().setName("some");
         final DefaultLaunchResults launchResults = new DefaultLaunchResults(
                 Collections.singleton(result),
                 Collections.emptyMap(),
@@ -51,9 +51,9 @@ public class MarkdownAggregatorTest {
         final MarkdownDescriptionsPlugin aggregator = new MarkdownDescriptionsPlugin();
 
         final TestResult result = new TestResult()
-                .withName("some")
-                .withDescription("desc")
-                .withDescriptionHtml("descHtml");
+                .setName("some")
+                .setDescription("desc")
+                .setDescriptionHtml("descHtml");
         final DefaultLaunchResults launchResults = new DefaultLaunchResults(
                 Collections.singleton(result),
                 Collections.emptyMap(),
@@ -71,8 +71,8 @@ public class MarkdownAggregatorTest {
         final MarkdownDescriptionsPlugin aggregator = new MarkdownDescriptionsPlugin();
 
         final TestResult result = new TestResult()
-                .withName("some")
-                .withDescription("desc");
+                .setName("some")
+                .setDescription("desc");
         final DefaultLaunchResults launchResults = new DefaultLaunchResults(
                 Collections.singleton(result),
                 Collections.emptyMap(),

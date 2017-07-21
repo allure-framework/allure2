@@ -2,6 +2,8 @@ package io.qameta.allure.entity;
 
 import org.junit.Test;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -11,17 +13,20 @@ public class WithSummaryTest {
 
     @Test
     public void shouldCountSteps() throws Exception {
-        final Step step = new Step().withSteps(new Step(), new Step().withSteps(new Step()));
+        final Step step = new Step().setSteps(asList(
+                new Step(),
+                new Step().setSteps(singletonList(new Step()))
+        ));
         assertThat(step.getStepsCount())
                 .isEqualTo(3L);
     }
 
     @Test
     public void shouldCountAttachments() throws Exception {
-        final Step step = new Step().withSteps(
-                new Step().withAttachments(new Attachment(), new Attachment()),
-                new Step().withAttachments(new Attachment()).withSteps(new Step())
-        ).withAttachments(new Attachment());
+        final Step step = new Step().setSteps(asList(
+                new Step().setAttachments(asList(new Attachment(), new Attachment())),
+                new Step().setAttachments(singletonList(new Attachment())).setSteps(singletonList(new Step()))
+        )).setAttachments(singletonList(new Attachment()));
         assertThat(step.getAttachmentsCount())
                 .isEqualTo(4L);
     }
@@ -35,21 +40,21 @@ public class WithSummaryTest {
 
     @Test
     public void shouldCountAttachmentsForHasContent() throws Exception {
-        final Step step = new Step().withAttachments(new Attachment());
+        final Step step = new Step().setAttachments(singletonList(new Attachment()));
         assertThat(step.hasContent())
                 .isTrue();
     }
 
     @Test
     public void shouldCountStepsForHasContent() throws Exception {
-        final Step step = new Step().withSteps(new Step());
+        final Step step = new Step().setSteps(singletonList(new Step()));
         assertThat(step.hasContent())
                 .isTrue();
     }
 
     @Test
     public void shouldCountParametersForHasContent() throws Exception {
-        final Step step = new Step().withParameters(new Parameter());
+        final Step step = new Step().setParameters(singletonList(new Parameter()));
         assertThat(step.hasContent())
                 .isTrue();
     }
@@ -72,7 +77,7 @@ public class WithSummaryTest {
     @Test
     public void shouldCalculateDisplayMessageFlagIfNoMessage() throws Exception {
         final Step step = new Step()
-                .withStatusDetails(new StatusDetails());
+                .setStatusDetails(new StatusDetails());
 
         assertThat(step.shouldDisplayMessage())
                 .isFalse();
@@ -81,11 +86,11 @@ public class WithSummaryTest {
     @Test
     public void shouldCalculateShouldMessageFlagIfChildHasTheSameMessage() throws Exception {
         final Step step = createStep("hey")
-                .withSteps(
+                .setSteps(asList(
                         createStep("hey"),
                         createStep("oy"),
                         new Step()
-                );
+                ));
 
         assertThat(step.shouldDisplayMessage())
                 .isFalse();
@@ -94,10 +99,10 @@ public class WithSummaryTest {
     @Test
     public void shouldCalculateDisplayMessageFlagIfChildrenHasDifferentMessages() throws Exception {
         final Step step = createStep("hey")
-                .withSteps(
+                .setSteps(asList(
                         createStep("ay"),
                         createStep("oy"),
-                        new Step()
+                        new Step())
                 );
 
         assertThat(step.shouldDisplayMessage())
@@ -107,10 +112,9 @@ public class WithSummaryTest {
     @Test
     public void shouldCalculateDisplayMessageFlagInSubChild() throws Exception {
         final Step step = createStep("hey")
-                .withSteps(
-                        createStep("ay").withSteps(createStep("hey")),
+                .setSteps(asList(createStep("ay").setSteps(singletonList(createStep("hey"))),
                         createStep("oy"),
-                        new Step()
+                        new Step())
                 );
 
         assertThat(step.shouldDisplayMessage())
@@ -118,6 +122,6 @@ public class WithSummaryTest {
     }
 
     protected Step createStep(final String message) {
-        return new Step().withStatusDetails(new StatusDetails().withMessage(message));
+        return new Step().setStatusDetails(new StatusDetails().setMessage(message));
     }
 }

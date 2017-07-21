@@ -46,9 +46,9 @@ public class SummaryPlugin implements Aggregator, Widget {
 
     private SummaryData getSummaryData(final List<LaunchResults> launches) {
         final SummaryData data = new SummaryData()
-                .withStatistic(new Statistic())
-                .withTime(new GroupTime())
-                .withReportName("Allure Report");
+                .setStatistic(new Statistic())
+                .setTime(new GroupTime())
+                .setReportName("Allure Report");
         launches.stream()
                 .flatMap(launch -> launch.getResults().stream())
                 .forEach(result -> {

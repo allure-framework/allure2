@@ -148,10 +148,10 @@ public class TrxPlugin implements Reader {
 
         final String uid = context.getValue().get();
         final TestResult result = new TestResult()
-                .withUid(uid)
-                .withName(testName)
-                .withStatus(parseStatus(outcome))
-                .withTime(getTime(startTime, endTime));
+                .setUid(uid)
+                .setName(testName)
+                .setStatus(parseStatus(outcome))
+                .setTime(getTime(startTime, endTime));
 
         Optional.ofNullable(tests.get(executionId)).ifPresent(unitTest -> {
             result.setParameters(unitTest.getParameters());

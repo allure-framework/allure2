@@ -158,7 +158,7 @@ public class Allure1Plugin implements Reader {
 
         final Status status = convert(source.getStatus());
         dest.setStatus(status);
-        dest.setTime(source.getStart(), source.getStop());
+        dest.setTime(Time.create(source.getStart(), source.getStop()));
         dest.setParameters(parameters);
         dest.setDescription(getDescription(testSuite.getDescription(), source.getDescription()));
         dest.setDescriptionHtml(getDescriptionHtml(testSuite.getDescription(), source.getDescription()));
@@ -184,17 +184,17 @@ public class Allure1Plugin implements Reader {
         set.addAll(convert(testSuite.getLabels(), this::convert));
         set.addAll(convert(source.getLabels(), this::convert));
         dest.setLabels(new ArrayList<>(set));
-        dest.findAll(ISSUE).forEach(issue ->
+        dest.findAllLabels(ISSUE).forEach(issue ->
                 dest.getLinks().add(getLink(ISSUE, issue, getIssueUrl(issue, properties)))
         );
-        dest.findOne("testId").ifPresent(testId ->
-                dest.getLinks().add(new Link().withName(testId).withType("tms")
-                        .withUrl(getTestCaseIdUrl(testId, properties)))
+        dest.findOneLabel("testId").ifPresent(testId ->
+                dest.getLinks().add(new Link().setName(testId).setType("tms")
+                        .setUrl(getTestCaseIdUrl(testId, properties)))
         );
 
         //TestNG nested suite
-        final Optional<String> testGroupLabel = dest.findOne("testGroup");
-        final Optional<String> testSuiteLabel = dest.findOne("testSuite");
+        final Optional<String> testGroupLabel = dest.findOneLabel("testGroup");
+        final Optional<String> testSuiteLabel = dest.findOneLabel("testSuite");
 
         if (testGroupLabel.isPresent() && testSuiteLabel.isPresent()) {
             dest.addLabelIfNotExists(PARENT_SUITE, testSuiteLabel.get());
@@ -207,7 +207,7 @@ public class Allure1Plugin implements Reader {
         dest.addLabelIfNotExists(TEST_CLASS, testClass);
         dest.addLabelIfNotExists(TEST_METHOD, testMethod);
         dest.addLabelIfNotExists(PACKAGE, testClass);
-        dest.findAll("status_details").stream()
+        dest.findAllLabels("status_details").stream()
                 .filter("flaky"::equalsIgnoreCase)
                 .findAny()
                 .ifPresent(value -> dest.getStatusDetailsSafe().setFlaky(true));
@@ -234,15 +234,15 @@ public class Allure1Plugin implements Reader {
                          final StatusDetails details) {
         final Status status = convert(s.getStatus());
         final Step current = new Step()
-                .withName(s.getTitle() == null ? s.getName() : s.getTitle())
-                .withTime(new Time()
-                        .withStart(s.getStart())
-                        .withStop(s.getStop())
-                        .withDuration(s.getStop() - s.getStart()))
-                .withStatus(status)
-                .withSteps(convert(s.getSteps(), step -> convert(source, visitor, step, testStatus, details)))
-                .withAttachments(convert(s.getAttachments(), attach -> convert(source, visitor, attach)));
-        //Copy test status details to each step with the same status
+                .setName(s.getTitle() == null ? s.getName() : s.getTitle())
+                .setTime(new Time()
+                        .setStart(s.getStart())
+                        .setStop(s.getStop())
+                        .setDuration(s.getStop() - s.getStart()))
+                .setStatus(status)
+                .setSteps(convert(s.getSteps(), step -> convert(source, visitor, step, testStatus, details)))
+                .setAttachments(convert(s.getAttachments(), attach -> convert(source, visitor, attach)));
+        //Copy test status details to each step set the same status
         if (Objects.equals(status, testStatus)) {
             current.setStatusDetails(details);
         }
@@ -251,20 +251,20 @@ public class Allure1Plugin implements Reader {
 
     private StatusDetails convert(final Failure failure) {
         return Objects.isNull(failure) ? null : new StatusDetails()
-                .withMessage(failure.getMessage())
-                .withTrace(failure.getStackTrace());
+                .setMessage(failure.getMessage())
+                .setTrace(failure.getStackTrace());
     }
 
     private Label convert(final ru.yandex.qatools.allure.model.Label label) {
         return new Label()
-                .withName(label.getName())
-                .withValue(label.getValue());
+                .setName(label.getName())
+                .setValue(label.getValue());
     }
 
     private Parameter convert(final ru.yandex.qatools.allure.model.Parameter parameter) {
         return new Parameter()
-                .withName(parameter.getName())
-                .withValue(parameter.getValue());
+                .setName(parameter.getName())
+                .setValue(parameter.getValue());
     }
 
     private Attachment convert(final Path source,
@@ -283,9 +283,9 @@ public class Allure1Plugin implements Reader {
         } else {
             visitor.error("Could not find attachment " + attachment.getSource() + " in directory " + source);
             return new Attachment()
-                    .withType(attachment.getType())
-                    .withName(attachment.getTitle())
-                    .withSize(0L);
+                    .setType(attachment.getType())
+                    .setName(attachment.getTitle())
+                    .setSize(0L);
         }
     }
 
@@ -355,7 +355,7 @@ public class Allure1Plugin implements Reader {
     }
 
     private Link getLink(final LabelName labelName, final String value, final String url) {
-        return new Link().withName(value).withType(labelName.value()).withUrl(url);
+        return new Link().setName(value).setType(labelName.value()).setUrl(url);
     }
 
     private String getIssueUrl(final String issue, final Properties properties) {

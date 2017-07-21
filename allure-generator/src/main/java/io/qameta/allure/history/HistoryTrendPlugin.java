@@ -11,7 +11,6 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.ExecutorInfo;
-import io.qameta.allure.entity.ExtraStatisticMethods;
 import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.TestResult;
 import org.slf4j.Logger;
@@ -110,7 +109,7 @@ public class HistoryTrendPlugin implements Reader, Aggregator, Widget {
 
             if (Objects.nonNull(child.get("total"))) {
                 final Statistic statistic = mapper.treeToValue(child, Statistic.class);
-                return Optional.of(new HistoryTrendItem().withStatistic(statistic));
+                return Optional.of(new HistoryTrendItem().setStatistic(statistic));
 
             }
             return Optional.ofNullable(mapper.treeToValue(child, HistoryTrendItem.class));
@@ -133,9 +132,9 @@ public class HistoryTrendPlugin implements Reader, Aggregator, Widget {
         final Statistic statistic = launchesResults.stream()
                 .flatMap(results -> results.getResults().stream())
                 .map(TestResult::getStatus)
-                .collect(Statistic::new, ExtraStatisticMethods::update, ExtraStatisticMethods::merge);
+                .collect(Statistic::new, Statistic::update, Statistic::merge);
         final HistoryTrendItem item = new HistoryTrendItem()
-                .withStatistic(statistic);
+                .setStatistic(statistic);
         extractLatestExecutor(launchesResults).ifPresent(info -> {
             item.setBuildOrder(info.getBuildOrder());
             item.setReportName(info.getReportName());

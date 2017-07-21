@@ -21,10 +21,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static io.qameta.allure.entity.ExtraStatisticMethods.comparator;
 import static io.qameta.allure.entity.LabelName.EPIC;
 import static io.qameta.allure.entity.LabelName.FEATURE;
 import static io.qameta.allure.entity.LabelName.STORY;
+import static io.qameta.allure.entity.Statistic.comparator;
 import static io.qameta.allure.tree.TreeUtils.calculateStatisticByChildren;
 import static io.qameta.allure.tree.TreeUtils.groupByLabels;
 
@@ -74,7 +74,7 @@ public class BehaviorsPlugin implements Aggregator, Widget {
                 .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
                 .limit(10)
                 .collect(Collectors.toList());
-        return new TreeWidgetData().withItems(items).withTotal(data.getChildren().size());
+        return new TreeWidgetData().setItems(items).setTotal(data.getChildren().size());
     }
 
     @Override
@@ -84,8 +84,8 @@ public class BehaviorsPlugin implements Aggregator, Widget {
 
     protected TreeWidgetItem toWidgetItem(final TestResultTreeGroup group) {
         return new TreeWidgetItem()
-                .withUid(group.getUid())
-                .withName(group.getName())
-                .withStatistic(calculateStatisticByChildren(group));
+                .setUid(group.getUid())
+                .setName(group.getName())
+                .setStatistic(calculateStatisticByChildren(group));
     }
 }

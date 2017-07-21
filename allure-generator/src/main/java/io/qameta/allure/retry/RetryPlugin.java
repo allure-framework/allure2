@@ -52,12 +52,12 @@ public class RetryPlugin implements Aggregator {
             final List<RetryItem> retries = results.stream()
                     .sorted(byTime())
                     .filter(result -> !latest.equals(result))
-                    .map(retry -> retry.withHidden(true))
+                    .map(retry -> retry.setHidden(true))
                     .map(retry -> new RetryItem()
-                            .withStatus(retry.getStatus())
-                            .withStatusDetails(retry.getStatusDetailsSafe().getMessage())
-                            .withTime(retry.getTime())
-                            .withUid(retry.getUid()))
+                            .setStatus(retry.getStatus())
+                            .setStatusDetails(retry.getStatusDetailsSafe().getMessage())
+                            .setTime(retry.getTime())
+                            .setUid(retry.getUid()))
                     .collect(Collectors.toList());
             latest.addExtraBlock(RETRY_BLOCK_NAME, retries);
             final Set<Status> statuses = retries.stream()

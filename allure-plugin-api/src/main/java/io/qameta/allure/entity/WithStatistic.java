@@ -18,13 +18,13 @@ public interface WithStatistic {
         getStatistic().setUnknown(other.getUnknown() + getStatistic().getUnknown());
     }
 
-    default void updateStatistic(WithStatus withStatus) {
-        if (withStatus == null) {
+    default void updateStatistic(Statusable statusable) {
+        if (statusable == null) {
             return;
         }
         if (getStatistic() == null) {
             setStatistic(new Statistic());
         }
-        getStatistic().update(withStatus.getStatus());
+        getStatistic().update(statusable.getStatus());
     }
 }

@@ -33,7 +33,7 @@ public final class TreeUtils {
     public static List<TreeLayer> groupByLabels(final TestResult testResult,
                                                 final LabelName... labelNames) {
         return Stream.of(labelNames)
-                .map(testResult::findAll)
+                .map(testResult::findAllLabels)
                 .filter(strings -> !strings.isEmpty())
                 .map(DefaultTreeLayer::new)
                 .collect(Collectors.toList());

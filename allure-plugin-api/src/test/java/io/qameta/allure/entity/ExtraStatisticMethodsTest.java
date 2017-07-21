@@ -13,11 +13,11 @@ public class ExtraStatisticMethodsTest {
 
     @Test
     public void shouldGetStatusForStatistic() throws Exception {
-        final Statistic first = new Statistic().withFailed(2L).withPassed(1L);
-        final Statistic second = new Statistic().withPassed(4L).withBroken(1L);
-        final Statistic third = new Statistic().withPassed(1L).withSkipped(4L);
+        final Statistic first = new Statistic().setFailed(2L).setPassed(1L);
+        final Statistic second = new Statistic().setPassed(4L).setBroken(1L);
+        final Statistic third = new Statistic().setPassed(1L).setSkipped(4L);
         assertThat(Arrays.asList(first, second, third))
-                .extracting(ExtraStatisticMethods::getStatus)
+                .extracting(Statistic::getStatus)
                 .containsExactly(
                         Status.FAILED, Status.BROKEN, Status.PASSED
                 );
@@ -25,7 +25,7 @@ public class ExtraStatisticMethodsTest {
 
     @Test
     public void shouldGetByStatus() throws Exception {
-        final Statistic statistic = new Statistic().withFailed(2L).withPassed(1L).withBroken(4L);
+        final Statistic statistic = new Statistic().setFailed(2L).setPassed(1L).setBroken(4L);
         assertThat(Arrays.asList(Status.FAILED, Status.BROKEN, Status.PASSED, Status.UNKNOWN))
                 .extracting(statistic::get)
                 .containsExactly(2L, 4L, 1L, 0L);

@@ -72,7 +72,7 @@ public class Allure2Plugin implements Reader {
         dest.setHistoryId(result.getHistoryId());
         dest.setFullName(result.getFullName());
         dest.setName(result.getName());
-        dest.setTime(result.getStart(), result.getStop());
+        dest.setTime(Time.create(result.getStart(), result.getStop()));
         dest.setDescription(result.getDescription());
         dest.setDescriptionHtml(result.getDescriptionHtml());
         dest.setStatus(convert(result.getStatus()));
@@ -102,32 +102,32 @@ public class Allure2Plugin implements Reader {
                                 final ResultsVisitor visitor,
                                 final FixtureResult result) {
         return new StageResult()
-                .withName(result.getName())
-                .withTime(convert(result.getStart(), result.getStop()))
-                .withStatus(convert(result.getStatus()))
-                .withStatusDetails(convert(result.getStatusDetails()))
-                .withSteps(convert(result.getSteps(), step -> convert(source, visitor, step)))
-                .withAttachments(convert(result.getAttachments(), attach -> convert(source, visitor, attach)))
-                .withParameters(convert(result.getParameters(), this::convert));
+                .setName(result.getName())
+                .setTime(convert(result.getStart(), result.getStop()))
+                .setStatus(convert(result.getStatus()))
+                .setStatusDetails(convert(result.getStatusDetails()))
+                .setSteps(convert(result.getSteps(), step -> convert(source, visitor, step)))
+                .setAttachments(convert(result.getAttachments(), attach -> convert(source, visitor, attach)))
+                .setParameters(convert(result.getParameters(), this::convert));
     }
 
     private Link convert(final io.qameta.allure.model.Link link) {
         return new Link()
-                .withName(link.getName())
-                .withType(link.getType())
-                .withUrl(link.getUrl());
+                .setName(link.getName())
+                .setType(link.getType())
+                .setUrl(link.getUrl());
     }
 
     private Label convert(final io.qameta.allure.model.Label label) {
         return new Label()
-                .withName(label.getName())
-                .withValue(label.getValue());
+                .setName(label.getName())
+                .setValue(label.getValue());
     }
 
     private Parameter convert(final io.qameta.allure.model.Parameter parameter) {
         return new Parameter()
-                .withName(parameter.getName())
-                .withValue(parameter.getValue());
+                .setName(parameter.getName())
+                .setValue(parameter.getValue());
     }
 
     private Attachment convert(final Path source,
@@ -146,9 +146,9 @@ public class Allure2Plugin implements Reader {
         } else {
             visitor.error("Could not find attachment " + attachment.getSource() + " in directory " + source);
             return new Attachment()
-                    .withType(attachment.getType())
-                    .withName(attachment.getName())
-                    .withSize(0L);
+                    .setType(attachment.getType())
+                    .setName(attachment.getName())
+                    .setSize(0L);
         }
     }
 
@@ -156,13 +156,13 @@ public class Allure2Plugin implements Reader {
                          final ResultsVisitor visitor,
                          final StepResult step) {
         return new Step()
-                .withName(step.getName())
-                .withStatus(convert(step.getStatus()))
-                .withStatusDetails(convert(step.getStatusDetails()))
-                .withTime(convert(step.getStart(), step.getStop()))
-                .withParameters(convert(step.getParameters(), this::convert))
-                .withAttachments(convert(step.getAttachments(), attachment -> convert(source, visitor, attachment)))
-                .withSteps(convert(step.getSteps(), s -> convert(source, visitor, s)));
+                .setName(step.getName())
+                .setStatus(convert(step.getStatus()))
+                .setStatusDetails(convert(step.getStatusDetails()))
+                .setTime(convert(step.getStart(), step.getStop()))
+                .setParameters(convert(step.getParameters(), this::convert))
+                .setAttachments(convert(step.getAttachments(), attachment -> convert(source, visitor, attachment)))
+                .setSteps(convert(step.getSteps(), s -> convert(source, visitor, s)));
     }
 
     private Status convert(final io.qameta.allure.model.Status status) {
@@ -177,16 +177,16 @@ public class Allure2Plugin implements Reader {
 
     private StatusDetails convert(final io.qameta.allure.model.StatusDetails details) {
         return Objects.isNull(details) ? null : new StatusDetails()
-                .withFlaky(details.isFlaky())
-                .withMessage(details.getMessage())
-                .withTrace(details.getTrace());
+                .setFlaky(details.isFlaky())
+                .setMessage(details.getMessage())
+                .setTrace(details.getTrace());
     }
 
     private Time convert(final Long start, final Long stop) {
         return new Time()
-                .withStart(start)
-                .withStop(stop)
-                .withDuration(nonNull(start) && nonNull(stop) ? stop - start : null);
+                .setStart(start)
+                .setStop(stop)
+                .setDuration(nonNull(start) && nonNull(stop) ? stop - start : null);
     }
 
     private List<Parameter> getParameters(final TestResult result) {
