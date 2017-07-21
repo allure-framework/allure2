@@ -57,7 +57,7 @@ class TestResultExecutionView extends View {
         const attachmentUid = $(e.currentTarget).data('uid');
         const name = `attachment__${attachmentUid}`;
 
-        if($(e.currentTarget).hasClass('attachment-row_selected')) {
+        if($(e.currentTarget).hasClass('attachment-row_selected') && this.getRegion(name)) {
             this.getRegion(name).destroy();
         } else {
             this.addRegion(name, {el: this.$(`.${name}`)});

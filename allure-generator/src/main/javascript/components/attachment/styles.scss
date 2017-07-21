@@ -1,9 +1,6 @@
 @import "../../variables.scss";
 
 .attachment {
-  &__title {
-    flex-shrink: 0;
-  }
   &__filename {
     background: $heading-bg;
     padding: $gap-size;
@@ -40,6 +37,12 @@
   &__table-container {
     overflow: auto;
   }
+  &__text-container, &__table-container {
+    &_fullscreen {
+      padding: $gap-size;
+      background-color: $pane-bg-color;
+    }
+  }
   &__media-container {
     text-align: center;
     cursor: zoom-in;
@@ -53,10 +56,5 @@
   &__iframe {
     width: 100%;
     flex: 1;
-  }
-  &__ctrl {
-    position: fixed;
-    top:0;
-    heigth: 100px;
   }
 }

@@ -54,7 +54,7 @@ class TestResultView extends View {
         const attachment = this.model.getAttachment(uid);
         const modalView = new ModalView({
             childView: attachment
-                ? new AttachmentView({attachment})
+                ? new AttachmentView({attachment, fullScreen: true})
                 : new ErrorSplashView({code: 404, message: translate('errors.missedAttachment')}),
             title: attachment
                 ? attachment.name || attachment.source
