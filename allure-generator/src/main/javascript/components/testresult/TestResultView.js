@@ -2,11 +2,13 @@ import './styles.scss';
 import {View} from 'backbone.marionette';
 import {regions, behavior, className} from '../../decorators';
 import template from './TestResultView.hbs';
-import {Model} from 'backbone';
 import TestResultOverviewView from '../testresult-overview/TestResultOverviewView';
 import TestResultExecutionView from '../testresult-execution/TestResultExecutionView';
 import ErrorSplashView from '../error-splash/ErrorSplashView';
 import pluginsRegistry from '../../util/pluginsRegistry';
+import ModalView from '../modal/ModalView';
+import AttachmentView from '../attachment/AttachmentView';
+import translate from '../../helpers/t';
 
 const subViews = [
     {id: '', name: 'testResult.overview.name', View: TestResultOverviewView},
@@ -25,9 +27,9 @@ class TestResultView extends View {
     initialize({routeState}) {
         this.routeState = routeState;
         this.tabs = subViews.concat(pluginsRegistry.testResultTabs);
-        this.state = new Model();
         this.tabName =  this.routeState.get('testResultTab') || '';
         this.listenTo(this.routeState, 'change:testResultTab', (_, tabName) => this.onTabChange(tabName));
+        this.listenTo(this.routeState, 'change:attachment', (_, uid) => this.onShowAttachment(uid));
     }
 
     onRender() {
@@ -36,11 +38,29 @@ class TestResultView extends View {
             ? new ErrorSplashView({code: 404, message: `Tab "${this.tabName}" not found`})
             : new subView.View(this.options)
         );
+
+        const attachment = this.routeState.get('attachment');
+        if (attachment) {
+            this.onShowAttachment(attachment);
+        }
     }
 
     onTabChange(tabName) {
         this.tabName = tabName || '';
         this.render();
+    }
+
+    onShowAttachment(uid) {
+        const attachment = this.model.getAttachment(uid);
+        const modalView = new ModalView({
+            childView: attachment
+                ? new AttachmentView({attachment})
+                : new ErrorSplashView({code: 404, message: translate('errors.missedAttachment')}),
+            title: attachment
+                ? attachment.name || attachment.source
+                : translate('errors.notFound')
+        });
+        modalView.show();
     }
 
     templateContext() {

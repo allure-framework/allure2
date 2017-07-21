@@ -141,6 +141,7 @@
   "controls": {
     "collapse": "Свернуть",
     "expand": "Развернуть",
+    "fullscreen": "На весь экран",
     "language": "Сменить язык",
     "clipboard": "Скопировать в буфер обмена",
     "clipboardSuccess": "Значение успешно скопировано",

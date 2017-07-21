@@ -134,6 +134,7 @@
   "controls": {
     "collapse": "折叠",
     "expand": "展开",
+    "fullscreen": "全屏",
     "language": "切换地区语言",
     "clipboard": "复制到剪贴板",
     "backto": "返回"

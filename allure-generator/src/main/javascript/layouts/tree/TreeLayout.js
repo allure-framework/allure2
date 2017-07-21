@@ -2,6 +2,7 @@ import AppLayout from '../application/AppLayout';
 import TreeCollection from '../../data/tree/TreeCollection';
 import {Model} from 'backbone';
 import TestResultTreeView from '../../components/testresult-tree/TestResultTreeView';
+import router from '../../router';
 
 export default class TreeLayout extends AppLayout {
 
@@ -28,5 +29,13 @@ export default class TreeLayout extends AppLayout {
     onRouteUpdate(testGroup, testResult, testResultTab) {
         this.routeState.set('treeNode', {testGroup, testResult});
         this.routeState.set('testResultTab', testResultTab);
+
+        const attachment = router.getUrlParams().attachment;
+        if (attachment) {
+            this.routeState.set('attachment', attachment);
+        } else {
+            this.routeState.unset('attachment', {silent: true})
+        }
+
     }
 }

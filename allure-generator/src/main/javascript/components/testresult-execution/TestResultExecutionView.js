@@ -2,6 +2,7 @@ import $ from 'jquery';
 import './styles.scss';
 import AttachmentView from '../attachment/AttachmentView';
 import template from './TestResultExecutionView.hbs';
+import router from '../../router';
 import {className, on} from '../../decorators';
 import {makeArray} from '../../util/arrays';
 import {Model} from 'backbone';
@@ -14,15 +15,18 @@ class TestResultExecutionView extends View {
 
     initialize() {
         this.state = new Model();
+        this.routeState = this.options.routeState;
         this.listenTo(this.state, 'change:attachment', this.highlightSelectedAttachment, this);
     }
 
     onRender() {
-        this.highlightSelectedAttachment();
+        const attachment = this.routeState.get('attachment');
+        if (attachment) {
+            this.highlightSelectedAttachment(attachment);
+        }
     }
 
-    highlightSelectedAttachment() {
-        const currentAttachment = this.state.get('attachment');
+    highlightSelectedAttachment(currentAttachment) {
         this.$('.attachment-row').removeClass('attachment-row_selected');
 
         const attachmentEl = this.$(`.attachment-row[data-uid="${currentAttachment}"]`);
@@ -58,12 +62,17 @@ class TestResultExecutionView extends View {
         } else {
             this.addRegion(name, {el: this.$(`.${name}`)});
             this.getRegion(name).show(new AttachmentView({
-                baseUrl: this.options.baseUrl,
                 attachment: this.model.getAttachment(attachmentUid),
-                state: this.state
             }));
         }
         this.$(e.currentTarget).toggleClass('attachment-row_selected');
+    }
+
+    @on('click .attachment-row__fullscreen')
+    onAttachmnetFullScrennClick(e) {
+        const attachment = $(e.currentTarget).closest('.attachment-row').data('uid');
+        router.setSearch({attachment});
+        e.stopPropagation();
     }
 
     @on('click .attachment-row__link')

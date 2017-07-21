@@ -6,17 +6,22 @@
   height: 100%;
   top: 0;
   margin: 0 auto;
-  background: #fff;
-  opacity: 0.96;
-  z-index: 2;
-
+  background-color: rgba(235, 235, 235, 0.7);
+  overflow: auto;
+  z-index: 1000;
   &__body {
     top: 0;
     margin: 0 40px 0 40px;
-    padding-top: 5px;
-    border-left: 1px solid $border-color;
-    border-right: 1px solid $border-color;
-    opacity: 0.99;
-    background: #fff;
   }
+  &__content {
+    background-color: $pane-bg-color;
+  }
+}
+
+.blur {
+  -webkit-filter: blur(3px);
+  -moz-filter: blur(3px);
+  -o-filter: blur(3px);
+  -ms-filter: blur(3px);
+  filter: blur(3px);
 }

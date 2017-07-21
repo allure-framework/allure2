@@ -135,6 +135,7 @@
   "controls": {
     "collapse": "Collapse",
     "expand": "Expand",
+    "fullscreen": "Full screen",
     "language": "Change language",
     "clipboard": "Copy to clipboard",
     "clipboardSuccess": "Successfully copied",

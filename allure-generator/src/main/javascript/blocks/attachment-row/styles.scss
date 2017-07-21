@@ -16,17 +16,20 @@
     &, &:hover {
       background: $selected-color;
     }
+    &:hover {
+      background: $hover-color;
+    }
   }
-  &__link {
-    position: relative;
-    min-width: 70px;
+  &__name {
+    flex: 1;
+  }
+  &__control {
+    padding-left: $gap-size;
+    display: inline-block;
   }
   &__icon {
     left: 11px;
     position: absolute;
-  }
-  &__name {
-     flex: 1;
   }
   &__preview {
     margin: 2px 5px 2px 0;
