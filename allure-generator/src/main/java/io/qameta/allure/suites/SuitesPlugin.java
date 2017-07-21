@@ -21,10 +21,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static io.qameta.allure.entity.ExtraStatisticMethods.comparator;
 import static io.qameta.allure.entity.LabelName.PARENT_SUITE;
 import static io.qameta.allure.entity.LabelName.SUB_SUITE;
 import static io.qameta.allure.entity.LabelName.SUITE;
+import static io.qameta.allure.entity.Statistic.comparator;
 import static io.qameta.allure.tree.TreeUtils.calculateStatisticByLeafs;
 import static io.qameta.allure.tree.TreeUtils.groupByLabels;
 
@@ -74,7 +74,7 @@ public class SuitesPlugin implements Aggregator, Widget {
                 .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
                 .limit(10)
                 .collect(Collectors.toList());
-        return new TreeWidgetData().withItems(items).withTotal(data.getChildren().size());
+        return new TreeWidgetData().setItems(items).setTotal(data.getChildren().size());
     }
 
     @Override
@@ -84,8 +84,8 @@ public class SuitesPlugin implements Aggregator, Widget {
 
     protected TreeWidgetItem toWidgetItem(final TestResultTreeGroup group) {
         return new TreeWidgetItem()
-                .withUid(group.getUid())
-                .withName(group.getName())
-                .withStatistic(calculateStatisticByLeafs(group));
+                .setUid(group.getUid())
+                .setName(group.getName())
+                .setStatistic(calculateStatisticByLeafs(group));
     }
 }

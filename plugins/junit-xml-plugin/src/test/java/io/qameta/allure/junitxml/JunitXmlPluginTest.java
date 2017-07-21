@@ -86,7 +86,7 @@ public class JunitXmlPluginTest {
 
     @Test
     public void shouldAddLogAsAttachment() throws Exception {
-        final Attachment hey = new Attachment().withUid("some-uid");
+        final Attachment hey = new Attachment().setUid("some-uid");
         when(visitor.visitAttachmentFile(any())).thenReturn(hey);
         process(
                 "junitdata/TEST-test.SampleTest.xml", "TEST-test.SampleTest.xml",

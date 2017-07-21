@@ -1,6 +1,5 @@
 package io.qameta.allure.tree;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.TestResult;
 import org.junit.Test;
@@ -10,6 +9,7 @@ import java.util.Collections;
 import static io.qameta.allure.entity.LabelName.FEATURE;
 import static io.qameta.allure.entity.LabelName.STORY;
 import static io.qameta.allure.tree.TreeUtils.groupByLabels;
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -36,11 +36,11 @@ public class TestResultTreeTest {
         );
 
         final TestResult first = new TestResult()
-                .withName("first")
-                .withLabels(feature("f1"), feature("f2"), story("s1"), story("s2"));
+                .setName("first")
+                .setLabels(asList(feature("f1"), feature("f2"), story("s1"), story("s2")));
         final TestResult second = new TestResult()
-                .withName("second")
-                .withLabels(feature("f2"), feature("f3"), story("s2"), story("s3"));
+                .setName("second")
+                .setLabels(asList(feature("f2"), feature("f3"), story("s2"), story("s3")));
         behaviors.add(first);
         behaviors.add(second);
 
@@ -86,11 +86,11 @@ public class TestResultTreeTest {
     }
 
     private Label feature(final String value) {
-        return new Label().withName("feature").withValue(value);
+        return new Label().setName("feature").setValue(value);
     }
 
     private Label story(final String value) {
-        return new Label().withName("story").withValue(value);
+        return new Label().setName("story").setValue(value);
     }
 
 }

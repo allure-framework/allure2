@@ -4,8 +4,6 @@ import io.qameta.allure.Aggregator;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.TestResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -19,8 +17,6 @@ import static io.qameta.allure.entity.LabelName.SEVERITY;
  */
 public class SeverityPlugin implements Aggregator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SeverityPlugin.class);
-
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
@@ -32,18 +28,9 @@ public class SeverityPlugin implements Aggregator {
     }
 
     private void setSeverityLevel(final TestResult result) {
-        final SeverityLevel severityLevel = result.findOne(SEVERITY)
-                .map(this::getSeverity)
+        final SeverityLevel severityLevel = result.findOneLabel(SEVERITY)
+                .flatMap(SeverityLevel::fromValue)
                 .orElse(SeverityLevel.NORMAL);
         result.addExtraBlock("severity", severityLevel);
-    }
-
-    private SeverityLevel getSeverity(final String value) {
-        try {
-            return SeverityLevel.fromValue(value);
-        } catch (Exception e) {
-            LOGGER.error("Unknown severity level {}", value, e);
-            return null;
-        }
     }
 }

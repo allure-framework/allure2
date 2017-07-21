@@ -96,7 +96,7 @@ public class RetryPluginTest {
         List<LaunchResults> launchResultsList = createSingleLaunchResults(
                 createTestResult(FIRST_RESULT, historyId, 1L, 9L),
                 createTestResult(SECOND_RESULT, historyId, 11L, 19L),
-                createTestResult(LAST_RESULT, historyId, 21L, 29L).withHidden(true)
+                createTestResult(LAST_RESULT, historyId, 21L, 29L).setHidden(true)
         );
         retryPlugin.aggregate(null, launchResultsList, null);
         Set<TestResult> results = launchResultsList.get(0).getAllResults();
@@ -116,8 +116,8 @@ public class RetryPluginTest {
     public void shouldNotMarkLatestAsFlakyIfRetriesArePassed() throws Exception {
         String historyId = UUID.randomUUID().toString();
         List<LaunchResults> launchResultsList = createSingleLaunchResults(
-                createTestResult(FIRST_RESULT, historyId, 1L, 9L).withStatus(Status.PASSED),
-                createTestResult(SECOND_RESULT, historyId, 11L, 19L).withStatus(Status.PASSED)
+                createTestResult(FIRST_RESULT, historyId, 1L, 9L).setStatus(Status.PASSED),
+                createTestResult(SECOND_RESULT, historyId, 11L, 19L).setStatus(Status.PASSED)
         );
         retryPlugin.aggregate(null, launchResultsList, null);
         Set<TestResult> results = launchResultsList.get(0).getAllResults();
@@ -137,9 +137,9 @@ public class RetryPluginTest {
     public void shouldNotMarkLatestAsFlakyIfRetriesSkipped() throws Exception {
         String historyId = UUID.randomUUID().toString();
         List<LaunchResults> launchResultsList = createSingleLaunchResults(
-                createTestResult(FIRST_RESULT, historyId, 1L, 9L).withStatus(Status.SKIPPED),
-                createTestResult(SECOND_RESULT, historyId, 11L, 19L).withStatus(Status.PASSED),
-                createTestResult(LAST_RESULT, historyId, 12L, 20L).withHidden(true).withStatus(Status.PASSED)
+                createTestResult(FIRST_RESULT, historyId, 1L, 9L).setStatus(Status.SKIPPED),
+                createTestResult(SECOND_RESULT, historyId, 11L, 19L).setStatus(Status.PASSED),
+                createTestResult(LAST_RESULT, historyId, 12L, 20L).setHidden(true).setStatus(Status.PASSED)
         );
         retryPlugin.aggregate(null, launchResultsList, null);
         Set<TestResult> results = launchResultsList.get(0).getAllResults();
@@ -157,9 +157,9 @@ public class RetryPluginTest {
 
     private TestResult createTestResult(String name, String historyId, long start, long stop) {
         return new TestResult()
-                .withName(name)
-                .withHistoryId(historyId)
-                .withStatus(Status.BROKEN)
-                .withTime(new Time().withStart(start).withStop(stop));
+                .setName(name)
+                .setHistoryId(historyId)
+                .setStatus(Status.BROKEN)
+                .setTime(new Time().setStart(start).setStop(stop));
     }
 }

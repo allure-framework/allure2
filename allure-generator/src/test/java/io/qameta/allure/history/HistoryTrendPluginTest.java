@@ -158,9 +158,9 @@ public class HistoryTrendPluginTest {
         final List<HistoryTrendItem> history = randomHistoryTrendItems();
         final List<HistoryTrendItem> data = new HistoryTrendPlugin().getData(configuration, createSingleLaunchResults(
                 singletonMap(HISTORY_TREND_BLOCK_NAME, history),
-                randomTestResult().withStatus(Status.PASSED),
-                randomTestResult().withStatus(Status.FAILED),
-                randomTestResult().withStatus(Status.FAILED)
+                randomTestResult().setStatus(Status.PASSED),
+                randomTestResult().setStatus(Status.FAILED),
+                randomTestResult().setStatus(Status.FAILED)
         ));
 
         assertThat(data)
@@ -184,22 +184,22 @@ public class HistoryTrendPluginTest {
         final Map<String, Object> extra1 = new HashMap<>();
         final List<HistoryTrendItem> history1 = randomHistoryTrendItems();
         extra1.put(HISTORY_TREND_BLOCK_NAME, history1);
-        extra1.put(EXECUTORS_BLOCK_NAME, new ExecutorInfo().withBuildOrder(1L));
+        extra1.put(EXECUTORS_BLOCK_NAME, new ExecutorInfo().setBuildOrder(1L));
         final Map<String, Object> extra2 = new HashMap<>();
         final List<HistoryTrendItem> history2 = randomHistoryTrendItems();
         extra2.put(HISTORY_TREND_BLOCK_NAME, history2);
-        extra2.put(EXECUTORS_BLOCK_NAME, new ExecutorInfo().withBuildOrder(7L));
+        extra2.put(EXECUTORS_BLOCK_NAME, new ExecutorInfo().setBuildOrder(7L));
 
         final List<LaunchResults> launchResults = Arrays.asList(
                 createLaunchResults(extra1,
-                        randomTestResult().withStatus(Status.PASSED),
-                        randomTestResult().withStatus(Status.FAILED),
-                        randomTestResult().withStatus(Status.FAILED)
+                        randomTestResult().setStatus(Status.PASSED),
+                        randomTestResult().setStatus(Status.FAILED),
+                        randomTestResult().setStatus(Status.FAILED)
                 ),
                 createLaunchResults(extra2,
-                        randomTestResult().withStatus(Status.PASSED),
-                        randomTestResult().withStatus(Status.FAILED),
-                        randomTestResult().withStatus(Status.FAILED)
+                        randomTestResult().setStatus(Status.PASSED),
+                        randomTestResult().setStatus(Status.FAILED),
+                        randomTestResult().setStatus(Status.FAILED)
                 )
         );
 
@@ -221,18 +221,18 @@ public class HistoryTrendPluginTest {
         final List<HistoryTrendItem> history = randomHistoryTrendItems();
         final Map<String, Object> extra = new HashMap<>();
         extra.put(HISTORY_TREND_BLOCK_NAME, history);
-        extra.put(EXECUTORS_BLOCK_NAME, new ExecutorInfo().withBuildOrder(null));
+        extra.put(EXECUTORS_BLOCK_NAME, new ExecutorInfo().setBuildOrder(null));
 
         final List<LaunchResults> launchResults = Arrays.asList(
                 createLaunchResults(extra,
-                        randomTestResult().withStatus(Status.PASSED),
-                        randomTestResult().withStatus(Status.FAILED),
-                        randomTestResult().withStatus(Status.FAILED)
+                        randomTestResult().setStatus(Status.PASSED),
+                        randomTestResult().setStatus(Status.FAILED),
+                        randomTestResult().setStatus(Status.FAILED)
                 ),
                 createLaunchResults(extra,
-                        randomTestResult().withStatus(Status.PASSED),
-                        randomTestResult().withStatus(Status.FAILED),
-                        randomTestResult().withStatus(Status.FAILED)
+                        randomTestResult().setStatus(Status.PASSED),
+                        randomTestResult().setStatus(Status.FAILED),
+                        randomTestResult().setStatus(Status.FAILED)
                 )
         );
         final List<HistoryTrendItem> data = new HistoryTrendPlugin().getData(configuration, launchResults);

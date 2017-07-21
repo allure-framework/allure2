@@ -179,7 +179,7 @@ public class XunitXmlPlugin implements Reader {
     private Parameter getParameter(final XmlElement traitElement) {
         final String name = traitElement.getAttribute(NAME_ATTRIBUTE_NAME);
         final String value = traitElement.getAttribute(VALUE_ATTRIBUTE_NAME);
-        return new Parameter().withName(name).withValue(value);
+        return new Parameter().setName(name).setValue(value);
     }
 
     private Time getTime(final XmlElement testElement) {
@@ -188,7 +188,7 @@ public class XunitXmlPlugin implements Reader {
                 final long duration = BigDecimal.valueOf(testElement.getDoubleAttribute(TIME_ATTRIBUTE_NAME))
                         .multiply(MULTIPLICAND)
                         .longValue();
-                return new Time().withDuration(duration);
+                return new Time().setDuration(duration);
             } catch (Exception e) {
                 LOGGER.debug("Could not parse time attribute for element test", e);
             }

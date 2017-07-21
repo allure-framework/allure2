@@ -55,13 +55,13 @@ public class CategoriesPluginTest {
         final CategoriesPlugin categoriesPlugin = new CategoriesPlugin();
 
         final TestResult first = new TestResult()
-                .withName("first")
-                .withStatus(Status.FAILED)
-                .withStatusDetails(new StatusDetails().withMessage("A"));
+                .setName("first")
+                .setStatus(Status.FAILED)
+                .setStatusDetails(new StatusDetails().setMessage("A"));
         final TestResult second = new TestResult()
-                .withName("second")
-                .withStatus(Status.BROKEN)
-                .withStatusDetails(new StatusDetails().withMessage("B"));
+                .setName("second")
+                .setStatus(Status.BROKEN)
+                .setStatusDetails(new StatusDetails().setMessage("B"));
 
         categoriesPlugin.addCategoriesForResults(createSingleLaunchResults(first, second));
 
@@ -81,9 +81,9 @@ public class CategoriesPluginTest {
     public void shouldSetCustomCategoriesToResults() throws Exception {
         final String categoryName = "Some category";
         Category category = new Category()
-                .withName(categoryName)
-                .withMessageRegex(".*")
-                .withMatchedStatuses(Status.BROKEN);
+                .setName(categoryName)
+                .setMessageRegex(".*")
+                .setMatchedStatuses(singletonList(Status.BROKEN));
 
         Map<String, Object> meta = new HashMap<>();
         meta.put("categories", singletonList(category));
@@ -91,13 +91,13 @@ public class CategoriesPluginTest {
         final CategoriesPlugin categoriesPlugin = new CategoriesPlugin();
 
         final TestResult first = new TestResult()
-                .withName("first")
-                .withStatus(Status.FAILED)
-                .withStatusDetails(new StatusDetails().withMessage("A"));
+                .setName("first")
+                .setStatus(Status.FAILED)
+                .setStatusDetails(new StatusDetails().setMessage("A"));
         final TestResult second = new TestResult()
-                .withName("second")
-                .withStatus(Status.BROKEN)
-                .withStatusDetails(new StatusDetails().withMessage("B"));
+                .setName("second")
+                .setStatus(Status.BROKEN)
+                .setStatusDetails(new StatusDetails().setMessage("B"));
 
         categoriesPlugin.addCategoriesForResults(createSingleLaunchResults(meta, first, second));
 
@@ -117,26 +117,26 @@ public class CategoriesPluginTest {
         final CategoriesPlugin categoriesPlugin = new CategoriesPlugin();
 
         final TestResult first = new TestResult()
-                .withName("first")
-                .withStatus(Status.BROKEN)
-                .withStatusDetails(new StatusDetails().withMessage("M1"));
+                .setName("first")
+                .setStatus(Status.BROKEN)
+                .setStatusDetails(new StatusDetails().setMessage("M1"));
         final TestResult second = new TestResult()
-                .withName("second")
-                .withStatus(Status.FAILED)
-                .withStatusDetails(new StatusDetails().withMessage("M2"));
+                .setName("second")
+                .setStatus(Status.FAILED)
+                .setStatusDetails(new StatusDetails().setMessage("M2"));
         final TestResult third = new TestResult()
-                .withName("third")
-                .withStatus(Status.BROKEN)
-                .withStatusDetails(new StatusDetails().withMessage("M3"));
+                .setName("third")
+                .setStatus(Status.BROKEN)
+                .setStatusDetails(new StatusDetails().setMessage("M3"));
         final TestResult other = new TestResult()
-                .withName("other")
-                .withStatus(Status.PASSED)
-                .withStatusDetails(new StatusDetails().withMessage("M4"));
+                .setName("other")
+                .setStatus(Status.PASSED)
+                .setStatusDetails(new StatusDetails().setMessage("M4"));
 
-        first.addExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().withName("C1")));
-        second.addExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().withName("C2")));
-        third.addExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().withName("C1")));
-        other.addExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().withName("C3")));
+        first.addExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().setName("C1")));
+        second.addExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().setName("C2")));
+        third.addExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().setName("C1")));
+        other.addExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().setName("C3")));
 
         final List<LaunchResults> launchResults = createSingleLaunchResults(first, second, third, other);
         final Tree<TestResult> tree = categoriesPlugin.getData(launchResults);
@@ -164,9 +164,9 @@ public class CategoriesPluginTest {
     public void shouldWork() throws IOException {
 
         Category category = new Category()
-                .withName(CATEGORY_NAME)
-                .withMessageRegex(".*")
-                .withMatchedStatuses(Status.BROKEN);
+                .setName(CATEGORY_NAME)
+                .setMessageRegex(".*")
+                .setMatchedStatuses(singletonList(Status.BROKEN));
 
         Map<String, Object> meta = new HashMap<>();
         meta.put("categories", singletonList(category));
@@ -195,9 +195,9 @@ public class CategoriesPluginTest {
     @Test
     public void flakyTestsCanBeAddedToCategory() throws IOException {
         Category category = new Category()
-                .withName(CATEGORY_NAME)
-                .withMatchedStatuses(Status.FAILED)
-                .withFlaky(true);
+                .setName(CATEGORY_NAME)
+                .setMatchedStatuses(singletonList(Status.FAILED))
+                .setFlaky(true);
 
         Map<String, Object> meta = new HashMap<>();
         meta.put("categories", singletonList(category));
@@ -227,8 +227,8 @@ public class CategoriesPluginTest {
     }
 
     private TestResult createTestResult(String message, Status status, boolean flaky) {
-        return new TestResult().withStatus(status).withStatusDetails(
-                new StatusDetails().withMessage(message).withFlaky(flaky)
+        return new TestResult().setStatus(status).setStatusDetails(
+                new StatusDetails().setMessage(message).setFlaky(flaky)
         );
     }
 

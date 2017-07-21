@@ -39,10 +39,10 @@ public class GraphPlugin implements Aggregator {
 
     private GraphData createData(final TestResult result) {
         return new GraphData()
-                .withUid(result.getUid())
-                .withName(result.getName())
-                .withStatus(result.getStatus())
-                .withTime(result.getTime())
-                .withSeverity(result.getExtraBlock("severity"));
+                .setUid(result.getUid())
+                .setName(result.getName())
+                .setStatus(result.getStatus())
+                .setTime(result.getTime())
+                .setSeverity(result.getExtraBlock("severity"));
     }
 }

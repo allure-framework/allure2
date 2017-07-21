@@ -46,7 +46,7 @@ public class UnitTest {
                 .filter(entry -> entry.getKey().startsWith(PARAMETER_PREFIX))
                 .map(entry -> {
                     final String name = entry.getKey().substring(PARAMETER_PREFIX.length());
-                    return new Parameter().withName(name).withValue(entry.getValue());
+                    return new Parameter().setName(name).setValue(entry.getValue());
                 }).collect(Collectors.toList());
     }
 }
