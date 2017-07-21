@@ -20,7 +20,7 @@ export default class TestResultModel extends Model {
             .concat(makeArray(testResult.testStage))
             .concat(makeArray(testResult.afterStages))
             .reduce((result, stage) => result.concat(collectAttachments(stage)), []);
-        return testResult
+        return testResult;
     }
 
 

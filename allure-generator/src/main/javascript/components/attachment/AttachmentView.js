@@ -31,7 +31,7 @@ class AttachmentView extends View {
     }
 
     onDestroy() {
-        router.setSearch({attachment: null})
+        router.setSearch({attachment: null});
     }
 
     @on('click .attachment__media')
