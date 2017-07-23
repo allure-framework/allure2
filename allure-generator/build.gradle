@@ -58,7 +58,9 @@ dependencies {
     compile('org.apache.tika:tika-core')
     compile('commons-io:commons-io')
     compile('com.fasterxml.jackson.dataformat:jackson-dataformat-yaml')
+    compile('org.apache.httpcomponents:httpclient')
     compileOnly('org.projectlombok:lombok')
+
 
     testCompile('junit:junit')
     testCompile('org.assertj:assertj-core')

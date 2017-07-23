@@ -89,6 +89,7 @@ allprojects {
             dependency 'org.freemarker:freemarker:2.3.23'
             dependency 'com.vladsch.flexmark:flexmark:0.19.4'
             dependency 'org.projectlombok:lombok:1.16.16'
+            dependency 'org.apache.httpcomponents:httpclient:4.5.3'
 
             dependency 'org.allurefw:allure1-model:1.0'
             dependency 'io.qameta.allure:allure2-model-api:1.0-BETA4'
