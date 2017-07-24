@@ -4,6 +4,7 @@
   overflow: auto;
   @include status-border();
   @include status-bg-light();
+  margin-bottom: 7px;
   &__expanded > &__content > &__trace {
     display: block;
   }

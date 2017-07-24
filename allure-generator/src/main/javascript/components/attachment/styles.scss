@@ -53,6 +53,11 @@
   &__embed, &__media {
     max-width: 100%;
     display: block;
+    &_fullscreen {
+      margin: auto;
+    }
+    margin: auto;
+
   }
   &__iframe {
     width: 100%;

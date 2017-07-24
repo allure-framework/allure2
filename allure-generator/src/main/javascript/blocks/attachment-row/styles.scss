@@ -14,7 +14,7 @@
   }
   &_selected {
     &, &:hover {
-      background: $selected-color;
+      background: $pane-bg-color;
     }
     &:hover {
       background: $hover-color;
@@ -39,10 +39,10 @@
     margin-right: 5px;
   }
   &__preview {
-    margin: 0px 0px 4px 0;
+    margin-bottom: 7px;
   }
   &__content {
-    background-color: #f7f7f8;
+    background-color: $attachment-bg;
   }
   &__content > div{
     padding: 5px;
