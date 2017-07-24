@@ -52,6 +52,7 @@
   }
   &__embed, &__media {
     max-width: 100%;
+    display: block;
   }
   &__iframe {
     width: 100%;
