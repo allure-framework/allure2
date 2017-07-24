@@ -51,16 +51,22 @@ class TestResultView extends View {
     }
 
     onShowAttachment(uid) {
-        const attachment = this.model.getAttachment(uid);
-        const modalView = new ModalView({
-            childView: attachment
-                ? new AttachmentView({attachment, fullScreen: true})
-                : new ErrorSplashView({code: 404, message: translate('errors.missedAttachment')}),
-            title: attachment
-                ? attachment.name || attachment.source
-                : translate('errors.notFound')
-        });
-        modalView.show();
+        if (!uid && this.modalView) {
+            this.modalView.destroy();
+        }
+
+        if(uid) {
+            const attachment = this.model.getAttachment(uid);
+            this.modalView = new ModalView({
+                childView: attachment
+                    ? new AttachmentView({attachment, fullScreen: true})
+                    : new ErrorSplashView({code: 404, message: translate('errors.missedAttachment')}),
+                title: attachment
+                    ? attachment.name || attachment.source
+                    : translate('errors.notFound')
+            });
+            this.modalView.show();
+        }
     }
 
     templateContext() {

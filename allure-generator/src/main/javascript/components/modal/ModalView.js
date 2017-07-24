@@ -16,12 +16,15 @@ class ModalView extends View {
     show() {
         this.constructor.container.append(this.$el);
         this.showChildView('content', this.options.childView);
-        $('#content').toggleClass('blur');
+        $('#content').toggleClass('blur', true);
     }
 
-    @on('click .modal__close')
+    onDestroy() {
+        $('#content').toggleClass('blur', false);
+    }
+
+    @on('click .modal__background, .modal__close')
     onClose() {
-        $('#content').toggleClass('blur');
         this.destroy();
     }
 

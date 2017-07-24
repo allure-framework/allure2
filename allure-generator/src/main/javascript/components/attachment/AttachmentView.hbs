@@ -21,7 +21,7 @@
         </table>
     </div>
 {{else if (eq type "image")}}
-    <div class="attachment__media-container">
+    <div class="{{b 'attachment__media-container' fullscreen=fullScreen}}">
         <img class="attachment__media" src="{{sourceUrl}}"/>
     </div>
 {{else if (eq type "svg")}}

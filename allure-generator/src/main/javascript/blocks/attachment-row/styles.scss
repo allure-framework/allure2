@@ -20,6 +20,14 @@
       background: $hover-color;
     }
   }
+  &_selected > &__arrow {
+      transform: rotate(90deg);
+  }
+  &__arrow {
+    left: 7px;
+    position: absolute;
+    font-size: initial;
+  }
   &__name {
     flex: 1;
   }
@@ -28,8 +36,7 @@
     display: inline-block;
   }
   &__icon {
-    left: 11px;
-    position: absolute;
+    margin-right: 5px;
   }
   &__preview {
     margin: 2px 5px 2px 0;

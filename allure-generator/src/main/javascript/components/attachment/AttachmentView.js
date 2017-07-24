@@ -34,9 +34,14 @@ class AttachmentView extends View {
         router.setSearch({attachment: null});
     }
 
-    @on('click .attachment__media')
-    onImageClick() {
-        router.setSearch({attachment: this.attachment.uid});
+    @on('click .attachment__media-container')
+    onImageClick(e) {
+        const el = this.$(e.currentTarget);
+        if (el.hasClass('attachment__media-container_fullscreen')) {
+            this.onDestroy();
+        } else {
+            router.setSearch({attachment: this.attachment.uid});
+        }
     }
 
     loadContent() {

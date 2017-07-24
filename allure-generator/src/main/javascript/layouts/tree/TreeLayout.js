@@ -34,7 +34,7 @@ export default class TreeLayout extends AppLayout {
         if (attachment) {
             this.routeState.set('attachment', attachment);
         } else {
-            this.routeState.unset('attachment', {silent: true});
+            this.routeState.unset('attachment');
         }
 
     }

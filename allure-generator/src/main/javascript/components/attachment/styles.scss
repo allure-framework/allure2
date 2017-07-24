@@ -46,7 +46,7 @@
   &__media-container {
     text-align: center;
     cursor: zoom-in;
-    .pane_expanded & {
+    &_fullscreen {
       cursor: zoom-out;
     }
   }
