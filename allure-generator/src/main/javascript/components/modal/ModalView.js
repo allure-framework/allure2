@@ -23,6 +23,11 @@ class ModalView extends View {
         $('#content').toggleClass('blur', false);
     }
 
+    @on('click .modal__content')
+    onKeepOpen(e) {
+        e.stopPropagation();
+    }
+
     @on('click .modal__background, .modal__close')
     onClose() {
         this.destroy();
