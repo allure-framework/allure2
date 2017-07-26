@@ -3,7 +3,6 @@ import {View} from 'backbone.marionette';
 import {regions, behavior, className} from '../../decorators';
 import template from './TestResultView.hbs';
 import TestResultOverviewView from '../testresult-overview/TestResultOverviewView';
-import TestResultExecutionView from '../testresult-execution/TestResultExecutionView';
 import ErrorSplashView from '../error-splash/ErrorSplashView';
 import pluginsRegistry from '../../util/pluginsRegistry';
 import ModalView from '../modal/ModalView';
@@ -11,8 +10,7 @@ import AttachmentView from '../attachment/AttachmentView';
 import translate from '../../helpers/t';
 
 const subViews = [
-    {id: '', name: 'testResult.overview.name', View: TestResultOverviewView},
-    {id: 'execution', name: 'testResult.execution.name', View: TestResultExecutionView}
+    {id: '', name: 'testResult.overview.name', View: TestResultOverviewView}
 ];
 
 @className('test-result')
