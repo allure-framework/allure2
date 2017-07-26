@@ -1,5 +1,6 @@
 package io.qameta.allure.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -54,6 +55,7 @@ public class Statistic implements Serializable {
         }
     }
 
+    @JsonIgnore
     public Status getStatus() {
         for (final Status status : Status.values()) {
             if (get(status) > 0) {
