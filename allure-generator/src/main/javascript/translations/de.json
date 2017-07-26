@@ -134,6 +134,7 @@
   "controls": {
     "collapse": "Verkleinern",
     "expand": "Vergrößern",
+    "fullscreen": "Vollbild",
     "language": "Sprache ändern",
     "clipboard": "In Zwischenablage kopieren",
     "backto": "Zurück zu"
