@@ -21,7 +21,7 @@ class TrendChartView extends BaseChartView {
     getChartData() {
         return this.options.items.map((item, i) => ({
             ...item,
-            id:  item.buildOrder ? `build_${item.buildOrder}` : `item_${i}`,
+            id: `item_${i}`,
             name: item.buildOrder ? `#${item.buildOrder}` : '',
             total: item.statistic.total,
             statistic: omit(item.statistic, 'total')
