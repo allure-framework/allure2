@@ -1,6 +1,6 @@
 import './styles.scss';
 import {View} from 'backbone.marionette';
-import {className, on, regions} from '../../decorators';
+import {className, regions} from '../../decorators';
 import template from './TestResultOverviewView.hbs';
 import pluginsRegistry from '../../util/pluginsRegistry';
 import TestResultExecutionView from '../testresult-execution/TestResultExecutionView';
