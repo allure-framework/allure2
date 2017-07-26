@@ -36,11 +36,6 @@ class TestResultOverviewView extends View {
         });
     }
 
-    @on('click .status-details__trace-toggle')
-    onStacktraceClick(e) {
-        this.$(e.currentTarget).closest('.status-details').toggleClass('status-details__expanded');
-    }
-
     templateContext() {
         return {
             cls: this.className

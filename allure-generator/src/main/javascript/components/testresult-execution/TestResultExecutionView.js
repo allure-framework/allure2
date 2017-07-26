@@ -84,11 +84,6 @@ class TestResultExecutionView extends View {
     onParameterClick(e) {
         this.$(e.target).siblings().addBack().toggleClass('line-ellipsis');
     }
-
-    @on('click .status-details__trace-toggle')
-    onStacktraceClick(e) {
-        this.$(e.currentTarget).closest('.status-details').toggleClass('status-details__expanded');
-    }
 }
 
 export default TestResultExecutionView;
