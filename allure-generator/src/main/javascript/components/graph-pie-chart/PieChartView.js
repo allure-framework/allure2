@@ -67,7 +67,7 @@ class PieChartView extends BaseChartView {
         this.svg.select('.chart__plot').append('text')
             .classed('chart__caption', true)
             .attrs({dy: '0.4em'})
-            .styles({'font-size': radius / 3})
+            .styles({'font-size': `${radius / 3}px`})
             .text(this.getChartTitle());
 
         if(this.firstRender) {
