@@ -46,6 +46,8 @@
             </p>
         {{/each}}
     </div>
+{{else if (eq type "html")}}
+        <iframe class="attachment__iframe" frameborder="0" src="{{sourceUrl}}"></iframe>
 {{else}}
     <div class="{{b 'attachment__text-container' fullscreen=fullScreen}}">
         <span class="fa fa-download"></span>
