@@ -65,7 +65,8 @@
   &__iframe {
     width: 100%;
     &_fullscreen {
-      height: 80vh;
+      background-color: $pane-bg-color;
+      height: 85vh;
     }
   }
 }
