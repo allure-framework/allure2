@@ -30,10 +30,8 @@ export default class BaseChartView extends View {
     }
 
     setupViewport() {
-        this.viewBoxWidth = Math.floor(this.$el.outerWidth());
-        this.viewBoxHeight = Math.floor(this.$el.outerHeight());
-        this.width = this.viewBoxWidth - this.PAD_LEFT - this.PAD_RIGHT;
-        this.height = this.viewBoxHeight - this.PAD_BOTTOM - this.PAD_TOP;
+        this.width = Math.floor(this.$el.outerWidth()) - this.PAD_LEFT - this.PAD_RIGHT;
+        this.height = Math.floor(this.$el.outerHeight()) - this.PAD_BOTTOM - this.PAD_TOP;
         this.$el.html(template(this));
         this.svg = select(this.$el[0]).select('.chart__svg');
         this.plot = this.svg.select('.chart__plot');
