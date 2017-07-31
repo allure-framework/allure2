@@ -117,7 +117,7 @@ class TreeView extends View {
     onNodeClick(e) {
         const uid = this.$(e.currentTarget).data('uid');
         this.changeState(uid, !this.state.has(uid));
-        this.restoreState();
+        this.$(e.currentTarget).parent().toggleClass('node__expanded');
     }
 
     @on('click .tree__info')
