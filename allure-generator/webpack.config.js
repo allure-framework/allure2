@@ -71,6 +71,7 @@ module.exports = (env) => {
             new CaseSensitivePathsPlugin()
         ],
         devServer: {
+            disableHostCheck: true,
             contentBase: './build/demo-report/',
             stats: {colors: true},
             host: '0.0.0.0',
