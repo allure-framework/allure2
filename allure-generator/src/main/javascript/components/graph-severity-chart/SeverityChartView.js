@@ -15,19 +15,17 @@ export default class SeverityChartView extends BaseChartView {
         this.y = scaleSqrt();
         this.status = scaleBand().domain(values);
         this.tooltip = new PopoverView({position: 'right'});
-
         this.collection = this.model;
-
         this.getChartData();
     }
 
     getChartData() {
         this.data = severities.map(severity =>
             values.map(status => {
-                const testResult = this.collection.where({status, severity}).map(model => model.toJSON());
+                const testResults = this.collection.where({status, severity}).map(model => model.toJSON());
                 return {
-                    value: testResult.length,
-                    testResult,
+                    value: testResults.length,
+                    testResults,
                     severity,
                     status
                 };
@@ -50,14 +48,14 @@ export default class SeverityChartView extends BaseChartView {
         });
 
         this.svg.selectAll('.tick').select('line')
-            .attr('transform', 'translate(' + this.x.step()/2 + ', 0)');
+            .attr('transform', `translate(${this.x.step()/2} , 0)`);
 
         this.makeLeftAxis({
             scale: this.y,
             ticks: Math.min(10, this.y.domain()[1])
         });
 
-        var bars = this.svg.select('.chart__plot').selectAll('.chart__group')
+        let bars = this.svg.select('.chart__plot').selectAll('.chart__group')
             .data(data).enter()
             .append('g')
             .attr('transform', d => `translate(${this.x(d[0].severity)},0)`)
@@ -70,7 +68,7 @@ export default class SeverityChartView extends BaseChartView {
             y: this.height,
             height: 0,
             width: this.status.step(),
-            'class': d => 'chart__bar chart__fill_status_' + d.status
+            'class': d => `chart__bar chart__fill_status_${d.status}`
         });
 
         this.bindTooltip(bars);
