@@ -10,7 +10,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -38,7 +37,10 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
     protected String description;
     protected String descriptionHtml;
     protected Status status;
-    protected StatusDetails statusDetails = new StatusDetails();
+    protected String statusMessage;
+    protected String statusTrace;
+
+    protected boolean flaky;
 
     //    Execution
     protected List<StageResult> beforeStages = new ArrayList<>();
@@ -58,9 +60,8 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
         return getUid() + ".json";
     }
 
-    public TestResult setExtraBlock(final String blockName, final Object block) {
+    public void addExtraBlock(final String blockName, final Object block) {
         extra.put(blockName, block);
-        return this;
     }
 
     @SuppressWarnings("unchecked")
@@ -128,26 +129,10 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
         getLabels().add(new Label().setName(name).setValue(value));
     }
 
-    public StatusDetails getStatusDetailsSafe() {
-        if (Objects.isNull(getStatusDetails())) {
-            setStatusDetails(new StatusDetails());
-        }
-        return getStatusDetails();
-    }
-
-    public Optional<String> getStatusMessage() {
-        return Optional.ofNullable(getStatusDetails())
-                .map(StatusDetails::getMessage);
-    }
-
-    public static Comparator<TestResult> comparingByTimeDesc() {
-        return comparingByTimeAsc().reversed();
-    }
-
-    public static Comparator<TestResult> comparingByTimeAsc() {
+    public static Comparator<TestResult> comparingByTime() {
         return comparing(
                 TestResult::getTime,
                 nullsFirst(comparing(Time::getStart, nullsFirst(naturalOrder())))
-        );
+        ).reversed();
     }
 }
