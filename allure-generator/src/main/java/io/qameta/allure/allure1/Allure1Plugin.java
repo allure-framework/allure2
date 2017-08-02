@@ -12,7 +12,6 @@ import io.qameta.allure.entity.Link;
 import io.qameta.allure.entity.Parameter;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
@@ -21,7 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.yandex.qatools.allure.model.Description;
 import ru.yandex.qatools.allure.model.DescriptionType;
-import ru.yandex.qatools.allure.model.Failure;
 import ru.yandex.qatools.allure.model.ParameterKind;
 import ru.yandex.qatools.allure.model.TestCaseResult;
 import ru.yandex.qatools.allure.model.TestSuiteResult;
@@ -164,21 +162,27 @@ public class Allure1Plugin implements Reader {
         dest.setParameters(parameters);
         dest.setDescription(getDescription(testSuite.getDescription(), source.getDescription()));
         dest.setDescriptionHtml(getDescriptionHtml(testSuite.getDescription(), source.getDescription()));
-        final StatusDetails statusDetails = convert(source.getFailure());
-        dest.setStatusDetails(statusDetails);
+        Optional.ofNullable(source.getFailure()).ifPresent(failure -> {
+            dest.setStatusMessage(failure.getMessage());
+            dest.setStatusTrace(failure.getStackTrace());
+        });
 
         if (!source.getSteps().isEmpty() || !source.getAttachments().isEmpty()) {
             StageResult testStage = new StageResult();
             if (!source.getSteps().isEmpty()) {
-                testStage.setSteps(
-                        convert(source.getSteps(), step -> convert(directory, visitor, step, status, statusDetails))
+                //@formatter:off
+                testStage.setSteps(convert(
+                    source.getSteps(),
+                    step -> convert(directory, visitor, step, status, dest.getStatusMessage(), dest.getStatusTrace()))
                 );
+                //@formatter:on
             }
             if (!source.getAttachments().isEmpty()) {
                 testStage.setAttachments(convert(source.getAttachments(), at -> convert(directory, visitor, at)));
             }
             testStage.setStatus(status);
-            testStage.setStatusDetails(statusDetails);
+            testStage.setStatusMessage(dest.getStatusMessage());
+            testStage.setStatusTrace(dest.getStatusTrace());
             dest.setTestStage(testStage);
         }
 
@@ -212,7 +216,7 @@ public class Allure1Plugin implements Reader {
         dest.findAllLabels("status_details").stream()
                 .filter("flaky"::equalsIgnoreCase)
                 .findAny()
-                .ifPresent(value -> dest.getStatusDetailsSafe().setFlaky(true));
+                .ifPresent(value -> dest.setFlaky(true));
         dest.addLabelIfNotExists(RESULT_FORMAT, ALLURE1_RESULTS_FORMAT);
         visitor.visitTestResult(dest);
     }
@@ -234,7 +238,8 @@ public class Allure1Plugin implements Reader {
                          final ResultsVisitor visitor,
                          final ru.yandex.qatools.allure.model.Step s,
                          final Status testStatus,
-                         final StatusDetails details) {
+                         final String message,
+                         final String trace) {
         final Status status = convert(s.getStatus());
         final Step current = new Step()
                 .setName(s.getTitle() == null ? s.getName() : s.getTitle())
@@ -243,19 +248,14 @@ public class Allure1Plugin implements Reader {
                         .setStop(s.getStop())
                         .setDuration(s.getStop() - s.getStart()))
                 .setStatus(status)
-                .setSteps(convert(s.getSteps(), step -> convert(source, visitor, step, testStatus, details)))
+                .setSteps(convert(s.getSteps(), step -> convert(source, visitor, step, testStatus, message, trace)))
                 .setAttachments(convert(s.getAttachments(), attach -> convert(source, visitor, attach)));
         //Copy test status details to each step set the same status
         if (Objects.equals(status, testStatus)) {
-            current.setStatusDetails(details);
+            current.setStatusMessage(message);
+            current.setStatusMessage(trace);
         }
         return current;
-    }
-
-    private StatusDetails convert(final Failure failure) {
-        return Objects.isNull(failure) ? null : new StatusDetails()
-                .setMessage(failure.getMessage())
-                .setTrace(failure.getStackTrace());
     }
 
     private Label convert(final ru.yandex.qatools.allure.model.Label label) {

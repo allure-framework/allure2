@@ -9,7 +9,6 @@ import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.TestResult;
 import org.assertj.core.groups.Tuple;
 import org.junit.Before;
@@ -25,7 +24,6 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -168,10 +166,7 @@ public class JunitXmlPluginTest {
                 );
 
         assertThat(results)
-                .extracting(TestResult::getStatusDetails)
-                .filteredOn(Objects::nonNull)
-                .hasSize(4)
-                .extracting(StatusDetails::getMessage, StatusDetails::getTrace)
+                .extracting(TestResult::getStatusMessage, TestResult::getStatusTrace)
                 .containsExactlyInAnyOrder(
                         Tuple.tuple("message-root", "trace-root"),
                         Tuple.tuple("message-retried-1", "trace-retried-1"),
@@ -191,8 +186,7 @@ public class JunitXmlPluginTest {
         verify(visitor, times(1)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
-                .extracting(TestResult::getStatusDetails)
-                .extracting(StatusDetails::getMessage, StatusDetails::getTrace)
+                .extracting(TestResult::getStatusMessage, TestResult::getStatusTrace)
                 .containsExactlyInAnyOrder(
                         tuple("some-message", "some-trace")
                 );

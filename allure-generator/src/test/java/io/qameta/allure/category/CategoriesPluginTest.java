@@ -4,7 +4,6 @@ import io.qameta.allure.ConfigurationBuilder;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeNode;
@@ -57,11 +56,11 @@ public class CategoriesPluginTest {
         final TestResult first = new TestResult()
                 .setName("first")
                 .setStatus(Status.FAILED)
-                .setStatusDetails(new StatusDetails().setMessage("A"));
+                .setStatusMessage("A");
         final TestResult second = new TestResult()
                 .setName("second")
                 .setStatus(Status.BROKEN)
-                .setStatusDetails(new StatusDetails().setMessage("B"));
+                .setStatusMessage("B");
 
         categoriesPlugin.addCategoriesForResults(createSingleLaunchResults(first, second));
 
@@ -93,11 +92,11 @@ public class CategoriesPluginTest {
         final TestResult first = new TestResult()
                 .setName("first")
                 .setStatus(Status.FAILED)
-                .setStatusDetails(new StatusDetails().setMessage("A"));
+                .setStatusMessage("B");
         final TestResult second = new TestResult()
                 .setName("second")
                 .setStatus(Status.BROKEN)
-                .setStatusDetails(new StatusDetails().setMessage("B"));
+                .setStatusMessage("B");
 
         categoriesPlugin.addCategoriesForResults(createSingleLaunchResults(meta, first, second));
 
@@ -119,19 +118,19 @@ public class CategoriesPluginTest {
         final TestResult first = new TestResult()
                 .setName("first")
                 .setStatus(Status.BROKEN)
-                .setStatusDetails(new StatusDetails().setMessage("M1"));
+                .setStatusMessage("M1");
         final TestResult second = new TestResult()
                 .setName("second")
                 .setStatus(Status.FAILED)
-                .setStatusDetails(new StatusDetails().setMessage("M2"));
+                .setStatusMessage("M2");
         final TestResult third = new TestResult()
                 .setName("third")
                 .setStatus(Status.BROKEN)
-                .setStatusDetails(new StatusDetails().setMessage("M3"));
+                .setStatusMessage("M3");
         final TestResult other = new TestResult()
                 .setName("other")
                 .setStatus(Status.PASSED)
-                .setStatusDetails(new StatusDetails().setMessage("M4"));
+                .setStatusMessage("M4");
 
         first.addExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().setName("C1")));
         second.addExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().setName("C2")));
@@ -227,9 +226,10 @@ public class CategoriesPluginTest {
     }
 
     private TestResult createTestResult(String message, Status status, boolean flaky) {
-        return new TestResult().setStatus(status).setStatusDetails(
-                new StatusDetails().setMessage(message).setFlaky(flaky)
-        );
+        return new TestResult()
+                .setStatus(status)
+                .setStatusMessage(message)
+                .setFlaky(flaky);
     }
 
 

@@ -24,9 +24,7 @@
                                 {{> ../../blocks/attachment-row/attachment-row . baseUrl=../../baseUrl}}
                             {{/each}}
                             {{#if shouldDisplayMessage}}
-                                {{#with statusDetails}}
-                                    {{~> ../../blocks/status-details/status-details . status=../status}}
-                                {{/with}}
+                                {{~> ../../blocks/status-details/status-details .}}
                             {{/if}}
                         </div>
                     </div>
@@ -36,9 +34,7 @@
                         {{> ../../blocks/attachment-row/attachment-row . baseUrl=../../baseUrl}}
                     {{/each}}
                     {{#if shouldDisplayMessage}}
-                        {{#with statusDetails}}
-                            {{~> ../../blocks/status-details/status-details . status=../status}}
-                        {{/with}}
+                        {{~> ../../blocks/status-details/status-details .}}
                     {{/if}}
                 {{/if}}
             {{/each}}

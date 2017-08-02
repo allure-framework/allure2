@@ -14,7 +14,7 @@ import static java.util.Objects.isNull;
  */
 public interface Summarizable {
 
-    StatusDetails getStatusDetails();
+    String getStatusMessage();
 
     List<Step> getSteps();
 
@@ -43,15 +43,13 @@ public interface Summarizable {
 
     @JsonProperty
     default boolean shouldDisplayMessage() {
-        final Optional<String> message = Optional.ofNullable(getStatusDetails())
-                .map(StatusDetails::getMessage);
+        final Optional<String> message = Optional.ofNullable(getStatusMessage());
         return message.isPresent() && getSteps().stream()
                 .noneMatch(step -> step.hasMessage(message.get()));
     }
 
     default boolean hasMessage(String message) {
-        final Optional<String> current = Optional.ofNullable(getStatusDetails())
-                .map(StatusDetails::getMessage)
+        final Optional<String> current = Optional.ofNullable(getStatusMessage())
                 .filter(s -> Objects.equals(s, message));
         return current.isPresent() || getSteps().stream()
                 .anyMatch(step -> step.hasMessage(message));

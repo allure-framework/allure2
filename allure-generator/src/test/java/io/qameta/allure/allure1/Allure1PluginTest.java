@@ -10,7 +10,6 @@ import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.Link;
 import io.qameta.allure.entity.Parameter;
 import io.qameta.allure.entity.StageResult;
-import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
 import org.assertj.core.groups.Tuple;
@@ -194,8 +193,7 @@ public class Allure1PluginTest {
         ).getResults();
         assertThat(testCases)
                 .hasSize(1)
-                .extracting(TestResult::getStatusDetails)
-                .extracting(StatusDetails::isFlaky)
+                .extracting(TestResult::isFlaky)
                 .containsExactly(true);
     }
 

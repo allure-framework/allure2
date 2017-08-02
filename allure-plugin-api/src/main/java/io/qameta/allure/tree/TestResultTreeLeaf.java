@@ -30,7 +30,7 @@ public class TestResultTreeLeaf extends DefaultTreeLeaf {
                 testResult.getUid(),
                 testResult.getStatus(),
                 testResult.getTime(),
-                testResult.getStatusDetailsSafe().isFlaky(),
+                testResult.isFlaky(),
                 testResult.getParameterValues()
         );
     }

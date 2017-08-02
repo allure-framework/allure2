@@ -51,7 +51,7 @@ public class RetryPlugin implements Aggregator {
                     .map(retry -> retry.setHidden(true))
                     .map(retry -> new RetryItem()
                             .setStatus(retry.getStatus())
-                            .setStatusDetails(retry.getStatusDetailsSafe().getMessage())
+                            .setStatusDetails(retry.getStatusMessage())
                             .setTime(retry.getTime())
                             .setUid(retry.getUid()))
                     .collect(Collectors.toList());
@@ -64,7 +64,7 @@ public class RetryPlugin implements Aggregator {
             statuses.remove(Status.PASSED);
             statuses.remove(Status.SKIPPED);
 
-            latest.getStatusDetailsSafe().setFlaky(!statuses.isEmpty());
+            latest.setFlaky(!statuses.isEmpty());
         };
     }
 

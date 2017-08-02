@@ -6,7 +6,6 @@ import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import org.assertj.core.groups.Tuple;
@@ -152,8 +151,7 @@ public class XunitXmlPluginTest {
 
         assertThat(captor.getAllValues())
                 .hasSize(1)
-                .extracting(TestResult::getStatusDetails)
-                .extracting(StatusDetails::getMessage, StatusDetails::getTrace)
+                .extracting(TestResult::getStatusMessage, TestResult::getStatusTrace)
                 .containsExactlyInAnyOrder(
                         Tuple.tuple(inputs[2], inputs[3])
                 );

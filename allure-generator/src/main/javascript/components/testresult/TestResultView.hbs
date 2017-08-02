@@ -5,7 +5,7 @@
     </div>
 {{/if}}
 <h2 class="{{b 'pane' 'title' borderless=true}}">
-    {{#if statusDetails.flaky}}
+    {{#if flaky}}
         {{allure-icon 'flaky'}}
     {{/if}}
     <span class="label label_status_{{status}}">{{t statusName}}</span>
