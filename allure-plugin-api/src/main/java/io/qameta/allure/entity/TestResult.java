@@ -96,8 +96,8 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
     public Optional<String> findOneLabel(final String name) {
         return getLabels().stream()
                 .filter(label -> name.equals(label.getName()))
-                .map(Label::getValue)
-                .findAny();
+                .findAny()
+                .map(Label::getValue);
     }
 
     public void addLabelIfNotExists(final LabelName name, final String value) {
