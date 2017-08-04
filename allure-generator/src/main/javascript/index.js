@@ -8,6 +8,7 @@ import './blocks/status-details/styles.scss';
 import './blocks/table/styles.scss';
 import './blocks/tabs/styles.scss';
 import './blocks/pane/styles.scss';
+import './blocks/parameters-table/styles.scss';
 
 import './pluginApi';
 
