@@ -50,7 +50,7 @@ public class GaPlugin implements Aggregator {
             LOGGER.debug("analytics is disabled");
             return;
         }
-        LOGGER.info("send analytics");
+        LOGGER.debug("send analytics");
         final int pluginsCount = configuration.getPlugins().size();
         final long testResultsCount = launchesResults.stream()
                 .map(LaunchResults::getResults)
@@ -99,7 +99,6 @@ public class GaPlugin implements Aggregator {
                     pair("ds", "Report generator"),
                     pair("cd2", executor),
                     pair("cm1", String.valueOf(testResultsCount)),
-                    pair("cm2", String.valueOf(pluginsCount))
             );
             final HttpPost post = new HttpPost(GA_ENDPOINT);
             final UrlEncodedFormEntity entity = new UrlEncodedFormEntity(pairs, StandardCharsets.UTF_8);
