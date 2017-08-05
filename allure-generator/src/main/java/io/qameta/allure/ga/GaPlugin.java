@@ -51,7 +51,6 @@ public class GaPlugin implements Aggregator {
             return;
         }
         LOGGER.debug("send analytics");
-        final int pluginsCount = configuration.getPlugins().size();
         final long testResultsCount = launchesResults.stream()
                 .map(LaunchResults::getResults)
                 .mapToLong(Collection::size)
@@ -72,7 +71,7 @@ public class GaPlugin implements Aggregator {
 
         try {
             CompletableFuture
-                    .runAsync(() -> sendStats(allureVersion, testResultsCount, pluginsCount, executor))
+                    .runAsync(() -> sendStats(allureVersion, testResultsCount, executor))
                     .get(10, TimeUnit.SECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             LOGGER.debug("Could not send analytics within 10 seconds", e);
@@ -80,8 +79,7 @@ public class GaPlugin implements Aggregator {
     }
 
     @SuppressWarnings("EmptyTryBlock")
-    protected void sendStats(final String allureVersion, final long testResultsCount,
-                             final long pluginsCount, final String executor) {
+    protected void sendStats(final String allureVersion, final long testResultsCount, final String executor) {
         final HttpClientBuilder builder = HttpClientBuilder.create();
         try (CloseableHttpClient client = builder.build()) {
             List<NameValuePair> pairs = Arrays.asList(
@@ -98,7 +96,7 @@ public class GaPlugin implements Aggregator {
                     pair("av", allureVersion),
                     pair("ds", "Report generator"),
                     pair("cd2", executor),
-                    pair("cm1", String.valueOf(testResultsCount)),
+                    pair("cm1", String.valueOf(testResultsCount))
             );
             final HttpPost post = new HttpPost(GA_ENDPOINT);
             final UrlEncodedFormEntity entity = new UrlEncodedFormEntity(pairs, StandardCharsets.UTF_8);
