@@ -16,9 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.InterfaceAddress;
 import java.net.URI;
-import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -40,6 +38,7 @@ import static io.qameta.allure.executor.ExecutorPlugin.EXECUTORS_BLOCK_NAME;
 /**
  * @author charlie (Dmitry Baev).
  */
+@SuppressWarnings({"PMD.ExcessiveImports"})
 public class GaPlugin implements Aggregator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GaPlugin.class);
