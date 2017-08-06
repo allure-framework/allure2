@@ -141,14 +141,6 @@ public class GaPlugin implements Aggregator {
         }
     }
 
-    public static MessageDigest getMd5Digest() {
-        try {
-            return MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Can not find hashing algorithm", e);
-        }
-    }
-
     private static NameValuePair pair(final String v, final String value) {
         return new BasicNameValuePair(v, value);
     }
