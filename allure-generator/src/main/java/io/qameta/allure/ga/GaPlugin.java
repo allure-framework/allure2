@@ -162,7 +162,8 @@ public class GaPlugin implements Aggregator {
                 .map(Label::getValue)
                 .distinct()
                 .sorted()
-                .collect(Collectors.joining(" "));
+                .collect(Collectors.joining(" "))
+                .toLowerCase();
         return values.isEmpty() ? UNDEFINED : values;
     }
 
