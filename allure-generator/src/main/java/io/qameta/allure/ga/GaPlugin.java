@@ -123,8 +123,10 @@ public class GaPlugin implements Aggregator {
                 .map(ExecutorInfo::getBuildUrl)
                 .map(URI::create)
                 .map(URI::getHost);
-        return DigestUtils.sha256Hex(executorHostName
-                .orElse(getLocalHostName().orElse(UUID.randomUUID().toString())));
+
+        return executorHostName.map(DigestUtils::sha256Hex)
+                .orElse(getLocalHostName().map(DigestUtils::sha256Hex)
+                        .orElse(UUID.randomUUID().toString()));
     }
 
     private static String getExecutorType(final List<LaunchResults> launchesResults) {
