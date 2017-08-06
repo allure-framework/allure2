@@ -16,7 +16,7 @@ class LanguageSelectView extends PopoverView {
     setContent() {
         this.$el.html(template({
             languages: LANGUAGES,
-            currentLang: settings.get('language')
+            currentLang: settings.getLanguage()
         }));
     }
 
@@ -31,7 +31,7 @@ class LanguageSelectView extends PopoverView {
     @on('click .language-select__item')
     onLanguageClick(e) {
         const langId = this.$(e.currentTarget).data('id');
-        settings.save('language', langId);
+        settings.setLanguage(langId);
         i18next.changeLanguage(langId);
     }
 

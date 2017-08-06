@@ -1,9 +1,9 @@
-import settings from 'util/settings';
 import StatusToggleView from 'components/status-toggle/StatusToggleView';
+import {getSettingsForTreePlugin} from 'util/settingsFactory';
 
 describe('StatusToggle', function () {
-    const statusesKey = 'testStatusKey';
     const statistic = {failed: '4', broken: '3', passed: '2', skipped: '1', unknown: '0'};
+    const settings = getSettingsForTreePlugin('ALLURE_TEST');
 
     function StatusElement(el) {
         this.activeItems = () => el.find('.status-toggle__item').find('.y-label').toArray().map(item => item.textContent.trim());
@@ -12,8 +12,8 @@ describe('StatusToggle', function () {
     }
 
     beforeEach(() => {
-        settings.set(statusesKey, {failed: true, broken: true, passed: false, skipped: false, unknown: false});
-        this.view = new StatusToggleView({statusesKey, statistic});
+        settings.setVisibleStatuses({failed: true, broken: true, passed: false, skipped: false, unknown: false});
+        this.view = new StatusToggleView({settings, statistic});
         this.view.render();
         this.el = new StatusElement(this.view.$el);
     });
@@ -25,9 +25,9 @@ describe('StatusToggle', function () {
 
     it('should update model on click', () => {
         this.el.passed().click();
-        expect(settings.get(statusesKey)).toEqual({failed: true, broken: true, passed: true, skipped:false, unknown: false});
+        expect(settings.getVisibleStatuses()).toEqual({failed: true, broken: true, passed: true, skipped:false, unknown: false});
 
         this.el.passed().click();
-        expect(settings.get(statusesKey)).toEqual({failed: true, broken: true, passed: false, skipped:false, unknown: false});
+        expect(settings.getVisibleStatuses()).toEqual({failed: true, broken: true, passed: false, skipped:false, unknown: false});
     });
 });

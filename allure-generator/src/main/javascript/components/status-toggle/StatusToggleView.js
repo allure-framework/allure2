@@ -1,24 +1,22 @@
 import './styles.scss';
 import {on, className} from '../../decorators';
-import settings from '../../util/settings';
 import template from './StatusToggleView.hbs';
 import {values} from '../../util/statuses';
 import {View} from 'backbone.marionette';
 import translate from '../../helpers/t';
 
-
 @className('status-toggle')
 class StatusToggleView extends View {
     template = template;
 
-    initialize({statusesKey, statistic}) {
-        this.statusesKey = statusesKey;
+    initialize({settings, statistic}) {
+        this.settings = settings;
         this.statistic = statistic;
-        this.listenTo(settings, 'change:' + this.statusesKey, this.render);
+        this.listenTo(settings, 'change', this.render);
     }
 
     serializeData() {
-        const statuses = settings.getVisibleStatuses(this.statusesKey);
+        const statuses = this.settings.getVisibleStatuses();
         return {
             statuses: values.map(status => ({
                 status,
@@ -34,8 +32,8 @@ class StatusToggleView extends View {
         const el = this.$(e.currentTarget);
         const name = el.data('status');
         const checked = el.hasClass('n-label');
-        const statuses = settings.getVisibleStatuses(this.statusesKey);
-        settings.save(this.statusesKey, Object.assign({}, statuses, {[name]: checked}));
+        const statuses = this.settings.getVisibleStatuses();
+        this.settings.setVisibleStatuses(Object.assign({}, statuses, {[name]: checked}));
     }
 }
 

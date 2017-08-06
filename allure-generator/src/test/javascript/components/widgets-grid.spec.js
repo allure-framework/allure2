@@ -1,18 +1,18 @@
 import {View} from 'backbone';
-import settings from 'util/settings';
 import pluginsRegistry from 'util/pluginsRegistry';
 import WidgetsGridView from 'components/widgets-grid/WidgetsGridView';
 import WidgetsModel from 'data/widgets/WidgetsModel';
+import {getSettingsForWidgetGridPlugin} from 'util/settingsFactory';
 
 describe('WidgetsGridView', function() {
+    let settings = getSettingsForWidgetGridPlugin('ALLURE_TEST');
     function PageObject(el) {
         this.column = (i) => el.find('.widgets-grid__col').eq(i);
         this.widgetsAtCol = (i) => this.column(i).find('.widget');
-        this.widgetById = (id) => el.find(`[data-id=${id}]`);
     }
 
     beforeEach(() => {
-        settings.clear();
+        settings = getSettingsForWidgetGridPlugin('ALLURE_TEST');
         pluginsRegistry.widgets = {
             group: {
                 a: View,
@@ -29,7 +29,7 @@ describe('WidgetsGridView', function() {
                 c: {}
             }
         });
-        this.view = new WidgetsGridView({model: this.model, tabName: 'group'}).render();
+        this.view = new WidgetsGridView({model: this.model, tabName: 'group', settings: settings}).render();
         this.view.onRender();
         this.el = new PageObject(this.view.$el);
     });
@@ -55,7 +55,7 @@ describe('WidgetsGridView', function() {
     });
 
     it('should add remaining widgets and ignore missing', () => {
-        settings.set('widgets', [['a', 'x', 'c'], ['d', 'e']]);
+        settings.setWidgetsArrangement([['a', 'x', 'c'], ['d', 'e']]);
         expect(this.view.getWidgetsArrangement()).toEqual([
             ['a', 'c', 'b'],
             ['d', 'e']
