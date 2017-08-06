@@ -44,9 +44,9 @@ public class GaPlugin implements Aggregator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GaPlugin.class);
 
-    private static final String EXECUTOR_TYPE_LOCAL = "Local";
+    private static final String LOCAL = "Local";
 
-    private static final String VERSION_UNDEFINED = "Undefined";
+    private static final String UNDEFINED = "Undefined";
 
     private static final String GA_DISABLE = "ALLURE_NO_ANALYTICS";
 
@@ -63,28 +63,26 @@ public class GaPlugin implements Aggregator {
             return;
         }
         LOGGER.debug("send analytics");
-        final String allureVersion = Optional.of(getClass())
-                .map(Class::getPackage)
-                .map(Package::getImplementationVersion)
-                .orElse(VERSION_UNDEFINED);
+        final GaParameters parameters = new GaParameters()
+                .setAllureVersion(getAllureVersion())
+                .setExecutorType(getExecutorType(launchesResults))
+                .setResultsCount(getTestResultsCount(launchesResults))
+                .setResultsFormat(getLabelValuesAsString(launchesResults, LabelName.RESULT_FORMAT))
+                .setFramework(getLabelValuesAsString(launchesResults, LabelName.FRAMEWORK))
+                .setLanguage(getLabelValuesAsString(launchesResults, LabelName.LANGUAGE));
 
         final String cid = getClientId(launchesResults);
-        final String executorType = getExecutorType(launchesResults);
-        final long testResultsCount = getTestResultsCount(launchesResults);
-        final String testResultFormats = getResultsFormats(launchesResults);
 
         try {
             CompletableFuture
-                    .runAsync(() -> sendStats(cid, allureVersion, executorType, testResultFormats, testResultsCount))
+                    .runAsync(() -> sendStats(cid, parameters))
                     .get(10, TimeUnit.SECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             LOGGER.debug("Could not send analytics within 10 seconds", e);
         }
     }
 
-    @SuppressWarnings("PMD.UseObjectForClearerAPI")
-    protected void sendStats(final String clientId, final String allureVersion, final String executorType,
-                             final String resultsFormats, final long testResultsCount) {
+    protected void sendStats(final String clientId, final GaParameters parameters) {
         final HttpClientBuilder builder = HttpClientBuilder.create();
         try (CloseableHttpClient client = builder.build()) {
             List<NameValuePair> pairs = Arrays.asList(
@@ -98,11 +96,13 @@ public class GaPlugin implements Aggregator {
                     pair("an", "Allure Report"),
                     pair("ec", "Allure CLI events"),
                     pair("ea", "Report generate"),
-                    pair("av", allureVersion),
+                    pair("av", parameters.getAllureVersion()),
                     pair("ds", "Report generator"),
-                    pair("cd2", executorType),
-                    pair("cd4", resultsFormats),
-                    pair("cm1", String.valueOf(testResultsCount))
+                    pair("cd6", parameters.getLanguage()),
+                    pair("cd5", parameters.getFramework()),
+                    pair("cd2", parameters.getExecutorType()),
+                    pair("cd4", parameters.getResultsFormat()),
+                    pair("cm1", String.valueOf(parameters.getResultsCount()))
             );
             final HttpPost post = new HttpPost(GA_ENDPOINT);
             final UrlEncodedFormEntity entity = new UrlEncodedFormEntity(pairs, StandardCharsets.UTF_8);
@@ -129,6 +129,13 @@ public class GaPlugin implements Aggregator {
                         .orElse(UUID.randomUUID().toString()));
     }
 
+    private static String getAllureVersion() {
+        return Optional.of(GaPlugin.class)
+                .map(Class::getPackage)
+                .map(Package::getImplementationVersion)
+                .orElse(UNDEFINED);
+    }
+
     private static String getExecutorType(final List<LaunchResults> launchesResults) {
         return launchesResults.stream()
                 .map(results -> results.<ExecutorInfo>getExtra(EXECUTORS_BLOCK_NAME))
@@ -136,7 +143,7 @@ public class GaPlugin implements Aggregator {
                 .map(Optional::get)
                 .findFirst()
                 .map(ExecutorInfo::getType)
-                .orElse(EXECUTOR_TYPE_LOCAL);
+                .orElse(LOCAL);
     }
 
     private static long getTestResultsCount(final List<LaunchResults> launchesResults) {
@@ -146,15 +153,17 @@ public class GaPlugin implements Aggregator {
                 .sum();
     }
 
-    private static String getResultsFormats(final List<LaunchResults> launchesResults) {
-        return launchesResults.stream()
+    private static String getLabelValuesAsString(final List<LaunchResults> launchesResults,
+                                                 final LabelName labelName) {
+        String values = launchesResults.stream()
                 .flatMap(results -> results.getResults().stream())
                 .flatMap(result -> result.getLabels().stream())
-                .filter(label -> LabelName.RESULT_FORMAT.value().equals(label.getName()))
+                .filter(label -> labelName.value().equals(label.getName()))
                 .map(Label::getValue)
                 .distinct()
                 .sorted()
                 .collect(Collectors.joining(" "));
+        return values.isEmpty() ? UNDEFINED : values;
     }
 
     private static Optional<String> getLocalHostName() {
