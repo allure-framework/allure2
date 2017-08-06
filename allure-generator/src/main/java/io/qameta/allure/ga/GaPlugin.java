@@ -73,17 +73,17 @@ public class GaPlugin implements Aggregator {
                 .map(ExecutorInfo::getType)
                 .orElse(EXECUTOR_TYPE_LOCAL);
 
-        final String hostname = launchesResults.stream()
+        final Optional<String> executorHostName = launchesResults.stream()
                 .map(results -> results.<ExecutorInfo>getExtra(EXECUTORS_BLOCK_NAME))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .findFirst()
                 .map(ExecutorInfo::getBuildUrl)
                 .map(URI::create)
-                .map(URI::getHost)
-                .orElse(getLocalHost());
+                .map(URI::getHost);
 
-        final String clientId = DigestUtils.sha256Hex(hostname);
+        final String clientId = DigestUtils.sha256Hex(executorHostName
+                .orElse(getLocalHostName().orElse(UUID.randomUUID().toString())));
 
         final String allureVersion = Optional.of(getClass())
                 .map(Class::getPackage)
@@ -130,12 +130,12 @@ public class GaPlugin implements Aggregator {
         }
     }
 
-    private static String getLocalHost() {
+    private static Optional<String> getLocalHostName() {
         try {
-            return InetAddress.getLocalHost().getHostName();
+            return Optional.ofNullable(InetAddress.getLocalHost().getHostName());
         } catch (UnknownHostException e) {
             LOGGER.debug("Could not get host name {}", e);
-            return "default";
+            return Optional.empty();
         }
     }
 
