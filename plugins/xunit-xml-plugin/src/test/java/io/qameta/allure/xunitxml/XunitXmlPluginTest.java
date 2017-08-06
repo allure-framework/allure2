@@ -4,6 +4,7 @@ import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Label;
+import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.TestResult;
@@ -54,11 +55,10 @@ public class XunitXmlPluginTest {
     }
 
     @DataPoints
-    public static String[][] input()
-    {
+    public static String[][] input() {
         return new String[][]{
                 {"xunitdata/failed-test.xml", "failed-test.xml",
-                        String.format("%s%n","Assert.True() Failure\\r\\nExpected: True\\r\\nActual:   False")+
+                        String.format("%s%n", "Assert.True() Failure\\r\\nExpected: True\\r\\nActual:   False") +
                                 "test output\\n", "FAILED-TRACE"},
                 {"xunitdata/passed-test.xml", "passed-test.xml", "test output\\n", null}
         };
@@ -114,9 +114,10 @@ public class XunitXmlPluginTest {
                 .flatExtracting(TestResult::getLabels)
                 .extracting(Label::getName, Label::getValue)
                 .containsExactlyInAnyOrder(
-                        Tuple.tuple("suite", "org.example.XunitTest"),
-                        Tuple.tuple("testClass", "org.example.XunitTest"),
-                        Tuple.tuple("package", "org.example.XunitTest")
+                        Tuple.tuple(LabelName.SUITE.value(), "org.example.XunitTest"),
+                        Tuple.tuple(LabelName.PACKAGE.value(), "org.example.XunitTest"),
+                        Tuple.tuple(LabelName.TEST_CLASS.value(), "org.example.XunitTest"),
+                        Tuple.tuple(LabelName.RESULT_FORMAT.value(), XunitXmlPlugin.XUNIT_RESULTS_FORMAT)
                 );
     }
 
@@ -134,7 +135,7 @@ public class XunitXmlPluginTest {
                 .hasSize(1)
                 .extracting(TestResult::getFullName)
                 .containsExactlyInAnyOrder(
-                       "Some test"
+                        "Some test"
                 );
     }
 

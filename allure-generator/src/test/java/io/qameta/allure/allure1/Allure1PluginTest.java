@@ -224,6 +224,18 @@ public class Allure1PluginTest {
     }
 
     @Test
+    public void shouldAddTestResultFormatLabel() throws Exception {
+        Set<TestResult> testResults = process(
+                "allure1/sample-testsuite.xml", generateTestSuiteXmlName()
+        ).getResults();
+
+        assertThat(testResults)
+                .extracting(result -> result.findOneLabel(LabelName.RESULT_FORMAT))
+                .extracting(Optional::get)
+                .containsOnly(Allure1Plugin.ALLURE1_RESULTS_FORMAT);
+    }
+
+    @Test
     public void shouldGenerateDifferentHistoryIdForParameterizedTests() throws Exception {
         final String historyId1 = "56f15d234f8ad63b493afb25f7c26556";
         final String historyId2 = "e374f6eb3cf497543291506c8c20353";

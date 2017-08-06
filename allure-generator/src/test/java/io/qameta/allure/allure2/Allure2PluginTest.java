@@ -2,9 +2,11 @@ package io.qameta.allure.allure2;
 
 import io.qameta.allure.ConfigurationBuilder;
 import io.qameta.allure.DefaultResultsVisitor;
+import io.qameta.allure.allure1.Allure1Plugin;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Attachment;
+import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.Parameter;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Step;
@@ -19,11 +21,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.Set;
 
 import static io.qameta.allure.AllureUtils.generateTestResultContainerName;
 import static io.qameta.allure.AllureUtils.generateTestResultName;
 import static io.qameta.allure.entity.Status.UNKNOWN;
+import static org.allurefw.allure1.AllureUtils.generateTestSuiteXmlName;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
@@ -196,6 +200,20 @@ public class Allure2PluginTest {
 
         assertThat(testResults)
                 .hasSize(1);
+    }
+
+    @Test
+    public void shouldAddTestResultFormatLabel() throws Exception {
+        Set<TestResult> testResults = process(
+                "allure2/simple-testcase.json", generateTestResultName(),
+                "allure2/first-testgroup.json", generateTestResultContainerName(),
+                "allure2/second-testgroup.json", generateTestResultContainerName()
+        ).getResults();
+
+        assertThat(testResults)
+                .extracting(result -> result.findOneLabel(LabelName.RESULT_FORMAT))
+                .extracting(Optional::get)
+                .containsOnly(Allure2Plugin.ALLURE2_RESULTS_FORMAT);
     }
 
     private LaunchResults process(String... strings) throws IOException {

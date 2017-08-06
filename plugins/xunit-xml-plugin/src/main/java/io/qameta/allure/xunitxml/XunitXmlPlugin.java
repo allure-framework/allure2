@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
 import static java.nio.file.Files.newDirectoryStream;
 import static java.util.Objects.nonNull;
 
@@ -40,6 +41,8 @@ import static java.util.Objects.nonNull;
 public class XunitXmlPlugin implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XunitXmlPlugin.class);
+
+    public static final String XUNIT_RESULTS_FORMAT = "xunit";
 
     private static final BigDecimal MULTIPLICAND = new BigDecimal(1000);
 
@@ -118,6 +121,7 @@ public class XunitXmlPlugin implements Reader {
         getStatusDetails(testElement).ifPresent(result::setStatusDetails);
         getParameters(testElement).ifPresent(result::setParameters);
 
+        result.addLabelIfNotExists(RESULT_FORMAT, XUNIT_RESULTS_FORMAT);
         if (nonNull(className)) {
             result.addLabelIfNotExists(LabelName.SUITE, className);
             result.addLabelIfNotExists(LabelName.TEST_CLASS, className);

@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
 import static java.nio.file.Files.newDirectoryStream;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
@@ -46,6 +47,8 @@ import static java.util.Objects.nonNull;
 public class JunitXmlPlugin implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JunitXmlPlugin.class);
+
+    public static final String JUNIT_RESULTS_FORMAT = "junit";
 
     private static final BigDecimal MULTIPLICAND = new BigDecimal(1000);
 
@@ -62,6 +65,7 @@ public class JunitXmlPlugin implements Reader {
     private static final String RERUN_ERROR_ELEMENT_NAME = "rerunError";
 
     private static final Map<String, Status> RETRIES;
+
 
     static {
         RETRIES = new HashMap<>();
@@ -151,6 +155,7 @@ public class JunitXmlPlugin implements Reader {
         result.setUid(context.getValue().get());
         result.setName(isNull(name) ? "Unknown test case" : name);
         result.setTime(getTime(testCaseElement, parsedFile));
+        result.addLabelIfNotExists(RESULT_FORMAT, JUNIT_RESULTS_FORMAT);
 
         if (nonNull(className)) {
             result.addLabelIfNotExists(LabelName.SUITE, className);
