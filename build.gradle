@@ -95,6 +95,7 @@ allprojects {
 
             dependency 'org.allurefw:allure1-model:1.0'
             dependency 'io.qameta.allure:allure2-model-api:1.0-BETA4'
+            dependency 'io.qameta.allure:allure-java-commons:2.0-BETA16'
             dependency 'net.masterthought:cucumber-reporting:3.4.0'
             dependency 'org.apache.maven.surefire:surefire-report-parser:2.19.1'
 
