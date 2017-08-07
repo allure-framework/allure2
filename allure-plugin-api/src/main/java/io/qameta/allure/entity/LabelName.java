@@ -26,7 +26,8 @@ public enum LabelName implements Serializable {
     HOST("host"),
     THREAD("thread"),
     LANGUAGE("language"),
-    FRAMEWORK("framework");
+    FRAMEWORK("framework"),
+    RESULT_FORMAT("resultFormat");
 
     private static final long serialVersionUID = 1L;
 

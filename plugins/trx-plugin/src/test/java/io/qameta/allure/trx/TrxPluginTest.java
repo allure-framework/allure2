@@ -3,8 +3,11 @@ package io.qameta.allure.trx;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
+import io.qameta.allure.entity.Label;
+import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
+import org.assertj.core.groups.Tuple;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
@@ -63,6 +67,11 @@ public class TrxPluginTest {
                         tuple("AddTwoNumbers", Status.PASSED, "Add two numbers"),
                         tuple("FailToAddTwoNumbers", Status.FAILED, "Fail to add two numbers")
                 );
+
+        assertThat(captor.getAllValues())
+                .extracting(result -> result.findOneLabel(LabelName.RESULT_FORMAT))
+                .extracting(Optional::get)
+                .containsOnly(TrxPlugin.TRX_RESULTS_FORMAT);
 
     }
 

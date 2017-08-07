@@ -5,6 +5,7 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.Label;
+import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.StatusDetails;
@@ -130,9 +131,10 @@ public class JunitXmlPluginTest {
                 .flatExtracting(TestResult::getLabels)
                 .extracting(Label::getName, Label::getValue)
                 .containsExactlyInAnyOrder(
-                        Tuple.tuple("suite", "test.SampleTest"),
-                        Tuple.tuple("package", "test.SampleTest"),
-                        Tuple.tuple("testClass", "test.SampleTest")
+                        Tuple.tuple(LabelName.SUITE.value(), "test.SampleTest"),
+                        Tuple.tuple(LabelName.PACKAGE.value(), "test.SampleTest"),
+                        Tuple.tuple(LabelName.TEST_CLASS.value(), "test.SampleTest"),
+                        Tuple.tuple(LabelName.RESULT_FORMAT.value(), JunitXmlPlugin.JUNIT_RESULTS_FORMAT)
                 );
     }
 

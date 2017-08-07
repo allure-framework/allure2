@@ -54,6 +54,7 @@ import java.util.stream.Stream;
 import static io.qameta.allure.entity.LabelName.ISSUE;
 import static io.qameta.allure.entity.LabelName.PACKAGE;
 import static io.qameta.allure.entity.LabelName.PARENT_SUITE;
+import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
 import static io.qameta.allure.entity.LabelName.SUB_SUITE;
 import static io.qameta.allure.entity.LabelName.SUITE;
 import static io.qameta.allure.entity.LabelName.TEST_CLASS;
@@ -87,6 +88,7 @@ public class Allure1Plugin implements Reader {
                     .thenComparing(Parameter::getValue, nullsFirst(naturalOrder()));
 
     public static final String ENVIRONMENT_BLOCK_NAME = "environment";
+    public static final String ALLURE1_RESULTS_FORMAT = "allure1";
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -211,6 +213,7 @@ public class Allure1Plugin implements Reader {
                 .filter("flaky"::equalsIgnoreCase)
                 .findAny()
                 .ifPresent(value -> dest.getStatusDetailsSafe().setFlaky(true));
+        dest.addLabelIfNotExists(RESULT_FORMAT, ALLURE1_RESULTS_FORMAT);
         visitor.visitTestResult(dest);
     }
 

@@ -1,5 +1,7 @@
 import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 
+description = 'Allure Report'
+
 buildscript {
     repositories {
         jcenter()
@@ -131,6 +133,12 @@ subprojects { project ->
         targetCompatibility = 1.8
         options.encoding = 'UTF-8'
         options.compilerArgs += "-parameters"
+    }
+
+    jar {
+        manifest {
+            attributes('Implementation-Title': project.name, 'Implementation-Version': project.version)
+        }
     }
 
     tasks.withType(Javadoc) {
