@@ -135,6 +135,7 @@
   "controls": {
     "collapse": "כווץ",
     "expand": "הרחב",
+	"fullscreen": "מסך מלא",
     "language": "שנה שפה",
     "clipboard": "העתק אל מגש המערכת",
 	"clipboardSuccess": "הועתק בהצלחה",
