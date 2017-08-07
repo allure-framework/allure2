@@ -6,15 +6,6 @@ apply from: "${gradleScriptDir}/bintray.gradle"
 applicationName = 'allure'
 mainClassName = 'io.qameta.allure.CommandLine'
 
-jar {
-    manifest {
-        attributes(
-                'Implementation-Title': description,
-                'Implementation-Version': version
-        )
-    }
-}
-
 startScripts {
     classpath += files('src/lib/config')
     doLast {

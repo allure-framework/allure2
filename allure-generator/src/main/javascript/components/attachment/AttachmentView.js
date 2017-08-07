@@ -13,8 +13,9 @@ import template from './AttachmentView.hbs';
 class AttachmentView extends View {
     template = template;
 
-    initialize({attachment}) {
-        this.attachment = attachment;
+    initialize() {
+        this.fullScreen = !!this.options.fullScreen;
+        this.attachment = this.options.attachment;
         this.attachmentInfo = attachmentType(this.attachment.type);
         this.sourceUrl = 'data/attachments/' + this.attachment.source;
     }
@@ -29,10 +30,18 @@ class AttachmentView extends View {
         }
     }
 
-    @on('click .attachment__media')
-    onImageClick() {
-        const expanded = router.getUrlParams().expanded === 'true' ? null : true;
-        router.setSearch({expanded});
+    onDestroy() {
+        router.setSearch({attachment: null});
+    }
+
+    @on('click .attachment__media-container')
+    onImageClick(e) {
+        const el = this.$(e.currentTarget);
+        if (el.hasClass('attachment__media-container_fullscreen')) {
+            this.onDestroy();
+        } else {
+            router.setSearch({attachment: this.attachment.uid});
+        }
     }
 
     loadContent() {
@@ -52,9 +61,7 @@ class AttachmentView extends View {
             content: this.content,
             sourceUrl: this.sourceUrl,
             attachment: this.attachment,
-            route: {
-                baseUrl: this.options.baseUrl
-            }
+            fullScreen: this.fullScreen
         };
     }
 }

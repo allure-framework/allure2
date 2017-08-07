@@ -34,6 +34,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsFirst;
@@ -46,6 +47,8 @@ import static java.util.Objects.nonNull;
  */
 @SuppressWarnings("PMD.ExcessiveImports")
 public class Allure2Plugin implements Reader {
+
+    public static final String ALLURE2_RESULTS_FORMAT = "allure2";
 
     private static final Comparator<StageResult> BY_START = comparing(
             StageResult::getTime,
@@ -81,6 +84,8 @@ public class Allure2Plugin implements Reader {
         dest.setLinks(convert(result.getLinks(), this::convert));
         dest.setLabels(convert(result.getLabels(), this::convert));
         dest.setParameters(getParameters(result));
+
+        dest.addLabelIfNotExists(RESULT_FORMAT, ALLURE2_RESULTS_FORMAT);
 
         if (hasTestStage(result)) {
             dest.setTestStage(getTestStage(resultsDirectory, visitor, result));

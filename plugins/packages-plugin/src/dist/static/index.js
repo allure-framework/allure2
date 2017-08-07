@@ -45,9 +45,9 @@ allure.api.addTab('packages', {
     route: 'packages(/)(:testGroup)(/)(:testResult)(/)(:testResultTab)(/)',
     onEnter: (function (testGroup, testResult, testResultTab) {
         return new allure.components.TreeLayout({
-            testGroup,
-            testResult,
-            testResultTab,
+            testGroup: testGroup,
+            testResult: testResult,
+            testResultTab: testResultTab,
             tabName: 'tab.packages.name',
             baseUrl: 'packages',
             url: 'data/packages.json'

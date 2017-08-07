@@ -89,7 +89,7 @@ public class PackagesPlugin implements Aggregator {
                 .filter(TestResultTreeGroup.class::isInstance)
                 .count();
 
-        if (count == 1) {
+        if (groupNode.getChildren().size() == 1 && count == 1) {
             groupNode.getChildren().stream()
                     .filter(TestResultTreeGroup.class::isInstance)
                     .map(TestResultTreeGroup.class::cast)

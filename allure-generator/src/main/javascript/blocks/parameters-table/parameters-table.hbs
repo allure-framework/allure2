@@ -1,0 +1,10 @@
+{{#if parameters}}
+    <div class="parameters-table">
+        {{#each parameters}}
+            <div class="{{b "parameters-table" "row"}}">
+                <div class="{{b "parameters-table" "cell" name=true}} line-ellipsis">{{name}}</div>
+                <div class="{{b "parameters-table" "cell" value=true}} line-ellipsis">{{value}}</div>
+            </div>
+        {{/each}}
+    </div>
+{{/if}}

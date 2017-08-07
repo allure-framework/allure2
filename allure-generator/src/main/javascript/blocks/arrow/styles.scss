@@ -1,28 +1,25 @@
 .block__arrow {
-  top: 7px;
   position: absolute;
   visibility: visible;
   transition: transform 0.1s;
   font-weight: initial;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
   &__expanded {
     transform: rotate(90deg);
   }
 }
 
-[dir=ltr] .arrow {
-  width: 14px;
-  height: 14px;
-  background: url(./arrow.svg) center no-repeat;
-}
-
-[dir=rtl] .arrow {
-  width: 14px;
-  height: 14px;
-  background: url(./arrow.svg) center no-repeat;
+[dir=rtl] .block__arrow {
   -moz-transform: scaleX(-1);
   -o-transform: scaleX(-1);
   -webkit-transform: scaleX(-1);
   transform: scaleX(-1);
   filter: FlipH;
   -ms-filter: "FlipH";
+}
+
+.angle {
+  width: 18px;
 }

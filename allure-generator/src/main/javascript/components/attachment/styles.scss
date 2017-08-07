@@ -1,9 +1,6 @@
 @import "../../variables.scss";
 
 .attachment {
-  &__title {
-    flex-shrink: 0;
-  }
   &__filename {
     background: $heading-bg;
     padding: $gap-size;
@@ -40,23 +37,36 @@
   &__table-container {
     overflow: auto;
   }
+  &__text-container, &__table-container {
+    &_fullscreen {
+      padding: $gap-size;
+      background-color: $pane-bg-color;
+    }
+  }
   &__media-container {
     text-align: center;
     cursor: zoom-in;
-    .pane_expanded & {
+    &_fullscreen {
       cursor: zoom-out;
     }
   }
+  &__iframe-container {
+    height: 100%;
+  }
   &__embed, &__media {
     max-width: 100%;
+    display: block;
+    &_fullscreen {
+      margin: auto;
+    }
+    margin: auto;
+
   }
   &__iframe {
     width: 100%;
-    flex: 1;
-  }
-  &__ctrl {
-    position: fixed;
-    top:0;
-    heigth: 100px;
+    &_fullscreen {
+      background-color: $pane-bg-color;
+      height: 85vh;
+    }
   }
 }

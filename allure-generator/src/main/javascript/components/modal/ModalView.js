@@ -13,12 +13,22 @@ class ModalView extends View {
     template = template;
     static container = $(document.body);
 
-    onRender() {
+    show() {
         this.constructor.container.append(this.$el);
         this.showChildView('content', this.options.childView);
+        $('#content').toggleClass('blur', true);
     }
 
-    @on('click .modal__close')
+    onDestroy() {
+        $('#content').toggleClass('blur', false);
+    }
+
+    @on('click .modal__content')
+    onKeepOpen(e) {
+        e.stopPropagation();
+    }
+
+    @on('click .modal__background, .modal__close')
     onClose() {
         this.destroy();
     }
@@ -27,7 +37,6 @@ class ModalView extends View {
         return {
             cls: this.className,
             title: this.options.title,
-            backUrl: this.options.backUrl
         };
     }
 }

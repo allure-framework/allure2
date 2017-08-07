@@ -14,25 +14,40 @@
   }
   &_selected {
     &, &:hover {
-      background: $selected-color;
+      background: $pane-bg-color;
+    }
+    &:hover {
+      background: $hover-color;
     }
   }
-  &__link {
-    position: relative;
-    min-width: 70px;
+  &_selected > &__arrow {
+      transform: rotate(90deg);
   }
-  &__icon {
-    left: 11px;
+  &__arrow {
+    left: 7px;
     position: absolute;
   }
   &__name {
-     flex: 1;
+    flex: 1;
+  }
+  &__control {
+    padding-left: $gap-size;
+    display: inline-block;
+  }
+  &__icon {
+    margin-right: 5px;
   }
   &__preview {
-    margin: 2px 5px 2px 0;
+    margin-bottom: 7px;
   }
-  &__content{
-    border-left: 3px solid $hover-color;
-    padding-left: 5px;
+  &__content {
+    background-color: $attachment-bg;
   }
+  &__content > div{
+    padding: 5px;
+  }
+}
+
+.hljs {
+  background: inherit;
 }

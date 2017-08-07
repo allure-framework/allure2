@@ -4,6 +4,9 @@ import io.qameta.allure.Aggregator;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.ExecutorInfo;
+import io.qameta.allure.entity.Label;
+import io.qameta.allure.entity.LabelName;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -14,6 +17,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.URI;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -26,15 +32,21 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 
 import static io.qameta.allure.executor.ExecutorPlugin.EXECUTORS_BLOCK_NAME;
 
 /**
  * @author charlie (Dmitry Baev).
  */
+@SuppressWarnings({"PMD.ExcessiveImports"})
 public class GaPlugin implements Aggregator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GaPlugin.class);
+
+    private static final String LOCAL = "Local";
+
+    private static final String UNDEFINED = "Undefined";
 
     private static final String GA_DISABLE = "ALLURE_NO_ANALYTICS";
 
@@ -50,38 +62,27 @@ public class GaPlugin implements Aggregator {
             LOGGER.debug("analytics is disabled");
             return;
         }
-        LOGGER.info("send analytics");
-        final int pluginsCount = configuration.getPlugins().size();
-        final long testResultsCount = launchesResults.stream()
-                .map(LaunchResults::getResults)
-                .mapToLong(Collection::size)
-                .sum();
+        LOGGER.debug("send analytics");
+        final GaParameters parameters = new GaParameters()
+                .setAllureVersion(getAllureVersion())
+                .setExecutorType(getExecutorType(launchesResults))
+                .setResultsCount(getTestResultsCount(launchesResults))
+                .setResultsFormat(getLabelValuesAsString(launchesResults, LabelName.RESULT_FORMAT))
+                .setFramework(getLabelValuesAsString(launchesResults, LabelName.FRAMEWORK))
+                .setLanguage(getLabelValuesAsString(launchesResults, LabelName.LANGUAGE));
 
-        final String executor = launchesResults.stream()
-                .map(results -> results.<ExecutorInfo>getExtra(EXECUTORS_BLOCK_NAME))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .findFirst()
-                .map(ExecutorInfo::getType)
-                .orElse("Local");
-
-        final String allureVersion = Optional.of(getClass())
-                .map(Class::getPackage)
-                .map(Package::getImplementationVersion)
-                .orElse("Undefined");
+        final String cid = getClientId(launchesResults);
 
         try {
             CompletableFuture
-                    .runAsync(() -> sendStats(allureVersion, testResultsCount, pluginsCount, executor))
+                    .runAsync(() -> sendStats(cid, parameters))
                     .get(10, TimeUnit.SECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             LOGGER.debug("Could not send analytics within 10 seconds", e);
         }
     }
 
-    @SuppressWarnings("EmptyTryBlock")
-    protected void sendStats(final String allureVersion, final long testResultsCount,
-                             final long pluginsCount, final String executor) {
+    protected void sendStats(final String clientId, final GaParameters parameters) {
         final HttpClientBuilder builder = HttpClientBuilder.create();
         try (CloseableHttpClient client = builder.build()) {
             List<NameValuePair> pairs = Arrays.asList(
@@ -91,15 +92,17 @@ public class GaPlugin implements Aggregator {
                     pair("z", UUID.randomUUID().toString()),
                     pair("t", "event"),
                     pair("ds", "allure cli"),
-                    pair("cid", UUID.randomUUID().toString()),
+                    pair("cid", clientId),
                     pair("an", "Allure Report"),
                     pair("ec", "Allure CLI events"),
                     pair("ea", "Report generate"),
-                    pair("av", allureVersion),
+                    pair("av", parameters.getAllureVersion()),
                     pair("ds", "Report generator"),
-                    pair("cd2", executor),
-                    pair("cm1", String.valueOf(testResultsCount)),
-                    pair("cm2", String.valueOf(pluginsCount))
+                    pair("cd6", parameters.getLanguage()),
+                    pair("cd5", parameters.getFramework()),
+                    pair("cd2", parameters.getExecutorType()),
+                    pair("cd4", parameters.getResultsFormat()),
+                    pair("cm1", String.valueOf(parameters.getResultsCount()))
             );
             final HttpPost post = new HttpPost(GA_ENDPOINT);
             final UrlEncodedFormEntity entity = new UrlEncodedFormEntity(pairs, StandardCharsets.UTF_8);
@@ -108,6 +111,68 @@ public class GaPlugin implements Aggregator {
             LOGGER.debug("GA done");
         } catch (IOException e) {
             LOGGER.debug("Could not send analytics", e);
+        }
+    }
+
+    private static String getClientId(final List<LaunchResults> launchesResults) {
+        final Optional<String> executorHostName = launchesResults.stream()
+                .map(results -> results.<ExecutorInfo>getExtra(EXECUTORS_BLOCK_NAME))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .findFirst()
+                .map(ExecutorInfo::getBuildUrl)
+                .map(URI::create)
+                .map(URI::getHost);
+
+        return executorHostName.map(DigestUtils::sha256Hex)
+                .orElse(getLocalHostName().map(DigestUtils::sha256Hex)
+                        .orElse(UUID.randomUUID().toString()));
+    }
+
+    private static String getAllureVersion() {
+        return Optional.of(GaPlugin.class)
+                .map(Class::getPackage)
+                .map(Package::getImplementationVersion)
+                .orElse(UNDEFINED);
+    }
+
+    private static String getExecutorType(final List<LaunchResults> launchesResults) {
+        return launchesResults.stream()
+                .map(results -> results.<ExecutorInfo>getExtra(EXECUTORS_BLOCK_NAME))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .findFirst()
+                .map(ExecutorInfo::getType)
+                .orElse(LOCAL);
+    }
+
+    private static long getTestResultsCount(final List<LaunchResults> launchesResults) {
+        return launchesResults.stream()
+                .map(LaunchResults::getResults)
+                .mapToLong(Collection::size)
+                .sum();
+    }
+
+    private static String getLabelValuesAsString(final List<LaunchResults> launchesResults,
+                                                 final LabelName labelName) {
+        String values = launchesResults.stream()
+                .flatMap(results -> results.getResults().stream())
+                .flatMap(result -> result.getLabels().stream())
+                .filter(label -> labelName.value().equals(label.getName()))
+                .map(Label::getValue)
+                .distinct()
+                .sorted()
+                .collect(Collectors.joining(" "))
+                .toLowerCase();
+        return values.isEmpty() ? UNDEFINED : values;
+    }
+
+    private static Optional<String> getLocalHostName() {
+        try {
+            return Optional.ofNullable(InetAddress.getLocalHost().getHostName());
+        } catch (UnknownHostException e) {
+            LOGGER.debug("Could not get host name {}", e);
+            return Optional.empty();
         }
     }
 

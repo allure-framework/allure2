@@ -75,9 +75,9 @@ allure.api.addTab('behaviors', {
     route: 'behaviors(/)(:testGroup)(/)(:testResult)(/)(:testResultTab)(/)',
     onEnter: (function (testGroup, testResult, testResultTab) {
         return new allure.components.TreeLayout({
-            testGroup,
-            testResult,
-            testResultTab,
+            testGroup: testGroup,
+            testResult: testResult,
+            testResultTab: testResultTab,
             tabName: 'tab.behaviors.name',
             baseUrl: 'behaviors',
             url: 'data/behaviors.json'

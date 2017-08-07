@@ -1,6 +1,7 @@
 package io.qameta.allure.packages;
 
 import io.qameta.allure.DefaultLaunchResults;
+import io.qameta.allure.Issue;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.tree.Tree;
@@ -99,4 +100,44 @@ public class PackagesPluginTest {
                 .containsExactlyInAnyOrder("first", "second");
     }
 
+    @Issue("531")
+    @Test
+    public void shouldProcessTestsInNestedPackages() throws Exception {
+        final Set<TestResult> testResults = new HashSet<>();
+        final TestResult first = new TestResult()
+                .setName("first")
+                .setLabels(singletonList(PACKAGE.label("a.b")));
+        final TestResult second = new TestResult()
+                .setName("second")
+                .setLabels(singletonList(PACKAGE.label("a.b.c")));
+
+        testResults.add(first);
+        testResults.add(second);
+
+        final LaunchResults results = new DefaultLaunchResults(
+                testResults,
+                Collections.emptyMap(),
+                Collections.emptyMap()
+        );
+
+        final PackagesPlugin packagesPlugin = new PackagesPlugin();
+        final Tree<TestResult> tree = packagesPlugin.getData(singletonList(results));
+
+        assertThat(tree.getChildren())
+                .hasSize(1)
+                .extracting("name")
+                .containsExactlyInAnyOrder("a.b");
+
+        assertThat(tree.getChildren())
+                .flatExtracting("children")
+                .extracting("name")
+                .containsExactlyInAnyOrder("first", "c");
+
+        assertThat(tree.getChildren())
+                .flatExtracting("children")
+                .filteredOn("name", "c")
+                .flatExtracting("children")
+                .extracting("name")
+                .containsExactlyInAnyOrder("second");
+    }
 }

@@ -14,14 +14,6 @@
     content: "\F105";
 }
 
-[dir=rtl] .fa-chevron-right:before {
-    content: "\F053";
-}
-
-[dir=rtl] .step_expanded > .step__title > .step__arrow > .fa-chevron-right {
-	transform: rotate(180deg);
-}
-
 [dir=rtl] .tooltip_position_bottom {
 	width: 100px;
 }

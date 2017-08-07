@@ -1,10 +1,12 @@
 package io.qameta.allure.junitxml;
 
+import io.qameta.allure.Issue;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.Label;
+import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.StatusDetails;
@@ -130,9 +132,10 @@ public class JunitXmlPluginTest {
                 .flatExtracting(TestResult::getLabels)
                 .extracting(Label::getName, Label::getValue)
                 .containsExactlyInAnyOrder(
-                        Tuple.tuple("suite", "test.SampleTest"),
-                        Tuple.tuple("package", "test.SampleTest"),
-                        Tuple.tuple("testClass", "test.SampleTest")
+                        Tuple.tuple(LabelName.SUITE.value(), "test.SampleTest"),
+                        Tuple.tuple(LabelName.PACKAGE.value(), "test.SampleTest"),
+                        Tuple.tuple(LabelName.TEST_CLASS.value(), "test.SampleTest"),
+                        Tuple.tuple(LabelName.RESULT_FORMAT.value(), JunitXmlPlugin.JUNIT_RESULTS_FORMAT)
                 );
     }
 
@@ -194,6 +197,25 @@ public class JunitXmlPluginTest {
                         tuple("some-message", "some-trace")
                 );
 
+    }
+
+    @Issue("532")
+    @Test
+    public void shouldParseSuitesTag() throws Exception {
+        process(
+                "junitdata/testsuites.xml", "TEST-test.SampleTest.xml"
+        );
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(3)).visitTestResult(captor.capture());
+
+        assertThat(captor.getAllValues())
+                .extracting(TestResult::getName)
+                .containsExactlyInAnyOrder(
+                        "should default path to an empty string",
+                        "should default consolidate to true",
+                        "should default useDotNotation to true"
+                );
     }
 
     private void process(String... strings) throws IOException {

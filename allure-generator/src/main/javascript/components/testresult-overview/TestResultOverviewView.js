@@ -1,10 +1,14 @@
 import './styles.scss';
 import {View} from 'backbone.marionette';
-import {className, on} from '../../decorators';
+import {className, regions} from '../../decorators';
 import template from './TestResultOverviewView.hbs';
 import pluginsRegistry from '../../util/pluginsRegistry';
+import TestResultExecutionView from '../testresult-execution/TestResultExecutionView';
 
 @className('test-result-overview')
+@regions({
+    execution: '.test-result-overview__execution'
+})
 class TestResultOverviewView extends View {
     template = template;
 
@@ -15,6 +19,7 @@ class TestResultOverviewView extends View {
     onRender() {
         this.showBlock(this.$('.test-result-overview__tags'), pluginsRegistry.testResultBlocks.tag);
         this.showBlock(this.$('.test-result-overview__before'), pluginsRegistry.testResultBlocks.before);
+        this.showChildView('execution', new TestResultExecutionView(this.options));
         this.showBlock(this.$('.test-result-overview__after'), pluginsRegistry.testResultBlocks.after);
     }
 
@@ -29,11 +34,6 @@ class TestResultOverviewView extends View {
             this.blocks.push(block);
             block.render();
         });
-    }
-
-    @on('click .status-details__trace-toggle')
-    onStacktraceClick(e) {
-        this.$(e.currentTarget).closest('.status-details').toggleClass('status-details__expanded');
     }
 
     templateContext() {
