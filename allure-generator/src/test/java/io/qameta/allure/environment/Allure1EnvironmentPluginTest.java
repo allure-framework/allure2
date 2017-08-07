@@ -16,9 +16,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.allurefw.allure1.AllureUtils.generateTestSuiteJsonName;
 import static org.allurefw.allure1.AllureUtils.generateTestSuiteXmlName;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,13 +38,13 @@ public class Allure1EnvironmentPluginTest {
     public void shouldReadEnvironmentProperties() throws Exception {
 
         EnvironmentItem[] expected = new EnvironmentItem[]{
-                new EnvironmentItem().withName("allure.test.run.id").withValues("some-id"),
-                new EnvironmentItem().withName("allure.test.run.name").withValues("some-name"),
-                new EnvironmentItem().withName("allure.test.property").withValues("1")
+                new EnvironmentItem().setName("allure.test.run.id").setValues(singletonList("some-id")),
+                new EnvironmentItem().setName("allure.test.run.name").setValues(singletonList("some-name")),
+                new EnvironmentItem().setName("allure.test.property").setValues(singletonList("1"))
         };
 
         List<EnvironmentItem> environment = process(
-                Arrays.asList(
+                asList(
                         "allure1/sample-testsuite.json", generateTestSuiteJsonName(),
                         "allure1/environment.properties", "environment.properties"
                 )
@@ -57,13 +60,13 @@ public class Allure1EnvironmentPluginTest {
     @Test
     public void shouldReadEnvironmentXml() throws Exception {
         EnvironmentItem[] expected = new EnvironmentItem[]{
-                new EnvironmentItem().withName("my.properties.browser").withValues("Firefox"),
-                new EnvironmentItem().withName("my.properties.url").withValues("http://yandex.ru"),
-                new EnvironmentItem().withName("allure.test.property").withValues("3"),
+                new EnvironmentItem().setName("my.properties.browser").setValues(singletonList("Firefox")),
+                new EnvironmentItem().setName("my.properties.url").setValues(singletonList("http://yandex.ru")),
+                new EnvironmentItem().setName("allure.test.property").setValues(singletonList("3")),
         };
 
         List<EnvironmentItem> environment = process(
-                Arrays.asList(
+                asList(
                         "allure1/sample-testsuite.json", generateTestSuiteJsonName(),
                         "allure1/environment.xml", "environment.xml"
                 )
@@ -79,20 +82,20 @@ public class Allure1EnvironmentPluginTest {
     @Test
     public void shouldStackParameterValues() throws Exception {
         EnvironmentItem[] expected = new EnvironmentItem[]{
-                new EnvironmentItem().withName("my.properties.browser").withValues("Firefox"),
-                new EnvironmentItem().withName("my.properties.url").withValues("http://yandex.ru"),
-                new EnvironmentItem().withName("allure.test.run.id").withValues("some-id"),
-                new EnvironmentItem().withName("allure.test.run.name").withValues("some-name"),
-                new EnvironmentItem().withName("allure.test.property").withValues("2", "3"),
-                new EnvironmentItem().withName("allure.test.other.property").withValues("value")
+                new EnvironmentItem().setName("my.properties.browser").setValues(singletonList("Firefox")),
+                new EnvironmentItem().setName("my.properties.url").setValues(singletonList("http://yandex.ru")),
+                new EnvironmentItem().setName("allure.test.run.id").setValues(singletonList("some-id")),
+                new EnvironmentItem().setName("allure.test.run.name").setValues(singletonList("some-name")),
+                new EnvironmentItem().setName("allure.test.property").setValues(asList("2", "3")),
+                new EnvironmentItem().setName("allure.test.other.property").setValues(singletonList("value"))
         };
 
         List<EnvironmentItem> environment = process(
-                Arrays.asList(
+                asList(
                         "allure1/environment-variables-testsuite.xml", generateTestSuiteXmlName(),
                         "allure1/environment.properties", "environment.properties"
                 ),
-                Arrays.asList(
+                asList(
                         "allure1/sample-testsuite.xml", generateTestSuiteXmlName(),
                         "allure1/environment.xml", "environment.xml"
                 )

@@ -3,7 +3,6 @@ package io.qameta.allure.behaviors;
 import io.qameta.allure.DefaultLaunchResults;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
-import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
@@ -19,6 +18,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import static io.qameta.allure.entity.LabelName.EPIC;
+import static io.qameta.allure.entity.LabelName.FEATURE;
+import static io.qameta.allure.entity.LabelName.STORY;
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
@@ -36,11 +39,11 @@ public class BehaviorsPluginTest {
 
         final Set<TestResult> testResults = new HashSet<>();
         testResults.add(new TestResult()
-                .withStatus(Status.PASSED)
-                .withLabels(feature("feature1"), feature("feature2"), story("story1"), story("story2")));
+                .setStatus(Status.PASSED)
+                .setLabels(asList(FEATURE.label("feature1"), FEATURE.label("feature2"), STORY.label("story1"), STORY.label("story2"))));
         testResults.add(new TestResult()
-                .withStatus(Status.FAILED)
-                .withLabels(feature("feature2"), feature("feature3"), story("story2"), story("story3")));
+                .setStatus(Status.FAILED)
+                .setLabels(asList(FEATURE.label("feature2"), FEATURE.label("feature3"), STORY.label("story2"), STORY.label("story3"))));
 
         LaunchResults results = new DefaultLaunchResults(testResults, Collections.emptyMap(), Collections.emptyMap());
 
@@ -72,11 +75,11 @@ public class BehaviorsPluginTest {
 
         final Set<TestResult> testResults = new HashSet<>();
         testResults.add(new TestResult()
-                .withStatus(Status.PASSED)
-                .withLabels(epic("e1"), feature("f1"), story("s1")));
+                .setStatus(Status.PASSED)
+                .setLabels(asList(EPIC.label("e1"), FEATURE.label("f1"), STORY.label("s1"))));
         testResults.add(new TestResult()
-                .withStatus(Status.FAILED)
-                .withLabels(epic("e2"), feature("f2"), story("s2")));
+                .setStatus(Status.FAILED)
+                .setLabels(asList(EPIC.label("e2"), FEATURE.label("f2"), STORY.label("s2"))));
 
         LaunchResults results = new DefaultLaunchResults(testResults, Collections.emptyMap(), Collections.emptyMap());
 
@@ -86,18 +89,6 @@ public class BehaviorsPluginTest {
         assertThat(behaviorsData.getItems())
                 .extracting("name")
                 .containsExactlyInAnyOrder("e1", "e2");
-    }
-
-    private Label epic(final String value) {
-        return new Label().withName("epic").withValue(value);
-    }
-
-    private Label feature(final String value) {
-        return new Label().withName("feature").withValue(value);
-    }
-
-    private Label story(final String value) {
-        return new Label().withName("story").withValue(value);
     }
 
 

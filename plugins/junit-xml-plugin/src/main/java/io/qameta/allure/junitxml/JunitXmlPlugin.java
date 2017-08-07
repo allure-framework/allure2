@@ -33,6 +33,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static java.nio.file.Files.newDirectoryStream;
+import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -107,8 +108,10 @@ public class JunitXmlPlugin implements Reader {
         getLogFile(resultsDirectory, className)
                 .filter(Files::exists)
                 .map(visitor::visitAttachmentFile)
-                .map(attachment1 -> attachment1.withName("System out"))
-                .ifPresent(attachment -> result.setTestStage(new StageResult().withAttachments(attachment)));
+                .map(attachment1 -> attachment1.setName("System out"))
+                .ifPresent(attachment -> result.setTestStage(
+                        new StageResult().setAttachments(singletonList(attachment))
+                ));
 
         visitor.visitTestResult(result);
 
@@ -117,9 +120,9 @@ public class JunitXmlPlugin implements Reader {
             retried.setHidden(true);
             retried.setStatus(retryStatus);
             retried.setStatusDetails(new StatusDetails()
-                    .withMessage(failure.getAttribute(MESSAGE_ATTRIBUTE_NAME))
-                    .withTrace(failure.getValue())
-                    .withFlaky(true)
+                    .setMessage(failure.getAttribute(MESSAGE_ATTRIBUTE_NAME))
+                    .setTrace(failure.getValue())
+                    .setFlaky(true)
             );
             visitor.visitTestResult(retried);
         }));
@@ -179,10 +182,10 @@ public class JunitXmlPlugin implements Reader {
                 .flatMap(Collection::stream)
                 .findFirst()
                 .map(element -> new StatusDetails()
-                        .withMessage(element.getAttribute(MESSAGE_ATTRIBUTE_NAME))
-                        .withTrace(element.getValue())
-                        .withFlaky(flaky))
-                .orElseGet(() -> new StatusDetails().withFlaky(flaky));
+                        .setMessage(element.getAttribute(MESSAGE_ATTRIBUTE_NAME))
+                        .setTrace(element.getValue())
+                        .setFlaky(flaky))
+                .orElseGet(() -> new StatusDetails().setFlaky(flaky));
     }
 
     private Time getTime(final XmlElement testCaseElement, final Path parsedFile) {
@@ -191,7 +194,7 @@ public class JunitXmlPlugin implements Reader {
                 final long duration = BigDecimal.valueOf(testCaseElement.getDoubleAttribute(TIME_ATTRIBUTE_NAME))
                         .multiply(MULTIPLICAND)
                         .longValue();
-                return new Time().withDuration(duration);
+                return new Time().setDuration(duration);
             } catch (Exception e) {
                 LOGGER.debug(
                         "Could not parse time attribute for element {} in file {}",

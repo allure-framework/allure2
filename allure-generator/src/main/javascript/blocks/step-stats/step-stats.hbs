@@ -1,7 +1,5 @@
 <span class="step-stats__info">
     <span>
-    {{~#if hasContent}}
-    (
          {{~#if parameters.length ~}}
             {{~t 'testResult.stats.count.parameters' count=parameters.length~}}
              <span class="step-stats__info_separator">,&nbsp;</span>
@@ -14,8 +12,6 @@
             {{~t 'testResult.stats.count.attachments' count=attachmentsCount~}}
             <span class="step-stats__info_separator">,&nbsp;</span>
         {{~/if~}}
-    )
-    {{~/if~}}
     </span>
     <span class="step-stats__info_time" data-tooltip="{{date time.start}} {{time time.start true}}&nbsp;&ndash;&nbsp;{{time time.stop true}}">{{duration time.duration}}</span>
 </span>

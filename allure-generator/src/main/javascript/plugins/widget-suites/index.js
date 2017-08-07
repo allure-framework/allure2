@@ -4,6 +4,5 @@ allure.api.addWidget('widgets', 'suites', WidgetStatusView.extend({
     rowTag: 'a',
     title: 'widget.suites.name',
     baseUrl: 'suites',
-    showLinks: true,
-    showAllText: 'widget.suites.showAll'
+    showLinks: true
 }));

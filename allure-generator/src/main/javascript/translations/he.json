@@ -35,7 +35,7 @@
     "summary": {
       "aggregatedName": "דוח",
       "launches": "חבילת הרצה",
-      "launches_plural": "חבילת והרצה",
+      "launches_plural": "חבילות הרצה",
       "testResults": "תוצאת בדיקה",
       "testResults_plural": "תוצאות בדיקה"
     },
@@ -57,8 +57,10 @@
       "showAll": "הצג את כל משתני הסביבה"
     },
     "suites": {
-      "name": "קבוצות מקרי בדיקה",
-      "showAll": "הצג את כל קבוצות מקרי הבדיקה"
+      "name": "קבוצות מקרי בדיקה"
+    },
+	"categories": {
+      "name": "קטגוריות"
     }
   },
   "chart": {
@@ -81,6 +83,9 @@
       "empty": "לא קיימים פרטים על מצב מקרה הבדיקה",
       "trace": "הצג מידע נוסף"
     },
+	"overview": {
+      "name": "סקירה כללית"
+    },
     "categories": {
       "name": "קטגוריות"
     },
@@ -98,7 +103,8 @@
       "name": "האחראי למקרה הבדיקה"
     },
     "retries": {
-      "name": "ניסיונות חוזרים"
+      "name": "ניסיונות ריצה חוזרים",
+	  "empty": "אין מידע זמין על ניסיונות ריצה חוזרים"
     },
     "parameters": {
       "name": "פרמטרים"
@@ -136,7 +142,8 @@
     "backto": "חזור ל"
   },
   "errors": {
-    "missedAttachment": "התוכן המצורף לא נמצא"
+    "missedAttachment": "התוכן המצורף לא נמצא",
+	"notFound": "לא נמצא"
   },
   "component": {
     "tree": {
@@ -164,6 +171,7 @@
       }
     },
     "widgetStatus": {
+	  "showAll": "הצג את כל הפריטים",
       "total": "סך הכול פריט {{count}}",
       "total_plural": "סך הכול {{count}} פריטים"
     },

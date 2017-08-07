@@ -3,17 +3,20 @@ package io.qameta.allure.category;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.qameta.allure.Aggregator;
 import io.qameta.allure.Reader;
+import io.qameta.allure.Widget;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.tree.Classifier;
-import io.qameta.allure.tree.DefaultTree;
-import io.qameta.allure.tree.TestResultClassifier;
-import io.qameta.allure.tree.TestResultTreeLeaf;
+import io.qameta.allure.tree.DefaultTreeLayer;
+import io.qameta.allure.tree.TestResultTree;
+import io.qameta.allure.tree.TestResultTreeGroup;
 import io.qameta.allure.tree.Tree;
+import io.qameta.allure.tree.TreeLayer;
+import io.qameta.allure.tree.TreeWidgetData;
+import io.qameta.allure.tree.TreeWidgetItem;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,14 +24,17 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
+import static io.qameta.allure.entity.Statistic.comparator;
+import static io.qameta.allure.tree.TreeUtils.calculateStatisticByLeafs;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -37,13 +43,14 @@ import static java.util.Objects.nonNull;
  *
  * @since 2.0
  */
-public class CategoriesPlugin implements Aggregator, Reader {
+@SuppressWarnings("PMD.ExcessiveImports")
+public class CategoriesPlugin implements Aggregator, Reader, Widget {
 
     public static final String CATEGORIES_BLOCK_NAME = "categories";
 
-    public static final Category FAILED_TESTS = new Category().withName("Product defects");
+    public static final Category FAILED_TESTS = new Category().setName("Product defects");
 
-    public static final Category BROKEN_TESTS = new Category().withName("Test defects");
+    public static final Category BROKEN_TESTS = new Category().setName("Test defects");
 
     private static final String CATEGORIES_FILE_NAME = "categories.json";
 
@@ -83,6 +90,39 @@ public class CategoriesPlugin implements Aggregator, Reader {
         }
     }
 
+    @Override
+    public String getName() {
+        return "categories";
+    }
+
+    @Override
+    public Object getData(final Configuration configuration, final List<LaunchResults> launches) {
+        final Tree<TestResult> data = getData(launches);
+        final List<TreeWidgetItem> items = data.getChildren().stream()
+                .filter(TestResultTreeGroup.class::isInstance)
+                .map(TestResultTreeGroup.class::cast)
+                .map(this::toWidgetItem)
+                .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
+                .limit(10)
+                .collect(Collectors.toList());
+        return new TreeWidgetData().setItems(items).setTotal(data.getChildren().size());
+    }
+
+    @SuppressWarnings("PMD.DefaultPackage")
+    /* default */ Tree<TestResult> getData(final List<LaunchResults> launchResults) {
+
+
+        // @formatter:off
+        final Tree<TestResult> categories = new TestResultTree("categories", this::groupByCategories);
+        // @formatter:on
+
+        launchResults.stream()
+                .map(LaunchResults::getResults)
+                .flatMap(Collection::stream)
+                .forEach(categories::add);
+        return categories;
+    }
+
     @SuppressWarnings("PMD.DefaultPackage")
     /* default */ void addCategoriesForResults(final List<LaunchResults> launchesResults) {
         launchesResults.forEach(launch -> {
@@ -104,43 +144,15 @@ public class CategoriesPlugin implements Aggregator, Reader {
         });
     }
 
-    @SuppressWarnings("PMD.DefaultPackage")
-    /* default */ Tree<TestResult> getData(final List<LaunchResults> launchResults) {
-
-        // @formatter:off
-        final Tree<TestResult> xunit = new DefaultTree<>(
-            "suites",
-            this::groupByCategories,
-            this::createLeaf
-        );
-        // @formatter:on
-
-        launchResults.stream()
-                .map(LaunchResults::getResults)
-                .flatMap(Collection::stream)
-                .forEach(xunit::add);
-        return xunit;
-    }
-
-    protected List<Classifier<TestResult>> groupByCategories(final TestResult testResult) {
-        final Stream<TestResultClassifier> categories = testResult
+    protected List<TreeLayer> groupByCategories(final TestResult testResult) {
+        final Set<String> categories = testResult
                 .<List<Category>>getExtraBlock(CATEGORIES_BLOCK_NAME, new ArrayList<>())
                 .stream()
                 .map(Category::getName)
-                .map(TestResultClassifier::new);
-        final Stream<TestResultClassifier> message = Stream.of(testResult.getStatusMessage().orElse("Without message"))
-                .map(TestResultClassifier::new);
-
-        return Stream.concat(categories, message)
-                .collect(Collectors.toList());
-    }
-
-    protected Optional<TestResultTreeLeaf> createLeaf(final TestResult testResult) {
-        if (testResult.<List<Category>>getExtraBlock(CATEGORIES_BLOCK_NAME, new ArrayList<>()).isEmpty()) {
-            return Optional.empty();
-        } else {
-            return TestResultTreeLeaf.create(testResult);
-        }
+                .collect(Collectors.toSet());
+        final TreeLayer categoriesLayer = new DefaultTreeLayer(categories);
+        final TreeLayer messageLayer = new DefaultTreeLayer(testResult.getStatusMessage().orElse("Without message"));
+        return Arrays.asList(categoriesLayer, messageLayer);
     }
 
     public static boolean matches(final TestResult result, final Category category) {
@@ -162,5 +174,12 @@ public class CategoriesPlugin implements Aggregator, Reader {
 
     private static boolean matches(final String message, final String pattern) {
         return Pattern.compile(pattern, Pattern.DOTALL).matcher(message).matches();
+    }
+
+    protected TreeWidgetItem toWidgetItem(final TestResultTreeGroup group) {
+        return new TreeWidgetItem()
+                .setUid(group.getUid())
+                .setName(group.getName())
+                .setStatistic(calculateStatisticByLeafs(group));
     }
 }

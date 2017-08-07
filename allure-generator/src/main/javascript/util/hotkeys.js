@@ -3,7 +3,9 @@ import $ from 'jquery';
 
 const codes = {
     27: 'esc',
+    37: 'left',
     38: 'up',
+    39: 'right',
     40: 'down'
 };
 

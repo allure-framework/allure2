@@ -92,7 +92,7 @@
   &__collapse {
     cursor: pointer;
     .side-nav__icon {
-      left: calc($gap-size + 5px);
+      left: $gap-size + 5px;
       transition: transform 0.1s;
     }
   }

@@ -81,22 +81,22 @@ public final class TestData {
 
     public static HistoryTrendItem randomHistoryTrendItem() {
         return new HistoryTrendItem()
-                .withStatistic(randomStatistic())
-                .withBuildOrder(current().nextLong(100))
-                .withReportName(randomAlphabetic(10))
-                .withReportUrl(randomAlphabetic(10));
+                .setStatistic(randomStatistic())
+                .setBuildOrder(current().nextLong(100))
+                .setReportName(randomAlphabetic(10))
+                .setReportUrl(randomAlphabetic(10));
     }
 
     public static Statistic randomStatistic() {
         return new Statistic()
-                .withFailed(current().nextLong(10))
-                .withBroken(current().nextLong(10))
-                .withPassed(current().nextLong(10))
-                .withSkipped(current().nextLong(10))
-                .withUnknown(current().nextLong(10));
+                .setFailed(current().nextLong(10))
+                .setBroken(current().nextLong(10))
+                .setPassed(current().nextLong(10))
+                .setSkipped(current().nextLong(10))
+                .setUnknown(current().nextLong(10));
     }
 
     public static TestResult randomTestResult() {
-        return new TestResult().withName(randomAlphabetic(10));
+        return new TestResult().setName(randomAlphabetic(10));
     }
 }

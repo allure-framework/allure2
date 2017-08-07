@@ -7,6 +7,7 @@ import {className, on, behavior} from '../../decorators';
 import attachmentType from '../../util/attachmentType';
 import template from './AttachmentView.hbs';
 
+
 @className('attachment')
 @behavior('TooltipBehavior', {position: 'bottom'})
 class AttachmentView extends View {
@@ -36,7 +37,7 @@ class AttachmentView extends View {
 
     loadContent() {
         return $.ajax(this.sourceUrl, {dataType: 'text'}).then((responseText) => {
-            var parser = this.attachmentInfo.parser;
+            const parser = this.attachmentInfo.parser;
             this.content = parser(responseText);
         });
     }

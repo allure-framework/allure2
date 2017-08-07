@@ -1,7 +1,6 @@
 description = 'Allure Plugin Api'
 
 apply from: "${gradleScriptDir}/maven-publish.gradle"
-apply from: "${gradleScriptDir}/jaxb.gradle"
 apply from: "${gradleScriptDir}/bintray.gradle"
 apply plugin: 'maven'
 
@@ -12,6 +11,7 @@ dependencies {
     compile('com.fasterxml.jackson.module:jackson-module-jaxb-annotations')
 
     compile('org.slf4j:slf4j-api')
+    compileOnly('org.projectlombok:lombok')
 
     testCompile('junit:junit')
     testCompile('org.assertj:assertj-core')

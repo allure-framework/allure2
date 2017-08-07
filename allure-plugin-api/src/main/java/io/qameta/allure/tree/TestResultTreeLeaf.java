@@ -5,7 +5,6 @@ import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -13,6 +12,8 @@ import java.util.Optional;
 public class TestResultTreeLeaf extends DefaultTreeLeaf {
 
     private final String uid;
+
+    private final String parentUid;
 
     private final Status status;
 
@@ -22,8 +23,9 @@ public class TestResultTreeLeaf extends DefaultTreeLeaf {
 
     private final List<String> parameters;
 
-    public TestResultTreeLeaf(final TestResult testResult) {
+    public TestResultTreeLeaf(final String parentUid, final TestResult testResult) {
         this(
+                parentUid,
                 testResult.getName(),
                 testResult.getUid(),
                 testResult.getStatus(),
@@ -33,15 +35,20 @@ public class TestResultTreeLeaf extends DefaultTreeLeaf {
         );
     }
 
-    public TestResultTreeLeaf(final String name, final String uid,
+    public TestResultTreeLeaf(final String parentUid, final String name, final String uid,
                               final Status status, final Time time,
                               final boolean flaky, final List<String> parameters) {
         super(name);
+        this.parentUid = parentUid;
         this.uid = uid;
         this.status = status;
         this.time = time;
         this.flaky = flaky;
         this.parameters = parameters;
+    }
+
+    public String getParentUid() {
+        return parentUid;
     }
 
     public String getUid() {
@@ -62,9 +69,5 @@ public class TestResultTreeLeaf extends DefaultTreeLeaf {
 
     public List<String> getParameters() {
         return parameters;
-    }
-
-    public static Optional<TestResultTreeLeaf> create(final TestResult testResult) {
-        return Optional.of(new TestResultTreeLeaf(testResult));
     }
 }

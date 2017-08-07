@@ -26,10 +26,10 @@
                 </div>
             {{/if}}
             {{#each children}}
-                {{~> tree-group baseUrl=../baseUrl showGroupInfo=../showGroupInfo tabName=../tabName}}
+                {{~> tree-group baseUrl=../baseUrl showGroupInfo=../showGroupInfo tabName=../tabName testResultTab=../testResultTab}}
             {{/each}}
         </div>
     </div>
 {{else}}
-    {{~> tree-leaf baseUrl=baseUrl}}
+    {{~> tree-leaf baseUrl=baseUrl testResultTab=testResultTab}}
 {{/if}}

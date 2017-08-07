@@ -1,5 +1,5 @@
 import {Collection} from 'backbone';
-import {flatten} from 'underscore';
+import {flatten, findWhere} from 'underscore';
 import {values} from '../../util/statuses';
 
 function updateTime(timeA, timeB, field, operation) {
@@ -14,6 +14,10 @@ export default class TreeCollection extends Collection {
         this.url = url;
     }
 
+    findLeaf(parentUid, uid) {
+        return findWhere(this.allResults, {parentUid, uid});
+    }
+
     getFlattenTestResults(children) {
         return flatten(children.map(child => {
             if (child.children) {
@@ -23,8 +27,9 @@ export default class TreeCollection extends Collection {
         }));
     }
 
-    parse({children}) {
+    parse({uid, children}) {
         const items = children || [];
+        this.uid = uid;
         this.allResults = this.getFlattenTestResults(items);
         this.allNodes = items;
         this.time = this.calculateTime(this.allResults);
@@ -59,6 +64,18 @@ export default class TreeCollection extends Collection {
             })
             .filter(filter)
             .sort(sorter);
+    }
+
+    getFirstTestResult() {
+        if (this.testResults.length > 0 ) {
+            return this.testResults[0];
+        }
+    }
+
+    getLastTestResult() {
+        if (this.testResults.length > 0 ) {
+            return this.testResults[this.testResults.length - 1];
+        }
     }
 
     getNextTestResult(testResultUid) {

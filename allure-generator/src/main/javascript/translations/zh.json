@@ -54,11 +54,13 @@
     "environment": {
       "name": "环境",
       "empty": "没有环境变量",
-      "showAll": "显示所有环境变量"
+      "showAll": "显示所有"
     },
     "suites": {
-      "name": "测试套",
-      "showAll": "显示所有测试套"
+      "name": "测试套"
+    },
+    "categories": {
+      "name": "类别"
     }
   },
   "chart": {
@@ -80,6 +82,9 @@
     "status": {
       "empty": "状态详情为空",
       "trace": "展示堆栈"
+    },
+    "overview": {
+      "name": "总览"
     },
     "categories": {
       "name": "类别"
@@ -134,7 +139,8 @@
     "backto": "返回"
   },
   "errors": {
-    "missedAttachment": "没有找到附件"
+    "missedAttachment": "没有找到附件",
+    "notFound": "没有找到"
   },
   "component": {
     "tree": {
@@ -162,6 +168,7 @@
       }
     },
     "widgetStatus": {
+      "showAll": "显示所有",
       "total": "总共{{count}}项",
       "total_plural": "总共{{count}}项"
     },

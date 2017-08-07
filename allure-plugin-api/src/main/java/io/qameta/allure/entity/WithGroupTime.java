@@ -13,7 +13,7 @@ public interface WithGroupTime {
         getTimeSafe().merge(groupTime);
     }
 
-    default void updateTime(WithTime timed) {
+    default void updateTime(Timeable timed) {
         getTimeSafe().update(timed.getTime());
     }
 

@@ -1,4 +1,3 @@
-<a class="{{b 'pane' 'overlay'}}" href="#{{baseUrl}}"></a>
 <div class="{{b 'pane' 'title' borderless=true}}">
     {{t tabName}}
     {{#if filtered}}
@@ -8,22 +7,22 @@
     </span>
     {{/if}}
     <span class="pane__controls">
-        <a class="fa fa-info-circle {{b 'tree' 'control'}} {{b 'tree' 'info'}}" data-tooltip="{{t 'component.tree.groups'}}"></a>
+        <a class="fa fa-info-circle {{b cls 'control'}} {{b cls 'info'}}" data-tooltip="{{t 'component.tree.groups'}}"></a>
     </span>
 </div>
 
-<div class="{{b 'tree' 'ctrl'}}">
-    <div class="{{b 'tree' 'sorter'}}"></div>
-    <div class="{{b 'tree' 'strut'}}"></div>
-    <div class="{{b 'tree' 'filter'}}"></div>
+<div class="{{b cls 'ctrl'}}">
+    <div class="{{b cls 'sorter'}}"></div>
+    <div class="{{b cls 'strut'}}"></div>
+    <div class="{{b cls 'filter'}}"></div>
 </div>
 
-<div class="tree">
+<div class="{{b cls 'content'}}" data-uid="{{uid}}">
     {{#if items}}
         {{#each items}}
-            {{~> tree-group baseUrl=../baseUrl showGroupInfo=../showGroupInfo tabName=../tabName}}
+            {{~> tree-group baseUrl=../baseUrl showGroupInfo=../showGroupInfo tabName=../tabName testResultTab=../testResultTab}}
         {{/each}}
     {{else}}
-           <div class="{{b 'tree' 'empty'}}">{{t 'component.tree.empty'}}</div>
+           <div class="{{b cls 'empty'}}">{{t 'component.tree.empty'}}</div>
     {{/if}}
 </div>

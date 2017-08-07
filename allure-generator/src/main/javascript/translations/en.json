@@ -54,11 +54,13 @@
     "environment": {
       "name": "Environment",
       "empty": "There are no environment variables",
-      "showAll": "Show all environment variables"
+      "showAll": "Show all"
     },
     "suites": {
-      "name": "Suites",
-      "showAll": "Show all suites"
+      "name": "Suites"
+    },
+    "categories": {
+      "name": "Categories"
     }
   },
   "chart": {
@@ -81,6 +83,9 @@
       "empty": "Empty status details",
       "trace": "Show trace"
     },
+    "overview": {
+      "name": "Overview"
+    },
     "categories": {
       "name": "Categories"
     },
@@ -98,7 +103,8 @@
       "name": "Owner"
     },
     "retries": {
-      "name": "Retries"
+      "name": "Retries",
+      "empty": "There is no information available about test retries"
     },
     "parameters": {
       "name": "Parameters"
@@ -136,11 +142,12 @@
     "backto": "Back to"
   },
   "errors": {
-    "missedAttachment": "Attachment not found"
+    "missedAttachment": "Attachment not found",
+    "notFound": "Not found"
   },
   "component": {
     "tree": {
-      "filter": "Filter test cases by status",
+      "filter": "Filter by status",
       "groups": "Toggle groups info",
       "empty": "There are no items",
       "time": {
@@ -164,6 +171,7 @@
       }
     },
     "widgetStatus": {
+      "showAll": "Show all",
       "total": "{{count}} item total",
       "total_plural": "{{count}} items total"
     },

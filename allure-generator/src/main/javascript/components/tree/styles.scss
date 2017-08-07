@@ -76,6 +76,10 @@
   }
 }
 
+[dir=rtl] .step_expanded > .step__title > .step__arrow {
+	transform: rotate(90deg);
+}
+
 [dir=rtl] .node__expanded > .node__title > .node__arrow {
   transform: rotate(90deg);
 }

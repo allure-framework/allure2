@@ -4,9 +4,15 @@ import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.TestResult;
 
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -17,12 +23,19 @@ public final class TreeUtils {
         throw new IllegalStateException("Do not instance");
     }
 
-    public static List<Classifier<TestResult>> groupByLabels(final TestResult testResult,
-                                                             final LabelName... labelNames) {
+    public static String createGroupUid(final String parentUid, final String groupName) {
+        final MessageDigest md = getMessageDigest();
+        md.update(Objects.toString(parentUid).getBytes(UTF_8));
+        md.update(Objects.toString(groupName).getBytes(UTF_8));
+        return DatatypeConverter.printHexBinary(md.digest()).toLowerCase();
+    }
+
+    public static List<TreeLayer> groupByLabels(final TestResult testResult,
+                                                final LabelName... labelNames) {
         return Stream.of(labelNames)
-                .map(testResult::findAll)
+                .map(testResult::findAllLabels)
                 .filter(strings -> !strings.isEmpty())
-                .map(TestResultClassifier::new)
+                .map(DefaultTreeLayer::new)
                 .collect(Collectors.toList());
     }
 
@@ -68,5 +81,13 @@ public final class TreeUtils {
         statistic.merge(a);
         statistic.merge(b);
         return statistic;
+    }
+
+    private static MessageDigest getMessageDigest() {
+        try {
+            return MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException("Can not find hashing algorithm", e);
+        }
     }
 }

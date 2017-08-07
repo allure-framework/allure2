@@ -15,6 +15,7 @@ import io.qameta.allure.core.ReportWebPlugin;
 import io.qameta.allure.core.TestsResultsPlugin;
 import io.qameta.allure.environment.Allure1EnvironmentPlugin;
 import io.qameta.allure.executor.ExecutorPlugin;
+import io.qameta.allure.ga.GaPlugin;
 import io.qameta.allure.graph.GraphPlugin;
 import io.qameta.allure.history.HistoryPlugin;
 import io.qameta.allure.history.HistoryTrendPlugin;
@@ -74,7 +75,8 @@ public class ConfigurationBuilder {
                 new LaunchPlugin(),
                 new Allure1Plugin(),
                 new Allure1EnvironmentPlugin(),
-                new Allure2Plugin()
+                new Allure2Plugin(),
+                new GaPlugin()
         ));
         return this;
     }

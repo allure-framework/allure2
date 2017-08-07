@@ -72,11 +72,12 @@ allure.api.addTranslation('he', {
 
 allure.api.addTab('behaviors', {
     title: 'tab.behaviors.name', icon: 'fa fa-list',
-    route: 'behaviors(/:testcaseId)',
-    onEnter: (function () {
-        var routeParams = Array.prototype.slice.call(arguments);
+    route: 'behaviors(/)(:testGroup)(/)(:testResult)(/)(:testResultTab)(/)',
+    onEnter: (function (testGroup, testResult, testResultTab) {
         return new allure.components.TreeLayout({
-            routeParams: routeParams,
+            testGroup,
+            testResult,
+            testResultTab,
             tabName: 'tab.behaviors.name',
             baseUrl: 'behaviors',
             url: 'data/behaviors.json'
@@ -88,6 +89,5 @@ allure.api.addWidget('widgets', 'behaviors', allure.components.WidgetStatusView.
     rowTag: 'a',
     title: 'widget.behaviors.name',
     baseUrl: 'behaviors',
-    showLinks: true,
-    showAllText: 'widget.behaviors.showAll'
+    showLinks: true
 }));

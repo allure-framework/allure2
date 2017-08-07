@@ -34,8 +34,8 @@ public class Allure1EnvironmentPlugin implements Widget {
 
     private EnvironmentItem aggregateItem(final Map.Entry<String, List<Map.Entry<String, String>>> entry) {
         return new EnvironmentItem()
-                .withName(entry.getKey())
-                .withValues(entry.getValue().stream().map(Map.Entry::getValue).collect(toList()));
+                .setName(entry.getKey())
+                .setValues(entry.getValue().stream().map(Map.Entry::getValue).collect(toList()));
     }
 
     @Override

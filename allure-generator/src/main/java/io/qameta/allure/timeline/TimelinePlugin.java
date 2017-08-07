@@ -6,8 +6,7 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.tree.DefaultTree;
-import io.qameta.allure.tree.TestResultTreeLeaf;
+import io.qameta.allure.tree.TestResultTree;
 import io.qameta.allure.tree.Tree;
 
 import java.io.IOException;
@@ -44,10 +43,9 @@ public class TimelinePlugin implements Aggregator {
     /* default */ Tree<TestResult> getData(final List<LaunchResults> launchResults) {
 
         // @formatter:off
-        final Tree<TestResult> timeline = new DefaultTree<>(
+        final Tree<TestResult> timeline = new TestResultTree(
             "timeline",
-            testResult -> groupByLabels(testResult, LabelName.HOST, LabelName.THREAD),
-            TestResultTreeLeaf::create
+            testResult -> groupByLabels(testResult, LabelName.HOST, LabelName.THREAD)
         );
         // @formatter:on
 

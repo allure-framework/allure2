@@ -64,11 +64,11 @@ public class DefaultResultsVisitor implements ResultsVisitor {
             final String source = uid + (extension.isEmpty() ? "" : extension);
             final Long size = getFileSizeSafe(file);
             return new Attachment()
-                    .withUid(uid)
-                    .withName(file.getFileName().toString())
-                    .withSource(source)
-                    .withType(realType)
-                    .withSize(size);
+                    .setUid(uid)
+                    .setName(file.getFileName().toString())
+                    .setSource(source)
+                    .setType(realType)
+                    .setSize(size);
         });
     }
 

@@ -1,0 +1,23 @@
+@import "../../variables.scss";
+
+.test-result-overview {
+  &__trace {
+    border-top: 1px solid $border-color;
+    padding-top: 10px;
+    margin-top: 10px;
+    display: none;
+    &_expanded {
+      display: block;
+    }
+  }
+  &__trace-toggle {
+    margin-top: 5px;
+    text-align: center;
+    padding-top: 5px;
+    color: $text-muted-color;
+    &:hover {
+      background-color: $hover-color;
+    }
+  }
+}
+
