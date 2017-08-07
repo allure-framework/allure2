@@ -97,7 +97,7 @@ public class JunitXmlPlugin implements Reader {
                 return;
             }
             if (TEST_SUITES_ELEMENT_NAME.equals(elementName)) {
-                rootElement.get("testsuite").stream()
+                rootElement.get(TEST_SUITE_ELEMENT_NAME).stream()
                         .map(testSuiteElement -> testSuiteElement.get(TEST_CASE_ELEMENT_NAME))
                         .flatMap(Collection::stream)
                         .forEach(element -> parseTestCase(element, resultsDirectory, parsedFile, context, visitor));
