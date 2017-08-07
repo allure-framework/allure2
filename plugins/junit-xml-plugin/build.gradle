@@ -10,7 +10,8 @@ dependencies {
     testCompile('junit:junit')
     testCompile('org.assertj:assertj-core')
     testCompile('org.mockito:mockito-core')
-    testCompile("org.slf4j:slf4j-simple")
+    testCompile('org.slf4j:slf4j-simple')
+    testCompile('io.qameta.allure:allure-java-commons')
 }
 
 configurations.archives.artifacts.removeAll { it.archiveTask.is jar }

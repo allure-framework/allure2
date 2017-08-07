@@ -1,5 +1,6 @@
 package io.qameta.allure.junitxml;
 
+import io.qameta.allure.Issue;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
@@ -196,6 +197,25 @@ public class JunitXmlPluginTest {
                         tuple("some-message", "some-trace")
                 );
 
+    }
+
+    @Issue("532")
+    @Test
+    public void shouldParseSuitesTag() throws Exception {
+        process(
+                "junitdata/testsuites.xml", "TEST-test.SampleTest.xml"
+        );
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(3)).visitTestResult(captor.capture());
+
+        assertThat(captor.getAllValues())
+                .extracting(TestResult::getName)
+                .containsExactlyInAnyOrder(
+                        "should default path to an empty string",
+                        "should default consolidate to true",
+                        "should default useDotNotation to true"
+                );
     }
 
     private void process(String... strings) throws IOException {
