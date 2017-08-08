@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import './styles.scss';
 import {View} from 'backbone';
 import {className} from '../../decorators';
