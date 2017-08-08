@@ -62,7 +62,30 @@
     font-style: italic;
   }
   &_separator:last-child {
-    display:none;
+   display:none;
+  }
+  &__table {
+    display: table;
+    font-size: 12px;
+    margin: 0px 0px 5px 10px;
+    width: 85%;
+    table-layout: fixed;
+    &_row {
+      display: table-row;
+    }
+    &_cell {
+      display: table-cell;
+      padding: 5px 5px;
+      border-bottom: 1px solid $border-color;
+      cursor: pointer;
+      word-wrap: break-word;
+      &_name {
+        width: 25%;
+      }
+      &_value{
+        width: 75%;
+      }
+    }
   }
 }
 

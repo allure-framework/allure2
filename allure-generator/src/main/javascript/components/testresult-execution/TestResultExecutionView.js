@@ -80,7 +80,7 @@ class TestResultExecutionView extends View {
         e.stopPropagation();
     }
 
-    @on('click .parameters-table__cell')
+    @on('click .parameters__table_cell')
     onParameterClick(e) {
         this.$(e.target).siblings().addBack().toggleClass('line-ellipsis');
     }
