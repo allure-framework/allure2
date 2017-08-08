@@ -12,7 +12,16 @@
             {{> ../../blocks/step-stats/step-stats . baseUrl=../../baseUrl}}
         </div>
         <div class="step__content">
-            {{> ../../blocks/parameters-table/parameters-table parameters=parameters }}
+            {{#if parameters}}
+                <div class="parameters__table">
+                    {{#each parameters}}
+                        <div class="{{b "parameters" "table_row"}}">
+                            <div class="{{b "parameters" "table_cell" name=true}} line-ellipsis">{{name}}</div>
+                            <div class="{{b "parameters" "table_cell" value=true}} line-ellipsis">{{value}}</div>
+                        </div>
+                    {{/each}}
+                </div>
+            {{/if}}
             {{~> steps-list steps=steps baseUrl=../baseUrl}}
             {{#each attachments}}
                 {{> ../../blocks/attachment-row/attachment-row . baseUrl=../../baseUrl}}
