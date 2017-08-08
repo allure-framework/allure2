@@ -41,10 +41,10 @@ public class CopyVisitor extends SimpleFileVisitor<Path> {
 
     @Override
     public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
-        final Path dest = outputDirectory.resolve(sourceDirectory.relativize(file));
         if (Files.notExists(file)) {
             return FileVisitResult.CONTINUE;
         }
+        final Path dest = outputDirectory.resolve(sourceDirectory.relativize(file));
         try {
             Files.copy(file, dest, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
