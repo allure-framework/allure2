@@ -45,7 +45,8 @@ class PieChartView extends BaseChartView {
     onAttach() {
         const data = this.data;
         const width = this.$el.outerWidth();
-        const radius = width/4 - 10;
+        const height = this.$el.outerHeight();
+        const radius = Math.min(width,height)/2 - 10;
         var leftOffset = width / 2;
 
         if(this.showLegend) {
@@ -56,7 +57,7 @@ class PieChartView extends BaseChartView {
         this.svg = this.setupViewport();
 
         var sectors = this.svg.select('.chart__plot')
-            .attrs({transform: `translate(${leftOffset},${radius})`})
+            .attrs({transform: `translate(${leftOffset},${radius+5})`})
             .selectAll('.chart__arc').data(this.pie(data))
             .enter()
             .append('path')
