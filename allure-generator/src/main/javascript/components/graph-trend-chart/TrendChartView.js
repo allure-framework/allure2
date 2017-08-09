@@ -2,7 +2,7 @@ import './styles.scss';
 import {scaleLinear, scalePoint} from 'd3-scale';
 import {max} from 'd3-array';
 import {area, stack} from 'd3-shape';
-import {values} from '../../util/statuses';
+import {values} from '../../utils/statuses';
 import translate from '../../helpers/t';
 import BaseChartView from '../../components/graph-base/BaseChartView';
 import TooltipView from '../../components/tooltip/TooltipView';

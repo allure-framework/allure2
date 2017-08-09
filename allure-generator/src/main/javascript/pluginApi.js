@@ -1,9 +1,9 @@
-import pluginsRegistry from './util/pluginsRegistry';
+import pluginsRegistry from './utils/pluginsRegistry';
 import TreeLayout from './layouts/tree/TreeLayout';
 import AppLayout from './layouts/application/AppLayout';
 import WidgetStatusView from './components/widget-status/WidgetStatusView';
-import {getSettingsForPlugin} from './util/settingsFactory';
-import settings from './util/settings';
+import {getSettingsForPlugin} from './utils/settingsFactory';
+import settings from './utils/settings';
 
 window.allure = {
     api: pluginsRegistry,

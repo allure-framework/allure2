@@ -4,12 +4,12 @@ import {findWhere} from 'underscore';
 import {View} from 'backbone.marionette';
 import TooltipView from '../tooltip/TooltipView';
 import LanguageSelectView from '../language-select/LanguageSelectView';
-import { LANGUAGES } from '../../util/translation';
-import pluginsRegistry from '../../util/pluginsRegistry';
+import { LANGUAGES } from '../../utils/translation';
+import pluginsRegistry from '../../utils/pluginsRegistry';
 import template from './SideNavView.hbs';
 import {escapeExpression as escape} from 'handlebars/runtime';
 import router from '../../router';
-import settings from '../../util/settings';
+import settings from '../../utils/settings';
 
 @className('side-nav')
 class SideNavView extends View {

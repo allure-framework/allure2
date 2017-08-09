@@ -3,8 +3,8 @@ import {View} from 'backbone.marionette';
 import $ from 'jquery';
 import Sortable from 'sortablejs';
 import {className} from '../../decorators';
-import pluginsRegistry from '../../util/pluginsRegistry';
-import {getSettingsForWidgetGridPlugin} from '../../util/settingsFactory';
+import pluginsRegistry from '../../utils/pluginsRegistry';
+import {getSettingsForWidgetGridPlugin} from '../../utils/settingsFactory';
 
 
 const widgetTpl = (id) => `<div class="widget island" data-id="${id}">

@@ -1,6 +1,6 @@
 import {Collection} from 'backbone';
 import {flatten, findWhere} from 'underscore';
-import {values} from '../../util/statuses';
+import {values} from '../../utils/statuses';
 
 function updateTime(timeA, timeB, field, operation) {
     if (timeB && timeB[field]) {

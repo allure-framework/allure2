@@ -2,8 +2,8 @@ import './styles.scss';
 import PopoverView from '../popover/PopoverView';
 import {className, on} from '../../decorators';
 import template from './LanguageSelectView.hbs';
-import i18next, { LANGUAGES } from '../../util/translation';
-import settings from '../../util/settings';
+import i18next, { LANGUAGES } from '../../utils/translation';
+import settings from '../../utils/settings';
 import $ from 'jquery';
 
 @className('language-select popover')

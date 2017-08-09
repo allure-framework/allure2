@@ -4,7 +4,7 @@ import AttachmentView from '../attachment/AttachmentView';
 import template from './TestResultExecutionView.hbs';
 import router from '../../router';
 import {className, on} from '../../decorators';
-import {makeArray} from '../../util/arrays';
+import {makeArray} from '../../utils/arrays';
 import {Model} from 'backbone';
 import {View} from 'backbone.marionette';
 

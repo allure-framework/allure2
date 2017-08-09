@@ -1,5 +1,5 @@
 import StatusToggleView from 'components/status-toggle/StatusToggleView';
-import {getSettingsForTreePlugin} from 'util/settingsFactory';
+import {getSettingsForTreePlugin} from 'utils/settingsFactory';
 
 describe('StatusToggle', function () {
     const statistic = {failed: '4', broken: '3', passed: '2', skipped: '1', unknown: '0'};

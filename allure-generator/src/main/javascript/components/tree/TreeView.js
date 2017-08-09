@@ -1,6 +1,6 @@
 import './styles.scss';
 import {View} from 'backbone.marionette';
-import hotkeys from '../../util/hotkeys';
+import hotkeys from '../../utils/hotkeys';
 import template from './TreeView.hbs';
 import {behavior, className, on, regions} from '../../decorators';
 import getComparator from '../../data/tree/comparator';
@@ -9,7 +9,7 @@ import NodeSorterView from '../node-sorter/NodeSorterView';
 import StatusToggleView from '../status-toggle/StatusToggleView';
 import router from '../../router';
 import {Model} from 'backbone';
-import {getSettingsForTreePlugin} from '../../util/settingsFactory';
+import {getSettingsForTreePlugin} from '../../utils/settingsFactory';
 
 @className('tree')
 @behavior('TooltipBehavior', {position: 'bottom'})

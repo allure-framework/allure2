@@ -1,6 +1,6 @@
 import {Behavior} from 'backbone.marionette';
 import {on} from '../decorators';
-import copy from '../util/clipboard';
+import copy from '../utils/clipboard';
 import TooltipView from '../components/tooltip/TooltipView';
 import translate from '../helpers/t';
 

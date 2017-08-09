@@ -10,7 +10,7 @@ import {select, event as currentEvent} from 'd3-selection';
 import {brushX} from 'd3-brush';
 import {drag} from 'd3-drag';
 import 'd3-selection-multi';
-import escape from '../../util/escape';
+import escape from '../../utils/escape';
 import TooltipView from '../../components/tooltip/TooltipView';
 import template from './TimelineView.hbs';
 import {axisBottom} from 'd3-axis';

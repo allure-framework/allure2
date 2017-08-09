@@ -1,7 +1,7 @@
 import {Model} from 'backbone';
 import TreeView from 'components/tree/TreeView';
 import TreeCollection from 'data/tree/TreeCollection';
-import {getSettingsForTreePlugin} from 'util/settingsFactory';
+import {getSettingsForTreePlugin} from 'utils/settingsFactory';
 
 describe('Tree', function () {
     const tabName = 'Tab Name';

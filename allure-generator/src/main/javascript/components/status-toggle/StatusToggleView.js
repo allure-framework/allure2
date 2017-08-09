@@ -1,7 +1,7 @@
 import './styles.scss';
 import {on, className} from '../../decorators';
 import template from './StatusToggleView.hbs';
-import {values} from '../../util/statuses';
+import {values} from '../../utils/statuses';
 import {View} from 'backbone.marionette';
 import translate from '../../helpers/t';
 
