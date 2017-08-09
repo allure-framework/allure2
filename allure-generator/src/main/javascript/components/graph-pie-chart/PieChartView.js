@@ -9,6 +9,8 @@ import escape from '../../util/escape';
 import {values} from '../../util/statuses';
 import translate from '../../helpers/t';
 
+const PADDING = 5;
+
 
 class PieChartView extends BaseChartView {
 
@@ -46,8 +48,9 @@ class PieChartView extends BaseChartView {
         const data = this.data;
         const width = this.$el.outerWidth();
         const height = this.$el.outerHeight();
-        const radius = Math.min(width,height)/2 - 10;
-        var leftOffset = width / 2;
+        const radius = Math.min(width,height) / 2 - 2 * PADDING;
+        const topOffset = height / 2;
+        let leftOffset = width / 2;
 
         if(this.showLegend) {
             leftOffset -= 70;
@@ -57,7 +60,7 @@ class PieChartView extends BaseChartView {
         this.svg = this.setupViewport();
 
         var sectors = this.svg.select('.chart__plot')
-            .attrs({transform: `translate(${leftOffset},${radius+5})`})
+            .attrs({transform: `translate(${leftOffset},${topOffset})`})
             .selectAll('.chart__arc').data(this.pie(data))
             .enter()
             .append('path')
