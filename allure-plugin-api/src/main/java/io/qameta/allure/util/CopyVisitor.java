@@ -1,5 +1,8 @@
 package io.qameta.allure.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -15,6 +18,8 @@ import java.nio.file.attribute.BasicFileAttributes;
  */
 public class CopyVisitor extends SimpleFileVisitor<Path> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CopyVisitor.class);
+
     private final Path sourceDirectory;
 
     private final Path outputDirectory;
@@ -26,14 +31,25 @@ public class CopyVisitor extends SimpleFileVisitor<Path> {
 
     @Override
     public FileVisitResult preVisitDirectory(final Path dir, final BasicFileAttributes attrs) throws IOException {
-        Files.createDirectories(dir);
+        try {
+            Files.createDirectories(dir);
+        } catch (IOException e) {
+            LOGGER.error("Could not create directory", e);
+        }
         return FileVisitResult.CONTINUE;
     }
 
     @Override
     public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
+        if (Files.notExists(file)) {
+            return FileVisitResult.CONTINUE;
+        }
         final Path dest = outputDirectory.resolve(sourceDirectory.relativize(file));
-        Files.copy(file, dest, StandardCopyOption.REPLACE_EXISTING);
+        try {
+            Files.copy(file, dest, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            LOGGER.error("Could not copy file", e);
+        }
         return FileVisitResult.CONTINUE;
     }
 }

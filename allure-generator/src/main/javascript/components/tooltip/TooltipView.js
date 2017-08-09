@@ -6,14 +6,14 @@ import $ from 'jquery';
 import {defaults} from 'underscore';
 
 export const POSITION = {
-    'top': function({top, left, height, width}, {offset}, tipSize) {
+    'top': function({top, left, width}, {offset}, tipSize) {
         return {
             top: top - tipSize.height - offset,
             left: left + width / 2 - tipSize.width / 2
         };
     },
 
-    'center': function({top, left, height, width}, {offset}, tipSize) {
+    'center': function({top, left, height, width}, offsets, tipSize) {
         return {
             top: top + height / 2,
             left: left + width / 2 - tipSize.width / 2
@@ -25,7 +25,7 @@ export const POSITION = {
             left: left + width + offset
         };
     },
-    'left': function({top, left, height, width}, {offset}, tipSize) {
+    'left': function({top, left, height}, {offset}, tipSize) {
         return {
             top: top + height / 2 - tipSize.height / 2,
             left: left - offset - tipSize.width
