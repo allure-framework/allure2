@@ -30,16 +30,20 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
 import static java.nio.file.Files.newDirectoryStream;
 
 /**
  * @author charlie (Dmitry Baev).
  */
+@SuppressWarnings("PMD.ExcessiveImports")
 public class TrxPlugin implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TrxPlugin.class);
 
     private static final String TEST_RUN_ELEMENT_NAME = "TestRun";
+
+    public static final String TRX_RESULTS_FORMAT = "trx";
     public static final String RESULTS_ELEMENT_NAME = "Results";
     public static final String UNIT_TEST_RESULT_ELEMENT_NAME = "UnitTestResult";
     public static final String TEST_NAME_ATTRIBUTE = "testName";
@@ -158,6 +162,7 @@ public class TrxPlugin implements Reader {
             result.setDescription(unitTest.getDescription());
         });
 
+        result.addLabelIfNotExists(RESULT_FORMAT, TRX_RESULTS_FORMAT);
         visitor.visitTestResult(result);
     }
 

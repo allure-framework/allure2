@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
 import static java.nio.file.Files.newDirectoryStream;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
@@ -47,9 +48,12 @@ public class JunitXmlPlugin implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JunitXmlPlugin.class);
 
+    public static final String JUNIT_RESULTS_FORMAT = "junit";
+
     private static final BigDecimal MULTIPLICAND = new BigDecimal(1000);
 
     private static final String TEST_SUITE_ELEMENT_NAME = "testsuite";
+    private static final String TEST_SUITES_ELEMENT_NAME = "testsuites";
     private static final String TEST_CASE_ELEMENT_NAME = "testcase";
     private static final String CLASS_NAME_ATTRIBUTE_NAME = "classname";
     private static final String NAME_ATTRIBUTE_NAME = "name";
@@ -63,6 +67,7 @@ public class JunitXmlPlugin implements Reader {
 
     private static final Map<String, Status> RETRIES;
 
+
     static {
         RETRIES = new HashMap<>();
         RETRIES.put(RERUN_FAILURE_ELEMENT_NAME, Status.FAILED);
@@ -73,25 +78,32 @@ public class JunitXmlPlugin implements Reader {
     @Override
     public void readResults(final Configuration configuration, final ResultsVisitor visitor, final Path directory) {
         final RandomUidContext context = configuration.requireContext(RandomUidContext.class);
-        listResults(directory).forEach(result -> parseTestSuite(directory, result, context, visitor));
+        listResults(directory).forEach(result -> parseRootElement(directory, result, context, visitor));
     }
 
-    private void parseTestSuite(final Path resultsDirectory, final Path parsedFile,
-                                final RandomUidContext context, final ResultsVisitor visitor) {
+    private void parseRootElement(final Path resultsDirectory, final Path parsedFile,
+                                  final RandomUidContext context, final ResultsVisitor visitor) {
         try {
             LOGGER.debug("Parsing file {}", parsedFile);
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             final DocumentBuilder builder = factory.newDocumentBuilder();
 
-            final XmlElement testSuiteElement = new XmlElement(builder.parse(parsedFile.toFile()).getDocumentElement());
-            final String elementName = testSuiteElement.getName();
-            if (!TEST_SUITE_ELEMENT_NAME.equals(elementName)) {
-                LOGGER.debug("File {} is not a valid JUnit xml. Unknown root element {}", parsedFile, elementName);
+            final XmlElement rootElement = new XmlElement(builder.parse(parsedFile.toFile()).getDocumentElement());
+            final String elementName = rootElement.getName();
+
+            if (TEST_SUITE_ELEMENT_NAME.equals(elementName)) {
+                rootElement.get(TEST_CASE_ELEMENT_NAME)
+                        .forEach(element -> parseTestCase(element, resultsDirectory, parsedFile, context, visitor));
                 return;
             }
-
-            testSuiteElement.get(TEST_CASE_ELEMENT_NAME)
-                    .forEach(element -> parseTestCase(element, resultsDirectory, parsedFile, context, visitor));
+            if (TEST_SUITES_ELEMENT_NAME.equals(elementName)) {
+                rootElement.get(TEST_SUITE_ELEMENT_NAME).stream()
+                        .map(testSuiteElement -> testSuiteElement.get(TEST_CASE_ELEMENT_NAME))
+                        .flatMap(Collection::stream)
+                        .forEach(element -> parseTestCase(element, resultsDirectory, parsedFile, context, visitor));
+                return;
+            }
+            LOGGER.debug("File {} is not a valid JUnit xml. Unknown root element {}", parsedFile, elementName);
         } catch (SAXException | ParserConfigurationException | IOException e) {
             LOGGER.error("Could not parse file {}: {}", parsedFile, e);
         }
@@ -151,6 +163,7 @@ public class JunitXmlPlugin implements Reader {
         result.setUid(context.getValue().get());
         result.setName(isNull(name) ? "Unknown test case" : name);
         result.setTime(getTime(testCaseElement, parsedFile));
+        result.addLabelIfNotExists(RESULT_FORMAT, JUNIT_RESULTS_FORMAT);
 
         if (nonNull(className)) {
             result.addLabelIfNotExists(LabelName.SUITE, className);
