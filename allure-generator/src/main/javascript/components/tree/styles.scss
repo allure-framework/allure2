@@ -17,6 +17,17 @@
     left: 7px;
     position: absolute;
   }
+  &__flaky {
+    padding-left: 10px;
+    opacity: 0;
+    &_shown {
+      opacity: 1;
+    }
+  }
+  &__order {
+    padding-left: 5px;
+    padding-right: 10px;
+  }
   &__anchor {
     left: 10px;
     position: absolute;

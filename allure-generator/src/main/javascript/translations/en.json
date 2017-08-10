@@ -8,6 +8,7 @@
     "flaky": "Test is flaky"
   },
   "sorter": {
+    "order": "order",
     "name": "name",
     "duration": "duration",
     "status": "status"

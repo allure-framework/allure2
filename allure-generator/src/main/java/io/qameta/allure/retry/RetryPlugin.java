@@ -5,13 +5,11 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.entity.Time;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -20,9 +18,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static java.util.Comparator.comparing;
-import static java.util.Comparator.naturalOrder;
-import static java.util.Comparator.nullsFirst;
+import static io.qameta.allure.entity.TestResult.comparingByTime;
 
 /**
  * The plugin that process test retries.
@@ -50,7 +46,7 @@ public class RetryPlugin implements Aggregator {
     private Consumer<TestResult> addRetries(final List<TestResult> results) {
         return latest -> {
             final List<RetryItem> retries = results.stream()
-                    .sorted(byTime())
+                    .sorted(comparingByTime())
                     .filter(result -> !latest.equals(result))
                     .map(retry -> retry.setHidden(true))
                     .map(retry -> new RetryItem()
@@ -75,7 +71,7 @@ public class RetryPlugin implements Aggregator {
     private Optional<TestResult> findLatest(final List<TestResult> results) {
         return results.stream()
                 .filter(result -> !result.isHidden())
-                .sorted(byTime())
+                .sorted(comparingByTime())
                 .findFirst();
     }
 
@@ -85,12 +81,5 @@ public class RetryPlugin implements Aggregator {
         merged.addAll(first);
         merged.addAll(second);
         return merged;
-    }
-
-    private Comparator<TestResult> byTime() {
-        return comparing(
-                TestResult::getTime,
-                nullsFirst(comparing(Time::getStart, nullsFirst(naturalOrder())))
-        ).reversed();
     }
 }
