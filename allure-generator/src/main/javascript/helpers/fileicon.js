@@ -1,4 +1,4 @@
-import typeByMime from '../util/attachmentType';
+import typeByMime from '../utils/attachmentType';
 
 export default function(type) {
     return typeByMime(type).icon;

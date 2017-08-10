@@ -4,12 +4,12 @@ import {findWhere} from 'underscore';
 import {View} from 'backbone.marionette';
 import TooltipView from '../tooltip/TooltipView';
 import LanguageSelectView from '../language-select/LanguageSelectView';
-import { LANGUAGES } from '../../util/translation';
-import pluginsRegistry from '../../util/pluginsRegistry';
-import settings from '../../util/settings';
+import { LANGUAGES } from '../../utils/translation';
+import pluginsRegistry from '../../utils/pluginsRegistry';
 import template from './SideNavView.hbs';
 import {escapeExpression as escape} from 'handlebars/runtime';
 import router from '../../router';
+import settings from '../../utils/settings';
 
 @className('side-nav')
 class SideNavView extends View {
@@ -25,7 +25,7 @@ class SideNavView extends View {
     }
 
     onRender() {
-        this.$el.toggleClass('side-nav_collapsed', settings.get('sidebarCollapsed'));
+        this.$el.toggleClass('side-nav_collapsed', settings.isSidebarCollapsed());
     }
 
     onDestroy() {
@@ -34,13 +34,13 @@ class SideNavView extends View {
 
     serializeData() {
         return {
-            language: findWhere(LANGUAGES, {id: settings.get('language')}),
+            language: findWhere(LANGUAGES, {id: settings.getLanguage()}),
             tabs: this.tabs
         };
     }
 
     isTabActive(name) {
-        var currentUrl = router.getCurrentUrl();
+        const currentUrl = router.getCurrentUrl();
         return name ? currentUrl.indexOf(name) === 0 : currentUrl === name;
     }
 
@@ -60,7 +60,7 @@ class SideNavView extends View {
     @on('click .side-nav__collapse')
     onCollapseClick() {
         this.$el.toggleClass('side-nav_collapsed');
-        settings.save('sidebarCollapsed', this.$el.hasClass('side-nav_collapsed'));
+        settings.setSidebarCollapsed( this.$el.hasClass('side-nav_collapsed'));
         this.tooltip.hide();
     }
 

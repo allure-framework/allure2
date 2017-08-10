@@ -1,4 +1,4 @@
-import {values} from '../../util/statuses';
+import {values} from '../../utils/statuses';
 
 function byName(a, b) {
     return a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1;

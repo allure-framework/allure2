@@ -1,6 +1,6 @@
 import {findWhere} from 'underscore';
 import {Model} from 'backbone';
-import {makeArray} from '../../util/arrays';
+import {makeArray} from '../../utils/arrays';
 
 
 function collectAttachments({steps, attachments}) {

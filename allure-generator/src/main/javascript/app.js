@@ -6,7 +6,7 @@ import router from './router';
 import * as behaviors from './behaviors';
 import ErrorLayout from './layouts/error/ErrorLayout';
 import TestResultLayout from './layouts/testresult/TestResultLayout';
-import i18next, { initTranslations } from './util/translation';
+import i18next, { initTranslations } from './utils/translation';
 import translate from './helpers/t';
 
 //https://github.com/d3/d3-timer/pull/21
