@@ -1,5 +1,5 @@
 import {SafeString} from 'handlebars/runtime';
-import {values} from '../util/statuses';
+import {values} from '../utils/statuses';
 
 export default function statusBar(statistic) {
     const fill = values.map(status => {

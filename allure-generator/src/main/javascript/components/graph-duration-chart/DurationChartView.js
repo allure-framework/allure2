@@ -2,7 +2,7 @@ import BaseChartView from '../../components/graph-base/BaseChartView';
 import {scaleLinear, scaleSqrt} from 'd3-scale';
 import {histogram, max} from 'd3-array';
 import PopoverView from '../../components/popover/PopoverView';
-import escape from '../../util/escape';
+import escape from '../../utils/escape';
 import duration from '../../helpers/duration';
 import translate from '../../helpers/t';
 

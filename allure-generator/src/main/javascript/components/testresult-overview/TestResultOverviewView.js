@@ -2,7 +2,7 @@ import './styles.scss';
 import {View} from 'backbone.marionette';
 import {className, regions} from '../../decorators';
 import template from './TestResultOverviewView.hbs';
-import pluginsRegistry from '../../util/pluginsRegistry';
+import pluginsRegistry from '../../utils/pluginsRegistry';
 import TestResultExecutionView from '../testresult-execution/TestResultExecutionView';
 
 @className('test-result-overview')

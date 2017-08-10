@@ -1,14 +1,11 @@
 import {Model} from 'backbone';
 import TreeView from 'components/tree/TreeView';
 import TreeCollection from 'data/tree/TreeCollection';
-import settings from 'util/settings';
-
+import {getSettingsForTreePlugin} from 'utils/settingsFactory';
 
 describe('Tree', function () {
     const tabName = 'Tab Name';
-    const sorterSettingsKey = tabName + '.treeSorting';
-    const filterSettingsKey = tabName + '.visibleStatuses';
-    const infoSettingsKey = 'showGroupInfo';
+    let settings = getSettingsForTreePlugin('TREE_TEST');
     let view;
     let page;
 
@@ -45,11 +42,11 @@ describe('Tree', function () {
     }
 
     function sortTree({sorter = 'sorter.name', ascending = true}) {
-        settings.save(sorterSettingsKey, {sorter, ascending});
+        settings.setTreeSorting({sorter, ascending});
     }
 
     function filterTree({failed = true, broken = true, passed = true, skipped = true, unknown = true}) {
-        settings.save(filterSettingsKey, {
+        settings.setVisibleStatuses({
             failed: failed,
             broken: broken,
             passed: passed,
@@ -68,6 +65,7 @@ describe('Tree', function () {
             routeState: new Model(),
             tabName: tabName,
             baseUrl: 'XUnit',
+            settings: settings
         }).render();
         view.onRender();
         const page = new PageObject(view.$el);
@@ -96,9 +94,7 @@ describe('Tree', function () {
     });
 
     beforeEach(() => {
-        settings.unset(sorterSettingsKey);
-        settings.unset(filterSettingsKey);
-        settings.unset(infoSettingsKey);
+        settings = getSettingsForTreePlugin('TREE_TEST');
         ({view, page} = renderView(data));
     });
 
@@ -113,7 +109,7 @@ describe('Tree', function () {
             expect(page.nodes().length).toBe(0);
             sortTree({ascending: false});
             filterTree({failed: true, broken: false, passed: false, skipped: false, unknown: false});
-            settings.save(infoSettingsKey, true);
+            settings.setShowGroupInfo(true);
             expect(page.nodes().length).toBe(0);
             view.destroy();
         });
@@ -184,9 +180,9 @@ describe('Tree', function () {
     describe('groupInfo', () => {
 
         it('should showing and hiding the group node info', () => {
-            settings.save(infoSettingsKey, true);
+            settings.setShowGroupInfo(true);
             expect(page.infos().length).toBe(2);
-            settings.save(infoSettingsKey, false);
+            settings.setShowGroupInfo(false);
             expect(page.infos().length).toBe(0);
         });
     });

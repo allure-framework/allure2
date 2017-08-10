@@ -59,9 +59,14 @@ $sidebar-text-shadow-color: #000;
 $link-color: #000;
 $link-color-hover: #f00;
 
+
 /* Pane set */
 
 $pane-bg-color: #fff;
 $pane-shadow-color: #999;
 $pane-overlay-bg: rgba(240, 240, 240, 0.4);
-$pane-overlay-bg-hover: rgba(240, 240, 240, 0.2); 
+$pane-overlay-bg-hover: rgba(240, 240, 240, 0.2);
+
+/* Tooltip */
+$tooltip-bg: rgba(50, 50, 50, 0.8);
+$tooltip-color: #fff;

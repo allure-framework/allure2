@@ -87,7 +87,7 @@
     background: $pane-overlay-bg-hover;
   }
   &__filter, &__sorter {
-    padding: 0px $gap-size 0px $gap-size;
+    padding: 0 $gap-size 0 $gap-size;
     position: relative;
     white-space: nowrap;
   }
@@ -96,6 +96,6 @@
   }
   &__empty {
     border-top: 1px solid #ECEFF1;
-    padding: 8px 0px 0px 15px;
+    padding: 8px 0 0 15px;
   }
 }
