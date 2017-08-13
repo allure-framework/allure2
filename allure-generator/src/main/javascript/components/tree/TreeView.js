@@ -1,7 +1,6 @@
 import './styles.scss';
 import {View} from 'backbone.marionette';
-import settings from '../../util/settings';
-import hotkeys from '../../util/hotkeys';
+import hotkeys from '../../utils/hotkeys';
 import template from './TreeView.hbs';
 import {behavior, className, on, regions} from '../../decorators';
 import getComparator from '../../data/tree/comparator';
@@ -10,6 +9,7 @@ import NodeSorterView from '../node-sorter/NodeSorterView';
 import StatusToggleView from '../status-toggle/StatusToggleView';
 import router from '../../router';
 import {Model} from 'backbone';
+import {getSettingsForTreePlugin} from '../../utils/settingsFactory';
 
 @className('tree')
 @behavior('TooltipBehavior', {position: 'bottom'})
@@ -20,19 +20,18 @@ import {Model} from 'backbone';
 class TreeView extends View {
     template = template;
 
-    initialize({routeState, tabName, baseUrl}) {
+    initialize({routeState, tabName, baseUrl, settings = getSettingsForTreePlugin(baseUrl)}) {
         this.state = new Model();
         this.routeState = routeState;
         this.baseUrl = baseUrl;
         this.tabName = tabName;
-        this.statusesKey = tabName + '.visibleStatuses';
-        this.sorterSettingsKey = tabName + '.treeSorting';
         this.setState();
         this.listenTo(this.routeState, 'change:treeNode', this.selectNode);
         this.listenTo(this.routeState, 'change:testResultTab', this.render);
-        this.listenTo(settings, 'change:' + this.statusesKey, this.render);
-        this.listenTo(settings, 'change:' + this.sorterSettingsKey, this.render);
-        this.listenTo(settings, 'change:showGroupInfo', this.render);
+
+        this.settings = settings;
+        this.listenTo(this.settings, 'change', this.render);
+
         this.listenTo(hotkeys, 'key:up', this.onKeyUp, this);
         this.listenTo(hotkeys, 'key:down', this.onKeyDown, this);
         this.listenTo(hotkeys, 'key:esc', this.onKeyBack, this);
@@ -52,20 +51,22 @@ class TreeView extends View {
     }
 
     onBeforeRender() {
-        const visibleStatuses = settings.getVisibleStatuses(this.statusesKey);
+        const visibleStatuses = this.settings.getVisibleStatuses();
         const filter = byStatuses(visibleStatuses);
-        const sortSettings = settings.getTreeSorting(this.sorterSettingsKey);
+
+        const sortSettings = this.settings.getTreeSorting();
         const sorter = getComparator(sortSettings);
+
         this.collection.applyFilterAndSorting(filter, sorter);
     }
 
     onRender() {
         this.selectNode();
         this.showChildView('sorter', new NodeSorterView({
-            sorterSettingsKey: this.sorterSettingsKey
+            settings: this.settings
         }));
         this.showChildView('filter', new StatusToggleView({
-            statusesKey: this.statusesKey,
+            settings: this.settings,
             statistic: this.collection.statistic
         }));
     }
@@ -90,7 +91,7 @@ class TreeView extends View {
     changeState(uid, active = true) {
         if (active) {
             this.state.set(uid, true);
-        } else  {
+        } else {
             this.state.unset(uid);
         }
     }
@@ -122,14 +123,14 @@ class TreeView extends View {
 
     @on('click .tree__info')
     onInfoClick() {
-        const show = settings.get('showGroupInfo');
-        settings.save('showGroupInfo', !show);
+        const show = this.settings.isShowGroupInfo();
+        this.settings.setShowGroupInfo(!show);
     }
 
     onKeyUp(event) {
         event.preventDefault();
         const current = this.routeState.get('treeNode');
-        if(current && current.testResult) {
+        if (current && current.testResult) {
             this.selectTestResult(this.collection.getPreviousTestResult(current.testResult));
         } else {
             this.selectTestResult(this.collection.getLastTestResult());
@@ -139,7 +140,7 @@ class TreeView extends View {
     onKeyDown(event) {
         event.preventDefault();
         const current = this.routeState.get('treeNode');
-        if(current && current.testResult) {
+        if (current && current.testResult) {
             this.selectTestResult(this.collection.getNextTestResult(current.testResult));
         } else {
             this.selectTestResult(this.collection.getFirstTestResult());
@@ -160,7 +161,7 @@ class TreeView extends View {
     }
 
     selectTestResult(testResult) {
-        if(testResult) {
+        if (testResult) {
             const tab = this.routeState.get('testResultTab') || '';
             router.toUrl(`${this.baseUrl}/${testResult.parentUid}/${testResult.uid}/${tab}`, {replace: true});
         }
@@ -170,7 +171,7 @@ class TreeView extends View {
         return {
             cls: this.className,
             baseUrl: this.baseUrl,
-            showGroupInfo: settings.get('showGroupInfo'),
+            showGroupInfo: this.settings.isShowGroupInfo(),
             time: this.collection.time,
             statistic: this.collection.statistic,
             uid: this.collection.uid,

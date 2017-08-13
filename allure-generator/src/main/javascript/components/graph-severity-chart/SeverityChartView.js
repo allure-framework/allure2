@@ -1,7 +1,7 @@
 import BaseChartView from '../../components/graph-base/BaseChartView';
 import PopoverView from '../../components/popover/PopoverView';
-import escape from '../../util/escape';
-import {values} from '../../util/statuses';
+import escape from '../../utils/escape';
+import {values} from '../../utils/statuses';
 import {scaleBand, scaleSqrt} from 'd3-scale';
 import {max} from 'd3-array';
 

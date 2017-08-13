@@ -1,6 +1,5 @@
 import './styles.scss';
-import {on, className} from '../../decorators';
-import settings from '../../util/settings';
+import {className, on} from '../../decorators';
 import template from './NodeSorterView.hbs';
 import {View} from 'backbone.marionette';
 
@@ -10,15 +9,14 @@ const AVAILABLE_SORTERS = ['sorter.name', 'sorter.duration', 'sorter.status'];
 class NodeSorterView extends View {
     template = template;
 
-    initialize({sorterSettingsKey}) {
-        this.sorterSettingsKey = sorterSettingsKey;
+    initialize({settings}) {
+        this.settings = settings;
     }
 
     @on('click .sorter__item')
     onChangeSorting(e) {
         const el = this.$(e.currentTarget);
-
-        settings.save(this.sorterSettingsKey, {
+        this.settings.setTreeSorting({
             sorter: el.data('name'),
             ascending: !el.data('asc')
         });
@@ -31,7 +29,7 @@ class NodeSorterView extends View {
     }
 
     serializeData() {
-        const sortSettings = settings.getTreeSorting(this.sorterSettingsKey);
+        const sortSettings = this.settings.getTreeSorting();
         return {
             sorters: AVAILABLE_SORTERS.map(sorter => ({
                 name: sorter,

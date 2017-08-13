@@ -5,8 +5,8 @@ import {omit} from 'underscore';
 import {arc, pie} from 'd3-shape';
 import {interpolate} from 'd3-interpolate';
 import {select} from 'd3-selection';
-import escape from '../../util/escape';
-import {values} from '../../util/statuses';
+import escape from '../../utils/escape';
+import {values} from '../../utils/statuses';
 import translate from '../../helpers/t';
 
 const PADDING = 5;
