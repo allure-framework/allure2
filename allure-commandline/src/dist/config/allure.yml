@@ -5,3 +5,4 @@ plugins:
   - behaviors-plugin
   - packages-plugin
   - screen-diff-plugin
+  - xctest-plugin
