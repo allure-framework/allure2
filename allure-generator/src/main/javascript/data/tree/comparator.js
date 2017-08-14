@@ -1,5 +1,9 @@
 import {values} from '../../utils/statuses';
 
+function byOrder(a, b) {
+    return a.order < b.order ? -1 : 1;
+}
+
 function byName(a, b) {
     return a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1;
 }
@@ -45,6 +49,8 @@ function compare(a, b, nodeCmp, groupCmp, direction) {
 export default function getComparator({sorter, ascending}) {
     const direction =  ascending ? 1 : -1;
     switch (sorter) {
+        case 'sorter.order':
+            return (a, b) => compare(a, b, byOrder, byName, direction);
         case 'sorter.name':
             return (a, b) => compare(a, b, byName, byName, direction);
         case 'sorter.duration':

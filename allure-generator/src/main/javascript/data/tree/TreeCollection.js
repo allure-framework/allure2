@@ -49,8 +49,8 @@ export default class TreeCollection extends Collection {
     }
 
     getFilteredAndSortedChildren(children, filter, sorter) {
-        return children
-            .map(child => {
+        return this.calculateOrder(children)
+            .map((child) => {
                 if (child.children) {
                     const newChildren = this.getFilteredAndSortedChildren(child.children, filter, sorter);
                     return {
@@ -90,6 +90,18 @@ export default class TreeCollection extends Collection {
         if (index > 0) {
             return this.testResults[index - 1];
         }
+    }
+
+    calculateOrder(items) {
+        let index = 0;
+        items.forEach(item => {
+            if (item.children) {
+                this.calculateOrder(item.children);
+            } else {
+                item.order = ++index;
+            }
+        });
+        return items;
     }
 
     calculateStatistic(items) {
