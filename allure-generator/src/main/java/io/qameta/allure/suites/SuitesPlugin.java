@@ -25,6 +25,7 @@ import static io.qameta.allure.entity.LabelName.PARENT_SUITE;
 import static io.qameta.allure.entity.LabelName.SUB_SUITE;
 import static io.qameta.allure.entity.LabelName.SUITE;
 import static io.qameta.allure.entity.Statistic.comparator;
+import static io.qameta.allure.entity.TestResult.comparingByTime;
 import static io.qameta.allure.tree.TreeUtils.calculateStatisticByLeafs;
 import static io.qameta.allure.tree.TreeUtils.groupByLabels;
 
@@ -60,6 +61,7 @@ public class SuitesPlugin implements Aggregator, Widget {
         launchResults.stream()
                 .map(LaunchResults::getResults)
                 .flatMap(Collection::stream)
+                .sorted(comparingByTime())
                 .forEach(xunit::add);
         return xunit;
     }

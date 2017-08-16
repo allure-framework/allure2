@@ -1,5 +1,4 @@
-$tooltip-bg: rgba(50, 50, 50, 0.8);
-$tooltip-color: #fff;
+@import "../../variables.scss";
 
 .tooltip {
   position: absolute;

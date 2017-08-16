@@ -5,9 +5,11 @@ import {omit} from 'underscore';
 import {arc, pie} from 'd3-shape';
 import {interpolate} from 'd3-interpolate';
 import {select} from 'd3-selection';
-import escape from '../../util/escape';
-import {values} from '../../util/statuses';
+import escape from '../../utils/escape';
+import {values} from '../../utils/statuses';
 import translate from '../../helpers/t';
+
+const PADDING = 5;
 
 
 class PieChartView extends BaseChartView {
@@ -45,8 +47,10 @@ class PieChartView extends BaseChartView {
     onAttach() {
         const data = this.data;
         const width = this.$el.outerWidth();
-        const radius = width/4 - 10;
-        var leftOffset = width / 2;
+        const height = this.$el.outerHeight();
+        const radius = Math.min(width,height) / 2 - 2 * PADDING;
+        const topOffset = height / 2;
+        let leftOffset = width / 2;
 
         if(this.showLegend) {
             leftOffset -= 70;
@@ -56,7 +60,7 @@ class PieChartView extends BaseChartView {
         this.svg = this.setupViewport();
 
         var sectors = this.svg.select('.chart__plot')
-            .attrs({transform: `translate(${leftOffset},${radius})`})
+            .attrs({transform: `translate(${leftOffset},${topOffset})`})
             .selectAll('.chart__arc').data(this.pie(data))
             .enter()
             .append('path')

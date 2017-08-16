@@ -17,6 +17,17 @@
     left: 7px;
     position: absolute;
   }
+  &__flaky {
+    padding-left: 10px;
+    opacity: 0;
+    &_shown {
+      opacity: 1;
+    }
+  }
+  &__order {
+    padding-left: 5px;
+    padding-right: 10px;
+  }
   &__anchor {
     left: 10px;
     position: absolute;
@@ -87,7 +98,7 @@
     background: $pane-overlay-bg-hover;
   }
   &__filter, &__sorter {
-    padding: 0px $gap-size 0px $gap-size;
+    padding: 0 $gap-size 0 $gap-size;
     position: relative;
     white-space: nowrap;
   }
@@ -96,6 +107,6 @@
   }
   &__empty {
     border-top: 1px solid #ECEFF1;
-    padding: 8px 0px 0px 15px;
+    padding: 8px 0 0 15px;
   }
 }

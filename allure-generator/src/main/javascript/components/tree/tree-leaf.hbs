@@ -3,11 +3,12 @@
         <div class="node__anchor">
             {{allure-icon status 'fa-lg'}}
         </div>
-        {{#if flaky}}
-            {{allure-icon 'flaky'}}
-        {{/if}}
+        <div class="node__order">#{{order}}</div>
         <div class="node__name">
             {{name}}
+        </div>
+        <div class="{{b 'node' 'flaky' shown=flaky}}">
+            {{allure-icon 'flaky'}}
         </div>
         {{#if parameters}}
 

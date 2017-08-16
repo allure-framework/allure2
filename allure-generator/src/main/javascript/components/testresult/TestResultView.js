@@ -4,7 +4,7 @@ import {behavior, className, on, regions} from '../../decorators';
 import template from './TestResultView.hbs';
 import TestResultOverviewView from '../testresult-overview/TestResultOverviewView';
 import ErrorSplashView from '../error-splash/ErrorSplashView';
-import pluginsRegistry from '../../util/pluginsRegistry';
+import pluginsRegistry from '../../utils/pluginsRegistry';
 import ModalView from '../modal/ModalView';
 import AttachmentView from '../attachment/AttachmentView';
 import translate from '../../helpers/t';

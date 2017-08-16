@@ -2,7 +2,7 @@
 
 .popover {
   position: absolute;
-  background: #fff;
+  background: $pane-bg-color;
   color: $text-color;
   border: 1px solid $border-accent-color;
   padding: 8px;
@@ -21,7 +21,7 @@
     }
     &::after {
       left: -15px;
-      border-right-color: #fff;
+      border-right-color: $pane-bg-color;
     }
   }
   &__list {

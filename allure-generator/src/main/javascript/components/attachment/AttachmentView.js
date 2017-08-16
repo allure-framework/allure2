@@ -1,10 +1,10 @@
 import './styles.scss';
-import highlight from '../../util/highlight';
+import highlight from '../../utils/highlight';
 import {View} from 'backbone.marionette';
 import $ from 'jquery';
 import router from '../../router';
 import {className, on, behavior} from '../../decorators';
-import attachmentType from '../../util/attachmentType';
+import attachmentType from '../../utils/attachmentType';
 import template from './AttachmentView.hbs';
 
 

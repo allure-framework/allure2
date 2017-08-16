@@ -11,6 +11,7 @@ def plugins = [
         'screen-diff-plugin',
         'junit-xml-plugin',
         'xunit-xml-plugin',
+        'xctest-plugin',
         'trx-plugin'
 ]
 
