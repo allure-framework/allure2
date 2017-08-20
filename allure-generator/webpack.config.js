@@ -8,7 +8,7 @@ const postcssLoader = {
     options: {
         plugins: [
             require('autoprefixer'),
-			require('postcss-rtl')
+            require('postcss-rtl')
         ]
     }
 };

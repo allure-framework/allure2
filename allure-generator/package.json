@@ -17,7 +17,7 @@
   "author": "Dmitry Baev",
   "license": "Apache-2.0",
   "devDependencies": {
-	"postcss-rtl": "^0.5.10",
+    "postcss-rtl": "^0.5.10",
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.2.3",

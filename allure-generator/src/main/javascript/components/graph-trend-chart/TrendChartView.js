@@ -68,16 +68,16 @@ class TrendChartView extends BaseChartView {
         this.makeLeftAxis({
             scale: this.y
         });
-		
+
         if(document.dir === 'rtl'){
             this.svg.selectAll('.chart__axis_x')
             .selectAll('text')
             .style('text-anchor', 'start');
-		} else {
-			this.svg.selectAll('.chart__axis_x')
+        } else {
+            this.svg.selectAll('.chart__axis_x')
             .selectAll('text')
             .style('text-anchor', 'end');
-		}
+        }
 
         this.svg.selectAll('.chart__axis_x')
             .selectAll('text')
