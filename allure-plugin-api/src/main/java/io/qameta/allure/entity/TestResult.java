@@ -6,6 +6,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.naturalOrder;
+import static java.util.Comparator.nullsFirst;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -131,5 +136,12 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
     public Optional<String> getStatusMessage() {
         return Optional.ofNullable(getStatusDetails())
                 .map(StatusDetails::getMessage);
+    }
+
+    public static Comparator<TestResult> comparingByTime() {
+        return comparing(
+                TestResult::getTime,
+                nullsFirst(comparing(Time::getStart, nullsFirst(naturalOrder())))
+        ).reversed();
     }
 }

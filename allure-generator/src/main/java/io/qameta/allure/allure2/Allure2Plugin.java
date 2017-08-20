@@ -74,7 +74,7 @@ public class Allure2Plugin implements Reader {
         dest.setUid(uidGenerator.get());
         dest.setHistoryId(result.getHistoryId());
         dest.setFullName(result.getFullName());
-        dest.setName(result.getName());
+        dest.setName(firstNonNull(result.getName(), result.getFullName(), "Unknown test"));
         dest.setTime(Time.create(result.getStart(), result.getStop()));
         dest.setDescription(result.getDescription());
         dest.setDescriptionHtml(result.getDescriptionHtml());
@@ -258,5 +258,15 @@ public class Allure2Plugin implements Reader {
                 .filter(container -> container.getChildren().contains(id))
                 .filter(container -> !seen.contains(container.getUuid()))
                 .collect(Collectors.toList());
+    }
+
+    @SafeVarargs
+    private static <T> T firstNonNull(final T... items) {
+        return Stream.of(items)
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException(
+                        "firstNonNull method should have at least one non null parameter"
+                ));
     }
 }
