@@ -6,7 +6,7 @@ import TestResultView from '../testresult/TestResultView';
 import TestResultModel from '../../data/testresult/TestResultModel';
 import ErrorSplashView from '../error-splash/ErrorSplashView';
 
-@className('two-sides-container')
+@className('side-by-side')
 class TestResultTreeView extends SideBySideView {
 
     initialize({tree, routeState}) {

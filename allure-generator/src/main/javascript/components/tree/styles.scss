@@ -88,19 +88,19 @@
 }
 
 [dir=rtl] .attachment-row.attachment-row_selected > .attachment-row__arrow > .fa-angle-right {
-	transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 
 [dir=rtl] .step_expanded > .step__title > .step__arrow {
-	transform: rotate(90deg);
+  transform: rotate(90deg);
 }
 
 [dir=rtl] .node__expanded > .node__title > .node__arrow {
-	transform: rotate(90deg);
+  transform: rotate(90deg);
 }
 
 [dir=ltr] .node__expanded > .node__title > .node__arrow {
-	transform: rotate(90deg);
+  transform: rotate(90deg);
 }
 
 .tree {
