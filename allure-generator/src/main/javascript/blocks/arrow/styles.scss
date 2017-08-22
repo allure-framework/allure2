@@ -11,6 +11,11 @@
   }
 }
 
+[dir=rtl] .block__arrow {
+  transform: scaleX(-1);
+  filter: FlipH;
+}
+
 .angle {
   width: 18px;
 }

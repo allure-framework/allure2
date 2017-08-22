@@ -46,9 +46,11 @@ const App = new Application({
 App.on('start', () => {
     initTranslations().then(() => {
         history.start();
+        document.dir = i18next.dir();
         i18next.on('languageChanged', () => {
             App.getRegion().reset();
             router.reload();
+            document.dir = i18next.dir();
         });
     });
 

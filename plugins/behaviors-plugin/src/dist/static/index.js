@@ -56,6 +56,20 @@ allure.api.addTranslation('de', {
     }
 });
 
+allure.api.addTranslation('he', {
+    tab: {
+        behaviors: {
+            name: 'התנהגויות'
+        }
+    },
+    widget: {
+        behaviors: {
+            name: 'תכונות לפי סיפורי משתמש',
+            showAll: 'הצג הכול'
+        }
+    }
+});
+
 allure.api.addTab('behaviors', {
     title: 'tab.behaviors.name', icon: 'fa fa-list',
     route: 'behaviors(/)(:testGroup)(/)(:testResult)(/)(:testResultTab)(/)',

@@ -69,9 +69,18 @@ class TrendChartView extends BaseChartView {
             scale: this.y
         });
 
+        if(document.dir === 'rtl'){
+            this.svg.selectAll('.chart__axis_x')
+            .selectAll('text')
+            .style('text-anchor', 'start');
+        } else {
+            this.svg.selectAll('.chart__axis_x')
+            .selectAll('text')
+            .style('text-anchor', 'end');
+        }
+
         this.svg.selectAll('.chart__axis_x')
             .selectAll('text')
-            .style('text-anchor', 'end')
             .attr('dx', '-.8em')
             .attr('dy', '-.6em')
             .attr('transform', 'rotate(-90)');

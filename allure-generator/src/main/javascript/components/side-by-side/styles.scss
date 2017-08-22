@@ -7,8 +7,12 @@
   margin: 0;
   overflow: hidden;
   display: flex;
-  flex-direction: row;
   position: absolute;
+}
+
+[dir=ltr] .side-by-side {
+  direction: ltr;
+  flex-direction: row;
 
   &__left {
     overflow: auto;
@@ -19,6 +23,28 @@
     overflow: auto;
     flex: 1 1 auto;
   }
+}
+
+[dir=rtl] .side-by-side {
+  direction: ltr;
+  box-orient: horizontal;
+  flex-direction: row-reverse;
+  
+  &__left {
+    direction: rtl;
+    overflow: auto;
+    flex: 0 0 auto;
+  }
+
+  &__right {
+    direction: rtl;
+    overflow: auto;
+    flex: 1 1 auto;
+  }
+}
+
+[dir=rtl] .tree__ctrl {
+  overflow: hidden;
 }
 
 .gutter {

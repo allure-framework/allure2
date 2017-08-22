@@ -71,11 +71,22 @@ class TooltipView extends View {
         this.setContent(text);
         this.$el.addClass(bem(this.className, {position}));
         this.render();
-        this.$el.css(POSITION[position](
+        if(document.dir === 'rtl' && position === 'right'){
+            this.$el.css(POSITION['left'](
             anchor[0].getBoundingClientRect(),
             {offset: this.options.offset},
-            this.$el[0].getBoundingClientRect()
-        ));
+            this.$el[0].getBoundingClientRect()));
+        } else if(document.dir === 'rtl' && position === 'left'){
+            this.$el.css(POSITION['right'](
+            anchor[0].getBoundingClientRect(),
+            {offset: this.options.offset},
+            this.$el[0].getBoundingClientRect()));
+        } else {
+            this.$el.css(POSITION[position](
+            anchor[0].getBoundingClientRect(),
+            {offset: this.options.offset},
+            this.$el[0].getBoundingClientRect()));
+        }
     }
 
     hide() {
