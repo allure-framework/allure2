@@ -90,6 +90,7 @@ public class GaPlugin implements Aggregator {
                     pair("aip", GA_API_VERSION),
                     pair("tid", GA_ID),
                     pair("z", UUID.randomUUID().toString()),
+                    pair("sc", "end"),
                     pair("t", "event"),
                     pair("ds", "allure cli"),
                     pair("cid", clientId),
