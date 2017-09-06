@@ -31,6 +31,6 @@ public class SeverityPlugin implements Aggregator {
         final SeverityLevel severityLevel = result.findOneLabel(SEVERITY)
                 .flatMap(SeverityLevel::fromValue)
                 .orElse(SeverityLevel.NORMAL);
-        result.addExtraBlock("severity", severityLevel);
+        result.setExtraBlock("severity", severityLevel);
     }
 }

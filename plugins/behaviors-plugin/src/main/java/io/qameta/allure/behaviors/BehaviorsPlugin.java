@@ -25,7 +25,7 @@ import static io.qameta.allure.entity.LabelName.EPIC;
 import static io.qameta.allure.entity.LabelName.FEATURE;
 import static io.qameta.allure.entity.LabelName.STORY;
 import static io.qameta.allure.entity.Statistic.comparator;
-import static io.qameta.allure.entity.TestResult.comparingByTime;
+import static io.qameta.allure.entity.TestResult.comparingByTimeAsc;
 import static io.qameta.allure.tree.TreeUtils.calculateStatisticByChildren;
 import static io.qameta.allure.tree.TreeUtils.groupByLabels;
 
@@ -61,7 +61,7 @@ public class BehaviorsPlugin implements Aggregator, Widget {
         launchResults.stream()
                 .map(LaunchResults::getResults)
                 .flatMap(Collection::stream)
-                .sorted(comparingByTime())
+                .sorted(comparingByTimeAsc())
                 .forEach(behaviors::add);
         return behaviors;
     }

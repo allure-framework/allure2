@@ -1,7 +1,7 @@
 package io.qameta.allure.tree;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -10,7 +10,7 @@ public class DefaultTreeGroup implements TreeGroup {
 
     private String name;
 
-    private Set<TreeNode> children = new HashSet<>();
+    private List<TreeNode> children = new ArrayList<>();
 
     public DefaultTreeGroup(final String name) {
         this.name = name;
@@ -22,7 +22,7 @@ public class DefaultTreeGroup implements TreeGroup {
     }
 
     @Override
-    public Set<TreeNode> getChildren() {
+    public List<TreeNode> getChildren() {
         return children;
     }
 
@@ -35,7 +35,7 @@ public class DefaultTreeGroup implements TreeGroup {
         this.name = name;
     }
 
-    public void setChildren(final Set<TreeNode> children) {
+    public void setChildren(final List<TreeNode> children) {
         this.children = children;
     }
 }

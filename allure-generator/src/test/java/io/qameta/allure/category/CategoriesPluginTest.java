@@ -1,11 +1,13 @@
 package io.qameta.allure.category;
 
 import io.qameta.allure.ConfigurationBuilder;
+import io.qameta.allure.Issue;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.entity.Time;
 import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeNode;
 import org.junit.Before;
@@ -133,10 +135,10 @@ public class CategoriesPluginTest {
                 .setStatus(Status.PASSED)
                 .setStatusDetails(new StatusDetails().setMessage("M4"));
 
-        first.addExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().setName("C1")));
-        second.addExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().setName("C2")));
-        third.addExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().setName("C1")));
-        other.addExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().setName("C3")));
+        first.setExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().setName("C1")));
+        second.setExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().setName("C2")));
+        third.setExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().setName("C1")));
+        other.setExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().setName("C3")));
 
         final List<LaunchResults> launchResults = createSingleLaunchResults(first, second, third, other);
         final Tree<TestResult> tree = categoriesPlugin.getData(launchResults);
@@ -220,6 +222,39 @@ public class CategoriesPluginTest {
 
         assertThat(reportPath.resolve("data").resolve("categories.json"))
                 .exists();
+    }
+
+    @Issue("587")
+    @Issue("572")
+    @Test
+    public void shouldSortByStartTimeAsc() throws Exception {
+        final Category category = new Category().setName("some");
+
+        final TestResult first = new TestResult()
+                .setName("first")
+                .setStatus(Status.FAILED)
+                .setTime(new Time().setStart(10L))
+                .setExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(category));
+        final TestResult second = new TestResult()
+                .setName("second")
+                .setStatus(Status.FAILED)
+                .setTime(new Time().setStart(12L))
+                .setExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(category));
+        final TestResult timeless = new TestResult()
+                .setName("timeless")
+                .setStatus(Status.FAILED)
+                .setExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(category));
+
+        final CategoriesPlugin plugin = new CategoriesPlugin();
+        final Tree<TestResult> tree = plugin.getData(
+                createSingleLaunchResults(second, first, timeless)
+        );
+
+        assertThat(tree.getChildren())
+                .flatExtracting("children")
+                .flatExtracting("children")
+                .extracting("name")
+                .containsExactly("timeless", "first", "second");
     }
 
     private TestResult createTestResult(String message, Status status) {

@@ -68,6 +68,7 @@ dependencies {
     testCompile('org.slf4j:slf4j-simple')
     testCompile('org.apache.commons:commons-lang3')
     testCompile('com.google.guava:guava')
+    testCompile('io.qameta.allure:allure-java-commons')
 }
 
 task sourceJar(type: Jar, dependsOn: classes) {

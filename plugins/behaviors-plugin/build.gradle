@@ -14,6 +14,7 @@ dependencies {
     testCompile('junit:junit')
     testCompile('org.mockito:mockito-core')
     testCompile('org.assertj:assertj-core')
+    testCompile('io.qameta.allure:allure-java-commons')
 }
 
 configurations.archives.artifacts.removeAll { it.archiveTask.is jar }

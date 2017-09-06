@@ -4,9 +4,11 @@ import io.qameta.allure.DefaultLaunchResults;
 import io.qameta.allure.Issue;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.entity.Time;
 import io.qameta.allure.tree.Tree;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -139,5 +141,35 @@ public class PackagesPluginTest {
                 .flatExtracting("children")
                 .extracting("name")
                 .containsExactlyInAnyOrder("second");
+    }
+
+    @Issue("587")
+    @Issue("572")
+    @Test
+    public void shouldSortByStartTimeAsc() throws Exception {
+        final TestResult first = new TestResult()
+                .setName("first")
+                .setTime(new Time().setStart(10L));
+        final TestResult second = new TestResult()
+                .setName("second")
+                .setTime(new Time().setStart(100L));
+        final TestResult third = new TestResult()
+                .setName("third")
+                .setTime(new Time().setStart(50L));
+        final TestResult timeless = new TestResult()
+                .setName("timeless");
+
+        final LaunchResults results = new DefaultLaunchResults(
+                new HashSet<>(Arrays.asList(first, second, third, timeless)),
+                Collections.emptyMap(),
+                Collections.emptyMap()
+        );
+
+        final PackagesPlugin packagesPlugin = new PackagesPlugin();
+        final Tree<TestResult> tree = packagesPlugin.getData(singletonList(results));
+
+        assertThat(tree.getChildren())
+                .extracting("name")
+                .containsExactly("timeless", "first", "third", "second");
     }
 }

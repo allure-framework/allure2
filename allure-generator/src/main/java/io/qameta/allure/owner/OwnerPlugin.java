@@ -29,6 +29,6 @@ public class OwnerPlugin implements Aggregator {
 
     private void setOwner(final TestResult result) {
         result.findOneLabel(LabelName.OWNER)
-                .ifPresent(owner -> result.addExtraBlock(OWNER_BLOCK_NAME, owner));
+                .ifPresent(owner -> result.setExtraBlock(OWNER_BLOCK_NAME, owner));
     }
 }
