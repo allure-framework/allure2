@@ -4,7 +4,6 @@ import io.qameta.allure.Reader;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
-import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.Parameter;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.StatusDetails;
@@ -31,7 +30,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static io.qameta.allure.entity.LabelName.FRAMEWORK;
+import static io.qameta.allure.entity.LabelName.PACKAGE;
 import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
+import static io.qameta.allure.entity.LabelName.SUITE;
+import static io.qameta.allure.entity.LabelName.TEST_CLASS;
 import static java.nio.file.Files.newDirectoryStream;
 import static java.util.Objects.nonNull;
 
@@ -124,14 +126,15 @@ public class XunitXmlPlugin implements Reader {
         getStatusDetails(testElement).ifPresent(result::setStatusDetails);
         getParameters(testElement).ifPresent(result::setParameters);
 
-        result.addLabelIfNotExists(FRAMEWORK, framework);
         result.addLabelIfNotExists(RESULT_FORMAT, XUNIT_RESULTS_FORMAT);
         if (nonNull(className)) {
-            result.addLabelIfNotExists(LabelName.SUITE, className);
-            result.addLabelIfNotExists(LabelName.TEST_CLASS, className);
-            result.addLabelIfNotExists(LabelName.PACKAGE, className);
+            result.addLabelIfNotExists(SUITE, className);
+            result.addLabelIfNotExists(TEST_CLASS, className);
+            result.addLabelIfNotExists(PACKAGE, className);
         }
-
+        if (nonNull(framework)) {
+            result.addLabelIfNotExists(FRAMEWORK, framework);
+        }
 
         visitor.visitTestResult(result);
     }
