@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static io.qameta.allure.entity.Statistic.comparator;
-import static io.qameta.allure.entity.TestResult.comparingByTime;
+import static io.qameta.allure.entity.TestResult.comparingByTimeAsc;
 import static io.qameta.allure.tree.TreeUtils.calculateStatisticByLeafs;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -120,7 +120,7 @@ public class CategoriesPlugin implements Aggregator, Reader, Widget {
         launchResults.stream()
                 .map(LaunchResults::getResults)
                 .flatMap(Collection::stream)
-                .sorted(comparingByTime())
+                .sorted(comparingByTimeAsc())
                 .forEach(categories::add);
         return categories;
     }

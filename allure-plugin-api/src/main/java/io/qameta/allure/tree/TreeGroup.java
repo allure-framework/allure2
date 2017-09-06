@@ -1,15 +1,15 @@
 package io.qameta.allure.tree;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * @author charlie (Dmitry Baev).
  */
 public interface TreeGroup extends TreeNode {
 
-    Set<TreeNode> getChildren();
+    List<TreeNode> getChildren();
 
     void addChild(TreeNode node);
 

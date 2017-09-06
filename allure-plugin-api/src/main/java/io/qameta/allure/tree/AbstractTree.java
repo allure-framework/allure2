@@ -2,7 +2,6 @@ package io.qameta.allure.tree;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -62,8 +61,8 @@ public abstract class AbstractTree<T, S extends TreeGroup, U extends TreeLeaf> i
     }
 
     @Override
-    public Set<TreeNode> getChildren() {
-        return Collections.unmodifiableSet(root.getChildren());
+    public List<TreeNode> getChildren() {
+        return Collections.unmodifiableList(root.getChildren());
     }
 
     @Override

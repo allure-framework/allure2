@@ -1,11 +1,15 @@
 package io.qameta.allure.behaviors;
 
 import io.qameta.allure.DefaultLaunchResults;
+import io.qameta.allure.Issue;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.entity.Time;
+import io.qameta.allure.tree.Tree;
+import io.qameta.allure.tree.TreeNode;
 import io.qameta.allure.tree.TreeWidgetData;
 import io.qameta.allure.tree.TreeWidgetItem;
 import org.assertj.core.groups.Tuple;
@@ -14,6 +18,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -91,5 +96,31 @@ public class BehaviorsPluginTest {
                 .containsExactlyInAnyOrder("e1", "e2");
     }
 
+    @Issue("587")
+    @Issue("572")
+    @Test
+    public void shouldSortByStartTimeAsc() throws Exception {
+        final TestResult first = new TestResult()
+                .setName("first")
+                .setTime(new Time().setStart(10L));
+        final TestResult second = new TestResult()
+                .setName("second")
+                .setTime(new Time().setStart(12L));
+        final TestResult timeless = new TestResult()
+                .setName("timeless");
 
+        final LaunchResults results = new DefaultLaunchResults(
+                new HashSet<>(Arrays.asList(first, second, timeless)),
+                Collections.emptyMap(),
+                Collections.emptyMap()
+        );
+
+        final BehaviorsPlugin plugin = new BehaviorsPlugin();
+        final Tree<TestResult> tree = plugin.getData(Collections.singletonList(results));
+
+        assertThat(tree.getChildren())
+                .extracting(TreeNode::getName)
+                .containsExactly("timeless", "first", "second");
+    }
 }
+
