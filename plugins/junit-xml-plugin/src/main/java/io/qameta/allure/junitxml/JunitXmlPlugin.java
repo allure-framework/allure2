@@ -64,6 +64,7 @@ public class JunitXmlPlugin implements Reader {
     private static final String MESSAGE_ATTRIBUTE_NAME = "message";
     private static final String RERUN_FAILURE_ELEMENT_NAME = "rerunFailure";
     private static final String RERUN_ERROR_ELEMENT_NAME = "rerunError";
+    private static final String XML_GLOB = "*.xml";
 
     private static final Map<String, Status> RETRIES;
 
@@ -229,7 +230,7 @@ public class JunitXmlPlugin implements Reader {
             return result;
         }
 
-        try (DirectoryStream<Path> directoryStream = newDirectoryStream(directory, "TEST-*.xml")) {
+        try (DirectoryStream<Path> directoryStream = newDirectoryStream(directory, XML_GLOB)) {
             for (Path path : directoryStream) {
                 if (!Files.isDirectory(path)) {
                     result.add(path);
