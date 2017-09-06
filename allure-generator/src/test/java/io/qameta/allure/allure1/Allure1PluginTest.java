@@ -287,6 +287,23 @@ public class Allure1PluginTest {
                 );
     }
 
+    @Test
+    public void shouldBeAbleToSpecifyHistoryIdViaLabel() throws Exception {
+        final Set<TestResult> results = process(
+                "allure1/history-id-label.xml", generateTestSuiteXmlName()
+        ).getResults();
+
+        assertThat(results)
+                .filteredOn("name", "test1")
+                .extracting(TestResult::getHistoryId)
+                .containsExactly("something");
+
+        assertThat(results)
+                .filteredOn("name", "test2")
+                .extracting(TestResult::getHistoryId)
+                .containsNull();
+    }
+
     private LaunchResults process(String... strings) throws IOException {
         Path resultsDirectory = folder.newFolder().toPath();
         Iterator<String> iterator = Arrays.asList(strings).iterator();
