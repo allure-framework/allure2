@@ -140,20 +140,25 @@ public class Allure1Plugin implements Reader {
         final TestResult dest = new TestResult();
         final String suiteName = firstNonNull(testSuite.getTitle(), testSuite.getName(), "unknown test suite");
         final String testClass = firstNonNull(
-                findLabel(source.getLabels(), TEST_CLASS.value()),
-                findLabel(testSuite.getLabels(), TEST_CLASS.value()),
+                findLabelValue(source.getLabels(), TEST_CLASS.value()),
+                findLabelValue(testSuite.getLabels(), TEST_CLASS.value()),
                 testSuite.getName(),
                 UNKNOWN
         );
         final String testMethod = firstNonNull(
-                findLabel(source.getLabels(), TEST_METHOD.value()),
+                findLabelValue(source.getLabels(), TEST_METHOD.value()),
                 source.getName(),
                 UNKNOWN
         );
         final String name = firstNonNull(source.getTitle(), source.getName(), "unknown test case");
 
         final List<Parameter> parameters = getParameters(source);
-        dest.setHistoryId(getHistoryId(String.format("%s#%s", testClass, name), parameters));
+        final Optional<ru.yandex.qatools.allure.model.Label> historyId = findLabel(source.getLabels(), "historyId");
+        if (historyId.isPresent()) {
+            dest.setHistoryId(historyId.get().getValue());
+        } else {
+            dest.setHistoryId(getHistoryId(String.format("%s#%s", testClass, name), parameters));
+        }
         dest.setUid(randomUid.get());
         dest.setName(name);
         dest.setFullName(String.format("%s.%s", testClass, testMethod));
@@ -182,7 +187,10 @@ public class Allure1Plugin implements Reader {
             dest.setTestStage(testStage);
         }
 
-        final Set<Label> set = new TreeSet<>(comparing(Label::getName).thenComparing(Label::getValue));
+        final Set<Label> set = new TreeSet<>(
+                comparing(Label::getName, nullsFirst(naturalOrder()))
+                        .thenComparing(Label::getValue, nullsFirst(naturalOrder()))
+        );
         set.addAll(convert(testSuite.getLabels(), this::convert));
         set.addAll(convert(source.getLabels(), this::convert));
         dest.setLabels(new ArrayList<>(set));
@@ -341,12 +349,19 @@ public class Allure1Plugin implements Reader {
         return description -> DescriptionType.HTML.equals(description.getType());
     }
 
-    private String findLabel(final List<ru.yandex.qatools.allure.model.Label> labels, final String labelName) {
+    private String findLabelValue(final List<ru.yandex.qatools.allure.model.Label> labels, final String labelName) {
         return labels.stream()
                 .filter(label -> labelName.equals(label.getName()))
                 .map(ru.yandex.qatools.allure.model.Label::getValue)
                 .findAny()
                 .orElse(null);
+    }
+
+    private Optional<ru.yandex.qatools.allure.model.Label> findLabel(
+            final List<ru.yandex.qatools.allure.model.Label> labels, final String labelName) {
+        return labels.stream()
+                .filter(label -> labelName.equals(label.getName()))
+                .findAny();
     }
 
     private boolean hasArgumentType(final ru.yandex.qatools.allure.model.Parameter parameter) {
