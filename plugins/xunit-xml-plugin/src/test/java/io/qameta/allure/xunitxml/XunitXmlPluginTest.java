@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -137,6 +138,24 @@ public class XunitXmlPluginTest {
                 .containsExactlyInAnyOrder(
                         "Some test"
                 );
+    }
+
+    @Test
+    public void shouldSetFramework() throws Exception {
+        process(
+                "xunitdata/framework-test.xml",
+                "passed-test.xml"
+        );
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(1)).visitTestResult(captor.capture());
+
+        assertThat(captor.getAllValues())
+                .hasSize(1)
+                .flatExtracting(TestResult::getLabels)
+                .filteredOn(label -> label.getName().equals(LabelName.FRAMEWORK.value()))
+                .extracting(Label::getValue)
+                .containsExactly("junit");
     }
 
     @Theory

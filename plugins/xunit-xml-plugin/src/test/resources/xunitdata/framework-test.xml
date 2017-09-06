@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<assemblies>
+    <assembly test-framework="junit">
+        <collection>
+            <test name="org.example.FailedTest"
+                  type="Some failed test"
+                  method="failedTest" time="0.1542482" result="Fail">
+                <output><![CDATA[test output\n]]></output>
+                <failure exception-type="Xunit.Sdk.TrueException">
+                    <message><![CDATA[Assert.True() Failure\r\nExpected: True\r\nActual:   False]]></message>
+                    <stack-trace><![CDATA[FAILED-TRACE]]></stack-trace>
+                </failure>
+            </test>
+        </collection>
+    </assembly>
+</assemblies>

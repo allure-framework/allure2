@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static io.qameta.allure.entity.LabelName.FRAMEWORK;
 import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
 import static java.nio.file.Files.newDirectoryStream;
 import static java.util.Objects.nonNull;
@@ -57,6 +58,7 @@ public class XunitXmlPlugin implements Reader {
     private static final String TRAIT_ELEMENT_NAME = "trait";
     private static final String TRAITS_ELEMENT_NAME = "traits";
 
+    private static final String FRAMEWORK_ATTRIBUTE_NAME = "test-framework";
     private static final String METHOD_ATTRIBUTE_NAME = "method";
     private static final String TYPE_ATTRIBUTE_NAME = "type";
     private static final String RESULT_ATTRIBUTE_NAME = "result";
@@ -94,17 +96,18 @@ public class XunitXmlPlugin implements Reader {
 
     private void parseAssembly(final XmlElement assemblyElement,
                                final RandomUidContext context, final ResultsVisitor visitor) {
+        final String framework = getFramework(assemblyElement);
         assemblyElement.get(COLLECTION_ELEMENT_NAME)
-                .forEach(element -> parseCollection(element, context, visitor));
+                .forEach(element -> parseCollection(element, framework, context, visitor));
     }
 
-    private void parseCollection(final XmlElement collectionElement,
+    private void parseCollection(final XmlElement collectionElement, final String framework,
                                  final RandomUidContext context, final ResultsVisitor visitor) {
         collectionElement.get(TEST_ELEMENT_NAME)
-                .forEach(element -> parseTest(element, context, visitor));
+                .forEach(element -> parseTest(element, framework, context, visitor));
     }
 
-    private void parseTest(final XmlElement testElement,
+    private void parseTest(final XmlElement testElement, final String framework,
                            final RandomUidContext context, final ResultsVisitor visitor) {
         final Optional<String> fullName = Optional.ofNullable(testElement.getAttribute(NAME_ATTRIBUTE_NAME));
         final String className = testElement.getAttribute(TYPE_ATTRIBUTE_NAME);
@@ -121,6 +124,7 @@ public class XunitXmlPlugin implements Reader {
         getStatusDetails(testElement).ifPresent(result::setStatusDetails);
         getParameters(testElement).ifPresent(result::setParameters);
 
+        result.addLabelIfNotExists(FRAMEWORK, framework);
         result.addLabelIfNotExists(RESULT_FORMAT, XUNIT_RESULTS_FORMAT);
         if (nonNull(className)) {
             result.addLabelIfNotExists(LabelName.SUITE, className);
@@ -184,6 +188,10 @@ public class XunitXmlPlugin implements Reader {
         final String name = traitElement.getAttribute(NAME_ATTRIBUTE_NAME);
         final String value = traitElement.getAttribute(VALUE_ATTRIBUTE_NAME);
         return new Parameter().setName(name).setValue(value);
+    }
+
+    private String getFramework(final XmlElement assemblyElement) {
+        return assemblyElement.getAttribute(FRAMEWORK_ATTRIBUTE_NAME);
     }
 
     private Time getTime(final XmlElement testElement) {
