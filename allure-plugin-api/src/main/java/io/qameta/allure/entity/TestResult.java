@@ -57,8 +57,9 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
         return getUid() + ".json";
     }
 
-    public void addExtraBlock(final String blockName, final Object block) {
+    public TestResult setExtraBlock(final String blockName, final Object block) {
         extra.put(blockName, block);
+        return this;
     }
 
     @SuppressWarnings("unchecked")
@@ -138,10 +139,14 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
                 .map(StatusDetails::getMessage);
     }
 
-    public static Comparator<TestResult> comparingByTime() {
+    public static Comparator<TestResult> comparingByTimeDesc() {
+        return comparingByTimeAsc().reversed();
+    }
+
+    public static Comparator<TestResult> comparingByTimeAsc() {
         return comparing(
                 TestResult::getTime,
                 nullsFirst(comparing(Time::getStart, nullsFirst(naturalOrder())))
-        ).reversed();
+        );
     }
 }
