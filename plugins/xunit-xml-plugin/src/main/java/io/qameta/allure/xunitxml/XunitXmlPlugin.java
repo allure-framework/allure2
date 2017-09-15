@@ -4,7 +4,6 @@ import io.qameta.allure.Reader;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
-import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.Parameter;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.StatusDetails;
@@ -30,7 +29,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static io.qameta.allure.entity.LabelName.FRAMEWORK;
+import static io.qameta.allure.entity.LabelName.PACKAGE;
 import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
+import static io.qameta.allure.entity.LabelName.SUITE;
+import static io.qameta.allure.entity.LabelName.TEST_CLASS;
 import static java.nio.file.Files.newDirectoryStream;
 import static java.util.Objects.nonNull;
 
@@ -57,6 +60,7 @@ public class XunitXmlPlugin implements Reader {
     private static final String TRAIT_ELEMENT_NAME = "trait";
     private static final String TRAITS_ELEMENT_NAME = "traits";
 
+    private static final String FRAMEWORK_ATTRIBUTE_NAME = "test-framework";
     private static final String METHOD_ATTRIBUTE_NAME = "method";
     private static final String TYPE_ATTRIBUTE_NAME = "type";
     private static final String RESULT_ATTRIBUTE_NAME = "result";
@@ -94,17 +98,18 @@ public class XunitXmlPlugin implements Reader {
 
     private void parseAssembly(final XmlElement assemblyElement,
                                final RandomUidContext context, final ResultsVisitor visitor) {
+        final String framework = getFramework(assemblyElement);
         assemblyElement.get(COLLECTION_ELEMENT_NAME)
-                .forEach(element -> parseCollection(element, context, visitor));
+                .forEach(element -> parseCollection(element, framework, context, visitor));
     }
 
-    private void parseCollection(final XmlElement collectionElement,
+    private void parseCollection(final XmlElement collectionElement, final String framework,
                                  final RandomUidContext context, final ResultsVisitor visitor) {
         collectionElement.get(TEST_ELEMENT_NAME)
-                .forEach(element -> parseTest(element, context, visitor));
+                .forEach(element -> parseTest(element, framework, context, visitor));
     }
 
-    private void parseTest(final XmlElement testElement,
+    private void parseTest(final XmlElement testElement, final String framework,
                            final RandomUidContext context, final ResultsVisitor visitor) {
         final Optional<String> fullName = Optional.ofNullable(testElement.getAttribute(NAME_ATTRIBUTE_NAME));
         final String className = testElement.getAttribute(TYPE_ATTRIBUTE_NAME);
@@ -123,11 +128,13 @@ public class XunitXmlPlugin implements Reader {
 
         result.addLabelIfNotExists(RESULT_FORMAT, XUNIT_RESULTS_FORMAT);
         if (nonNull(className)) {
-            result.addLabelIfNotExists(LabelName.SUITE, className);
-            result.addLabelIfNotExists(LabelName.TEST_CLASS, className);
-            result.addLabelIfNotExists(LabelName.PACKAGE, className);
+            result.addLabelIfNotExists(SUITE, className);
+            result.addLabelIfNotExists(TEST_CLASS, className);
+            result.addLabelIfNotExists(PACKAGE, className);
         }
-
+        if (nonNull(framework)) {
+            result.addLabelIfNotExists(FRAMEWORK, framework);
+        }
 
         visitor.visitTestResult(result);
     }
@@ -184,6 +191,10 @@ public class XunitXmlPlugin implements Reader {
         final String name = traitElement.getAttribute(NAME_ATTRIBUTE_NAME);
         final String value = traitElement.getAttribute(VALUE_ATTRIBUTE_NAME);
         return new Parameter().setName(name).setValue(value);
+    }
+
+    private String getFramework(final XmlElement assemblyElement) {
+        return assemblyElement.getAttribute(FRAMEWORK_ATTRIBUTE_NAME);
     }
 
     private Time getTime(final XmlElement testElement) {

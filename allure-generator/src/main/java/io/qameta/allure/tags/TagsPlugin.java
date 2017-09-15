@@ -26,7 +26,7 @@ public class TagsPlugin implements Aggregator {
                 .flatMap(Collection::stream)
                 .forEach(result -> {
                     final Set<String> tags = new HashSet<>(result.findAllLabels(LabelName.TAG));
-                    result.addExtraBlock("tags", tags);
+                    result.setExtraBlock("tags", tags);
                 });
     }
 }

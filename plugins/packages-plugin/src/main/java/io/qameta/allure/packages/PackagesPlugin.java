@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static io.qameta.allure.entity.TestResult.comparingByTime;
+import static io.qameta.allure.entity.TestResult.comparingByTimeAsc;
 
 /**
  * The plugin adds packages tab to the report.
@@ -58,7 +58,7 @@ public class PackagesPlugin implements Aggregator {
         launchResults.stream()
                 .map(LaunchResults::getResults)
                 .flatMap(Collection::stream)
-                .sorted(comparingByTime())
+                .sorted(comparingByTimeAsc())
                 .forEach(packages::add);
 
         return collapseGroupsWithOnlyOneChild(packages);
