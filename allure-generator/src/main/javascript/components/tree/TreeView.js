@@ -3,20 +3,13 @@ import {View} from 'backbone.marionette';
 import hotkeys from '../../utils/hotkeys';
 import template from './TreeView.hbs';
 import {behavior, className, on, regions} from '../../decorators';
-import getComparator from '../../data/tree/comparator';
-import {byStatuses} from '../../data/tree/filter';
-import NodeSorterView from '../node-sorter/NodeSorterView';
-import StatusToggleView from '../status-toggle/StatusToggleView';
+import {byStatuses, byText, mix} from '../../data/tree/filter';
 import router from '../../router';
 import {Model} from 'backbone';
 import {getSettingsForTreePlugin} from '../../utils/settingsFactory';
 
 @className('tree')
 @behavior('TooltipBehavior', {position: 'bottom'})
-@regions({
-    sorter: '.tree__sorter',
-    filter: '.tree__filter'
-})
 class TreeView extends View {
     template = template;
 
@@ -30,7 +23,6 @@ class TreeView extends View {
         this.listenTo(this.routeState, 'change:testResultTab', this.render);
 
         this.settings = settings;
-        this.listenTo(this.settings, 'change', this.render);
 
         this.listenTo(hotkeys, 'key:up', this.onKeyUp, this);
         this.listenTo(hotkeys, 'key:down', this.onKeyDown, this);
@@ -50,25 +42,9 @@ class TreeView extends View {
         }
     }
 
-    onBeforeRender() {
-        const visibleStatuses = this.settings.getVisibleStatuses();
-        const filter = byStatuses(visibleStatuses);
-
-        const sortSettings = this.settings.getTreeSorting();
-        const sorter = getComparator(sortSettings);
-
-        this.collection.applyFilterAndSorting(filter, sorter);
-    }
 
     onRender() {
         this.selectNode();
-        this.showChildView('sorter', new NodeSorterView({
-            settings: this.settings
-        }));
-        this.showChildView('filter', new StatusToggleView({
-            settings: this.settings,
-            statistic: this.collection.statistic
-        }));
     }
 
     selectNode() {
