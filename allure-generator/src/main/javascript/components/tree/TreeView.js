@@ -4,16 +4,14 @@ import hotkeys from '../../utils/hotkeys';
 import template from './TreeView.hbs';
 import {behavior, className, on} from '../../decorators';
 import router from '../../router';
-import {Model} from 'backbone';
-import {getSettingsForTreePlugin} from '../../utils/settingsFactory';
 
 @className('tree')
 @behavior('TooltipBehavior', {position: 'bottom'})
 class TreeView extends View {
     template = template;
 
-    initialize({routeState, searchQuery, tabName, baseUrl, settings = getSettingsForTreePlugin(baseUrl)}) {
-        this.state = new Model();
+    initialize({routeState, state, searchQuery, tabName, baseUrl, settings}) {
+        this.state = state;
         this.routeState = routeState;
         this.baseUrl = baseUrl;
         this.tabName = tabName;
@@ -108,12 +106,6 @@ class TreeView extends View {
         this.expandNode(this.$(e.currentTarget));
     }
 
-    @on('click .tree__info')
-    onInfoClick() {
-        const show = this.settings.isShowGroupInfo();
-        this.settings.setShowGroupInfo(!show);
-    }
-
     onKeyUp(event) {
         event.preventDefault();
         const current = this.routeState.get('treeNode');
@@ -165,9 +157,6 @@ class TreeView extends View {
             tabName: this.tabName,
             items: this.collection.toJSON(),
             testResultTab: this.routeState.get('testResultTab') || '',
-            shownCases: 0,
-            totalCases: 0,
-            filtered: false
         };
     }
 }

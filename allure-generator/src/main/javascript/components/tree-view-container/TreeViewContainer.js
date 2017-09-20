@@ -1,7 +1,7 @@
 import './styles.scss';
 import {View} from 'backbone.marionette';
-import template from './TreeView.hbs';
-import {behavior, className, regions} from '../../decorators';
+import template from './TreeViewContainer.hbs';
+import {behavior, className, on, regions} from '../../decorators';
 import getComparator from '../../data/tree/comparator';
 import {byStatuses, byText, mix} from '../../data/tree/filter';
 import NodeSorterView from '../node-sorter/NodeSorterView';
@@ -48,6 +48,12 @@ class TreeViewContainer extends View {
        this.applyFilters();
     }
 
+    @on('click .tree__info')
+    onInfoClick() {
+        const show = this.settings.isShowGroupInfo();
+        this.settings.setShowGroupInfo(!show);
+    }
+
     onRender() {
         this.renderContent();
         this.showChildView('search', new NodeSearchView({
@@ -65,12 +71,12 @@ class TreeViewContainer extends View {
 
     renderContent() {
         this.showChildView('content', new TreeView({
+            state: this.state,
             routeState: this.routeState,
             searchQuery: this.searchQuery,
             tabName: this.tabName,
             baseUrl: this.baseUrl,
             settings: this.settings,
-            items: this.collection.toJSON(),
             collection: this.collection
         }));
     }
@@ -84,14 +90,8 @@ class TreeViewContainer extends View {
     templateContext() {
         return {
             cls: this.className,
-            baseUrl: this.baseUrl,
             showGroupInfo: this.settings.isShowGroupInfo(),
-            time: this.collection.time,
-            statistic: this.collection.statistic,
-            uid: this.collection.uid,
             tabName: this.tabName,
-            items: this.collection.toJSON(),
-            testResultTab: this.routeState.get('testResultTab') || '',
             shownCases: 0,
             totalCases: 0,
             filtered: false

@@ -1,5 +1,5 @@
 import {Model} from 'backbone';
-import TreeView from 'components/tree/TreeView';
+import TreeViewContainer from 'components/tree-view-container/TreeViewContainer';
 import TreeCollection from 'data/tree/TreeCollection';
 import {getSettingsForTreePlugin} from 'utils/settingsFactory';
 
@@ -59,7 +59,7 @@ describe('Tree', function () {
         const items = new TreeCollection([], {});
         items.set(data, {parse: true});
 
-        view = new TreeView({
+        view = new TreeViewContainer({
             collection: items,
             state: new Model(),
             routeState: new Model(),

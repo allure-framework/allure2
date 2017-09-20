@@ -12,6 +12,7 @@
 
   &__title {
     padding: 0 15px 10px;
+    position: relative;
     margin: 7px 0 0;
     border-bottom: 1px solid $border-color;
     font-size: 24px;
@@ -22,7 +23,10 @@
   }
 
   &__controls {
-    float: right;
+    position: absolute;
+    top: 0;
+    right: 0;
+
     padding-right: 0.5em;
     & > a {
       text-decoration: none;
