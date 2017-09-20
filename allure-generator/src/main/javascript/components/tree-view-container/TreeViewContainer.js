@@ -1,7 +1,7 @@
 import './styles.scss';
 import {View} from 'backbone.marionette';
 import template from './TreeView.hbs';
-import {behavior, className, on, regions} from '../../decorators';
+import {behavior, className, regions} from '../../decorators';
 import getComparator from '../../data/tree/comparator';
 import {byStatuses, byText, mix} from '../../data/tree/filter';
 import NodeSorterView from '../node-sorter/NodeSorterView';
@@ -30,7 +30,7 @@ class TreeViewContainer extends View {
         this.listenTo(this.routeState, 'change:testResultTab', this.render);
 
         this.settings = settings;
-        this.listenTo(this.settings, 'change', this.applyFilters);
+        this.listenTo(this.settings, 'change', this.render);
     }
 
 
@@ -42,26 +42,17 @@ class TreeViewContainer extends View {
         const sorter = getComparator(sortSettings);
 
         this.collection.applyFilterAndSorting(filter, sorter);
+    }
 
-        this.showChildView('content', new TreeView({
-            routeState: this.routeState, tabName: this.tabName, baseUrl: this.baseUrl, settings: this.settings,
-            items: this.collection.toJSON(),
-            collection: this.collection
-        }));
+    onBeforeRender() {
+       this.applyFilters();
     }
 
     onRender() {
+        this.renderContent();
         this.showChildView('search', new NodeSearchView({
             onSearch: this.onSearch.bind(this),
             searchQuery: this.searchQuery
-        }));
-        this.showChildView('content', new TreeView({
-            routeState: this.routeState,
-            tabName: this.tabName,
-            baseUrl: this.baseUrl,
-            settings: this.settings,
-            items: this.collection.toJSON(),
-            collection: this.collection
         }));
         this.showChildView('sorter', new NodeSorterView({
             settings: this.settings
@@ -72,9 +63,22 @@ class TreeViewContainer extends View {
         }));
     }
 
+    renderContent() {
+        this.showChildView('content', new TreeView({
+            routeState: this.routeState,
+            searchQuery: this.searchQuery,
+            tabName: this.tabName,
+            baseUrl: this.baseUrl,
+            settings: this.settings,
+            items: this.collection.toJSON(),
+            collection: this.collection
+        }));
+    }
+
     onSearch(searchQuery) {
         this.searchQuery = searchQuery;
         this.applyFilters();
+        this.renderContent();
     }
 
     templateContext() {

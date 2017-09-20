@@ -13,13 +13,13 @@ class NodeSearchView extends View {
         this.searchQuery = searchQuery;
     }
 
-    onRender(){
-        this.$('input').val(this.searchQuery)
+    onRender() {
+        this.$('input').val(this.searchQuery);
     }
 
     @on('input input')
     onChangeSorting(e) {
-        this.onSearch( e.target.value);
+        this.onSearch(e.target.value);
     }
 
 }

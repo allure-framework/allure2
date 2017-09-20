@@ -1,4 +1,3 @@
-
 function byStatuses(statuses) {
     return (child) => {
         if (child.children) {
@@ -19,23 +18,23 @@ function byDuration(min, max) {
 
 
 function byText(text) {
+    text = text && text.toLowerCase() || '';
     return (child) => {
         return !text
-            || child.name.indexOf(text) > -1
-            || child.children && child.children.some(byText(text))
+            || child.name.toLowerCase().indexOf(text) > -1
+            || child.children && child.children.some(byText(text));
     };
 }
 
 function mix(...filters) {
     return (child) => {
         let result = true;
-        filters.forEach((filter)=> {
-            result = result && filter(child)
+        filters.forEach((filter) => {
+            result = result && filter(child);
         });
         return result;
-    }
+    };
 }
-
 
 
 export {byStatuses, byDuration, byText, mix};

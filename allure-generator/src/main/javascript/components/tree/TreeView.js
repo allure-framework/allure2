@@ -2,8 +2,7 @@ import './styles.scss';
 import {View} from 'backbone.marionette';
 import hotkeys from '../../utils/hotkeys';
 import template from './TreeView.hbs';
-import {behavior, className, on, regions} from '../../decorators';
-import {byStatuses, byText, mix} from '../../data/tree/filter';
+import {behavior, className, on} from '../../decorators';
 import router from '../../router';
 import {Model} from 'backbone';
 import {getSettingsForTreePlugin} from '../../utils/settingsFactory';
@@ -13,11 +12,12 @@ import {getSettingsForTreePlugin} from '../../utils/settingsFactory';
 class TreeView extends View {
     template = template;
 
-    initialize({routeState, tabName, baseUrl, settings = getSettingsForTreePlugin(baseUrl)}) {
+    initialize({routeState, searchQuery, tabName, baseUrl, settings = getSettingsForTreePlugin(baseUrl)}) {
         this.state = new Model();
         this.routeState = routeState;
         this.baseUrl = baseUrl;
         this.tabName = tabName;
+        this.searchQuery = searchQuery;
         this.setState();
         this.listenTo(this.routeState, 'change:treeNode', this.selectNode);
         this.listenTo(this.routeState, 'change:testResultTab', this.render);
@@ -45,6 +45,11 @@ class TreeView extends View {
 
     onRender() {
         this.selectNode();
+        if (this.searchQuery) {
+            this.$('.node__title').each((i, node) => this.expandNode(this.$(node), true));
+        } else {
+            this.restoreState();
+        }
     }
 
     selectNode() {
@@ -90,11 +95,17 @@ class TreeView extends View {
         }
     }
 
+    expandNode(node, keepState) {
+        const uid = node.data('uid');
+        if (!keepState) {
+            this.changeState(uid, !this.state.has(uid));
+        }
+        this.$(node).parent().toggleClass('node__expanded');
+    }
+
     @on('click .node__title')
     onNodeClick(e) {
-        const uid = this.$(e.currentTarget).data('uid');
-        this.changeState(uid, !this.state.has(uid));
-        this.$(e.currentTarget).parent().toggleClass('node__expanded');
+        this.expandNode(this.$(e.currentTarget));
     }
 
     @on('click .tree__info')
