@@ -14,7 +14,7 @@ import {getSettingsForTreePlugin} from '../../utils/settingsFactory';
 @className('tree')
 @behavior('TooltipBehavior', {position: 'bottom'})
 @regions({
-    search: '.tree__search',
+    search: '.pane__search',
     sorter: '.tree__sorter',
     filter: '.tree__filter',
     content: '.tree__content'

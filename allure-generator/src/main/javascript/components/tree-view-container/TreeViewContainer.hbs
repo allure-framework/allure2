@@ -1,12 +1,12 @@
 <div class="{{b 'pane' 'title' borderless=true}}">
-    {{t tabName}}
+    <span class="{{b 'pane' 'title-text'}}">{{t tabName}}</span>
     {{#if filtered}}
         <span class="{{b 'pane' 'subtitle'}}">
         {{t 'component.tree.filtered.total' count=totalCases}},
             {{t 'component.tree.filtered.shown' count=shownCases}}
     </span>
     {{/if}}
-    <div class="{{b cls 'search'}}"></div>
+    <div class="{{b 'pane' 'search'}}"></div>
     <span class="pane__controls">
         <a class="fa fa-info-circle {{b cls 'control'}} {{b cls 'info'}}" data-tooltip="{{t 'component.tree.groups'}}"></a>
     </span>
