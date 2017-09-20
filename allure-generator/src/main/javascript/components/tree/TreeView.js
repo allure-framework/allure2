@@ -44,7 +44,9 @@ class TreeView extends View {
     onRender() {
         this.selectNode();
         if (this.searchQuery) {
-            this.$('.node__title').each((i, node) => this.expandNode(this.$(node), true));
+            this.$('.node__title').each((i, node) => {
+                this.$(node).parent().addClass('node__expanded');
+            });
         } else {
             this.restoreState();
         }
@@ -93,17 +95,12 @@ class TreeView extends View {
         }
     }
 
-    expandNode(node, keepState) {
-        const uid = node.data('uid');
-        if (!keepState) {
-            this.changeState(uid, !this.state.has(uid));
-        }
-        this.$(node).parent().toggleClass('node__expanded');
-    }
-
     @on('click .node__title')
     onNodeClick(e) {
-        this.expandNode(this.$(e.currentTarget));
+        const node = this.$(e.currentTarget);
+        const uid = node.data('uid');
+        this.changeState(uid, !this.state.has(uid));
+        node.parent().toggleClass('node__expanded');
     }
 
     onKeyUp(event) {
