@@ -7,14 +7,8 @@ import {View} from 'backbone.marionette';
 class NodeSearchView extends View {
     template = template;
 
-    initialize({onSearch, searchQuery}) {
+    initialize({onSearch}) {
         this.onSearch = onSearch;
-
-        this.searchQuery = searchQuery;
-    }
-
-    onRender() {
-        this.$('input').val(this.searchQuery);
     }
 
     @on('input input')

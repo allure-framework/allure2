@@ -57,8 +57,7 @@ class TreeViewContainer extends View {
     onRender() {
         this.renderContent();
         this.showChildView('search', new NodeSearchView({
-            onSearch: this.onSearch.bind(this),
-            searchQuery: this.searchQuery
+            onSearch: this.onSearch.bind(this)
         }));
         this.showChildView('sorter', new NodeSorterView({
             settings: this.settings
