@@ -1,7 +1,12 @@
 @import "../../variables.scss";
 
 .search {
-    &-input {
+    &__container {
+        width: 100%;
+        max-width: 350px;
+        float: right;
+    }
+    &__input {
         width: 100%;
         font-size: .8em;
     }

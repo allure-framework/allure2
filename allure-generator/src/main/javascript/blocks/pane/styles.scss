@@ -13,7 +13,7 @@
   &__title {
     padding: 0 15px 10px;
     width:100%;
-    display: table;
+    display: flex;
     text-align: right;
     position: relative;
     margin: 7px 0 0;
@@ -28,15 +28,11 @@
     display: inline-block;
     padding: 0 0.5em;
     width: 100%;
-    max-width: 350px;
   }
   &__title-text {
-      display: table-cell;
       text-align: left;
   }
   &__controls {
-      display: table-cell;
-
     & > a {
       text-decoration: none;
       color: $text-color;
