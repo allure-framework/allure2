@@ -8,7 +8,13 @@
         {{#if (eq type "tms")}}
             <span class="fa fa-database"></span>
         {{/if}}
-        <a class="link" href="{{this.url}}" target="_blank">{{name}}</a>
+        <a class="link" href="{{this.url}}" target="_blank">
+            {{#if (eq type "image")}}
+                <img src="{{this.url}}"/>
+            {{else}}
+                {{name}}
+            {{/if}}
+        </a>
     </span>
     {{/each}}
 {{/if}}
