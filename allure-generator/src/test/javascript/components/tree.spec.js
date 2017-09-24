@@ -55,6 +55,10 @@ describe('Tree', function () {
         });
     }
 
+    function searchInTree(searchQuery) {
+        settings.setSearchQuery(searchQuery);
+    }
+
     function renderView(data) {
         const items = new TreeCollection([], {});
         items.set(data, {parse: true});
@@ -80,16 +84,16 @@ describe('Tree', function () {
                 children: [
                     caseNode({name: 'First node', status: 'passed', duration: 4}),
                     caseNode({name: 'Second node', status: 'failed', duration: 2}),
-                    caseNode({name: 'Third node', status: 'skipped', duration: 3})
+                    caseNode({name: 'Third node that i like', status: 'skipped', duration: 3})
                 ]
             }),
             groupNode({
                 name: 'B group node',
                 children: [
-                    caseNode({name: 'Node in B group', status: 'unknown', duration: 1})
+                    caseNode({name: 'Node in B group likes to be tested', status: 'unknown', duration: 1})
                 ]
             }),
-            caseNode({name: 'Other node', status: 'unknown', duration: 5}),
+            caseNode({name: 'Like other nodes', status: 'unknown', duration: 5}),
         ]
     });
 
@@ -160,19 +164,36 @@ describe('Tree', function () {
 
     describe('filtering', () => {
 
-        it('should hiding nodes', () => {
+        it('should hide nodes', () => {
             filterTree({failed: false, broken: false, passed: false, skipped: false, unknown: false});
             expect(page.nodes().length).toBe(0);
 
             filterTree({failed: false, broken: false, passed: false, skipped: false, unknown: true});
             expect(page.nodes().length).toBe(3);
             expect(page.node(0).text()).toMatch(/B group node/);
-            expect(page.node(2).text()).toMatch(/Other node/);
+            expect(page.node(2).text()).toMatch(/Like other nodes/);
 
             filterTree({failed: true, broken: false, passed: false, skipped: false, unknown: false});
             expect(page.nodes().length).toBe(2);
             expect(page.node(0).text()).toMatch(/A group node/);
             expect(page.node(1).text()).toMatch(/Second node/);
+        });
+
+    });
+
+    describe('searching', () => {
+
+        it('should hide nodes which don\'t contain searchQuery in its name(ignoring case)', () => {
+            searchInTree('Like');
+            expect(page.nodes().length).toBe(5);
+            expect(page.node(0).text()).toMatch(/A group node/);
+            expect(page.node(1).text()).toMatch(/Third node that i like/);
+            expect(page.node(2).text()).toMatch(/B group node/);
+            expect(page.node(3).text()).toMatch(/Node in B group likes to be tested/);
+            expect(page.node(4).text()).toMatch(/Like other nodes/);
+
+            searchInTree('abracadabra');
+            expect(page.nodes().length).toBe(0);
         });
 
     });
