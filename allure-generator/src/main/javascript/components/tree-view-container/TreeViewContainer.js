@@ -2,8 +2,6 @@ import './styles.scss';
 import {View} from 'backbone.marionette';
 import template from './TreeViewContainer.hbs';
 import {behavior, className, on, regions} from '../../decorators';
-import getComparator from '../../data/tree/comparator';
-import {byStatuses, byText, mix} from '../../data/tree/filter';
 import NodeSorterView from '../node-sorter/NodeSorterView';
 import NodeSearchView from '../node-search/NodeSearchView';
 import StatusToggleView from '../status-toggle/StatusToggleView';
@@ -30,23 +28,8 @@ class TreeViewContainer extends View {
         this.listenTo(this.routeState, 'change:testResultTab', this.render);
 
         this.settings = settings;
-        this.listenTo(this.settings, 'change', this.render);
     }
 
-
-    applyFilters() {
-        const visibleStatuses = this.settings.getVisibleStatuses();
-        const filter = mix(byText(this.searchQuery), byStatuses(visibleStatuses));
-
-        const sortSettings = this.settings.getTreeSorting();
-        const sorter = getComparator(sortSettings);
-
-        this.collection.applyFilterAndSorting(filter, sorter);
-    }
-
-    onBeforeRender() {
-       this.applyFilters();
-    }
 
     @on('click .tree__info')
     onInfoClick() {
@@ -55,9 +38,17 @@ class TreeViewContainer extends View {
     }
 
     onRender() {
-        this.renderContent();
+        this.showChildView('content', new TreeView({
+            state: this.state,
+            routeState: this.routeState,
+            tabName: this.tabName,
+            baseUrl: this.baseUrl,
+            settings: this.settings,
+            collection: this.collection
+        }));
+
         this.showChildView('search', new NodeSearchView({
-            onSearch: this.onSearch.bind(this)
+            settings: this.settings
         }));
         this.showChildView('sorter', new NodeSorterView({
             settings: this.settings
@@ -66,24 +57,6 @@ class TreeViewContainer extends View {
             settings: this.settings,
             statistic: this.collection.statistic
         }));
-    }
-
-    renderContent() {
-        this.showChildView('content', new TreeView({
-            state: this.state,
-            routeState: this.routeState,
-            searchQuery: this.searchQuery,
-            tabName: this.tabName,
-            baseUrl: this.baseUrl,
-            settings: this.settings,
-            collection: this.collection
-        }));
-    }
-
-    onSearch(searchQuery) {
-        this.searchQuery = searchQuery;
-        this.applyFilters();
-        this.renderContent();
     }
 
     templateContext() {

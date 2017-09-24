@@ -22,4 +22,8 @@ export default class LocalStorageModel extends Model {
         window.localStorage.setItem(this.storageKey(), JSON.stringify(json));
     }
 
+    saveTemporary(key, val) {
+        this.set(key, val);
+    }
+
 }

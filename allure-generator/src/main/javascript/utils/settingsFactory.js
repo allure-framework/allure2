@@ -17,7 +17,8 @@ const treePluginDefaults = {
     treeSorting: {
         ascending: true,
         sorter: 'sorter.name'
-    }
+    },
+    searchQuery: ''
 };
 
 const widgetGridPluginDefaults = {
@@ -116,6 +117,15 @@ function getSettingsForTreePlugin(pluginName, defaults = treePluginDefaults) {
 
         setShowGroupInfo(value) {
             this.save('showGroupInfo', value);
+        },
+
+        // store it temporary, do not use localstorage
+        setSearchQuery(value) {
+            this.saveTemporary('searchQuery', value);
+        },
+
+        getSearchQuery() {
+            return this.get('searchQuery');
         }
     });
     const settings = new SettingsModel();

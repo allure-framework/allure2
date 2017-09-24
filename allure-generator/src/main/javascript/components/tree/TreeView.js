@@ -4,28 +4,41 @@ import hotkeys from '../../utils/hotkeys';
 import template from './TreeView.hbs';
 import {behavior, className, on} from '../../decorators';
 import router from '../../router';
+import getComparator from '../../data/tree/comparator';
+import {byStatuses, byText, mix} from '../../data/tree/filter';
 
 @className('tree')
 @behavior('TooltipBehavior', {position: 'bottom'})
 class TreeView extends View {
     template = template;
 
-    initialize({routeState, state, searchQuery, tabName, baseUrl, settings}) {
+    initialize({routeState, state, tabName, baseUrl, settings}) {
         this.state = state;
         this.routeState = routeState;
         this.baseUrl = baseUrl;
         this.tabName = tabName;
-        this.searchQuery = searchQuery;
         this.setState();
         this.listenTo(this.routeState, 'change:treeNode', this.selectNode);
         this.listenTo(this.routeState, 'change:testResultTab', this.render);
 
         this.settings = settings;
+        this.listenTo(this.settings, 'change', this.render);
 
         this.listenTo(hotkeys, 'key:up', this.onKeyUp, this);
         this.listenTo(hotkeys, 'key:down', this.onKeyDown, this);
         this.listenTo(hotkeys, 'key:esc', this.onKeyBack, this);
         this.listenTo(hotkeys, 'key:left', this.onKeyBack, this);
+    }
+
+    applyFilters() {
+        const visibleStatuses = this.settings.getVisibleStatuses();
+        const searchQuery = this.settings.getSearchQuery();
+        const filter = mix(byText(searchQuery), byStatuses(visibleStatuses));
+
+        const sortSettings = this.settings.getTreeSorting();
+        const sorter = getComparator(sortSettings);
+
+        this.collection.applyFilterAndSorting(filter, sorter);
     }
 
     setState() {
@@ -40,10 +53,13 @@ class TreeView extends View {
         }
     }
 
+    onBeforeRender() {
+        this.applyFilters();
+    }
 
     onRender() {
         this.selectNode();
-        if (this.searchQuery) {
+        if (this.settings.getSearchQuery()) {
             this.$('.node__title').each((i, node) => {
                 this.$(node).parent().addClass('node__expanded');
             });
