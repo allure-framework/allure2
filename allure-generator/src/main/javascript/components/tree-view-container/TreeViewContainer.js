@@ -20,8 +20,8 @@ import {getSettingsForTreePlugin} from '../../utils/settingsFactory';
 class TreeViewContainer extends View {
     template = template;
 
-    initialize({routeState, tabName, baseUrl, settings = getSettingsForTreePlugin(baseUrl)}) {
-        this.state = new Model();
+    initialize({routeState, state = new Model(), tabName, baseUrl, settings = getSettingsForTreePlugin(baseUrl)}) {
+        this.state = state;
         this.routeState = routeState;
         this.baseUrl = baseUrl;
         this.tabName = tabName;
@@ -48,7 +48,7 @@ class TreeViewContainer extends View {
         }));
 
         this.showChildView('search', new NodeSearchView({
-            settings: this.settings
+            state: this.state
         }));
         this.showChildView('sorter', new NodeSorterView({
             settings: this.settings

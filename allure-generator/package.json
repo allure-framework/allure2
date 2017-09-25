@@ -7,7 +7,8 @@
     "build": "webpack --optimize-minimize",
     "start": "webpack-dev-server --inline --hot --env.development",
     "pretest": "eslint --ignore-path=.gitignore .",
-    "test": "jest --colors",
+    "test": "jest",
+    "test:watch": "jest --colors --watch",
     "coverage": "jest --coverage --collectCoverageFrom=src/main/javascript/**/*.js"
   },
   "repository": {

@@ -2,10 +2,12 @@ import {Model} from 'backbone';
 import TreeViewContainer from 'components/tree-view-container/TreeViewContainer';
 import TreeCollection from 'data/tree/TreeCollection';
 import {getSettingsForTreePlugin} from 'utils/settingsFactory';
+import {SEARCH_QUERY_KEY} from '../../../main/javascript/components/node-search/NodeSearchView';
 
 describe('Tree', function () {
     const tabName = 'Tab Name';
     let settings = getSettingsForTreePlugin('TREE_TEST');
+    let state;
     let view;
     let page;
 
@@ -56,16 +58,17 @@ describe('Tree', function () {
     }
 
     function searchInTree(searchQuery) {
-        settings.setSearchQuery(searchQuery);
+        state.set(SEARCH_QUERY_KEY, searchQuery);
     }
 
     function renderView(data) {
         const items = new TreeCollection([], {});
+        const state = new Model();
         items.set(data, {parse: true});
 
         view = new TreeViewContainer({
             collection: items,
-            state: new Model(),
+            state: state,
             routeState: new Model(),
             tabName: tabName,
             baseUrl: 'XUnit',
@@ -74,7 +77,7 @@ describe('Tree', function () {
         view.onRender();
         const page = new PageObject(view.$el);
 
-        return {view, page};
+        return {view, page, state};
     }
 
     const data = groupNode({
@@ -99,7 +102,7 @@ describe('Tree', function () {
 
     beforeEach(() => {
         settings = getSettingsForTreePlugin('TREE_TEST');
-        ({view, page} = renderView(data));
+        ({view, page, state} = renderView(data));
     });
 
     afterEach(() => {

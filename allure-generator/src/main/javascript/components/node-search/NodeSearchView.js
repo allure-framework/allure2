@@ -3,25 +3,27 @@ import {className, on} from '../../decorators';
 import template from './NodeSearchView.hbs';
 import {View} from 'backbone.marionette';
 
+export const SEARCH_QUERY_KEY = 'searchQuery';
+
 @className('search')
 class NodeSearchView extends View {
     template = template;
 
-    initialize({settings}) {
-        this.settings = settings;
+    initialize({state}) {
+        this.state = state;
     }
 
     onRender() {
-        this.$('input').val(this.settings.getSearchQuery());
+        this.$('input').val(this.state.get(SEARCH_QUERY_KEY));
     }
 
     @on('input input')
     onChangeSorting(e) {
-        this.settings.setSearchQuery(e.target.value);
+        this.state.set(SEARCH_QUERY_KEY, e.target.value);
     }
 
     close() {
-        this.settings.setSearchQuery('');
+        this.state.set(SEARCH_QUERY_KEY, '');
     }
 
 }

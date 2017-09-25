@@ -6,6 +6,7 @@ import {behavior, className, on} from '../../decorators';
 import router from '../../router';
 import getComparator from '../../data/tree/comparator';
 import {byStatuses, byText, mix} from '../../data/tree/filter';
+import {SEARCH_QUERY_KEY} from '../node-search/NodeSearchView';
 
 @className('tree')
 @behavior('TooltipBehavior', {position: 'bottom'})
@@ -23,6 +24,7 @@ class TreeView extends View {
 
         this.settings = settings;
         this.listenTo(this.settings, 'change', this.render);
+        this.listenTo(this.state, 'change', this.render);
 
         this.listenTo(hotkeys, 'key:up', this.onKeyUp, this);
         this.listenTo(hotkeys, 'key:down', this.onKeyDown, this);
@@ -32,7 +34,7 @@ class TreeView extends View {
 
     applyFilters() {
         const visibleStatuses = this.settings.getVisibleStatuses();
-        const searchQuery = this.settings.getSearchQuery();
+        const searchQuery = this.state.get(SEARCH_QUERY_KEY);
         const filter = mix(byText(searchQuery), byStatuses(visibleStatuses));
 
         const sortSettings = this.settings.getTreeSorting();
@@ -59,7 +61,7 @@ class TreeView extends View {
 
     onRender() {
         this.selectNode();
-        if (this.settings.getSearchQuery()) {
+        if (this.state.get(SEARCH_QUERY_KEY)) {
             this.$('.node__title').each((i, node) => {
                 this.$(node).parent().addClass('node__expanded');
             });
