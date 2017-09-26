@@ -13,6 +13,7 @@ import {SEARCH_QUERY_KEY} from '../node-search/NodeSearchView';
 class TreeView extends View {
     template = template;
 
+    cachedQuery = '';
     initialize({routeState, state, tabName, baseUrl, settings}) {
         this.state = state;
         this.routeState = routeState;
@@ -24,7 +25,7 @@ class TreeView extends View {
 
         this.settings = settings;
         this.listenTo(this.settings, 'change', this.render);
-        this.listenTo(this.state, 'change', this.render);
+        this.listenTo(this.state, 'change', this.handleStateChange);
 
         this.listenTo(hotkeys, 'key:up', this.onKeyUp, this);
         this.listenTo(hotkeys, 'key:down', this.onKeyDown, this);
@@ -57,6 +58,15 @@ class TreeView extends View {
 
     onBeforeRender() {
         this.applyFilters();
+    }
+
+    handleStateChange() {
+        const query = this.state.get(SEARCH_QUERY_KEY);
+        // need to check this ot to re-render nodes on folding
+        if (query !== this.cachedQuery) {
+            this.cachedQuery = query;
+            this.render();
+        }
     }
 
     onRender() {
