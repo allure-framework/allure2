@@ -1,6 +1,10 @@
 package io.qameta.allure.allure1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import io.qameta.allure.Reader;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
@@ -26,7 +30,6 @@ import ru.yandex.qatools.allure.model.ParameterKind;
 import ru.yandex.qatools.allure.model.TestCaseResult;
 import ru.yandex.qatools.allure.model.TestSuiteResult;
 
-import javax.xml.bind.JAXB;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
@@ -51,6 +54,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.fasterxml.jackson.databind.MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME;
 import static io.qameta.allure.entity.LabelName.ISSUE;
 import static io.qameta.allure.entity.LabelName.PACKAGE;
 import static io.qameta.allure.entity.LabelName.PARENT_SUITE;
@@ -68,7 +72,6 @@ import static java.util.Comparator.comparing;
 import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsFirst;
 import static java.util.stream.Collectors.toList;
-import static org.allurefw.allure1.AllureUtils.unmarshalTestSuite;
 
 /**
  * Plugin that reads results from Allure1 data format.
@@ -90,7 +93,17 @@ public class Allure1Plugin implements Reader {
     public static final String ENVIRONMENT_BLOCK_NAME = "environment";
     public static final String ALLURE1_RESULTS_FORMAT = "allure1";
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper jsonMapper = new ObjectMapper();
+    private final ObjectMapper xmlMapper;
+
+    public Allure1Plugin() {
+        final SimpleModule module = new SimpleModule()
+                .addDeserializer(ru.yandex.qatools.allure.model.Status.class, new StatusDeserializer());
+        xmlMapper = new XmlMapper()
+                .configure(USE_WRAPPER_NAME_AS_PROPERTY_NAME, true)
+                .setAnnotationIntrospector(new JaxbAnnotationIntrospector(TypeFactory.defaultInstance()))
+                .registerModule(module);
+    }
 
     @Override
     public void readResults(final Configuration configuration,
@@ -415,8 +428,8 @@ public class Allure1Plugin implements Reader {
     }
 
     private Optional<TestSuiteResult> readXmlTestSuiteFile(final Path source) {
-        try {
-            return Optional.of(unmarshalTestSuite(source));
+        try (InputStream is = Files.newInputStream(source)) {
+            return Optional.of(xmlMapper.readValue(is, TestSuiteResult.class));
         } catch (IOException e) {
             LOGGER.debug("Could not read result {}: {}", source, e);
         }
@@ -425,7 +438,7 @@ public class Allure1Plugin implements Reader {
 
     private Optional<TestSuiteResult> readJsonTestSuiteFile(final Path source) {
         try (InputStream is = Files.newInputStream(source)) {
-            return Optional.of(mapper.readValue(is, TestSuiteResult.class));
+            return Optional.of(jsonMapper.readValue(is, TestSuiteResult.class));
         } catch (IOException e) {
             LOGGER.debug("Could not read result {}: {}", source, e);
             return Optional.empty();
@@ -489,7 +502,7 @@ public class Allure1Plugin implements Reader {
         final Map<String, String> items = new HashMap<>();
         if (Files.exists(envXmlFile)) {
             try (InputStream fis = Files.newInputStream(envXmlFile)) {
-                JAXB.unmarshal(fis, ru.yandex.qatools.commons.model.Environment.class).getParameter().forEach(p ->
+                xmlMapper.readValue(fis, ru.yandex.qatools.commons.model.Environment.class).getParameter().forEach(p ->
                         items.put(p.getKey(), p.getValue())
                 );
             } catch (Exception e) {
