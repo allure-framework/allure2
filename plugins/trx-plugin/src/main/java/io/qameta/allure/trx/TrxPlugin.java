@@ -5,6 +5,7 @@ import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Status;
+import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import io.qameta.allure.parser.XmlElement;
@@ -61,6 +62,10 @@ public class TrxPlugin implements Reader {
     public static final String EXECUTION_ELEMENT = "Execution";
     public static final String ID_ATTRIBUTE = "id";
     public static final String EXECUTION_ID_ATTRIBUTE = "executionId";
+    public static final String OUTPUT_ELEMENT_NAME = "Output";
+    public static final String MESSAGE_ELEMENT_NAME = "Message";
+    public static final String STACK_TRACE_ELEMENT_NAME = "StackTrace";
+    public static final String ERROR_INFO_ELEMENT_NAME = "ErrorInfo";
 
     @Override
     public void readResults(final Configuration configuration,
@@ -149,14 +154,13 @@ public class TrxPlugin implements Reader {
         final String startTime = unitTestResult.getAttribute(START_TIME_ATTRIBUTE);
         final String endTime = unitTestResult.getAttribute(END_TIME_ATTRIBUTE);
         final String outcome = unitTestResult.getAttribute(OUTCOME_ATTRIBUTE);
-
         final String uid = context.getValue().get();
         final TestResult result = new TestResult()
                 .setUid(uid)
                 .setName(testName)
                 .setStatus(parseStatus(outcome))
                 .setTime(getTime(startTime, endTime));
-
+        getStatusDetails(unitTestResult).ifPresent(result::setStatusDetails);
         Optional.ofNullable(tests.get(executionId)).ifPresent(unitTest -> {
             result.setParameters(unitTest.getParameters());
             result.setDescription(unitTest.getDescription());
@@ -164,6 +168,17 @@ public class TrxPlugin implements Reader {
 
         result.addLabelIfNotExists(RESULT_FORMAT, TRX_RESULTS_FORMAT);
         visitor.visitTestResult(result);
+    }
+
+    private Optional<StatusDetails> getStatusDetails(final XmlElement unitTestResult) {
+        return unitTestResult.getFirst(OUTPUT_ELEMENT_NAME)
+                .flatMap(output -> output.getFirst(ERROR_INFO_ELEMENT_NAME))
+                .map(output -> {
+                    final StatusDetails details = new StatusDetails();
+                    output.getFirst(MESSAGE_ELEMENT_NAME).map(XmlElement::getValue).ifPresent(details::setMessage);
+                    output.getFirst(STACK_TRACE_ELEMENT_NAME).map(XmlElement::getValue).ifPresent(details::setTrace);
+                    return details;
+                });
     }
 
     private Time getTime(final String startTime, final String endTime) {
