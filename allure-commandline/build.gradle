@@ -9,8 +9,8 @@ mainClassName = 'io.qameta.allure.CommandLine'
 startScripts {
     classpath += files('src/lib/config')
     defaultJvmOpts = [
+            '-XX:+IgnoreUnrecognizedVMOptions',
             '--add-modules', 'java.xml.bind',
-            '-XX:+IgnoreUnrecognizedVMOptions'
     ]
     doLast {
         unixScript.text = unixScript.text
