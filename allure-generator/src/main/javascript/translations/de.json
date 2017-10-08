@@ -8,6 +8,7 @@
     "flaky": "Instabil"
   },
   "sorter": {
+    "order": "Reihenfolge",
     "name": "Name",
     "duration": "Dauer",
     "status": "Status"
@@ -103,7 +104,8 @@
       "name": "Besitzer"
     },
     "retries": {
-      "name": "Wiederholungen"
+      "name": "Wiederholungen",
+      "empty": "Keine Informationen zu Wiederholungen verfügbar"
     },
     "parameters": {
       "name": "Parameter"
@@ -137,6 +139,8 @@
     "fullscreen": "Vollbild",
     "language": "Sprache ändern",
     "clipboard": "In Zwischenablage kopieren",
+    "clipboardSuccess": "Erfolgreich in Zwischenablage kopiert",
+    "clipboardError": "Wert konnte nicht in Zwischenablage kopiert werden. Ihr Browser scheint dieses Feature nicht zu unterstützen",
     "backto": "Zurück zu"
   },
   "errors": {
