@@ -230,8 +230,18 @@ public class JunitXmlPluginTest {
 
         assertThat(captor.getAllValues())
                 .extracting(TestResult::getTime)
-                .extracting(Time::getStart, Time::getStop, Time::getDuration)
-                .containsExactly(tuple(1507188982L, 1507190033L, 1051L));
+                .extracting(Time::getDuration)
+                .containsExactly(1051L);
+
+        assertThat(captor.getAllValues())
+                .extracting(TestResult::getTime)
+                .extracting(Time::getStart)
+                .isNotNull();
+
+        assertThat(captor.getAllValues())
+                .extracting(TestResult::getTime)
+                .extracting(Time::getStop)
+                .isNotNull();
     }
 
     @Test
