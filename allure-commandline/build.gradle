@@ -8,6 +8,10 @@ mainClassName = 'io.qameta.allure.CommandLine'
 
 startScripts {
     classpath += files('src/lib/config')
+    defaultJvmOpts = [
+            '--add-modules', 'java.xml.bind',
+            '-XX:+IgnoreUnrecognizedVMOptions'
+    ]
     doLast {
         unixScript.text = unixScript.text
                 .replaceAll('(?m)^APP_HOME=', 'export APP_HOME=')

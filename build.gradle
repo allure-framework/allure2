@@ -43,7 +43,7 @@ configure(rootProject) {
     }
 
     task wrapper(type: Wrapper) {
-        gradleVersion = '4.1'
+        gradleVersion = '4.2.1'
     }
 
     task deleteDemoReport(type: Delete) {
@@ -90,7 +90,7 @@ allprojects {
             dependency 'org.eclipse.jetty:jetty-server:9.2.2.v20140723'
             dependency 'org.freemarker:freemarker:2.3.23'
             dependency 'com.vladsch.flexmark:flexmark:0.19.4'
-            dependency 'org.projectlombok:lombok:1.16.16'
+            dependency 'org.projectlombok:lombok:1.16.18'
             dependency 'org.apache.httpcomponents:httpclient:4.5.3'
 
             dependency 'org.allurefw:allure1-model:1.0'
