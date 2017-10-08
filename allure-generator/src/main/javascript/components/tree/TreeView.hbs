@@ -1,22 +1,3 @@
-<div class="{{b 'pane' 'title' borderless=true}}">
-    {{t tabName}}
-    {{#if filtered}}
-        <span class="{{b 'pane' 'subtitle'}}">
-        {{t 'component.tree.filtered.total' count=totalCases}},
-            {{t 'component.tree.filtered.shown' count=shownCases}}
-    </span>
-    {{/if}}
-    <span class="pane__controls">
-        <a class="fa fa-info-circle {{b cls 'control'}} {{b cls 'info'}}" data-tooltip="{{t 'component.tree.groups'}}"></a>
-    </span>
-</div>
-
-<div class="{{b cls 'ctrl'}}">
-    <div class="{{b cls 'sorter'}}"></div>
-    <div class="{{b cls 'strut'}}"></div>
-    <div class="{{b cls 'filter'}}"></div>
-</div>
-
 <div class="{{b cls 'content'}}" data-uid="{{uid}}">
     {{#if items}}
         {{#each items}}

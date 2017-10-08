@@ -1,6 +1,6 @@
 import {className} from '../../decorators';
 import SideBySideView from '../side-by-side/SideBySideView';
-import TreeView from '../tree/TreeView';
+import TreeViewContainer from '../tree-view-container/TreeViewContainer';
 import EmptyView from '../empty/EmptyView';
 import TestResultView from '../testresult/TestResultView';
 import TestResultModel from '../../data/testresult/TestResultModel';
@@ -34,7 +34,7 @@ class TestResultTreeView extends SideBySideView {
 
     onRender() {
         const {tabName, baseUrl} = this.options;
-        const left = new TreeView({
+        const left = new TreeViewContainer({
             collection: this.tree,
             routeState: this.routeState,
             treeSorters: [],

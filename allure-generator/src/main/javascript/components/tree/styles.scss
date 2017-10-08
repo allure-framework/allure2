@@ -102,24 +102,3 @@
 [dir=ltr] .node__expanded > .node__title > .node__arrow {
   transform: rotate(90deg);
 }
-
-.tree {
-  &__ctrl {
-    display: flex;
-    flex-wrap: wrap;
-    border-top: 1px solid $border-color;
-    background: $pane-overlay-bg-hover;
-  }
-  &__filter, &__sorter {
-    padding: 0 $gap-size 0 $gap-size;
-    position: relative;
-    white-space: nowrap;
-  }
-  &__strut {
-    flex: 1;
-  }
-  &__empty {
-    border-top: 1px solid #ECEFF1;
-    padding: 8px 0 0 15px;
-  }
-}

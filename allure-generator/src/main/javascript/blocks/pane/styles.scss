@@ -12,6 +12,10 @@
 
   &__title {
     padding: 0 15px 10px;
+    width:100%;
+    display: flex;
+    text-align: right;
+    position: relative;
     margin: 7px 0 0;
     border-bottom: 1px solid $border-color;
     font-size: 24px;
@@ -20,10 +24,15 @@
       border: none;
     }
   }
-
+  &__search {
+    display: inline-block;
+    padding: 0 0.5em;
+    width: 100%;
+  }
+  &__title-text {
+      text-align: left;
+  }
   &__controls {
-    float: right;
-    padding-right: 0.5em;
     & > a {
       text-decoration: none;
       color: $text-color;
