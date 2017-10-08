@@ -190,6 +190,7 @@ public class Commands {
     protected Server setUpServer(final int port, final Path reportDirectory) {
         final Server server = new Server(port);
         ResourceHandler handler = new ResourceHandler();
+        handler.setRedirectWelcome(true);
         handler.setDirectoriesListed(true);
         handler.setResourceBase(reportDirectory.toAbsolutePath().toString());
         HandlerList handlers = new HandlerList();

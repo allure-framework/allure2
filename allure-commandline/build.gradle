@@ -41,7 +41,7 @@ dependencies {
     testCompile('junit:junit')
     testCompile('org.assertj:assertj-core')
     testCompile('org.mockito:mockito-core')
-    testCompile('org.apache.commons:commons-lang3')
+    testCompile('org.apache.commons:commons-text')
 }
 
 configurations.archives.artifacts.removeAll { it.archiveTask.is jar }
