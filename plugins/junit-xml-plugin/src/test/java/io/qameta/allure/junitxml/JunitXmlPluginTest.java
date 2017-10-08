@@ -11,6 +11,7 @@ import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.entity.Time;
 import org.assertj.core.groups.Tuple;
 import org.junit.Before;
 import org.junit.Rule;
@@ -161,10 +162,10 @@ public class JunitXmlPluginTest {
         assertThat(results)
                 .extracting(TestResult::getName, TestResult::getStatus, TestResult::isHidden, TestResult::getHistoryId)
                 .containsExactlyInAnyOrder(
-                        Tuple.tuple("searchTest", Status.BROKEN, false, "my.company.tests.SearchTest#searchTest"),
-                        Tuple.tuple("searchTest", Status.BROKEN, true, "my.company.tests.SearchTest#searchTest"),
-                        Tuple.tuple("searchTest", Status.BROKEN, true, "my.company.tests.SearchTest#searchTest"),
-                        Tuple.tuple("searchTest", Status.FAILED, true, "my.company.tests.SearchTest#searchTest")
+                        Tuple.tuple("searchTest", Status.BROKEN, false, "my.company.tests.SearchTest:my.company.tests.SearchTest#searchTest"),
+                        Tuple.tuple("searchTest", Status.BROKEN, true, "my.company.tests.SearchTest:my.company.tests.SearchTest#searchTest"),
+                        Tuple.tuple("searchTest", Status.BROKEN, true, "my.company.tests.SearchTest:my.company.tests.SearchTest#searchTest"),
+                        Tuple.tuple("searchTest", Status.FAILED, true, "my.company.tests.SearchTest:my.company.tests.SearchTest#searchTest")
                 );
 
         assertThat(results)
@@ -216,6 +217,55 @@ public class JunitXmlPluginTest {
                         "should default consolidate to true",
                         "should default useDotNotation to true"
                 );
+    }
+
+    @Test
+    public void shouldProcessTimestampIfPresent() throws Exception {
+        process(
+                "junitdata/with-timestamp.xml", "TEST-test.SampleTest.xml"
+        );
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(1)).visitTestResult(captor.capture());
+
+        assertThat(captor.getAllValues())
+                .extracting(TestResult::getTime)
+                .extracting(Time::getStart, Time::getStop, Time::getDuration)
+                .containsExactly(tuple(1507188982L, 1507190033L, 1051L));
+    }
+
+    @Test
+    public void shouldUseSuiteNameIfPresent() throws Exception {
+        process(
+                "junitdata/with-timestamp.xml", "TEST-test.SampleTest.xml"
+        );
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(1)).visitTestResult(captor.capture());
+
+        assertThat(captor.getAllValues())
+                .flatExtracting(TestResult::getLabels)
+                .filteredOn("name", "suite")
+                .extracting(Label::getValue)
+                .containsExactly("LocalSuiteIDOL");
+
+    }
+
+    @Test
+    public void shouldUseHostnameIfPresent() throws Exception {
+        process(
+                "junitdata/with-timestamp.xml", "TEST-test.SampleTest.xml"
+        );
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(1)).visitTestResult(captor.capture());
+
+        assertThat(captor.getAllValues())
+                .flatExtracting(TestResult::getLabels)
+                .filteredOn("name", "host")
+                .extracting(Label::getValue)
+                .containsExactly("cbgtalosbld02");
+
     }
 
     private void process(String... strings) throws IOException {

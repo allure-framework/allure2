@@ -24,11 +24,14 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -64,6 +67,9 @@ public class JunitXmlPlugin implements Reader {
     private static final String MESSAGE_ATTRIBUTE_NAME = "message";
     private static final String RERUN_FAILURE_ELEMENT_NAME = "rerunFailure";
     private static final String RERUN_ERROR_ELEMENT_NAME = "rerunError";
+    private static final String HOSTNAME_ATTRIBUTE_NAME = "hostname";
+    private static final String TIMESTAMP_ATTRIBUTE_NAME = "timestamp";
+
     private static final String XML_GLOB = "*.xml";
 
     private static final Map<String, Status> RETRIES;
@@ -93,15 +99,12 @@ public class JunitXmlPlugin implements Reader {
             final String elementName = rootElement.getName();
 
             if (TEST_SUITE_ELEMENT_NAME.equals(elementName)) {
-                rootElement.get(TEST_CASE_ELEMENT_NAME)
-                        .forEach(element -> parseTestCase(element, resultsDirectory, parsedFile, context, visitor));
+                parseTestSuite(rootElement, parsedFile, context, visitor, resultsDirectory);
                 return;
             }
             if (TEST_SUITES_ELEMENT_NAME.equals(elementName)) {
-                rootElement.get(TEST_SUITE_ELEMENT_NAME).stream()
-                        .map(testSuiteElement -> testSuiteElement.get(TEST_CASE_ELEMENT_NAME))
-                        .flatMap(Collection::stream)
-                        .forEach(element -> parseTestCase(element, resultsDirectory, parsedFile, context, visitor));
+                rootElement.get(TEST_SUITE_ELEMENT_NAME)
+                        .forEach(element -> parseTestSuite(element, parsedFile, context, visitor, resultsDirectory));
                 return;
             }
             LOGGER.debug("File {} is not a valid JUnit xml. Unknown root element {}", parsedFile, elementName);
@@ -110,11 +113,34 @@ public class JunitXmlPlugin implements Reader {
         }
     }
 
-    private void parseTestCase(final XmlElement testCaseElement, final Path resultsDirectory,
+    private void parseTestSuite(final XmlElement testSuiteElement, final Path parsedFile,
+                                final RandomUidContext context, final ResultsVisitor visitor,
+                                final Path resultsDirectory) {
+        final String name = testSuiteElement.getAttribute(NAME_ATTRIBUTE_NAME);
+        final String hostname = testSuiteElement.getAttribute(HOSTNAME_ATTRIBUTE_NAME);
+        final String timestamp = testSuiteElement.getAttribute(TIMESTAMP_ATTRIBUTE_NAME);
+        final TestSuiteInfo info = new TestSuiteInfo()
+                .setName(name)
+                .setHostname(hostname)
+                .setTimestamp(getUnix(timestamp));
+        testSuiteElement.get(TEST_CASE_ELEMENT_NAME)
+                .forEach(element -> parseTestCase(info, element,
+                        resultsDirectory, parsedFile, context, visitor));
+    }
+
+    private Long getUnix(final String timestamp) {
+        if (isNull(timestamp)) {
+            return null;
+        }
+        final LocalDateTime parsed = LocalDateTime.parse(timestamp);
+        return parsed.atZone(ZoneId.systemDefault()).toEpochSecond();
+    }
+
+    private void parseTestCase(final TestSuiteInfo info, final XmlElement testCaseElement, final Path resultsDirectory,
                                final Path parsedFile, final RandomUidContext context, final ResultsVisitor visitor) {
         final String className = testCaseElement.getAttribute(CLASS_NAME_ATTRIBUTE_NAME);
         final Status status = getStatus(testCaseElement);
-        final TestResult result = createStatuslessTestResult(testCaseElement, parsedFile, context);
+        final TestResult result = createStatuslessTestResult(info, testCaseElement, parsedFile, context);
         result.setStatus(status);
         result.setStatusDetails(getStatusDetails(testCaseElement));
 
@@ -129,7 +155,7 @@ public class JunitXmlPlugin implements Reader {
         visitor.visitTestResult(result);
 
         RETRIES.forEach((elementName, retryStatus) -> testCaseElement.get(elementName).forEach(failure -> {
-            final TestResult retried = createStatuslessTestResult(testCaseElement, parsedFile, context);
+            final TestResult retried = createStatuslessTestResult(info, testCaseElement, parsedFile, context);
             retried.setHidden(true);
             retried.setStatus(retryStatus);
             retried.setStatusDetails(new StatusDetails()
@@ -152,22 +178,26 @@ public class JunitXmlPlugin implements Reader {
         }
     }
 
-    private TestResult createStatuslessTestResult(final XmlElement testCaseElement, final Path parsedFile,
-                                                  final RandomUidContext context) {
+    private TestResult createStatuslessTestResult(final TestSuiteInfo info, final XmlElement testCaseElement,
+                                                  final Path parsedFile, final RandomUidContext context) {
         final String className = testCaseElement.getAttribute(CLASS_NAME_ATTRIBUTE_NAME);
+        final Optional<String> suiteName = firstNotNull(info.getName(), className);
         final String name = testCaseElement.getAttribute(NAME_ATTRIBUTE_NAME);
-        final String historyId = String.format("%s#%s", className, name);
+        final String historyId = String.format("%s:%s#%s", info.getName(), className, name);
         final TestResult result = new TestResult();
         if (nonNull(className) && nonNull(name)) {
             result.setHistoryId(historyId);
         }
         result.setUid(context.getValue().get());
         result.setName(isNull(name) ? "Unknown test case" : name);
-        result.setTime(getTime(testCaseElement, parsedFile));
+        result.setTime(getTime(info.getTimestamp(), testCaseElement, parsedFile));
         result.addLabelIfNotExists(RESULT_FORMAT, JUNIT_RESULTS_FORMAT);
 
+        suiteName.ifPresent(s -> result.addLabelIfNotExists(LabelName.SUITE, s));
+        if (nonNull(info.getHostname())) {
+            result.addLabelIfNotExists(LabelName.HOST, info.getHostname());
+        }
         if (nonNull(className)) {
-            result.addLabelIfNotExists(LabelName.SUITE, className);
             result.addLabelIfNotExists(LabelName.TEST_CLASS, className);
             result.addLabelIfNotExists(LabelName.PACKAGE, className);
         }
@@ -202,13 +232,16 @@ public class JunitXmlPlugin implements Reader {
                 .orElseGet(() -> new StatusDetails().setFlaky(flaky));
     }
 
-    private Time getTime(final XmlElement testCaseElement, final Path parsedFile) {
+    private Time getTime(final Long suiteStart, final XmlElement testCaseElement, final Path parsedFile) {
         if (testCaseElement.containsAttribute(TIME_ATTRIBUTE_NAME)) {
             try {
                 final long duration = BigDecimal.valueOf(testCaseElement.getDoubleAttribute(TIME_ATTRIBUTE_NAME))
                         .multiply(MULTIPLICAND)
                         .longValue();
-                return new Time().setDuration(duration);
+
+                return nonNull(suiteStart)
+                        ? new Time().setStart(suiteStart).setStop(suiteStart + duration).setDuration(duration)
+                        : new Time().setDuration(duration);
             } catch (Exception e) {
                 LOGGER.debug(
                         "Could not parse time attribute for element {} in file {}",
@@ -240,5 +273,11 @@ public class JunitXmlPlugin implements Reader {
             LOGGER.error("Could not read data from {}: {}", directory, e);
         }
         return result;
+    }
+
+    private static Optional<String> firstNotNull(final String... values) {
+        return Stream.of(values)
+                .filter(Objects::nonNull)
+                .findFirst();
     }
 }
