@@ -10,7 +10,7 @@
 
   &__head {
     margin: $gap-size 0;
-    padding-bottom: $gap-size;
+    padding-bottom: 5px;
     border-bottom: 1px solid $sidebar-separator-color;
   }
 
@@ -18,7 +18,7 @@
     color: $sidebar-brand-color;
     text-decoration: none;
     display: block;
-    font-size: 20px;
+    font-size: 26px;
     line-height: 40px;
     font-weight: bold;
     background: url('allure_logo.svg') no-repeat left center;
@@ -74,7 +74,7 @@
     left: $gap-size;
     font-size: 22px;
     vertical-align: middle;
-    margin: 0 5px;
+    margin: 0 3px;
   }
   &__text {
     padding-left: 55px;
