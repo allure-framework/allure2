@@ -5,14 +5,12 @@ apply from: "${gradleScriptDir}/bintray.gradle"
 apply plugin: 'maven'
 
 dependencies {
-    compile('com.vladsch.flexmark:flexmark')
-    compile('org.freemarker:freemarker')
     compile('com.fasterxml.jackson.core:jackson-databind')
     compile('com.fasterxml.jackson.module:jackson-module-jaxb-annotations')
-
+    compile('com.vladsch.flexmark:flexmark')
+    compile('org.freemarker:freemarker')
     compile('org.slf4j:slf4j-api')
     compileOnly('org.projectlombok:lombok')
-
     testCompile('junit:junit')
     testCompile('org.assertj:assertj-core')
     testCompile('org.slf4j:slf4j-simple')

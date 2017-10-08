@@ -8,10 +8,6 @@ mainClassName = 'io.qameta.allure.CommandLine'
 
 startScripts {
     classpath += files('src/lib/config')
-    defaultJvmOpts = [
-            '-XX:+IgnoreUnrecognizedVMOptions',
-            '--add-modules', 'java.xml.bind',
-    ]
     doLast {
         unixScript.text = unixScript.text
                 .replaceAll('(?m)^APP_HOME=', 'export APP_HOME=')
@@ -45,7 +41,7 @@ dependencies {
     testCompile('junit:junit')
     testCompile('org.assertj:assertj-core')
     testCompile('org.mockito:mockito-core')
-    testCompile('org.apache.commons:commons-lang3')
+    testCompile('org.apache.commons:commons-text')
 }
 
 configurations.archives.artifacts.removeAll { it.archiveTask.is jar }

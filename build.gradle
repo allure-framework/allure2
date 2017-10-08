@@ -80,37 +80,32 @@ allprojects {
 
     apply plugin: 'io.spring.dependency-management'
     dependencyManagement {
+        imports {
+            mavenBom 'com.fasterxml.jackson:jackson-bom:2.9.1'
+        }
         dependencies {
-            dependency 'org.apache.tika:tika-core:1.14'
+            dependency 'com.beust:jcommander:1.72'
+            dependency 'com.google.guava:guava:23.1-jre'
+            dependency 'com.vladsch.flexmark:flexmark:0.27.0'
             dependency 'commons-io:commons-io:2.5'
-            dependency 'com.google.guava:guava:21.0'
-            dependency 'com.beust:jcommander:1.64'
-            dependency 'org.zeroturnaround:zt-zip:1.11'
-            dependency 'org.apache.commons:commons-lang3:3.5'
-            dependency 'org.eclipse.jetty:jetty-server:9.2.2.v20140723'
-            dependency 'org.freemarker:freemarker:2.3.23'
-            dependency 'com.vladsch.flexmark:flexmark:0.19.4'
-            dependency 'org.projectlombok:lombok:1.16.18'
-            dependency 'org.apache.httpcomponents:httpclient:4.5.3'
-
-            dependency 'org.allurefw:allure1-model:1.0'
+            dependency 'io.qameta.allure:allure-java-commons:2.0-BETA18'
             dependency 'io.qameta.allure:allure2-model-api:1.0-BETA4'
-            dependency 'io.qameta.allure:allure-java-commons:2.0-BETA16'
-            dependency 'net.masterthought:cucumber-reporting:3.4.0'
-            dependency 'org.apache.maven.surefire:surefire-report-parser:2.19.1'
-
-            dependency 'com.fasterxml.jackson.core:jackson-databind:2.8.6'
-            dependency 'com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.8.6'
-            dependency 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.8.6'
-
-            dependency 'org.slf4j:slf4j-nop:1.7.21'
-            dependency 'org.slf4j:slf4j-api:1.7.21'
-            dependency 'org.slf4j:slf4j-simple:1.7.21'
-            dependency 'org.slf4j:slf4j-log4j12:1.7.21'
-
             dependency 'junit:junit:4.12'
-            dependency 'org.assertj:assertj-core:3.6.2'
-            dependency 'org.mockito:mockito-core:2.7.19'
+            dependency 'org.allurefw:allure1-model:1.0'
+            dependency 'org.apache.commons:commons-lang3:3.6'
+            dependency 'org.apache.commons:commons-text:1.1'
+            dependency 'org.apache.httpcomponents:httpclient:4.5.3'
+            dependency 'org.apache.tika:tika-core:1.16'
+            dependency 'org.assertj:assertj-core:3.8.0'
+            dependency 'org.eclipse.jetty:jetty-server:9.4.7.v20170914'
+            dependency 'org.freemarker:freemarker:2.3.23'
+            dependency 'org.mockito:mockito-core:2.10.0'
+            dependency 'org.projectlombok:lombok:1.16.18'
+            dependency 'org.slf4j:slf4j-api:1.7.25'
+            dependency 'org.slf4j:slf4j-log4j12:1.7.25'
+            dependency 'org.slf4j:slf4j-nop:1.7.25'
+            dependency 'org.slf4j:slf4j-simple:1.7.25'
+            dependency 'org.zeroturnaround:zt-zip:1.12'
         }
     }
 
