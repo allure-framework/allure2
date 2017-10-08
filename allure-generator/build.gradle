@@ -58,6 +58,7 @@ dependencies {
     compile('org.apache.tika:tika-core')
     compile('commons-io:commons-io')
     compile('com.fasterxml.jackson.dataformat:jackson-dataformat-yaml')
+    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
     compile('org.apache.httpcomponents:httpclient')
     compileOnly('org.projectlombok:lombok')
 
