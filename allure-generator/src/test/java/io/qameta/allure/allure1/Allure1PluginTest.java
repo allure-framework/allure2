@@ -2,6 +2,7 @@ package io.qameta.allure.allure1;
 
 import io.qameta.allure.ConfigurationBuilder;
 import io.qameta.allure.DefaultResultsVisitor;
+import io.qameta.allure.Issue;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Attachment;
@@ -302,6 +303,17 @@ public class Allure1PluginTest {
                 .filteredOn("name", "test2")
                 .extracting(TestResult::getHistoryId)
                 .containsNull();
+    }
+
+    @Issue("629")
+    @Test
+    public void shouldProcessEmptyLists() throws Exception {
+        final Set<TestResult> results = process(
+                "allure1/empty-lists.xml", generateTestSuiteXmlName()
+        ).getResults();
+
+        assertThat(results)
+                .hasSize(1);
     }
 
     private LaunchResults process(String... strings) throws IOException {
