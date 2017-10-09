@@ -97,7 +97,7 @@ public class Allure1Plugin implements Reader {
     private final ObjectMapper xmlMapper;
 
     public Allure1Plugin() {
-        final SimpleModule module = new SimpleModule()
+        final SimpleModule module = new XmlParserModule()
                 .addDeserializer(ru.yandex.qatools.allure.model.Status.class, new StatusDeserializer());
         xmlMapper = new XmlMapper()
                 .configure(USE_WRAPPER_NAME_AS_PROPERTY_NAME, true)
@@ -431,7 +431,7 @@ public class Allure1Plugin implements Reader {
         try (InputStream is = Files.newInputStream(source)) {
             return Optional.of(xmlMapper.readValue(is, TestSuiteResult.class));
         } catch (IOException e) {
-            LOGGER.debug("Could not read result {}: {}", source, e);
+            LOGGER.error("Could not read result {}: {}", source, e);
         }
         return Optional.empty();
     }
@@ -440,7 +440,7 @@ public class Allure1Plugin implements Reader {
         try (InputStream is = Files.newInputStream(source)) {
             return Optional.of(jsonMapper.readValue(is, TestSuiteResult.class));
         } catch (IOException e) {
-            LOGGER.debug("Could not read result {}: {}", source, e);
+            LOGGER.error("Could not read result {}: {}", source, e);
             return Optional.empty();
         }
     }
