@@ -33,7 +33,7 @@ public class ListDeserializer extends CollectionDeserializer {
             throws IOException {
         // Ok: must point to START_ARRAY (or equivalent)
         if (!p.isExpectedStartArrayToken()) {
-            return new ArrayList<>();
+            return result;
         }
         // [databind#631]: Assign current value, to be accessible by custom serializers
         p.setCurrentValue(result);
