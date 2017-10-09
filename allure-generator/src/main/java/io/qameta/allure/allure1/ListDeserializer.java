@@ -14,7 +14,6 @@ import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import com.fasterxml.jackson.databind.util.ClassUtil;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
