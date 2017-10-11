@@ -6,7 +6,7 @@ import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.history.HistoryTrendItem;
-import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.text.RandomStringGenerator;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,11 +18,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 import static java.util.concurrent.ThreadLocalRandom.current;
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 /**
  * @since 2.0
@@ -83,8 +81,8 @@ public final class TestData {
         return new HistoryTrendItem()
                 .setStatistic(randomStatistic())
                 .setBuildOrder(current().nextLong(100))
-                .setReportName(randomAlphabetic(10))
-                .setReportUrl(randomAlphabetic(10));
+                .setReportName(randomString())
+                .setReportUrl(randomString());
     }
 
     public static Statistic randomStatistic() {
@@ -97,6 +95,12 @@ public final class TestData {
     }
 
     public static TestResult randomTestResult() {
-        return new TestResult().setName(randomAlphabetic(10));
+        return new TestResult().setName(randomString());
+    }
+
+    public static String randomString() {
+        return new RandomStringGenerator.Builder()
+                .withinRange('a', 'z').build()
+                .generate(10);
     }
 }

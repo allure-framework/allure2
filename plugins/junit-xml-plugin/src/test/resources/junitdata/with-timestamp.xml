@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="14" failures="10" hostname="cbgtalosbld02" id="0" name="LocalSuiteIDOL" package="com.zantaz.junit.testsuites" tests="1251" time="391.212" timestamp="2017-10-05T10:36:22">
+  <testcase classname="test.SampleTest" name="shouldGenerate" time="1.051"/>
+</testsuite>

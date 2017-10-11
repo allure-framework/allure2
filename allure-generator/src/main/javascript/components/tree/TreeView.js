@@ -2,26 +2,20 @@ import './styles.scss';
 import {View} from 'backbone.marionette';
 import hotkeys from '../../utils/hotkeys';
 import template from './TreeView.hbs';
-import {behavior, className, on, regions} from '../../decorators';
-import getComparator from '../../data/tree/comparator';
-import {byStatuses} from '../../data/tree/filter';
-import NodeSorterView from '../node-sorter/NodeSorterView';
-import StatusToggleView from '../status-toggle/StatusToggleView';
+import {behavior, className, on} from '../../decorators';
 import router from '../../router';
-import {Model} from 'backbone';
-import {getSettingsForTreePlugin} from '../../utils/settingsFactory';
+import getComparator from '../../data/tree/comparator';
+import {byStatuses, byText, mix} from '../../data/tree/filter';
+import {SEARCH_QUERY_KEY} from '../node-search/NodeSearchView';
 
 @className('tree')
 @behavior('TooltipBehavior', {position: 'bottom'})
-@regions({
-    sorter: '.tree__sorter',
-    filter: '.tree__filter'
-})
 class TreeView extends View {
     template = template;
 
-    initialize({routeState, tabName, baseUrl, settings = getSettingsForTreePlugin(baseUrl)}) {
-        this.state = new Model();
+    cachedQuery = '';
+    initialize({routeState, state, tabName, baseUrl, settings}) {
+        this.state = state;
         this.routeState = routeState;
         this.baseUrl = baseUrl;
         this.tabName = tabName;
@@ -31,11 +25,23 @@ class TreeView extends View {
 
         this.settings = settings;
         this.listenTo(this.settings, 'change', this.render);
+        this.listenTo(this.state, 'change', this.handleStateChange);
 
         this.listenTo(hotkeys, 'key:up', this.onKeyUp, this);
         this.listenTo(hotkeys, 'key:down', this.onKeyDown, this);
         this.listenTo(hotkeys, 'key:esc', this.onKeyBack, this);
         this.listenTo(hotkeys, 'key:left', this.onKeyBack, this);
+    }
+
+    applyFilters() {
+        const visibleStatuses = this.settings.getVisibleStatuses();
+        const searchQuery = this.state.get(SEARCH_QUERY_KEY);
+        const filter = mix(byText(searchQuery), byStatuses(visibleStatuses));
+
+        const sortSettings = this.settings.getTreeSorting();
+        const sorter = getComparator(sortSettings);
+
+        this.collection.applyFilterAndSorting(filter, sorter);
     }
 
     setState() {
@@ -51,24 +57,27 @@ class TreeView extends View {
     }
 
     onBeforeRender() {
-        const visibleStatuses = this.settings.getVisibleStatuses();
-        const filter = byStatuses(visibleStatuses);
+        this.applyFilters();
+    }
 
-        const sortSettings = this.settings.getTreeSorting();
-        const sorter = getComparator(sortSettings);
-
-        this.collection.applyFilterAndSorting(filter, sorter);
+    handleStateChange() {
+        const query = this.state.get(SEARCH_QUERY_KEY);
+        // need to check this ot to re-render nodes on folding
+        if (query !== this.cachedQuery) {
+            this.cachedQuery = query;
+            this.render();
+        }
     }
 
     onRender() {
         this.selectNode();
-        this.showChildView('sorter', new NodeSorterView({
-            settings: this.settings
-        }));
-        this.showChildView('filter', new StatusToggleView({
-            settings: this.settings,
-            statistic: this.collection.statistic
-        }));
+        if (this.state.get(SEARCH_QUERY_KEY)) {
+            this.$('.node__title').each((i, node) => {
+                this.$(node).parent().addClass('node__expanded');
+            });
+        } else {
+            this.restoreState();
+        }
     }
 
     selectNode() {
@@ -116,15 +125,10 @@ class TreeView extends View {
 
     @on('click .node__title')
     onNodeClick(e) {
-        const uid = this.$(e.currentTarget).data('uid');
+        const node = this.$(e.currentTarget);
+        const uid = node.data('uid');
         this.changeState(uid, !this.state.has(uid));
-        this.$(e.currentTarget).parent().toggleClass('node__expanded');
-    }
-
-    @on('click .tree__info')
-    onInfoClick() {
-        const show = this.settings.isShowGroupInfo();
-        this.settings.setShowGroupInfo(!show);
+        node.parent().toggleClass('node__expanded');
     }
 
     onKeyUp(event) {
@@ -178,9 +182,6 @@ class TreeView extends View {
             tabName: this.tabName,
             items: this.collection.toJSON(),
             testResultTab: this.routeState.get('testResultTab') || '',
-            shownCases: 0,
-            totalCases: 0,
-            filtered: false
         };
     }
 }

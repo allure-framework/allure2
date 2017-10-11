@@ -58,6 +58,7 @@ dependencies {
     compile('org.apache.tika:tika-core')
     compile('commons-io:commons-io')
     compile('com.fasterxml.jackson.dataformat:jackson-dataformat-yaml')
+    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
     compile('org.apache.httpcomponents:httpclient')
     compileOnly('org.projectlombok:lombok')
 
@@ -66,7 +67,7 @@ dependencies {
     testCompile('org.assertj:assertj-core')
     testCompile('org.mockito:mockito-core')
     testCompile('org.slf4j:slf4j-simple')
-    testCompile('org.apache.commons:commons-lang3')
+    testCompile('org.apache.commons:commons-text')
     testCompile('com.google.guava:guava')
     testCompile('io.qameta.allure:allure-java-commons')
 }

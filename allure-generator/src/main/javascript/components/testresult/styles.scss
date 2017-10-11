@@ -2,6 +2,9 @@
 @import "../../mixins.scss";
 
 .test-result {
+  &__name {
+    padding-left: 10px;
+  }
   &__content {
     margin-bottom: 300px;
   }

@@ -5,6 +5,7 @@ apply from: "${gradleScriptDir}/bintray.gradle"
 
 dependencies {
     compileOnly project(':allure-plugin-api')
+    compileOnly('org.projectlombok:lombok')
 
     testCompile project(':allure-plugin-api')
     testCompile('junit:junit')

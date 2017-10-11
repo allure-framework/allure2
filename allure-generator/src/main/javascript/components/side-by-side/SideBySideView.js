@@ -13,7 +13,7 @@ class SideBySideView extends View {
     template = template;
 
     onAttach() {
-        split(['.side-by-side__left', '.side-by-side__right']);
+        split(['.side-by-side__left', '.side-by-side__right'], {gutterSize: 7});
     }
 
     onRender() {
