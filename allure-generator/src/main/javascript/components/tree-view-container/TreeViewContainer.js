@@ -20,10 +20,11 @@ import {getSettingsForTreePlugin} from '../../utils/settingsFactory';
 class TreeViewContainer extends View {
     template = template;
 
-    initialize({routeState, state = new Model(), tabName, baseUrl, settings = getSettingsForTreePlugin(baseUrl)}) {
+    initialize({routeState, state = new Model(), tabName, baseUrl, csvUrl=null, settings = getSettingsForTreePlugin(baseUrl)}) {
         this.state = state;
         this.routeState = routeState;
         this.baseUrl = baseUrl;
+        this.csvUrl = csvUrl;
         this.tabName = tabName;
         this.listenTo(this.routeState, 'change:testResultTab', this.render);
 

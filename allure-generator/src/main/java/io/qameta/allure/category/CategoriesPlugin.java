@@ -2,12 +2,14 @@ package io.qameta.allure.category;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.qameta.allure.Aggregator;
+import io.qameta.allure.CsvExporter;
 import io.qameta.allure.Reader;
 import io.qameta.allure.Widget;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
+import io.qameta.allure.csv.CsvExportCategory;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.tree.DefaultTreeLayer;
@@ -45,7 +47,7 @@ import static java.util.Objects.nonNull;
  * @since 2.0
  */
 @SuppressWarnings("PMD.ExcessiveImports")
-public class CategoriesPlugin implements Aggregator, Reader, Widget {
+public class CategoriesPlugin extends CsvExporter<CsvExportCategory> implements Aggregator, Reader, Widget {
 
     public static final String CATEGORIES_BLOCK_NAME = "categories";
 
@@ -54,6 +56,8 @@ public class CategoriesPlugin implements Aggregator, Reader, Widget {
     public static final Category BROKEN_TESTS = new Category().setName("Test defects");
 
     private static final String CATEGORIES_FILE_NAME = "categories.json";
+
+    public static final String CSV_FILE_NAME = "categories.csv";
 
     //@formatter:off
     private static final TypeReference<List<Category>> CATEGORIES_TYPE =
@@ -85,10 +89,11 @@ public class CategoriesPlugin implements Aggregator, Reader, Widget {
 
         final JacksonContext jacksonContext = configuration.requireContext(JacksonContext.class);
         final Path dataFolder = Files.createDirectories(outputDirectory.resolve("data"));
-        final Path dataFile = dataFolder.resolve("categories.json");
+        final Path dataFile = dataFolder.resolve(CATEGORIES_FILE_NAME);
         try (OutputStream os = Files.newOutputStream(dataFile)) {
             jacksonContext.getValue().writeValue(os, getData(launchesResults));
         }
+        createCsvExportFile(launchesResults, dataFolder, CSV_FILE_NAME, CsvExportCategory.class);
     }
 
     @Override
@@ -183,5 +188,10 @@ public class CategoriesPlugin implements Aggregator, Reader, Widget {
                 .setUid(group.getUid())
                 .setName(group.getName())
                 .setStatistic(calculateStatisticByLeafs(group));
+    }
+
+    @Override
+    public List<CsvExportCategory> getCollectionToCsvExport(List<LaunchResults> launchesResults) {
+        return null;
     }
 }

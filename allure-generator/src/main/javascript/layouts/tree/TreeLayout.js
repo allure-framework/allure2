@@ -17,8 +17,8 @@ export default class TreeLayout extends AppLayout {
     }
 
     getContentView() {
-        const {baseUrl, tabName} = this.options;
-        return new TestResultTreeView({tree: this.tree, routeState: this.routeState, tabName, baseUrl});
+        const {baseUrl, tabName, csvUrl} = this.options;
+        return new TestResultTreeView({tree: this.tree, routeState: this.routeState, tabName, baseUrl, csvUrl});
     }
 
     onViewReady() {

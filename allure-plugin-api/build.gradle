@@ -12,6 +12,9 @@ dependencies {
     compile('org.freemarker:freemarker')
     compile('org.slf4j:slf4j-api')
     compileOnly('org.projectlombok:lombok')
+
+    compile('com.opencsv:opencsv')
+
     testCompile('junit:junit')
     testCompile('org.assertj:assertj-core')
     testCompile('org.slf4j:slf4j-simple')

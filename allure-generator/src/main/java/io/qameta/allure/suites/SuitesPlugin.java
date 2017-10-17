@@ -1,10 +1,12 @@
 package io.qameta.allure.suites;
 
 import io.qameta.allure.Aggregator;
+import io.qameta.allure.CsvExporter;
 import io.qameta.allure.Widget;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.csv.CsvExportSuite;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.tree.TestResultTree;
 import io.qameta.allure.tree.TestResultTreeGroup;
@@ -34,7 +36,9 @@ import static io.qameta.allure.tree.TreeUtils.groupByLabels;
  *
  * @since 2.0
  */
-public class SuitesPlugin implements Aggregator, Widget {
+public class SuitesPlugin extends CsvExporter<CsvExportSuite> implements Aggregator, Widget {
+
+    public static final String CSV_FILE_NAME = "suites.csv";
 
     @Override
     public void aggregate(final Configuration configuration,
@@ -46,6 +50,7 @@ public class SuitesPlugin implements Aggregator, Widget {
         try (OutputStream os = Files.newOutputStream(dataFile)) {
             jacksonContext.getValue().writeValue(os, getData(launchesResults));
         }
+        createCsvExportFile(launchesResults, dataFolder, CSV_FILE_NAME,CsvExportSuite.class);
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
@@ -89,5 +94,12 @@ public class SuitesPlugin implements Aggregator, Widget {
                 .setUid(group.getUid())
                 .setName(group.getName())
                 .setStatistic(calculateStatisticByLeafs(group));
+    }
+
+    @Override
+    public List<CsvExportSuite> getCollectionToCsvExport(List<LaunchResults> launchesResults) {
+        return launchesResults.stream()
+                .flatMap(launch -> launch.getResults().stream())
+                .map(CsvExportSuite::new).collect(Collectors.toList());
     }
 }
