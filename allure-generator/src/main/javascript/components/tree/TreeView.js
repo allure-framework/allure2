@@ -157,8 +157,14 @@ class TreeView extends View {
         if (!current) {
             return;
         }
+        const attachment = this.routeState.get('attachment');
         if (current.testGroup && current.testResult) {
-            router.toUrl(`${this.baseUrl}/${current.testGroup}`);
+            if (attachment) {
+                router.setSearch({attachment: null});
+            }
+            else{
+                router.toUrl(`${this.baseUrl}/${current.testGroup}`);
+            }
         } else if (current.testGroup) {
             router.toUrl(`${this.baseUrl}`);
         }
