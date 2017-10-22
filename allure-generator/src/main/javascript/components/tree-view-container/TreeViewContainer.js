@@ -27,7 +27,6 @@ class TreeViewContainer extends View {
         this.csvUrl = csvUrl;
         this.tabName = tabName;
         this.listenTo(this.routeState, 'change:testResultTab', this.render);
-
         this.settings = settings;
     }
 
@@ -67,7 +66,8 @@ class TreeViewContainer extends View {
             tabName: this.tabName,
             shownCases: 0,
             totalCases: 0,
-            filtered: false
+            filtered: false,
+            csvUrl: this.csvUrl
         };
     }
 }

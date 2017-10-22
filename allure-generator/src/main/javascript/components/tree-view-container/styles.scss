@@ -19,4 +19,11 @@
     border-top: 1px solid #ECEFF1;
     padding: 8px 0 0 15px;
   }
+  .pane__controls {
+    display: flex;
+  }
+  &__info, &__download {
+    color: $text-muted-color;
+    padding: 7px;
+  }
 }

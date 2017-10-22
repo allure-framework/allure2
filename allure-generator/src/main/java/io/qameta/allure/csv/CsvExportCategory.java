@@ -2,6 +2,7 @@ package io.qameta.allure.csv;
 
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
+import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
 
 import java.io.Serializable;
@@ -18,69 +19,67 @@ public class CsvExportCategory implements Serializable {
 
     @CsvBindByName(column = "FAILED")
     @CsvBindByPosition(position = 1)
-    private String failed;
+    private int failed;
 
     @CsvBindByName(column = "BROKEN")
     @CsvBindByPosition(position = 2)
-    private String broken;
+    private int broken;
 
     @CsvBindByName(column = "PASSED")
     @CsvBindByPosition(position = 3)
-    private String passed;
+    private int passed;
 
     @CsvBindByName(column = "SKIPPED")
     @CsvBindByPosition(position = 4)
-    private String skipped;
+    private int skipped;
 
     @CsvBindByName(column = "UNKNOWN")
     @CsvBindByPosition(position = 5)
-    private String unknown;
+    private int unknown;
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
-    public String getFailed() {
+    public int getFailed() {
         return failed;
     }
 
-    public void setFailed(String failed) {
-        this.failed = failed;
-    }
-
-    public String getBroken() {
+    public int getBroken() {
         return broken;
     }
 
-    public void setBroken(String broken) {
-        this.broken = broken;
-    }
-
-    public String getPassed() {
+    public int getPassed() {
         return passed;
     }
 
-    public void setPassed(String passed) {
-        this.passed = passed;
-    }
-
-    public String getSkipped() {
+    public int getSkipped() {
         return skipped;
     }
 
-    public void setSkipped(String skipped) {
-        this.skipped = skipped;
-    }
-
-    public String getUnknown() {
+    public int getUnknown() {
         return unknown;
     }
 
-    public void setUnknown(String unknown) {
-        this.unknown = unknown;
+    public void addTestResult(final TestResult result) {
+        if (Status.FAILED.equals(result.getStatus())) {
+            this.failed++;
+        }
+        if (Status.BROKEN.equals(result.getStatus())) {
+            this.broken++;
+        }
+        if (Status.PASSED.equals(result.getStatus())) {
+            this.passed++;
+        }
+        if (Status.SKIPPED.equals(result.getStatus())) {
+            this.skipped++;
+        }
+        if (Status.UNKNOWN.equals(result.getStatus())) {
+            this.unknown++;
+        }
     }
 }
