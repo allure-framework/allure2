@@ -25,7 +25,9 @@ import java.util.Map;
 import java.util.Set;
 
 import static io.qameta.allure.category.CategoriesPlugin.BROKEN_TESTS;
-import static io.qameta.allure.category.CategoriesPlugin.CATEGORIES_BLOCK_NAME;
+import static io.qameta.allure.category.CategoriesPlugin.CATEGORIES;
+import static io.qameta.allure.category.CategoriesPlugin.CSV_FILE_NAME;
+import static io.qameta.allure.category.CategoriesPlugin.JSON_FILE_NAME;
 import static io.qameta.allure.category.CategoriesPlugin.FAILED_TESTS;
 import static io.qameta.allure.testdata.TestData.createSingleLaunchResults;
 import static java.util.Collections.singletonList;
@@ -67,12 +69,12 @@ public class CategoriesPluginTest {
 
         categoriesPlugin.addCategoriesForResults(createSingleLaunchResults(first, second));
 
-        assertThat(first.getExtraBlock(CATEGORIES_BLOCK_NAME, new ArrayList<Category>()))
+        assertThat(first.getExtraBlock(CATEGORIES, new ArrayList<Category>()))
                 .hasSize(1)
                 .extracting(Category::getName)
                 .containsExactlyInAnyOrder(FAILED_TESTS.getName());
 
-        assertThat(second.getExtraBlock(CATEGORIES_BLOCK_NAME, new ArrayList<Category>()))
+        assertThat(second.getExtraBlock(CATEGORIES, new ArrayList<Category>()))
                 .hasSize(1)
                 .extracting(Category::getName)
                 .containsExactlyInAnyOrder(BROKEN_TESTS.getName());
@@ -103,12 +105,12 @@ public class CategoriesPluginTest {
 
         categoriesPlugin.addCategoriesForResults(createSingleLaunchResults(meta, first, second));
 
-        assertThat(first.getExtraBlock(CATEGORIES_BLOCK_NAME, new ArrayList<Category>()))
+        assertThat(first.getExtraBlock(CATEGORIES, new ArrayList<Category>()))
                 .hasSize(1)
                 .extracting(Category::getName)
                 .containsExactlyInAnyOrder(FAILED_TESTS.getName());
 
-        assertThat(second.getExtraBlock(CATEGORIES_BLOCK_NAME, new ArrayList<Category>()))
+        assertThat(second.getExtraBlock(CATEGORIES, new ArrayList<Category>()))
                 .hasSize(1)
                 .extracting(Category::getName)
                 .containsExactlyInAnyOrder(categoryName);
@@ -116,8 +118,6 @@ public class CategoriesPluginTest {
 
     @Test
     public void shouldCreateTree() throws Exception {
-        final CategoriesPlugin categoriesPlugin = new CategoriesPlugin();
-
         final TestResult first = new TestResult()
                 .setName("first")
                 .setStatus(Status.BROKEN)
@@ -135,13 +135,13 @@ public class CategoriesPluginTest {
                 .setStatus(Status.PASSED)
                 .setStatusDetails(new StatusDetails().setMessage("M4"));
 
-        first.setExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().setName("C1")));
-        second.setExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().setName("C2")));
-        third.setExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().setName("C1")));
-        other.setExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(new Category().setName("C3")));
+        first.setExtraBlock(CATEGORIES, singletonList(new Category().setName("C1")));
+        second.setExtraBlock(CATEGORIES, singletonList(new Category().setName("C2")));
+        third.setExtraBlock(CATEGORIES, singletonList(new Category().setName("C1")));
+        other.setExtraBlock(CATEGORIES, singletonList(new Category().setName("C3")));
 
         final List<LaunchResults> launchResults = createSingleLaunchResults(first, second, third, other);
-        final Tree<TestResult> tree = categoriesPlugin.getData(launchResults);
+        final Tree<TestResult> tree = CategoriesPlugin.getData(launchResults);
 
         assertThat(tree.getChildren())
                 .hasSize(3)
@@ -189,9 +189,11 @@ public class CategoriesPluginTest {
                 .extracting(Category::getName)
                 .containsExactly(category.getName());
 
-        assertThat(reportPath.resolve("data").resolve("categories.json"))
+        assertThat(reportPath.resolve("data").resolve(JSON_FILE_NAME))
                 .exists();
 
+        assertThat(reportPath.resolve("data").resolve(CSV_FILE_NAME))
+                .exists();
     }
 
     @Test
@@ -220,7 +222,7 @@ public class CategoriesPluginTest {
                 .extracting(Category::getName)
                 .containsExactly(category.getName());
 
-        assertThat(reportPath.resolve("data").resolve("categories.json"))
+        assertThat(reportPath.resolve("data").resolve(JSON_FILE_NAME))
                 .exists();
     }
 
@@ -234,19 +236,18 @@ public class CategoriesPluginTest {
                 .setName("first")
                 .setStatus(Status.FAILED)
                 .setTime(new Time().setStart(10L))
-                .setExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(category));
+                .setExtraBlock(CATEGORIES, singletonList(category));
         final TestResult second = new TestResult()
                 .setName("second")
                 .setStatus(Status.FAILED)
                 .setTime(new Time().setStart(12L))
-                .setExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(category));
+                .setExtraBlock(CATEGORIES, singletonList(category));
         final TestResult timeless = new TestResult()
                 .setName("timeless")
                 .setStatus(Status.FAILED)
-                .setExtraBlock(CATEGORIES_BLOCK_NAME, singletonList(category));
+                .setExtraBlock(CATEGORIES, singletonList(category));
 
-        final CategoriesPlugin plugin = new CategoriesPlugin();
-        final Tree<TestResult> tree = plugin.getData(
+        final Tree<TestResult> tree = CategoriesPlugin.getData(
                 createSingleLaunchResults(second, first, timeless)
         );
 

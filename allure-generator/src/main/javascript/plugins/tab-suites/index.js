@@ -8,6 +8,7 @@ allure.api.addTab('suites', {
         testResultTab,
         tabName: 'tab.suites.name',
         baseUrl: 'suites',
-        url: 'data/suites.json'
+        url: 'data/suites.json',
+        csvUrl: 'data/suites.csv'
     })
 });

@@ -107,6 +107,7 @@ allprojects {
             dependency 'org.slf4j:slf4j-nop:1.7.25'
             dependency 'org.slf4j:slf4j-simple:1.7.25'
             dependency 'org.zeroturnaround:zt-zip:1.12'
+            dependency 'com.opencsv:opencsv:4.0'
         }
     }
 

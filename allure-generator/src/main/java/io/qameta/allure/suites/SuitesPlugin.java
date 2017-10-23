@@ -1,21 +1,19 @@
 package io.qameta.allure.suites;
 
-import io.qameta.allure.Aggregator;
+import io.qameta.allure.CommonCsvExportAggregator;
+import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.CompositeAggregator;
 import io.qameta.allure.Widget;
-import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.csv.CsvExportSuite;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.tree.TestResultTree;
 import io.qameta.allure.tree.TestResultTreeGroup;
 import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeWidgetData;
 import io.qameta.allure.tree.TreeWidgetItem;
-
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -34,26 +32,26 @@ import static io.qameta.allure.tree.TreeUtils.groupByLabels;
  *
  * @since 2.0
  */
-public class SuitesPlugin implements Aggregator, Widget {
+public class SuitesPlugin extends CompositeAggregator implements Widget {
 
-    @Override
-    public void aggregate(final Configuration configuration,
-                          final List<LaunchResults> launchesResults,
-                          final Path outputDirectory) throws IOException {
-        final JacksonContext jacksonContext = configuration.requireContext(JacksonContext.class);
-        final Path dataFolder = Files.createDirectories(outputDirectory.resolve("data"));
-        final Path dataFile = dataFolder.resolve("suites.json");
-        try (OutputStream os = Files.newOutputStream(dataFile)) {
-            jacksonContext.getValue().writeValue(os, getData(launchesResults));
-        }
+    private static final String SUITES = "suites";
+
+    /** Name of the json file. */
+    protected static final String JSON_FILE_NAME = "suites.json";
+
+    /** Name of the csv file. */
+    protected static final String CSV_FILE_NAME = "suites.csv";
+
+    public SuitesPlugin() {
+        super(Arrays.asList(new JsonAggregator(), new CsvExportAggregator()));
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
-    /* default */ Tree<TestResult> getData(final List<LaunchResults> launchResults) {
+    static /* default */ Tree<TestResult> getData(final List<LaunchResults> launchResults) {
 
         // @formatter:off
         final Tree<TestResult> xunit = new TestResultTree(
-            "suites",
+                SUITES,
             testResult -> groupByLabels(testResult, PARENT_SUITE, SUITE, SUB_SUITE)
         );
         // @formatter:on
@@ -81,13 +79,39 @@ public class SuitesPlugin implements Aggregator, Widget {
 
     @Override
     public String getName() {
-        return "suites";
+        return SUITES;
     }
 
-    protected TreeWidgetItem toWidgetItem(final TestResultTreeGroup group) {
+    private TreeWidgetItem toWidgetItem(final TestResultTreeGroup group) {
         return new TreeWidgetItem()
                 .setUid(group.getUid())
                 .setName(group.getName())
                 .setStatistic(calculateStatisticByLeafs(group));
+    }
+
+    private static class JsonAggregator extends CommonJsonAggregator {
+
+        JsonAggregator() {
+            super(JSON_FILE_NAME);
+        }
+
+        @Override
+        protected Tree<TestResult> getData(final List<LaunchResults> launchResults) {
+            return SuitesPlugin.getData(launchResults);
+        }
+    }
+
+    private static class CsvExportAggregator extends CommonCsvExportAggregator<CsvExportSuite> {
+
+        CsvExportAggregator() {
+            super(CSV_FILE_NAME, CsvExportSuite.class);
+        }
+
+        @Override
+        protected List<CsvExportSuite> getData(final List<LaunchResults> launchesResults) {
+            return launchesResults.stream()
+                    .flatMap(launch -> launch.getResults().stream())
+                    .map(CsvExportSuite::new).collect(Collectors.toList());
+        }
     }
 }
