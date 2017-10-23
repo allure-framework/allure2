@@ -4,6 +4,7 @@ import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.tree.TreeWidgetItem;
 
 import java.io.Serializable;
 
@@ -19,67 +20,54 @@ public class CsvExportCategory implements Serializable {
 
     @CsvBindByName(column = "FAILED")
     @CsvBindByPosition(position = 1)
-    private int failed;
+    private long failed;
 
     @CsvBindByName(column = "BROKEN")
     @CsvBindByPosition(position = 2)
-    private int broken;
+    private long broken;
 
     @CsvBindByName(column = "PASSED")
     @CsvBindByPosition(position = 3)
-    private int passed;
+    private long passed;
 
     @CsvBindByName(column = "SKIPPED")
     @CsvBindByPosition(position = 4)
-    private int skipped;
+    private long skipped;
 
     @CsvBindByName(column = "UNKNOWN")
     @CsvBindByPosition(position = 5)
-    private int unknown;
+    private long unknown;
+
+    public CsvExportCategory(final TreeWidgetItem item) {
+        this.name = item.getName();
+        this.failed = item.getStatistic().getFailed();
+        this.broken = item.getStatistic().getBroken();
+        this.passed = item.getStatistic().getPassed();
+        this.skipped = item.getStatistic().getSkipped();
+        this.unknown = item.getStatistic().getUnknown();
+    }
 
     public String getName() {
         return name;
     }
 
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    public int getFailed() {
+    public long getFailed() {
         return failed;
     }
 
-    public int getBroken() {
+    public long getBroken() {
         return broken;
     }
 
-    public int getPassed() {
+    public long getPassed() {
         return passed;
     }
 
-    public int getSkipped() {
+    public long getSkipped() {
         return skipped;
     }
 
-    public int getUnknown() {
+    public long getUnknown() {
         return unknown;
-    }
-
-    public void addTestResult(final TestResult result) {
-        if (Status.FAILED.equals(result.getStatus())) {
-            this.failed++;
-        }
-        if (Status.BROKEN.equals(result.getStatus())) {
-            this.broken++;
-        }
-        if (Status.PASSED.equals(result.getStatus())) {
-            this.passed++;
-        }
-        if (Status.SKIPPED.equals(result.getStatus())) {
-            this.skipped++;
-        }
-        if (Status.UNKNOWN.equals(result.getStatus())) {
-            this.unknown++;
-        }
     }
 }

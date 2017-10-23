@@ -60,7 +60,6 @@ dependencies {
     compile('com.fasterxml.jackson.dataformat:jackson-dataformat-yaml')
     compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
     compile('org.apache.httpcomponents:httpclient')
-    compile('com.opencsv:opencsv')
     compileOnly('org.projectlombok:lombok')
 
 

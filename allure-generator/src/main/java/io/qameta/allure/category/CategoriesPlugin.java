@@ -30,9 +30,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -97,7 +95,7 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader, Wid
         final List<TreeWidgetItem> items = data.getChildren().stream()
                 .filter(TestResultTreeGroup.class::isInstance)
                 .map(TestResultTreeGroup.class::cast)
-                .map(this::toWidgetItem)
+                .map(CategoriesPlugin::toWidgetItem)
                 .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
                 .limit(10)
                 .collect(Collectors.toList());
@@ -172,7 +170,7 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader, Wid
         return Pattern.compile(pattern, Pattern.DOTALL).matcher(message).matches();
     }
 
-    protected TreeWidgetItem toWidgetItem(final TestResultTreeGroup group) {
+    protected static TreeWidgetItem toWidgetItem(final TestResultTreeGroup group) {
         return new TreeWidgetItem()
                 .setUid(group.getUid())
                 .setName(group.getName())
@@ -205,22 +203,16 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader, Wid
 
         @Override
         protected List<CsvExportCategory> getData(final List<LaunchResults> launchesResults) {
-            Map<String, CsvExportCategory> exportCategories = new HashMap<>();
-            launchesResults.forEach(launch -> launch.getResults().forEach(result -> {
-                final List<Category> categories = result.getExtraBlock(CATEGORIES, new ArrayList<>());
-                categories.forEach(category -> {
-                    CsvExportCategory exportCategory = exportCategories.get(category.getName());
-                    if (exportCategory != null) {
-                        exportCategory.addTestResult(result);
-                    } else {
-                        exportCategory = new CsvExportCategory();
-                        exportCategory.setName(category.getName());
-                        exportCategory.addTestResult(result);
-                        exportCategories.put(exportCategory.getName(), exportCategory);
-                    }
-                });
-            }));
-            return exportCategories.values().stream().collect(Collectors.toList());
+            final List<CsvExportCategory> exportLabels = new ArrayList<>();
+            final Tree<TestResult> data = CategoriesPlugin.getData(launchesResults);
+            final List<TreeWidgetItem> items = data.getChildren().stream()
+                    .filter(TestResultTreeGroup.class::isInstance)
+                    .map(TestResultTreeGroup.class::cast)
+                    .map(CategoriesPlugin::toWidgetItem)
+                    .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
+                    .collect(Collectors.toList());
+            items.forEach(item -> exportLabels.add(new CsvExportCategory(item)));
+            return exportLabels;
         }
     }
 }

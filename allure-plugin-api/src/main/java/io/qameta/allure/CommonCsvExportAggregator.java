@@ -67,8 +67,7 @@ public abstract class CommonCsvExportAggregator<T> implements Aggregator {
             BeanField beanField;
             for (int i = 0; i <= numColumns; i++) {
                 beanField = findField(i);
-                String columnHeaderName = extractHeaderName(beanField);
-                header[i] = columnHeaderName;
+                header[i] = extractHeaderName(beanField);
             }
             return header;
         }
@@ -79,9 +78,7 @@ public abstract class CommonCsvExportAggregator<T> implements Aggregator {
                     || beanField.getField().getDeclaredAnnotationsByType(CsvBindByName.class).length == 0) {
                 return StringUtils.EMPTY;
             }
-            final CsvBindByName bindByNameAnnotation =
-                    beanField.getField().getDeclaredAnnotationsByType(CsvBindByName.class)[0];
-            return bindByNameAnnotation.column();
+            return beanField.getField().getDeclaredAnnotationsByType(CsvBindByName.class)[0].column();
         }
     }
 }
