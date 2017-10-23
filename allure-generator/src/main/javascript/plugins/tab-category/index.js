@@ -7,6 +7,7 @@ allure.api.addTab('categories', {
         testResultTab,
         tabName: 'tab.categories.name',
         baseUrl: 'categories',
-        url: 'data/categories.json'
+        url: 'data/categories.json',
+        csvUrl: 'data/categories.csv'
     })
 });

@@ -1,13 +1,16 @@
 package io.qameta.allure.category;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import io.qameta.allure.Aggregator;
+import io.qameta.allure.CommonCsvExportAggregator;
+import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.CompositeAggregator;
 import io.qameta.allure.Reader;
 import io.qameta.allure.Widget;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
+import io.qameta.allure.csv.CsvExportCategory;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.tree.DefaultTreeLayer;
@@ -20,7 +23,6 @@ import io.qameta.allure.tree.TreeWidgetItem;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -45,31 +47,37 @@ import static java.util.Objects.nonNull;
  * @since 2.0
  */
 @SuppressWarnings("PMD.ExcessiveImports")
-public class CategoriesPlugin implements Aggregator, Reader, Widget {
+public class CategoriesPlugin extends CompositeAggregator implements Reader, Widget {
 
-    public static final String CATEGORIES_BLOCK_NAME = "categories";
+    public static final String CATEGORIES = "categories";
 
     public static final Category FAILED_TESTS = new Category().setName("Product defects");
 
     public static final Category BROKEN_TESTS = new Category().setName("Test defects");
 
-    private static final String CATEGORIES_FILE_NAME = "categories.json";
+    public static final String JSON_FILE_NAME = "categories.json";
+
+    public static final String CSV_FILE_NAME = "categories.csv";
 
     //@formatter:off
     private static final TypeReference<List<Category>> CATEGORIES_TYPE =
         new TypeReference<List<Category>>() {};
     //@formatter:on
 
+    public CategoriesPlugin() {
+        super(Arrays.asList(new JsonAggregator(), new CsvExportAggregator()));
+    }
+
     @Override
     public void readResults(final Configuration configuration,
                             final ResultsVisitor visitor,
                             final Path directory) {
         final JacksonContext context = configuration.requireContext(JacksonContext.class);
-        final Path categoriesFile = directory.resolve(CATEGORIES_FILE_NAME);
+        final Path categoriesFile = directory.resolve(JSON_FILE_NAME);
         if (Files.exists(categoriesFile)) {
             try (InputStream is = Files.newInputStream(categoriesFile)) {
                 final List<Category> categories = context.getValue().readValue(is, CATEGORIES_TYPE);
-                visitor.visitExtra(CATEGORIES_BLOCK_NAME, categories);
+                visitor.visitExtra(CATEGORIES, categories);
             } catch (IOException e) {
                 visitor.error("Could not read categories file " + categoriesFile, e);
             }
@@ -77,23 +85,8 @@ public class CategoriesPlugin implements Aggregator, Reader, Widget {
     }
 
     @Override
-    public void aggregate(final Configuration configuration,
-                          final List<LaunchResults> launchesResults,
-                          final Path outputDirectory) throws IOException {
-
-        addCategoriesForResults(launchesResults);
-
-        final JacksonContext jacksonContext = configuration.requireContext(JacksonContext.class);
-        final Path dataFolder = Files.createDirectories(outputDirectory.resolve("data"));
-        final Path dataFile = dataFolder.resolve("categories.json");
-        try (OutputStream os = Files.newOutputStream(dataFile)) {
-            jacksonContext.getValue().writeValue(os, getData(launchesResults));
-        }
-    }
-
-    @Override
     public String getName() {
-        return "categories";
+        return CATEGORIES;
     }
 
     @Override
@@ -102,7 +95,7 @@ public class CategoriesPlugin implements Aggregator, Reader, Widget {
         final List<TreeWidgetItem> items = data.getChildren().stream()
                 .filter(TestResultTreeGroup.class::isInstance)
                 .map(TestResultTreeGroup.class::cast)
-                .map(this::toWidgetItem)
+                .map(CategoriesPlugin::toWidgetItem)
                 .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
                 .limit(10)
                 .collect(Collectors.toList());
@@ -110,11 +103,10 @@ public class CategoriesPlugin implements Aggregator, Reader, Widget {
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
-    /* default */ Tree<TestResult> getData(final List<LaunchResults> launchResults) {
-
+    /* default */ static Tree<TestResult> getData(final List<LaunchResults> launchResults) {
 
         // @formatter:off
-        final Tree<TestResult> categories = new TestResultTree("categories", this::groupByCategories);
+        final Tree<TestResult> categories = new TestResultTree(CATEGORIES, CategoriesPlugin::groupByCategories);
         // @formatter:on
 
         launchResults.stream()
@@ -126,29 +118,29 @@ public class CategoriesPlugin implements Aggregator, Reader, Widget {
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
-    /* default */ void addCategoriesForResults(final List<LaunchResults> launchesResults) {
+    /* default */ static void addCategoriesForResults(final List<LaunchResults> launchesResults) {
         launchesResults.forEach(launch -> {
-            final List<Category> categories = launch.getExtra(CATEGORIES_BLOCK_NAME, Collections::emptyList);
+            final List<Category> categories = launch.getExtra(CATEGORIES, Collections::emptyList);
             launch.getResults().forEach(result -> {
-                final List<Category> resultCategories = result.getExtraBlock(CATEGORIES_BLOCK_NAME, new ArrayList<>());
+                final List<Category> resultCategories = result.getExtraBlock(CATEGORIES, new ArrayList<>());
                 categories.forEach(category -> {
                     if (matches(result, category)) {
                         resultCategories.add(category);
                     }
                 });
                 if (resultCategories.isEmpty() && Status.FAILED.equals(result.getStatus())) {
-                    result.getExtraBlock(CATEGORIES_BLOCK_NAME, new ArrayList<Category>()).add(FAILED_TESTS);
+                    result.getExtraBlock(CATEGORIES, new ArrayList<Category>()).add(FAILED_TESTS);
                 }
                 if (resultCategories.isEmpty() && Status.BROKEN.equals(result.getStatus())) {
-                    result.getExtraBlock(CATEGORIES_BLOCK_NAME, new ArrayList<Category>()).add(BROKEN_TESTS);
+                    result.getExtraBlock(CATEGORIES, new ArrayList<Category>()).add(BROKEN_TESTS);
                 }
             });
         });
     }
 
-    protected List<TreeLayer> groupByCategories(final TestResult testResult) {
+    protected static List<TreeLayer> groupByCategories(final TestResult testResult) {
         final Set<String> categories = testResult
-                .<List<Category>>getExtraBlock(CATEGORIES_BLOCK_NAME, new ArrayList<>())
+                .<List<Category>>getExtraBlock(CATEGORIES, new ArrayList<>())
                 .stream()
                 .map(Category::getName)
                 .collect(Collectors.toSet());
@@ -178,10 +170,51 @@ public class CategoriesPlugin implements Aggregator, Reader, Widget {
         return Pattern.compile(pattern, Pattern.DOTALL).matcher(message).matches();
     }
 
-    protected TreeWidgetItem toWidgetItem(final TestResultTreeGroup group) {
+    protected static TreeWidgetItem toWidgetItem(final TestResultTreeGroup group) {
         return new TreeWidgetItem()
                 .setUid(group.getUid())
                 .setName(group.getName())
                 .setStatistic(calculateStatisticByLeafs(group));
+    }
+
+    @Override
+    public void aggregate(final Configuration configuration,
+                          final List<LaunchResults> launchesResults,
+                          final Path outputDirectory) throws IOException {
+        addCategoriesForResults(launchesResults);
+        super.aggregate(configuration, launchesResults, outputDirectory);
+    }
+
+    private static class JsonAggregator extends CommonJsonAggregator {
+
+        JsonAggregator() {
+            super(JSON_FILE_NAME);
+        }
+
+        @Override
+        protected Tree<TestResult> getData(final List<LaunchResults> launchResults) {
+            return CategoriesPlugin.getData(launchResults);
+        }
+    }
+
+    private static class CsvExportAggregator extends CommonCsvExportAggregator<CsvExportCategory> {
+
+        CsvExportAggregator() {
+            super(CSV_FILE_NAME, CsvExportCategory.class);
+        }
+
+        @Override
+        protected List<CsvExportCategory> getData(final List<LaunchResults> launchesResults) {
+            final List<CsvExportCategory> exportLabels = new ArrayList<>();
+            final Tree<TestResult> data = CategoriesPlugin.getData(launchesResults);
+            final List<TreeWidgetItem> items = data.getChildren().stream()
+                    .filter(TestResultTreeGroup.class::isInstance)
+                    .map(TestResultTreeGroup.class::cast)
+                    .map(CategoriesPlugin::toWidgetItem)
+                    .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
+                    .collect(Collectors.toList());
+            items.forEach(item -> exportLabels.add(new CsvExportCategory(item)));
+            return exportLabels;
+        }
     }
 }
