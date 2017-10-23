@@ -14,24 +14,24 @@ public class CsvExportSuite implements Serializable {
 
     @CsvBindByName(column = "Status")
     @CsvBindByPosition(position = 0)
-    private String status;
+    private final String status;
 
     @CsvBindByName(column = "Name")
     @CsvBindByPosition(position = 1)
-    private String name;
+    private final String name;
 
     @CsvBindByName(column = "Duration in ms")
     @CsvBindByPosition(position = 2)
-    private String duration;
+    private final String duration;
 
     @CsvBindByName(column = "Description")
     @CsvBindByPosition(position = 3)
-    private String message;
+    private final String message;
 
     public CsvExportSuite(final TestResult result) {
         this.status = result.getStatus() != null ? result.getStatus().value() : null;
         this.name = result.getFullName();
-        this.duration = result.getTime() != null ? result.getTime().getDuration().toString() : null;
+        this.duration = result.getTime().getDuration() != null ? result.getTime().getDuration().toString() : null;
         this.message = result.getDescription();
     }
 
@@ -39,31 +39,15 @@ public class CsvExportSuite implements Serializable {
         return message;
     }
 
-    public void setMessage(final String message) {
-        this.message = message;
-    }
-
     public String getDuration() {
         return duration;
-    }
-
-    public void setDuration(final String duration) {
-        this.duration = duration;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(final String name) {
-        this.name = name;
-    }
-
     public String getStatus() {
         return status;
-    }
-
-    public void setStatus(final String status) {
-        this.status = status;
     }
 }

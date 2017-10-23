@@ -61,13 +61,9 @@ public abstract class CommonCsvExportAggregator<T> implements Aggregator {
             if (!isAnnotationDriven() || numColumns == -1) {
                 return super.generateHeader();
             }
-
             header = new String[numColumns + 1];
-
-            BeanField beanField;
             for (int i = 0; i <= numColumns; i++) {
-                beanField = findField(i);
-                header[i] = extractHeaderName(beanField);
+                header[i] = extractHeaderName(findField(i));
             }
             return header;
         }

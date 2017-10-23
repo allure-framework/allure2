@@ -178,7 +178,9 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader, Wid
     }
 
     @Override
-    public void aggregate(final Configuration configuration, final List<LaunchResults> launchesResults, final Path outputDirectory) throws IOException {
+    public void aggregate(final Configuration configuration,
+                          final List<LaunchResults> launchesResults,
+                          final Path outputDirectory) throws IOException {
         addCategoriesForResults(launchesResults);
         super.aggregate(configuration, launchesResults, outputDirectory);
     }

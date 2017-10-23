@@ -4,7 +4,6 @@ import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.tree.TreeWidgetItem;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -17,15 +16,15 @@ public class CsvExportBehavior implements Serializable {
 
     @CsvBindByName(column = "Epic")
     @CsvBindByPosition(position = 0)
-    private String epic;
+    private final String epic;
 
     @CsvBindByName(column = "Feature")
     @CsvBindByPosition(position = 1)
-    private String feature;
+    private final String feature;
 
     @CsvBindByName(column = "Story")
     @CsvBindByPosition(position = 2)
-    private String story;
+    private final String story;
 
     @CsvBindByName(column = "FAILED")
     @CsvBindByPosition(position = 3)

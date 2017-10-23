@@ -2,8 +2,6 @@ package io.qameta.allure.csv;
 
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
-import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.tree.TreeWidgetItem;
 
 import java.io.Serializable;
@@ -16,27 +14,27 @@ public class CsvExportCategory implements Serializable {
 
     @CsvBindByName(column = "Category")
     @CsvBindByPosition(position = 0)
-    private String name;
+    private final String name;
 
     @CsvBindByName(column = "FAILED")
     @CsvBindByPosition(position = 1)
-    private long failed;
+    private final long failed;
 
     @CsvBindByName(column = "BROKEN")
     @CsvBindByPosition(position = 2)
-    private long broken;
+    private final long broken;
 
     @CsvBindByName(column = "PASSED")
     @CsvBindByPosition(position = 3)
-    private long passed;
+    private final long passed;
 
     @CsvBindByName(column = "SKIPPED")
     @CsvBindByPosition(position = 4)
-    private long skipped;
+    private final long skipped;
 
     @CsvBindByName(column = "UNKNOWN")
     @CsvBindByPosition(position = 5)
-    private long unknown;
+    private final long unknown;
 
     public CsvExportCategory(final TreeWidgetItem item) {
         this.name = item.getName();
