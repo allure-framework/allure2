@@ -181,7 +181,7 @@ class TreeView extends View {
             uid: this.collection.uid,
             tabName: this.tabName,
             items: this.collection.toJSON(),
-            testResultTab: this.routeState.get('testResultTab') || '',
+            testResultTab: this.routeState.get('testResultTab') || ''
         };
     }
 }

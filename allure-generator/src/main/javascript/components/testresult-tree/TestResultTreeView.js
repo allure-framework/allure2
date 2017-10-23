@@ -9,8 +9,9 @@ import ErrorSplashView from '../error-splash/ErrorSplashView';
 @className('side-by-side')
 class TestResultTreeView extends SideBySideView {
 
-    initialize({tree, routeState}) {
+    initialize({tree, routeState, csvUrl}) {
         super.initialize();
+        this.csvUrl = csvUrl;
         this.tree = tree;
         this.routeState = routeState;
         this.listenTo(this.routeState, 'change:treeNode', (_, treeNode) => this.showLeaf(treeNode));
@@ -39,7 +40,8 @@ class TestResultTreeView extends SideBySideView {
             routeState: this.routeState,
             treeSorters: [],
             tabName: tabName,
-            baseUrl: baseUrl
+            baseUrl: baseUrl,
+            csvUrl: this.csvUrl
         });
         this.showChildView('left', left);
     }

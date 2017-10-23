@@ -9,6 +9,10 @@
     <div class="{{b 'pane' 'search'}}"></div>
     <span class="pane__controls">
         <a class="fa fa-info-circle {{b cls 'control'}} {{b cls 'info'}}" data-tooltip="{{t 'component.tree.groups'}}"></a>
+        {{#if csvUrl}}
+            <a class="fa fa-download {{b cls 'control'}} {{b cls 'download'}}" data-tooltip="{{t 'component.tree.download'}}"
+               href="{{csvUrl}}" download></a>
+        {{/if}}
     </span>
 </div>
 
