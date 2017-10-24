@@ -19,11 +19,13 @@ export default class StatusWidgetView extends View {
     }
 
     getStatusChartData() {
-        const statistic =  this.model.get('items').reduce((stats, testResult) => {
-            stats[testResult.get('status').toLowerCase()]++;
-            return stats;
-        }, {
-            total: this.model.total,
+        this.items = this.model.get('items');
+        const statistic =  this.items.reduce(
+            (stats, testResult) => {
+                stats[testResult.status.toLowerCase()]++;
+                return stats;
+            }, {
+            total: this.model.get('total'),
             failed: 0,
             broken: 0,
             skipped: 0,

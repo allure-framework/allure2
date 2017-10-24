@@ -3,8 +3,6 @@ package io.qameta.allure;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
-import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.tree.Tree;
 
 import java.io.IOException;
 import java.io.OutputStream;

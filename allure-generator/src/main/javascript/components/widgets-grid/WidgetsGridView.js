@@ -70,7 +70,6 @@ class WidgetsGridView extends View {
     addWidget(col, name, Widget) {
         const el = $(widgetTpl(name));
         col.append(el);
-
         this.addRegion(name, {el: el.find('.widget__body')});
         const widget = new WidgetModel({}, {name});
         fetchAndShow(this, name, widget, new Widget({model: widget}));
