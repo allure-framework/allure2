@@ -9,12 +9,11 @@ import TrendChartView from '../../components/graph-trend-chart/TrendChartView';
 })
 @className('history-trend')
 class HistoryTrendWidgetView extends View {
-
     template = template;
 
     onRender() {
         this.showChildView('chart', new TrendChartView({
-            items: this.model.getWidgetData('history-trend').get('items')
+            items: this.model.get('items')
         }));
     }
 }

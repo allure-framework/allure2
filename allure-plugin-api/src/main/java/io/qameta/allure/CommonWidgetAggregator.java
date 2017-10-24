@@ -31,4 +31,24 @@ public abstract class CommonWidgetAggregator implements Aggregator {
     }
 
     public abstract Object getData(final Configuration configuration, final List<LaunchResults> launches);
+
+    public static class WidgetCollection<T> {
+
+        private final long total;
+
+        private final List<T> items;
+
+        public WidgetCollection(final long total, final List<T> items) {
+            this.total = total;
+            this.items = items;
+        }
+
+        public long getTotal() {
+            return total;
+        }
+
+        public List<T> getItems() {
+            return items;
+        }
+    }
 }
