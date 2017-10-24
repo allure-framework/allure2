@@ -13,7 +13,7 @@ export default class SeverityWidgetView extends View {
 
     onRender() {
         this.showChildView('chart', new SeverityChartView({
-            model: this.model,
+            model: this.model.get('items'),
         }));
     }
 }

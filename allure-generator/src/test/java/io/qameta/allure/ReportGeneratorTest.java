@@ -50,12 +50,6 @@ public class ReportGeneratorTest {
     }
 
     @Test
-    public void shouldGenerateGraphJson() throws Exception {
-        assertThat(output.resolve("data/graph.json"))
-                .isRegularFile();
-    }
-
-    @Test
     public void shouldGenerateXunitJson() throws Exception {
         assertThat(output.resolve("data/suites.json"))
                 .isRegularFile();
@@ -68,8 +62,68 @@ public class ReportGeneratorTest {
     }
 
     @Test
-    public void shouldGenerateWidgetsJson() throws Exception {
-        assertThat(output.resolve("data/widgets.json"))
+    public void shouldGenerateWidgetBehaviorsJson() throws Exception {
+        assertThat(output.resolve("widgets/behaviors.json"))
+                .isRegularFile();
+    }
+
+    @Test
+    public void shouldGenerateWidgetCategoriesJson() throws Exception {
+        assertThat(output.resolve("widgets/categories.json"))
+                .isRegularFile();
+    }
+
+    @Test
+    public void shouldGenerateWidgetDurationJson() throws Exception {
+        assertThat(output.resolve("widgets/duration.json"))
+                .isRegularFile();
+    }
+
+    @Test
+    public void shouldGenerateWidgetEnvironmentJson() throws Exception {
+        assertThat(output.resolve("widgets/environment.json"))
+                .isRegularFile();
+    }
+
+    @Test
+    public void shouldGenerateWidgetExecutorsJson() throws Exception {
+        assertThat(output.resolve("widgets/executors.json"))
+                .isRegularFile();
+    }
+
+    @Test
+    public void shouldGenerateWidgetHistoryTrendJson() throws Exception {
+        assertThat(output.resolve("widgets/history-trend.json"))
+                .isRegularFile();
+    }
+
+    @Test
+    public void shouldGenerateWidgetLaunchJson() throws Exception {
+        assertThat(output.resolve("widgets/launch.json"))
+                .isRegularFile();
+    }
+
+    @Test
+    public void shouldGenerateWidgetSeverityJson() throws Exception {
+        assertThat(output.resolve("widgets/severity.json"))
+                .isRegularFile();
+    }
+
+    @Test
+    public void shouldGenerateWidgetStatusJson() throws Exception {
+        assertThat(output.resolve("widgets/status.json"))
+                .isRegularFile();
+    }
+
+    @Test
+    public void shouldGenerateWidgetSuitesJson() throws Exception {
+        assertThat(output.resolve("widgets/suites.json"))
+                .isRegularFile();
+    }
+
+    @Test
+    public void shouldGenerateWidgetSummaryJson() throws Exception {
+        assertThat(output.resolve("widgets/summary.json"))
                 .isRegularFile();
     }
 

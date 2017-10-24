@@ -52,13 +52,9 @@ public class Allure1EnvironmentPlugin extends CompositeAggregator {
         }
 
         @Override
-        public Object getData(Configuration configuration, List<LaunchResults> launches) {
+        public WidgetCollection<EnvironmentItem> getData(Configuration configuration, List<LaunchResults> launches) {
             List<EnvironmentItem> environmentItems = Allure1EnvironmentPlugin.getData(launches);
             return new WidgetCollection<>(environmentItems.size(), environmentItems);
         }
-
-
-
-
     }
 }

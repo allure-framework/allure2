@@ -1,4 +1,4 @@
-package io.qameta.allure.graph;
+package io.qameta.allure.status;
 
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.Time;
@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @Data
 @Accessors(chain = true)
-public class GraphData implements Serializable {
+public class StatusData implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

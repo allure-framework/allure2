@@ -13,10 +13,10 @@ import io.qameta.allure.core.MarkdownDescriptionsPlugin;
 import io.qameta.allure.core.Plugin;
 import io.qameta.allure.core.ReportWebPlugin;
 import io.qameta.allure.core.TestsResultsPlugin;
+import io.qameta.allure.duration.DurationPlugin;
 import io.qameta.allure.environment.Allure1EnvironmentPlugin;
 import io.qameta.allure.executor.ExecutorPlugin;
 import io.qameta.allure.ga.GaPlugin;
-import io.qameta.allure.graph.GraphPlugin;
 import io.qameta.allure.history.HistoryPlugin;
 import io.qameta.allure.history.HistoryTrendPlugin;
 import io.qameta.allure.launch.LaunchPlugin;
@@ -24,6 +24,7 @@ import io.qameta.allure.mail.MailPlugin;
 import io.qameta.allure.owner.OwnerPlugin;
 import io.qameta.allure.retry.RetryPlugin;
 import io.qameta.allure.severity.SeverityPlugin;
+import io.qameta.allure.status.StatusPlugin;
 import io.qameta.allure.suites.SuitesPlugin;
 import io.qameta.allure.summary.SummaryPlugin;
 import io.qameta.allure.tags.TagsPlugin;
@@ -61,7 +62,8 @@ public class ConfigurationBuilder {
                 new CategoriesPlugin(),
                 new HistoryPlugin(),
                 new HistoryTrendPlugin(),
-                new GraphPlugin(),
+                new DurationPlugin(),
+                new StatusPlugin(),
                 new TimelinePlugin(),
                 new SuitesPlugin(),
                 new ReportWebPlugin(),

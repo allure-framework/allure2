@@ -39,7 +39,7 @@ import static io.qameta.allure.tree.TreeUtils.groupByLabels;
  *
  * @since 2.0
  */
-@SuppressWarnings("PMD.ExcessiveImports")
+@SuppressWarnings({"PMD.ExcessiveImports", "PMD.UseUtilityClass"})
 public class BehaviorsPlugin extends CompositeAggregator {
 
     public static final String BEHAVIORS = "behaviors";
@@ -171,7 +171,7 @@ public class BehaviorsPlugin extends CompositeAggregator {
         }
 
         @Override
-        public Object getData(Configuration configuration, List<LaunchResults> launches) {
+        public TreeWidgetData getData(final Configuration configuration, final List<LaunchResults> launches) {
             final Tree<TestResult> data = BehaviorsPlugin.getData(launches);
             final List<TreeWidgetItem> items = data.getChildren().stream()
                     .filter(TestResultTreeGroup.class::isInstance)
