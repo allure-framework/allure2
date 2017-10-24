@@ -5,6 +5,8 @@ import Sortable from 'sortablejs';
 import {className} from '../../decorators';
 import pluginsRegistry from '../../utils/pluginsRegistry';
 import {getSettingsForWidgetGridPlugin} from '../../utils/settingsFactory';
+import WidgetModel from "../../data/widgets/WidgetsModel";
+import {fetchAndShow} from "../../utils/loading";
 
 
 const widgetTpl = (id) => `<div class="widget island" data-id="${id}">
@@ -70,9 +72,8 @@ class WidgetsGridView extends View {
         col.append(el);
 
         this.addRegion(name, {el: el.find('.widget__body')});
-        /// fetchAndShow(this, name, this.model, new Widget({model: this.model}))
-        const model = this.model;
-        this.getRegion(name).show(new Widget({model, name}));
+        const widget = new WidgetModel({}, {name});
+        fetchAndShow(this, name, widget, new Widget({model: widget}));
     }
 }
 

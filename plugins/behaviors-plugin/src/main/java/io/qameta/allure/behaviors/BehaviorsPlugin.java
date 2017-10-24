@@ -1,9 +1,6 @@
 package io.qameta.allure.behaviors;
 
-import io.qameta.allure.CommonCsvExportAggregator;
-import io.qameta.allure.CommonJsonAggregator;
-import io.qameta.allure.CompositeAggregator;
-import io.qameta.allure.Widget;
+import io.qameta.allure.*;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.csv.CsvExportBehavior;
@@ -40,7 +37,7 @@ import static io.qameta.allure.tree.TreeUtils.groupByLabels;
  * @since 2.0
  */
 @SuppressWarnings("PMD.ExcessiveImports")
-public class BehaviorsPlugin extends CompositeAggregator implements Widget {
+public class BehaviorsPlugin extends CompositeAggregator {
 
     public static final String BEHAVIORS = "behaviors";
 
@@ -52,7 +49,9 @@ public class BehaviorsPlugin extends CompositeAggregator implements Widget {
     /* default */ static final LabelName[] LABEL_NAMES = new LabelName[] {EPIC, FEATURE, STORY};
 
     public BehaviorsPlugin() {
-        super(Arrays.asList(new JsonAggregator(), new CsvExportAggregator()));
+        super(Arrays.asList(
+                new JsonAggregator(), new CsvExportAggregator(), new WidgetAggregator()
+        ));
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
@@ -73,31 +72,6 @@ public class BehaviorsPlugin extends CompositeAggregator implements Widget {
         return behaviors;
     }
 
-    @Override
-    public Object getData(final Configuration configuration, final List<LaunchResults> launches) {
-        final Tree<TestResult> data = getData(launches);
-        final List<TreeWidgetItem> items = data.getChildren().stream()
-                .filter(TestResultTreeGroup.class::isInstance)
-                .map(TestResultTreeGroup.class::cast)
-                .map(BehaviorsPlugin::toWidgetItem)
-                .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
-                .limit(10)
-                .collect(Collectors.toList());
-        return new TreeWidgetData().setItems(items).setTotal(data.getChildren().size());
-    }
-
-    @Override
-    public String getName() {
-        return BEHAVIORS;
-    }
-
-    protected static TreeWidgetItem toWidgetItem(final TestResultTreeGroup group) {
-        return new TreeWidgetItem()
-                .setUid(group.getUid())
-                .setName(group.getName())
-                .setStatistic(calculateStatisticByChildren(group));
-    }
-
     private static class JsonAggregator extends CommonJsonAggregator {
 
         JsonAggregator() {
@@ -105,8 +79,8 @@ public class BehaviorsPlugin extends CompositeAggregator implements Widget {
         }
 
         @Override
-        protected Tree<TestResult> getData(final List<LaunchResults> launchResults) {
-            return BehaviorsPlugin.getData(launchResults);
+        protected Tree<TestResult> getData(final List<LaunchResults> launches) {
+            return BehaviorsPlugin.getData(launches);
         }
     }
 
@@ -184,6 +158,33 @@ public class BehaviorsPlugin extends CompositeAggregator implements Widget {
                 exportBehavior.addTestResult(result);
                 exportBehaviors.add(exportBehavior);
             }
+        }
+    }
+
+    private static class WidgetAggregator extends CommonWidgetAggregator {
+
+        WidgetAggregator() {
+            super(JSON_FILE_NAME);
+        }
+
+        @Override
+        public Object getData(Configuration configuration, List<LaunchResults> launches) {
+            final Tree<TestResult> data = BehaviorsPlugin.getData(launches);
+            final List<TreeWidgetItem> items = data.getChildren().stream()
+                    .filter(TestResultTreeGroup.class::isInstance)
+                    .map(TestResultTreeGroup.class::cast)
+                    .map(WidgetAggregator::toWidgetItem)
+                    .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
+                    .limit(10)
+                    .collect(Collectors.toList());
+            return new TreeWidgetData().setItems(items).setTotal(data.getChildren().size());
+        }
+
+        private static TreeWidgetItem toWidgetItem(final TestResultTreeGroup group) {
+            return new TreeWidgetItem()
+                    .setUid(group.getUid())
+                    .setName(group.getName())
+                    .setStatistic(calculateStatisticByChildren(group));
         }
     }
 }

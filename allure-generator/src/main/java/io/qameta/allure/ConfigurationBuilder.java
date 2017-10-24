@@ -28,7 +28,6 @@ import io.qameta.allure.suites.SuitesPlugin;
 import io.qameta.allure.summary.SummaryPlugin;
 import io.qameta.allure.tags.TagsPlugin;
 import io.qameta.allure.timeline.TimelinePlugin;
-import io.qameta.allure.widget.WidgetsPlugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,7 +68,6 @@ public class ConfigurationBuilder {
                 new TestsResultsPlugin(),
                 new AttachmentsPlugin(),
                 new MailPlugin(),
-                new WidgetsPlugin(),
                 new SummaryPlugin(),
                 new ExecutorPlugin(),
                 new LaunchPlugin(),

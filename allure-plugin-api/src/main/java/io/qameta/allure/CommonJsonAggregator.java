@@ -17,9 +17,17 @@ import java.util.List;
  */
 public abstract class CommonJsonAggregator implements Aggregator {
 
+    private final String location;
+
     private final String fileName;
 
     protected CommonJsonAggregator(final String fileName) {
+        this.location = "data";
+        this.fileName = fileName;
+    }
+
+    protected CommonJsonAggregator(final String location, final String fileName) {
+        this.location = location;
         this.fileName = fileName;
     }
 
@@ -28,12 +36,12 @@ public abstract class CommonJsonAggregator implements Aggregator {
                           final List<LaunchResults> launchesResults,
                           final Path outputDirectory) throws IOException {
         final JacksonContext jacksonContext = configuration.requireContext(JacksonContext.class);
-        final Path dataFolder = Files.createDirectories(outputDirectory.resolve("data"));
+        final Path dataFolder = Files.createDirectories(outputDirectory.resolve(this.location));
         final Path dataFile = dataFolder.resolve(this.fileName);
         try (OutputStream os = Files.newOutputStream(dataFile)) {
             jacksonContext.getValue().writeValue(os, getData(launchesResults));
         }
     }
 
-    protected abstract Tree<TestResult> getData(final List<LaunchResults> launchResults);
+    protected abstract Object getData(final List<LaunchResults> launches);
 }

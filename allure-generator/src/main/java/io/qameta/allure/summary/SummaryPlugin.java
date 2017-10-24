@@ -1,17 +1,12 @@
 package io.qameta.allure.summary;
 
-import io.qameta.allure.Aggregator;
-import io.qameta.allure.Widget;
-import io.qameta.allure.context.JacksonContext;
+import io.qameta.allure.*;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.GroupTime;
 import io.qameta.allure.entity.Statistic;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -19,32 +14,18 @@ import java.util.List;
  *
  * @since 2.0
  */
-public class SummaryPlugin implements Aggregator, Widget {
+public class SummaryPlugin extends CompositeAggregator {
 
-    @Override
-    public void aggregate(final Configuration configuration,
-                          final List<LaunchResults> launchesResults,
-                          final Path outputDirectory) throws IOException {
-        final JacksonContext context = configuration.requireContext(JacksonContext.class);
-        final Path exportFolder = Files.createDirectories(outputDirectory.resolve("export"));
-        final Path summaryFile = exportFolder.resolve("summary.json");
+    /** Name of the json file. */
+    protected static final String JSON_FILE_NAME = "summary.json";
 
-        try (OutputStream os = Files.newOutputStream(summaryFile)) {
-            context.getValue().writeValue(os, getSummaryData(launchesResults));
-        }
+    public SummaryPlugin() {
+        super(Arrays.asList(
+                new JsonAggregator(), new WidgetAggregator()
+        ));
     }
 
-    @Override
-    public Object getData(final Configuration configuration, final List<LaunchResults> launches) {
-        return getSummaryData(launches);
-    }
-
-    @Override
-    public String getName() {
-        return "summary";
-    }
-
-    private SummaryData getSummaryData(final List<LaunchResults> launches) {
+    private static SummaryData getSummaryData(final List<LaunchResults> launches) {
         final SummaryData data = new SummaryData()
                 .setStatistic(new Statistic())
                 .setTime(new GroupTime())
@@ -56,5 +37,29 @@ public class SummaryPlugin implements Aggregator, Widget {
                     data.getTime().update(result);
                 });
         return data;
+    }
+
+    private static class JsonAggregator extends CommonJsonAggregator {
+
+        JsonAggregator() {
+            super(JSON_FILE_NAME);
+        }
+
+        @Override
+        protected SummaryData getData(final List<LaunchResults> launches) {
+            return SummaryPlugin.getSummaryData(launches);
+        }
+    }
+
+    private static class WidgetAggregator extends CommonWidgetAggregator {
+
+        WidgetAggregator() {
+            super(JSON_FILE_NAME);
+        }
+
+        @Override
+        public SummaryData getData(final Configuration configuration, final List<LaunchResults> launches) {
+            return SummaryPlugin.getSummaryData(launches);
+        }
     }
 }

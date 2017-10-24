@@ -1,11 +1,7 @@
 package io.qameta.allure.category;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import io.qameta.allure.CommonCsvExportAggregator;
-import io.qameta.allure.CommonJsonAggregator;
-import io.qameta.allure.CompositeAggregator;
-import io.qameta.allure.Reader;
-import io.qameta.allure.Widget;
+import io.qameta.allure.*;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
@@ -47,7 +43,7 @@ import static java.util.Objects.nonNull;
  * @since 2.0
  */
 @SuppressWarnings("PMD.ExcessiveImports")
-public class CategoriesPlugin extends CompositeAggregator implements Reader, Widget {
+public class CategoriesPlugin extends CompositeAggregator implements Reader {
 
     public static final String CATEGORIES = "categories";
 
@@ -65,7 +61,9 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader, Wid
     //@formatter:on
 
     public CategoriesPlugin() {
-        super(Arrays.asList(new JsonAggregator(), new CsvExportAggregator()));
+        super(Arrays.asList(
+                new JsonAggregator(), new CsvExportAggregator(), new WidgetAggregator()
+        ));
     }
 
     @Override
@@ -82,24 +80,6 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader, Wid
                 visitor.error("Could not read categories file " + categoriesFile, e);
             }
         }
-    }
-
-    @Override
-    public String getName() {
-        return CATEGORIES;
-    }
-
-    @Override
-    public Object getData(final Configuration configuration, final List<LaunchResults> launches) {
-        final Tree<TestResult> data = getData(launches);
-        final List<TreeWidgetItem> items = data.getChildren().stream()
-                .filter(TestResultTreeGroup.class::isInstance)
-                .map(TestResultTreeGroup.class::cast)
-                .map(CategoriesPlugin::toWidgetItem)
-                .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
-                .limit(10)
-                .collect(Collectors.toList());
-        return new TreeWidgetData().setItems(items).setTotal(data.getChildren().size());
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
@@ -192,8 +172,8 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader, Wid
         }
 
         @Override
-        protected Tree<TestResult> getData(final List<LaunchResults> launchResults) {
-            return CategoriesPlugin.getData(launchResults);
+        protected Tree<TestResult> getData(final List<LaunchResults> launches) {
+            return CategoriesPlugin.getData(launches);
         }
     }
 
@@ -215,6 +195,26 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader, Wid
                     .collect(Collectors.toList());
             items.forEach(item -> exportLabels.add(new CsvExportCategory(item)));
             return exportLabels;
+        }
+    }
+
+    private static class WidgetAggregator extends CommonWidgetAggregator {
+
+        WidgetAggregator() {
+            super(JSON_FILE_NAME);
+        }
+
+        @Override
+        public Object getData(Configuration configuration, List<LaunchResults> launches) {
+            final Tree<TestResult> data = CategoriesPlugin.getData(launches);
+            final List<TreeWidgetItem> items = data.getChildren().stream()
+                    .filter(TestResultTreeGroup.class::isInstance)
+                    .map(TestResultTreeGroup.class::cast)
+                    .map(CategoriesPlugin::toWidgetItem)
+                    .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
+                    .limit(10)
+                    .collect(Collectors.toList());
+            return new TreeWidgetData().setItems(items).setTotal(data.getChildren().size());
         }
     }
 }
