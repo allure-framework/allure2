@@ -55,9 +55,9 @@ public class ExecutorPlugin extends CompositeAggregator implements Reader {
         }
 
         @Override
-        public Object getData(Configuration configuration, List<LaunchResults> launches) {
+        public WidgetCollection<ExecutorInfo> getData(Configuration configuration, List<LaunchResults> launches) {
             List<ExecutorInfo> executorInfos = getData(launches);
-            return new WidgetCollection<ExecutorInfo>(executorInfos.size(), executorInfos);
+            return new WidgetCollection<>(executorInfos.size(), executorInfos);
         }
 
         private List<ExecutorInfo> getData(final List<LaunchResults> launches) {

@@ -127,7 +127,7 @@ public class Allure1EnvironmentPluginTest {
             launches.add(resultsVisitor.getLaunchResults());
         }
         Allure1EnvironmentPlugin envPlugin = new Allure1EnvironmentPlugin();
-        return envPlugin.getData(configuration, launches);
+        return envPlugin.getData(launches);
     }
 
     private void copyFile(Path dir, String resourceName, String fileName) throws IOException {

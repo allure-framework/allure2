@@ -55,12 +55,13 @@ public class LaunchPlugin extends CompositeAggregator implements Reader {
         }
 
         @Override
-        public Object getData(Configuration configuration, List<LaunchResults> launches) {
-            return launches.stream()
+        public WidgetCollection<LaunchInfo> getData(Configuration configuration, List<LaunchResults> launches) {
+            List<LaunchInfo> launchInfos = launches.stream()
                     .map(this::updateLaunchInfo)
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .collect(Collectors.toList());
+            return new WidgetCollection<>(launchInfos.size(), launchInfos);
         }
 
         private Optional<LaunchInfo> updateLaunchInfo(final LaunchResults results) {

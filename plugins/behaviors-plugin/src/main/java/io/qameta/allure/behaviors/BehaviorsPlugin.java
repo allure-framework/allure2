@@ -1,6 +1,9 @@
 package io.qameta.allure.behaviors;
 
-import io.qameta.allure.*;
+import io.qameta.allure.CommonCsvExportAggregator;
+import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.CommonWidgetAggregator;
+import io.qameta.allure.CompositeAggregator;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.csv.CsvExportBehavior;

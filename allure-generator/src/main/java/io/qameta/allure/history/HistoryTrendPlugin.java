@@ -3,8 +3,6 @@ package io.qameta.allure.history;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.qameta.allure.CommonJsonAggregator;
 import io.qameta.allure.CommonWidgetAggregator;
 import io.qameta.allure.CompositeAggregator;
@@ -175,10 +173,9 @@ public class HistoryTrendPlugin extends CompositeAggregator implements Reader {
         }
 
         @Override
-        public Object getData(final Configuration configuration, final List<LaunchResults> launches) {
-            ObjectNode node = JsonNodeFactory.instance.objectNode();
-            node.putPOJO(HISTORY_TREND_BLOCK_NAME, HistoryTrendPlugin.getData(launches));
-            return node;
+        public WidgetCollection<HistoryTrendItem> getData(final Configuration configuration, final List<LaunchResults> launches) {
+            List<HistoryTrendItem> historyTrendItems = HistoryTrendPlugin.getData(launches);
+            return new WidgetCollection<>(historyTrendItems.size(), historyTrendItems);
         }
     }
 }
