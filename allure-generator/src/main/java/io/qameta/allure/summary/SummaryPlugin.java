@@ -1,6 +1,8 @@
 package io.qameta.allure.summary;
 
-import io.qameta.allure.*;
+import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.CommonWidgetAggregator;
+import io.qameta.allure.CompositeAggregator;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.GroupTime;
@@ -14,6 +16,7 @@ import java.util.List;
  *
  * @since 2.0
  */
+@SuppressWarnings("PMD.UseUtilityClass")
 public class SummaryPlugin extends CompositeAggregator {
 
     /** Name of the json file. */
@@ -25,7 +28,7 @@ public class SummaryPlugin extends CompositeAggregator {
         ));
     }
 
-    private static SummaryData getSummaryData(final List<LaunchResults> launches) {
+    protected static SummaryData getSummaryData(final List<LaunchResults> launches) {
         final SummaryData data = new SummaryData()
                 .setStatistic(new Statistic())
                 .setTime(new GroupTime())

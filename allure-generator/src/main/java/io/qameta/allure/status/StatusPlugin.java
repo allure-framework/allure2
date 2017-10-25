@@ -19,6 +19,13 @@ public class StatusPlugin extends CommonWidgetAggregator {
         super("status.json");
     }
 
+    @Override
+    protected WidgetCollection<StatusData> getData(final Configuration configuration,
+                                                   final List<LaunchResults> launches) {
+        List<StatusData> dataList = this.getData(launches);
+        return new WidgetCollection<>(dataList.size(), dataList);
+    }
+
     private List<StatusData> getData(final List<LaunchResults> launchesResults) {
         return launchesResults.stream()
                 .flatMap(launch -> launch.getResults().stream())
@@ -33,11 +40,5 @@ public class StatusPlugin extends CommonWidgetAggregator {
                 .setStatus(result.getStatus())
                 .setTime(result.getTime())
                 .setSeverity(result.getExtraBlock("severity"));
-    }
-
-    @Override
-    protected WidgetCollection<StatusData> getData(Configuration configuration, List<LaunchResults> launches) {
-        List<StatusData> dataList = this.getData(launches);
-        return new WidgetCollection<>(dataList.size(), dataList);
     }
 }

@@ -19,6 +19,13 @@ public class DurationPlugin extends CommonWidgetAggregator {
         super("duration.json");
     }
 
+    @Override
+    public WidgetCollection<DurationData> getData(final Configuration configuration,
+                                                  final List<LaunchResults> launches) {
+        List<DurationData> dataList = this.getData(launches);
+        return new WidgetCollection<>(dataList.size(), dataList);
+    }
+
     private List<DurationData> getData(final List<LaunchResults> launchesResults) {
         return launchesResults.stream()
                 .flatMap(launch -> launch.getResults().stream())
@@ -33,11 +40,5 @@ public class DurationPlugin extends CommonWidgetAggregator {
                 .setStatus(result.getStatus())
                 .setTime(result.getTime())
                 .setSeverity(result.getExtraBlock("severity"));
-    }
-
-    @Override
-    public WidgetCollection<DurationData> getData(Configuration configuration, List<LaunchResults> launches) {
-        List<DurationData> dataList = this.getData(launches);
-        return new WidgetCollection<>(dataList.size(), dataList);
     }
 }

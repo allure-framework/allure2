@@ -164,7 +164,7 @@ public class BehaviorsPlugin extends CompositeAggregator {
         }
     }
 
-    private static class WidgetAggregator extends CommonWidgetAggregator {
+    protected static class WidgetAggregator extends CommonWidgetAggregator {
 
         WidgetAggregator() {
             super(JSON_FILE_NAME);

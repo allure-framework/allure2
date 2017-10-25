@@ -5,8 +5,8 @@ import Sortable from 'sortablejs';
 import {className} from '../../decorators';
 import pluginsRegistry from '../../utils/pluginsRegistry';
 import {getSettingsForWidgetGridPlugin} from '../../utils/settingsFactory';
-import WidgetModel from "../../data/widgets/WidgetsModel";
-import {fetchAndShow} from "../../utils/loading";
+import WidgetModel from '../../data/widgets/WidgetsModel';
+import {fetchAndShow} from '../../utils/loading';
 
 
 const widgetTpl = (id) => `<div class="widget island" data-id="${id}">

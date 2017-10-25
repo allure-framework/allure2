@@ -23,7 +23,7 @@ export default class SeverityChartView extends BaseChartView {
         this.data = severities.map(severity =>
             values.map(status => {
                 const testResults = this.collection.filter(function (item) {
-                    return item.status == status && item.severity == severity;
+                    return item.status === status && item.severity === severity;
                 });
                 return {
                     value: testResults.length,

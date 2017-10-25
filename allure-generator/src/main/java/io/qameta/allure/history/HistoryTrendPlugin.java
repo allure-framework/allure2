@@ -173,7 +173,8 @@ public class HistoryTrendPlugin extends CompositeAggregator implements Reader {
         }
 
         @Override
-        public WidgetCollection<HistoryTrendItem> getData(final Configuration configuration, final List<LaunchResults> launches) {
+        public WidgetCollection<HistoryTrendItem> getData(final Configuration configuration,
+                                                          final List<LaunchResults> launches) {
             List<HistoryTrendItem> historyTrendItems = HistoryTrendPlugin.getData(launches);
             return new WidgetCollection<>(historyTrendItems.size(), historyTrendItems);
         }

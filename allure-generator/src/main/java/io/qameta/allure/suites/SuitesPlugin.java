@@ -32,6 +32,7 @@ import static io.qameta.allure.tree.TreeUtils.groupByLabels;
  *
  * @since 2.0
  */
+@SuppressWarnings("PMD.UseUtilityClass")
 public class SuitesPlugin extends CompositeAggregator {
 
     private static final String SUITES = "suites";

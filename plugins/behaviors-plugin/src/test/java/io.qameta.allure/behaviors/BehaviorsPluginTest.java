@@ -2,6 +2,7 @@ package io.qameta.allure.behaviors;
 
 import io.qameta.allure.DefaultLaunchResults;
 import io.qameta.allure.Issue;
+import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.Status;
@@ -27,6 +28,7 @@ import static io.qameta.allure.entity.LabelName.FEATURE;
 import static io.qameta.allure.entity.LabelName.STORY;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author Egor Borisov ehborisov@gmail.com
@@ -48,7 +50,9 @@ public class BehaviorsPluginTest {
 
         LaunchResults results = new DefaultLaunchResults(testResults, Collections.emptyMap(), Collections.emptyMap());
 
-        TreeWidgetData behaviorsData = (TreeWidgetData) BehaviorsPlugin.getData(Collections.singletonList(results));
+        final Configuration configuration = mock(Configuration.class);
+        TreeWidgetData behaviorsData = new BehaviorsPlugin.WidgetAggregator()
+                .getData(configuration, Collections.singletonList(results));
 
         assertThat(behaviorsData.getItems())
                 .filteredOn(node2 -> node2.getName().equals("feature1"))
@@ -80,8 +84,9 @@ public class BehaviorsPluginTest {
                 .setLabels(asList(EPIC.label("e2"), FEATURE.label("f2"), STORY.label("s2"))));
 
         LaunchResults results = new DefaultLaunchResults(testResults, Collections.emptyMap(), Collections.emptyMap());
-
-        TreeWidgetData behaviorsData = (TreeWidgetData) BehaviorsPlugin.getData(Collections.singletonList(results));
+        final Configuration configuration = mock(Configuration.class);
+        TreeWidgetData behaviorsData = new BehaviorsPlugin.WidgetAggregator()
+                .getData(configuration, Collections.singletonList(results));
 
         assertThat(behaviorsData.getItems())
                 .extracting("name")

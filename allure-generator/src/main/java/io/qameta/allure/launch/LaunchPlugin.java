@@ -45,7 +45,8 @@ public class LaunchPlugin extends CommonWidgetAggregator implements Reader {
     }
 
     @Override
-    public WidgetCollection<LaunchInfo> getData(Configuration configuration, List<LaunchResults> launches) {
+    public WidgetCollection<LaunchInfo> getData(final Configuration configuration,
+                                                final List<LaunchResults> launches) {
         List<LaunchInfo> launchInfos = launches.stream()
                 .map(this::updateLaunchInfo)
                 .filter(Optional::isPresent)

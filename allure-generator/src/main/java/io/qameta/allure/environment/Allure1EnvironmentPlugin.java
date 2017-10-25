@@ -23,6 +23,13 @@ public class Allure1EnvironmentPlugin extends CommonWidgetAggregator {
         super("environment.json");
     }
 
+    @Override
+    public WidgetCollection<EnvironmentItem> getData(final Configuration configuration,
+                                                     final List<LaunchResults> launches) {
+        List<EnvironmentItem> environmentItems = Allure1EnvironmentPlugin.getData(launches);
+        return new WidgetCollection<>(environmentItems.size(), environmentItems);
+    }
+
     @SuppressWarnings("PMD.DefaultPackage")
     /* default */ static List<EnvironmentItem> getData(final List<LaunchResults> launches) {
         final List<Map.Entry<String, String>> launchEnvironments = launches.stream()
@@ -39,11 +46,5 @@ public class Allure1EnvironmentPlugin extends CommonWidgetAggregator {
         return new EnvironmentItem()
                 .setName(entry.getKey())
                 .setValues(entry.getValue().stream().map(Map.Entry::getValue).collect(toList()));
-    }
-
-    @Override
-    public WidgetCollection<EnvironmentItem> getData(Configuration configuration, List<LaunchResults> launches) {
-        List<EnvironmentItem> environmentItems = Allure1EnvironmentPlugin.getData(launches);
-        return new WidgetCollection<>(environmentItems.size(), environmentItems);
     }
 }

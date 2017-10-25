@@ -1,7 +1,11 @@
 package io.qameta.allure.category;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import io.qameta.allure.*;
+import io.qameta.allure.CommonCsvExportAggregator;
+import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.CommonWidgetAggregator;
+import io.qameta.allure.CompositeAggregator;
+import io.qameta.allure.Reader;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
@@ -205,7 +209,7 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
         }
 
         @Override
-        public Object getData(Configuration configuration, List<LaunchResults> launches) {
+        protected Object getData(final Configuration configuration, final List<LaunchResults> launches) {
             final Tree<TestResult> data = CategoriesPlugin.getData(launches);
             final List<TreeWidgetItem> items = data.getChildren().stream()
                     .filter(TestResultTreeGroup.class::isInstance)

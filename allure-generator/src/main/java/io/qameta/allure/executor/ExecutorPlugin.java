@@ -45,7 +45,8 @@ public class ExecutorPlugin extends CommonWidgetAggregator implements Reader {
     }
 
     @Override
-    public WidgetCollection<ExecutorInfo> getData(Configuration configuration, List<LaunchResults> launches) {
+    public WidgetCollection<ExecutorInfo> getData(final Configuration configuration,
+                                                  final List<LaunchResults> launches) {
         List<ExecutorInfo> executorInfos = getData(launches);
         return new WidgetCollection<>(executorInfos.size(), executorInfos);
     }
