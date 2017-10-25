@@ -62,12 +62,6 @@ public class ReportGeneratorTest {
     }
 
     @Test
-    public void shouldGenerateWidgetBehaviorsJson() throws Exception {
-        assertThat(output.resolve("widgets/behaviors.json"))
-                .isRegularFile();
-    }
-
-    @Test
     public void shouldGenerateWidgetCategoriesJson() throws Exception {
         assertThat(output.resolve("widgets/categories.json"))
                 .isRegularFile();

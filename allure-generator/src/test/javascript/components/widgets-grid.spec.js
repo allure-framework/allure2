@@ -1,7 +1,7 @@
 import {View} from 'backbone';
 import pluginsRegistry from 'utils/pluginsRegistry';
 import WidgetsGridView from 'components/widgets-grid/WidgetsGridView';
-import WidgetsModel from 'data/widgets/WidgetModel';
+import WidgetsModel from 'data/widgets/WidgetsModel';
 import {getSettingsForWidgetGridPlugin} from 'utils/settingsFactory';
 
 describe('WidgetsGridView', function() {

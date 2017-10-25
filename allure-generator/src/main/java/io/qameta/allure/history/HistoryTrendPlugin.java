@@ -154,7 +154,7 @@ public class HistoryTrendPlugin extends CompositeAggregator implements Reader {
                 .findFirst();
     }
 
-    private static class JsonAggregator extends CommonJsonAggregator {
+    protected static class JsonAggregator extends CommonJsonAggregator {
 
         JsonAggregator() {
             super(HISTORY, JSON_FILE_NAME);
