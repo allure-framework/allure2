@@ -30,7 +30,7 @@ public abstract class CommonWidgetAggregator implements Aggregator {
         }
     }
 
-    public abstract Object getData(final Configuration configuration, final List<LaunchResults> launches);
+    protected abstract Object getData(final Configuration configuration, final List<LaunchResults> launches);
 
     public static class WidgetCollection<T> {
 

@@ -36,7 +36,7 @@ public class StatusPlugin extends CommonWidgetAggregator {
     }
 
     @Override
-    public WidgetCollection<StatusData> getData(Configuration configuration, List<LaunchResults> launches) {
+    protected WidgetCollection<StatusData> getData(Configuration configuration, List<LaunchResults> launches) {
         List<StatusData> dataList = this.getData(launches);
         return new WidgetCollection<>(dataList.size(), dataList);
     }

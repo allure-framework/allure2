@@ -1,7 +1,6 @@
 package io.qameta.allure.launch;
 
 import io.qameta.allure.CommonWidgetAggregator;
-import io.qameta.allure.CompositeAggregator;
 import io.qameta.allure.Reader;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
@@ -13,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,15 +19,13 @@ import java.util.stream.Collectors;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class LaunchPlugin extends CompositeAggregator implements Reader {
+public class LaunchPlugin extends CommonWidgetAggregator implements Reader {
 
     private static final String LAUNCH_BLOCK_NAME = "launch";
     private static final String JSON_FILE_NAME = "launch.json";
 
     public LaunchPlugin() {
-        super(Arrays.asList(
-                new WidgetAggregator()
-        ));
+        super(JSON_FILE_NAME);
     }
 
     @Override
@@ -48,31 +44,24 @@ public class LaunchPlugin extends CompositeAggregator implements Reader {
         }
     }
 
-    private static class WidgetAggregator extends CommonWidgetAggregator {
+    @Override
+    public WidgetCollection<LaunchInfo> getData(Configuration configuration, List<LaunchResults> launches) {
+        List<LaunchInfo> launchInfos = launches.stream()
+                .map(this::updateLaunchInfo)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
+        return new WidgetCollection<>(launchInfos.size(), launchInfos);
+    }
 
-        WidgetAggregator() {
-            super(JSON_FILE_NAME);
-        }
-
-        @Override
-        public WidgetCollection<LaunchInfo> getData(Configuration configuration, List<LaunchResults> launches) {
-            List<LaunchInfo> launchInfos = launches.stream()
-                    .map(this::updateLaunchInfo)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .collect(Collectors.toList());
-            return new WidgetCollection<>(launchInfos.size(), launchInfos);
-        }
-
-        private Optional<LaunchInfo> updateLaunchInfo(final LaunchResults results) {
-            final Optional<LaunchInfo> extra = results.getExtra(LAUNCH_BLOCK_NAME);
-            extra.map(launchInfo -> {
-                final Statistic statistic = new Statistic();
-                launchInfo.setStatistic(statistic);
-                results.getResults().forEach(statistic::update);
-                return launchInfo;
-            });
-            return extra;
-        }
+    private Optional<LaunchInfo> updateLaunchInfo(final LaunchResults results) {
+        final Optional<LaunchInfo> extra = results.getExtra(LAUNCH_BLOCK_NAME);
+        extra.map(launchInfo -> {
+            final Statistic statistic = new Statistic();
+            launchInfo.setStatistic(statistic);
+            results.getResults().forEach(statistic::update);
+            return launchInfo;
+        });
+        return extra;
     }
 }

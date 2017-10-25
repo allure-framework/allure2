@@ -57,7 +57,8 @@ public class SeverityPlugin extends CompositeAggregator {
         }
 
         @Override
-        public WidgetCollection<SeverityData> getData(final Configuration configuration, final List<LaunchResults> launches) {
+        protected WidgetCollection<SeverityData> getData(final Configuration configuration,
+                                                         final List<LaunchResults> launches) {
             List<SeverityData> dataList = this.getData(launches);
             return new WidgetCollection<>(dataList.size(), dataList);
         }

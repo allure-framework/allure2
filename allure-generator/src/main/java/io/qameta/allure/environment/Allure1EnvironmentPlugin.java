@@ -1,12 +1,10 @@
 package io.qameta.allure.environment;
 
 import io.qameta.allure.CommonWidgetAggregator;
-import io.qameta.allure.CompositeAggregator;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.EnvironmentItem;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,12 +17,10 @@ import static java.util.stream.Collectors.toList;
 /**
  * @author Egor Borisov ehborisov@gmail.com
  */
-public class Allure1EnvironmentPlugin extends CompositeAggregator {
+public class Allure1EnvironmentPlugin extends CommonWidgetAggregator {
 
     public Allure1EnvironmentPlugin() {
-        super(Arrays.asList(
-                new WidgetAggregator()
-        ));
+        super("environment.json");
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
@@ -45,16 +41,9 @@ public class Allure1EnvironmentPlugin extends CompositeAggregator {
                 .setValues(entry.getValue().stream().map(Map.Entry::getValue).collect(toList()));
     }
 
-    private static class WidgetAggregator extends CommonWidgetAggregator {
-
-        WidgetAggregator() {
-            super("environment.json");
-        }
-
-        @Override
-        public WidgetCollection<EnvironmentItem> getData(Configuration configuration, List<LaunchResults> launches) {
-            List<EnvironmentItem> environmentItems = Allure1EnvironmentPlugin.getData(launches);
-            return new WidgetCollection<>(environmentItems.size(), environmentItems);
-        }
+    @Override
+    public WidgetCollection<EnvironmentItem> getData(Configuration configuration, List<LaunchResults> launches) {
+        List<EnvironmentItem> environmentItems = Allure1EnvironmentPlugin.getData(launches);
+        return new WidgetCollection<>(environmentItems.size(), environmentItems);
     }
 }

@@ -99,7 +99,7 @@ public class SuitesPlugin extends CompositeAggregator {
         }
 
         @Override
-        public Object getData(final Configuration configuration, final List<LaunchResults> launches) {
+        protected Object getData(final Configuration configuration, final List<LaunchResults> launches) {
             final Tree<TestResult> data = SuitesPlugin.getData(launches);
             final List<TreeWidgetItem> items = data.getChildren().stream()
                 .filter(TestResultTreeGroup.class::isInstance)

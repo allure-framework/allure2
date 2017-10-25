@@ -58,7 +58,7 @@ public class SummaryPlugin extends CompositeAggregator {
         }
 
         @Override
-        public SummaryData getData(final Configuration configuration, final List<LaunchResults> launches) {
+        protected SummaryData getData(final Configuration configuration, final List<LaunchResults> launches) {
             return SummaryPlugin.getSummaryData(launches);
         }
     }

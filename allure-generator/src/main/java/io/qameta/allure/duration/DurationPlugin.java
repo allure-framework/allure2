@@ -40,5 +40,4 @@ public class DurationPlugin extends CommonWidgetAggregator {
         List<DurationData> dataList = this.getData(launches);
         return new WidgetCollection<>(dataList.size(), dataList);
     }
-
 }

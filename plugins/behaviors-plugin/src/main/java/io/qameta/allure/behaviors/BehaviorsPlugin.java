@@ -42,11 +42,11 @@ import static io.qameta.allure.tree.TreeUtils.groupByLabels;
 @SuppressWarnings({"PMD.ExcessiveImports", "PMD.UseUtilityClass"})
 public class BehaviorsPlugin extends CompositeAggregator {
 
-    public static final String BEHAVIORS = "behaviors";
+    protected static final String BEHAVIORS = "behaviors";
 
-    public static final String JSON_FILE_NAME = "behaviors.json";
+    protected static final String JSON_FILE_NAME = "behaviors.json";
 
-    public static final String CSV_FILE_NAME = "behaviors.csv";
+    protected static final String CSV_FILE_NAME = "behaviors.csv";
 
     @SuppressWarnings("PMD.DefaultPackage")
     /* default */ static final LabelName[] LABEL_NAMES = new LabelName[] {EPIC, FEATURE, STORY};
