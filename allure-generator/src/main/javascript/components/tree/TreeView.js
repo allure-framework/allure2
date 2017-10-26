@@ -157,9 +157,8 @@ class TreeView extends View {
         if (!current) {
             return;
         }
-        const attachment = this.routeState.get('attachment');
         if (current.testGroup && current.testResult) {
-            if (attachment) {
+            if (this.routeState.get('attachment')) {
                 router.setSearch({attachment: null});
             }
             else{
