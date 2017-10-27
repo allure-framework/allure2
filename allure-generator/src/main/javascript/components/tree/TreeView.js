@@ -111,8 +111,8 @@ class TreeView extends View {
             const uid = el.data('uid');
             el.toggleClass('node__expanded', this.state.has(uid));
         });
-        this.$('.node__title_active').parent('.node').toggleClass('node__expanded', true);
-        this.$('.node__expanded').parent('.node').toggleClass('node__expanded', true);
+        this.$('.node__title_active').parents('.node').toggleClass('node__expanded', true);
+        this.$('.node__expanded').parents('.node').toggleClass('node__expanded', true);
     }
 
     findElement(treeNode) {
