@@ -21,7 +21,6 @@
     font-size: 26px;
     line-height: 40px;
     font-weight: bold;
-    background: url('allure_logo.svg') no-repeat left center;
     padding-left: 40px;
     margin-bottom: 10px;
     margin-left: 10px;
@@ -112,4 +111,12 @@
       white-space: nowrap;
     }
   }
+}
+
+[dir=rtl] .side-nav__brand{
+  background: url('allure_logo_rtl.svg') no-repeat right center;
+}
+
+[dir=ltr] .side-nav__brand{
+  background: url('allure_logo.svg') no-repeat left center;
 }
