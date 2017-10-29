@@ -20,8 +20,7 @@ public abstract class CommonJsonAggregator implements Aggregator {
     private final String fileName;
 
     protected CommonJsonAggregator(final String fileName) {
-        this.location = "data";
-        this.fileName = fileName;
+        this("data", fileName);
     }
 
     protected CommonJsonAggregator(final String location, final String fileName) {

@@ -8,26 +8,26 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Plugin that generates data for Graph tab.
+ * Plugin that generates data for Status chart widget.
  *
  * @since 2.0
  */
-public class StatusPlugin extends CommonJsonAggregator {
+public class StatusChartPlugin extends CommonJsonAggregator {
 
-    public StatusPlugin() {
-        super("widgets", "status.json");
+    public StatusChartPlugin() {
+        super("widgets", "status-chart.json");
     }
 
     @Override
-    protected List<StatusData> getData(final List<LaunchResults> launchesResults) {
+    protected List<StatusChartData> getData(final List<LaunchResults> launchesResults) {
         return launchesResults.stream()
                 .flatMap(launch -> launch.getResults().stream())
                 .map(this::createData)
                 .collect(Collectors.toList());
     }
 
-    private StatusData createData(final TestResult result) {
-        return new StatusData()
+    private StatusChartData createData(final TestResult result) {
+        return new StatusChartData()
                 .setUid(result.getUid())
                 .setName(result.getName())
                 .setStatus(result.getStatus())

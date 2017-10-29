@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @Data
 @Accessors(chain = true)
-public class StatusData implements Serializable {
+public class StatusChartData implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -105,7 +105,7 @@ public class ReportGeneratorTest {
 
     @Test
     public void shouldGenerateWidgetStatusJson() throws Exception {
-        assertThat(output.resolve("widgets/status.json"))
+        assertThat(output.resolve("widgets/status-chart.json"))
                 .isRegularFile();
     }
 

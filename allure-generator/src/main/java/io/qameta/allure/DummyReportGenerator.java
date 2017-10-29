@@ -25,7 +25,7 @@ import io.qameta.allure.owner.OwnerPlugin;
 import io.qameta.allure.plugin.DefaultPluginLoader;
 import io.qameta.allure.retry.RetryPlugin;
 import io.qameta.allure.severity.SeverityPlugin;
-import io.qameta.allure.status.StatusPlugin;
+import io.qameta.allure.status.StatusChartPlugin;
 import io.qameta.allure.suites.SuitesPlugin;
 import io.qameta.allure.summary.SummaryPlugin;
 import io.qameta.allure.tags.TagsPlugin;
@@ -66,7 +66,7 @@ public final class DummyReportGenerator {
             new HistoryPlugin(),
             new HistoryTrendPlugin(),
             new DurationPlugin(),
-            new StatusPlugin(),
+            new StatusChartPlugin(),
             new TimelinePlugin(),
             new SuitesPlugin(),
             new TestsResultsPlugin(),

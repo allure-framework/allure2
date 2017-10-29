@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Plugin that generates data for Graph tab.
+ * Plugin that generates data for Duration graph.
  *
  * @since 2.0
  */
