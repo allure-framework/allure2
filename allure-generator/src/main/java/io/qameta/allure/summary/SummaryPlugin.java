@@ -1,9 +1,7 @@
 package io.qameta.allure.summary;
 
 import io.qameta.allure.CommonJsonAggregator;
-import io.qameta.allure.CommonWidgetAggregator;
 import io.qameta.allure.CompositeAggregator;
-import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.GroupTime;
 import io.qameta.allure.entity.Statistic;
@@ -54,14 +52,14 @@ public class SummaryPlugin extends CompositeAggregator {
         }
     }
 
-    private static class WidgetAggregator extends CommonWidgetAggregator {
+    private static class WidgetAggregator extends CommonJsonAggregator {
 
         WidgetAggregator() {
-            super(JSON_FILE_NAME);
+            super("widgets", JSON_FILE_NAME);
         }
 
         @Override
-        protected SummaryData getData(final Configuration configuration, final List<LaunchResults> launches) {
+        protected SummaryData getData(final List<LaunchResults> launches) {
             return SummaryPlugin.getSummaryData(launches);
         }
     }

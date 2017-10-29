@@ -2,9 +2,7 @@ package io.qameta.allure.behaviors;
 
 import io.qameta.allure.CommonCsvExportAggregator;
 import io.qameta.allure.CommonJsonAggregator;
-import io.qameta.allure.CommonWidgetAggregator;
 import io.qameta.allure.CompositeAggregator;
-import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.csv.CsvExportBehavior;
 import io.qameta.allure.entity.LabelName;
@@ -164,14 +162,14 @@ public class BehaviorsPlugin extends CompositeAggregator {
         }
     }
 
-    protected static class WidgetAggregator extends CommonWidgetAggregator {
+    protected static class WidgetAggregator extends CommonJsonAggregator {
 
         WidgetAggregator() {
-            super(JSON_FILE_NAME);
+            super("widgets", JSON_FILE_NAME);
         }
 
         @Override
-        public TreeWidgetData getData(final Configuration configuration, final List<LaunchResults> launches) {
+        public TreeWidgetData getData(final List<LaunchResults> launches) {
             final Tree<TestResult> data = BehaviorsPlugin.getData(launches);
             final List<TreeWidgetItem> items = data.getChildren().stream()
                     .filter(TestResultTreeGroup.class::isInstance)

@@ -2,9 +2,7 @@ package io.qameta.allure.suites;
 
 import io.qameta.allure.CommonCsvExportAggregator;
 import io.qameta.allure.CommonJsonAggregator;
-import io.qameta.allure.CommonWidgetAggregator;
 import io.qameta.allure.CompositeAggregator;
-import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.csv.CsvExportSuite;
 import io.qameta.allure.entity.TestResult;
@@ -93,14 +91,14 @@ public class SuitesPlugin extends CompositeAggregator {
         }
     }
 
-    private static class WidgetAggregator extends CommonWidgetAggregator {
+    private static class WidgetAggregator extends CommonJsonAggregator {
 
         WidgetAggregator() {
-            super(JSON_FILE_NAME);
+            super("widgets", JSON_FILE_NAME);
         }
 
         @Override
-        protected Object getData(final Configuration configuration, final List<LaunchResults> launches) {
+        protected Object getData(final List<LaunchResults> launches) {
             final Tree<TestResult> data = SuitesPlugin.getData(launches);
             final List<TreeWidgetItem> items = data.getChildren().stream()
                 .filter(TestResultTreeGroup.class::isInstance)

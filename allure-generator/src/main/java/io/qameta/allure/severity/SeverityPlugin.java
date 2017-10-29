@@ -1,7 +1,7 @@
 package io.qameta.allure.severity;
 
 import io.qameta.allure.Aggregator;
-import io.qameta.allure.CommonWidgetAggregator;
+import io.qameta.allure.CommonJsonAggregator;
 import io.qameta.allure.CompositeAggregator;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
@@ -50,20 +50,14 @@ public class SeverityPlugin extends CompositeAggregator {
         }
     }
 
-    private static class WidgetAggregator extends CommonWidgetAggregator {
+    private static class WidgetAggregator extends CommonJsonAggregator {
 
         WidgetAggregator() {
-            super(JSON_FILE_NAME);
+            super("widgets", JSON_FILE_NAME);
         }
 
         @Override
-        protected WidgetCollection<SeverityData> getData(final Configuration configuration,
-                                                         final List<LaunchResults> launches) {
-            List<SeverityData> dataList = this.getData(launches);
-            return new WidgetCollection<>(dataList.size(), dataList);
-        }
-
-        private List<SeverityData> getData(final List<LaunchResults> launchesResults) {
+        protected List<SeverityData> getData(final List<LaunchResults> launchesResults) {
             return launchesResults.stream()
                     .flatMap(launch -> launch.getResults().stream())
                     .map(this::createData)

@@ -3,7 +3,6 @@ package io.qameta.allure.category;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.qameta.allure.CommonCsvExportAggregator;
 import io.qameta.allure.CommonJsonAggregator;
-import io.qameta.allure.CommonWidgetAggregator;
 import io.qameta.allure.CompositeAggregator;
 import io.qameta.allure.Reader;
 import io.qameta.allure.context.JacksonContext;
@@ -202,14 +201,14 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
         }
     }
 
-    private static class WidgetAggregator extends CommonWidgetAggregator {
+    private static class WidgetAggregator extends CommonJsonAggregator {
 
         WidgetAggregator() {
-            super(JSON_FILE_NAME);
+            super("widgets", JSON_FILE_NAME);
         }
 
         @Override
-        protected Object getData(final Configuration configuration, final List<LaunchResults> launches) {
+        protected Object getData(final List<LaunchResults> launches) {
             final Tree<TestResult> data = CategoriesPlugin.getData(launches);
             final List<TreeWidgetItem> items = data.getChildren().stream()
                     .filter(TestResultTreeGroup.class::isInstance)

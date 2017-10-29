@@ -1,6 +1,6 @@
 package io.qameta.allure.launch;
 
-import io.qameta.allure.CommonWidgetAggregator;
+import io.qameta.allure.CommonJsonAggregator;
 import io.qameta.allure.Reader;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
@@ -19,13 +19,13 @@ import java.util.stream.Collectors;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class LaunchPlugin extends CommonWidgetAggregator implements Reader {
+public class LaunchPlugin extends CommonJsonAggregator implements Reader {
 
     private static final String LAUNCH_BLOCK_NAME = "launch";
     private static final String JSON_FILE_NAME = "launch.json";
 
     public LaunchPlugin() {
-        super(JSON_FILE_NAME);
+        super("widgets", JSON_FILE_NAME);
     }
 
     @Override
@@ -45,14 +45,12 @@ public class LaunchPlugin extends CommonWidgetAggregator implements Reader {
     }
 
     @Override
-    public WidgetCollection<LaunchInfo> getData(final Configuration configuration,
-                                                final List<LaunchResults> launches) {
-        List<LaunchInfo> launchInfos = launches.stream()
+    public List<LaunchInfo> getData(final List<LaunchResults> launches) {
+        return launches.stream()
                 .map(this::updateLaunchInfo)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toList());
-        return new WidgetCollection<>(launchInfos.size(), launchInfos);
     }
 
     private Optional<LaunchInfo> updateLaunchInfo(final LaunchResults results) {

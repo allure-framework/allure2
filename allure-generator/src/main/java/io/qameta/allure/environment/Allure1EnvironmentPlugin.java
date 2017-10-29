@@ -1,7 +1,6 @@
 package io.qameta.allure.environment;
 
-import io.qameta.allure.CommonWidgetAggregator;
-import io.qameta.allure.core.Configuration;
+import io.qameta.allure.CommonJsonAggregator;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.EnvironmentItem;
 
@@ -17,21 +16,14 @@ import static java.util.stream.Collectors.toList;
 /**
  * @author Egor Borisov ehborisov@gmail.com
  */
-public class Allure1EnvironmentPlugin extends CommonWidgetAggregator {
+public class Allure1EnvironmentPlugin extends CommonJsonAggregator {
 
     public Allure1EnvironmentPlugin() {
-        super("environment.json");
+        super("widgets", "environment.json");
     }
 
-    @Override
-    public WidgetCollection<EnvironmentItem> getData(final Configuration configuration,
-                                                     final List<LaunchResults> launches) {
-        List<EnvironmentItem> environmentItems = Allure1EnvironmentPlugin.getData(launches);
-        return new WidgetCollection<>(environmentItems.size(), environmentItems);
-    }
 
-    @SuppressWarnings("PMD.DefaultPackage")
-    /* default */ static List<EnvironmentItem> getData(final List<LaunchResults> launches) {
+    protected List<EnvironmentItem> getData(final List<LaunchResults> launches) {
         final List<Map.Entry<String, String>> launchEnvironments = launches.stream()
                 .flatMap(launch -> launch.getExtra(ENVIRONMENT_BLOCK_NAME,
                         (Supplier<Map<String, String>>) HashMap::new).entrySet().stream())

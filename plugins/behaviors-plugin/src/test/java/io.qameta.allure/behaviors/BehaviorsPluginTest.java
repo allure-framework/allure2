@@ -2,7 +2,6 @@ package io.qameta.allure.behaviors;
 
 import io.qameta.allure.DefaultLaunchResults;
 import io.qameta.allure.Issue;
-import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.Status;
@@ -50,9 +49,8 @@ public class BehaviorsPluginTest {
 
         LaunchResults results = new DefaultLaunchResults(testResults, Collections.emptyMap(), Collections.emptyMap());
 
-        final Configuration configuration = mock(Configuration.class);
         TreeWidgetData behaviorsData = new BehaviorsPlugin.WidgetAggregator()
-                .getData(configuration, Collections.singletonList(results));
+                .getData(Collections.singletonList(results));
 
         assertThat(behaviorsData.getItems())
                 .filteredOn(node2 -> node2.getName().equals("feature1"))
@@ -84,9 +82,8 @@ public class BehaviorsPluginTest {
                 .setLabels(asList(EPIC.label("e2"), FEATURE.label("f2"), STORY.label("s2"))));
 
         LaunchResults results = new DefaultLaunchResults(testResults, Collections.emptyMap(), Collections.emptyMap());
-        final Configuration configuration = mock(Configuration.class);
         TreeWidgetData behaviorsData = new BehaviorsPlugin.WidgetAggregator()
-                .getData(configuration, Collections.singletonList(results));
+                .getData(Collections.singletonList(results));
 
         assertThat(behaviorsData.getItems())
                 .extracting("name")

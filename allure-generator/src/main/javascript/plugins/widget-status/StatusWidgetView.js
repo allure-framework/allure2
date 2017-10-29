@@ -25,7 +25,7 @@ export default class StatusWidgetView extends View {
                 stats[testResult.status.toLowerCase()]++;
                 return stats;
             }, {
-            total: this.model.get('total'),
+            total: this.items.length,
             failed: 0,
             broken: 0,
             skipped: 0,

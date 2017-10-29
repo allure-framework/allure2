@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.CommonJsonAggregator;
-import io.qameta.allure.CommonWidgetAggregator;
 import io.qameta.allure.CompositeAggregator;
 import io.qameta.allure.Reader;
 import io.qameta.allure.context.JacksonContext;
@@ -166,17 +165,15 @@ public class HistoryTrendPlugin extends CompositeAggregator implements Reader {
         }
     }
 
-    private static class WidgetAggregator extends CommonWidgetAggregator {
+    private static class WidgetAggregator extends CommonJsonAggregator {
 
         WidgetAggregator() {
-            super(JSON_FILE_NAME);
+            super("widgets", JSON_FILE_NAME);
         }
 
         @Override
-        public WidgetCollection<HistoryTrendItem> getData(final Configuration configuration,
-                                                          final List<LaunchResults> launches) {
-            List<HistoryTrendItem> historyTrendItems = HistoryTrendPlugin.getData(launches);
-            return new WidgetCollection<>(historyTrendItems.size(), historyTrendItems);
+        public List<HistoryTrendItem> getData(final List<LaunchResults> launches) {
+            return HistoryTrendPlugin.getData(launches);
         }
     }
 }

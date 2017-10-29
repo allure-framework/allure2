@@ -1,7 +1,6 @@
 package io.qameta.allure.status;
 
-import io.qameta.allure.CommonWidgetAggregator;
-import io.qameta.allure.core.Configuration;
+import io.qameta.allure.CommonJsonAggregator;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.TestResult;
 
@@ -13,20 +12,14 @@ import java.util.stream.Collectors;
  *
  * @since 2.0
  */
-public class StatusPlugin extends CommonWidgetAggregator {
+public class StatusPlugin extends CommonJsonAggregator {
 
     public StatusPlugin() {
-        super("status.json");
+        super("widgets", "status.json");
     }
 
     @Override
-    protected WidgetCollection<StatusData> getData(final Configuration configuration,
-                                                   final List<LaunchResults> launches) {
-        List<StatusData> dataList = this.getData(launches);
-        return new WidgetCollection<>(dataList.size(), dataList);
-    }
-
-    private List<StatusData> getData(final List<LaunchResults> launchesResults) {
+    protected List<StatusData> getData(final List<LaunchResults> launchesResults) {
         return launchesResults.stream()
                 .flatMap(launch -> launch.getResults().stream())
                 .map(this::createData)

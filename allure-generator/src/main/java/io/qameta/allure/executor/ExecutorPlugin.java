@@ -1,6 +1,6 @@
 package io.qameta.allure.executor;
 
-import io.qameta.allure.CommonWidgetAggregator;
+import io.qameta.allure.CommonJsonAggregator;
 import io.qameta.allure.Reader;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
@@ -19,13 +19,13 @@ import java.util.stream.Collectors;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class ExecutorPlugin extends CommonWidgetAggregator implements Reader {
+public class ExecutorPlugin extends CommonJsonAggregator implements Reader {
 
     public static final String EXECUTORS_BLOCK_NAME = "executor";
     protected static final String JSON_FILE_NAME = "executor.json";
 
     public ExecutorPlugin() {
-        super("executors.json");
+        super("widgets", "executors.json");
     }
 
     @Override
@@ -45,13 +45,7 @@ public class ExecutorPlugin extends CommonWidgetAggregator implements Reader {
     }
 
     @Override
-    public WidgetCollection<ExecutorInfo> getData(final Configuration configuration,
-                                                  final List<LaunchResults> launches) {
-        List<ExecutorInfo> executorInfos = getData(launches);
-        return new WidgetCollection<>(executorInfos.size(), executorInfos);
-    }
-
-    private List<ExecutorInfo> getData(final List<LaunchResults> launches) {
+    protected List<ExecutorInfo> getData(final List<LaunchResults> launches) {
         return launches.stream()
                 .map(launchResults -> launchResults.getExtra(EXECUTORS_BLOCK_NAME))
                 .filter(Optional::isPresent)
