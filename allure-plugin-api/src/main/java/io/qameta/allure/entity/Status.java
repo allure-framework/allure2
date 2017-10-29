@@ -13,6 +13,7 @@ public enum Status implements Serializable {
     BROKEN("broken"),
     PASSED("passed"),
     SKIPPED("skipped"),
+    PENDING("pending"),
     UNKNOWN("unknown");
 
     private static final long serialVersionUID = 1L;

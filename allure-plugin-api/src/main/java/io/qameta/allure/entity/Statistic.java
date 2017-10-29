@@ -22,11 +22,12 @@ public class Statistic implements Serializable {
     protected long broken;
     protected long skipped;
     protected long passed;
+    protected long pending;
     protected long unknown;
 
     @JsonProperty
     public long getTotal() {
-        return getFailed() + getBroken() + getPassed() + getSkipped() + getUnknown();
+        return getFailed() + getBroken() + getPassed() + getSkipped() + getPending() + getUnknown();
     }
 
     /**
@@ -50,6 +51,8 @@ public class Statistic implements Serializable {
                 return getPassed();
             case SKIPPED:
                 return getSkipped();
+            case PENDING:
+                return getPending();
             default:
                 return getUnknown();
         }
@@ -89,6 +92,9 @@ public class Statistic implements Serializable {
             case SKIPPED:
                 setSkipped(getSkipped() + 1);
                 break;
+            case PENDING:
+                setPending(getPending() + 1);
+                break;
             default:
                 setUnknown(getUnknown() + 1);
                 break;
@@ -103,6 +109,7 @@ public class Statistic implements Serializable {
         setBroken(getBroken() + other.getBroken());
         setPassed(getPassed() + other.getPassed());
         setSkipped(getSkipped() + other.getSkipped());
+        setPending(getPending() + other.getPending());
         setUnknown(getUnknown() + other.getUnknown());
     }
 
@@ -111,6 +118,7 @@ public class Statistic implements Serializable {
                 .thenComparing(Statistic::getBroken)
                 .thenComparing(Statistic::getPassed)
                 .thenComparing(Statistic::getSkipped)
+                .thenComparing(Statistic::getPending)
                 .thenComparing(Statistic::getUnknown);
     }
 }
