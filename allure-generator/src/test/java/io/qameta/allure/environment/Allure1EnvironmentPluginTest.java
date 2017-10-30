@@ -15,8 +15,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -127,7 +125,7 @@ public class Allure1EnvironmentPluginTest {
             launches.add(resultsVisitor.getLaunchResults());
         }
         Allure1EnvironmentPlugin envPlugin = new Allure1EnvironmentPlugin();
-        return envPlugin.getData(configuration, launches);
+        return envPlugin.getData(launches);
     }
 
     private void copyFile(Path dir, String resourceName, String fileName) throws IOException {

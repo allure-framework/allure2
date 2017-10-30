@@ -1,7 +1,7 @@
 package io.qameta.allure.launch;
 
+import io.qameta.allure.CommonJsonAggregator;
 import io.qameta.allure.Reader;
-import io.qameta.allure.Widget;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
@@ -19,17 +19,21 @@ import java.util.stream.Collectors;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class LaunchPlugin implements Reader, Widget {
+public class LaunchPlugin extends CommonJsonAggregator implements Reader {
 
     private static final String LAUNCH_BLOCK_NAME = "launch";
-    private static final String LAUNCH_JSON = "launch.json";
+    private static final String JSON_FILE_NAME = "launch.json";
+
+    public LaunchPlugin() {
+        super("widgets", JSON_FILE_NAME);
+    }
 
     @Override
     public void readResults(final Configuration configuration,
                             final ResultsVisitor visitor,
                             final Path directory) {
         final JacksonContext context = configuration.requireContext(JacksonContext.class);
-        final Path executorFile = directory.resolve(LAUNCH_JSON);
+        final Path executorFile = directory.resolve(JSON_FILE_NAME);
         if (Files.exists(executorFile)) {
             try (InputStream is = Files.newInputStream(executorFile)) {
                 final LaunchInfo info = context.getValue().readValue(is, LaunchInfo.class);
@@ -41,8 +45,7 @@ public class LaunchPlugin implements Reader, Widget {
     }
 
     @Override
-    public Object getData(final Configuration configuration,
-                          final List<LaunchResults> launches) {
+    public List<LaunchInfo> getData(final List<LaunchResults> launches) {
         return launches.stream()
                 .map(this::updateLaunchInfo)
                 .filter(Optional::isPresent)
@@ -59,10 +62,5 @@ public class LaunchPlugin implements Reader, Widget {
             return launchInfo;
         });
         return extra;
-    }
-
-    @Override
-    public String getName() {
-        return "launches";
     }
 }
