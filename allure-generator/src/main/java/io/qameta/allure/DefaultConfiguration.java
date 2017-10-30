@@ -47,14 +47,6 @@ public class DefaultConfiguration implements Configuration {
     }
 
     @Override
-    public List<Widget> getWidgets() {
-        return extensions.stream()
-                .filter(Widget.class::isInstance)
-                .map(Widget.class::cast)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public <T> Optional<T> getContext(final Class<T> contextType) {
         return extensions.stream()
                 .filter(contextType::isInstance)

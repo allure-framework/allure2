@@ -3,8 +3,6 @@ package io.qameta.allure;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
-import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.tree.Tree;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -17,9 +15,16 @@ import java.util.List;
  */
 public abstract class CommonJsonAggregator implements Aggregator {
 
+    private final String location;
+
     private final String fileName;
 
     protected CommonJsonAggregator(final String fileName) {
+        this("data", fileName);
+    }
+
+    protected CommonJsonAggregator(final String location, final String fileName) {
+        this.location = location;
         this.fileName = fileName;
     }
 
@@ -28,12 +33,12 @@ public abstract class CommonJsonAggregator implements Aggregator {
                           final List<LaunchResults> launchesResults,
                           final Path outputDirectory) throws IOException {
         final JacksonContext jacksonContext = configuration.requireContext(JacksonContext.class);
-        final Path dataFolder = Files.createDirectories(outputDirectory.resolve("data"));
+        final Path dataFolder = Files.createDirectories(outputDirectory.resolve(this.location));
         final Path dataFile = dataFolder.resolve(this.fileName);
         try (OutputStream os = Files.newOutputStream(dataFile)) {
             jacksonContext.getValue().writeValue(os, getData(launchesResults));
         }
     }
 
-    protected abstract Tree<TestResult> getData(final List<LaunchResults> launchResults);
+    protected abstract Object getData(final List<LaunchResults> launches);
 }

@@ -11,10 +11,6 @@ import TrendChartView from '../../components/graph-trend-chart/TrendChartView';
 class HistoryTrendWidgetView extends View {
     template = template;
 
-    initialize() {
-        this.model = this.model.getWidgetData('history-trend');
-    }
-
     onRender() {
         this.showChildView('chart', new TrendChartView({
             items: this.model.get('items')
