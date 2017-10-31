@@ -66,6 +66,7 @@ import static io.qameta.allure.entity.LabelName.TEST_METHOD;
 import static io.qameta.allure.entity.Status.BROKEN;
 import static io.qameta.allure.entity.Status.FAILED;
 import static io.qameta.allure.entity.Status.PASSED;
+import static io.qameta.allure.entity.Status.PENDING;
 import static io.qameta.allure.entity.Status.SKIPPED;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
@@ -326,8 +327,9 @@ public class Allure1Plugin implements Reader {
                 return PASSED;
             case CANCELED:
             case SKIPPED:
-            case PENDING:
                 return SKIPPED;
+            case PENDING:
+                return PENDING;
             default:
                 return Status.UNKNOWN;
         }

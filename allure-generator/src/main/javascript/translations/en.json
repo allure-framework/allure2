@@ -4,6 +4,7 @@
     "broken": "Broken",
     "passed": "Passed",
     "skipped": "Skipped",
+    "pending": "Xfailed",
     "unknown": "Unknown",
     "flaky": "Test is flaky"
   },

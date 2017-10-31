@@ -128,7 +128,7 @@ public class CucumberJsonResultsReader implements ResultsProcessor {
             return Status.FAILED;
         }
         if (status == PENDING) {
-            return Status.SKIPPED;
+            return Status.XFAIL;
         }
         if (status == SKIPPED) {
             return Status.SKIPPED;
