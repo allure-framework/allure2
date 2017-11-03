@@ -148,6 +148,13 @@ public class Allure2Plugin implements Reader {
                 found.setName(attachment.getName());
             }
             return found;
+        } else if (nonNull(attachment.getSource()) && attachment.getSource().startsWith("http")) {
+            return new Attachment()
+                    .setUid(new RandomUidContext().getValue().get())
+                    .setName(attachment.getName())
+                    .setType(attachment.getType())
+                    .setSource(attachment.getSource())
+                    .setSize(0L);
         } else {
             visitor.error("Could not find attachment " + attachment.getSource() + " in directory " + source);
             return new Attachment()
