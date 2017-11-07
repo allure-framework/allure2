@@ -27,7 +27,7 @@ import static io.qameta.allure.entity.TestResult.comparingByTimeDesc;
  */
 public class RetryPlugin implements Aggregator {
 
-    public static final String RETRY_BLOCK_NAME = "retries";
+    /* default */ static final String RETRY_BLOCK_NAME = "retries";
 
     @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.AvoidInstantiatingObjectsInLoops"})
     @Override
@@ -48,12 +48,8 @@ public class RetryPlugin implements Aggregator {
             final List<RetryItem> retries = results.stream()
                     .sorted(comparingByTimeDesc())
                     .filter(result -> !latest.equals(result))
-                    .map(retry -> retry.setHidden(true))
-                    .map(retry -> new RetryItem()
-                            .setStatus(retry.getStatus())
-                            .setStatusDetails(retry.getStatusDetailsSafe().getMessage())
-                            .setTime(retry.getTime())
-                            .setUid(retry.getUid()))
+                    .map(this::prepareRetry)
+                    .map(this::createRetryItem)
                     .collect(Collectors.toList());
             latest.setExtraBlock(RETRY_BLOCK_NAME, retries);
             final Set<Status> statuses = retries.stream()
@@ -66,6 +62,20 @@ public class RetryPlugin implements Aggregator {
 
             latest.getStatusDetailsSafe().setFlaky(!statuses.isEmpty());
         };
+    }
+
+    private TestResult prepareRetry(TestResult result) {
+        result.setHidden(true);
+        result.setRetry(true);
+        return result;
+    }
+
+    private RetryItem createRetryItem(TestResult result) {
+        return new RetryItem()
+                .setStatus(result.getStatus())
+                .setStatusDetails(result.getStatusDetailsSafe().getMessage())
+                .setTime(result.getTime())
+                .setUid(result.getUid());
     }
 
     private Optional<TestResult> findLatest(final List<TestResult> results) {

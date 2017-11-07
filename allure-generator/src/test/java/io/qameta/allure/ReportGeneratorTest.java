@@ -80,6 +80,12 @@ public class ReportGeneratorTest {
     }
 
     @Test
+    public void shouldGenerateWidgetRetryTrendJson() throws Exception {
+        assertThat(output.resolve("widgets/retry-trend.json"))
+                .isRegularFile();
+    }
+
+    @Test
     public void shouldGenerateWidgetEnvironmentJson() throws Exception {
         assertThat(output.resolve("widgets/environment.json"))
                 .isRegularFile();

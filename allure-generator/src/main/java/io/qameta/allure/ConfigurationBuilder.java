@@ -24,6 +24,7 @@ import io.qameta.allure.launch.LaunchPlugin;
 import io.qameta.allure.mail.MailPlugin;
 import io.qameta.allure.owner.OwnerPlugin;
 import io.qameta.allure.retry.RetryPlugin;
+import io.qameta.allure.retry.RetryTrendPlugin;
 import io.qameta.allure.severity.SeverityPlugin;
 import io.qameta.allure.status.StatusChartPlugin;
 import io.qameta.allure.suites.SuitesPlugin;
@@ -57,6 +58,7 @@ public class ConfigurationBuilder {
                 new RandomUidContext(),
                 new MarkdownDescriptionsPlugin(),
                 new RetryPlugin(),
+                new RetryTrendPlugin(),
                 new TagsPlugin(),
                 new SeverityPlugin(),
                 new OwnerPlugin(),

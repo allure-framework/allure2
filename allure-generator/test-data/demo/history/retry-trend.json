@@ -1,0 +1,16 @@
+[ {
+  "buildOrder" : 12,
+  "reportUrl" : "http://example.org/build#13/AllureReport",
+  "reportName" : "Demo allure report",
+  "retryNumber" : 4
+} ,{
+  "buildOrder" : 11,
+  "reportUrl" : "http://example.org/build#12/AllureReport",
+  "reportName" : "Demo report 1",
+  "retryNumber" : 2
+},{
+  "buildOrder" : 10,
+  "reportUrl" : "http://example.org/build#11/AllureReport",
+  "reportName" : "Demo report",
+  "retryNumber" : 3
+}]
