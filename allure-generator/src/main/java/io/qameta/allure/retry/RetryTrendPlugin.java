@@ -11,6 +11,7 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.ExecutorInfo;
+import io.qameta.allure.entity.TestResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,9 +39,9 @@ public class RetryTrendPlugin extends CompositeAggregator implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RetryTrendPlugin.class);
 
-    public static final String JSON_FILE_NAME = "retry-trend.json";
-    public static final String RETRY_TREND_BLOCK_NAME = "retry-trend";
-    public static final String HISTORY = "history";
+    private static final String JSON_FILE_NAME = "retry-trend.json";
+    private static final String RETRY_TREND_BLOCK_NAME = "retry-trend";
+    private static final String HISTORY = "history";
 
     public RetryTrendPlugin() {
         super(Arrays.asList(
@@ -49,9 +50,9 @@ public class RetryTrendPlugin extends CompositeAggregator implements Reader {
     }
 
     @Override
-    public void readResults(Configuration configuration,
-                            ResultsVisitor visitor,
-                            Path directory) {
+    public void readResults(final Configuration configuration,
+                            final ResultsVisitor visitor,
+                            final Path directory) {
         final JacksonContext context = configuration.requireContext(JacksonContext.class);
         final Path historyFile = directory.resolve(HISTORY).resolve(JSON_FILE_NAME);
         if (Files.exists(historyFile)) {
@@ -78,8 +79,8 @@ public class RetryTrendPlugin extends CompositeAggregator implements Reader {
     }
 
     private Optional<RetryTrendItem> parseItem(final Path historyFile,
-                                                 final ObjectMapper mapper,
-                                                 final JsonNode child) {
+                                               final ObjectMapper mapper,
+                                               final JsonNode child) {
         try {
             return Optional.ofNullable(mapper.treeToValue(child, RetryTrendItem.class));
         } catch (JsonProcessingException e) {
@@ -120,7 +121,7 @@ public class RetryTrendPlugin extends CompositeAggregator implements Reader {
         });
         launchesResults.stream()
                 .flatMap(launch -> launch.getAllResults().stream())
-                .filter(result -> result.isRetry())
+                .filter(TestResult::isRetry)
                 .forEach(result -> item.updateNumber());
         return item;
     }

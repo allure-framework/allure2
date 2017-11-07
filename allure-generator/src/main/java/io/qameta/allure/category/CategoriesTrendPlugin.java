@@ -1,4 +1,4 @@
-package io.qameta.allure.duration;
+package io.qameta.allure.category;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -11,7 +11,6 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.ExecutorInfo;
-import io.qameta.allure.entity.GroupTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,15 +34,15 @@ import static java.util.Comparator.nullsFirst;
 import static java.util.Spliterators.spliteratorUnknownSize;
 import static java.util.stream.StreamSupport.stream;
 
-public class DurationTrendPlugin extends CompositeAggregator implements Reader {
+public class CategoriesTrendPlugin extends CompositeAggregator implements Reader {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DurationTrendPlugin.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CategoriesTrendPlugin.class);
 
-    private static final String JSON_FILE_NAME = "duration-trend.json";
-    private static final String DURATION_TREND_BLOCK_NAME = "duration-trend";
+    private static final String JSON_FILE_NAME = "categories-trend.json";
+    private static final String CATEGORIES_TREND_BLOCK_NAME = "categories-trend";
     private static final String HISTORY = "history";
 
-    public DurationTrendPlugin() {
+    public CategoriesTrendPlugin() {
         super(Arrays.asList(
                 new JsonAggregator(), new WidgetAggregator()
         ));
@@ -59,15 +58,15 @@ public class DurationTrendPlugin extends CompositeAggregator implements Reader {
             try (InputStream is = Files.newInputStream(historyFile)) {
                 final ObjectMapper mapper = context.getValue();
                 final JsonNode jsonNode = mapper.readTree(is);
-                final List<DurationTrendItem> history = getStream(jsonNode)
+                final List<CategoriesTrendItem> history = getStream(jsonNode)
                         .map(child -> parseItem(historyFile, mapper, child))
                         .filter(Optional::isPresent)
                         .map(Optional::get)
                         .collect(Collectors.toList());
 
-                visitor.visitExtra(DURATION_TREND_BLOCK_NAME, history);
+                visitor.visitExtra(CATEGORIES_TREND_BLOCK_NAME, history);
             } catch (IOException e) {
-                visitor.error("Could not read duration-trend file " + historyFile, e);
+                visitor.error("Could not read categories-trend file " + historyFile, e);
             }
         }
     }
@@ -78,11 +77,11 @@ public class DurationTrendPlugin extends CompositeAggregator implements Reader {
                 false);
     }
 
-    private Optional<DurationTrendItem> parseItem(final Path historyFile,
-                                                 final ObjectMapper mapper,
-                                                 final JsonNode child) {
+    private Optional<CategoriesTrendItem> parseItem(final Path historyFile,
+                                                    final ObjectMapper mapper,
+                                                    final JsonNode child) {
         try {
-            return Optional.ofNullable(mapper.treeToValue(child, DurationTrendItem.class));
+            return Optional.ofNullable(mapper.treeToValue(child, CategoriesTrendItem.class));
         } catch (JsonProcessingException e) {
             LOGGER.warn("Could not read {}", historyFile, e);
             return Optional.empty();
@@ -90,39 +89,38 @@ public class DurationTrendPlugin extends CompositeAggregator implements Reader {
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
-    /* default */ static List<DurationTrendItem> getData(final List<LaunchResults> launchesResults) {
-        final DurationTrendItem item = createCurrent(launchesResults);
-        final List<DurationTrendItem> data = getHistoryItems(launchesResults);
+    /* default */ static List<CategoriesTrendItem> getData(final List<LaunchResults> launchesResults) {
+        final CategoriesTrendItem item = createCurrent(launchesResults);
+        final List<CategoriesTrendItem> data = getHistoryItems(launchesResults);
 
         return Stream.concat(Stream.of(item), data.stream())
                 .limit(20)
                 .collect(Collectors.toList());
     }
 
-    private static List<DurationTrendItem> getHistoryItems(final List<LaunchResults> launchesResults) {
+    private static List<CategoriesTrendItem> getHistoryItems(final List<LaunchResults> launchesResults) {
         return launchesResults.stream()
-                .map(DurationTrendPlugin::getPreviousTrendData)
+                .map(CategoriesTrendPlugin::getPreviousTrendData)
                 .reduce(new ArrayList<>(), (first, second) -> {
                     first.addAll(second);
                     return first;
                 });
     }
 
-    private static List<DurationTrendItem> getPreviousTrendData(final LaunchResults results) {
-        return results.getExtra(DURATION_TREND_BLOCK_NAME, ArrayList::new);
+    private static List<CategoriesTrendItem> getPreviousTrendData(final LaunchResults results) {
+        return results.getExtra(CATEGORIES_TREND_BLOCK_NAME, ArrayList::new);
     }
 
-    private static DurationTrendItem createCurrent(final List<LaunchResults> launchesResults) {
-        final DurationTrendItem item = new DurationTrendItem()
-                .setTime(new GroupTime());
+    private static CategoriesTrendItem createCurrent(final List<LaunchResults> launchesResults) {
+        final CategoriesTrendItem item = new CategoriesTrendItem();
         extractLatestExecutor(launchesResults).ifPresent(info -> {
             item.setBuildOrder(info.getBuildOrder());
             item.setReportName(info.getReportName());
             item.setReportUrl(info.getReportUrl());
         });
         launchesResults.stream()
-                .flatMap(launch -> launch.getResults().stream())
-                .forEach(result -> item.getTime().update(result));
+                .flatMap(launch -> launch.getAllResults().stream())
+                .forEach(item::updateCategories);
         return item;
     }
 
@@ -145,8 +143,8 @@ public class DurationTrendPlugin extends CompositeAggregator implements Reader {
         }
 
         @Override
-        protected List<DurationTrendItem> getData(final List<LaunchResults> launches) {
-            return DurationTrendPlugin.getData(launches);
+        protected List<CategoriesTrendItem> getData(final List<LaunchResults> launches) {
+            return CategoriesTrendPlugin.getData(launches);
         }
     }
 
@@ -157,8 +155,8 @@ public class DurationTrendPlugin extends CompositeAggregator implements Reader {
         }
 
         @Override
-        public List<DurationTrendItem> getData(final List<LaunchResults> launches) {
-            return DurationTrendPlugin.getData(launches);
+        public List<CategoriesTrendItem> getData(final List<LaunchResults> launches) {
+            return CategoriesTrendPlugin.getData(launches);
         }
     }
 }

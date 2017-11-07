@@ -3,6 +3,7 @@ package io.qameta.allure;
 import io.qameta.allure.allure1.Allure1Plugin;
 import io.qameta.allure.allure2.Allure2Plugin;
 import io.qameta.allure.category.CategoriesPlugin;
+import io.qameta.allure.category.CategoriesTrendPlugin;
 import io.qameta.allure.context.FreemarkerContext;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.context.MarkdownContext;
@@ -66,6 +67,7 @@ public final class DummyReportGenerator {
             new SeverityPlugin(),
             new OwnerPlugin(),
             new CategoriesPlugin(),
+            new CategoriesTrendPlugin(),
             new HistoryPlugin(),
             new HistoryTrendPlugin(),
             new DurationPlugin(),

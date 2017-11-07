@@ -19,7 +19,7 @@ public class RetryTrendItem implements Serializable {
     protected String reportName;
     protected int retryNumber;
 
-    public void updateNumber() {
+    protected void updateNumber() {
         this.retryNumber ++;
     }
 }

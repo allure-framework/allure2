@@ -1,0 +1,34 @@
+[ {
+  "buildOrder" : 12,
+  "reportUrl" : "http://example.org/build#13/AllureReport",
+  "reportName" : "Demo allure report",
+  "categories" : {
+    "Product defects" : 4,
+    "Outdated tests" : 3,
+    "Infrastructure problems" : 1,
+    "Test defects" : 1,
+    "Ignored tests" : 1
+  }
+},{
+  "buildOrder" : 11,
+  "reportUrl" : "http://example.org/build#12/AllureReport",
+  "reportName" : "Demo report 1",
+  "categories" : {
+    "Product defects" : 4,
+    "Outdated tests" : 5,
+    "Infrastructure problems" : 1,
+    "Test defects" : 2,
+    "Ignored tests" : 1
+  }
+},{
+  "buildOrder" : 10,
+  "reportUrl" : "http://example.org/build#11/AllureReport",
+  "reportName" : "Demo report",
+  "categories" : {
+    "Product defects" : 3,
+    "Outdated tests" : 1,
+    "Infrastructure problems" : 1,
+    "Test defects" : 2,
+    "Ignored tests" : 1
+  }
+}]
