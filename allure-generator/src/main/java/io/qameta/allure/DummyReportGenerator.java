@@ -15,6 +15,7 @@ import io.qameta.allure.core.Plugin;
 import io.qameta.allure.core.ReportWebPlugin;
 import io.qameta.allure.core.TestsResultsPlugin;
 import io.qameta.allure.duration.DurationPlugin;
+import io.qameta.allure.duration.DurationTrendPlugin;
 import io.qameta.allure.environment.Allure1EnvironmentPlugin;
 import io.qameta.allure.executor.ExecutorPlugin;
 import io.qameta.allure.history.HistoryPlugin;
@@ -66,6 +67,7 @@ public final class DummyReportGenerator {
             new HistoryPlugin(),
             new HistoryTrendPlugin(),
             new DurationPlugin(),
+            new DurationTrendPlugin(),
             new StatusChartPlugin(),
             new TimelinePlugin(),
             new SuitesPlugin(),
