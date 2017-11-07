@@ -35,13 +35,17 @@ import static java.util.Comparator.nullsFirst;
 import static java.util.Spliterators.spliteratorUnknownSize;
 import static java.util.stream.StreamSupport.stream;
 
+/**
+ * Plugin that generates data for Retry-Trend graph.
+ */
+@SuppressWarnings("PMD.ExcessiveImports")
 public class RetryTrendPlugin extends CompositeAggregator implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RetryTrendPlugin.class);
 
-    private static final String JSON_FILE_NAME = "retry-trend.json";
+    protected static final String JSON_FILE_NAME = "retry-trend.json";
     private static final String RETRY_TREND_BLOCK_NAME = "retry-trend";
-    private static final String HISTORY = "history";
+    protected static final String HISTORY = "history";
 
     public RetryTrendPlugin() {
         super(Arrays.asList(

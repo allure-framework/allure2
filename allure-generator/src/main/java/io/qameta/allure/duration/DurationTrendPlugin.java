@@ -35,13 +35,17 @@ import static java.util.Comparator.nullsFirst;
 import static java.util.Spliterators.spliteratorUnknownSize;
 import static java.util.stream.StreamSupport.stream;
 
+/**
+ * Plugin that generates data for Duration-Trend graph.
+ */
+@SuppressWarnings("PMD.ExcessiveImports")
 public class DurationTrendPlugin extends CompositeAggregator implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DurationTrendPlugin.class);
 
-    private static final String JSON_FILE_NAME = "duration-trend.json";
+    protected static final String JSON_FILE_NAME = "duration-trend.json";
     private static final String DURATION_TREND_BLOCK_NAME = "duration-trend";
-    private static final String HISTORY = "history";
+    protected static final String HISTORY = "history";
 
     public DurationTrendPlugin() {
         super(Arrays.asList(
@@ -138,7 +142,7 @@ public class DurationTrendPlugin extends CompositeAggregator implements Reader {
                 .findFirst();
     }
 
-    protected static class JsonAggregator extends CommonJsonAggregator {
+    private static class JsonAggregator extends CommonJsonAggregator {
 
         JsonAggregator() {
             super(HISTORY, JSON_FILE_NAME);

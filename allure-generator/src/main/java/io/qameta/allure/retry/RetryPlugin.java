@@ -27,7 +27,7 @@ import static io.qameta.allure.entity.TestResult.comparingByTimeDesc;
  */
 public class RetryPlugin implements Aggregator {
 
-    /* default */ static final String RETRY_BLOCK_NAME = "retries";
+    protected static final String RETRY_BLOCK_NAME = "retries";
 
     @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.AvoidInstantiatingObjectsInLoops"})
     @Override
@@ -64,13 +64,13 @@ public class RetryPlugin implements Aggregator {
         };
     }
 
-    private TestResult prepareRetry(TestResult result) {
+    private TestResult prepareRetry(final TestResult result) {
         result.setHidden(true);
         result.setRetry(true);
         return result;
     }
 
-    private RetryItem createRetryItem(TestResult result) {
+    private RetryItem createRetryItem(final TestResult result) {
         return new RetryItem()
                 .setStatus(result.getStatus())
                 .setStatusDetails(result.getStatusDetailsSafe().getMessage())

@@ -1,11 +1,9 @@
 package io.qameta.allure.duration;
 
 import io.qameta.allure.entity.GroupTime;
-import io.qameta.allure.entity.Statistic;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import javax.xml.bind.annotation.XmlElement;
 import java.io.Serializable;
 
 /**

@@ -34,13 +34,17 @@ import static java.util.Comparator.nullsFirst;
 import static java.util.Spliterators.spliteratorUnknownSize;
 import static java.util.stream.StreamSupport.stream;
 
+/**
+ * Plugin that generates data for Categories-trend graph.
+ */
+@SuppressWarnings("PMD.ExcessiveImports")
 public class CategoriesTrendPlugin extends CompositeAggregator implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CategoriesTrendPlugin.class);
 
-    private static final String JSON_FILE_NAME = "categories-trend.json";
+    protected static final String JSON_FILE_NAME = "categories-trend.json";
     private static final String CATEGORIES_TREND_BLOCK_NAME = "categories-trend";
-    private static final String HISTORY = "history";
+    protected static final String HISTORY = "history";
 
     public CategoriesTrendPlugin() {
         super(Arrays.asList(
@@ -136,7 +140,7 @@ public class CategoriesTrendPlugin extends CompositeAggregator implements Reader
                 .findFirst();
     }
 
-    protected static class JsonAggregator extends CommonJsonAggregator {
+    private static class JsonAggregator extends CommonJsonAggregator {
 
         JsonAggregator() {
             super(HISTORY, JSON_FILE_NAME);
