@@ -11,7 +11,6 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.ExecutorInfo;
-import io.qameta.allure.entity.GroupTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,8 +82,8 @@ public class DurationTrendPlugin extends CompositeAggregator implements Reader {
     }
 
     private Optional<DurationTrendItem> parseItem(final Path historyFile,
-                                                 final ObjectMapper mapper,
-                                                 final JsonNode child) {
+                                                  final ObjectMapper mapper,
+                                                  final JsonNode child) {
         try {
             return Optional.ofNullable(mapper.treeToValue(child, DurationTrendItem.class));
         } catch (JsonProcessingException e) {
@@ -117,8 +116,7 @@ public class DurationTrendPlugin extends CompositeAggregator implements Reader {
     }
 
     private static DurationTrendItem createCurrent(final List<LaunchResults> launchesResults) {
-        final DurationTrendItem item = new DurationTrendItem()
-                .setTime(new GroupTime());
+        final DurationTrendItem item = new DurationTrendItem();
         extractLatestExecutor(launchesResults).ifPresent(info -> {
             item.setBuildOrder(info.getBuildOrder());
             item.setReportName(info.getReportName());
@@ -126,7 +124,7 @@ public class DurationTrendPlugin extends CompositeAggregator implements Reader {
         });
         launchesResults.stream()
                 .flatMap(launch -> launch.getResults().stream())
-                .forEach(result -> item.getTime().update(result));
+                .forEach(item::updateTime);
         return item;
     }
 

@@ -1,25 +1,20 @@
 package io.qameta.allure.retry;
 
-import lombok.Data;
-import lombok.experimental.Accessors;
-
-import java.io.Serializable;
+import io.qameta.allure.trend.TrendItem;
 
 /**
  * Represent information about retries.
  */
-@Data
-@Accessors(chain = true)
-public class RetryTrendItem implements Serializable {
+public class RetryTrendItem extends TrendItem {
 
-    private static final long serialVersionUID = 1L;
+    private static final String RETRY_KEY = "retry";
 
-    protected Long buildOrder;
-    protected String reportUrl;
-    protected String reportName;
-    protected int retryNumber;
-
-    protected void updateNumber() {
-        this.retryNumber ++;
+    public RetryTrendItem() {
+        this.setMetric(RETRY_KEY, 0L);
     }
+
+    public void increaseRetryCount() {
+        this.increaseMetric(RETRY_KEY);
+    }
+
 }

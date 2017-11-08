@@ -126,7 +126,7 @@ public class RetryTrendPlugin extends CompositeAggregator implements Reader {
         launchesResults.stream()
                 .flatMap(launch -> launch.getAllResults().stream())
                 .filter(TestResult::isRetry)
-                .forEach(result -> item.updateNumber());
+                .forEach(result -> item.increaseRetryCount());
         return item;
     }
 

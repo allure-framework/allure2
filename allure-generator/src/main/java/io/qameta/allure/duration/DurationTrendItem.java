@@ -1,22 +1,23 @@
 package io.qameta.allure.duration;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.qameta.allure.entity.GroupTime;
-import lombok.Data;
-import lombok.experimental.Accessors;
-
-import java.io.Serializable;
+import io.qameta.allure.entity.Timeable;
+import io.qameta.allure.trend.TrendItem;
 
 /**
  * @author charlie (Dmitry Baev).
  */
-@Data
-@Accessors(chain = true)
-public class DurationTrendItem implements Serializable {
+public class DurationTrendItem extends TrendItem {
 
-    private static final long serialVersionUID = 1L;
+    private static final String DURATION_KEY = "duration";
 
-    protected Long buildOrder;
-    protected String reportUrl;
-    protected String reportName;
-    protected GroupTime time = new GroupTime();
+    @JsonIgnore
+    private final GroupTime time = new GroupTime();
+
+    public void updateTime(final Timeable timeable) {
+        time.update(timeable);
+        setMetric(DURATION_KEY, time.getDuration());
+    }
+
 }

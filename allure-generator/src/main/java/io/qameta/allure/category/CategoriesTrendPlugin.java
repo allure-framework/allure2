@@ -124,7 +124,7 @@ public class CategoriesTrendPlugin extends CompositeAggregator implements Reader
         });
         launchesResults.stream()
                 .flatMap(launch -> launch.getAllResults().stream())
-                .forEach(item::updateCategories);
+                .forEach(item::increaseCategories);
         return item;
     }
 
