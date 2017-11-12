@@ -43,6 +43,15 @@
     "trend": {
       "name": "Trend"
     },
+    "categoriesTrend": {
+      "name": "Categories trend"
+    },
+    "durationTrend": {
+      "name": "Duration trend"
+    },
+    "retryTrend": {
+      "name": "Retries trend"
+    },
     "executors": {
       "name": "Executors",
       "unknown": "Unknown",

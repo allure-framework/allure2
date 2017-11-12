@@ -1,37 +1,50 @@
-[ {
-  "buildOrder" : 12,
-  "reportUrl" : "http://example.org/build#12/AllureReport",
-  "reportName" : "Demo allure report",
-  "time" : {
-    "start" : 1412949039950,
-    "stop" : 1412949953780,
-    "duration" : 913830,
-    "minDuration" : 0,
-    "maxDuration" : 20367,
-    "sumDuration" : 62773
+[
+  {
+    "buildOrder": 12,
+    "reportUrl": "http://example.org/build#12/AllureReport",
+    "reportName": "Demo allure report",
+    "data": {
+      "duration": 1013830
+    }
+  },
+  {
+    "buildOrder": 11,
+    "reportUrl": "http://example.org/build#12/AllureReport",
+    "reportName": "Demo report 1",
+    "data": {
+      "duration": 903830
+    }
+  },
+  {
+    "buildOrder": 10,
+    "reportUrl": "http://example.org/build#11/AllureReport",
+    "reportName": "Demo report",
+    "data": {
+      "duration": 1003840
+    }
+  },
+  {
+    "buildOrder": 9,
+    "reportUrl": "http://example.org/build#12/AllureReport",
+    "reportName": "Demo allure report",
+    "data": {
+      "duration": 1513830
+    }
+  },
+  {
+    "buildOrder": 8,
+    "reportUrl": "http://example.org/build#12/AllureReport",
+    "reportName": "Demo report 1",
+    "data": {
+      "duration": 813830
+    }
+  },
+  {
+    "buildOrder": 7,
+    "reportUrl": "http://example.org/build#11/AllureReport",
+    "reportName": "Demo report",
+    "data": {
+      "duration": 803840
+    }
   }
-},{
-  "buildOrder" : 11,
-  "reportUrl" : "http://example.org/build#12/AllureReport",
-  "reportName" : "Demo report 1",
-  "time" : {
-    "start" : 1412948049950,
-    "stop" : 1412948953780,
-    "duration" : 903830,
-    "minDuration" : 0,
-    "maxDuration" : 10367,
-    "sumDuration" : 58773
-  }
-},{
-  "buildOrder" : 10,
-  "reportUrl" : "http://example.org/build#11/AllureReport",
-  "reportName" : "Demo report",
-  "time" : {
-    "start" : 1412947049950,
-    "stop" :  1412947953790,
-    "duration" : 903840,
-    "minDuration" : 1,
-    "maxDuration" : 20367,
-    "sumDuration" : 52773
-  }
-} ]
+]
