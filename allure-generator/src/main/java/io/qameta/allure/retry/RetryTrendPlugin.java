@@ -11,7 +11,6 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.ExecutorInfo;
-import io.qameta.allure.entity.TestResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -125,8 +124,7 @@ public class RetryTrendPlugin extends CompositeAggregator implements Reader {
         });
         launchesResults.stream()
                 .flatMap(launch -> launch.getAllResults().stream())
-                .filter(TestResult::isRetry)
-                .forEach(result -> item.increaseRetryCount());
+                .forEach(item::update);
         return item;
     }
 
