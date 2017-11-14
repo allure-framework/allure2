@@ -4,7 +4,7 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.beust.jcommander.ParametersDelegate;
 import io.qameta.allure.convert.PathConverter;
-import io.qameta.allure.option.PortOptions;
+import io.qameta.allure.option.HostPortOptions;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,13 +28,13 @@ public class OpenCommand {
     private List<Path> reportDirectories = new ArrayList<>(Collections.singletonList(Paths.get("allure-report")));
 
     @ParametersDelegate
-    private PortOptions portOptions = new PortOptions();
+    private HostPortOptions hostPortOptions = new HostPortOptions();
 
     public List<Path> getReportDirectories() {
         return reportDirectories;
     }
 
-    public PortOptions getPortOptions() {
-        return portOptions;
+    public HostPortOptions getHostPortOptions() {
+        return hostPortOptions;
     }
 }
