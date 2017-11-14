@@ -4,7 +4,6 @@ import io.qameta.allure.Reader;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Timeable;
@@ -100,7 +99,8 @@ public class XcTestPlugin implements Reader {
                 .forEach(activity -> parseStep(directory, result, activity, visitor));
         Optional<Step> lastFailedStep = result.getTestStage().getSteps().stream()
                 .filter(s -> !s.getStatus().equals(Status.PASSED)).sorted((a, b) -> -1).findFirst();
-        lastFailedStep.map(Step::getStatusDetails).ifPresent(result::setStatusDetails);
+        lastFailedStep.map(Step::getStatusMessage).ifPresent(result::setStatusMessage);
+        lastFailedStep.map(Step::getStatusTrace).ifPresent(result::setStatusTrace);
         visitor.visitTestResult(result);
     }
 
@@ -121,7 +121,7 @@ public class XcTestPlugin implements Reader {
         }
         final Step step = ResultsUtils.getStep(props);
         if (activityTitle.startsWith("Assertion Failure:")) {
-            step.setStatusDetails(new StatusDetails().setMessage(activityTitle));
+            step.setStatusMessage(activityTitle);
             step.setStatus(Status.FAILED);
         }
 
@@ -147,7 +147,8 @@ public class XcTestPlugin implements Reader {
         Optional<Step> lastFailedStep = step.getSteps().stream()
                 .filter(s -> !s.getStatus().equals(Status.PASSED)).sorted((a, b) -> -1).findFirst();
         lastFailedStep.map(Step::getStatus).ifPresent(step::setStatus);
-        lastFailedStep.map(Step::getStatusDetails).ifPresent(step::setStatusDetails);
+        lastFailedStep.map(Step::getStatusMessage).ifPresent(step::setStatusMessage);
+        lastFailedStep.map(Step::getStatusTrace).ifPresent(step::setStatusTrace);
     }
 
     @SuppressWarnings("unchecked")

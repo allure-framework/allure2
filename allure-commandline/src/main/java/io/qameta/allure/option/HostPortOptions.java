@@ -9,7 +9,7 @@ import io.qameta.allure.validator.PortValidator;
  * @since 2.0
  */
 @SuppressWarnings("PMD.ImmutableField")
-public class PortOptions {
+public class HostPortOptions {
 
     @Parameter(
             names = {"-p", "--port"},
@@ -18,7 +18,17 @@ public class PortOptions {
     )
     private int port;
 
+    @Parameter(
+            names = {"-h", "--host"},
+            description = "This host will be used to start web server for the report."
+    )
+    private String host;
+
     public int getPort() {
         return port;
+    }
+
+    public String getHost() {
+        return host;
     }
 }

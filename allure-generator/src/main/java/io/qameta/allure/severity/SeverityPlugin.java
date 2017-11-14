@@ -46,7 +46,7 @@ public class SeverityPlugin extends CompositeAggregator {
             final SeverityLevel severityLevel = result.findOneLabel(SEVERITY)
                     .flatMap(SeverityLevel::fromValue)
                     .orElse(SeverityLevel.NORMAL);
-            result.setExtraBlock("severity", severityLevel);
+            result.addExtraBlock("severity", severityLevel);
         }
     }
 
