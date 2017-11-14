@@ -104,8 +104,7 @@ public class InfluxDbExportItem implements Serializable {
         this.metrics.get(name).put(metric, current + 1);
     }
 
-    @Override
-    public String toString() {
+    public String export() {
         final long timestamp = TimeUnit.SECONDS.toNanos(Instant.now().getEpochSecond());
         final StringBuilder builder = new StringBuilder();
         METRICS_NAMES.forEach(name -> addMetricData(builder, name, timestamp));

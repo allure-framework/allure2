@@ -26,7 +26,7 @@ public class InfluxDbExportPlugin implements Aggregator {
         final Path dataFile = dataFolder.resolve(FILE_NAME);
         try (Writer writer = Files.newBufferedWriter(dataFile, Charset.forName("UTF-8"))) {
             InfluxDbExportItem item = getData(launchesResults);
-            writer.write(item.toString());
+            writer.write(item.export());
         }
     }
 
