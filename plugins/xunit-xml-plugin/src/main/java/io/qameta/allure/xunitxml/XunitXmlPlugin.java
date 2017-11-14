@@ -6,7 +6,6 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Parameter;
 import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import io.qameta.allure.parser.XmlElement;
@@ -123,7 +122,8 @@ public class XunitXmlPlugin implements Reader {
 
         fullName.ifPresent(result::setFullName);
         fullName.ifPresent(result::setHistoryId);
-        getStatusDetails(testElement).ifPresent(result::setStatusDetails);
+        getStatusMessage(testElement).ifPresent(result::setStatusMessage);
+        getStatusTrace(testElement).ifPresent(result::setStatusTrace);
         getParameters(testElement).ifPresent(result::setParameters);
 
         result.addLabelIfNotExists(RESULT_FORMAT, XUNIT_RESULTS_FORMAT);
@@ -153,30 +153,27 @@ public class XunitXmlPlugin implements Reader {
         return Status.UNKNOWN;
     }
 
-    private Optional<StatusDetails> getStatusDetails(final XmlElement testElement) {
-        final StatusDetails statusDetails = testElement.getFirst(FAILURE_ELEMENT_NAME)
-                .map(failure -> {
-                    final StatusDetails details = new StatusDetails();
-                    failure.getFirst(MESSAGE_ELEMENT_NAME)
-                            .map(XmlElement::getValue)
-                            .ifPresent(details::setMessage);
+    private Optional<String> getStatusMessage(final XmlElement testElement) {
+        final Optional<String> message = testElement.getFirst(FAILURE_ELEMENT_NAME)
+                .flatMap(failure -> failure.getFirst(MESSAGE_ELEMENT_NAME))
+                .map(XmlElement::getValue);
 
-                    failure.getFirst(STACK_TRACE_ELEMENT_NAME)
-                            .map(XmlElement::getValue)
-                            .ifPresent(details::setTrace);
-                    return details;
-                }).orElse(new StatusDetails());
+        final Optional<String> output = testElement.getFirst(OUTPUT_ELEMENT_NAME)
+                .map(XmlElement::getValue);
 
-        testElement.getFirst(OUTPUT_ELEMENT_NAME)
-                .map(XmlElement::getValue)
-                .ifPresent(output -> {
-                    if (nonNull(statusDetails.getMessage())) {
-                        statusDetails.setMessage(String.format("%s%n%s", statusDetails.getMessage(), output));
-                    } else {
-                        statusDetails.setMessage(output);
-                    }
-                });
-        return Optional.of(statusDetails);
+        if (message.isPresent() && output.isPresent()) {
+            return Optional.of(String.format("%s%n%s", message.get(), output.get()));
+        }
+        if (message.isPresent()) {
+            return message;
+        }
+        return output;
+    }
+
+    private Optional<String> getStatusTrace(final XmlElement testElement) {
+        return testElement.getFirst(FAILURE_ELEMENT_NAME)
+                .flatMap(failure -> failure.getFirst(STACK_TRACE_ELEMENT_NAME))
+                .map(XmlElement::getValue);
     }
 
     private Optional<List<Parameter>> getParameters(final XmlElement testElement) {

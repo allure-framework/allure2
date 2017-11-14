@@ -128,7 +128,7 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
                 .map(Category::getName)
                 .collect(Collectors.toSet());
         final TreeLayer categoriesLayer = new DefaultTreeLayer(categories);
-        final TreeLayer messageLayer = new DefaultTreeLayer(testResult.getStatusMessage().orElse("Without message"));
+        final TreeLayer messageLayer = new DefaultTreeLayer(testResult.getStatusMessage());
         return Arrays.asList(categoriesLayer, messageLayer);
     }
 
@@ -137,15 +137,12 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
                 || nonNull(result.getStatus())
                 && category.getMatchedStatuses().contains(result.getStatus());
         boolean matchesMessage = isNull(category.getMessageRegex())
-                || nonNull(result.getStatusDetails())
-                && nonNull(result.getStatusDetails().getMessage())
-                && matches(result.getStatusDetails().getMessage(), category.getMessageRegex());
+                || nonNull(result.getStatusMessage())
+                && matches(result.getStatusMessage(), category.getMessageRegex());
         boolean matchesTrace = isNull(category.getTraceRegex())
-                || nonNull(result.getStatusDetails())
-                && nonNull(result.getStatusDetails().getTrace())
-                && matches(result.getStatusDetails().getTrace(), category.getTraceRegex());
-        boolean matchesFlaky = nonNull(result.getStatusDetails())
-                && result.getStatusDetails().isFlaky() == category.isFlaky();
+                || nonNull(result.getStatusTrace())
+                && matches(result.getStatusTrace(), category.getTraceRegex());
+        boolean matchesFlaky = result.isFlaky() == category.isFlaky();
         return matchesStatus && matchesMessage && matchesTrace && matchesFlaky;
     }
 
