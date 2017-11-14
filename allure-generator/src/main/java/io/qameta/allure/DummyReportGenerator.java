@@ -21,6 +21,7 @@ import io.qameta.allure.environment.Allure1EnvironmentPlugin;
 import io.qameta.allure.executor.ExecutorPlugin;
 import io.qameta.allure.history.HistoryPlugin;
 import io.qameta.allure.history.HistoryTrendPlugin;
+import io.qameta.allure.influxdb.InfluxDbExportPlugin;
 import io.qameta.allure.launch.LaunchPlugin;
 import io.qameta.allure.mail.MailPlugin;
 import io.qameta.allure.owner.OwnerPlugin;
@@ -78,6 +79,7 @@ public final class DummyReportGenerator {
             new TestsResultsPlugin(),
             new AttachmentsPlugin(),
             new MailPlugin(),
+            new InfluxDbExportPlugin(),
             new SummaryPlugin(),
             new ExecutorPlugin(),
             new LaunchPlugin(),
