@@ -9,7 +9,6 @@ export default class GraphLayout extends AppLayout {
     }
 
     loadData() {
-
         return this.collection.fetch();
     }
 
