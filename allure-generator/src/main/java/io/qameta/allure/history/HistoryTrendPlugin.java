@@ -3,9 +3,9 @@ package io.qameta.allure.history;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.qameta.allure.Aggregator;
+import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.CompositeAggregator;
 import io.qameta.allure.Reader;
-import io.qameta.allure.Widget;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
@@ -18,10 +18,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -43,19 +43,26 @@ import static java.util.stream.StreamSupport.stream;
  * @since 2.0
  */
 @SuppressWarnings("PMD.ExcessiveImports")
-public class HistoryTrendPlugin implements Reader, Aggregator, Widget {
+public class HistoryTrendPlugin extends CompositeAggregator implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HistoryTrendPlugin.class);
 
-    public static final String HISTORY_TREND_JSON = "history-trend.json";
+    public static final String JSON_FILE_NAME = "history-trend.json";
     public static final String HISTORY_TREND_BLOCK_NAME = "history-trend";
+    public static final String HISTORY = "history";
+
+    public HistoryTrendPlugin() {
+        super(Arrays.asList(
+                new JsonAggregator(), new WidgetAggregator()
+        ));
+    }
 
     @Override
     public void readResults(final Configuration configuration,
                             final ResultsVisitor visitor,
                             final Path directory) {
         final JacksonContext context = configuration.requireContext(JacksonContext.class);
-        final Path historyFile = directory.resolve("history").resolve(HISTORY_TREND_JSON);
+        final Path historyFile = directory.resolve(HISTORY).resolve(JSON_FILE_NAME);
 
         if (Files.exists(historyFile)) {
             try (InputStream is = Files.newInputStream(historyFile)) {
@@ -72,29 +79,6 @@ public class HistoryTrendPlugin implements Reader, Aggregator, Widget {
                 visitor.error("Could not read history-trend file " + historyFile, e);
             }
         }
-    }
-
-    @Override
-    public void aggregate(final Configuration configuration,
-                          final List<LaunchResults> launchesResults,
-                          final Path outputDirectory) throws IOException {
-        final List<HistoryTrendItem> limited = getHistoryTrendData(launchesResults);
-        final JacksonContext context = configuration.requireContext(JacksonContext.class);
-        final Path historyFolder = Files.createDirectories(outputDirectory.resolve("history"));
-        final Path historyFile = historyFolder.resolve(HISTORY_TREND_JSON);
-        try (OutputStream os = Files.newOutputStream(historyFile)) {
-            context.getValue().writeValue(os, limited);
-        }
-    }
-
-    @Override
-    public List<HistoryTrendItem> getData(final Configuration configuration, final List<LaunchResults> launches) {
-        return getHistoryTrendData(launches);
-    }
-
-    @Override
-    public String getName() {
-        return HISTORY_TREND_BLOCK_NAME;
     }
 
     private Stream<JsonNode> getStream(final JsonNode jsonNode) {
@@ -119,7 +103,8 @@ public class HistoryTrendPlugin implements Reader, Aggregator, Widget {
         }
     }
 
-    private List<HistoryTrendItem> getHistoryTrendData(final List<LaunchResults> launchesResults) {
+    @SuppressWarnings("PMD.DefaultPackage")
+    /* default */ static List<HistoryTrendItem> getData(final List<LaunchResults> launchesResults) {
         final HistoryTrendItem item = createCurrent(launchesResults);
         final List<HistoryTrendItem> data = getHistoryItems(launchesResults);
 
@@ -128,7 +113,7 @@ public class HistoryTrendPlugin implements Reader, Aggregator, Widget {
                 .collect(Collectors.toList());
     }
 
-    private HistoryTrendItem createCurrent(final List<LaunchResults> launchesResults) {
+    private static HistoryTrendItem createCurrent(final List<LaunchResults> launchesResults) {
         final Statistic statistic = launchesResults.stream()
                 .flatMap(results -> results.getResults().stream())
                 .map(TestResult::getStatus)
@@ -143,16 +128,16 @@ public class HistoryTrendPlugin implements Reader, Aggregator, Widget {
         return item;
     }
 
-    private List<HistoryTrendItem> getHistoryItems(final List<LaunchResults> launchesResults) {
+    private static List<HistoryTrendItem> getHistoryItems(final List<LaunchResults> launchesResults) {
         return launchesResults.stream()
-                .map(this::getPreviousTrendData)
+                .map(HistoryTrendPlugin::getPreviousTrendData)
                 .reduce(new ArrayList<>(), (first, second) -> {
                     first.addAll(second);
                     return first;
                 });
     }
 
-    private List<HistoryTrendItem> getPreviousTrendData(final LaunchResults results) {
+    private static List<HistoryTrendItem> getPreviousTrendData(final LaunchResults results) {
         return results.getExtra(HISTORY_TREND_BLOCK_NAME, ArrayList::new);
     }
 
@@ -166,5 +151,29 @@ public class HistoryTrendPlugin implements Reader, Aggregator, Widget {
                 .map(ExecutorInfo.class::cast)
                 .sorted(comparator.reversed())
                 .findFirst();
+    }
+
+    protected static class JsonAggregator extends CommonJsonAggregator {
+
+        JsonAggregator() {
+            super(HISTORY, JSON_FILE_NAME);
+        }
+
+        @Override
+        protected List<HistoryTrendItem> getData(final List<LaunchResults> launches) {
+            return HistoryTrendPlugin.getData(launches);
+        }
+    }
+
+    private static class WidgetAggregator extends CommonJsonAggregator {
+
+        WidgetAggregator() {
+            super("widgets", JSON_FILE_NAME);
+        }
+
+        @Override
+        public List<HistoryTrendItem> getData(final List<LaunchResults> launches) {
+            return HistoryTrendPlugin.getData(launches);
+        }
     }
 }
