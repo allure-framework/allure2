@@ -135,13 +135,14 @@ public class CommandLine {
             case SERVE_COMMAND:
                 return commands.serve(
                         serveCommand.getResultsOptions().getResultsDirectories(),
-                        serveCommand.getPortOptions().getPort(),
-                        serveCommand.getConfigOptions()
-                );
+                        serveCommand.getHostPortOptions().getHost(),
+                        serveCommand.getHostPortOptions().getPort(),
+                        serveCommand.getConfigOptions());
             case OPEN_COMMAND:
                 return commands.open(
                         openCommand.getReportDirectories().get(0),
-                        openCommand.getPortOptions().getPort()
+                        openCommand.getHostPortOptions().getHost(),
+                        openCommand.getHostPortOptions().getPort()
                 );
             case PLUGIN_COMMAND:
                 return commands.listPlugins(pluginCommand.getConfigOptions());
