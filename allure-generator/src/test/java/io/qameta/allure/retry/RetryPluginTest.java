@@ -7,6 +7,7 @@ import io.qameta.allure.entity.Time;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -52,10 +53,10 @@ public class RetryPluginTest {
         TestResult lastResult = results.stream()
                 .filter(r -> !r.isHidden()).findFirst().orElseGet(null);
 
-        assertThat(lastResult).as("latest test result")
-                .hasFieldOrPropertyWithValue("name", LAST_RESULT)
-                .hasFieldOrPropertyWithValue("hidden", false)
-                .hasFieldOrPropertyWithValue("statusDetails.flaky", true);
+        assertThat(Collections.singletonList(lastResult))
+                .as("latest test result")
+                .extracting(TestResult::getName, TestResult::isHidden, TestResult::isFlaky)
+                .containsExactlyInAnyOrder(tuple(LAST_RESULT, false, true));
 
         assertThat(results).as("test results with retries block")
                 .filteredOn(result -> result.hasExtraBlock(RETRY_BLOCK_NAME))
@@ -108,7 +109,7 @@ public class RetryPluginTest {
 
         assertThat(results)
                 .filteredOn(result -> !result.isHidden())
-                .extracting("name", "statusDetails.flaky")
+                .extracting(TestResult::getName, TestResult::isFlaky)
                 .containsExactlyInAnyOrder(tuple(SECOND_RESULT, true));
     }
 
@@ -129,7 +130,7 @@ public class RetryPluginTest {
 
         assertThat(results)
                 .filteredOn(result -> !result.isHidden())
-                .extracting("name", "statusDetails.flaky")
+                .extracting(TestResult::getName, TestResult::isFlaky)
                 .containsExactlyInAnyOrder(tuple(SECOND_RESULT, false));
     }
 
@@ -151,7 +152,7 @@ public class RetryPluginTest {
 
         assertThat(results)
                 .filteredOn(result -> !result.isHidden())
-                .extracting("name", "statusDetails.flaky")
+                .extracting(TestResult::getName, TestResult::isFlaky)
                 .containsExactlyInAnyOrder(tuple(SECOND_RESULT, false));
     }
 

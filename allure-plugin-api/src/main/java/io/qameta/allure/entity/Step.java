@@ -18,8 +18,11 @@ public class Step implements Serializable, Summarizable {
 
     protected String name;
     protected Time time = new Time();
+
     protected Status status;
-    protected StatusDetails statusDetails = new StatusDetails();
+    protected String statusMessage;
+    protected String statusTrace;
+
     protected List<Step> steps = new ArrayList<>();
     protected List<Attachment> attachments = new ArrayList<>();
     protected List<Parameter> parameters = new ArrayList<>();

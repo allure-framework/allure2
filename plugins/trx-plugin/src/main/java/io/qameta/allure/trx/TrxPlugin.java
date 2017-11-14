@@ -5,7 +5,6 @@ import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import io.qameta.allure.parser.XmlElement;
@@ -160,7 +159,8 @@ public class TrxPlugin implements Reader {
                 .setName(testName)
                 .setStatus(parseStatus(outcome))
                 .setTime(getTime(startTime, endTime));
-        getStatusDetails(unitTestResult).ifPresent(result::setStatusDetails);
+        getStatusMessage(unitTestResult).ifPresent(result::setStatusMessage);
+        getStatusTrace(unitTestResult).ifPresent(result::setStatusTrace);
         Optional.ofNullable(tests.get(executionId)).ifPresent(unitTest -> {
             result.setParameters(unitTest.getParameters());
             result.setDescription(unitTest.getDescription());
@@ -170,15 +170,18 @@ public class TrxPlugin implements Reader {
         visitor.visitTestResult(result);
     }
 
-    private Optional<StatusDetails> getStatusDetails(final XmlElement unitTestResult) {
+    private Optional<String> getStatusMessage(final XmlElement unitTestResult) {
         return unitTestResult.getFirst(OUTPUT_ELEMENT_NAME)
                 .flatMap(output -> output.getFirst(ERROR_INFO_ELEMENT_NAME))
-                .map(output -> {
-                    final StatusDetails details = new StatusDetails();
-                    output.getFirst(MESSAGE_ELEMENT_NAME).map(XmlElement::getValue).ifPresent(details::setMessage);
-                    output.getFirst(STACK_TRACE_ELEMENT_NAME).map(XmlElement::getValue).ifPresent(details::setTrace);
-                    return details;
-                });
+                .flatMap(output -> output.getFirst(MESSAGE_ELEMENT_NAME))
+                .map(XmlElement::getValue);
+    }
+
+    private Optional<String> getStatusTrace(final XmlElement unitTestResult) {
+        return unitTestResult.getFirst(OUTPUT_ELEMENT_NAME)
+                .flatMap(output -> output.getFirst(ERROR_INFO_ELEMENT_NAME))
+                .flatMap(output -> output.getFirst(STACK_TRACE_ELEMENT_NAME))
+                .map(XmlElement::getValue);
     }
 
     private Time getTime(final String startTime, final String endTime) {

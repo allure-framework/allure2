@@ -4,12 +4,9 @@ import io.qameta.allure.Issue;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
-import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.TestResult;
-import org.assertj.core.groups.Tuple;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -89,8 +86,7 @@ public class TrxPluginTest {
         verify(visitor, times(1)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
-                .extracting(TestResult::getStatusDetails)
-                .extracting(StatusDetails::getMessage, StatusDetails::getTrace)
+                .extracting(TestResult::getStatusMessage, TestResult::getStatusTrace)
                 .containsExactly(tuple("Some message", "Some trace"));
     }
 
