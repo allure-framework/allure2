@@ -8,8 +8,10 @@ import java.util.List;
 /**
  * Widget extension.
  *
- * @since 2.0
+ * @since 2.0,
+ * @deprecated use {@link Aggregator} instead.
  */
+@Deprecated
 public interface Widget extends Extension {
 
     /**
