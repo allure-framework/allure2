@@ -73,7 +73,7 @@ public class RetryPlugin implements Aggregator {
     private RetryItem createRetryItem(final TestResult result) {
         return new RetryItem()
                 .setStatus(result.getStatus())
-                .setStatusDetails(result.getStatusDetailsSafe().getMessage())
+                .setStatusDetails(result.getStatusMessage())
                 .setTime(result.getTime())
                 .setUid(result.getUid());
     }
