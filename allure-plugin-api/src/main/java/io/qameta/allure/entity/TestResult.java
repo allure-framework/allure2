@@ -50,6 +50,7 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
     protected List<Parameter> parameters = new ArrayList<>();
     protected List<Link> links = new ArrayList<>();
     protected boolean hidden;
+    protected boolean retry;
     protected final Map<String, Object> extra = new HashMap<>();
 
     @JsonProperty

@@ -11,10 +11,6 @@ import PieChartView from '../../components/graph-pie-chart/PieChartView';
 class SummaryWidgetView extends View {
     template = template;
 
-    initialize(){
-        this.model = this.model.getWidgetData('summary');
-    }
-
     onRender() {
         this.showChildView('chart', new PieChartView({
             model: this.model,

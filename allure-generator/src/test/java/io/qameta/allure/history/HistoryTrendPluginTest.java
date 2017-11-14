@@ -26,7 +26,7 @@ import java.util.Map;
 
 import static io.qameta.allure.executor.ExecutorPlugin.EXECUTORS_BLOCK_NAME;
 import static io.qameta.allure.history.HistoryTrendPlugin.HISTORY_TREND_BLOCK_NAME;
-import static io.qameta.allure.history.HistoryTrendPlugin.HISTORY_TREND_JSON;
+import static io.qameta.allure.history.HistoryTrendPlugin.JSON_FILE_NAME;
 import static io.qameta.allure.testdata.TestData.createLaunchResults;
 import static io.qameta.allure.testdata.TestData.createSingleLaunchResults;
 import static io.qameta.allure.testdata.TestData.randomHistoryTrendItems;
@@ -53,7 +53,7 @@ public class HistoryTrendPluginTest {
     public void shouldReadOldData() throws Exception {
         final Path resultsDirectory = folder.newFolder().toPath();
         final Path history = Files.createDirectories(resultsDirectory.resolve("history"));
-        final Path trend = history.resolve(HISTORY_TREND_JSON);
+        final Path trend = history.resolve(JSON_FILE_NAME);
         TestData.unpackFile("history-trend-old.json", trend);
 
         final Configuration configuration = mock(Configuration.class);
@@ -81,7 +81,7 @@ public class HistoryTrendPluginTest {
     public void shouldReadNewData() throws Exception {
         final Path resultsDirectory = folder.newFolder().toPath();
         final Path history = Files.createDirectories(resultsDirectory.resolve("history"));
-        final Path trend = history.resolve(HISTORY_TREND_JSON);
+        final Path trend = history.resolve(JSON_FILE_NAME);
         TestData.unpackFile("history-trend.json", trend);
 
         final Configuration configuration = mock(Configuration.class);
@@ -130,8 +130,8 @@ public class HistoryTrendPluginTest {
         when(context.getValue())
                 .thenReturn(mapper);
 
-        final HistoryTrendPlugin plugin = new HistoryTrendPlugin();
-        plugin.aggregate(configuration, Collections.emptyList(), outputDirectory);
+        final HistoryTrendPlugin.JsonAggregator aggregator = new HistoryTrendPlugin.JsonAggregator();
+        aggregator.aggregate(configuration, Collections.emptyList(), outputDirectory);
 
         final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.forClass(List.class);
         verify(mapper, times(1))
@@ -156,7 +156,7 @@ public class HistoryTrendPluginTest {
         final Configuration configuration = mock(Configuration.class);
 
         final List<HistoryTrendItem> history = randomHistoryTrendItems();
-        final List<HistoryTrendItem> data = new HistoryTrendPlugin().getData(configuration, createSingleLaunchResults(
+        final List<HistoryTrendItem> data = new HistoryTrendPlugin().getData(createSingleLaunchResults(
                 singletonMap(HISTORY_TREND_BLOCK_NAME, history),
                 randomTestResult().setStatus(Status.PASSED),
                 randomTestResult().setStatus(Status.FAILED),
@@ -203,7 +203,7 @@ public class HistoryTrendPluginTest {
                 )
         );
 
-        final List<HistoryTrendItem> data = new HistoryTrendPlugin().getData(configuration, launchResults);
+        final List<HistoryTrendItem> data = new HistoryTrendPlugin().getData(launchResults);
 
         assertThat(data)
                 .hasSize(1 + history1.size() + history2.size());
@@ -235,7 +235,7 @@ public class HistoryTrendPluginTest {
                         randomTestResult().setStatus(Status.FAILED)
                 )
         );
-        final List<HistoryTrendItem> data = new HistoryTrendPlugin().getData(configuration, launchResults);
+        final List<HistoryTrendItem> data = new HistoryTrendPlugin().getData(launchResults);
 
         assertThat(data)
                 .hasSize(1 + 2 * history.size());

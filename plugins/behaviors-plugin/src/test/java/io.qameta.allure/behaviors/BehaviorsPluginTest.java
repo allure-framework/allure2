@@ -2,7 +2,6 @@ package io.qameta.allure.behaviors;
 
 import io.qameta.allure.DefaultLaunchResults;
 import io.qameta.allure.Issue;
-import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.Status;
@@ -40,8 +39,6 @@ public class BehaviorsPluginTest {
 
     @Test
     public void storiesPerFeatureResultsAggregation() throws IOException {
-        final Configuration configuration = mock(Configuration.class);
-
         final Set<TestResult> testResults = new HashSet<>();
         testResults.add(new TestResult()
                 .setStatus(Status.PASSED)
@@ -52,8 +49,8 @@ public class BehaviorsPluginTest {
 
         LaunchResults results = new DefaultLaunchResults(testResults, Collections.emptyMap(), Collections.emptyMap());
 
-        TreeWidgetData behaviorsData = (TreeWidgetData) new BehaviorsPlugin().getData(configuration,
-                Collections.singletonList(results));
+        TreeWidgetData behaviorsData = new BehaviorsPlugin.WidgetAggregator()
+                .getData(Collections.singletonList(results));
 
         assertThat(behaviorsData.getItems())
                 .filteredOn(node2 -> node2.getName().equals("feature1"))
@@ -76,8 +73,6 @@ public class BehaviorsPluginTest {
 
     @Test
     public void shouldGroupByEpic() throws Exception {
-        final Configuration configuration = mock(Configuration.class);
-
         final Set<TestResult> testResults = new HashSet<>();
         testResults.add(new TestResult()
                 .setStatus(Status.PASSED)
@@ -87,9 +82,8 @@ public class BehaviorsPluginTest {
                 .setLabels(asList(EPIC.label("e2"), FEATURE.label("f2"), STORY.label("s2"))));
 
         LaunchResults results = new DefaultLaunchResults(testResults, Collections.emptyMap(), Collections.emptyMap());
-
-        TreeWidgetData behaviorsData = (TreeWidgetData) new BehaviorsPlugin().getData(configuration,
-                Collections.singletonList(results));
+        TreeWidgetData behaviorsData = new BehaviorsPlugin.WidgetAggregator()
+                .getData(Collections.singletonList(results));
 
         assertThat(behaviorsData.getItems())
                 .extracting("name")
@@ -115,8 +109,7 @@ public class BehaviorsPluginTest {
                 Collections.emptyMap()
         );
 
-        final BehaviorsPlugin plugin = new BehaviorsPlugin();
-        final Tree<TestResult> tree = plugin.getData(Collections.singletonList(results));
+        final Tree<TestResult> tree = BehaviorsPlugin.getData(Collections.singletonList(results));
 
         assertThat(tree.getChildren())
                 .extracting(TreeNode::getName)

@@ -4,6 +4,7 @@ import WidgetsGridView from 'components/widgets-grid/WidgetsGridView';
 import WidgetsModel from 'data/widgets/WidgetsModel';
 import {getSettingsForWidgetGridPlugin} from 'utils/settingsFactory';
 
+
 describe('WidgetsGridView', function() {
     let settings = getSettingsForWidgetGridPlugin('ALLURE_TEST');
     function PageObject(el) {
@@ -15,11 +16,11 @@ describe('WidgetsGridView', function() {
         settings = getSettingsForWidgetGridPlugin('ALLURE_TEST');
         pluginsRegistry.widgets = {
             group: {
-                a: View,
-                b: View,
-                c: View,
-                d: View,
-                e: View
+                a: {widget: View, model: WidgetsModel},
+                b: {widget: View, model: WidgetsModel},
+                c: {widget: View, model: WidgetsModel},
+                d: {widget: View, model: WidgetsModel},
+                e: {widget: View, model: WidgetsModel}
             }
         };
         this.model = new WidgetsModel({
