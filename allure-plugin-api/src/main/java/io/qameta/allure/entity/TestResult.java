@@ -130,9 +130,13 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
     }
 
     public static Comparator<TestResult> comparingByTime() {
+        return comparingByTimeAsc().reversed();
+    }
+
+    public static Comparator<TestResult> comparingByTimeAsc() {
         return comparing(
                 TestResult::getTime,
                 nullsFirst(comparing(Time::getStart, nullsFirst(naturalOrder())))
-        ).reversed();
+        );
     }
 }

@@ -134,10 +134,10 @@ public class CategoriesPluginTest {
                 .setStatus(Status.PASSED)
                 .setStatusMessage("M4");
 
-        first.setExtraBlock(CATEGORIES, singletonList(new Category().setName("C1")));
-        second.setExtraBlock(CATEGORIES, singletonList(new Category().setName("C2")));
-        third.setExtraBlock(CATEGORIES, singletonList(new Category().setName("C1")));
-        other.setExtraBlock(CATEGORIES, singletonList(new Category().setName("C3")));
+        first.addExtraBlock(CATEGORIES, singletonList(new Category().setName("C1")));
+        second.addExtraBlock(CATEGORIES, singletonList(new Category().setName("C2")));
+        third.addExtraBlock(CATEGORIES, singletonList(new Category().setName("C1")));
+        other.addExtraBlock(CATEGORIES, singletonList(new Category().setName("C3")));
 
         final List<LaunchResults> launchResults = createSingleLaunchResults(first, second, third, other);
         final Tree<TestResult> tree = CategoriesPlugin.getData(launchResults);
@@ -234,17 +234,17 @@ public class CategoriesPluginTest {
         final TestResult first = new TestResult()
                 .setName("first")
                 .setStatus(Status.FAILED)
-                .setTime(new Time().setStart(10L))
-                .setExtraBlock(CATEGORIES, singletonList(category));
+                .setTime(new Time().setStart(10L));
+        first.addExtraBlock(CATEGORIES, singletonList(category));
         final TestResult second = new TestResult()
                 .setName("second")
                 .setStatus(Status.FAILED)
-                .setTime(new Time().setStart(12L))
-                .setExtraBlock(CATEGORIES, singletonList(category));
+                .setTime(new Time().setStart(12L));
+        second.addExtraBlock(CATEGORIES, singletonList(category));
         final TestResult timeless = new TestResult()
                 .setName("timeless")
-                .setStatus(Status.FAILED)
-                .setExtraBlock(CATEGORIES, singletonList(category));
+                .setStatus(Status.FAILED);
+        timeless.addExtraBlock(CATEGORIES, singletonList(category));
 
         final Tree<TestResult> tree = CategoriesPlugin.getData(
                 createSingleLaunchResults(second, first, timeless)
