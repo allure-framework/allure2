@@ -25,6 +25,7 @@ import io.qameta.allure.influxdb.InfluxDbExportPlugin;
 import io.qameta.allure.launch.LaunchPlugin;
 import io.qameta.allure.mail.MailPlugin;
 import io.qameta.allure.owner.OwnerPlugin;
+import io.qameta.allure.prometheus.PrometheusExportPlugin;
 import io.qameta.allure.retry.RetryPlugin;
 import io.qameta.allure.retry.RetryTrendPlugin;
 import io.qameta.allure.severity.SeverityPlugin;
@@ -78,6 +79,7 @@ public class ConfigurationBuilder {
                 new AttachmentsPlugin(),
                 new MailPlugin(),
                 new InfluxDbExportPlugin(),
+                new PrometheusExportPlugin(),
                 new SummaryPlugin(),
                 new ExecutorPlugin(),
                 new LaunchPlugin(),

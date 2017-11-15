@@ -26,6 +26,7 @@ import io.qameta.allure.launch.LaunchPlugin;
 import io.qameta.allure.mail.MailPlugin;
 import io.qameta.allure.owner.OwnerPlugin;
 import io.qameta.allure.plugin.DefaultPluginLoader;
+import io.qameta.allure.prometheus.PrometheusExportPlugin;
 import io.qameta.allure.retry.RetryPlugin;
 import io.qameta.allure.retry.RetryTrendPlugin;
 import io.qameta.allure.severity.SeverityPlugin;
@@ -49,7 +50,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author Artem Eroshenko eroshenkoam@qameta.io
- *         Date: 1/22/14
+ * Date: 1/22/14
  */
 @SuppressWarnings("PMD.ExcessiveImports")
 public final class DummyReportGenerator {
@@ -80,6 +81,7 @@ public final class DummyReportGenerator {
             new AttachmentsPlugin(),
             new MailPlugin(),
             new InfluxDbExportPlugin(),
+            new PrometheusExportPlugin(),
             new SummaryPlugin(),
             new ExecutorPlugin(),
             new LaunchPlugin(),
