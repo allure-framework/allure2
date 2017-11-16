@@ -2,6 +2,8 @@ import {addTranslation} from './translation';
 import router from '../router';
 import {showView, notFound} from '../app';
 import translate from '../helpers/t.js';
+import WidgetsModel from '../data/widgets/WidgetsModel';
+
 
 class AllurePluginsRegistry {
     tabs = [];
@@ -22,11 +24,11 @@ class AllurePluginsRegistry {
         router.on('route:' + tabName, showView(onEnter));
     }
 
-    addWidget(tabName, widgetName, Widget) {
+    addWidget(tabName, widgetName, widget, model = WidgetsModel) {
         if (!this.widgets[tabName]) {
             this.widgets[tabName] = {};
         }
-        this.widgets[tabName][widgetName] = Widget;
+        this.widgets[tabName][widgetName] = {widget, model};
     }
 
     addTranslation(lang, json) {

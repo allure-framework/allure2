@@ -76,8 +76,7 @@ public class WithSummaryTest {
 
     @Test
     public void shouldCalculateDisplayMessageFlagIfNoMessage() throws Exception {
-        final Step step = new Step()
-                .setStatusDetails(new StatusDetails());
+        final Step step = new Step();
 
         assertThat(step.shouldDisplayMessage())
                 .isFalse();
@@ -122,6 +121,6 @@ public class WithSummaryTest {
     }
 
     protected Step createStep(final String message) {
-        return new Step().setStatusDetails(new StatusDetails().setMessage(message));
+        return new Step().setStatusMessage(message);
     }
 }
