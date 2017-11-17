@@ -43,6 +43,15 @@
     "trend": {
       "name": "מגמת ריצות"
     },
+    "categoriesTrend": {
+      "name": "מגמת ריצה על קטגוריות"
+    },
+    "durationTrend": {
+      "name": "מגמת זמן ריצה"
+    },
+    "retryTrend": {
+      "name": "מגמת חזרות על ריצה"
+    },
     "executors": {
       "name": "כלי הרצה",
       "unknown": "לא ידוע",
@@ -151,6 +160,7 @@
     "tree": {
       "filter": "מיין מקרי בדיקה על ידי סטטוס",
       "groups": "הצג/הסתר את המידע על הקבוצות",
+      "download": "הורד קובץ CSV",
       "empty": "לא קיימים פריטים",
       "time": {
         "total" : {
