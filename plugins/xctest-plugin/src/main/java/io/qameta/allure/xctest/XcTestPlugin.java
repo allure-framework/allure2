@@ -152,14 +152,11 @@ public class XcTestPlugin implements Reader {
                                final Map<String, Object> props,
                                final Step step) {
         String uuid = props.get("UUID").toString();
-        Path pngAttachmentPath = directory.resolve("Attachments").resolve(String.format("Screenshot_%s.png", uuid));
-        if (Files.exists(pngAttachmentPath)) {
-            step.getAttachments().add(visitor.visitAttachmentFile(pngAttachmentPath));
-        } else {
-            Path jpgAttachmentPath = directory.resolve("Attachments")
-                .resolve(String.format("Screenshot_%s.jpg", uuid));
-            if (Files.exists(jpgAttachmentPath)) {
-                step.getAttachments().add(visitor.visitAttachmentFile(jpgAttachmentPath));
+        String[] attachExtensions = {"png", "jpg"};
+        for (String extension : attachExtensions) {
+            Path attachmentPath = directory.resolve("Attachments").resolve(String.format("Screenshot_%s.%s", uuid, extension));
+            if (Files.exists(attachmentPath)) {
+                step.getAttachments().add(visitor.visitAttachmentFile(attachmentPath));
             }
         }
     }
