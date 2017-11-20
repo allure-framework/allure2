@@ -43,6 +43,15 @@
     "trend": {
       "name": "Trend"
     },
+    "categoriesTrend": {
+      "name": "Kategorien Trend"
+    },
+    "durationTrend": {
+      "name": "Dauer Trend"
+    },
+    "retryTrend": {
+      "name": "Wiederholungen Trend"
+    },
     "executors": {
       "name": "Durchführer",
       "unknown": "Unbekannt",
@@ -151,6 +160,7 @@
     "tree": {
       "filter": "Filtere Testfälle nach Status",
       "groups": "Gruppeninformationen an- / ausschalten",
+      "download": "CSV herunterladen",
       "empty": "Keine Einträge verfügbar",
       "time": {
         "total" : {
