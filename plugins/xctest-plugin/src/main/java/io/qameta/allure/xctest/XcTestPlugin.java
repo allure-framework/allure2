@@ -20,12 +20,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Stream;
 
 import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
 import static io.qameta.allure.entity.LabelName.SUITE;
@@ -152,13 +148,12 @@ public class XcTestPlugin implements Reader {
                                final Map<String, Object> props,
                                final Step step) {
         String uuid = props.get("UUID").toString();
-        String[] attachExtensions = {"png", "jpg"};
-        for (String extension : attachExtensions) {
-            Path attachmentPath = directory.resolve("Attachments").resolve(String.format("Screenshot_%s.%s", uuid, extension));
-            if (Files.exists(attachmentPath)) {
-                step.getAttachments().add(visitor.visitAttachmentFile(attachmentPath));
-            }
-        }
+        Path attachments = directory.resolve("Attachments");
+        Stream.of("jpg", "png")
+            .map(ext -> attachments.resolve(String.format("Screenshot_%s.%s", uuid, ext)))
+            .filter(Files::exists)
+            .map(visitor::visitAttachmentFile)
+            .forEach(step.getAttachments()::add);
     }
 
     @SuppressWarnings("unchecked")
