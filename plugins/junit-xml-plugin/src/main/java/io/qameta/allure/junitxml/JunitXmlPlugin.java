@@ -60,6 +60,7 @@ public class JunitXmlPlugin implements Reader {
     private static final String CLASS_NAME_ATTRIBUTE_NAME = "classname";
     private static final String NAME_ATTRIBUTE_NAME = "name";
     private static final String TIME_ATTRIBUTE_NAME = "time";
+    private static final String SYSTEM_OUT_ELEMENT_NAME = "system-out";
     private static final String FAILURE_ELEMENT_NAME = "failure";
     private static final String ERROR_ELEMENT_NAME = "error";
     private static final String SKIPPED_ELEMENT_NAME = "skipped";
@@ -215,6 +216,9 @@ public class JunitXmlPlugin implements Reader {
     }
 
     private void setStatusDetails(final TestResult result, final XmlElement testCaseElement) {
+        StringBuilder message = new StringBuilder();
+        Optional<String> outputMessage = testCaseElement.getFirst(SYSTEM_OUT_ELEMENT_NAME).map(XmlElement::getValue);
+        outputMessage.ifPresent(output -> message.append(String.format("%s%n", output)));
         Stream.of(FAILURE_ELEMENT_NAME, ERROR_ELEMENT_NAME, SKIPPED_ELEMENT_NAME)
                 .filter(testCaseElement::contains)
                 .map(testCaseElement::get)
@@ -223,10 +227,11 @@ public class JunitXmlPlugin implements Reader {
                 .findFirst()
                 .ifPresent(element -> {
                     //@formatter:off
-                    result.setStatusMessage(element.getAttribute(MESSAGE_ATTRIBUTE_NAME));
+                    message.append(element.getAttribute(MESSAGE_ATTRIBUTE_NAME));
                     result.setStatusTrace(element.getValue());
                     //@formatter:on
                 });
+        result.setStatusMessage(message.toString());
     }
 
     private Time getTime(final Long suiteStart, final XmlElement testCaseElement, final Path parsedFile) {

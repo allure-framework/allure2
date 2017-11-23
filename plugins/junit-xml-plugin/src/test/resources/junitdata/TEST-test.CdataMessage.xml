@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="1" failures="0" name="test.SampleTest" time="1.051" errors="0" skipped="0">
+<testsuite tests="1" failures="0" name="test.SampleTest" time="2.055" errors="0" skipped="0">
   <testcase classname="test.SampleTest" name="shouldGenerate" time="1.051">
+    <system-out><![CDATA[output]]></system-out>
     <failure message="some-message"><![CDATA[some-trace]]></failure>
+  </testcase>
+  <testcase classname="test.SampleTest" name="shouldGenerateSystemOut" time="1.004">
+    <system-out><![CDATA[test output]]></system-out>
   </testcase>
 </testsuite>
