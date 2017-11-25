@@ -17,7 +17,11 @@ public class DurationTrendItem extends TrendItem {
 
     public void updateTime(final Timeable timeable) {
         time.update(timeable);
-        setMetric(DURATION_KEY, time.getDuration());
+        if (time.getDuration() != null) {
+            setMetric(DURATION_KEY, time.getDuration());
+        } else {
+            setMetric(DURATION_KEY, 0L);
+        }
     }
 
 }

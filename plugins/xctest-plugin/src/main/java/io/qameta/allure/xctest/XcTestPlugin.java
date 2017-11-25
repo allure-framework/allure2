@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
 import static io.qameta.allure.entity.LabelName.SUITE;
@@ -126,11 +127,7 @@ public class XcTestPlugin implements Reader {
         }
 
         if (props.containsKey(HAS_SCREENSHOT)) {
-            String uuid = props.get("UUID").toString();
-            Path attachmentPath = directory.resolve("Attachments").resolve(String.format("Screenshot_%s.png", uuid));
-            if (Files.exists(attachmentPath)) {
-                step.getAttachments().add(visitor.visitAttachmentFile(attachmentPath));
-            }
+            addAttachment(directory, visitor, props, step);
         }
 
         if (parent instanceof TestResult) {
@@ -149,6 +146,19 @@ public class XcTestPlugin implements Reader {
         lastFailedStep.map(Step::getStatus).ifPresent(step::setStatus);
         lastFailedStep.map(Step::getStatusMessage).ifPresent(step::setStatusMessage);
         lastFailedStep.map(Step::getStatusTrace).ifPresent(step::setStatusTrace);
+    }
+
+    private void addAttachment(final Path directory,
+                               final ResultsVisitor visitor,
+                               final Map<String, Object> props,
+                               final Step step) {
+        String uuid = props.get("UUID").toString();
+        Path attachments = directory.resolve("Attachments");
+        Stream.of("jpg", "png")
+            .map(ext -> attachments.resolve(String.format("Screenshot_%s.%s", uuid, ext)))
+            .filter(Files::exists)
+            .map(visitor::visitAttachmentFile)
+            .forEach(step.getAttachments()::add);
     }
 
     @SuppressWarnings("unchecked")
