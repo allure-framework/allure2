@@ -1,0 +1,21 @@
+.block__arrow {
+  position: absolute;
+  visibility: visible;
+  transition: transform 0.1s;
+  font-weight: initial;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+  &__expanded {
+    transform: rotate(90deg);
+  }
+}
+
+[dir=rtl] .block__arrow {
+  transform: scaleX(-1);
+  filter: FlipH;
+}
+
+.angle {
+  width: 18px;
+}

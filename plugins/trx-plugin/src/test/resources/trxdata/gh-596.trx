@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="37bd1bbc-784e-477a-8fe2-a116517ba93f" name="@ip-10-0-12-95 2017-09-11 07:32:55" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+    <Times creation="2017-09-11T07:32:55.5710479+00:00" queuing="2017-09-11T07:32:55.5710493+00:00" start="2017-09-11T07:31:47.7161493+00:00" finish="2017-09-11T07:50:48.6048416+00:00" />
+    <TestSettings name="default" id="fec1d7e5-efa1-43b5-b261-7507a1de835f">
+        <Deployment runDeploymentRoot="_ip-10-0-12-95 2017-09-11 07_32_55" />
+    </TestSettings>
+    <Results>
+        <UnitTestResult executionId="a0c122ad-b99a-4e42-b42c-9f03a42e789d" testId="6efcec51-ecd8-464a-afdf-a8f254074a1a" testName="MyCompany.TestSuite.IntegrationTests.Retrieve.RetrieveTestCases.Test_BookingIdInResponse_Succeeds" computerName="ip-10-0-12-95" duration="00:00:00.0010000" startTime="2017-09-11T07:32:55.4659624+00:00" endTime="2017-09-11T07:32:55.4659679+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a0c122ad-b99a-4e42-b42c-9f03a42e789d">
+            <Output>
+                <ErrorInfo>
+                    <Message>Some message</Message>
+                    <StackTrace>Some trace</StackTrace>
+                </ErrorInfo>
+            </Output>
+        </UnitTestResult>
+    </Results>
+    <TestDefinitions>
+        <UnitTest name="MyCompany.TestSuite.IntegrationTests.Retrieve.RetrieveTestCases.Test_BookingIdInResponse_Succeeds" storage="/var/lib/jenkins/workspace/Product/code/test/MyCompany.testsuite/bin/release/netcoreapp2.0/MyCompany.testsuite.dll" id="6efcec51-ecd8-464a-afdf-a8f254074a1a">
+            <Execution id="a0c122ad-b99a-4e42-b42c-9f03a42e789d" />
+            <TestMethod codeBase="/var/lib/jenkins/workspace/Product/code/test/MyCompany.TestSuite/bin/Release/netcoreapp2.0/MyCompany.TestSuite.dll" executorUriOfAdapter="executor://xunit/VsTestRunner2" className="MyCompany.TestSuite.IntegrationTests.Retrieve.RetrieveTestCases" name="MyCompany.TestSuite.IntegrationTests.Retrieve.RetrieveTestCases.Test_BookingIdInResponse_Succeeds" />
+        </UnitTest>
+    </TestDefinitions>
+    <TestEntries>
+        <TestEntry testId="6efcec51-ecd8-464a-afdf-a8f254074a1a" executionId="a0c122ad-b99a-4e42-b42c-9f03a42e789d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    </TestEntries>
+    <TestLists>
+        <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+        <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+    </TestLists>
+</TestRun>

@@ -1,0 +1,8 @@
+@import "../../mixins.scss";
+
+.alert {
+  &__code {
+    white-space: pre;
+  }
+  @include status-bg();
+}

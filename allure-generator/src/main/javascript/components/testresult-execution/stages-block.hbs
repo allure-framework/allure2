@@ -1,0 +1,43 @@
+{{#if stages}}
+    <div class="{{b 'step' expanded=expanded}}">
+        <div class="{{b 'step' 'title' hasContent=true stage=true}}">
+            <span class="step__arrow block__arrow">{{angle}}</span>
+            {{name}}
+        </div>
+        <div class="{{b 'step' 'content'}}">
+            {{#each stages}}
+                {{#if name}}
+                    <div class="{{b 'step'}}">
+                        <div class="{{b 'step' 'title' hasContent=hasContent stage=true}}">
+                            {{#if hasContent}}
+                                <span class="step__arrow block__arrow">{{arrow status}}</span>
+                            {{else}}
+                                <span class="step__status">{{allure-icon status}}</span>
+                            {{/if}}
+                            {{name}}
+                            {{> ../../blocks/step-stats/step-stats . baseUrl=../../baseUrl}}
+                        </div>
+                        <div class="{{b 'step' 'content'}}">
+                            {{> ../../blocks/parameters-table/parameters-table parameters=parameters }}
+                            {{~> steps-list steps=steps baseUrl=../baseUrl}}
+                            {{#each attachments}}
+                                {{> ../../blocks/attachment-row/attachment-row . baseUrl=../../baseUrl}}
+                            {{/each}}
+                            {{#if shouldDisplayMessage}}
+                                {{~> ../../blocks/status-details/status-details .}}
+                            {{/if}}
+                        </div>
+                    </div>
+                {{else}}
+                    {{~> steps-list steps=steps baseUrl=../baseUrl}}
+                    {{#each attachments}}
+                        {{> ../../blocks/attachment-row/attachment-row . baseUrl=../../baseUrl}}
+                    {{/each}}
+                    {{#if shouldDisplayMessage}}
+                        {{~> ../../blocks/status-details/status-details .}}
+                    {{/if}}
+                {{/if}}
+            {{/each}}
+        </div>
+    </div>
+{{/if}}

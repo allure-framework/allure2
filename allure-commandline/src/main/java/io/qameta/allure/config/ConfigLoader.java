@@ -3,41 +3,38 @@ package io.qameta.allure.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import io.qameta.allure.CommandlineConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Objects;
 
 /**
  * @author charlie (Dmitry Baev).
  */
 public class ConfigLoader {
 
-    private final Path home;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigLoader.class);
 
-    private final String profile;
+    private final Path configFile;
 
-    public ConfigLoader(final Path home, final String profile) {
-        this.home = home;
-        this.profile = profile;
+    public ConfigLoader(final Path configFile) {
+        this.configFile = configFile;
     }
 
-    public CommandlineConfig load() throws IOException {
-        final Path configFile = home.resolve(getConfigPath());
+    public CommandlineConfig load() {
         if (Files.notExists(configFile)) {
+            LOGGER.error("Could not find config file {}. Using the empty configuration", configFile);
             return new CommandlineConfig();
         }
         final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         try (InputStream is = Files.newInputStream(configFile)) {
             return mapper.readValue(is, CommandlineConfig.class);
+        } catch (IOException e) {
+            LOGGER.error("Could not load config file {}. Using the empty configuration", configFile);
+            return new CommandlineConfig();
         }
-    }
-
-    private String getConfigPath() {
-        return Objects.isNull(profile) || profile.isEmpty()
-                ? "config/allure.yml"
-                : String.format("config/allure-%s.yml", profile);
     }
 }

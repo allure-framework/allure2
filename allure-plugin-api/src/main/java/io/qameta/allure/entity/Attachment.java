@@ -1,0 +1,22 @@
+package io.qameta.allure.entity;
+
+import lombok.Data;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+
+/**
+ * @author charlie (Dmitry Baev).
+ */
+@Data
+@Accessors(chain = true)
+public class Attachment implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    protected String uid;
+    protected String name;
+    protected String source;
+    protected String type;
+    protected Long size;
+
+}

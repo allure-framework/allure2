@@ -1,0 +1,127 @@
+@import "./variables.scss";
+
+@mixin status-bg() {
+  &_status_failed {
+    background: $background-failed;
+  }
+  &_status_broken {
+    background: $background-broken;
+  }
+  &_status_passed {
+    background: $background-passed;
+  }
+  &_status_skipped {
+    background: $background-skipped;
+  }
+  &_status_unknown {
+    background: $background-unknown;
+  }
+}
+
+@mixin status-bg-bright-before() {
+  &_status_failed::before {
+    background: $color-failed;
+  }
+  &_status_broken::before {
+    background: $color-broken;
+  }
+  &_status_passed::before {
+    background: $color-passed;
+  }
+  &_status_skipped::before {
+    background: $color-skipped;
+  }
+  &_status_unknown::before {
+    background: $color-unknown;
+  }
+}
+
+@mixin status-bg-light() {
+  &_status_failed {
+    background: $background-light-failed;
+  }
+  &_status_broken {
+    background: $background-light-broken;
+  }
+  &_status_passed {
+    background: $background-light-passed;
+  }
+  &_status_skipped {
+    background: $background-light-skipped;
+  }
+  &_status_unknown {
+    background: $background-light-unknown;
+  }
+}
+
+@mixin status-bg-bright() {
+  &_status_failed {
+    background: $color-failed;
+  }
+  &_status_broken {
+    background: $color-broken;
+  }
+  &_status_passed {
+    background: $color-passed;
+  }
+  &_status_skipped {
+    background: $color-skipped;
+  }
+  &_status_unknown {
+    background: $color-unknown;
+  }
+}
+
+@mixin status-border() {
+  &_status_failed {
+    border-color: $color-failed;
+  }
+  &_status_broken {
+    border-color: $color-broken;
+  }
+  &_status_passed {
+    border-color: $color-passed;
+  }
+  &_status_skipped {
+    border-color: $color-skipped;
+  }
+  &_status_unknown {
+    border-color: $color-unknown;
+  }
+}
+
+@mixin status-text() {
+  &_status_failed {
+    color: $color-failed;
+  }
+  &_status_broken {
+    color: $color-broken;
+  }
+  &_status_passed {
+    color: $color-passed;
+  }
+  &_status_skipped {
+    color: $color-skipped;
+  }
+  &_status_unknown {
+    color: $color-unknown;
+  }
+}
+
+@mixin status-fill() {
+  &_status_failed {
+    fill: $color-failed;
+  }
+  &_status_broken {
+    fill: $color-broken;
+  }
+  &_status_passed {
+    fill: $color-passed;
+  }
+  &_status_skipped {
+    fill: $color-skipped;
+  }
+  &_status_unknown {
+    fill: $color-unknown;
+  }
+}

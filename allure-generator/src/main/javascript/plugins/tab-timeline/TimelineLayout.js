@@ -1,19 +1,20 @@
 import AppLayout from '../../layouts/application/AppLayout';
-import TimelineModel from './TimelineModel';
 import TimelineView from './TimelineView';
+import TreeCollection from '../../data/tree/TreeCollection';
 
 export default class TimelineLayout extends AppLayout {
 
-    initialize() {
+    initialize({url}) {
         super.initialize();
-        this.model = new TimelineModel();
+        this.items = new TreeCollection([], {url});
     }
 
     loadData() {
-        return this.model.fetch();
+        return this.items.fetch();
     }
 
     getContentView() {
-        return new TimelineView({model: this.model});
+        return new TimelineView({collection: this.items});
     }
+
 }

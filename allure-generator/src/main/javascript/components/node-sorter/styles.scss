@@ -1,0 +1,15 @@
+@import "../../variables.scss";
+
+.sorter {
+  overflow: hidden;
+  color: $text-muted-color;
+  user-select: none;
+  &_enabled {
+    color: $text-color;
+  }
+  &__item {
+    cursor: pointer;
+    display: inline-block;
+    padding-right: $gap-size;
+  }
+}

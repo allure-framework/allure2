@@ -1,16 +1,20 @@
-{{#if (eq type 'TestGroupNode')}}
-    <div class="node" data-uid="{{uid}}">
+{{#if children}}
+    <div class="node">
         <div class="node__title long-line" data-uid="{{uid}}">
-            <span class="node__arrow block__arrow arrow"></span>
+            <span class="node__arrow block__arrow">{{angle}}</span>
             {{#if name}}
-                {{name}}
+                <div class="node__name">
+                    {{name}}
+                </div>
             {{else}}
                 {{t 'component.tree.unknown'}}
             {{/if}}
+            <div class="tree__strut">&nbsp</div>
             <span class="node__stats">
-                {{statistic-bar statistic tabName}}
+                {{statistic-bar statistic}}
             </span>
         </div>
+
         <div class="node__children">
             {{#if showGroupInfo}}
                 <div class="node">
@@ -23,10 +27,10 @@
                 </div>
             {{/if}}
             {{#each children}}
-                {{> tree-group baseUrl=../baseUrl showGroupInfo=../showGroupInfo tabName=../tabName}}
+                {{~> tree-group baseUrl=../baseUrl showGroupInfo=../showGroupInfo tabName=../tabName testResultTab=../testResultTab}}
             {{/each}}
         </div>
     </div>
 {{else}}
-    {{> tree-leaf baseUrl=baseUrl}}
+    {{~> tree-leaf baseUrl=baseUrl testResultTab=testResultTab}}
 {{/if}}

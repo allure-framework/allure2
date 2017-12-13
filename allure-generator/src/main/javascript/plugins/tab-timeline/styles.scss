@@ -1,0 +1,75 @@
+@import "../../variables.scss";
+
+.timeline {
+  padding: $gap-size;
+  overflow: auto;
+  height: 100vh;
+
+  &__chart_svg, &__brush_svg {
+    width: 100%;
+  }
+
+  &__chart {
+     &__axis_x {
+       .tick {
+         opacity: 0.3;
+         stroke-dasharray: 1,4;
+         shape-rendering: crispEdges;
+       }
+     }
+  }
+  &__item:hover {
+    opacity: 0.7;
+  }
+
+  &__group_title {
+    font-size: 12px;
+    fill: #838383;
+    dominant-baseline: central;
+  }
+
+  &__host-bg {
+    fill: #eee;
+    stroke: #e0e0e0;
+    rx:3;
+    ry:9;
+  }
+
+  &__brush {
+     position: absolute;
+     width: 100%;
+
+     .selection {
+       fill: #000;
+       fill-opacity: 0.3;
+     }
+     &__axis_bg {
+       fill: white;
+     }
+     .handle {
+       fill: #fff;
+       stroke: #000;
+       stroke-opacity: 0.5;
+       stroke-width: 1px;
+     }
+  }
+
+  &__slider {
+    &_track {
+      stroke-linecap: round;
+      stroke: #000;
+      stroke-opacity: 0.3;
+      stroke-width: 10px;
+    }
+    &_handle {
+      fill: #fff;
+      stroke: #000;
+      stroke-opacity: 0.5;
+      stroke-width: 1px;
+      cursor: pointer;
+    }
+    &_text{
+      text-anchor: middle;
+    }
+  }
+}

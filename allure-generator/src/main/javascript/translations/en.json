@@ -8,6 +8,7 @@
     "flaky": "Test is flaky"
   },
   "sorter": {
+    "order": "order",
     "name": "name",
     "duration": "duration",
     "status": "status"
@@ -19,8 +20,8 @@
     "categories": {
       "name": "Categories"
     },
-    "xunit": {
-      "name": "xUnit"
+    "suites": {
+      "name": "Suites"
     },
     "graph": {
       "name": "Graphs"
@@ -36,11 +37,20 @@
       "aggregatedName": "Aggregated report",
       "launches": "launch",
       "launches_plural": "launches",
-      "testCases": "test case",
-      "testCases_plural": "test cases"
+      "testResults": "test case",
+      "testResults_plural": "test cases"
     },
     "trend": {
       "name": "Trend"
+    },
+    "categoriesTrend": {
+      "name": "Categories trend"
+    },
+    "durationTrend": {
+      "name": "Duration trend"
+    },
+    "retryTrend": {
+      "name": "Retries trend"
     },
     "executors": {
       "name": "Executors",
@@ -54,7 +64,13 @@
     "environment": {
       "name": "Environment",
       "empty": "There are no environment variables",
-      "showAll": "Show all environment variables"
+      "showAll": "Show all"
+    },
+    "suites": {
+      "name": "Suites"
+    },
+    "categories": {
+      "name": "Categories"
     }
   },
   "chart": {
@@ -72,10 +88,13 @@
       "name": "Status"
     }
   },
-  "testCase": {
+  "testResult": {
     "status": {
       "empty": "Empty status details",
       "trace": "Show trace"
+    },
+    "overview": {
+      "name": "Overview"
     },
     "categories": {
       "name": "Categories"
@@ -94,7 +113,8 @@
       "name": "Owner"
     },
     "retries": {
-      "name": "Retries"
+      "name": "Retries",
+      "empty": "There is no information available about test retries"
     },
     "parameters": {
       "name": "Parameters"
@@ -125,17 +145,22 @@
   "controls": {
     "collapse": "Collapse",
     "expand": "Expand",
+    "fullscreen": "Full screen",
     "language": "Change language",
     "clipboard": "Copy to clipboard",
+    "clipboardSuccess": "Successfully copied",
+    "clipboardError": "Can not copy value to clipboard. Seems like this feature is not supported for your browser",
     "backto": "Back to"
   },
   "errors": {
-    "missedAttachment": "Attachment not found"
+    "missedAttachment": "Attachment not found",
+    "notFound": "Not found"
   },
   "component": {
     "tree": {
-      "filter": "Filter test cases by status",
+      "filter": "Filter by status",
       "groups": "Toggle groups info",
+      "download": "Download CSV",
       "empty": "There are no items",
       "time": {
         "total" : {
@@ -158,6 +183,7 @@
       }
     },
     "widgetStatus": {
+      "showAll": "Show all",
       "total": "{{count}} item total",
       "total_plural": "{{count}} items total"
     },

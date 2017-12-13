@@ -6,10 +6,11 @@ export default class WidgetStatusView extends View {
 
     serializeData() {
         const showLinks = typeof this.showLinks !== 'undefined' ? this.showLinks : true;
+        const showAll = typeof this.showAll !== 'undefined' ? this.showAll : true;
         return Object.assign(super.serializeData(), {
             rowTag: showLinks ? 'a' : 'span',
             title: this.title,
-            showAllText: this.showAllText,
+            showAll: showAll,
             baseUrl: this.baseUrl
         });
     }

@@ -1,0 +1,29 @@
+@import "../../variables.scss";
+
+.tree {
+  &__ctrl {
+    display: flex;
+    flex-wrap: wrap;
+    border-top: 1px solid $border-color;
+    background: $pane-overlay-bg-hover;
+  }
+  &__filter, &__sorter {
+    padding: 0 $gap-size 0 $gap-size;
+    position: relative;
+    white-space: nowrap;
+  }
+  &__strut {
+    flex: 1;
+  }
+  &__empty {
+    border-top: 1px solid #ECEFF1;
+    padding: 8px 0 0 15px;
+  }
+  .pane__controls {
+    display: flex;
+  }
+  &__info, &__download {
+    color: $text-muted-color;
+    padding: 7px;
+  }
+}

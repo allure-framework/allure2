@@ -1,0 +1,68 @@
+@import "../../variables.scss";
+
+.test-result-execution {
+  &__title {
+    margin: $gap-size $gap-size 10px;
+  }
+  &__stage-title {
+    margin: $gap-size $gap-size 5px;
+  }
+}
+
+.step {
+  line-height: 1.2em;
+  &__status {
+    left: 7px;
+    position: absolute;
+  }
+  &__arrow {
+    left: 7px;
+    position: absolute;
+    display: none;
+  }
+  &__title {
+    position: relative;
+    padding: 7px $gap-size 7px 25px;
+    &_hasContent {
+      cursor: pointer;
+    }
+    &_hasContent > .step__arrow {
+      display: block;
+    }
+    &:hover {
+      background-color: $hover-color;
+      &::before {
+        background-color: $hover-color;
+      }
+    }
+    &_stage {
+      font-weight: bold;
+    }
+  }
+  &__name {
+    display: inline-flex;
+    max-width: 90%;
+  }
+  &__content {
+    margin-left: 20px;
+    display: none;
+  }
+  &_expanded > &__title > &__arrow {
+    transform: rotate(90deg);
+  }
+  &_expanded > &__content {
+    display: block;
+  }
+}
+
+.parameters {
+  display: inline;
+  white-space: nowrap;
+  &_name {
+    font-style: italic;
+  }
+  &_separator:last-child {
+    display:none;
+  }
+}
+

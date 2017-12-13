@@ -1,0 +1,27 @@
+{{#each steps}}
+    <div class="step">
+        <div class="{{b "step" "title" hasContent=hasContent}} long-line">
+            {{#if hasContent}}
+                <span class="step__arrow block__arrow">{{arrow status}}</span>
+            {{else}}
+                <span class="step__status">{{allure-icon status}}</span>
+            {{/if}}
+            <div class="step__name">
+            {{name}}
+            </div>
+            {{> ../../blocks/step-stats/step-stats . baseUrl=../../baseUrl}}
+        </div>
+        <div class="step__content">
+            {{> ../../blocks/parameters-table/parameters-table parameters=parameters }}
+            {{~> steps-list steps=steps baseUrl=../baseUrl}}
+            {{#each attachments}}
+                {{> ../../blocks/attachment-row/attachment-row . baseUrl=../../baseUrl}}
+            {{/each}}
+            {{#if shouldDisplayMessage}}
+                {{#with statusDetails}}
+                    {{~> ../../blocks/status-details/status-details . status=../status}}
+                {{/with}}
+            {{/if}}
+        </div>
+    </div>
+{{/each}}

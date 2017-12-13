@@ -3,24 +3,22 @@ package io.qameta.allure.retry;
 import io.qameta.allure.Aggregator;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.entity.Time;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static java.util.Comparator.comparing;
-import static java.util.Comparator.naturalOrder;
-import static java.util.Comparator.nullsFirst;
+import static io.qameta.allure.entity.TestResult.comparingByTime;
 
 /**
  * The plugin that process test retries.
@@ -29,7 +27,7 @@ import static java.util.Comparator.nullsFirst;
  */
 public class RetryPlugin implements Aggregator {
 
-    public static final String RETRY_BLOCK_NAME = "retries";
+    protected static final String RETRY_BLOCK_NAME = "retries";
 
     @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.AvoidInstantiatingObjectsInLoops"})
     @Override
@@ -47,33 +45,43 @@ public class RetryPlugin implements Aggregator {
 
     private Consumer<TestResult> addRetries(final List<TestResult> results) {
         return latest -> {
-            final List<RetryItem> retries = new ArrayList<>();
-            latest.addExtraBlock(RETRY_BLOCK_NAME, retries);
-            results.stream()
-                    .sorted(byTime())
+            final List<RetryItem> retries = results.stream()
+                    .sorted(comparingByTime())
                     .filter(result -> !latest.equals(result))
-                    .forEach(addRetry(latest, retries));
+                    .map(this::prepareRetry)
+                    .map(this::createRetryItem)
+                    .collect(Collectors.toList());
+            latest.addExtraBlock(RETRY_BLOCK_NAME, retries);
+            final Set<Status> statuses = retries.stream()
+                    .map(RetryItem::getStatus)
+                    .distinct()
+                    .collect(Collectors.toSet());
 
+            statuses.remove(Status.PASSED);
+            statuses.remove(Status.SKIPPED);
+
+            latest.setFlaky(!statuses.isEmpty());
         };
     }
 
-    private Consumer<TestResult> addRetry(final TestResult latest, final List<RetryItem> retries) {
-        return retried -> {
-            retried.setHidden(true);
-            retried.getStatusDetailsSafe().setFlaky(true);
-            retries.add(new RetryItem()
-                    .withUid(retried.getUid())
-                    .withStatus(retried.getStatus())
-                    .withTime(retried.getTime())
-            );
-            latest.getStatusDetailsSafe().setFlaky(true);
-        };
+    private TestResult prepareRetry(final TestResult result) {
+        result.setHidden(true);
+        result.setRetry(true);
+        return result;
+    }
+
+    private RetryItem createRetryItem(final TestResult result) {
+        return new RetryItem()
+                .setStatus(result.getStatus())
+                .setStatusDetails(result.getStatusMessage())
+                .setTime(result.getTime())
+                .setUid(result.getUid());
     }
 
     private Optional<TestResult> findLatest(final List<TestResult> results) {
         return results.stream()
                 .filter(result -> !result.isHidden())
-                .sorted(byTime())
+                .sorted(comparingByTime())
                 .findFirst();
     }
 
@@ -83,12 +91,5 @@ public class RetryPlugin implements Aggregator {
         merged.addAll(first);
         merged.addAll(second);
         return merged;
-    }
-
-    private Comparator<TestResult> byTime() {
-        return comparing(
-                TestResult::getTime,
-                nullsFirst(comparing(Time::getStart, nullsFirst(naturalOrder())))
-        ).reversed();
     }
 }

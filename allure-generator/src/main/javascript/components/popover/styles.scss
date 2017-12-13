@@ -1,0 +1,31 @@
+@import "../../variables.scss";
+
+.popover {
+  position: absolute;
+  background: $pane-bg-color;
+  color: $text-color;
+  border: 1px solid $border-accent-color;
+  padding: 8px;
+  font-size: 14px;
+  &::before, &::after {
+    content: ' ';
+    position: absolute;
+    border: 8px solid transparent;
+    top: 50%;
+    margin-top: -8px;
+  }
+  &_position_right {
+    &::before {
+      left: -16px;
+      border-right-color: $border-accent-color;
+    }
+    &::after {
+      left: -15px;
+      border-right-color: $pane-bg-color;
+    }
+  }
+  &__list {
+    margin: 0.5em 0;
+    padding-left: 20px;
+  }
+}

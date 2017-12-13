@@ -1,37 +1,41 @@
-import PaneLayout from '../pane/PaneLayout';
+import AppLayout from '../application/AppLayout';
 import TreeCollection from '../../data/tree/TreeCollection';
-import TreeView from '../../components/tree/TreeView';
+import {Model} from 'backbone';
+import TestResultTreeView from '../../components/testresult-tree/TestResultTreeView';
 import router from '../../router';
 
-export default class TreeLayout extends PaneLayout {
+export default class TreeLayout extends AppLayout {
 
     initialize({url}) {
         super.initialize();
-        this.items = new TreeCollection([], {url});
+        this.tree = new TreeCollection([], {url});
+        this.routeState = new Model();
     }
 
     loadData() {
-        return this.items.fetch();
+        return this.tree.fetch();
     }
 
-    onStateChange() {
-        const changed = Object.assign({}, this.state.changed);
-        const paneView = this.getChildView('content');
-        paneView.expanded = this.state.get('expanded');
-        if (!paneView.getRegion('testrun')) {
-            paneView.addPane('testrun', new TreeView({
-                collection: this.items,
-                state: this.state,
-                tabName: this.options.tabName,
-                baseUrl: this.options.baseUrl
-            }));
+    getContentView() {
+        const {baseUrl, tabName, csvUrl} = this.options;
+        return new TestResultTreeView({tree: this.tree, routeState: this.routeState, tabName, baseUrl, csvUrl});
+    }
+
+    onViewReady() {
+        const {testGroup, testResult, testResultTab} = this.options;
+        this.onRouteUpdate(testGroup, testResult, testResultTab);
+    }
+
+    onRouteUpdate(testGroup, testResult, testResultTab) {
+        this.routeState.set('treeNode', {testGroup, testResult});
+        this.routeState.set('testResultTab', testResultTab);
+
+        const attachment = router.getUrlParams().attachment;
+        if (attachment) {
+            this.routeState.set('attachment', attachment);
+        } else {
+            this.routeState.unset('attachment');
         }
-        this.testcase.updatePanes(this.options.baseUrl, changed);
-        paneView.updatePanesPositions();
-    }
 
-    onRouteUpdate(testcase, attachment) {
-        const expanded = router.getUrlParams().expanded === 'true';
-        this.state.set({testcase, attachment, expanded});
     }
 }

@@ -2,7 +2,6 @@ package io.qameta.allure.core;
 
 import io.qameta.allure.Aggregator;
 import io.qameta.allure.Reader;
-import io.qameta.allure.Widget;
 import io.qameta.allure.exception.ContextNotFoundException;
 
 import java.util.List;
@@ -35,13 +34,6 @@ public interface Configuration {
      * @return configured readers.
      */
     List<Reader> getReaders();
-
-    /**
-     * Returns all configured widgets.
-     *
-     * @return configured widgets.
-     */
-    List<Widget> getWidgets();
 
     /**
      * Resolve context by given type.

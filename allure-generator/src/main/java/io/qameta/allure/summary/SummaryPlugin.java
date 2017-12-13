@@ -1,54 +1,32 @@
 package io.qameta.allure.summary;
 
-import io.qameta.allure.Aggregator;
-import io.qameta.allure.Widget;
-import io.qameta.allure.context.JacksonContext;
-import io.qameta.allure.core.Configuration;
+import io.qameta.allure.CommonJsonAggregator;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.GroupTime;
 import io.qameta.allure.entity.Statistic;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 
 /**
- * Plugins generates Summary widget and summary export bean.
+ * Plugins generates Summary widget.
  *
  * @since 2.0
  */
-public class SummaryPlugin implements Aggregator, Widget {
+public class SummaryPlugin extends CommonJsonAggregator {
 
-    @Override
-    public void aggregate(final Configuration configuration,
-                          final List<LaunchResults> launchesResults,
-                          final Path outputDirectory) throws IOException {
-        final JacksonContext context = configuration.requireContext(JacksonContext.class);
-        final Path exportFolder = Files.createDirectories(outputDirectory.resolve("export"));
-        final Path summaryFile = exportFolder.resolve("summary.json");
+    /** Name of the json file. */
+    protected static final String JSON_FILE_NAME = "summary.json";
 
-        try (OutputStream os = Files.newOutputStream(summaryFile)) {
-            context.getValue().writeValue(os, getSummaryData(launchesResults));
-        }
+    public SummaryPlugin() {
+        super("widgets", JSON_FILE_NAME);
     }
 
     @Override
-    public Object getData(final Configuration configuration, final List<LaunchResults> launches) {
-        return getSummaryData(launches);
-    }
-
-    @Override
-    public String getName() {
-        return "summary";
-    }
-
-    private SummaryData getSummaryData(final List<LaunchResults> launches) {
+    protected SummaryData getData(final List<LaunchResults> launches) {
         final SummaryData data = new SummaryData()
-                .withStatistic(new Statistic())
-                .withTime(new GroupTime())
-                .withReportName("Allure Report");
+                .setStatistic(new Statistic())
+                .setTime(new GroupTime())
+                .setReportName("Allure Report");
         launches.stream()
                 .flatMap(launch -> launch.getResults().stream())
                 .forEach(result -> {

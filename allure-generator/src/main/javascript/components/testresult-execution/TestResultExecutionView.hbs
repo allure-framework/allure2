@@ -1,0 +1,13 @@
+<h3 class="test-result-execution__title">{{t 'testResult.execution.name'}}</h3>
+
+{{#if hasContent}}
+    <div class="execution__content">
+        {{~> stages-block stages=before name=(t 'testResult.execution.setup') baseUrl=baseUrl expanded=false}}
+        {{~> stages-block stages=test name=(t 'testResult.execution.body') baseUrl=baseUrl expanded=true}}
+        {{~> stages-block stages=after name=(t 'testResult.execution.teardown') baseUrl=baseUrl expanded=false}}
+    </div>
+{{else}}
+    <div class="{{b 'pane' 'section'}}">
+        No information about test execution is available.
+    </div>
+{{/if}}

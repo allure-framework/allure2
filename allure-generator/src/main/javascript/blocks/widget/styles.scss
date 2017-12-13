@@ -1,0 +1,80 @@
+@import "../../variables.scss";
+
+.widget {
+  margin-bottom: $gap-size;
+  position: relative;
+
+  &_ghost {
+    border: 1px dashed $border-accent-color;
+    box-shadow: none;
+    min-height: 50px;
+    & > * {
+      display: none;
+    }
+  }
+
+  &__title {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-weight: lighter;
+    text-transform: uppercase;
+  }
+
+  &__subtitle {
+    color: $text-muted-color;
+    font-size: 16px;
+    text-transform: none;
+  }
+
+  &__noitems {
+    font-size: 16px;
+    text-align: center;
+    padding: 10px 15px;
+    line-height: 1.5em;
+  }
+
+  &__flex-line {
+    display: flex;
+  }
+
+  &__column {
+    width: 50%;
+  }
+
+  &__handle {
+    display: none;
+    position: absolute;
+    right: $gap-size;
+    top: $gap-size;
+    color: $text-muted-color;
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+        
+    .widget:hover & {
+      display: block;
+    }
+  }
+
+  &__table {
+    border-top: 1px solid $border-color;
+    margin: 0 (-$gap-size);
+    word-break: break-all;
+    .table__row:last-child {
+      border-bottom: 0;
+    }
+  }
+}
+
+.draggable-icon {
+  position: absolute;
+  width: 10px;
+  height: 15px;
+  right: 0;
+  
+  background-image: url("./blocks/widget/draggable.svg");
+  z-index: 1;
+}

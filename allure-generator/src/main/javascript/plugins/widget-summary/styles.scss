@@ -1,0 +1,13 @@
+.summary-widget {
+  padding: 1em 0;
+  &__stats {
+    padding: 2em 0;
+  }
+
+  &__chart > div {
+    height: 100%;
+    position: relative;
+    padding-top: 50%;
+    padding-bottom: 12px;
+  }
+}

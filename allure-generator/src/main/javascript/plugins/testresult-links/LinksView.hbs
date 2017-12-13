@@ -1,0 +1,14 @@
+{{#if links}}
+    <h3 class="pane__section-title">{{t 'testResult.links.name'}}</h3>
+    {{#each links}}
+        <span class="testresult-link">
+        {{#if (eq type "issue")}}
+            <span class="fa fa-bug"></span>
+        {{/if}}
+        {{#if (eq type "tms")}}
+            <span class="fa fa-database"></span>
+        {{/if}}
+        <a class="link" href="{{this.url}}" target="_blank">{{name}}</a>
+    </span>
+    {{/each}}
+{{/if}}

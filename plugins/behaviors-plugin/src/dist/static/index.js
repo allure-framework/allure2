@@ -56,23 +56,39 @@ allure.api.addTranslation('de', {
     }
 });
 
+allure.api.addTranslation('he', {
+    tab: {
+        behaviors: {
+            name: 'התנהגויות'
+        }
+    },
+    widget: {
+        behaviors: {
+            name: 'תכונות לפי סיפורי משתמש',
+            showAll: 'הצג הכול'
+        }
+    }
+});
+
 allure.api.addTab('behaviors', {
     title: 'tab.behaviors.name', icon: 'fa fa-list',
-    route: 'behaviors(/:testcaseId)',
-    onEnter: (function () {
-        var routeParams = Array.prototype.slice.call(arguments);
+    route: 'behaviors(/)(:testGroup)(/)(:testResult)(/)(:testResultTab)(/)',
+    onEnter: (function (testGroup, testResult, testResultTab) {
         return new allure.components.TreeLayout({
-            routeParams: routeParams,
+            testGroup: testGroup,
+            testResult: testResult,
+            testResultTab: testResultTab,
             tabName: 'tab.behaviors.name',
             baseUrl: 'behaviors',
-            url: 'data/behaviors.json'
+            url: 'data/behaviors.json',
+            csvUrl: 'data/behaviors.csv'
         });
     })
 });
 
-allure.api.addWidget('behaviors', allure.components.WidgetStatusView.extend({
+allure.api.addWidget('widgets', 'behaviors', allure.components.WidgetStatusView.extend({
+    rowTag: 'a',
     title: 'widget.behaviors.name',
     baseUrl: 'behaviors',
-    showLinks: false,
-    showAllText: 'widget.behaviors.showAll'
+    showLinks: true
 }));

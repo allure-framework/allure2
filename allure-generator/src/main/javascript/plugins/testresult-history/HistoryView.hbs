@@ -1,0 +1,27 @@
+<div class="{{b 'pane' 'section'}}">
+    {{#if history}}
+        <div class="{{b cls 'success-rate'}}">
+            {{t 'testResult.history.successRate'}} {{successRate}}
+            {{#if history.statistic.total}}
+                ({{history.statistic.passed}} of {{history.statistic.total}})
+            {{/if}}
+        </div>
+        {{#each history.items}}
+            {{#if reportUrl}}
+                <div class="{{b ../cls 'row'}}">
+                    <a class="link" href="{{reportUrl}}" target="_blank">
+                        <span class="label label_status_{{status}}">{{status}}</span>
+                        <span>{{date time.start}} at {{time time.start}}</span>
+                    </a>
+                </div>
+            {{else}}
+                <div>
+                    <span class="label label_status_{{status}}">{{status}}</span>
+                    <span>{{date time.start}} at {{time time.start}}</span>
+                </div>
+            {{/if}}
+        {{/each}}
+    {{else}}
+        No history information are available.
+    {{/if}}
+</div>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="97f57849-3919-4bc0-8b5a-60884faca4a9" name="camejef@BUMBLEBEE 2012-02-19 09:25:24" runUser="BUMBLEBEE\camejef" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+    <TestSettings name="Default Test Settings" id="fca8b5a8-ae49-45c5-b2b7-a975e4a4fd10">
+        <Deployment userDeploymentRoot="c:\dev\pickles-results-harness" useDefaultDeploymentRoot="false" runDeploymentRoot="camejef_BUMBLEBEE 2012-02-19 09_25_24" />
+        <Execution>
+            <TestTypeSpecific />
+            <AgentRule name="Execution Agents">
+            </AgentRule>
+        </Execution>
+    </TestSettings>
+    <Times creation="2012-02-19T09:25:24.8479038-05:00" queuing="2012-02-19T09:25:25.1799228-05:00" start="2012-02-19T09:25:25.2569272-05:00" finish="2012-02-19T09:25:26.0819744-05:00" />
+    <ResultSummary outcome="Failed">
+        <Counters total="4" executed="4" passed="3" error="0" failed="1" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    </ResultSummary>
+    <TestDefinitions>
+        <UnitTest name="FailToAddTwoNumbers" storage="pickles.testharness\pickles.testharness.mstest\bin\debug\pickles.testharness.mstest.dll" id="10684beb-1457-c825-5087-2d0029460463">
+            <Description>Fail to add two numbers</Description>
+            <Execution id="6a02f552-17f1-4f86-9eaa-bcddec97f075" />
+            <Properties>
+                <Property>
+                    <Key>FeatureTitle</Key>
+                    <Value>Addition</Value>
+                </Property>
+            </Properties>
+            <TestMethod codeBase="c:/dev/pickles-results-harness/Pickles.TestHarness/Pickles.TestHarness.MSTest/bin/debug/Pickles.TestHarness.MSTest.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="Pickles.TestHarness.MSTest.AdditionFeature, Pickles.TestHarness.MSTest, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="FailToAddTwoNumbers" />
+        </UnitTest>
+        <UnitTest name="AddTwoNumbers" storage="pickles.testharness\pickles.testharness.mstest\bin\debug\pickles.testharness.mstest.dll" id="45571f70-456e-69eb-dbf2-7ec265c4b751">
+            <Description>Add two numbers</Description>
+            <Execution id="17356f2f-b3c9-4bee-b6b3-74fe17b2e82b" />
+            <Properties>
+                <Property>
+                    <Key>FeatureTitle</Key>
+                    <Value>Addition</Value>
+                </Property>
+            </Properties>
+            <TestMethod codeBase="c:/dev/pickles-results-harness/Pickles.TestHarness/Pickles.TestHarness.MSTest/bin/debug/Pickles.TestHarness.MSTest.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="Pickles.TestHarness.MSTest.AdditionFeature, Pickles.TestHarness.MSTest, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="AddTwoNumbers" />
+        </UnitTest>
+        <UnitTest name="AddingSeveralNumbers_40" storage="pickles.testharness\pickles.testharness.mstest\bin\debug\pickles.testharness.mstest.dll" id="272c9292-71fc-4aaa-5ed5-d7869de15ae4">
+            <Description>Adding several numbers</Description>
+            <Execution id="d7b75d23-a952-4578-8542-326abd65c695" />
+            <Properties>
+                <Property>
+                    <Key>FeatureTitle</Key>
+                    <Value>Addition</Value>
+                </Property>
+                <Property>
+                    <Key>VariantName</Key>
+                    <Value>40</Value>
+                </Property>
+                <Property>
+                    <Key>Parameter:Second Number</Key>
+                    <Value>50</Value>
+                </Property>
+                <Property>
+                    <Key>Parameter:Result</Key>
+                    <Value>90</Value>
+                </Property>
+                <Property>
+                    <Key>Parameter:First Number</Key>
+                    <Value>40</Value>
+                </Property>
+            </Properties>
+            <TestMethod codeBase="c:/dev/pickles-results-harness/Pickles.TestHarness/Pickles.TestHarness.MSTest/bin/debug/Pickles.TestHarness.MSTest.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="Pickles.TestHarness.MSTest.AdditionFeature, Pickles.TestHarness.MSTest, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="AddingSeveralNumbers_40" />
+        </UnitTest>
+        <UnitTest name="AddingSeveralNumbers_60" storage="pickles.testharness\pickles.testharness.mstest\bin\debug\pickles.testharness.mstest.dll" id="0156926a-5b5c-a0f3-47b4-9cf23f44894b">
+            <Description>Adding several numbers</Description>
+            <Execution id="0f00d527-6edd-4045-b9b5-65ebce5b3874" />
+            <Properties>
+                <Property>
+                    <Key>FeatureTitle</Key>
+                    <Value>Addition</Value>
+                </Property>
+                <Property>
+                    <Key>VariantName</Key>
+                    <Value>60</Value>
+                </Property>
+                <Property>
+                    <Key>Parameter:Second Number</Key>
+                    <Value>70</Value>
+                </Property>
+                <Property>
+                    <Key>Parameter:Result</Key>
+                    <Value>130</Value>
+                </Property>
+                <Property>
+                    <Key>Parameter:First Number</Key>
+                    <Value>60</Value>
+                </Property>
+            </Properties>
+            <TestMethod codeBase="c:/dev/pickles-results-harness/Pickles.TestHarness/Pickles.TestHarness.MSTest/bin/debug/Pickles.TestHarness.MSTest.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="Pickles.TestHarness.MSTest.AdditionFeature, Pickles.TestHarness.MSTest, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="AddingSeveralNumbers_60" />
+        </UnitTest>
+    </TestDefinitions>
+    <TestLists>
+        <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+        <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+    </TestLists>
+    <TestEntries>
+        <TestEntry testId="272c9292-71fc-4aaa-5ed5-d7869de15ae4" executionId="d7b75d23-a952-4578-8542-326abd65c695" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+        <TestEntry testId="0156926a-5b5c-a0f3-47b4-9cf23f44894b" executionId="0f00d527-6edd-4045-b9b5-65ebce5b3874" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+        <TestEntry testId="45571f70-456e-69eb-dbf2-7ec265c4b751" executionId="17356f2f-b3c9-4bee-b6b3-74fe17b2e82b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+        <TestEntry testId="10684beb-1457-c825-5087-2d0029460463" executionId="6a02f552-17f1-4f86-9eaa-bcddec97f075" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    </TestEntries>
+    <Results>
+        <UnitTestResult executionId="d7b75d23-a952-4578-8542-326abd65c695" testId="272c9292-71fc-4aaa-5ed5-d7869de15ae4" testName="AddingSeveralNumbers_40" computerName="BUMBLEBEE" duration="00:00:00.0768910" startTime="2012-02-19T09:25:25.2729281-05:00" endTime="2012-02-19T09:25:25.9379661-05:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d7b75d23-a952-4578-8542-326abd65c695">
+            <Output>
+                <StdOut>
+                    Given I have entered 40 into the calculator
+                    -&gt; done: Steps.GivenIHaveEnteredSomethingIntoTheCalculator(40) (0.0s)
+                    And I have entered 50 into the calculator
+                    -&gt; done: Steps.GivenIHaveEnteredSomethingIntoTheCalculator(50) (0.0s)
+                    When I press add
+                    -&gt; done: Steps.WhenIPressAdd() (0.0s)
+                    Then the result should be 90 on the screen
+                    -&gt; done: Steps.ThenTheResultShouldBePass(90) (0.0s)
+                </StdOut>
+            </Output>
+        </UnitTestResult>
+        <UnitTestResult executionId="0f00d527-6edd-4045-b9b5-65ebce5b3874" testId="0156926a-5b5c-a0f3-47b4-9cf23f44894b" testName="AddingSeveralNumbers_60" computerName="BUMBLEBEE" duration="00:00:00.0111534" startTime="2012-02-19T09:25:25.9399663-05:00" endTime="2012-02-19T09:25:25.9719681-05:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0f00d527-6edd-4045-b9b5-65ebce5b3874">
+            <Output>
+                <StdOut>
+                    Given I have entered 60 into the calculator
+                    -&gt; done: Steps.GivenIHaveEnteredSomethingIntoTheCalculator(60) (0.0s)
+                    And I have entered 70 into the calculator
+                    -&gt; done: Steps.GivenIHaveEnteredSomethingIntoTheCalculator(70) (0.0s)
+                    When I press add
+                    -&gt; done: Steps.WhenIPressAdd() (0.0s)
+                    Then the result should be 130 on the screen
+                    -&gt; done: Steps.ThenTheResultShouldBePass(130) (0.0s)
+                </StdOut>
+            </Output>
+        </UnitTestResult>
+        <UnitTestResult executionId="17356f2f-b3c9-4bee-b6b3-74fe17b2e82b" testId="45571f70-456e-69eb-dbf2-7ec265c4b751" testName="AddTwoNumbers" computerName="BUMBLEBEE" duration="00:00:00.0055623" startTime="2012-02-19T09:25:25.9799685-05:00" endTime="2012-02-19T09:25:25.9919692-05:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="17356f2f-b3c9-4bee-b6b3-74fe17b2e82b">
+            <Output>
+                <StdOut>
+                    Given I have entered 50 into the calculator
+                    -&gt; done: Steps.GivenIHaveEnteredSomethingIntoTheCalculator(50) (0.0s)
+                    And I have entered 70 into the calculator
+                    -&gt; done: Steps.GivenIHaveEnteredSomethingIntoTheCalculator(70) (0.0s)
+                    When I press add
+                    -&gt; done: Steps.WhenIPressAdd() (0.0s)
+                    Then the result should be 120 on the screen
+                    -&gt; done: Steps.ThenTheResultShouldBePass(120) (0.0s)
+                </StdOut>
+            </Output>
+        </UnitTestResult>
+        <UnitTestResult executionId="6a02f552-17f1-4f86-9eaa-bcddec97f075" testId="10684beb-1457-c825-5087-2d0029460463" testName="FailToAddTwoNumbers" computerName="BUMBLEBEE" duration="00:00:00.0459057" startTime="2012-02-19T09:25:25.9949694-05:00" endTime="2012-02-19T09:25:26.0469724-05:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6a02f552-17f1-4f86-9eaa-bcddec97f075">
+            <Output>
+                <StdOut>
+                    Given I have entered 50 into the calculator
+                    -&gt; done: Steps.GivenIHaveEnteredSomethingIntoTheCalculator(50) (0.0s)
+                    And I have entered -1 into the calculator
+                    -&gt; done: Steps.GivenIHaveEnteredSomethingIntoTheCalculator(-1) (0.0s)
+                    When I press add
+                    -&gt; done: Steps.WhenIPressAdd() (0.0s)
+                    Then the result should be -50 on the screen
+                    -&gt; error: Assert.NotEqual() Failure
+                </StdOut>
+                <ErrorInfo>
+                    <Message>
+                        Test method Pickles.TestHarness.MSTest.AdditionFeature.FailToAddTwoNumbers threw exception:
+                        Should.Core.Exceptions.NotEqualException: Assert.NotEqual() Failure
+                    </Message>
+                    <StackTrace>
+                        at Pickles.TestHarness.MSTest.Steps.ThenTheResultShouldBePass(Int32 result) in C:\dev\pickles-results-harness\Pickles.TestHarness\Pickles.TestHarness.MSTest\Steps.cs:line 28
+                        at lambda_method(Closure , IContextManager , Int32 )
+                        at TechTalk.SpecFlow.Bindings.MethodBinding.InvokeAction(IContextManager contextManager, Object[] arguments, ITestTracer testTracer, TimeSpan&amp; duration)
+                        at TechTalk.SpecFlow.Bindings.StepDefinitionBinding.Invoke(IContextManager contextManager, ITestTracer testTracer, Object[] arguments, TimeSpan&amp; duration)
+                        at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.ExecuteStepMatch(BindingMatch match, Object[] arguments)
+                        at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.ExecuteStep(StepArgs stepArgs)
+                        at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnAfterLastStep()
+                        at TechTalk.SpecFlow.TestRunner.CollectScenarioErrors()
+                        at Pickles.TestHarness.MSTest.AdditionFeature.ScenarioCleanup() in C:\dev\pickles-results-harness\Pickles.TestHarness\Pickles.TestHarness.MSTest\Addition.feature.cs:line 0
+                        at Pickles.TestHarness.MSTest.AdditionFeature.FailToAddTwoNumbers() in c:\dev\pickles-results-harness\Pickles.TestHarness\Pickles.TestHarness.MSTest\Addition.feature:line 18
+                    </StackTrace>
+                </ErrorInfo>
+            </Output>
+        </UnitTestResult>
+    </Results>
+</TestRun>

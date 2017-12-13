@@ -1,7 +1,6 @@
 package io.qameta.allure.environment;
 
-import io.qameta.allure.Widget;
-import io.qameta.allure.core.Configuration;
+import io.qameta.allure.CommonJsonAggregator;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.EnvironmentItem;
 
@@ -17,11 +16,14 @@ import static java.util.stream.Collectors.toList;
 /**
  * @author Egor Borisov ehborisov@gmail.com
  */
-public class Allure1EnvironmentPlugin implements Widget {
+public class Allure1EnvironmentPlugin extends CommonJsonAggregator {
 
-    @Override
-    public List<EnvironmentItem> getData(final Configuration configuration,
-                                         final List<LaunchResults> launches) {
+    public Allure1EnvironmentPlugin() {
+        super("widgets", "environment.json");
+    }
+
+
+    protected List<EnvironmentItem> getData(final List<LaunchResults> launches) {
         final List<Map.Entry<String, String>> launchEnvironments = launches.stream()
                 .flatMap(launch -> launch.getExtra(ENVIRONMENT_BLOCK_NAME,
                         (Supplier<Map<String, String>>) HashMap::new).entrySet().stream())
@@ -29,17 +31,12 @@ public class Allure1EnvironmentPlugin implements Widget {
 
         return launchEnvironments.stream()
                 .collect(groupingBy(Map.Entry::getKey, toList()))
-                .entrySet().stream().map(this::aggregateItem).collect(toList());
+                .entrySet().stream().map(Allure1EnvironmentPlugin::aggregateItem).collect(toList());
     }
 
-    private EnvironmentItem aggregateItem(final Map.Entry<String, List<Map.Entry<String, String>>> entry) {
+    private static EnvironmentItem aggregateItem(final Map.Entry<String, List<Map.Entry<String, String>>> entry) {
         return new EnvironmentItem()
-                .withName(entry.getKey())
-                .withValues(entry.getValue().stream().map(Map.Entry::getValue).collect(toList()));
-    }
-
-    @Override
-    public String getName() {
-        return "environment";
+                .setName(entry.getKey())
+                .setValues(entry.getValue().stream().map(Map.Entry::getValue).collect(toList()));
     }
 }

@@ -1,0 +1,7 @@
+@import "../../variables.scss";
+
+.island {
+  background: $content-bg;
+  border: 1px solid $border-accent-color;
+  padding: $gap-size $gap-size 0 $gap-size;
+}

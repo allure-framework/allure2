@@ -1,13 +1,10 @@
 import {SafeString} from 'handlebars/runtime';
-import settings from '../util/settings';
-import {values} from '../util/statuses';
+import {values} from '../utils/statuses';
 
-export default function (statistic, tabName){
-    const statusesKey = tabName + '.visibleStatuses';
-    const statuses = settings.getVisibleStatuses(statusesKey);
+export default function (statistic){
     const fill = values.map(status => {
-        const count = typeof statistic[status] === 'undefined' ? 0 : statistic[status];
-        return count === 0 || !statuses[status]
+        const count = !statistic || typeof statistic[status] === 'undefined' ? 0 : statistic[status];
+        return count === 0
             ? ''
             : `<span class="label label_status_${status}">${count}</span> `;
     }

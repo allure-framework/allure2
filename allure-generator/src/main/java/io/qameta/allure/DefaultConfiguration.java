@@ -33,7 +33,7 @@ public class DefaultConfiguration implements Configuration {
     @Override
     public List<Aggregator> getAggregators() {
         return extensions.stream()
-                .filter(extension -> extension instanceof Aggregator)
+                .filter(Aggregator.class::isInstance)
                 .map(Aggregator.class::cast)
                 .collect(Collectors.toList());
     }
@@ -41,16 +41,8 @@ public class DefaultConfiguration implements Configuration {
     @Override
     public List<Reader> getReaders() {
         return extensions.stream()
-                .filter(extension -> extension instanceof Reader)
+                .filter(Reader.class::isInstance)
                 .map(Reader.class::cast)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<Widget> getWidgets() {
-        return extensions.stream()
-                .filter(extension -> extension instanceof Widget)
-                .map(Widget.class::cast)
                 .collect(Collectors.toList());
     }
 

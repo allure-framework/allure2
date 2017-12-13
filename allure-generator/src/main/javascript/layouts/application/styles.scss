@@ -1,0 +1,17 @@
+@import "../../variables.scss";
+
+.app {
+  background: $body-bg;
+  display: flex;
+  &__nav {
+    padding: 0 0;
+  }
+  &__content {
+    position: relative;
+    flex: 1;
+    overflow: auto;
+  }
+  &__header {
+    background: $header-bg;
+  }
+}

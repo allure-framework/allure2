@@ -1,125 +1,191 @@
 package io.qameta.allure.behaviors;
 
-import io.qameta.allure.Widget;
-import io.qameta.allure.core.Configuration;
+import io.qameta.allure.CommonCsvExportAggregator;
+import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.CompositeAggregator;
 import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.csv.CsvExportBehavior;
 import io.qameta.allure.entity.LabelName;
-import io.qameta.allure.entity.Statistic;
-import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.tree.AbstractTreeAggregator;
-import io.qameta.allure.tree.TreeGroup;
+import io.qameta.allure.tree.TestResultTree;
+import io.qameta.allure.tree.TestResultTreeGroup;
+import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeWidgetData;
 import io.qameta.allure.tree.TreeWidgetItem;
+import org.apache.commons.collections.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import static io.qameta.allure.entity.ExtraStatisticMethods.comparator;
+import static io.qameta.allure.entity.LabelName.EPIC;
+import static io.qameta.allure.entity.LabelName.FEATURE;
+import static io.qameta.allure.entity.LabelName.STORY;
+import static io.qameta.allure.entity.Statistic.comparator;
+import static io.qameta.allure.entity.TestResult.comparingByTimeAsc;
+import static io.qameta.allure.tree.TreeUtils.calculateStatisticByChildren;
+import static io.qameta.allure.tree.TreeUtils.groupByLabels;
 
 /**
  * The plugin adds behaviors tab to the report.
  *
  * @since 2.0
  */
-public class BehaviorsPlugin extends AbstractTreeAggregator implements Widget {
+@SuppressWarnings({"PMD.ExcessiveImports", "PMD.UseUtilityClass"})
+public class BehaviorsPlugin extends CompositeAggregator {
 
-    private static final String DEFAULT_FEATURE = "Default feature";
-    private static final String DEFAULT_STORY = "Default story";
+    protected static final String BEHAVIORS = "behaviors";
 
-    @Override
-    protected String getFileName() {
-        return "behaviors.json";
+    protected static final String JSON_FILE_NAME = "behaviors.json";
+
+    protected static final String CSV_FILE_NAME = "behaviors.csv";
+
+    @SuppressWarnings("PMD.DefaultPackage")
+    /* default */ static final LabelName[] LABEL_NAMES = new LabelName[] {EPIC, FEATURE, STORY};
+
+    public BehaviorsPlugin() {
+        super(Arrays.asList(
+                new JsonAggregator(), new CsvExportAggregator(), new WidgetAggregator()
+        ));
     }
 
-    @Override
-    protected List<TreeGroup> getGroups(final TestResult result) {
-        return Arrays.asList(
-                TreeGroup.allByLabel(result, LabelName.FEATURE, DEFAULT_FEATURE),
-                TreeGroup.allByLabel(result, LabelName.STORY, DEFAULT_STORY)
+    @SuppressWarnings("PMD.DefaultPackage")
+    /* default */ static Tree<TestResult> getData(final List<LaunchResults> launchResults) {
+
+        // @formatter:off
+        final Tree<TestResult> behaviors = new TestResultTree(
+            BEHAVIORS,
+            testResult -> groupByLabels(testResult, LABEL_NAMES)
         );
+        // @formatter:on
+
+        launchResults.stream()
+                .map(LaunchResults::getResults)
+                .flatMap(Collection::stream)
+                .sorted(comparingByTimeAsc())
+                .forEach(behaviors::add);
+        return behaviors;
     }
 
-    @Override
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-    public Object getData(final Configuration configuration, final List<LaunchResults> launches) {
-        final Map<String, Set<TestResult>> featuresToResults = new HashMap<>();
-        for (LaunchResults launchResults : launches) {
-            for (TestResult result : launchResults.getResults()) {
-                final List<String> features = result.findAll(LabelName.FEATURE);
-                for (String feature : features) {
-                    final Set<TestResult> featureTestResults = featuresToResults
-                            .computeIfAbsent(feature, s -> new HashSet<>());
-                    featureTestResults.add(result);
-                }
+    private static class JsonAggregator extends CommonJsonAggregator {
+
+        JsonAggregator() {
+            super(JSON_FILE_NAME);
+        }
+
+        @Override
+        protected Tree<TestResult> getData(final List<LaunchResults> launches) {
+            return BehaviorsPlugin.getData(launches);
+        }
+    }
+
+    private static class CsvExportAggregator extends CommonCsvExportAggregator<CsvExportBehavior> {
+
+        CsvExportAggregator() {
+            super(CSV_FILE_NAME, CsvExportBehavior.class);
+        }
+
+        @Override
+        protected List<CsvExportBehavior> getData(final List<LaunchResults> launchesResults) {
+            final List<CsvExportBehavior> exportBehaviors = new ArrayList<>();
+            launchesResults.stream().flatMap(launch -> launch.getResults().stream()).forEach(result -> {
+                Map<LabelName, List<String>> epicFeatureStoryMap = new HashMap<>();
+                Arrays.asList(LABEL_NAMES).forEach(
+                    label -> epicFeatureStoryMap.put(label, result.findAllLabels(label))
+                );
+                addTestResult(exportBehaviors, result, epicFeatureStoryMap);
+            });
+            return exportBehaviors;
+        }
+
+        private void addTestResult(final List<CsvExportBehavior> exportBehaviors, final TestResult result,
+                                             final Map<LabelName, List<String>> epicFeatureStoryMap) {
+            if (epicFeatureStoryMap.isEmpty()) {
+                addTestResultWithLabels(exportBehaviors, result, null, null, null);
+            } else {
+                addTestResultWithEpic(exportBehaviors, result, epicFeatureStoryMap);
             }
         }
 
-        final List<TreeWidgetItem> items = featuresToResults.entrySet().stream()
-                .map(entry -> {
-                    Map<String, Status> statusesForStories = getStories(entry.getValue());
-                    if (statusesForStories.isEmpty()) {
-                        statusesForStories = getDefaultStoryStatus(entry.getValue());
-                    }
-                    return new TreeWidgetItem()
-                            .withStatistic(from(statusesForStories))
-                            .withName(entry.getKey());
-                })
-                .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
-                .limit(10)
-                .collect(Collectors.toList());
-        return new TreeWidgetData().withItems(items).withTotal(featuresToResults.entrySet().size());
+        private void addTestResultWithEpic(final List<CsvExportBehavior> exportBehaviors, final TestResult result,
+                                           final Map<LabelName, List<String>> epicFeatureStoryMap) {
+            if (!CollectionUtils.isEmpty(epicFeatureStoryMap.get(EPIC))) {
+                epicFeatureStoryMap.get(EPIC).forEach(
+                    epic -> addTestResultWithFeature(exportBehaviors, result, epicFeatureStoryMap, epic)
+                );
+            } else {
+                addTestResultWithFeature(exportBehaviors, result, epicFeatureStoryMap, null);
+            }
+        }
+
+        private void addTestResultWithFeature(final List<CsvExportBehavior> exportBehaviors, final TestResult result,
+                                              final Map<LabelName, List<String>> epicFeatureStoryMap,
+                                              final String epic) {
+            if (!CollectionUtils.isEmpty(epicFeatureStoryMap.get(FEATURE))) {
+                epicFeatureStoryMap.get(FEATURE).forEach(
+                    feature -> addTestResultWithStories(exportBehaviors, result, epicFeatureStoryMap, epic, feature)
+                );
+            } else {
+                addTestResultWithStories(exportBehaviors, result, epicFeatureStoryMap, epic, null);
+            }
+        }
+
+        private void addTestResultWithStories(final List<CsvExportBehavior> exportBehaviors, final TestResult result,
+                                                 final Map<LabelName, List<String>> epicFeatureStoryMap,
+                                                 final String epic, final String feature) {
+            if (!CollectionUtils.isEmpty(epicFeatureStoryMap.get(STORY))) {
+                epicFeatureStoryMap.get(STORY).forEach(
+                    story -> addTestResultWithLabels(exportBehaviors, result, epic, feature, story)
+                );
+            } else {
+                addTestResultWithLabels(exportBehaviors, result, epic, feature, null);
+            }
+        }
+
+        private void addTestResultWithLabels(final List<CsvExportBehavior> exportBehaviors, final TestResult result,
+                                             final String epic, final String feature, final String story) {
+            Optional<CsvExportBehavior> behavior = exportBehaviors.stream()
+                    .filter(exportBehavior -> exportBehavior.isPassed(epic, feature, story)).findFirst();
+            if (behavior.isPresent()) {
+                behavior.get().addTestResult(result);
+            } else {
+                CsvExportBehavior exportBehavior = new CsvExportBehavior(epic, feature, story);
+                exportBehavior.addTestResult(result);
+                exportBehaviors.add(exportBehavior);
+            }
+        }
     }
 
-    @Override
-    public String getName() {
-        return "behaviors";
-    }
+    protected static class WidgetAggregator extends CommonJsonAggregator {
 
-    private Map<String, Status> getDefaultStoryStatus(final Set<TestResult> featureTestResults) {
-        return Collections.singletonMap(DEFAULT_STORY,
-                featureTestResults.stream().map(TestResult::getStatus).reduce(this::min).orElse(Status.UNKNOWN));
-    }
+        WidgetAggregator() {
+            super("widgets", JSON_FILE_NAME);
+        }
 
-    private Map<String, Status> getStories(final Set<TestResult> featureTestResults) {
-        final Map<String, Status> storyStatus = new HashMap<>();
-        featureTestResults.forEach(result -> {
-            final List<String> stories = result.findAll(LabelName.STORY);
-            stories.forEach(story -> {
-                storyStatus.putIfAbsent(story, result.getStatus());
-                storyStatus.computeIfPresent(story, (key, value) -> min(value, result.getStatus()));
-            });
-        });
+        @Override
+        public TreeWidgetData getData(final List<LaunchResults> launches) {
+            final Tree<TestResult> data = BehaviorsPlugin.getData(launches);
+            final List<TreeWidgetItem> items = data.getChildren().stream()
+                    .filter(TestResultTreeGroup.class::isInstance)
+                    .map(TestResultTreeGroup.class::cast)
+                    .map(WidgetAggregator::toWidgetItem)
+                    .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
+                    .limit(10)
+                    .collect(Collectors.toList());
+            return new TreeWidgetData().setItems(items).setTotal(data.getChildren().size());
+        }
 
-        return storyStatus;
-    }
-
-    protected Statistic from(final Map<String, Status> stories) {
-        final List<Status> result = stories.entrySet().stream()
-                .map(Map.Entry::getValue)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-        return from(result);
-    }
-
-    protected Statistic from(final List<Status> statuses) {
-        final Statistic statistic = new Statistic();
-        statuses.forEach(statistic::update);
-        return statistic;
-    }
-
-    protected Status min(final Status first, final Status second) {
-        return Stream.of(first, second)
-                .min(Status::compareTo)
-                .orElse(Status.UNKNOWN);
+        private static TreeWidgetItem toWidgetItem(final TestResultTreeGroup group) {
+            return new TreeWidgetItem()
+                    .setUid(group.getUid())
+                    .setName(group.getName())
+                    .setStatistic(calculateStatisticByChildren(group));
+        }
     }
 }

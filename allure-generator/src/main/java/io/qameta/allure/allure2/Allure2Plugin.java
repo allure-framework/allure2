@@ -11,9 +11,9 @@ import io.qameta.allure.entity.Link;
 import io.qameta.allure.entity.Parameter;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.Time;
+import io.qameta.allure.model.ExecutableItem;
 import io.qameta.allure.model.FixtureResult;
 import io.qameta.allure.model.StepResult;
 import io.qameta.allure.model.TestResult;
@@ -27,12 +27,15 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsFirst;
@@ -45,6 +48,8 @@ import static java.util.Objects.nonNull;
  */
 @SuppressWarnings("PMD.ExcessiveImports")
 public class Allure2Plugin implements Reader {
+
+    public static final String ALLURE2_RESULTS_FORMAT = "allure2";
 
     private static final Comparator<StageResult> BY_START = comparing(
             StageResult::getTime,
@@ -70,16 +75,21 @@ public class Allure2Plugin implements Reader {
         dest.setUid(uidGenerator.get());
         dest.setHistoryId(result.getHistoryId());
         dest.setFullName(result.getFullName());
-        dest.setName(result.getName());
-        dest.setTime(result.getStart(), result.getStop());
+        dest.setName(firstNonNull(result.getName(), result.getFullName(), "Unknown test"));
+        dest.setTime(Time.create(result.getStart(), result.getStop()));
         dest.setDescription(result.getDescription());
         dest.setDescriptionHtml(result.getDescriptionHtml());
         dest.setStatus(convert(result.getStatus()));
-        dest.setStatusDetails(convert(result.getStatusDetails()));
+        Optional.ofNullable(result.getStatusDetails()).ifPresent(details -> {
+            dest.setStatusMessage(details.getMessage());
+            dest.setStatusTrace(details.getTrace());
+        });
 
         dest.setLinks(convert(result.getLinks(), this::convert));
         dest.setLabels(convert(result.getLabels(), this::convert));
-        dest.setParameters(convert(result.getParameters(), this::convert));
+        dest.setParameters(getParameters(result));
+
+        dest.addLabelIfNotExists(RESULT_FORMAT, ALLURE2_RESULTS_FORMAT);
 
         if (hasTestStage(result)) {
             dest.setTestStage(getTestStage(resultsDirectory, visitor, result));
@@ -100,33 +110,40 @@ public class Allure2Plugin implements Reader {
     private StageResult convert(final Path source,
                                 final ResultsVisitor visitor,
                                 final FixtureResult result) {
-        return new StageResult()
-                .withName(result.getName())
-                .withTime(convert(result.getStart(), result.getStop()))
-                .withStatus(convert(result.getStatus()))
-                .withStatusDetails(convert(result.getStatusDetails()))
-                .withSteps(convert(result.getSteps(), step -> convert(source, visitor, step)))
-                .withAttachments(convert(result.getAttachments(), attach -> convert(source, visitor, attach)))
-                .withParameters(convert(result.getParameters(), this::convert));
+        final StageResult stageResult = new StageResult()
+                .setName(result.getName())
+                .setTime(convert(result.getStart(), result.getStop()))
+                .setStatus(convert(result.getStatus()))
+                .setSteps(convert(result.getSteps(), step -> convert(source, visitor, step)))
+                .setAttachments(convert(result.getAttachments(), attach -> convert(source, visitor, attach)))
+                .setParameters(convert(result.getParameters(), this::convert));
+        Optional.of(result)
+                .map(ExecutableItem::getStatusDetails)
+                .ifPresent(statusDetails -> {
+                    stageResult.setStatusMessage(statusDetails.getMessage());
+                    stageResult.setStatusTrace(statusDetails.getTrace());
+                });
+
+        return stageResult;
     }
 
     private Link convert(final io.qameta.allure.model.Link link) {
         return new Link()
-                .withName(link.getName())
-                .withType(link.getType())
-                .withUrl(link.getUrl());
+                .setName(link.getName())
+                .setType(link.getType())
+                .setUrl(link.getUrl());
     }
 
     private Label convert(final io.qameta.allure.model.Label label) {
         return new Label()
-                .withName(label.getName())
-                .withValue(label.getValue());
+                .setName(label.getName())
+                .setValue(label.getValue());
     }
 
     private Parameter convert(final io.qameta.allure.model.Parameter parameter) {
         return new Parameter()
-                .withName(parameter.getName())
-                .withValue(parameter.getValue());
+                .setName(parameter.getName())
+                .setValue(parameter.getValue());
     }
 
     private Attachment convert(final Path source,
@@ -145,23 +162,29 @@ public class Allure2Plugin implements Reader {
         } else {
             visitor.error("Could not find attachment " + attachment.getSource() + " in directory " + source);
             return new Attachment()
-                    .withType(attachment.getType())
-                    .withName(attachment.getName())
-                    .withSize(0L);
+                    .setType(attachment.getType())
+                    .setName(attachment.getName())
+                    .setSize(0L);
         }
     }
 
     private Step convert(final Path source,
                          final ResultsVisitor visitor,
                          final StepResult step) {
-        return new Step()
-                .withName(step.getName())
-                .withStatus(convert(step.getStatus()))
-                .withStatusDetails(convert(step.getStatusDetails()))
-                .withTime(convert(step.getStart(), step.getStop()))
-                .withParameters(convert(step.getParameters(), this::convert))
-                .withAttachments(convert(step.getAttachments(), attachment -> convert(source, visitor, attachment)))
-                .withSteps(convert(step.getSteps(), s -> convert(source, visitor, s)));
+        final Step result = new Step()
+                .setName(step.getName())
+                .setStatus(convert(step.getStatus()))
+                .setTime(convert(step.getStart(), step.getStop()))
+                .setParameters(convert(step.getParameters(), this::convert))
+                .setAttachments(convert(step.getAttachments(), attachment -> convert(source, visitor, attachment)))
+                .setSteps(convert(step.getSteps(), s -> convert(source, visitor, s)));
+        Optional.of(step)
+                .map(ExecutableItem::getStatusDetails)
+                .ifPresent(statusDetails -> {
+                    result.setStatusMessage(statusDetails.getMessage());
+                    result.setStatusTrace(statusDetails.getTrace());
+                });
+        return result;
     }
 
     private Status convert(final io.qameta.allure.model.Status status) {
@@ -174,18 +197,20 @@ public class Allure2Plugin implements Reader {
                 .orElse(Status.UNKNOWN);
     }
 
-    private StatusDetails convert(final io.qameta.allure.model.StatusDetails details) {
-        return Objects.isNull(details) ? null : new StatusDetails()
-                .withFlaky(details.isFlaky())
-                .withMessage(details.getMessage())
-                .withTrace(details.getTrace());
-    }
-
     private Time convert(final Long start, final Long stop) {
         return new Time()
-                .withStart(start)
-                .withStop(stop)
-                .withDuration(nonNull(start) && nonNull(stop) ? stop - start : null);
+                .setStart(start)
+                .setStop(stop)
+                .setDuration(nonNull(start) && nonNull(stop) ? stop - start : null);
+    }
+
+    private List<Parameter> getParameters(final TestResult result) {
+        final TreeSet<Parameter> parametersSet = new TreeSet<>(
+                comparing(Parameter::getName, nullsFirst(naturalOrder()))
+                        .thenComparing(Parameter::getValue, nullsFirst(naturalOrder()))
+        );
+        parametersSet.addAll(convert(result.getParameters(), this::convert));
+        return new ArrayList<>(parametersSet);
     }
 
     private StageResult getTestStage(final Path source,
@@ -195,7 +220,12 @@ public class Allure2Plugin implements Reader {
         testStage.setSteps(convert(result.getSteps(), step -> convert(source, visitor, step)));
         testStage.setAttachments(convert(result.getAttachments(), attachment -> convert(source, visitor, attachment)));
         testStage.setStatus(convert(result.getStatus()));
-        testStage.setStatusDetails(convert(result.getStatusDetails()));
+        Optional.of(result)
+                .map(ExecutableItem::getStatusDetails)
+                .ifPresent(statusDetails -> {
+                    testStage.setStatusMessage(statusDetails.getMessage());
+                    testStage.setStatusTrace(statusDetails.getTrace());
+                });
         return testStage;
     }
 
@@ -243,5 +273,15 @@ public class Allure2Plugin implements Reader {
                 .filter(container -> container.getChildren().contains(id))
                 .filter(container -> !seen.contains(container.getUuid()))
                 .collect(Collectors.toList());
+    }
+
+    @SafeVarargs
+    private static <T> T firstNonNull(final T... items) {
+        return Stream.of(items)
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException(
+                        "firstNonNull method should have at least one non null parameter"
+                ));
     }
 }

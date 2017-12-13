@@ -1,0 +1,73 @@
+$brand-blue: #0044bb;
+$brand-red: #ff0000;
+
+$color-passed: #97cc64;
+$color-failed: #fd5a3e;
+$color-broken: #ffd050;
+$color-skipped: #aaa;
+$color-unknown: #d35ebe;
+
+$background-light-passed: #eef9eb;
+$background-light-failed: #ffe7e6;
+$background-light-broken: #fffae6;
+$background-light-skipped: #f2f2f2;
+$background-light-unknown: #faebf7;
+
+$background-passed: #a6e19d;
+$background-failed: #ffaca6;
+$background-broken: #ffeca0;
+$background-skipped: #cccccc;
+$background-unknown: #ecb7e2;
+
+$header-bg: #fff;
+$heading-bg: #f6f5f3;
+$body-bg: #fff;
+$content-bg: #fff;
+$attachment-bg: #f8f8f9;
+
+$border-color: #ECEFF1;
+$border-accent-color: #e5e5e5;
+
+$hover-color: #e4edfe;
+$selected-color: #fffacd;
+$summary-color: #f6f5f3;
+
+$text-color: #000;
+$text-muted-color: #999;
+
+$gap-size: 15px;
+$footer-gap-size: 30px;
+
+$small-screen: 1000px;
+$min-pane-size: 300px;
+
+/*  Sidebar  **/
+
+$sidebar-full-width: 180px;
+$sidebar-collapsed: 60px;
+
+$sidebar-separator-color: #4d4d4d;
+$sidebar-active-accent-color: #64B5F6;
+$app-nav-bg: #343434;
+$sidebar-active-text-color: #fff;
+$sidebar-hover-text-color: #fff;
+$sidebar-brand-color: #fff;
+$sidebar-text-shadow-color: #000;
+
+
+/* Links */
+
+$link-color: #000;
+$link-color-hover: #f00;
+
+
+/* Pane set */
+
+$pane-bg-color: #fff;
+$pane-shadow-color: #999;
+$pane-overlay-bg: rgba(240, 240, 240, 0.4);
+$pane-overlay-bg-hover: rgba(240, 240, 240, 0.2);
+
+/* Tooltip */
+$tooltip-bg: rgba(50, 50, 50, 0.8);
+$tooltip-color: #fff;

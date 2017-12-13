@@ -1,10 +1,12 @@
-import './styles.css';
+import './styles.scss';
 import {View} from 'backbone.marionette';
 import $ from 'jquery';
 import Sortable from 'sortablejs';
-import settings from '../../util/settings';
 import {className} from '../../decorators';
-import pluginsRegistry from '../../util/pluginsRegistry';
+import pluginsRegistry from '../../utils/pluginsRegistry';
+import {getSettingsForWidgetGridPlugin} from '../../utils/settingsFactory';
+import {fetchAndShow} from '../../utils/loading';
+
 
 const widgetTpl = (id) => `<div class="widget island" data-id="${id}">
     <div class="widget__handle">
@@ -16,18 +18,21 @@ const colTpl = '<div class="widgets-grid__col"></div>';
 
 @className('widgets-grid')
 class WidgetsGridView extends View {
-    template() {
-        return '';
+    template = () => '';
+
+    initialize({settings = getSettingsForWidgetGridPlugin('overview')}) {
+        this.widgets = pluginsRegistry.widgets[this.options.tabName];
+        this.settings = settings;
     }
 
     onRender() {
         this.getWidgetsArrangement().map(col => {
-            return col.map(widgetName => [widgetName, pluginsRegistry.widgets[widgetName]]);
+            return col.map(widgetName => [widgetName, this.widgets[widgetName].widget, this.widgets[widgetName].model]);
         }).forEach(widgetCol => {
             const col = $(colTpl);
             this.$el.append(col);
-            widgetCol.forEach(([name, Widget]) => {
-                this.addWidget(col, name, Widget);
+            widgetCol.forEach(([name, Widget, Model]) => {
+                this.addWidget(col, name, Widget, Model);
             });
         });
         this.$('.widgets-grid__col').each((i, colEl) => new Sortable(colEl, {
@@ -39,11 +44,12 @@ class WidgetsGridView extends View {
     }
 
     getWidgetsArrangement() {
-        const savedData = settings.get('widgets') || [[], []];
+        const savedData = this.settings.getWidgetsArrangement();
+
         const storedWidgets = savedData.map(col => {
-            return col.filter(widgetName => pluginsRegistry.widgets[widgetName]);
+            return col.filter(widgetName => this.widgets[widgetName]);
         });
-        Object.keys(pluginsRegistry.widgets).forEach(widgetName => {
+        Object.keys(this.widgets).forEach(widgetName => {
             if (storedWidgets.every(col => col.indexOf(widgetName) === -1)) {
                 const freeColumn = storedWidgets.reduce((smallestCol, col) =>
                     col.length < smallestCol.length ? col : smallestCol
@@ -55,19 +61,17 @@ class WidgetsGridView extends View {
     }
 
     saveWidgetsArrangement() {
-        settings.save('widgets', this.$('.widgets-grid__col').toArray().map(colEl => {
+        this.settings.setWidgetsArrangement(this.$('.widgets-grid__col').toArray().map(colEl => {
             return $(colEl).find('.widget').toArray().map(el => $(el).data('id'));
         }));
     }
 
-    addWidget(col, name, Widget) {
-        let data = this.model.getWidgetData(name);
-        data.set('widget', name);
-
+    addWidget(col, name, Widget, Model) {
         const el = $(widgetTpl(name));
         col.append(el);
         this.addRegion(name, {el: el.find('.widget__body')});
-        this.getRegion(name).show(new Widget({model: data}));
+        const widget = new Model({}, {name});
+        fetchAndShow(this, name, widget, new Widget({model: widget}));
     }
 }
 

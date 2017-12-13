@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:test-suite start="1412949039940" stop="1412949062424" version="1.4.23" xmlns:ns2="urn:model.allure.qatools.yandex.ru">
+    <name>my.company.CustomWidgetPageTest</name>
+    <title>Custom Widget page</title>
+    <test-cases>
+        <test-case start="1412949039950" stop="1412949051895" status="passed">
+            <name>open widget page</name>
+            <steps>
+                <step start="1412949044638" stop="1412949045140" status="passed">
+                    <name>toLoginForm</name>
+                    <title>Open Login form</title>
+                    <attachments/>
+                    <steps/>
+                </step>
+                <step start="1412949045143" stop="1412949047173" status="passed">
+                    <name>login[admin, admin]</name>
+                    <title>Log in as admin/admin</title>
+                    <attachments/>
+                    <steps/>
+                </step>
+                <step start="1412949049713" stop="1412949051574" status="passed">
+                    <name>uploadWidgetArchive[tests/web-tests/build/resources/test/widgets/test-widget.zip]</name>
+                    <title>Upload widget</title>
+                    <attachments>
+                        <attachment title="WidgetPage" source="2a61ec3c-1149-47cc-8640-615e51af26f5-attachment.png" type="image/png"/>
+                    </attachments>
+                    <steps>
+                        <step start="1412949049868" stop="1412949050998" status="passed">
+                            <name>selectFile[tests/web-tests/build/resources/test/widgets/test-widget.zip]</name>
+                            <title>Select widget archive [tests/web-tests/build/resources/test/widgets/test-widget.zip]</title>
+                            <attachments>
+                                <attachment title="Import widget dialog" source="8e86c8ae-c2cd-49d4-a1b8-87592aa6de02-attachment.png" type="image/png"/>
+                            </attachments>
+                            <steps/>
+                        </step>
+                        <step start="1412949050998" stop="1412949051000" status="passed">
+                            <name>step</name>
+                            <title>step</title>
+                            <attachments/>
+                            <steps/>
+                        </step>
+                    </steps>
+                </step>
+                <step start="1412949051575" stop="1412949051816" status="passed">
+                    <name>verifyWidget[test-widget, Test widget, 0.0.1]</name>
+                    <title>Verify widget description [test-widget/Test widget/0.0.1]</title>
+                    <attachments/>
+                    <steps/>
+                </step>
+            </steps>
+            <attachments/>
+            <labels>
+                <label name="host" value="testing.company.net"/>
+                <label name="thread" value="32653@testing.company.net.Test worker(11)"/>
+            </labels>
+        </test-case>
+    </test-cases>
+    <labels>
+        <label name="framework" value="JUnit"/>
+        <label name="language" value="JAVA"/>
+    </labels>
+</ns2:test-suite>

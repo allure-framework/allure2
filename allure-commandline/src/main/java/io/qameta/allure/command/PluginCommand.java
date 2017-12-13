@@ -2,7 +2,7 @@ package io.qameta.allure.command;
 
 import com.beust.jcommander.Parameters;
 import com.beust.jcommander.ParametersDelegate;
-import io.qameta.allure.option.ProfileOptions;
+import io.qameta.allure.option.ConfigOptions;
 
 /**
  * Display plugins.
@@ -14,9 +14,9 @@ import io.qameta.allure.option.ProfileOptions;
 public class PluginCommand {
 
     @ParametersDelegate
-    private ProfileOptions profileOptions = new ProfileOptions();
+    private ConfigOptions configOptions = new ConfigOptions();
 
-    public ProfileOptions getProfileOptions() {
-        return profileOptions;
+    public ConfigOptions getConfigOptions() {
+        return configOptions;
     }
 }

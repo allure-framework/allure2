@@ -1,0 +1,20 @@
+{{#if fullName}}
+    <div class="pane__subtitle long-line line-ellipsis">
+        {{> ../../blocks/clipboard-copy/clipboard-copy value=fullName}}
+        <span class="fullname__body">{{fullName}}</span>
+    </div>
+{{/if}}
+<h2 class="{{b 'pane' 'title' borderless=true}}">
+    {{#if flaky}}
+        {{allure-icon 'flaky'}}
+    {{/if}}
+    <div class="{{b cls 'status'}}">
+        <span class="label label_status_{{status}}">{{t statusName}}</span>
+    </div>
+    <div class="{{b cls 'name'}}">
+        <span class="long-line">{{name}}</span>
+    </div>
+</h2>
+
+{{> ../../blocks/tabs/tabs}}
+<div class="{{b cls 'content'}}"></div>

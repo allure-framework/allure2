@@ -1,14 +1,13 @@
 description = 'Allure Report Generator'
 
 apply from: "${gradleScriptDir}/maven-publish.gradle"
-apply from: "${gradleScriptDir}/jaxb.gradle"
 apply from: "${gradleScriptDir}/bintray.gradle"
 apply plugin: 'maven'
 
 apply plugin: 'com.moowork.node'
 
 node {
-    version = '7.10.0'
+    version = '8.1.3'
     yarnVersion = '0.24.6'
     download = true
 }
@@ -49,17 +48,28 @@ processResources.dependsOn buildWeb
 test.dependsOn testWeb
 
 dependencies {
+    allurePlugin project(path: ':behaviors-plugin', configuration: 'allurePlugin')
+    allurePlugin project(path: ':packages-plugin', configuration: 'allurePlugin')
+    allurePlugin project(path: ':screen-diff-plugin', configuration: 'allurePlugin')
+
     compile project(':allure-plugin-api')
     compile('org.allurefw:allure1-model')
     compile('io.qameta.allure:allure2-model-api')
     compile('org.apache.tika:tika-core')
     compile('commons-io:commons-io')
+    compile('com.fasterxml.jackson.dataformat:jackson-dataformat-yaml')
+    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
+    compile('org.apache.httpcomponents:httpclient')
+    compileOnly('org.projectlombok:lombok')
+
 
     testCompile('junit:junit')
     testCompile('org.assertj:assertj-core')
+    testCompile('org.mockito:mockito-core')
     testCompile('org.slf4j:slf4j-simple')
-    testCompile('org.apache.commons:commons-lang3')
+    testCompile('org.apache.commons:commons-text')
     testCompile('com.google.guava:guava')
+    testCompile('io.qameta.allure:allure-java-commons')
 }
 
 task sourceJar(type: Jar, dependsOn: classes) {
@@ -81,6 +91,7 @@ task generateDemoReport(type: JavaExec) {
     dependsOn cleanUpDemoReport
     main = 'io.qameta.allure.DummyReportGenerator'
     classpath = sourceSets.test.runtimeClasspath
+    systemProperty('allure.plugins.directory', 'build/plugins')
     args = [
             file("test-data/${resultsDirectory}"),
             file('build/demo-report')

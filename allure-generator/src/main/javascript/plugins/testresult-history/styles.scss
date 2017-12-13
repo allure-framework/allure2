@@ -1,0 +1,10 @@
+@import "../../variables.scss";
+
+.test-result-history {
+  &__row {
+    padding: 7px 15px 7px 0;
+  }
+  &__success-rate {
+    padding-bottom: 10px;
+  }
+}

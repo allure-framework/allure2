@@ -8,6 +8,7 @@
     "flaky": "Instabil"
   },
   "sorter": {
+    "order": "Reihenfolge",
     "name": "Name",
     "duration": "Dauer",
     "status": "Status"
@@ -19,8 +20,8 @@
     "categories": {
       "name": "Kategorien"
     },
-    "xunit": {
-      "name": "xUnit"
+    "suites": {
+      "name": "Suiten"
     },
     "graph": {
       "name": "Grafiken"
@@ -36,11 +37,20 @@
       "aggregatedName": "Aggregierter Report",
       "launches": "Durchlauf",
       "launches_plural": "Durchläufe",
-      "testCases": "Testfall",
-      "testCases_plural": "Testfälle"
+      "testResults": "Testfall",
+      "testResults_plural": "Testfälle"
     },
     "trend": {
       "name": "Trend"
+    },
+    "categoriesTrend": {
+      "name": "Kategorien Trend"
+    },
+    "durationTrend": {
+      "name": "Dauer Trend"
+    },
+    "retryTrend": {
+      "name": "Wiederholungen Trend"
     },
     "executors": {
       "name": "Durchführer",
@@ -54,7 +64,13 @@
     "environment": {
       "name": "Umgebung",
       "empty": "Keine Umgebungsvariablen verfügbar",
-      "showAll": "Zeige alle Umgebungsvariablen"
+      "showAll": "Zeige alle"
+    },
+    "suites": {
+      "name": "Suiten"
+    },
+    "categories": {
+      "name": "Kategorien"
     }
   },
   "chart": {
@@ -72,10 +88,13 @@
       "name": "Status"
     }
   },
-  "testCase": {
+  "testResult": {
     "status": {
       "empty": "Keine Status Details",
       "trace": "Zeige Stracktrace"
+    },
+    "overview": {
+      "name": "Übersicht"
     },
     "categories": {
       "name": "Kategorien"
@@ -94,7 +113,8 @@
       "name": "Besitzer"
     },
     "retries": {
-      "name": "Wiederholungen"
+      "name": "Wiederholungen",
+      "empty": "Keine Informationen zu Wiederholungen verfügbar"
     },
     "parameters": {
       "name": "Parameter"
@@ -125,17 +145,22 @@
   "controls": {
     "collapse": "Verkleinern",
     "expand": "Vergrößern",
+    "fullscreen": "Vollbild",
     "language": "Sprache ändern",
     "clipboard": "In Zwischenablage kopieren",
+    "clipboardSuccess": "Erfolgreich in Zwischenablage kopiert",
+    "clipboardError": "Wert konnte nicht in Zwischenablage kopiert werden. Ihr Browser scheint dieses Feature nicht zu unterstützen",
     "backto": "Zurück zu"
   },
   "errors": {
-    "missedAttachment": "Anhang nicht gefunden"
+    "missedAttachment": "Anhang nicht gefunden",
+    "notFound": "Nicht gefunden"
   },
   "component": {
     "tree": {
       "filter": "Filtere Testfälle nach Status",
       "groups": "Gruppeninformationen an- / ausschalten",
+      "download": "CSV herunterladen",
       "empty": "Keine Einträge verfügbar",
       "time": {
         "total" : {
@@ -158,6 +183,7 @@
       }
     },
     "widgetStatus": {
+      "showAll": "Zeige alle",
       "total": "{{count}} Eintrag insgesamt",
       "total_plural": "{{count}} Einträge insgesamt"
     },

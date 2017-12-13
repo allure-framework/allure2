@@ -90,20 +90,20 @@ public class HistoryPlugin implements Reader, Aggregator {
         //@formatter:off
         final HistoryData data = history.computeIfAbsent(
             result.getHistoryId(),
-            id -> new HistoryData().withStatistic(new Statistic())
+            id -> new HistoryData().setStatistic(new Statistic())
         );
         //@formatter:on
 
-        data.updateStatistic(result);
+        data.getStatistic().update(result);
         if (!data.getItems().isEmpty()) {
             result.addExtraBlock(HISTORY_BLOCK_NAME, copy(data));
         }
 
         final HistoryItem newItem = new HistoryItem()
-                .withUid(result.getUid())
-                .withStatus(result.getStatus())
-                .withStatusDetails(result.getStatusMessage().orElse(null))
-                .withTime(result.getTime());
+                .setUid(result.getUid())
+                .setStatus(result.getStatus())
+                .setStatusDetails(result.getStatusMessage())
+                .setTime(result.getTime());
 
         if (Objects.nonNull(info.getReportUrl())) {
             newItem.setReportUrl(createReportUrl(info.getReportUrl(), result.getUid()));
@@ -120,12 +120,12 @@ public class HistoryPlugin implements Reader, Aggregator {
         statistic.merge(other.getStatistic());
         final List<HistoryItem> items = new ArrayList<>(other.getItems());
         return new HistoryData()
-                .withStatistic(statistic)
-                .withItems(items);
+                .setStatistic(statistic)
+                .setItems(items);
     }
 
     private static String createReportUrl(final String reportUrl, final String uuid) {
-        final String pattern = reportUrl.endsWith("index.html") ? "%s#testcase/%s" : "%s/#testcase/%s";
+        final String pattern = reportUrl.endsWith("index.html") ? "%s#testresult/%s" : "%s/#testresult/%s";
         return String.format(pattern, reportUrl, uuid);
     }
 }

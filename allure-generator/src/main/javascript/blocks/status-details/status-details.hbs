@@ -1,0 +1,11 @@
+<div class="{{b "status-details" status=status}}">
+    <div class="status-details__content">
+        {{#if statusMessage}}
+            <div class="{{b 'status-details' 'trace-toggle' status=status}} clickable" data-tooltip="{{t 'testResult.status.trace'}}">
+                <pre class="status-details__message"><code>{{statusMessage}}</code></pre>
+            </div>
+
+            <pre class="{{b 'status-details' 'trace'}}"><code>{{#if statusTrace}}{{statusTrace}}{{else}}{{t 'testResult.status.empty'}}{{/if}}</code></pre>
+        {{/if}}
+    </div>
+</div>

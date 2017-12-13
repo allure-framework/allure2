@@ -1,15 +1,13 @@
 import {Model} from 'backbone';
-import TreeView from 'components/tree/TreeView';
+import TreeViewContainer from 'components/tree-view-container/TreeViewContainer';
 import TreeCollection from 'data/tree/TreeCollection';
-import settings from 'util/settings';
-import {values} from 'util/statuses';
-
+import {getSettingsForTreePlugin} from 'utils/settingsFactory';
+import {SEARCH_QUERY_KEY} from '../../../main/javascript/components/node-search/NodeSearchView';
 
 describe('Tree', function () {
     const tabName = 'Tab Name';
-    const sorterSettingsKey = tabName + '.treeSorting';
-    const filterSettingsKey = tabName + '.visibleStatuses';
-    const infoSettingsKey = 'showGroupInfo';
+    let settings = getSettingsForTreePlugin('TREE_TEST');
+    let state;
     let view;
     let page;
 
@@ -17,41 +15,19 @@ describe('Tree', function () {
         return Math.random().toString(36).substring(2);
     }
 
-    function rootNode({children = []} = {}) {
+    function groupNode({name = 'group', children = [], uid = fakeUid()} = {}) {
         return {
-            statistic: children.reduce((acc, curr) => {
-                values.forEach(status => {
-                    acc[status] = (acc[status] || 0) +
-                        (curr.statistic ? curr.statistic[status] : (curr.status === status ? 1 : 0));
-                });
-                return acc;
-            }, {}),
+            uid: uid,
+            name: name,
             time: {
-                minDuration: 0,
-                maxDuration: 0,
-                sumDuration: 0,
-                duration: children.reduce((acc, curr) => {
-                    return acc + curr.time.duration;
-                }, 0)
+                duration: children.reduce((acc, curr) => { return acc + curr.time.duration; }, 0)
             },
             children: children
         };
     }
 
-    function groupNode({name = '', children = [], uid = fakeUid()} = {}) {
-        return Object.assign(
-            rootNode({children: children}),
-            {
-                type: 'TestGroupNode',
-                uid: uid,
-                name: name
-            }
-        );
-    }
-
-    function caseNode({name = 'TestCaseNode', status = 'passed', uid = fakeUid(), duration = 1} = {}) {
+    function caseNode({name = 'node', status = 'passed', uid = fakeUid(), duration = 1} = {}) {
         return {
-            type: 'TestCaseNode',
             name: name,
             uid: uid,
             status: status,
@@ -62,16 +38,17 @@ describe('Tree', function () {
     }
 
     function PageObject(el) {
-        this.nodes = () => el.find('.node');
+        this.nodes = () => el.find('.node__name');
         this.node = (i) => this.nodes().eq(i);
+        this.infos = () => el.find('.node__info');
     }
 
     function sortTree({sorter = 'sorter.name', ascending = true}) {
-        settings.save(sorterSettingsKey, {sorter, ascending});
+        settings.setTreeSorting({sorter, ascending});
     }
 
     function filterTree({failed = true, broken = true, passed = true, skipped = true, unknown = true}) {
-        settings.save(filterSettingsKey, {
+        settings.setVisibleStatuses({
             failed: failed,
             broken: broken,
             passed: passed,
@@ -80,48 +57,52 @@ describe('Tree', function () {
         });
     }
 
-    function renderView(data) {
-        const items = new TreeCollection([], {});
-        items.set(data, {parse: true});
-
-        const view = new TreeView({
-            collection: items,
-            state: new Model(),
-            treeState: new Model(),
-            tabName: tabName,
-            baseUrl: 'XUnit',
-        });
-        view.render();
-        const page = new PageObject(view.$el);
-
-        return {view, page};
+    function searchInTree(searchQuery) {
+        state.set(SEARCH_QUERY_KEY, searchQuery);
     }
 
-    const data = rootNode({
+    function renderView(data) {
+        const items = new TreeCollection([], {});
+        const state = new Model();
+        items.set(data, {parse: true});
+
+        view = new TreeViewContainer({
+            collection: items,
+            state: state,
+            routeState: new Model(),
+            tabName: tabName,
+            baseUrl: 'XUnit',
+            settings: settings
+        }).render();
+        view.onRender();
+        const page = new PageObject(view.$el);
+
+        return {view, page, state};
+    }
+
+    const data = groupNode({
         children: [
             groupNode({
                 name: 'A group node',
                 children: [
-                    caseNode({name: 'First node', status: 'passed', duration: 3}),
-                    caseNode({name: 'Second node', status: 'failed', duration: 1}),
-                    caseNode({name: 'Third node', status: 'skipped', duration: 2})
+                    caseNode({name: 'First node', status: 'passed', duration: 4}),
+                    caseNode({name: 'Second node', status: 'failed', duration: 2}),
+                    caseNode({name: 'Third node that i like', status: 'skipped', duration: 3})
                 ]
             }),
             groupNode({
                 name: 'B group node',
                 children: [
-                    caseNode({name: 'Node in B group', status: 'unknown', duration: 1})
+                    caseNode({name: 'Node in B group likes to be tested', status: 'unknown', duration: 1})
                 ]
             }),
-            caseNode({name: 'Other node', status: 'unknown', duration: 5}),
+            caseNode({name: 'Like other nodes', status: 'unknown', duration: 5}),
         ]
     });
 
     beforeEach(() => {
-        settings.unset(sorterSettingsKey);
-        settings.unset(filterSettingsKey);
-        settings.unset(infoSettingsKey);
-        ({view, page} = renderView(data));
+        settings = getSettingsForTreePlugin('TREE_TEST');
+        ({view, page, state} = renderView(data));
     });
 
     afterEach(() => {
@@ -135,7 +116,7 @@ describe('Tree', function () {
             expect(page.nodes().length).toBe(0);
             sortTree({ascending: false});
             filterTree({failed: true, broken: false, passed: false, skipped: false, unknown: false});
-            settings.save(infoSettingsKey, true);
+            settings.setShowGroupInfo(true);
             expect(page.nodes().length).toBe(0);
             view.destroy();
         });
@@ -179,21 +160,21 @@ describe('Tree', function () {
             expect(page.node(1).text()).toMatch(/Second node/);
 
             sortTree({sorter: 'sorter.status', ascending: true});
-            expect(page.node(0).text()).toMatch(/A group node/);
-            expect(page.node(1).text()).toMatch(/Third node/);
+            expect(page.node(0).text()).toMatch(/B group node/);
+            expect(page.node(1).text()).toMatch(/Node in B group/);
         });
     });
 
     describe('filtering', () => {
 
-        it('should hiding nodes', () => {
+        it('should hide nodes', () => {
             filterTree({failed: false, broken: false, passed: false, skipped: false, unknown: false});
             expect(page.nodes().length).toBe(0);
 
             filterTree({failed: false, broken: false, passed: false, skipped: false, unknown: true});
             expect(page.nodes().length).toBe(3);
             expect(page.node(0).text()).toMatch(/B group node/);
-            expect(page.node(2).text()).toMatch(/Other node/);
+            expect(page.node(2).text()).toMatch(/Like other nodes/);
 
             filterTree({failed: true, broken: false, passed: false, skipped: false, unknown: false});
             expect(page.nodes().length).toBe(2);
@@ -203,12 +184,30 @@ describe('Tree', function () {
 
     });
 
+    describe('searching', () => {
+
+        it('should hide nodes which don\'t contain searchQuery in its name(ignoring case)', () => {
+            searchInTree('Like');
+            expect(page.nodes().length).toBe(5);
+            expect(page.node(0).text()).toMatch(/A group node/);
+            expect(page.node(1).text()).toMatch(/Third node that i like/);
+            expect(page.node(2).text()).toMatch(/B group node/);
+            expect(page.node(3).text()).toMatch(/Node in B group likes to be tested/);
+            expect(page.node(4).text()).toMatch(/Like other nodes/);
+
+            searchInTree('abracadabra');
+            expect(page.nodes().length).toBe(0);
+        });
+
+    });
+
     describe('groupInfo', () => {
 
-        it('should hiding nodes', () => {
-            settings.save(infoSettingsKey, true);
-            expect(page.nodes().length).toBe(9);
-
+        it('should showing and hiding the group node info', () => {
+            settings.setShowGroupInfo(true);
+            expect(page.infos().length).toBe(2);
+            settings.setShowGroupInfo(false);
+            expect(page.infos().length).toBe(0);
         });
     });
 });

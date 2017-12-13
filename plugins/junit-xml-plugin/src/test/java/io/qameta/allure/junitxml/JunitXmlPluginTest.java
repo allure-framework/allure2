@@ -1,14 +1,16 @@
 package io.qameta.allure.junitxml;
 
+import io.qameta.allure.Issue;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.Label;
+import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.entity.Time;
 import org.assertj.core.groups.Tuple;
 import org.junit.Before;
 import org.junit.Rule;
@@ -23,7 +25,6 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -86,7 +87,7 @@ public class JunitXmlPluginTest {
 
     @Test
     public void shouldAddLogAsAttachment() throws Exception {
-        final Attachment hey = new Attachment().withUid("some-uid");
+        final Attachment hey = new Attachment().setUid("some-uid");
         when(visitor.visitAttachmentFile(any())).thenReturn(hey);
         process(
                 "junitdata/TEST-test.SampleTest.xml", "TEST-test.SampleTest.xml",
@@ -130,9 +131,10 @@ public class JunitXmlPluginTest {
                 .flatExtracting(TestResult::getLabels)
                 .extracting(Label::getName, Label::getValue)
                 .containsExactlyInAnyOrder(
-                        Tuple.tuple("suite", "test.SampleTest"),
-                        Tuple.tuple("package", "test.SampleTest"),
-                        Tuple.tuple("testClass", "test.SampleTest")
+                        Tuple.tuple(LabelName.SUITE.value(), "test.SampleTest"),
+                        Tuple.tuple(LabelName.PACKAGE.value(), "test.SampleTest"),
+                        Tuple.tuple(LabelName.TEST_CLASS.value(), "test.SampleTest"),
+                        Tuple.tuple(LabelName.RESULT_FORMAT.value(), JunitXmlPlugin.JUNIT_RESULTS_FORMAT)
                 );
     }
 
@@ -158,17 +160,14 @@ public class JunitXmlPluginTest {
         assertThat(results)
                 .extracting(TestResult::getName, TestResult::getStatus, TestResult::isHidden, TestResult::getHistoryId)
                 .containsExactlyInAnyOrder(
-                        Tuple.tuple("searchTest", Status.BROKEN, false, "my.company.tests.SearchTest#searchTest"),
-                        Tuple.tuple("searchTest", Status.BROKEN, true, "my.company.tests.SearchTest#searchTest"),
-                        Tuple.tuple("searchTest", Status.BROKEN, true, "my.company.tests.SearchTest#searchTest"),
-                        Tuple.tuple("searchTest", Status.FAILED, true, "my.company.tests.SearchTest#searchTest")
+                        Tuple.tuple("searchTest", Status.BROKEN, false, "my.company.tests.SearchTest:my.company.tests.SearchTest#searchTest"),
+                        Tuple.tuple("searchTest", Status.BROKEN, true, "my.company.tests.SearchTest:my.company.tests.SearchTest#searchTest"),
+                        Tuple.tuple("searchTest", Status.BROKEN, true, "my.company.tests.SearchTest:my.company.tests.SearchTest#searchTest"),
+                        Tuple.tuple("searchTest", Status.FAILED, true, "my.company.tests.SearchTest:my.company.tests.SearchTest#searchTest")
                 );
 
         assertThat(results)
-                .extracting(TestResult::getStatusDetails)
-                .filteredOn(Objects::nonNull)
-                .hasSize(4)
-                .extracting(StatusDetails::getMessage, StatusDetails::getTrace)
+                .extracting(TestResult::getStatusMessage, TestResult::getStatusTrace)
                 .containsExactlyInAnyOrder(
                         Tuple.tuple("message-root", "trace-root"),
                         Tuple.tuple("message-retried-1", "trace-retried-1"),
@@ -188,11 +187,88 @@ public class JunitXmlPluginTest {
         verify(visitor, times(1)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
-                .extracting(TestResult::getStatusDetails)
-                .extracting(StatusDetails::getMessage, StatusDetails::getTrace)
+                .extracting(TestResult::getStatusMessage, TestResult::getStatusTrace)
                 .containsExactlyInAnyOrder(
                         tuple("some-message", "some-trace")
                 );
+
+    }
+
+    @Issue("532")
+    @Test
+    public void shouldParseSuitesTag() throws Exception {
+        process(
+                "junitdata/testsuites.xml", "TEST-test.SampleTest.xml"
+        );
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(3)).visitTestResult(captor.capture());
+
+        assertThat(captor.getAllValues())
+                .extracting(TestResult::getName)
+                .containsExactlyInAnyOrder(
+                        "should default path to an empty string",
+                        "should default consolidate to true",
+                        "should default useDotNotation to true"
+                );
+    }
+
+    @Test
+    public void shouldProcessTimestampIfPresent() throws Exception {
+        process(
+                "junitdata/with-timestamp.xml", "TEST-test.SampleTest.xml"
+        );
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(1)).visitTestResult(captor.capture());
+
+        assertThat(captor.getAllValues())
+                .extracting(TestResult::getTime)
+                .extracting(Time::getDuration)
+                .containsExactly(1051L);
+
+        assertThat(captor.getAllValues())
+                .extracting(TestResult::getTime)
+                .extracting(Time::getStart)
+                .isNotNull();
+
+        assertThat(captor.getAllValues())
+                .extracting(TestResult::getTime)
+                .extracting(Time::getStop)
+                .isNotNull();
+    }
+
+    @Test
+    public void shouldUseSuiteNameIfPresent() throws Exception {
+        process(
+                "junitdata/with-timestamp.xml", "TEST-test.SampleTest.xml"
+        );
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(1)).visitTestResult(captor.capture());
+
+        assertThat(captor.getAllValues())
+                .flatExtracting(TestResult::getLabels)
+                .filteredOn("name", "suite")
+                .extracting(Label::getValue)
+                .containsExactly("LocalSuiteIDOL");
+
+    }
+
+    @Test
+    public void shouldUseHostnameIfPresent() throws Exception {
+        process(
+                "junitdata/with-timestamp.xml", "TEST-test.SampleTest.xml"
+        );
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(1)).visitTestResult(captor.capture());
+
+        assertThat(captor.getAllValues())
+                .flatExtracting(TestResult::getLabels)
+                .filteredOn("name", "host")
+                .extracting(Label::getValue)
+                .containsExactly("cbgtalosbld02");
 
     }
 

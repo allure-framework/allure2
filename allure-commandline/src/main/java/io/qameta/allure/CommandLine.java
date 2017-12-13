@@ -130,21 +130,22 @@ public class CommandLine {
                         generateCommand.getReportDirectory(),
                         generateCommand.getResultsOptions().getResultsDirectories(),
                         generateCommand.isCleanReportDirectory(),
-                        generateCommand.getProfileOptions().getProfile()
+                        generateCommand.getConfigOptions()
                 );
             case SERVE_COMMAND:
                 return commands.serve(
                         serveCommand.getResultsOptions().getResultsDirectories(),
-                        serveCommand.getPortOptions().getPort(),
-                        serveCommand.getProfileOptions().getProfile()
-                );
+                        serveCommand.getHostPortOptions().getHost(),
+                        serveCommand.getHostPortOptions().getPort(),
+                        serveCommand.getConfigOptions());
             case OPEN_COMMAND:
                 return commands.open(
                         openCommand.getReportDirectories().get(0),
-                        openCommand.getPortOptions().getPort()
+                        openCommand.getHostPortOptions().getHost(),
+                        openCommand.getHostPortOptions().getPort()
                 );
             case PLUGIN_COMMAND:
-                return commands.listPlugins(pluginCommand.getProfileOptions().getProfile());
+                return commands.listPlugins(pluginCommand.getConfigOptions());
             default:
                 printUsage(commander);
                 return ExitCode.ARGUMENT_PARSING_ERROR;

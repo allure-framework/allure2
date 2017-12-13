@@ -1,0 +1,24 @@
+
+.parameters-table {
+  display: table;
+  font-size: 12px;
+  width: 100%;
+  padding-right: 10px;
+  table-layout: fixed;
+  &__row {
+    display: table-row;
+  }
+  &__cell {
+    display: table-cell;
+    padding: 5px 5px;
+    cursor: pointer;
+    word-wrap: break-word;
+    &_name {
+      width: 25%;
+    }
+    &_value {
+      width: 75%;
+    }
+  }
+
+}

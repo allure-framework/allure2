@@ -1,0 +1,89 @@
+@import "../../../node_modules/normalize-css/normalize.css";
+@import "../../../node_modules/highlight.js/styles/github-gist.css";
+@import "./rtl.scss";
+@import "./blocks/alert/styles.scss";
+@import "./blocks/attachment-row/styles.scss";
+@import "./blocks/bar/styles.scss";
+@import "./blocks/button/styles.scss";
+@import "./blocks/island/styles.scss";
+@import "./blocks/label/styles.scss";
+@import "./blocks/link/styles.scss";
+@import "./blocks/spinner/styles.scss";
+@import "./blocks/splash/styles.scss";
+@import "./blocks/step-stats/styles.scss";
+@import "./blocks/text/styles.scss";
+@import "./blocks/widget/styles.scss";
+@import "./blocks/parameters-table/styles.scss";
+@import "./variables.scss";
+
+body {
+  color: $text-color;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-size: 14px;
+}
+
+#content {
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  .app {
+    flex: 1;
+  }
+  & > .spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)
+  }
+}
+
+.view {
+  padding: 0 15px;
+  margin: 0 auto;
+  &_narrow {
+    max-width: 1100px;
+  }
+  &-small {
+    max-width: 300px;
+  }
+  &-medium {
+    max-width: 600px;
+  }
+  &-large {
+    max-width: 1200px;
+  }
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.long-line {
+  word-break: break-word;
+}
+
+.line-nobreak {
+  white-space: nowrap;
+}
+
+.preformated-text {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.line-ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+

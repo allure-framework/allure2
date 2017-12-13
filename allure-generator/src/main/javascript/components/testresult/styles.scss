@@ -1,0 +1,24 @@
+@import "../../variables.scss";
+@import "../../mixins.scss";
+
+.test-result {
+  &__name {
+    padding-left: 10px;
+  }
+  &__content {
+    margin-bottom: 300px;
+  }
+}
+
+.testresult__failure_expanded > .testresult__trace {
+  display: block;
+}
+
+.message {
+  border-bottom: 3px solid;
+  @include status-border();
+}
+
+.fullname__copy {
+  cursor: pointer;
+}

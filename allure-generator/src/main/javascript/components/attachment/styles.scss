@@ -1,0 +1,72 @@
+@import "../../variables.scss";
+
+.attachment {
+  &__filename {
+    background: $heading-bg;
+    padding: $gap-size;
+  }
+  &__text {
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin: 0;
+    padding: 0;
+  }
+  &__code {
+    font: 14px normal "Courier New" monospace;
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin: 0;
+    padding: 0;
+  }
+  &__table {
+    width: 100%;
+    tr {
+      border-bottom: 1px solid $border-color;
+    }
+    td {
+      padding: 10px 15px;
+    }
+  }
+  &__url {
+    padding: 0 $gap-size;
+    margin: 0.5em 0;
+    &_comment {
+      color: $text-muted-color;
+    }
+  }
+  &__table-container {
+    overflow: auto;
+  }
+  &__text-container, &__table-container {
+    &_fullscreen {
+      padding: $gap-size;
+      background-color: $pane-bg-color;
+    }
+  }
+  &__media-container {
+    text-align: center;
+    cursor: zoom-in;
+    &_fullscreen {
+      cursor: zoom-out;
+    }
+  }
+  &__iframe-container {
+    height: 100%;
+  }
+  &__embed, &__media {
+    max-width: 100%;
+    display: block;
+    &_fullscreen {
+      margin: auto;
+    }
+    margin: auto;
+
+  }
+  &__iframe {
+    width: 100%;
+    &_fullscreen {
+      background-color: $pane-bg-color;
+      height: 85vh;
+    }
+  }
+}

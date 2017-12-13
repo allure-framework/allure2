@@ -1,0 +1,53 @@
+@import "../../variables.scss";
+
+.pane {
+
+  &__subtitle {
+    color: $text-muted-color;
+    padding-left: 5px;
+    margin: 10px 0;
+    font-weight:initial;
+    font-size: 18px;
+  }
+
+  &__title {
+    padding: 0 15px 10px;
+    width:100%;
+    display: flex;
+    position: relative;
+    margin: 7px 0 0;
+    border-bottom: 1px solid $border-color;
+    font-size: 24px;
+    font-weight: bold;
+    &_borderless {
+      border: none;
+    }
+  }
+  &__search {
+    display: inline-block;
+    padding: 0 0.5em;
+    width: 100%;
+  }
+  &__title-text {
+      text-align: left;
+  }
+  &__controls {
+    & > a {
+      text-decoration: none;
+      color: $text-color;
+      opacity: 0.7;
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+
+  &__section {
+    margin: $gap-size 0;
+    padding: 0 $gap-size;
+  }
+
+  &__section-title {
+    margin: 0 0 $gap-size;
+  }
+}

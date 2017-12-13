@@ -1,0 +1,100 @@
+@import "../../variables.scss";
+
+.node {
+  margin-left: 0;
+  position: relative;
+  display: block;
+  text-decoration: none;
+  color: $text-color;
+
+  .node {
+    margin-left: 20px;
+  }
+  &:last-child {
+    padding-bottom: 10px;
+  }
+  &__arrow {
+    left: 7px;
+    position: absolute;
+  }
+  &__flaky {
+    padding-left: 10px;
+    opacity: 0;
+    &_shown {
+      opacity: 1;
+    }
+  }
+  &__order {
+    padding-left: 5px;
+    padding-right: 10px;
+  }
+  &__anchor {
+    left: 10px;
+    position: absolute;
+  }
+  &__stats {
+    display: block;
+    float: right;
+    white-space: nowrap;
+  }
+  &__title {
+    overflow: hidden;
+    line-height: 1.2em;
+    padding: 7px $gap-size 7px 25px;
+    flex: 1;
+    display: flex;
+    cursor: pointer;
+    border-top: 1px solid #ECEFF1;
+    position: relative;
+    .node__leaf & {
+      padding: 7px $gap-size 7px 35px;
+    }
+    &_active {
+      background-color: $selected-color;
+        &::before {
+        background-color: $selected-color;
+      }
+    }
+    &:hover {
+      background-color: $hover-color;
+      &::before {
+        background-color: $hover-color;
+      }
+    }
+  }
+  &__time {
+    padding: 5px;
+  }
+  &__parameters {
+    color: $text-muted-color;
+    min-width: 2ch;
+    &_separator:last-child {
+      display: none;
+    }
+  }
+  &__children {
+    display: none;
+    .node__expanded > & {
+      display: block;
+    }
+  }
+  &:focus {
+    outline: 0;
+  }
+}
+
+[dir=rtl] .attachment-row.attachment-row_selected > .attachment-row__arrow > .fa-angle-right {
+  transform: rotate(180deg);
+}
+
+[dir=rtl] .step_expanded > .step__title > .step__arrow {
+  transform: rotate(90deg);
+}
+
+[dir=rtl] .node__expanded > .node__title > .node__arrow {
+  transform: rotate(90deg);
+}
+
+[dir=ltr] .node__expanded > .node__title > .node__arrow {
+  transform: rotate(90deg);
+}

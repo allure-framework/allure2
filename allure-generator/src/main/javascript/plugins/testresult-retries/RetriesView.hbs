@@ -1,0 +1,13 @@
+<div class="{{b 'pane' 'section'}}">
+    {{#if retries}}
+        {{#each retries}}
+            <a class="link" href="#/testresult/{{uid}}">
+                <span class="label label_status_{{status}}">{{status}}</span>
+                <span>{{date time.start}} at {{time time.start}}</span>
+                <pre class="preformated-text"><code>{{statusDetails}}</code></pre>
+            </a>
+        {{/each}}
+    {{else}}
+        {{t 'testResult.retries.empty'}}
+    {{/if}}
+</div>

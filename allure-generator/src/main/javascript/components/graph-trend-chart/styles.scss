@@ -1,0 +1,16 @@
+@import "../../mixins.scss";
+
+.trend {
+  &__tooltip {
+    white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+    &_label {
+      text-align: left;
+      display: inline-block;
+    }
+    &_name {
+      vertical-align: middle;
+    }
+  }
+}

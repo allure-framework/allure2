@@ -63,6 +63,6 @@ public interface WithLabels {
     }
 
     default void addLabel(String name, String value) {
-        getLabels().add(new Label().withName(name).withValue(value));
+        getLabels().add(new Label().setName(name).setValue(value));
     }
 }

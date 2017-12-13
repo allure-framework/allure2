@@ -2,6 +2,7 @@ package io.qameta.allure.allure1;
 
 import io.qameta.allure.ConfigurationBuilder;
 import io.qameta.allure.DefaultResultsVisitor;
+import io.qameta.allure.Issue;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Attachment;
@@ -10,7 +11,6 @@ import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.Link;
 import io.qameta.allure.entity.Parameter;
 import io.qameta.allure.entity.StageResult;
-import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
 import org.assertj.core.groups.Tuple;
@@ -37,6 +37,7 @@ import static io.qameta.allure.entity.Status.UNKNOWN;
 import static org.allurefw.allure1.AllureUtils.generateTestSuiteJsonName;
 import static org.allurefw.allure1.AllureUtils.generateTestSuiteXmlName;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 
 public class Allure1PluginTest {
 
@@ -67,6 +68,24 @@ public class Allure1PluginTest {
         ).getResults();
         assertThat(testResults)
                 .hasSize(4);
+    }
+
+    @Test
+    public void shouldExcludeDuplicatedParams() throws Exception {
+        Set<TestResult> testResults = process(
+                "allure1/duplicated-params.xml", generateTestSuiteXmlName()
+        ).getResults();
+        assertThat(testResults)
+                .hasSize(1)
+                .flatExtracting(TestResult::getParameters)
+                .hasSize(4)
+                .extracting(Parameter::getName, Parameter::getValue)
+                .containsExactlyInAnyOrder(
+                        tuple("name", "value"),
+                        tuple("name2", "value"),
+                        tuple("name", "value2"),
+                        tuple("name2", "value2")
+                );
     }
 
     @Test
@@ -136,7 +155,7 @@ public class Allure1PluginTest {
         ).getResults();
         assertThat(testCases)
                 .hasSize(1)
-                .extracting(testResult -> testResult.findOne(LabelName.SUITE))
+                .extracting(testResult -> testResult.findOneLabel(LabelName.SUITE))
                 .extracting(Optional::get)
                 .containsExactly("Passing test");
     }
@@ -149,7 +168,7 @@ public class Allure1PluginTest {
 
         assertThat(testCases)
                 .hasSize(1)
-                .extracting(testResult -> testResult.findOne(LabelName.SUITE))
+                .extracting(testResult -> testResult.findOneLabel(LabelName.SUITE))
                 .extracting(Optional::get)
                 .containsExactly("my.company.AlwaysPassingTest");
     }
@@ -175,8 +194,7 @@ public class Allure1PluginTest {
         ).getResults();
         assertThat(testCases)
                 .hasSize(1)
-                .extracting(TestResult::getStatusDetails)
-                .extracting(StatusDetails::isFlaky)
+                .extracting(TestResult::isFlaky)
                 .containsExactly(true);
     }
 
@@ -187,7 +205,7 @@ public class Allure1PluginTest {
         ).getResults();
         assertThat(testResults)
                 .hasSize(1)
-                .extracting(result -> result.findOne(LabelName.PACKAGE))
+                .extracting(result -> result.findOneLabel(LabelName.PACKAGE))
                 .extracting(Optional::get)
                 .containsExactly("my.company.package.subpackage.MyClass");
     }
@@ -202,6 +220,18 @@ public class Allure1PluginTest {
                 .hasSize(1)
                 .extracting(TestResult::getFullName)
                 .containsExactly("my.company.package.subpackage.MyClass.testThree");
+    }
+
+    @Test
+    public void shouldAddTestResultFormatLabel() throws Exception {
+        Set<TestResult> testResults = process(
+                "allure1/sample-testsuite.xml", generateTestSuiteXmlName()
+        ).getResults();
+
+        assertThat(testResults)
+                .extracting(result -> result.findOneLabel(LabelName.RESULT_FORMAT))
+                .extracting(Optional::get)
+                .containsOnly(Allure1Plugin.ALLURE1_RESULTS_FORMAT);
     }
 
     @Test
@@ -254,6 +284,34 @@ public class Allure1PluginTest {
                         Tuple.tuple("invalid", null),
                         Tuple.tuple(null, null)
                 );
+    }
+
+    @Test
+    public void shouldBeAbleToSpecifyHistoryIdViaLabel() throws Exception {
+        final Set<TestResult> results = process(
+                "allure1/history-id-label.xml", generateTestSuiteXmlName()
+        ).getResults();
+
+        assertThat(results)
+                .filteredOn("name", "test1")
+                .extracting(TestResult::getHistoryId)
+                .containsExactly("something");
+
+        assertThat(results)
+                .filteredOn("name", "test2")
+                .extracting(TestResult::getHistoryId)
+                .containsNull();
+    }
+
+    @Issue("629")
+    @Test
+    public void shouldProcessEmptyLists() throws Exception {
+        final Set<TestResult> results = process(
+                "allure1/empty-lists.xml", generateTestSuiteXmlName()
+        ).getResults();
+
+        assertThat(results)
+                .hasSize(1);
     }
 
     private LaunchResults process(String... strings) throws IOException {

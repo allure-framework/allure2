@@ -4,6 +4,7 @@ import com.beust.jcommander.JCommander;
 import io.qameta.allure.config.ConfigLoader;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.Plugin;
+import io.qameta.allure.option.ConfigOptions;
 import io.qameta.allure.plugin.DefaultPluginLoader;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.server.Handler;
@@ -16,9 +17,12 @@ import org.slf4j.LoggerFactory;
 
 import java.awt.Desktop;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.URI;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -41,21 +45,42 @@ public class Commands {
         this.allureHome = allureHome;
     }
 
-    public CommandlineConfig getConfig(final String profile) throws IOException {
-        if (Objects.isNull(allureHome) || Files.notExists(allureHome)) {
-            return new CommandlineConfig();
+    public CommandlineConfig getConfig(final ConfigOptions configOptions) throws IOException {
+        return getConfigFile(configOptions)
+                .map(ConfigLoader::new)
+                .map(ConfigLoader::load)
+                .orElseGet(CommandlineConfig::new);
+    }
+
+    public Optional<Path> getConfigFile(final ConfigOptions configOptions) {
+        if (Objects.nonNull(configOptions.getConfigPath())) {
+            return Optional.of(Paths.get(configOptions.getConfigPath()));
         }
-        return new ConfigLoader(allureHome, profile).load();
+        if (Objects.nonNull(configOptions.getConfigDirectory())) {
+            return Optional.of(Paths.get(configOptions.getConfigDirectory())
+                    .resolve(getConfigFileName(configOptions.getProfile())));
+        }
+        if (Objects.nonNull(allureHome)) {
+            return Optional.of(allureHome.resolve("config")
+                    .resolve(getConfigFileName(configOptions.getProfile())));
+        }
+        return Optional.empty();
+    }
+
+    public String getConfigFileName(final String profile) {
+        return Objects.isNull(profile)
+                ? "allure.yml"
+                : format("allure-%s.yml", profile);
     }
 
     public ExitCode generate(final Path reportDirectory,
                              final List<Path> resultsDirectories,
                              final boolean clean,
-                             final String profile) {
+                             final ConfigOptions profile) {
         final boolean directoryExists = Files.exists(reportDirectory);
         if (clean && directoryExists) {
             FileUtils.deleteQuietly(reportDirectory.toFile());
-        } else if (directoryExists) {
+        } else if (directoryExists && isDirectoryNotEmpty(reportDirectory)) {
             JCommander.getConsole().println(format(DIRECTORY_EXISTS_MESSAGE, reportDirectory.toAbsolutePath()));
             return ExitCode.GENERIC_ERROR;
         }
@@ -71,8 +96,9 @@ public class Commands {
     }
 
     public ExitCode serve(final List<Path> resultsDirectories,
+                          final String host,
                           final int port,
-                          final String profile) {
+                          final ConfigOptions configOptions) {
         LOGGER.info("Generating report to temp directory...");
 
         final Path reportDirectory;
@@ -89,17 +115,17 @@ public class Commands {
                 reportDirectory,
                 resultsDirectories,
                 false,
-                profile
+                configOptions
         );
         if (exitCode.isSuccess()) {
-            return open(reportDirectory, port);
+            return open(reportDirectory, host, port);
         }
         return exitCode;
     }
 
-    public ExitCode open(final Path reportDirectory, final int port) {
+    public ExitCode open(final Path reportDirectory, final String host, final int port) {
         LOGGER.info("Starting web server...");
-        final Server server = setUpServer(port, reportDirectory);
+        final Server server = setUpServer(host, port, reportDirectory);
         try {
             server.start();
         } catch (Exception e) {
@@ -126,9 +152,9 @@ public class Commands {
         return ExitCode.NO_ERROR;
     }
 
-    public ExitCode listPlugins(final String profile) {
+    public ExitCode listPlugins(final ConfigOptions configOptions) {
         try {
-            final CommandlineConfig config = getConfig(profile);
+            final CommandlineConfig config = getConfig(configOptions);
             config.getPlugins().forEach(LOGGER::info);
         } catch (IOException e) {
             LOGGER.error("Can't read config: {}", e);
@@ -144,7 +170,7 @@ public class Commands {
      * @return created report configuration.
      * @throws IOException if any occurs.
      */
-    protected Configuration createReportConfiguration(final String profile) throws IOException {
+    protected Configuration createReportConfiguration(final ConfigOptions profile) throws IOException {
         final DefaultPluginLoader loader = new DefaultPluginLoader();
         final CommandlineConfig commandlineConfig = getConfig(profile);
         final ClassLoader classLoader = getClass().getClassLoader();
@@ -163,9 +189,12 @@ public class Commands {
     /**
      * Set up Jetty server to serve Allure Report
      */
-    protected Server setUpServer(final int port, final Path reportDirectory) {
-        final Server server = new Server(port);
+    protected Server setUpServer(final String host, final int port, final Path reportDirectory) {
+        final Server server = Objects.isNull(host)
+                ? new Server(port)
+                : new Server(new InetSocketAddress(host, port));
         ResourceHandler handler = new ResourceHandler();
+        handler.setRedirectWelcome(true);
         handler.setDirectoriesListed(true);
         handler.setResourceBase(reportDirectory.toAbsolutePath().toString());
         HandlerList handlers = new HandlerList();
@@ -184,6 +213,15 @@ public class Commands {
         } else {
             LOGGER.error("Can not open browser because this capability is not supported on "
                     + "your platform. You can use the link below to open the report manually.");
+        }
+    }
+
+    private boolean isDirectoryNotEmpty(final Path path) {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
+            return stream.iterator().hasNext();
+        } catch (IOException e) {
+            LOGGER.warn("Could not scan report directory {}", path, e);
+            return false;
         }
     }
 }

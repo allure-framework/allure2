@@ -10,7 +10,9 @@ def plugins = [
         'custom-logo-plugin',
         'screen-diff-plugin',
         'junit-xml-plugin',
-        'xunit-xml-plugin'
+        'xunit-xml-plugin',
+        'xctest-plugin',
+        'trx-plugin'
 ]
 
 plugins.forEach({

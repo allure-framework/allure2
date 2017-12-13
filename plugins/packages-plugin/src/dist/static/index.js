@@ -32,13 +32,22 @@ allure.api.addTranslation('de', {
     }
 });
 
+allure.api.addTranslation('he', {
+    tab: {
+        packages: {
+            name: 'חבילות'
+        }
+    }
+});
+
 allure.api.addTab('packages', {
     title: 'tab.packages.name', icon: 'fa fa-align-left',
-    route: 'packages(/:testcaseId)',
-    onEnter: (function () {
-        var routeParams = Array.prototype.slice.call(arguments);
+    route: 'packages(/)(:testGroup)(/)(:testResult)(/)(:testResultTab)(/)',
+    onEnter: (function (testGroup, testResult, testResultTab) {
         return new allure.components.TreeLayout({
-            routeParams: routeParams,
+            testGroup: testGroup,
+            testResult: testResult,
+            testResultTab: testResultTab,
             tabName: 'tab.packages.name',
             baseUrl: 'packages',
             url: 'data/packages.json'

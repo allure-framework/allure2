@@ -1,9 +1,11 @@
 package io.qameta.allure;
 
+import io.qameta.allure.option.ConfigOptions;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.mockito.ArgumentCaptor;
 
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -19,6 +21,8 @@ import static io.qameta.allure.ExitCode.NO_ERROR;
 import static io.qameta.allure.testdata.TestData.randomPort;
 import static io.qameta.allure.testdata.TestData.randomString;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -85,20 +89,10 @@ public class CommandLineTest {
     }
 
     @Test
-    public void shouldValidateResultsDirectoryExists() throws Exception {
+    public void shouldAllowResultsDirectoriesThatNotExists() throws Exception {
         final Optional<ExitCode> exitCode = commandLine.parse(GENERATE_COMMAND, randomString(), randomString());
         assertThat(exitCode)
-                .isPresent()
-                .hasValue(ExitCode.ARGUMENT_PARSING_ERROR);
-    }
-
-    @Test
-    public void shouldNotFailIfResultsAreRegularFile() throws Exception {
-        final Path results = folder.newFile().toPath();
-        final Optional<ExitCode> exitCode = commandLine.parse(GENERATE_COMMAND, results.toString());
-        assertThat(exitCode)
-                .isPresent()
-                .hasValue(ExitCode.ARGUMENT_PARSING_ERROR);
+                .isEmpty();
     }
 
     @Test
@@ -108,7 +102,7 @@ public class CommandLineTest {
         final Path secondResult = folder.newFolder().toPath();
         final List<Path> results = Arrays.asList(firstResult, secondResult);
 
-        when(commands.generate(report, results, false, null))
+        when(commands.generate(eq(report), eq(results), eq(false), any(ConfigOptions.class)))
                 .thenReturn(NO_ERROR);
 
         final Optional<ExitCode> exitCode = commandLine.parse(
@@ -119,7 +113,7 @@ public class CommandLineTest {
                 .isEmpty();
 
         final ExitCode code = commandLine.run();
-        verify(commands, times(1)).generate(report, results, false, null);
+        verify(commands, times(1)).generate(eq(report), eq(results), eq(false), any(ConfigOptions.class));
         assertThat(code)
                 .isEqualTo(NO_ERROR);
     }
@@ -128,7 +122,7 @@ public class CommandLineTest {
     public void shouldRunOpen() throws Exception {
         final int port = randomPort();
         final Path report = folder.newFolder().toPath();
-        when(commands.open(report, port))
+        when(commands.open(report, null, port))
                 .thenReturn(NO_ERROR);
 
         final Optional<ExitCode> exitCode = commandLine.parse(
@@ -138,7 +132,7 @@ public class CommandLineTest {
                 .isEmpty();
 
         final ExitCode code = commandLine.run();
-        verify(commands, times(1)).open(report, port);
+        verify(commands, times(1)).open(report, null, port);
         assertThat(code)
                 .isEqualTo(NO_ERROR);
     }
@@ -185,12 +179,14 @@ public class CommandLineTest {
     @Test
     public void shouldParseServeCommand() throws Exception {
         final int port = randomPort();
+        final String host = randomString();
         final String profile = randomString();
         final Path first = folder.newFolder().toPath();
         final Path second = folder.newFolder().toPath();
         final Optional<ExitCode> code = commandLine.parse(
                 SERVE_COMMAND,
                 "--port", String.valueOf(port),
+                "--host", host,
                 "--profile", profile,
                 first.toString(), second.toString()
         );
@@ -198,10 +194,17 @@ public class CommandLineTest {
         assertThat(code)
                 .isEmpty();
 
-        when(commands.serve(Arrays.asList(first, second), port, profile)).thenReturn(NO_ERROR);
+        final ArgumentCaptor<ConfigOptions> captor = ArgumentCaptor.forClass(ConfigOptions.class);
+
+        when(commands.serve(eq(Arrays.asList(first, second)), eq(host), eq(port), captor.capture())).thenReturn(NO_ERROR);
         final ExitCode run = commandLine.run();
         assertThat(run)
                 .isEqualTo(NO_ERROR);
+
+        assertThat(captor.getAllValues())
+                .hasSize(1)
+                .extracting(ConfigOptions::getProfile)
+                .containsExactly(profile);
     }
 
     @Test
@@ -219,7 +222,7 @@ public class CommandLineTest {
         assertThat(exitCode)
                 .isEmpty();
 
-        when(commands.listPlugins(null)).thenReturn(NO_ERROR);
+        when(commands.listPlugins(any(ConfigOptions.class))).thenReturn(NO_ERROR);
         final ExitCode run = commandLine.run();
         assertThat(run)
                 .isEqualTo(NO_ERROR);
