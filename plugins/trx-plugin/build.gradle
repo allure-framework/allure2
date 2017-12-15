@@ -5,7 +5,6 @@ apply from: "${gradleScriptDir}/bintray.gradle"
 
 dependencies {
     compileOnly project(':allure-plugin-api')
-
     testCompile project(':allure-plugin-api')
     testCompile('io.qameta.allure:allure-java-commons')
     testCompile('junit:junit')

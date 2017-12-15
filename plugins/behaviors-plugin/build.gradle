@@ -9,12 +9,11 @@ jar {
 
 dependencies {
     compileOnly project(':allure-plugin-api')
-
     testCompile project(':allure-generator')
-    testCompile('junit:junit')
-    testCompile('org.mockito:mockito-core')
-    testCompile('org.assertj:assertj-core')
     testCompile('io.qameta.allure:allure-java-commons')
+    testCompile('junit:junit')
+    testCompile('org.assertj:assertj-core')
+    testCompile('org.mockito:mockito-core')
 }
 
 configurations.archives.artifacts.removeAll { it.archiveTask.is jar }
