@@ -5,12 +5,11 @@ apply from: "${gradleScriptDir}/bintray.gradle"
 
 dependencies {
     compileOnly project(':allure-plugin-api')
-
     testCompile project(':allure-plugin-api')
+    testCompile('org.slf4j:slf4j-simple')
     testCompile('junit:junit')
     testCompile('org.assertj:assertj-core')
     testCompile('org.mockito:mockito-core')
-    testCompile("org.slf4j:slf4j-simple")
 }
 
 configurations.archives.artifacts.removeAll { it.archiveTask.is jar }

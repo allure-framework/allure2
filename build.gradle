@@ -9,13 +9,12 @@ buildscript {
     }
 
     dependencies {
-        classpath 'io.spring.gradle:dependency-management-plugin:1.0.3.RELEASE'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
-        classpath 'com.github.jacobono:gradle-jaxb-plugin:1.3.6'
+        classpath 'com.bmuschko:gradle-docker-plugin:3.2.1'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0'
         classpath 'com.moowork.gradle:gradle-node-plugin:1.2.0'
-        classpath 'com.bmuschko:gradle-docker-plugin:3.0.7'
+        classpath 'io.spring.gradle:dependency-management-plugin:1.0.4.RELEASE'
         classpath 'net.researchgate:gradle-release:2.6.0'
-        classpath 'ru.vyarus:gradle-quality-plugin:2.2.0'
+        classpath 'ru.vyarus:gradle-quality-plugin:2.4.0'
     }
 }
 
@@ -43,7 +42,7 @@ configure(rootProject) {
     }
 
     task wrapper(type: Wrapper) {
-        gradleVersion = '4.2.1'
+        gradleVersion = '4.4'
     }
 
     task deleteDemoReport(type: Delete) {
@@ -81,33 +80,33 @@ allprojects {
     apply plugin: 'io.spring.dependency-management'
     dependencyManagement {
         imports {
-            mavenBom 'com.fasterxml.jackson:jackson-bom:2.9.1'
+            mavenBom 'com.fasterxml.jackson:jackson-bom:2.9.3'
         }
         dependencies {
             dependency 'com.beust:jcommander:1.72'
-            dependency 'com.google.guava:guava:23.1-jre'
-            dependency 'com.vladsch.flexmark:flexmark:0.27.0'
-            dependency 'commons-io:commons-io:2.5'
-            dependency 'io.qameta.allure:allure-java-commons:2.0-BETA18'
+            dependency 'com.google.guava:guava:23.5-jre'
+            dependency 'com.opencsv:opencsv:4.1'
+            dependency 'com.vladsch.flexmark:flexmark:0.28.18'
+            dependency 'commons-io:commons-io:2.6'
+            dependency 'io.qameta.allure:allure-java-commons:2.0-BETA21'
             dependency 'io.qameta.allure:allure2-model-api:1.0-BETA4'
             dependency 'javax.xml.bind:jaxb-api:2.3.0'
             dependency 'junit:junit:4.12'
             dependency 'org.allurefw:allure1-model:1.0'
-            dependency 'org.apache.commons:commons-lang3:3.6'
+            dependency 'org.apache.commons:commons-lang3:3.7'
             dependency 'org.apache.commons:commons-text:1.1'
-            dependency 'org.apache.httpcomponents:httpclient:4.5.3'
+            dependency 'org.apache.httpcomponents:httpclient:4.5.4'
             dependency 'org.apache.tika:tika-core:1.16'
             dependency 'org.assertj:assertj-core:3.8.0'
-            dependency 'org.eclipse.jetty:jetty-server:9.4.7.v20170914'
+            dependency 'org.eclipse.jetty:jetty-server:9.4.8.v20171121'
             dependency 'org.freemarker:freemarker:2.3.23'
-            dependency 'org.mockito:mockito-core:2.10.0'
+            dependency 'org.mockito:mockito-core:2.13.0'
             dependency 'org.projectlombok:lombok:1.16.18'
             dependency 'org.slf4j:slf4j-api:1.7.25'
             dependency 'org.slf4j:slf4j-log4j12:1.7.25'
             dependency 'org.slf4j:slf4j-nop:1.7.25'
             dependency 'org.slf4j:slf4j-simple:1.7.25'
             dependency 'org.zeroturnaround:zt-zip:1.12'
-            dependency 'com.opencsv:opencsv:4.0'
         }
     }
 
@@ -172,8 +171,8 @@ subprojects { project ->
     apply plugin: 'ru.vyarus.quality'
 
     quality {
-        checkstyleVersion = '7.6'
-        pmdVersion = '5.5.4'
+        checkstyleVersion = '7.6.1'
+        pmdVersion = '5.8.1'
         findbugsVersion = '3.0.1'
         codenarcVersion = '0.26.0'
         excludeSources = fileTree('build/generated-sources')
