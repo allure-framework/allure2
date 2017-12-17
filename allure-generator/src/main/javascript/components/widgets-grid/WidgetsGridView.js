@@ -20,9 +20,9 @@ const colTpl = '<div class="widgets-grid__col"></div>';
 class WidgetsGridView extends View {
     template = () => '';
 
-    initialize({settings = getSettingsForWidgetGridPlugin('overview')}) {
+    initialize() {
         this.widgets = pluginsRegistry.widgets[this.options.tabName];
-        this.settings = settings;
+        this.settings = this.options.settings || getSettingsForWidgetGridPlugin(this.options.tabName);
     }
 
     onRender() {
