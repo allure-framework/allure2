@@ -9,7 +9,7 @@
       "total": 21
     },
     "buildOrder": 12,
-    "reportUrl": "http://example.org/build#13/AllureReport"
+    "reportUrl": "https://ci.qameta.io/job/allure2/job/master/Demo2_Report/index.html"
   },
   {
     "statistic": {
@@ -21,7 +21,7 @@
       "total": 21
     },
     "buildOrder": 11,
-    "reportUrl": "http://example.org/build#13/AllureReport"
+    "reportUrl": "https://ci.qameta.io/job/allure2/job/master/Demo2_Report/index.html"
   },
   {
     "statistic": {
