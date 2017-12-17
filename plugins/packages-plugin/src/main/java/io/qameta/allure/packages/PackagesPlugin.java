@@ -46,7 +46,7 @@ public class PackagesPlugin implements Aggregator {
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
-    /* default */ Tree<TestResult> getData(final List<LaunchResults> launchResults) {
+        /* default */ Tree<TestResult> getData(final List<LaunchResults> launchResults) {
 
         final Tree<TestResult> packages = new TestResultTree(
                 "packages",
@@ -117,8 +117,11 @@ public class PackagesPlugin implements Aggregator {
         return new TestResultTreeLeaf(
                 parent.getUid(),
                 name,
-                testResult.getUid(),
-                testResult.getStatus(), testResult.getTime(),
+                testResult.getId(),
+                testResult.getStatus(),
+                testResult.getStart(),
+                testResult.getStop(),
+                testResult.getDuration(),
                 testResult.isFlaky(),
                 testResult.getParameterValues()
         );

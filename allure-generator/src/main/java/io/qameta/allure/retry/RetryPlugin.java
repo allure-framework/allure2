@@ -3,10 +3,9 @@ package io.qameta.allure.retry;
 import io.qameta.allure.Aggregator;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
-import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.entity.TestStatus;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +32,7 @@ public class RetryPlugin implements Aggregator {
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
-                          final Path outputDirectory) throws IOException {
+                          final Path outputDirectory) {
 
         Map<String, List<TestResult>> byHistory = launchesResults.stream()
                 .flatMap(results -> results.getAllResults().stream())
@@ -52,13 +51,13 @@ public class RetryPlugin implements Aggregator {
                     .map(this::createRetryItem)
                     .collect(Collectors.toList());
             latest.addExtraBlock(RETRY_BLOCK_NAME, retries);
-            final Set<Status> statuses = retries.stream()
+            final Set<TestStatus> statuses = retries.stream()
                     .map(RetryItem::getStatus)
                     .distinct()
                     .collect(Collectors.toSet());
 
-            statuses.remove(Status.PASSED);
-            statuses.remove(Status.SKIPPED);
+            statuses.remove(TestStatus.PASSED);
+            statuses.remove(TestStatus.SKIPPED);
 
             latest.setFlaky(!statuses.isEmpty());
         };
@@ -73,16 +72,17 @@ public class RetryPlugin implements Aggregator {
     private RetryItem createRetryItem(final TestResult result) {
         return new RetryItem()
                 .setStatus(result.getStatus())
-                .setStatusDetails(result.getStatusMessage())
-                .setTime(result.getTime())
-                .setUid(result.getUid());
+                .setStatusDetails(result.getMessage())
+                .setStart(result.getStart())
+                .setStop(result.getStop())
+                .setDuration(result.getDuration())
+                .setUid(result.getId());
     }
 
     private Optional<TestResult> findLatest(final List<TestResult> results) {
         return results.stream()
                 .filter(result -> !result.isHidden())
-                .sorted(comparingByTime())
-                .findFirst();
+                .min(comparingByTime());
     }
 
     private List<TestResult> merge(final List<TestResult> first,

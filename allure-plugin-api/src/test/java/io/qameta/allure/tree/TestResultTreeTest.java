@@ -1,6 +1,6 @@
 package io.qameta.allure.tree;
 
-import io.qameta.allure.entity.Label;
+import io.qameta.allure.entity.TestLabel;
 import io.qameta.allure.entity.TestResult;
 import org.junit.Test;
 
@@ -85,12 +85,12 @@ public class TestResultTreeTest {
                 .containsExactlyInAnyOrder("second");
     }
 
-    private Label feature(final String value) {
-        return new Label().setName("feature").setValue(value);
+    private TestLabel feature(final String value) {
+        return new TestLabel().setName("feature").setValue(value);
     }
 
-    private Label story(final String value) {
-        return new Label().setName("story").setValue(value);
+    private TestLabel story(final String value) {
+        return new TestLabel().setName("story").setValue(value);
     }
 
 }

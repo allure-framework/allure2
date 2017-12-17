@@ -7,7 +7,7 @@ import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.Statistic;
-import io.qameta.allure.entity.Status;
+import io.qameta.allure.entity.TestStatus;
 import io.qameta.allure.testdata.TestData;
 import org.assertj.core.groups.Tuple;
 import org.junit.Rule;
@@ -158,9 +158,9 @@ public class HistoryTrendPluginTest {
         final List<HistoryTrendItem> history = randomHistoryTrendItems();
         final List<HistoryTrendItem> data = new HistoryTrendPlugin().getData(createSingleLaunchResults(
                 singletonMap(HISTORY_TREND_BLOCK_NAME, history),
-                randomTestResult().setStatus(Status.PASSED),
-                randomTestResult().setStatus(Status.FAILED),
-                randomTestResult().setStatus(Status.FAILED)
+                randomTestResult().setStatus(TestStatus.PASSED),
+                randomTestResult().setStatus(TestStatus.FAILED),
+                randomTestResult().setStatus(TestStatus.FAILED)
         ));
 
         assertThat(data)
@@ -192,14 +192,14 @@ public class HistoryTrendPluginTest {
 
         final List<LaunchResults> launchResults = Arrays.asList(
                 createLaunchResults(extra1,
-                        randomTestResult().setStatus(Status.PASSED),
-                        randomTestResult().setStatus(Status.FAILED),
-                        randomTestResult().setStatus(Status.FAILED)
+                        randomTestResult().setStatus(TestStatus.PASSED),
+                        randomTestResult().setStatus(TestStatus.FAILED),
+                        randomTestResult().setStatus(TestStatus.FAILED)
                 ),
                 createLaunchResults(extra2,
-                        randomTestResult().setStatus(Status.PASSED),
-                        randomTestResult().setStatus(Status.FAILED),
-                        randomTestResult().setStatus(Status.FAILED)
+                        randomTestResult().setStatus(TestStatus.PASSED),
+                        randomTestResult().setStatus(TestStatus.FAILED),
+                        randomTestResult().setStatus(TestStatus.FAILED)
                 )
         );
 
@@ -225,14 +225,14 @@ public class HistoryTrendPluginTest {
 
         final List<LaunchResults> launchResults = Arrays.asList(
                 createLaunchResults(extra,
-                        randomTestResult().setStatus(Status.PASSED),
-                        randomTestResult().setStatus(Status.FAILED),
-                        randomTestResult().setStatus(Status.FAILED)
+                        randomTestResult().setStatus(TestStatus.PASSED),
+                        randomTestResult().setStatus(TestStatus.FAILED),
+                        randomTestResult().setStatus(TestStatus.FAILED)
                 ),
                 createLaunchResults(extra,
-                        randomTestResult().setStatus(Status.PASSED),
-                        randomTestResult().setStatus(Status.FAILED),
-                        randomTestResult().setStatus(Status.FAILED)
+                        randomTestResult().setStatus(TestStatus.PASSED),
+                        randomTestResult().setStatus(TestStatus.FAILED),
+                        randomTestResult().setStatus(TestStatus.FAILED)
                 )
         );
         final List<HistoryTrendItem> data = new HistoryTrendPlugin().getData(launchResults);

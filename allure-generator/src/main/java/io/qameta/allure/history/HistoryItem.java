@@ -1,7 +1,6 @@
 package io.qameta.allure.history;
 
-import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.Time;
+import io.qameta.allure.entity.TestStatus;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -18,8 +17,11 @@ public class HistoryItem implements Serializable {
 
     protected String uid;
     protected String reportUrl;
-    protected Status status;
+    protected TestStatus status;
     protected String statusDetails;
-    protected Time time;
+
+    protected Long start;
+    protected Long stop;
+    protected Long duration;
 
 }

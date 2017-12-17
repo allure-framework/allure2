@@ -28,17 +28,22 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
 
     private static final long serialVersionUID = 1L;
 
-    protected String uid;
+    protected String id;
     protected String name;
     protected String fullName;
     protected String historyId;
     protected String testId;
-    protected Time time = new Time();
+
+    protected Long start;
+    protected Long stop;
+    protected Long duration;
+
     protected String description;
     protected String descriptionHtml;
-    protected Status status;
-    protected String statusMessage;
-    protected String statusTrace;
+
+    protected TestStatus status;
+    protected String message;
+    protected String trace;
 
     protected boolean flaky;
 
@@ -48,16 +53,16 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
     protected List<StageResult> afterStages = new ArrayList<>();
 
     //    Meta
-    protected List<Label> labels = new ArrayList<>();
-    protected List<Parameter> parameters = new ArrayList<>();
-    protected List<Link> links = new ArrayList<>();
+    protected List<TestLabel> labels = new ArrayList<>();
+    protected List<TestParameter> parameters = new ArrayList<>();
+    protected List<TestLink> links = new ArrayList<>();
     protected boolean hidden;
     protected boolean retry;
     protected final Map<String, Object> extra = new HashMap<>();
 
     @JsonProperty
     public String getSource() {
-        return getUid() + ".json";
+        return getId() + ".json";
     }
 
     public void addExtraBlock(final String blockName, final Object block) {
@@ -85,7 +90,7 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
     public <T> T findAllLabels(final String name, final Collector<String, ?, T> collector) {
         return getLabels().stream()
                 .filter(label -> name.equals(label.getName()))
-                .map(Label::getValue)
+                .map(TestLabel::getValue)
                 .collect(collector);
     }
 
@@ -105,7 +110,7 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
         return getLabels().stream()
                 .filter(label -> name.equals(label.getName()))
                 .findAny()
-                .map(Label::getValue);
+                .map(TestLabel::getValue);
     }
 
     public void addLabelIfNotExists(final LabelName name, final String value) {
@@ -117,7 +122,7 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
             return;
         }
         Optional<String> any = getLabels().stream()
-                .map(Label::getName)
+                .map(TestLabel::getName)
                 .filter(name::equals)
                 .findAny();
         if (!any.isPresent()) {
@@ -126,7 +131,7 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
     }
 
     public void addLabel(final String name, final String value) {
-        getLabels().add(new Label().setName(name).setValue(value));
+        getLabels().add(new TestLabel().setName(name).setValue(value));
     }
 
     public static Comparator<TestResult> comparingByTime() {
@@ -134,9 +139,6 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
     }
 
     public static Comparator<TestResult> comparingByTimeAsc() {
-        return comparing(
-                TestResult::getTime,
-                nullsFirst(comparing(Time::getStart, nullsFirst(naturalOrder())))
-        );
+        return comparing(TestResult::getStart, nullsFirst(naturalOrder()));
     }
 }

@@ -1,0 +1,46 @@
+@import "../../variables.scss";
+
+.pane {
+  padding: $gap-size;
+
+  &__subtitle {
+    color: $text-muted-color;
+    padding: 5px;
+    margin: 0;
+    font-size: 18px;
+  }
+
+  &__title {
+    display: flex;
+    padding: $gap-size;
+    margin: 0;
+    border-bottom: 1px solid $border-color;
+    font-size: 26px;
+    &_borderless {
+      border: none;
+    }
+  }
+
+  &__controls {
+    float: right;
+    padding-right: 0.5em;
+    & > a {
+      text-decoration: none;
+      color: $text-color;
+      opacity: 0.7;
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+
+  &__section {
+    padding-top: $gap-size;
+  }
+
+  &__section-title {
+    margin: 0;
+    padding: 0 0 $gap-size;
+    font-size: 18px;
+  }
+}

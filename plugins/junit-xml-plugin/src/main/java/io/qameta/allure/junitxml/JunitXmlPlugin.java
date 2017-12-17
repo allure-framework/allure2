@@ -6,9 +6,8 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.StageResult;
-import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.entity.Time;
+import io.qameta.allure.entity.TestStatus;
 import io.qameta.allure.parser.XmlElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,13 +70,13 @@ public class JunitXmlPlugin implements Reader {
 
     private static final String XML_GLOB = "*.xml";
 
-    private static final Map<String, Status> RETRIES;
+    private static final Map<String, TestStatus> RETRIES;
 
 
     static {
         RETRIES = new HashMap<>();
-        RETRIES.put(RERUN_FAILURE_ELEMENT_NAME, Status.FAILED);
-        RETRIES.put(RERUN_ERROR_ELEMENT_NAME, Status.BROKEN);
+        RETRIES.put(RERUN_FAILURE_ELEMENT_NAME, TestStatus.FAILED);
+        RETRIES.put(RERUN_ERROR_ELEMENT_NAME, TestStatus.BROKEN);
     }
 
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
@@ -138,7 +137,7 @@ public class JunitXmlPlugin implements Reader {
     private void parseTestCase(final TestSuiteInfo info, final XmlElement testCaseElement, final Path resultsDirectory,
                                final Path parsedFile, final RandomUidContext context, final ResultsVisitor visitor) {
         final String className = testCaseElement.getAttribute(CLASS_NAME_ATTRIBUTE_NAME);
-        final Status status = getStatus(testCaseElement);
+        final TestStatus status = getStatus(testCaseElement);
         final TestResult result = createStatuslessTestResult(info, testCaseElement, parsedFile, context);
         result.setStatus(status);
         result.setFlaky(isFlaky(testCaseElement));
@@ -158,8 +157,8 @@ public class JunitXmlPlugin implements Reader {
             final TestResult retried = createStatuslessTestResult(info, testCaseElement, parsedFile, context);
             retried.setHidden(true);
             retried.setStatus(retryStatus);
-            retried.setStatusMessage(failure.getAttribute(MESSAGE_ATTRIBUTE_NAME));
-            retried.setStatusTrace(failure.getValue());
+            retried.setMessage(failure.getAttribute(MESSAGE_ATTRIBUTE_NAME));
+            retried.setTrace(failure.getValue());
             visitor.visitTestResult(retried);
         }));
     }
@@ -185,9 +184,14 @@ public class JunitXmlPlugin implements Reader {
         if (nonNull(className) && nonNull(name)) {
             result.setHistoryId(historyId);
         }
-        result.setUid(context.getValue().get());
+        result.setId(context.getValue().get());
         result.setName(isNull(name) ? "Unknown test case" : name);
-        result.setTime(getTime(info.getTimestamp(), testCaseElement, parsedFile));
+        result.setStart(info.getTimestamp());
+        final Long duration = getDuration(testCaseElement, parsedFile);
+        result.setDuration(duration);
+        if (nonNull(duration) && nonNull(info.getTimestamp())) {
+            result.setStop(info.getTimestamp() + duration);
+        }
         result.addLabelIfNotExists(RESULT_FORMAT, JUNIT_RESULTS_FORMAT);
 
         suiteName.ifPresent(s -> result.addLabelIfNotExists(LabelName.SUITE, s));
@@ -201,17 +205,17 @@ public class JunitXmlPlugin implements Reader {
         return result;
     }
 
-    private Status getStatus(final XmlElement testCaseElement) {
+    private TestStatus getStatus(final XmlElement testCaseElement) {
         if (testCaseElement.contains(FAILURE_ELEMENT_NAME)) {
-            return Status.FAILED;
+            return TestStatus.FAILED;
         }
         if (testCaseElement.contains(ERROR_ELEMENT_NAME)) {
-            return Status.BROKEN;
+            return TestStatus.BROKEN;
         }
         if (testCaseElement.contains(SKIPPED_ELEMENT_NAME)) {
-            return Status.SKIPPED;
+            return TestStatus.SKIPPED;
         }
-        return Status.PASSED;
+        return TestStatus.PASSED;
     }
 
     private void setStatusDetails(final TestResult result, final XmlElement testCaseElement) {
@@ -223,22 +227,18 @@ public class JunitXmlPlugin implements Reader {
                 .findFirst()
                 .ifPresent(element -> {
                     //@formatter:off
-                    result.setStatusMessage(element.getAttribute(MESSAGE_ATTRIBUTE_NAME));
-                    result.setStatusTrace(element.getValue());
+                    result.setMessage(element.getAttribute(MESSAGE_ATTRIBUTE_NAME));
+                    result.setTrace(element.getValue());
                     //@formatter:on
                 });
     }
 
-    private Time getTime(final Long suiteStart, final XmlElement testCaseElement, final Path parsedFile) {
+    private Long getDuration(final XmlElement testCaseElement, final Path parsedFile) {
         if (testCaseElement.containsAttribute(TIME_ATTRIBUTE_NAME)) {
             try {
-                final long duration = BigDecimal.valueOf(testCaseElement.getDoubleAttribute(TIME_ATTRIBUTE_NAME))
+                return BigDecimal.valueOf(testCaseElement.getDoubleAttribute(TIME_ATTRIBUTE_NAME))
                         .multiply(MULTIPLICAND)
                         .longValue();
-
-                return nonNull(suiteStart)
-                        ? new Time().setStart(suiteStart).setStop(suiteStart + duration).setDuration(duration)
-                        : new Time().setDuration(duration);
             } catch (Exception e) {
                 LOGGER.debug(
                         "Could not parse time attribute for element {} in file {}",
@@ -246,7 +246,7 @@ public class JunitXmlPlugin implements Reader {
                 );
             }
         }
-        return new Time();
+        return null;
     }
 
     private boolean isFlaky(final XmlElement testCaseElement) {

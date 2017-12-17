@@ -1,7 +1,6 @@
 package io.qameta.allure.duration;
 
-import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.Time;
+import io.qameta.allure.entity.TestStatus;
 import io.qameta.allure.severity.SeverityLevel;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -19,7 +18,11 @@ public class DurationData implements Serializable {
 
     protected String uid;
     protected String name;
-    protected Time time;
-    protected Status status;
+
+    protected Long start;
+    protected Long stop;
+    protected Long duration;
+
+    protected TestStatus status;
     protected SeverityLevel severity;
 }

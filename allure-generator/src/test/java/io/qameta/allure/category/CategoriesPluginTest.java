@@ -4,9 +4,8 @@ import io.qameta.allure.ConfigurationBuilder;
 import io.qameta.allure.Issue;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
-import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.entity.Time;
+import io.qameta.allure.entity.TestStatus;
 import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeNode;
 import org.junit.Before;
@@ -26,8 +25,8 @@ import java.util.Set;
 import static io.qameta.allure.category.CategoriesPlugin.BROKEN_TESTS;
 import static io.qameta.allure.category.CategoriesPlugin.CATEGORIES;
 import static io.qameta.allure.category.CategoriesPlugin.CSV_FILE_NAME;
-import static io.qameta.allure.category.CategoriesPlugin.JSON_FILE_NAME;
 import static io.qameta.allure.category.CategoriesPlugin.FAILED_TESTS;
+import static io.qameta.allure.category.CategoriesPlugin.JSON_FILE_NAME;
 import static io.qameta.allure.testdata.TestData.createSingleLaunchResults;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -59,12 +58,12 @@ public class CategoriesPluginTest {
 
         final TestResult first = new TestResult()
                 .setName("first")
-                .setStatus(Status.FAILED)
-                .setStatusMessage("A");
+                .setStatus(TestStatus.FAILED)
+                .setMessage("A");
         final TestResult second = new TestResult()
                 .setName("second")
-                .setStatus(Status.BROKEN)
-                .setStatusMessage("B");
+                .setStatus(TestStatus.BROKEN)
+                .setMessage("B");
 
         categoriesPlugin.addCategoriesForResults(createSingleLaunchResults(first, second));
 
@@ -86,7 +85,7 @@ public class CategoriesPluginTest {
         Category category = new Category()
                 .setName(categoryName)
                 .setMessageRegex(".*")
-                .setMatchedStatuses(singletonList(Status.BROKEN));
+                .setMatchedStatuses(singletonList(TestStatus.BROKEN));
 
         Map<String, Object> meta = new HashMap<>();
         meta.put("categories", singletonList(category));
@@ -95,12 +94,12 @@ public class CategoriesPluginTest {
 
         final TestResult first = new TestResult()
                 .setName("first")
-                .setStatus(Status.FAILED)
-                .setStatusMessage("B");
+                .setStatus(TestStatus.FAILED)
+                .setMessage("B");
         final TestResult second = new TestResult()
                 .setName("second")
-                .setStatus(Status.BROKEN)
-                .setStatusMessage("B");
+                .setStatus(TestStatus.BROKEN)
+                .setMessage("B");
 
         categoriesPlugin.addCategoriesForResults(createSingleLaunchResults(meta, first, second));
 
@@ -119,20 +118,20 @@ public class CategoriesPluginTest {
     public void shouldCreateTree() throws Exception {
         final TestResult first = new TestResult()
                 .setName("first")
-                .setStatus(Status.BROKEN)
-                .setStatusMessage("M1");
+                .setStatus(TestStatus.BROKEN)
+                .setMessage("M1");
         final TestResult second = new TestResult()
                 .setName("second")
-                .setStatus(Status.FAILED)
-                .setStatusMessage("M2");
+                .setStatus(TestStatus.FAILED)
+                .setMessage("M2");
         final TestResult third = new TestResult()
                 .setName("third")
-                .setStatus(Status.BROKEN)
-                .setStatusMessage("M3");
+                .setStatus(TestStatus.BROKEN)
+                .setMessage("M3");
         final TestResult other = new TestResult()
                 .setName("other")
-                .setStatus(Status.PASSED)
-                .setStatusMessage("M4");
+                .setStatus(TestStatus.PASSED)
+                .setMessage("M4");
 
         first.addExtraBlock(CATEGORIES, singletonList(new Category().setName("C1")));
         second.addExtraBlock(CATEGORIES, singletonList(new Category().setName("C2")));
@@ -167,13 +166,13 @@ public class CategoriesPluginTest {
         Category category = new Category()
                 .setName(CATEGORY_NAME)
                 .setMessageRegex(".*")
-                .setMatchedStatuses(singletonList(Status.BROKEN));
+                .setMatchedStatuses(singletonList(TestStatus.BROKEN));
 
         Map<String, Object> meta = new HashMap<>();
         meta.put("categories", singletonList(category));
 
         List<LaunchResults> launchResultsList = createSingleLaunchResults(
-                meta, createTestResult("asd\n", Status.BROKEN)
+                meta, createTestResult("asd\n", TestStatus.BROKEN)
         );
 
         CategoriesPlugin plugin = new CategoriesPlugin();
@@ -199,14 +198,14 @@ public class CategoriesPluginTest {
     public void flakyTestsCanBeAddedToCategory() throws IOException {
         Category category = new Category()
                 .setName(CATEGORY_NAME)
-                .setMatchedStatuses(singletonList(Status.FAILED))
+                .setMatchedStatuses(singletonList(TestStatus.FAILED))
                 .setFlaky(true);
 
         Map<String, Object> meta = new HashMap<>();
         meta.put("categories", singletonList(category));
 
         List<LaunchResults> launchResultsList = createSingleLaunchResults(
-                meta, createTestResult("asd\n", Status.FAILED, true)
+                meta, createTestResult("asd\n", TestStatus.FAILED, true)
         );
 
         CategoriesPlugin plugin = new CategoriesPlugin();
@@ -233,17 +232,17 @@ public class CategoriesPluginTest {
 
         final TestResult first = new TestResult()
                 .setName("first")
-                .setStatus(Status.FAILED)
-                .setTime(new Time().setStart(10L));
+                .setStatus(TestStatus.FAILED)
+                .setStart(10L);
         first.addExtraBlock(CATEGORIES, singletonList(category));
         final TestResult second = new TestResult()
                 .setName("second")
-                .setStatus(Status.FAILED)
-                .setTime(new Time().setStart(12L));
+                .setStatus(TestStatus.FAILED)
+                .setStart(12L);
         second.addExtraBlock(CATEGORIES, singletonList(category));
         final TestResult timeless = new TestResult()
                 .setName("timeless")
-                .setStatus(Status.FAILED);
+                .setStatus(TestStatus.FAILED);
         timeless.addExtraBlock(CATEGORIES, singletonList(category));
 
         final Tree<TestResult> tree = CategoriesPlugin.getData(
@@ -257,14 +256,14 @@ public class CategoriesPluginTest {
                 .containsExactly("timeless", "first", "second");
     }
 
-    private TestResult createTestResult(String message, Status status) {
+    private TestResult createTestResult(String message, TestStatus status) {
         return createTestResult(message, status, false);
     }
 
-    private TestResult createTestResult(String message, Status status, boolean flaky) {
+    private TestResult createTestResult(String message, TestStatus status, boolean flaky) {
         return new TestResult()
                 .setStatus(status)
-                .setStatusMessage(message)
+                .setMessage(message)
                 .setFlaky(flaky);
     }
 

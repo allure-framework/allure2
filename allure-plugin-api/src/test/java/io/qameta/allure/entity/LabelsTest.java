@@ -22,7 +22,7 @@ public class LabelsTest {
     @Test
     public void shouldFindOneWithNullValue() throws Exception {
         final TestResult result = new TestResult();
-        result.getLabels().add(new Label().setName("hey").setValue(null));
+        result.getLabels().add(new TestLabel().setName("hey").setValue(null));
         final Optional<String> found = result.findOneLabel("hey");
         assertThat(found)
                 .isEmpty();
@@ -31,9 +31,9 @@ public class LabelsTest {
     @Test
     public void shouldFindAllWithNullValue() throws Exception {
         final TestResult result = new TestResult();
-        result.getLabels().add(new Label().setName("hey").setValue(null));
-        result.getLabels().add(new Label().setName("hey").setValue("a"));
-        result.getLabels().add(new Label().setName("hey").setValue("b"));
+        result.getLabels().add(new TestLabel().setName("hey").setValue(null));
+        result.getLabels().add(new TestLabel().setName("hey").setValue("a"));
+        result.getLabels().add(new TestLabel().setName("hey").setValue("b"));
         final List<String> found = result.findAllLabels("hey");
         assertThat(found)
                 .containsExactlyInAnyOrder(null, "a", "b");

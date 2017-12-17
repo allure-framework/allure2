@@ -6,9 +6,9 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.LabelName;
-import io.qameta.allure.entity.Parameter;
+import io.qameta.allure.entity.TestParameter;
 import io.qameta.allure.entity.StageResult;
-import io.qameta.allure.entity.Step;
+import io.qameta.allure.entity.TestResultStep;
 import io.qameta.allure.entity.TestResult;
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,7 +25,7 @@ import java.util.Set;
 
 import static io.qameta.allure.AllureUtils.generateTestResultContainerName;
 import static io.qameta.allure.AllureUtils.generateTestResultName;
-import static io.qameta.allure.entity.Status.UNKNOWN;
+import static io.qameta.allure.entity.TestStatus.UNKNOWN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
@@ -76,7 +76,7 @@ public class Allure2PluginTest {
                 .hasSize(1)
                 .flatExtracting(TestResult::getParameters)
                 .hasSize(4)
-                .extracting(Parameter::getName, Parameter::getValue)
+                .extracting(TestParameter::getName, TestParameter::getValue)
                 .containsExactlyInAnyOrder(
                         tuple("name", "value"),
                         tuple("name2", "value"),
@@ -101,7 +101,7 @@ public class Allure2PluginTest {
                 .flatExtracting(StageResult::getSteps)
                 .describedAs("Test case should have one step")
                 .hasSize(1)
-                .flatExtracting(Step::getAttachments)
+                .flatExtracting(TestResultStep::getAttachments)
                 .describedAs("Step should have an attachment")
                 .hasSize(1)
                 .extracting(Attachment::getName)

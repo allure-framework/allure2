@@ -5,12 +5,11 @@ import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Attachment;
-import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.StageResult;
-import io.qameta.allure.entity.Status;
+import io.qameta.allure.entity.TestLabel;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.entity.Time;
+import io.qameta.allure.entity.TestStatus;
 import org.assertj.core.groups.Tuple;
 import org.junit.Before;
 import org.junit.Rule;
@@ -68,9 +67,9 @@ public class JunitXmlPluginTest {
         assertThat(captor.getAllValues())
                 .hasSize(5);
 
-        List<TestResult> failed = filterByStatus(captor.getAllValues(), Status.FAILED);
-        List<TestResult> skipped = filterByStatus(captor.getAllValues(), Status.SKIPPED);
-        List<TestResult> passed = filterByStatus(captor.getAllValues(), Status.PASSED);
+        List<TestResult> failed = filterByStatus(captor.getAllValues(), TestStatus.FAILED);
+        List<TestResult> skipped = filterByStatus(captor.getAllValues(), TestStatus.SKIPPED);
+        List<TestResult> passed = filterByStatus(captor.getAllValues(), TestStatus.PASSED);
 
         assertThat(failed)
                 .describedAs("Should parse failed status")
@@ -129,7 +128,7 @@ public class JunitXmlPluginTest {
         assertThat(captor.getAllValues())
                 .hasSize(1)
                 .flatExtracting(TestResult::getLabels)
-                .extracting(Label::getName, Label::getValue)
+                .extracting(TestLabel::getName, TestLabel::getValue)
                 .containsExactlyInAnyOrder(
                         Tuple.tuple(LabelName.SUITE.value(), "test.SampleTest"),
                         Tuple.tuple(LabelName.PACKAGE.value(), "test.SampleTest"),
@@ -160,14 +159,14 @@ public class JunitXmlPluginTest {
         assertThat(results)
                 .extracting(TestResult::getName, TestResult::getStatus, TestResult::isHidden, TestResult::getHistoryId)
                 .containsExactlyInAnyOrder(
-                        Tuple.tuple("searchTest", Status.BROKEN, false, "my.company.tests.SearchTest:my.company.tests.SearchTest#searchTest"),
-                        Tuple.tuple("searchTest", Status.BROKEN, true, "my.company.tests.SearchTest:my.company.tests.SearchTest#searchTest"),
-                        Tuple.tuple("searchTest", Status.BROKEN, true, "my.company.tests.SearchTest:my.company.tests.SearchTest#searchTest"),
-                        Tuple.tuple("searchTest", Status.FAILED, true, "my.company.tests.SearchTest:my.company.tests.SearchTest#searchTest")
+                        Tuple.tuple("searchTest", TestStatus.BROKEN, false, "my.company.tests.SearchTest:my.company.tests.SearchTest#searchTest"),
+                        Tuple.tuple("searchTest", TestStatus.BROKEN, true, "my.company.tests.SearchTest:my.company.tests.SearchTest#searchTest"),
+                        Tuple.tuple("searchTest", TestStatus.BROKEN, true, "my.company.tests.SearchTest:my.company.tests.SearchTest#searchTest"),
+                        Tuple.tuple("searchTest", TestStatus.FAILED, true, "my.company.tests.SearchTest:my.company.tests.SearchTest#searchTest")
                 );
 
         assertThat(results)
-                .extracting(TestResult::getStatusMessage, TestResult::getStatusTrace)
+                .extracting(TestResult::getMessage, TestResult::getTrace)
                 .containsExactlyInAnyOrder(
                         Tuple.tuple("message-root", "trace-root"),
                         Tuple.tuple("message-retried-1", "trace-retried-1"),
@@ -187,7 +186,7 @@ public class JunitXmlPluginTest {
         verify(visitor, times(1)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
-                .extracting(TestResult::getStatusMessage, TestResult::getStatusTrace)
+                .extracting(TestResult::getMessage, TestResult::getTrace)
                 .containsExactlyInAnyOrder(
                         tuple("some-message", "some-trace")
                 );
@@ -223,18 +222,15 @@ public class JunitXmlPluginTest {
         verify(visitor, times(1)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
-                .extracting(TestResult::getTime)
-                .extracting(Time::getDuration)
+                .extracting(TestResult::getDuration)
                 .containsExactly(1051L);
 
         assertThat(captor.getAllValues())
-                .extracting(TestResult::getTime)
-                .extracting(Time::getStart)
+                .extracting(TestResult::getStart)
                 .isNotNull();
 
         assertThat(captor.getAllValues())
-                .extracting(TestResult::getTime)
-                .extracting(Time::getStop)
+                .extracting(TestResult::getStop)
                 .isNotNull();
     }
 
@@ -250,7 +246,7 @@ public class JunitXmlPluginTest {
         assertThat(captor.getAllValues())
                 .flatExtracting(TestResult::getLabels)
                 .filteredOn("name", "suite")
-                .extracting(Label::getValue)
+                .extracting(TestLabel::getValue)
                 .containsExactly("LocalSuiteIDOL");
 
     }
@@ -267,7 +263,7 @@ public class JunitXmlPluginTest {
         assertThat(captor.getAllValues())
                 .flatExtracting(TestResult::getLabels)
                 .filteredOn("name", "host")
-                .extracting(Label::getValue)
+                .extracting(TestLabel::getValue)
                 .containsExactly("cbgtalosbld02");
 
     }
@@ -291,7 +287,7 @@ public class JunitXmlPluginTest {
         }
     }
 
-    private List<TestResult> filterByStatus(List<TestResult> testCases, Status status) {
+    private List<TestResult> filterByStatus(List<TestResult> testCases, TestStatus status) {
         return testCases.stream()
                 .filter(item -> status.equals(item.getStatus()))
                 .collect(Collectors.toList());

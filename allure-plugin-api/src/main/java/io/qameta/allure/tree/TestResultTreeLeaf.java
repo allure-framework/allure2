@@ -1,8 +1,7 @@
 package io.qameta.allure.tree;
 
-import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.entity.Time;
+import io.qameta.allure.entity.TestStatus;
 
 import java.util.List;
 
@@ -15,9 +14,13 @@ public class TestResultTreeLeaf extends DefaultTreeLeaf {
 
     private final String parentUid;
 
-    private final Status status;
+    private final TestStatus status;
 
-    private final Time time;
+    private final Long start;
+
+    private final Long stop;
+
+    private final Long duration;
 
     private final boolean flaky;
 
@@ -27,22 +30,26 @@ public class TestResultTreeLeaf extends DefaultTreeLeaf {
         this(
                 parentUid,
                 testResult.getName(),
-                testResult.getUid(),
+                testResult.getId(),
                 testResult.getStatus(),
-                testResult.getTime(),
+                testResult.getStart(),
+                testResult.getStop(),
+                testResult.getDuration(),
                 testResult.isFlaky(),
                 testResult.getParameterValues()
         );
     }
 
     public TestResultTreeLeaf(final String parentUid, final String name, final String uid,
-                              final Status status, final Time time,
+                              final TestStatus status, final Long start, final Long stop, final Long duration,
                               final boolean flaky, final List<String> parameters) {
         super(name);
         this.parentUid = parentUid;
         this.uid = uid;
         this.status = status;
-        this.time = time;
+        this.start = start;
+        this.stop = stop;
+        this.duration = duration;
         this.flaky = flaky;
         this.parameters = parameters;
     }
@@ -55,12 +62,20 @@ public class TestResultTreeLeaf extends DefaultTreeLeaf {
         return uid;
     }
 
-    public Status getStatus() {
+    public TestStatus getStatus() {
         return status;
     }
 
-    public Time getTime() {
-        return time;
+    public Long getStart() {
+        return start;
+    }
+
+    public Long getStop() {
+        return stop;
+    }
+
+    public Long getDuration() {
+        return duration;
     }
 
     public boolean isFlaky() {

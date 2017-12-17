@@ -1,8 +1,8 @@
 package io.qameta.allure.metric;
 
 import io.qameta.allure.entity.Statistic;
-import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.entity.TestStatus;
 
 import java.util.List;
 import java.util.function.BiFunction;
@@ -16,9 +16,9 @@ public class StatusMetric implements Metric {
 
     private final Statistic statistic = new Statistic();
 
-    private final BiFunction<Status, Long, MetricLine> lineFactory;
+    private final BiFunction<TestStatus, Long, MetricLine> lineFactory;
 
-    public StatusMetric(final BiFunction<Status, Long, MetricLine> lineFactory) {
+    public StatusMetric(final BiFunction<TestStatus, Long, MetricLine> lineFactory) {
         this.lineFactory = lineFactory;
     }
 
@@ -32,7 +32,7 @@ public class StatusMetric implements Metric {
 
     @Override
     public List<MetricLine> getLines() {
-        return Stream.of(Status.values())
+        return Stream.of(TestStatus.values())
                 .map(status -> lineFactory.apply(status, statistic.get(status)))
                 .collect(Collectors.toList());
     }

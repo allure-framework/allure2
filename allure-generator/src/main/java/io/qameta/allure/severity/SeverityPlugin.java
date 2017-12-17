@@ -21,7 +21,9 @@ import static io.qameta.allure.entity.LabelName.SEVERITY;
  */
 public class SeverityPlugin extends CompositeAggregator {
 
-    /** Name of the json file. */
+    /**
+     * Name of the json file.
+     */
     protected static final String JSON_FILE_NAME = "severity.json";
 
     public SeverityPlugin() {
@@ -66,10 +68,12 @@ public class SeverityPlugin extends CompositeAggregator {
 
         private SeverityData createData(final TestResult result) {
             return new SeverityData()
-                    .setUid(result.getUid())
+                    .setUid(result.getId())
                     .setName(result.getName())
                     .setStatus(result.getStatus())
-                    .setTime(result.getTime())
+                    .setStart(result.getStart())
+                    .setStop(result.getStop())
+                    .setDuration(result.getDuration())
                     .setSeverity(result.getExtraBlock("severity"));
         }
     }

@@ -2,12 +2,13 @@ import App from './app';
 import $ from 'jquery';
 import 'file-loader?name=favicon.ico!./favicon.ico';
 
-import './blocks/arrow/styles.scss';
-import './blocks/executor-icon/styles.scss';
-import './blocks/status-details/styles.scss';
-import './blocks/table/styles.scss';
-import './blocks/tabs/styles.scss';
-import './blocks/pane/styles.scss';
+import './elements/arrow/styles.scss';
+import './elements/executor-icon/styles.scss';
+import './elements/link/styles.scss';
+import './elements/pane/styles.scss';
+import './elements/table/styles.scss';
+import './elements/tabs/styles.scss';
+import './elements/widget/styles.scss';
 
 import './pluginApi';
 

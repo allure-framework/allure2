@@ -1,19 +1,16 @@
 @import "../../../node_modules/normalize-css/normalize.css";
 @import "../../../node_modules/highlight.js/styles/github-gist.css";
 @import "./rtl.scss";
-@import "./blocks/alert/styles.scss";
-@import "./blocks/attachment-row/styles.scss";
-@import "./blocks/bar/styles.scss";
-@import "./blocks/button/styles.scss";
-@import "./blocks/island/styles.scss";
-@import "./blocks/label/styles.scss";
-@import "./blocks/link/styles.scss";
-@import "./blocks/spinner/styles.scss";
-@import "./blocks/splash/styles.scss";
-@import "./blocks/step-stats/styles.scss";
-@import "./blocks/text/styles.scss";
-@import "./blocks/widget/styles.scss";
-@import "./blocks/parameters-table/styles.scss";
+
+@import "./elements/alert/styles.scss";
+@import "./elements/bar/styles.scss";
+@import "./elements/button/styles.scss";
+@import "./elements/island/styles.scss";
+@import "./elements/label/styles.scss";
+@import "./elements/spinner/styles.scss";
+@import "./elements/splash/styles.scss";
+@import "./elements/text/styles.scss";
+
 @import "./variables.scss";
 
 body {
@@ -27,7 +24,8 @@ body {
 
 html, body {
   height: 100%;
-  font-size: 14px;
+  margin: 0;
+  font-size: 15px;
 }
 
 #content {
@@ -87,3 +85,49 @@ html, body {
   overflow: hidden;
 }
 
+.button {
+  background-color: white;
+  border-radius: 3px;
+  border: 1px solid $border-accent-color;
+  color: black;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  line-height: 1.25;
+  font-weight: normal;
+  margin: 0;
+  outline: black none 0;
+  padding: 0 7px;
+  text-align: center;
+  text-decoration: none;
+  text-indent: 0;
+  touch-action: manipulation;
+  user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  &_inline {
+    margin: 0 5px 0 0;
+  }
+  &:hover {
+    border-color: #888;
+  }
+  &:focus {
+    border-color: #51a7e8;
+    outline: none;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075), 0 0 5px rgba(81, 167, 232, 0.5);
+  }
+}
+
+.button-large {
+  height: 32px;
+  line-height: 32px;
+  font-size: 16px;
+  min-width: 100px;
+}
+
+.button-small {
+  height: 28px;
+  line-height: 28px;
+  font-size: 12px;
+  min-width: 80px;
+}

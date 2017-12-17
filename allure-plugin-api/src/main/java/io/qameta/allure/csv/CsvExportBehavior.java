@@ -2,15 +2,14 @@ package io.qameta.allure.csv;
 
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
-import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.entity.TestStatus;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 
 /**
  * Class contains the information for the behavior csv export.
- *
  */
 public class CsvExportBehavior implements Serializable {
 
@@ -91,19 +90,19 @@ public class CsvExportBehavior implements Serializable {
     }
 
     public void addTestResult(final TestResult result) {
-        if (Status.FAILED.equals(result.getStatus())) {
+        if (TestStatus.FAILED.equals(result.getStatus())) {
             this.failed++;
         }
-        if (Status.BROKEN.equals(result.getStatus())) {
+        if (TestStatus.BROKEN.equals(result.getStatus())) {
             this.broken++;
         }
-        if (Status.PASSED.equals(result.getStatus())) {
+        if (TestStatus.PASSED.equals(result.getStatus())) {
             this.passed++;
         }
-        if (Status.SKIPPED.equals(result.getStatus())) {
+        if (TestStatus.SKIPPED.equals(result.getStatus())) {
             this.skipped++;
         }
-        if (Status.UNKNOWN.equals(result.getStatus())) {
+        if (TestStatus.UNKNOWN.equals(result.getStatus())) {
             this.unknown++;
         }
     }

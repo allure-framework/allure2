@@ -5,10 +5,10 @@ import com.opencsv.bean.CsvBindByPosition;
 import io.qameta.allure.entity.TestResult;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Class contains the information for the suites csv export.
- *
  */
 public class CsvExportSuite implements Serializable {
 
@@ -31,7 +31,7 @@ public class CsvExportSuite implements Serializable {
     public CsvExportSuite(final TestResult result) {
         this.status = result.getStatus() != null ? result.getStatus().value() : null;
         this.name = result.getFullName();
-        this.duration = result.getTime().getDuration() != null ? result.getTime().getDuration().toString() : null;
+        this.duration = Objects.isNull(result.getDuration()) ? null : Objects.toString(result.getDuration());
         this.message = result.getDescription();
     }
 

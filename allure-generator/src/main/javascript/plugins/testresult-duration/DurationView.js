@@ -5,12 +5,6 @@ import template from './DurationView.hbs';
 @className('pane__section')
 class DurationView extends View {
     template = template;
-
-    serializeData() {
-        return {
-            time: this.model.get('time')
-        };
-    }
 }
 
 export default DurationView;

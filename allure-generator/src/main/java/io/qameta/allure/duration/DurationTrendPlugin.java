@@ -93,7 +93,7 @@ public class DurationTrendPlugin extends CompositeAggregator implements Reader {
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
-    /* default */ static List<DurationTrendItem> getData(final List<LaunchResults> launchesResults) {
+            /* default */ static List<DurationTrendItem> getData(final List<LaunchResults> launchesResults) {
         final DurationTrendItem item = createCurrent(launchesResults);
         final List<DurationTrendItem> data = getHistoryItems(launchesResults);
 
@@ -136,8 +136,7 @@ public class DurationTrendPlugin extends CompositeAggregator implements Reader {
                 .map(Optional::get)
                 .filter(ExecutorInfo.class::isInstance)
                 .map(ExecutorInfo.class::cast)
-                .sorted(comparator.reversed())
-                .findFirst();
+                .max(comparator);
     }
 
     private static class JsonAggregator extends CommonJsonAggregator {

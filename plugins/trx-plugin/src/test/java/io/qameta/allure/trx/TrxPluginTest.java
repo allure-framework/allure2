@@ -5,7 +5,7 @@ import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.LabelName;
-import io.qameta.allure.entity.Status;
+import io.qameta.allure.entity.TestStatus;
 import io.qameta.allure.entity.TestResult;
 import org.junit.Before;
 import org.junit.Rule;
@@ -61,10 +61,10 @@ public class TrxPluginTest {
                 .hasSize(4)
                 .extracting(TestResult::getName, TestResult::getStatus, TestResult::getDescription)
                 .containsExactlyInAnyOrder(
-                        tuple("AddingSeveralNumbers_40", Status.PASSED, "Adding several numbers"),
-                        tuple("AddingSeveralNumbers_60", Status.PASSED, "Adding several numbers"),
-                        tuple("AddTwoNumbers", Status.PASSED, "Add two numbers"),
-                        tuple("FailToAddTwoNumbers", Status.FAILED, "Fail to add two numbers")
+                        tuple("AddingSeveralNumbers_40", TestStatus.PASSED, "Adding several numbers"),
+                        tuple("AddingSeveralNumbers_60", TestStatus.PASSED, "Adding several numbers"),
+                        tuple("AddTwoNumbers", TestStatus.PASSED, "Add two numbers"),
+                        tuple("FailToAddTwoNumbers", TestStatus.FAILED, "Fail to add two numbers")
                 );
 
         assertThat(captor.getAllValues())
@@ -86,7 +86,7 @@ public class TrxPluginTest {
         verify(visitor, times(1)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
-                .extracting(TestResult::getStatusMessage, TestResult::getStatusTrace)
+                .extracting(TestResult::getMessage, TestResult::getTrace)
                 .containsExactly(tuple("Some message", "Some trace"));
     }
 

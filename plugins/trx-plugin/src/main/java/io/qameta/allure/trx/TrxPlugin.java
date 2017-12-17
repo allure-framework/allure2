@@ -4,9 +4,8 @@ import io.qameta.allure.Reader;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
-import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.entity.Time;
+import io.qameta.allure.entity.TestStatus;
 import io.qameta.allure.parser.XmlElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +31,7 @@ import java.util.Optional;
 
 import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
 import static java.nio.file.Files.newDirectoryStream;
+import static java.util.Objects.nonNull;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -155,12 +155,17 @@ public class TrxPlugin implements Reader {
         final String outcome = unitTestResult.getAttribute(OUTCOME_ATTRIBUTE);
         final String uid = context.getValue().get();
         final TestResult result = new TestResult()
-                .setUid(uid)
+                .setId(uid)
                 .setName(testName)
-                .setStatus(parseStatus(outcome))
-                .setTime(getTime(startTime, endTime));
-        getStatusMessage(unitTestResult).ifPresent(result::setStatusMessage);
-        getStatusTrace(unitTestResult).ifPresent(result::setStatusTrace);
+                .setStatus(parseStatus(outcome));
+        parseTime(startTime).ifPresent(result::setStart);
+        parseTime(endTime).ifPresent(result::setStop);
+        if (nonNull(result.getStart()) && nonNull(result.getStop())) {
+            result.setDuration(Math.max(result.getStop() - result.getStart(), 0));
+        }
+
+        getStatusMessage(unitTestResult).ifPresent(result::setMessage);
+        getStatusTrace(unitTestResult).ifPresent(result::setTrace);
         Optional.ofNullable(tests.get(executionId)).ifPresent(unitTest -> {
             result.setParameters(unitTest.getParameters());
             result.setDescription(unitTest.getDescription());
@@ -184,27 +189,17 @@ public class TrxPlugin implements Reader {
                 .map(XmlElement::getValue);
     }
 
-    private Time getTime(final String startTime, final String endTime) {
-        final Time time = new Time();
-        parseTime(startTime).ifPresent(time::setStart);
-        parseTime(endTime).ifPresent(time::setStop);
-        if (Objects.nonNull(time.getStart()) && Objects.nonNull(time.getStop())) {
-            time.setDuration(time.getStop() - time.getStart());
-        }
-        return time;
-    }
-
-    protected Status parseStatus(final String outcome) {
+    protected TestStatus parseStatus(final String outcome) {
         if (Objects.isNull(outcome)) {
-            return Status.UNKNOWN;
+            return TestStatus.UNKNOWN;
         }
         switch (outcome.toLowerCase()) {
             case "passed":
-                return Status.PASSED;
+                return TestStatus.PASSED;
             case "failed":
-                return Status.FAILED;
+                return TestStatus.FAILED;
             default:
-                return Status.UNKNOWN;
+                return TestStatus.UNKNOWN;
         }
     }
 

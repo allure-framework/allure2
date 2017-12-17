@@ -10,8 +10,8 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.csv.CsvExportCategory;
-import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.entity.TestStatus;
 import io.qameta.allure.tree.DefaultTreeLayer;
 import io.qameta.allure.tree.TestResultTree;
 import io.qameta.allure.tree.TestResultTreeGroup;
@@ -86,7 +86,7 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
-    /* default */ static Tree<TestResult> getData(final List<LaunchResults> launchResults) {
+            /* default */ static Tree<TestResult> getData(final List<LaunchResults> launchResults) {
 
         // @formatter:off
         final Tree<TestResult> categories = new TestResultTree(CATEGORIES, CategoriesPlugin::groupByCategories);
@@ -101,7 +101,7 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
-    /* default */ static void addCategoriesForResults(final List<LaunchResults> launchesResults) {
+            /* default */ static void addCategoriesForResults(final List<LaunchResults> launchesResults) {
         launchesResults.forEach(launch -> {
             final List<Category> categories = launch.getExtra(CATEGORIES, Collections::emptyList);
             launch.getResults().forEach(result -> {
@@ -111,10 +111,10 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
                         resultCategories.add(category);
                     }
                 });
-                if (resultCategories.isEmpty() && Status.FAILED.equals(result.getStatus())) {
+                if (resultCategories.isEmpty() && TestStatus.FAILED.equals(result.getStatus())) {
                     result.getExtraBlock(CATEGORIES, new ArrayList<Category>()).add(FAILED_TESTS);
                 }
-                if (resultCategories.isEmpty() && Status.BROKEN.equals(result.getStatus())) {
+                if (resultCategories.isEmpty() && TestStatus.BROKEN.equals(result.getStatus())) {
                     result.getExtraBlock(CATEGORIES, new ArrayList<Category>()).add(BROKEN_TESTS);
                 }
             });
@@ -128,7 +128,7 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
                 .map(Category::getName)
                 .collect(Collectors.toSet());
         final TreeLayer categoriesLayer = new DefaultTreeLayer(categories);
-        final TreeLayer messageLayer = new DefaultTreeLayer(testResult.getStatusMessage());
+        final TreeLayer messageLayer = new DefaultTreeLayer(testResult.getMessage());
         return Arrays.asList(categoriesLayer, messageLayer);
     }
 
@@ -137,11 +137,11 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
                 || nonNull(result.getStatus())
                 && category.getMatchedStatuses().contains(result.getStatus());
         boolean matchesMessage = isNull(category.getMessageRegex())
-                || nonNull(result.getStatusMessage())
-                && matches(result.getStatusMessage(), category.getMessageRegex());
+                || nonNull(result.getMessage())
+                && matches(result.getMessage(), category.getMessageRegex());
         boolean matchesTrace = isNull(category.getTraceRegex())
-                || nonNull(result.getStatusTrace())
-                && matches(result.getStatusTrace(), category.getTraceRegex());
+                || nonNull(result.getTrace())
+                && matches(result.getTrace(), category.getTraceRegex());
         boolean matchesFlaky = result.isFlaky() == category.isFlaky();
         return matchesStatus && matchesMessage && matchesTrace && matchesFlaky;
     }

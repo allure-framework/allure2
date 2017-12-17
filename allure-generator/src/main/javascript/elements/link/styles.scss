@@ -1,0 +1,12 @@
+@import "../../variables.scss";
+
+.link {
+  color: $brand-blue;
+  &:hover {
+    color: $brand-red;
+  }
+  &__no-decoration {
+    color: black;
+    text-decoration: none;
+  }
+}

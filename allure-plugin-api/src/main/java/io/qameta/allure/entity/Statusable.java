@@ -6,6 +6,6 @@ package io.qameta.allure.entity;
  */
 public interface Statusable {
 
-    Status getStatus();
+    TestStatus getStatus();
 
 }

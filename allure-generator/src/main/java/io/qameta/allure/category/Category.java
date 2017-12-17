@@ -1,6 +1,6 @@
 package io.qameta.allure.category;
 
-import io.qameta.allure.entity.Status;
+import io.qameta.allure.entity.TestStatus;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -22,7 +22,7 @@ public class Category implements Serializable {
     protected String descriptionHtml;
     protected String messageRegex;
     protected String traceRegex;
-    protected List<Status> matchedStatuses = new ArrayList<>();
+    protected List<TestStatus> matchedStatuses = new ArrayList<>();
     protected boolean flaky;
 
 }

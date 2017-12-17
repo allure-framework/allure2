@@ -6,12 +6,12 @@ import io.qameta.allure.Issue;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Attachment;
-import io.qameta.allure.entity.Label;
+import io.qameta.allure.entity.TestLabel;
 import io.qameta.allure.entity.LabelName;
-import io.qameta.allure.entity.Link;
-import io.qameta.allure.entity.Parameter;
+import io.qameta.allure.entity.TestLink;
+import io.qameta.allure.entity.TestParameter;
 import io.qameta.allure.entity.StageResult;
-import io.qameta.allure.entity.Step;
+import io.qameta.allure.entity.TestResultStep;
 import io.qameta.allure.entity.TestResult;
 import org.assertj.core.groups.Tuple;
 import org.junit.Rule;
@@ -31,9 +31,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.qameta.allure.entity.Status.FAILED;
-import static io.qameta.allure.entity.Status.PASSED;
-import static io.qameta.allure.entity.Status.UNKNOWN;
+import static io.qameta.allure.entity.TestStatus.FAILED;
+import static io.qameta.allure.entity.TestStatus.PASSED;
+import static io.qameta.allure.entity.TestStatus.UNKNOWN;
 import static org.allurefw.allure1.AllureUtils.generateTestSuiteJsonName;
 import static org.allurefw.allure1.AllureUtils.generateTestSuiteXmlName;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -79,7 +79,7 @@ public class Allure1PluginTest {
                 .hasSize(1)
                 .flatExtracting(TestResult::getParameters)
                 .hasSize(4)
-                .extracting(Parameter::getName, Parameter::getValue)
+                .extracting(TestParameter::getName, TestParameter::getValue)
                 .containsExactlyInAnyOrder(
                         tuple("name", "value"),
                         tuple("name2", "value"),
@@ -135,7 +135,7 @@ public class Allure1PluginTest {
         return Stream.concat(fromSteps, fromAttachments);
     }
 
-    private Stream<Attachment> extractAttachments(Step step) {
+    private Stream<Attachment> extractAttachments(TestResultStep step) {
         Stream<Attachment> fromSteps = step.getSteps().stream().flatMap(this::extractAttachments);
         Stream<Attachment> fromAttachments = step.getAttachments().stream();
         return Stream.concat(fromSteps, fromAttachments);
@@ -183,7 +183,7 @@ public class Allure1PluginTest {
                 .flatExtracting(TestResult::getLabels)
                 .filteredOn(label -> LabelName.STORY.value().equals(label.getName()))
                 .hasSize(2)
-                .extracting(Label::getValue)
+                .extracting(TestLabel::getValue)
                 .containsExactlyInAnyOrder("SuccessStory", "OtherStory");
     }
 
@@ -262,7 +262,7 @@ public class Allure1PluginTest {
         assertThat(testResults)
                 .filteredOn(testResult -> testResult.getName().equals(testName))
                 .flatExtracting(TestResult::getLinks)
-                .extracting(Link::getUrl)
+                .extracting(TestLink::getUrl)
                 .as("Test links should contain patterns from allure.properties file")
                 .containsExactlyInAnyOrder(link1, link2, link3);
     }
@@ -277,7 +277,7 @@ public class Allure1PluginTest {
                 .hasSize(1)
                 .flatExtracting(TestResult::getParameters)
                 .hasSize(4)
-                .extracting(Parameter::getName, Parameter::getValue)
+                .extracting(TestParameter::getName, TestParameter::getValue)
                 .containsExactlyInAnyOrder(
                         Tuple.tuple("parameterArgument", null),
                         Tuple.tuple("parameter", "default"),

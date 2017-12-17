@@ -1,14 +1,16 @@
 package io.qameta.allure.xctest;
 
 import io.qameta.allure.entity.StageResult;
-import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.entity.Time;
+import io.qameta.allure.entity.TestResultStep;
+import io.qameta.allure.entity.TestStatus;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
+
+import static java.util.Objects.nonNull;
 
 /**
  * The collection of Test result utils methods.
@@ -29,11 +31,11 @@ public final class ResultsUtils {
 
     public static TestResult getTestResult(final Map<String, Object> props) {
         return new TestResult()
-                .setUid(UUID.randomUUID().toString())
+                .setId(UUID.randomUUID().toString())
                 .setName(ResultsUtils.getTestName(props))
                 .setStatus(ResultsUtils.getTestStatus(props))
                 .setFullName(ResultsUtils.getFullName(props))
-                .setTime(ResultsUtils.getTestTime(props))
+                .setDuration(ResultsUtils.getTestDuration(props))
                 .setTestStage(new StageResult());
     }
 
@@ -49,45 +51,64 @@ public final class ResultsUtils {
         return (String) props.getOrDefault(TEST_IDENTIFIER, "Unknown");
     }
 
-    private static Time getTestTime(final Map<String, Object> props) {
-        return new Time().setDuration(parseTime(props.getOrDefault(TEST_DURATION, "0").toString()));
+    private static Long getTestDuration(final Map<String, Object> props) {
+        return Optional.ofNullable(props.get(TEST_DURATION))
+                .map(Objects::toString)
+                .map(ResultsUtils::parseTime)
+                .orElse(null);
     }
 
-    private static Status getTestStatus(final Map<String, Object> props) {
+    private static TestStatus getTestStatus(final Map<String, Object> props) {
         final Object status = props.get(TEST_STATUS);
         if (Objects.isNull(status)) {
-            return Status.UNKNOWN;
+            return TestStatus.UNKNOWN;
         }
         if ("Success".equals(status)) {
-            return Status.PASSED;
+            return TestStatus.PASSED;
         }
         if ("Failure".equals(status)) {
-            return Status.FAILED;
+            return TestStatus.FAILED;
         }
-        return Status.UNKNOWN;
+        return TestStatus.UNKNOWN;
     }
 
 
-    public static Step getStep(final Map<String, Object> props) {
-        return new Step()
+    public static TestResultStep getStep(final Map<String, Object> props) {
+        final Long start = getStepStart(props);
+        final Long stop = getStepStop(props);
+        return new TestResultStep()
                 .setName(getStepName(props))
-                .setTime(getStepTime(props))
-                .setStatus(Status.PASSED);
+                .setStart(start)
+                .setStop(stop)
+                .setDuration(getDuration(start, stop))
+                .setStatus(TestStatus.PASSED);
     }
 
     private static String getStepName(final Map<String, Object> props) {
         return (String) props.getOrDefault(STEP_NAME, "Unknown");
     }
 
-    private static Time getStepTime(final Map<String, Object> props) {
-        long start = parseTime(props.getOrDefault(STEP_START_TIME, "0").toString());
-        long stop = parseTime(props.getOrDefault(STEP_STOP_TIME, "0").toString());
-        return new Time().setStart(start).setStop(stop).setDuration(stop - start);
+    private static Long getStepStart(final Map<String, Object> props) {
+        return Optional.ofNullable(props.get(STEP_START_TIME))
+                .map(Objects::toString)
+                .map(ResultsUtils::parseTime)
+                .orElse(null);
+    }
+
+    private static Long getStepStop(final Map<String, Object> props) {
+        return Optional.ofNullable(props.get(STEP_STOP_TIME))
+                .map(Objects::toString)
+                .map(ResultsUtils::parseTime)
+                .orElse(null);
     }
 
     private static long parseTime(final String time) {
         final Double doubleTime = Double.parseDouble(time);
         final int seconds = doubleTime.intValue();
         return seconds * 1000;
+    }
+
+    private static Long getDuration(final Long start, final Long stop) {
+        return nonNull(start) && nonNull(stop) ? stop - start : null;
     }
 }

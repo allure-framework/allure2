@@ -4,9 +4,8 @@ import io.qameta.allure.DefaultLaunchResults;
 import io.qameta.allure.Issue;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Statistic;
-import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.entity.Time;
+import io.qameta.allure.entity.TestStatus;
 import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeNode;
 import io.qameta.allure.tree.TreeWidgetData;
@@ -27,7 +26,6 @@ import static io.qameta.allure.entity.LabelName.FEATURE;
 import static io.qameta.allure.entity.LabelName.STORY;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 /**
  * @author Egor Borisov ehborisov@gmail.com
@@ -41,10 +39,10 @@ public class BehaviorsPluginTest {
     public void storiesPerFeatureResultsAggregation() throws IOException {
         final Set<TestResult> testResults = new HashSet<>();
         testResults.add(new TestResult()
-                .setStatus(Status.PASSED)
+                .setStatus(TestStatus.PASSED)
                 .setLabels(asList(FEATURE.label("feature1"), FEATURE.label("feature2"), STORY.label("story1"), STORY.label("story2"))));
         testResults.add(new TestResult()
-                .setStatus(Status.FAILED)
+                .setStatus(TestStatus.FAILED)
                 .setLabels(asList(FEATURE.label("feature2"), FEATURE.label("feature3"), STORY.label("story2"), STORY.label("story3"))));
 
         LaunchResults results = new DefaultLaunchResults(testResults, Collections.emptyMap(), Collections.emptyMap());
@@ -75,10 +73,10 @@ public class BehaviorsPluginTest {
     public void shouldGroupByEpic() throws Exception {
         final Set<TestResult> testResults = new HashSet<>();
         testResults.add(new TestResult()
-                .setStatus(Status.PASSED)
+                .setStatus(TestStatus.PASSED)
                 .setLabels(asList(EPIC.label("e1"), FEATURE.label("f1"), STORY.label("s1"))));
         testResults.add(new TestResult()
-                .setStatus(Status.FAILED)
+                .setStatus(TestStatus.FAILED)
                 .setLabels(asList(EPIC.label("e2"), FEATURE.label("f2"), STORY.label("s2"))));
 
         LaunchResults results = new DefaultLaunchResults(testResults, Collections.emptyMap(), Collections.emptyMap());
@@ -96,10 +94,10 @@ public class BehaviorsPluginTest {
     public void shouldSortByStartTimeAsc() throws Exception {
         final TestResult first = new TestResult()
                 .setName("first")
-                .setTime(new Time().setStart(10L));
+                .setStart(10L);
         final TestResult second = new TestResult()
                 .setName("second")
-                .setTime(new Time().setStart(12L));
+                .setStart(12L);
         final TestResult timeless = new TestResult()
                 .setName("timeless");
 

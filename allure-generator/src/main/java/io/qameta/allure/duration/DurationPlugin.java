@@ -28,10 +28,12 @@ public class DurationPlugin extends CommonJsonAggregator {
 
     private DurationData createData(final TestResult result) {
         return new DurationData()
-                .setUid(result.getUid())
+                .setUid(result.getId())
                 .setName(result.getName())
                 .setStatus(result.getStatus())
-                .setTime(result.getTime())
+                .setStart(result.getStart())
+                .setStop(result.getStop())
+                .setDuration(result.getDuration())
                 .setSeverity(result.getExtraBlock("severity"));
     }
 }

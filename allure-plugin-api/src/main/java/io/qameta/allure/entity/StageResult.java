@@ -17,14 +17,17 @@ public class StageResult implements Serializable, Summarizable {
     private static final long serialVersionUID = 1L;
 
     protected String name;
-    protected Time time;
 
-    protected Status status;
-    protected String statusMessage;
-    protected String statusTrace;
+    protected Long start;
+    protected Long stop;
+    protected Long duration;
 
-    protected List<Step> steps = new ArrayList<>();
+    protected TestStatus status;
+    protected String message;
+    protected String trace;
+
+    protected List<TestResultStep> steps = new ArrayList<>();
     protected List<Attachment> attachments = new ArrayList<>();
-    protected List<Parameter> parameters = new ArrayList<>();
+    protected List<TestParameter> parameters = new ArrayList<>();
 
 }

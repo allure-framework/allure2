@@ -6,5 +6,10 @@ package io.qameta.allure.entity;
  */
 public interface Timeable {
 
-    Time getTime();
+    Long getStart();
+
+    Long getStop();
+
+    Long getDuration();
+
 }

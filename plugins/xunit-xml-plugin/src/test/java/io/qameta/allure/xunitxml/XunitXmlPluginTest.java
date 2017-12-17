@@ -3,11 +3,10 @@ package io.qameta.allure.xunitxml;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
-import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.LabelName;
-import io.qameta.allure.entity.Status;
+import io.qameta.allure.entity.TestLabel;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.entity.Time;
+import io.qameta.allure.entity.TestStatus;
 import org.assertj.core.groups.Tuple;
 import org.junit.Assume;
 import org.junit.Before;
@@ -28,7 +27,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -78,7 +76,7 @@ public class XunitXmlPluginTest {
                 .hasSize(1)
                 .extracting(TestResult::getName, TestResult::getHistoryId, TestResult::getStatus)
                 .containsExactlyInAnyOrder(
-                        Tuple.tuple("passedTest", "Some test", Status.PASSED)
+                        Tuple.tuple("passedTest", "Some test", TestStatus.PASSED)
                 );
     }
 
@@ -94,8 +92,7 @@ public class XunitXmlPluginTest {
 
         assertThat(captor.getAllValues())
                 .hasSize(1)
-                .extracting(TestResult::getTime)
-                .extracting(Time::getDuration)
+                .extracting(TestResult::getDuration)
                 .containsExactlyInAnyOrder(44L);
     }
 
@@ -112,7 +109,7 @@ public class XunitXmlPluginTest {
         assertThat(captor.getAllValues())
                 .hasSize(1)
                 .flatExtracting(TestResult::getLabels)
-                .extracting(Label::getName, Label::getValue)
+                .extracting(TestLabel::getName, TestLabel::getValue)
                 .containsExactlyInAnyOrder(
                         Tuple.tuple(LabelName.SUITE.value(), "org.example.XunitTest"),
                         Tuple.tuple(LabelName.PACKAGE.value(), "org.example.XunitTest"),
@@ -153,7 +150,7 @@ public class XunitXmlPluginTest {
                 .hasSize(1)
                 .flatExtracting(TestResult::getLabels)
                 .filteredOn(label -> label.getName().equals(LabelName.FRAMEWORK.value()))
-                .extracting(Label::getValue)
+                .extracting(TestLabel::getValue)
                 .containsExactly("junit");
     }
 
@@ -170,7 +167,7 @@ public class XunitXmlPluginTest {
 
         assertThat(captor.getAllValues())
                 .hasSize(1)
-                .extracting(TestResult::getStatusMessage, TestResult::getStatusTrace)
+                .extracting(TestResult::getMessage, TestResult::getTrace)
                 .containsExactlyInAnyOrder(
                         Tuple.tuple(inputs[2], inputs[3])
                 );

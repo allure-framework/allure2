@@ -8,11 +8,11 @@ import java.util.stream.Collectors;
  */
 public interface Parameterizable {
 
-    List<Parameter> getParameters();
+    List<TestParameter> getParameters();
 
     default List<String> getParameterValues() {
         return getParameters().stream()
-                .map(Parameter::getValue)
+                .map(TestParameter::getValue)
                 .collect(Collectors.toList());
     }
 }

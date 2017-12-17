@@ -42,7 +42,7 @@ public enum LabelName implements Serializable {
         return value;
     }
 
-    public Label label(final String value) {
-        return new Label().setName(value()).setValue(value);
+    public TestLabel label(final String value) {
+        return new TestLabel().setName(value()).setValue(value);
     }
 }

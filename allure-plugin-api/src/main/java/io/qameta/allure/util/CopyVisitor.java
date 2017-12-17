@@ -30,7 +30,7 @@ public class CopyVisitor extends SimpleFileVisitor<Path> {
     }
 
     @Override
-    public FileVisitResult preVisitDirectory(final Path dir, final BasicFileAttributes attrs) throws IOException {
+    public FileVisitResult preVisitDirectory(final Path dir, final BasicFileAttributes attrs) {
         try {
             Files.createDirectories(dir);
         } catch (IOException e) {
@@ -40,7 +40,7 @@ public class CopyVisitor extends SimpleFileVisitor<Path> {
     }
 
     @Override
-    public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
+    public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) {
         if (Files.notExists(file)) {
             return FileVisitResult.CONTINUE;
         }

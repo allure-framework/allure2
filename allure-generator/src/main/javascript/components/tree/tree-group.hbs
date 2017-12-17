@@ -20,9 +20,9 @@
                 <div class="node">
                     <div class="node__info long-line" data-uid="{{uid}}">
                         <span class="fa fa-clock-o"></span>
-                        {{> tree-time value=time.duration name=(t 'component.tree.time.total.name') tooltip=(t 'component.tree.time.total.tooltip')}}
-                        {{> tree-time value=time.maxDuration name=(t 'component.tree.time.max.name') tooltip=(t 'component.tree.time.max.tooltip')}}
-                        {{> tree-time value=time.sumDuration name=(t 'component.tree.time.sum.name') tooltip=(t 'component.tree.time.sum.tooltip')}}
+                        {{> tree-time value=duration name=(t 'component.tree.time.total.name') tooltip=(t 'component.tree.time.total.tooltip')}}
+                        {{> tree-time value=maxDuration name=(t 'component.tree.time.max.name') tooltip=(t 'component.tree.time.max.tooltip')}}
+                        {{> tree-time value=sumDuration name=(t 'component.tree.time.sum.name') tooltip=(t 'component.tree.time.sum.tooltip')}}
                     </div>
                 </div>
             {{/if}}

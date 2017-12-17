@@ -40,7 +40,7 @@ public class Statistic implements Serializable {
         //do nothing
     }
 
-    public long get(final Status status) {
+    public long get(final TestStatus status) {
         switch (status) {
             case FAILED:
                 return getFailed();
@@ -56,13 +56,13 @@ public class Statistic implements Serializable {
     }
 
     @JsonIgnore
-    public Status getStatus() {
-        for (final Status status : Status.values()) {
+    public TestStatus getStatus() {
+        for (final TestStatus status : TestStatus.values()) {
             if (get(status) > 0) {
                 return status;
             }
         }
-        return Status.UNKNOWN;
+        return TestStatus.UNKNOWN;
     }
 
     public void update(final Statusable statusable) {
@@ -72,7 +72,7 @@ public class Statistic implements Serializable {
         update(statusable.getStatus());
     }
 
-    public void update(final Status status) {
+    public void update(final TestStatus status) {
         if (Objects.isNull(status)) {
             return;
         }

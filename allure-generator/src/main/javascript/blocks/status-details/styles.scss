@@ -2,31 +2,31 @@
 
 .status-details {
   overflow: auto;
-  @include status-border();
-  @include status-bg-light();
-  margin-bottom: 7px;
-  &__expanded > &__content > &__trace {
-    display: block;
+
+  &__content {
+    @include status-border();
+    @include status-bg-light();
   }
-  &__expanded > &__content {
-    display: inline-block;
+
+  &__message-wrapper {
+    display: flex;
   }
+
   &__message {
     padding: $gap-size;
+    flex: 1;
+    word-break: break-all;
   }
+
+  &__controls {
+    padding: 5px;
+  }
+
   &__trace {
-    float: left;
-    display: none;
+    display: block;
+    word-break: break-all;
     padding: $gap-size;
     white-space: pre;
     border-top: 1px solid $pane-bg-color;
-  }
-  &__content {
-    display: block;
-  }
-  &__trace-toggle {
-    &:hover {
-      background-color: $hover-color;
-    }
   }
 }

@@ -100,13 +100,15 @@ public class HistoryPlugin implements Reader, Aggregator {
         }
 
         final HistoryItem newItem = new HistoryItem()
-                .setUid(result.getUid())
+                .setUid(result.getId())
                 .setStatus(result.getStatus())
-                .setStatusDetails(result.getStatusMessage())
-                .setTime(result.getTime());
+                .setStatusDetails(result.getMessage())
+                .setStart(result.getStart())
+                .setStop(result.getStop())
+                .setDuration(result.getDuration());
 
         if (Objects.nonNull(info.getReportUrl())) {
-            newItem.setReportUrl(createReportUrl(info.getReportUrl(), result.getUid()));
+            newItem.setReportUrl(createReportUrl(info.getReportUrl(), result.getId()));
         }
 
         final List<HistoryItem> newItems = Stream.concat(Stream.of(newItem), data.getItems().stream())

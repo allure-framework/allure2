@@ -1,6 +1,6 @@
 package io.qameta.allure.trx;
 
-import io.qameta.allure.entity.Parameter;
+import io.qameta.allure.entity.TestParameter;
 
 import java.util.List;
 import java.util.Map;
@@ -41,12 +41,12 @@ public class UnitTest {
         return properties;
     }
 
-    public List<Parameter> getParameters() {
+    public List<TestParameter> getParameters() {
         return getProperties().entrySet().stream()
                 .filter(entry -> entry.getKey().startsWith(PARAMETER_PREFIX))
                 .map(entry -> {
                     final String name = entry.getKey().substring(PARAMETER_PREFIX.length());
-                    return new Parameter().setName(name).setValue(entry.getValue());
+                    return new TestParameter().setName(name).setValue(entry.getValue());
                 }).collect(Collectors.toList());
     }
 }

@@ -1,8 +1,13 @@
-<div class="{{b "alert" "wide" status=status}}">
-    {{~> ../../blocks/status-details/status-details .}}
+<div class="pane__section">
+    <div class="{{b cls 'status-details'}}"></div>
 </div>
 
 <div class="{{b cls 'tags'}}"></div>
 <div class="{{b cls 'before'}}"></div>
-<div class="{{b cls 'execution'}}"></div>
+
+<div class="pane__section">
+    <h3 class="pane__section-title">{{t 'testResult.execution.name'}}</h3>
+    <div class="{{b cls 'execution'}}"></div>
+</div>
+
 <div class="{{b cls 'after'}}"></div>

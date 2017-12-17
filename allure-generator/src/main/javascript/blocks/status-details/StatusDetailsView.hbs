@@ -1,0 +1,15 @@
+<div class="{{b cls 'content' status=status}}">
+    <div class="{{b cls 'message-wrapper'}}">
+        <div class="{{b cls 'message'}}">
+            <pre><code>{{message}}</code></pre>
+        </div>
+        <div class="{{b cls 'controls'}}">
+            <input type="button" class="{{b cls 'trace-toggle'}} button button-large" value="{{#if expanded}}Hide trace{{else}}Show trace{{/if}}">
+        </div>
+    </div>
+    {{#if expanded}}
+        <div class="{{b cls 'trace'}}">
+            <pre><code>{{#if trace}}{{trace}}{{else}}{{t 'testResult.status.empty'}}{{/if}}</code></pre>
+        </div>
+    {{/if}}
+</div>

@@ -43,19 +43,16 @@ public class GroupTime implements Serializable {
         if (Objects.isNull(timeable)) {
             return;
         }
-        update(timeable.getTime());
+        update(timeable.getStart(), timeable.getStop(), timeable.getDuration());
     }
 
-    public void update(final Time time) {
-        if (Objects.isNull(time)) {
-            return;
-        }
-        update(firstNonNull(getStart(), MAX_VALUE), time.getStart(), Math::min, this::setStart);
-        update(firstNonNull(getStop(), 0L), time.getStop(), Math::max, this::setStop);
+    public void update(final Long start, final Long stop, final Long duration) {
+        update(firstNonNull(getStart(), MAX_VALUE), start, Math::min, this::setStart);
+        update(firstNonNull(getStop(), 0L), stop, Math::max, this::setStop);
         update(getStop(), getStart(), (a, b) -> a - b, this::setDuration);
-        update(firstNonNull(getMinDuration(), MAX_VALUE), time.getDuration(), Math::min, this::setMinDuration);
-        update(firstNonNull(getMaxDuration(), 0L), time.getDuration(), Math::max, this::setMaxDuration);
-        update(firstNonNull(getSumDuration(), 0L), time.getDuration(), (a, b) -> a + b, this::setSumDuration);
+        update(firstNonNull(getMinDuration(), MAX_VALUE), duration, Math::min, this::setMinDuration);
+        update(firstNonNull(getMaxDuration(), 0L), duration, Math::max, this::setMaxDuration);
+        update(firstNonNull(getSumDuration(), 0L), duration, (a, b) -> a + b, this::setSumDuration);
     }
 
     protected static <T> void update(final T first, final T second,

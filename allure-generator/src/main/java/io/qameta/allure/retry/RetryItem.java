@@ -1,7 +1,6 @@
 package io.qameta.allure.retry;
 
-import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.Time;
+import io.qameta.allure.entity.TestStatus;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -17,8 +16,11 @@ public class RetryItem implements Serializable {
     private static final long serialVersionUID = 1L;
 
     protected String uid;
-    protected Status status;
+    protected TestStatus status;
     protected String statusDetails;
-    protected Time time;
+
+    protected Long start;
+    protected Long stop;
+    protected Long duration;
 
 }

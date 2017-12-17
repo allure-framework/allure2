@@ -4,8 +4,8 @@ import io.qameta.allure.Aggregator;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.ExecutorInfo;
-import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.LabelName;
+import io.qameta.allure.entity.TestLabel;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -57,7 +57,7 @@ public class GaPlugin implements Aggregator {
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
-                          final Path outputDirectory) throws IOException {
+                          final Path outputDirectory) {
         if (Objects.nonNull(System.getenv(GA_DISABLE))) {
             LOGGER.debug("analytics is disabled");
             return;
@@ -160,7 +160,7 @@ public class GaPlugin implements Aggregator {
                 .flatMap(results -> results.getResults().stream())
                 .flatMap(result -> result.getLabels().stream())
                 .filter(label -> labelName.value().equals(label.getName()))
-                .map(Label::getValue)
+                .map(TestLabel::getValue)
                 .distinct()
                 .sorted()
                 .collect(Collectors.joining(" "))

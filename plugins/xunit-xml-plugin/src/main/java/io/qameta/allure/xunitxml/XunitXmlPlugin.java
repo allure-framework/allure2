@@ -4,10 +4,9 @@ import io.qameta.allure.Reader;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
-import io.qameta.allure.entity.Parameter;
-import io.qameta.allure.entity.Status;
+import io.qameta.allure.entity.TestParameter;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.entity.Time;
+import io.qameta.allure.entity.TestStatus;
 import io.qameta.allure.parser.XmlElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,15 +114,15 @@ public class XunitXmlPlugin implements Reader {
         final String methodName = testElement.getAttribute(METHOD_ATTRIBUTE_NAME);
         final TestResult result = new TestResult();
 
-        result.setUid(context.getValue().get());
+        result.setId(context.getValue().get());
         result.setName(methodName);
         result.setStatus(getStatus(testElement));
-        result.setTime(getTime(testElement));
+        result.setDuration(getDuration(testElement));
 
         fullName.ifPresent(result::setFullName);
         fullName.ifPresent(result::setHistoryId);
-        getStatusMessage(testElement).ifPresent(result::setStatusMessage);
-        getStatusTrace(testElement).ifPresent(result::setStatusTrace);
+        getStatusMessage(testElement).ifPresent(result::setMessage);
+        getStatusTrace(testElement).ifPresent(result::setTrace);
         getParameters(testElement).ifPresent(result::setParameters);
 
         result.addLabelIfNotExists(RESULT_FORMAT, XUNIT_RESULTS_FORMAT);
@@ -139,18 +138,18 @@ public class XunitXmlPlugin implements Reader {
         visitor.visitTestResult(result);
     }
 
-    private Status getStatus(final XmlElement testElement) {
+    private TestStatus getStatus(final XmlElement testElement) {
         final String status = testElement.getAttribute(RESULT_ATTRIBUTE_NAME);
         if ("Pass".equalsIgnoreCase(status)) {
-            return Status.PASSED;
+            return TestStatus.PASSED;
         }
         if ("Fail".equalsIgnoreCase(status)) {
-            return Status.FAILED;
+            return TestStatus.FAILED;
         }
         if ("Skip".equalsIgnoreCase(status)) {
-            return Status.SKIPPED;
+            return TestStatus.SKIPPED;
         }
-        return Status.UNKNOWN;
+        return TestStatus.UNKNOWN;
     }
 
     private Optional<String> getStatusMessage(final XmlElement testElement) {
@@ -176,7 +175,7 @@ public class XunitXmlPlugin implements Reader {
                 .map(XmlElement::getValue);
     }
 
-    private Optional<List<Parameter>> getParameters(final XmlElement testElement) {
+    private Optional<List<TestParameter>> getParameters(final XmlElement testElement) {
         return testElement.getFirst(TRAITS_ELEMENT_NAME)
                 .map(traits -> traits.get(TRAIT_ELEMENT_NAME))
                 .map(Collection::stream)
@@ -184,28 +183,27 @@ public class XunitXmlPlugin implements Reader {
                 .map(stream -> stream.collect(Collectors.toList()));
     }
 
-    private Parameter getParameter(final XmlElement traitElement) {
+    private TestParameter getParameter(final XmlElement traitElement) {
         final String name = traitElement.getAttribute(NAME_ATTRIBUTE_NAME);
         final String value = traitElement.getAttribute(VALUE_ATTRIBUTE_NAME);
-        return new Parameter().setName(name).setValue(value);
+        return new TestParameter().setName(name).setValue(value);
     }
 
     private String getFramework(final XmlElement assemblyElement) {
         return assemblyElement.getAttribute(FRAMEWORK_ATTRIBUTE_NAME);
     }
 
-    private Time getTime(final XmlElement testElement) {
+    private Long getDuration(final XmlElement testElement) {
         if (testElement.containsAttribute(TIME_ATTRIBUTE_NAME)) {
             try {
-                final long duration = BigDecimal.valueOf(testElement.getDoubleAttribute(TIME_ATTRIBUTE_NAME))
+                return BigDecimal.valueOf(testElement.getDoubleAttribute(TIME_ATTRIBUTE_NAME))
                         .multiply(MULTIPLICAND)
                         .longValue();
-                return new Time().setDuration(duration);
             } catch (Exception e) {
                 LOGGER.debug("Could not parse time attribute for element test", e);
             }
         }
-        return new Time();
+        return null;
     }
 
     private static List<Path> listResults(final Path directory) {

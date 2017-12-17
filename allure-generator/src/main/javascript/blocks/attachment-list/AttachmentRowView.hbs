@@ -1,0 +1,11 @@
+<div class="{{b cls 'row' expanded=expanded}}">
+    <span class="{{b cls 'arrow'}} {{b 'block' 'arrow' expanded=expanded}}">{{angle}}</span>
+    <div class="{{b cls 'name'}} long-line">{{name}}</div>
+    <div class="{{b cls 'type'}}">{{contentType}}</div>
+    <div class="{{b cls 'links'}}">
+        <a class="{{b 'link' 'no-decoration'}}" href="data/attachments/{{source}}" target="_blank" data-tooltip="Download">
+            <span class="fa fa-save"></span> {{#if size}}<small>{{filesize size}}</small>{{/if}}
+        </a>
+    </div>
+</div>
+<div class="{{b cls 'content' expanded=expanded}}"></div>

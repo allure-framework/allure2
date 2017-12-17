@@ -1,0 +1,35 @@
+<div class="{{b cls 'row' hasContent=hasContent}} long-line">
+    {{#if hasContent}}
+        <span class="{{b cls 'arrow'}} {{b 'block' 'arrow' expanded=expanded}}">{{#if status}}{{arrow status}}{{else}}{{angle}}{{/if}}</span>
+    {{else}}
+        <span class="{{b cls 'status'}}">{{allure-icon status}}</span>
+    {{/if}}
+    <div class="{{b cls 'name'}}">
+        {{name}}
+    </div>
+    <div class="{{b cls 'stats'}} long-line line-ellipsis">
+        {{~#if parameters.length ~}}
+            {{~t 'testResult.stats.count.parameters' count=parameters.length~}}
+            <span class="{{b cls 'stats-separator'}}">,&nbsp;</span>
+        {{~/if~}}
+        {{~#if stepsCount ~}}
+            {{~t 'testResult.stats.count.steps' count=stepsCount~}}
+            <span class="{{b cls 'stats-separator'}}">,&nbsp;</span>
+        {{~/if~}}
+        {{~#if attachmentsCount ~}}
+            {{~t 'testResult.stats.count.attachments' count=attachmentsCount~}}
+            <span class="{{b cls 'stats-separator'}}">,&nbsp;</span>
+        {{~/if~}}
+    </div>
+    {{#if duration}}
+        <div class="{{b cls 'time'}}" data-tooltip="{{date start}} {{time start true}}&nbsp;&ndash;&nbsp;{{time stop true}}">
+            {{duration duration}}
+        </div>
+    {{/if}}
+</div>
+<div class="{{b cls 'content' expanded=expanded}}">
+    <div class="{{b cls 'message'}}"></div>
+    <div class="{{b cls 'parameters'}}"></div>
+    <div class="{{b cls 'attachments'}}"></div>
+    <div class="{{b cls 'steps'}}"></div>
+</div>

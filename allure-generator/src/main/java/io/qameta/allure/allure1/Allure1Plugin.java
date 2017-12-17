@@ -10,15 +10,14 @@ import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Attachment;
-import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.LabelName;
-import io.qameta.allure.entity.Link;
-import io.qameta.allure.entity.Parameter;
 import io.qameta.allure.entity.StageResult;
-import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.Step;
+import io.qameta.allure.entity.TestLabel;
+import io.qameta.allure.entity.TestLink;
+import io.qameta.allure.entity.TestParameter;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.entity.Time;
+import io.qameta.allure.entity.TestResultStep;
+import io.qameta.allure.entity.TestStatus;
 import org.allurefw.allure1.AllureUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,14 +60,15 @@ import static io.qameta.allure.entity.LabelName.SUB_SUITE;
 import static io.qameta.allure.entity.LabelName.SUITE;
 import static io.qameta.allure.entity.LabelName.TEST_CLASS;
 import static io.qameta.allure.entity.LabelName.TEST_METHOD;
-import static io.qameta.allure.entity.Status.BROKEN;
-import static io.qameta.allure.entity.Status.FAILED;
-import static io.qameta.allure.entity.Status.PASSED;
-import static io.qameta.allure.entity.Status.SKIPPED;
+import static io.qameta.allure.entity.TestStatus.BROKEN;
+import static io.qameta.allure.entity.TestStatus.FAILED;
+import static io.qameta.allure.entity.TestStatus.PASSED;
+import static io.qameta.allure.entity.TestStatus.SKIPPED;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsFirst;
+import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -84,9 +84,9 @@ public class Allure1Plugin implements Reader {
     private static final String MD_5 = "md5";
     private static final String ISSUE_URL_PROPERTY = "allure.issues.tracker.pattern";
     private static final String TMS_LINK_PROPERTY = "allure.tests.management.pattern";
-    private static final Comparator<Parameter> PARAMETER_COMPARATOR =
-            comparing(Parameter::getName, nullsFirst(naturalOrder()))
-                    .thenComparing(Parameter::getValue, nullsFirst(naturalOrder()));
+    private static final Comparator<TestParameter> PARAMETER_COMPARATOR =
+            comparing(TestParameter::getName, nullsFirst(naturalOrder()))
+                    .thenComparing(TestParameter::getValue, nullsFirst(naturalOrder()));
 
     public static final String ENVIRONMENT_BLOCK_NAME = "environment";
     public static final String ALLURE1_RESULTS_FORMAT = "allure1";
@@ -163,26 +163,28 @@ public class Allure1Plugin implements Reader {
         );
         final String name = firstNonNull(source.getTitle(), source.getName(), "unknown test case");
 
-        final List<Parameter> parameters = getParameters(source);
+        final List<TestParameter> parameters = getParameters(source);
         final Optional<ru.yandex.qatools.allure.model.Label> historyId = findLabel(source.getLabels(), "historyId");
         if (historyId.isPresent()) {
             dest.setHistoryId(historyId.get().getValue());
         } else {
             dest.setHistoryId(getHistoryId(String.format("%s#%s", testClass, name), parameters));
         }
-        dest.setUid(randomUid.get());
+        dest.setId(randomUid.get());
         dest.setName(name);
         dest.setFullName(String.format("%s.%s", testClass, testMethod));
 
-        final Status status = convert(source.getStatus());
+        final TestStatus status = convert(source.getStatus());
         dest.setStatus(status);
-        dest.setTime(Time.create(source.getStart(), source.getStop()));
+        dest.setStart(source.getStart());
+        dest.setStop(source.getStop());
+        dest.setDuration(getDuration(source.getStart(), source.getStop()));
         dest.setParameters(parameters);
         dest.setDescription(getDescription(testSuite.getDescription(), source.getDescription()));
         dest.setDescriptionHtml(getDescriptionHtml(testSuite.getDescription(), source.getDescription()));
         Optional.ofNullable(source.getFailure()).ifPresent(failure -> {
-            dest.setStatusMessage(failure.getMessage());
-            dest.setStatusTrace(failure.getStackTrace());
+            dest.setMessage(failure.getMessage());
+            dest.setTrace(failure.getStackTrace());
         });
 
         if (!source.getSteps().isEmpty() || !source.getAttachments().isEmpty()) {
@@ -191,7 +193,7 @@ public class Allure1Plugin implements Reader {
                 //@formatter:off
                 testStage.setSteps(convert(
                     source.getSteps(),
-                    step -> convert(directory, visitor, step, status, dest.getStatusMessage(), dest.getStatusTrace()))
+                    step -> convert(directory, visitor, step, status, dest.getMessage(), dest.getTrace()))
                 );
                 //@formatter:on
             }
@@ -199,14 +201,14 @@ public class Allure1Plugin implements Reader {
                 testStage.setAttachments(convert(source.getAttachments(), at -> convert(directory, visitor, at)));
             }
             testStage.setStatus(status);
-            testStage.setStatusMessage(dest.getStatusMessage());
-            testStage.setStatusTrace(dest.getStatusTrace());
+            testStage.setMessage(dest.getMessage());
+            testStage.setTrace(dest.getTrace());
             dest.setTestStage(testStage);
         }
 
-        final Set<Label> set = new TreeSet<>(
-                comparing(Label::getName, nullsFirst(naturalOrder()))
-                        .thenComparing(Label::getValue, nullsFirst(naturalOrder()))
+        final Set<TestLabel> set = new TreeSet<>(
+                comparing(TestLabel::getName, nullsFirst(naturalOrder()))
+                        .thenComparing(TestLabel::getValue, nullsFirst(naturalOrder()))
         );
         set.addAll(convert(testSuite.getLabels(), this::convert));
         set.addAll(convert(source.getLabels(), this::convert));
@@ -215,7 +217,7 @@ public class Allure1Plugin implements Reader {
                 dest.getLinks().add(getLink(ISSUE, issue, getIssueUrl(issue, properties)))
         );
         dest.findOneLabel("testId").ifPresent(testId ->
-                dest.getLinks().add(new Link().setName(testId).setType("tms")
+                dest.getLinks().add(new TestLink().setName(testId).setType("tms")
                         .setUrl(getTestCaseIdUrl(testId, properties)))
         );
 
@@ -255,38 +257,37 @@ public class Allure1Plugin implements Reader {
                 .collect(toList());
     }
 
-    private Step convert(final Path source,
-                         final ResultsVisitor visitor,
-                         final ru.yandex.qatools.allure.model.Step s,
-                         final Status testStatus,
-                         final String message,
-                         final String trace) {
-        final Status status = convert(s.getStatus());
-        final Step current = new Step()
+    private TestResultStep convert(final Path source,
+                                   final ResultsVisitor visitor,
+                                   final ru.yandex.qatools.allure.model.Step s,
+                                   final TestStatus testStatus,
+                                   final String message,
+                                   final String trace) {
+        final TestStatus status = convert(s.getStatus());
+        final TestResultStep current = new TestResultStep()
                 .setName(s.getTitle() == null ? s.getName() : s.getTitle())
-                .setTime(new Time()
-                        .setStart(s.getStart())
-                        .setStop(s.getStop())
-                        .setDuration(s.getStop() - s.getStart()))
+                .setStart(s.getStart())
+                .setStop(s.getStop())
+                .setDuration(Math.max(s.getStop() - s.getStart(), 0))
                 .setStatus(status)
                 .setSteps(convert(s.getSteps(), step -> convert(source, visitor, step, testStatus, message, trace)))
                 .setAttachments(convert(s.getAttachments(), attach -> convert(source, visitor, attach)));
         //Copy test status details to each step set the same status
         if (Objects.equals(status, testStatus)) {
-            current.setStatusMessage(message);
-            current.setStatusMessage(trace);
+            current.setMessage(message);
+            current.setMessage(trace);
         }
         return current;
     }
 
-    private Label convert(final ru.yandex.qatools.allure.model.Label label) {
-        return new Label()
+    private TestLabel convert(final ru.yandex.qatools.allure.model.Label label) {
+        return new TestLabel()
                 .setName(label.getName())
                 .setValue(label.getValue());
     }
 
-    private Parameter convert(final ru.yandex.qatools.allure.model.Parameter parameter) {
-        return new Parameter()
+    private TestParameter convert(final ru.yandex.qatools.allure.model.Parameter parameter) {
+        return new TestParameter()
                 .setName(parameter.getName())
                 .setValue(parameter.getValue());
     }
@@ -297,10 +298,10 @@ public class Allure1Plugin implements Reader {
         final Path attachmentFile = source.resolve(attachment.getSource());
         if (Files.isRegularFile(attachmentFile)) {
             final Attachment found = visitor.visitAttachmentFile(attachmentFile);
-            if (Objects.nonNull(attachment.getType())) {
+            if (nonNull(attachment.getType())) {
                 found.setType(attachment.getType());
             }
-            if (Objects.nonNull(attachment.getTitle())) {
+            if (nonNull(attachment.getTitle())) {
                 found.setName(attachment.getTitle());
             }
             return found;
@@ -313,9 +314,9 @@ public class Allure1Plugin implements Reader {
         }
     }
 
-    public static Status convert(final ru.yandex.qatools.allure.model.Status status) {
+    public static TestStatus convert(final ru.yandex.qatools.allure.model.Status status) {
         if (Objects.isNull(status)) {
-            return Status.UNKNOWN;
+            return TestStatus.UNKNOWN;
         }
         switch (status) {
             case FAILED:
@@ -329,14 +330,14 @@ public class Allure1Plugin implements Reader {
             case PENDING:
                 return SKIPPED;
             default:
-                return Status.UNKNOWN;
+                return TestStatus.UNKNOWN;
         }
     }
 
-    private List<Parameter> getParameters(final TestCaseResult source) {
-        final TreeSet<Parameter> parametersSet = new TreeSet<>(
-                comparing(Parameter::getName, nullsFirst(naturalOrder()))
-                        .thenComparing(Parameter::getValue, nullsFirst(naturalOrder()))
+    private List<TestParameter> getParameters(final TestCaseResult source) {
+        final TreeSet<TestParameter> parametersSet = new TreeSet<>(
+                comparing(TestParameter::getName, nullsFirst(naturalOrder()))
+                        .thenComparing(TestParameter::getValue, nullsFirst(naturalOrder()))
         );
         parametersSet.addAll(convert(source.getParameters(), this::hasArgumentType, this::convert));
         return new ArrayList<>(parametersSet);
@@ -385,8 +386,8 @@ public class Allure1Plugin implements Reader {
         return ParameterKind.ENVIRONMENT_VARIABLE.equals(parameter.getKind());
     }
 
-    private Link getLink(final LabelName labelName, final String value, final String url) {
-        return new Link().setName(value).setType(labelName.value()).setUrl(url);
+    private TestLink getLink(final LabelName labelName, final String value, final String url) {
+        return new TestLink().setName(value).setType(labelName.value()).setUrl(url);
     }
 
     private String getIssueUrl(final String issue, final Properties properties) {
@@ -455,7 +456,7 @@ public class Allure1Plugin implements Reader {
                 ));
     }
 
-    private static String getHistoryId(final String name, final List<Parameter> parameters) {
+    private static String getHistoryId(final String name, final List<TestParameter> parameters) {
         final MessageDigest digest = getMessageDigest();
         digest.update(name.getBytes(UTF_8));
         parameters.stream()
@@ -510,5 +511,9 @@ public class Allure1Plugin implements Reader {
             }
         }
         return items;
+    }
+
+    private static Long getDuration(final Long start, final Long stop) {
+        return nonNull(start) && nonNull(stop) ? stop - start : null;
     }
 }

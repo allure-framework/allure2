@@ -28,10 +28,12 @@ public class StatusChartPlugin extends CommonJsonAggregator {
 
     private StatusChartData createData(final TestResult result) {
         return new StatusChartData()
-                .setUid(result.getUid())
+                .setUid(result.getId())
                 .setName(result.getName())
                 .setStatus(result.getStatus())
-                .setTime(result.getTime())
+                .setStart(result.getStart())
+                .setStop(result.getStop())
+                .setDuration(result.getDuration())
                 .setSeverity(result.getExtraBlock("severity"));
     }
 }

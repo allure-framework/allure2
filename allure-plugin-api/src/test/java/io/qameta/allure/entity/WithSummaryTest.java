@@ -13,9 +13,9 @@ public class WithSummaryTest {
 
     @Test
     public void shouldCountSteps() throws Exception {
-        final Step step = new Step().setSteps(asList(
-                new Step(),
-                new Step().setSteps(singletonList(new Step()))
+        final TestResultStep step = new TestResultStep().setSteps(asList(
+                new TestResultStep(),
+                new TestResultStep().setSteps(singletonList(new TestResultStep()))
         ));
         assertThat(step.getStepsCount())
                 .isEqualTo(3L);
@@ -23,9 +23,9 @@ public class WithSummaryTest {
 
     @Test
     public void shouldCountAttachments() throws Exception {
-        final Step step = new Step().setSteps(asList(
-                new Step().setAttachments(asList(new Attachment(), new Attachment())),
-                new Step().setAttachments(singletonList(new Attachment())).setSteps(singletonList(new Step()))
+        final TestResultStep step = new TestResultStep().setSteps(asList(
+                new TestResultStep().setAttachments(asList(new Attachment(), new Attachment())),
+                new TestResultStep().setAttachments(singletonList(new Attachment())).setSteps(singletonList(new TestResultStep()))
         )).setAttachments(singletonList(new Attachment()));
         assertThat(step.getAttachmentsCount())
                 .isEqualTo(4L);
@@ -33,42 +33,42 @@ public class WithSummaryTest {
 
     @Test
     public void shouldCalculateHasContent() throws Exception {
-        final Step step = new Step();
+        final TestResultStep step = new TestResultStep();
         assertThat(step.hasContent())
                 .isFalse();
     }
 
     @Test
     public void shouldCountAttachmentsForHasContent() throws Exception {
-        final Step step = new Step().setAttachments(singletonList(new Attachment()));
+        final TestResultStep step = new TestResultStep().setAttachments(singletonList(new Attachment()));
         assertThat(step.hasContent())
                 .isTrue();
     }
 
     @Test
     public void shouldCountStepsForHasContent() throws Exception {
-        final Step step = new Step().setSteps(singletonList(new Step()));
+        final TestResultStep step = new TestResultStep().setSteps(singletonList(new TestResultStep()));
         assertThat(step.hasContent())
                 .isTrue();
     }
 
     @Test
     public void shouldCountParametersForHasContent() throws Exception {
-        final Step step = new Step().setParameters(singletonList(new Parameter()));
+        final TestResultStep step = new TestResultStep().setParameters(singletonList(new TestParameter()));
         assertThat(step.hasContent())
                 .isTrue();
     }
 
     @Test
     public void shouldCountMessageForHasContent() throws Exception {
-        final Step step = createStep("hey");
+        final TestResultStep step = createStep("hey");
         assertThat(step.hasContent())
                 .isTrue();
     }
 
     @Test
     public void shouldCalculateDisplayMessageFlagIfNoChildren() throws Exception {
-        final Step step = createStep("hey");
+        final TestResultStep step = createStep("hey");
 
         assertThat(step.shouldDisplayMessage())
                 .isTrue();
@@ -76,7 +76,7 @@ public class WithSummaryTest {
 
     @Test
     public void shouldCalculateDisplayMessageFlagIfNoMessage() throws Exception {
-        final Step step = new Step();
+        final TestResultStep step = new TestResultStep();
 
         assertThat(step.shouldDisplayMessage())
                 .isFalse();
@@ -84,11 +84,11 @@ public class WithSummaryTest {
 
     @Test
     public void shouldCalculateShouldMessageFlagIfChildHasTheSameMessage() throws Exception {
-        final Step step = createStep("hey")
+        final TestResultStep step = createStep("hey")
                 .setSteps(asList(
                         createStep("hey"),
                         createStep("oy"),
-                        new Step()
+                        new TestResultStep()
                 ));
 
         assertThat(step.shouldDisplayMessage())
@@ -97,11 +97,11 @@ public class WithSummaryTest {
 
     @Test
     public void shouldCalculateDisplayMessageFlagIfChildrenHasDifferentMessages() throws Exception {
-        final Step step = createStep("hey")
+        final TestResultStep step = createStep("hey")
                 .setSteps(asList(
                         createStep("ay"),
                         createStep("oy"),
-                        new Step())
+                        new TestResultStep())
                 );
 
         assertThat(step.shouldDisplayMessage())
@@ -110,17 +110,17 @@ public class WithSummaryTest {
 
     @Test
     public void shouldCalculateDisplayMessageFlagInSubChild() throws Exception {
-        final Step step = createStep("hey")
+        final TestResultStep step = createStep("hey")
                 .setSteps(asList(createStep("ay").setSteps(singletonList(createStep("hey"))),
                         createStep("oy"),
-                        new Step())
+                        new TestResultStep())
                 );
 
         assertThat(step.shouldDisplayMessage())
                 .isFalse();
     }
 
-    protected Step createStep(final String message) {
-        return new Step().setStatusMessage(message);
+    protected TestResultStep createStep(final String message) {
+        return new TestResultStep().setMessage(message);
     }
 }

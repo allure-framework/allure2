@@ -3,10 +3,9 @@ package io.qameta.allure.xctest;
 import io.qameta.allure.Reader;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
-import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.entity.Timeable;
+import io.qameta.allure.entity.TestResultStep;
+import io.qameta.allure.entity.TestStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xmlwise.Plist;
@@ -31,6 +30,7 @@ import java.util.stream.Stream;
 import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
 import static io.qameta.allure.entity.LabelName.SUITE;
 import static java.util.Collections.emptyList;
+import static java.util.Objects.nonNull;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -98,10 +98,10 @@ public class XcTestPlugin implements Reader {
 
         asList(props.getOrDefault(ACTIVITY_SUMMARIES, emptyList()))
                 .forEach(activity -> parseStep(directory, result, activity, visitor));
-        Optional<Step> lastFailedStep = result.getTestStage().getSteps().stream()
-                .filter(s -> !s.getStatus().equals(Status.PASSED)).sorted((a, b) -> -1).findFirst();
-        lastFailedStep.map(Step::getStatusMessage).ifPresent(result::setStatusMessage);
-        lastFailedStep.map(Step::getStatusTrace).ifPresent(result::setStatusTrace);
+        Optional<TestResultStep> lastFailedStep = result.getTestStage().getSteps().stream()
+                .filter(s -> !s.getStatus().equals(TestStatus.PASSED)).sorted((a, b) -> -1).findFirst();
+        lastFailedStep.map(TestResultStep::getMessage).ifPresent(result::setMessage);
+        lastFailedStep.map(TestResultStep::getTrace).ifPresent(result::setTrace);
         visitor.visitTestResult(result);
     }
 
@@ -112,18 +112,13 @@ public class XcTestPlugin implements Reader {
         final String activityTitle = (String) props.get(TITLE);
 
         if (activityTitle.startsWith("Start Test at")) {
-            getStartTime(activityTitle).ifPresent(start -> {
-                final Timeable withTime = (Timeable) parent;
-                long duration = withTime.getTime().getDuration();
-                withTime.getTime().setStart(start);
-                withTime.getTime().setStop(start + duration);
-            });
+            getStartTime(activityTitle).ifPresent(start -> setTime(parent, start));
             return;
         }
-        final Step step = ResultsUtils.getStep(props);
+        final TestResultStep step = ResultsUtils.getStep(props);
         if (activityTitle.startsWith("Assertion Failure:")) {
-            step.setStatusMessage(activityTitle);
-            step.setStatus(Status.FAILED);
+            step.setMessage(activityTitle);
+            step.setStatus(TestStatus.FAILED);
         }
 
         if (props.containsKey(HAS_SCREENSHOT)) {
@@ -134,31 +129,31 @@ public class XcTestPlugin implements Reader {
             ((TestResult) parent).getTestStage().getSteps().add(step);
         }
 
-        if (parent instanceof Step) {
-            ((Step) parent).getSteps().add(step);
+        if (parent instanceof TestResultStep) {
+            ((TestResultStep) parent).getSteps().add(step);
         }
 
         asList(props.getOrDefault(SUB_ACTIVITIES, emptyList()))
                 .forEach(subActivity -> parseStep(directory, step, subActivity, visitor));
 
-        Optional<Step> lastFailedStep = step.getSteps().stream()
-                .filter(s -> !s.getStatus().equals(Status.PASSED)).sorted((a, b) -> -1).findFirst();
-        lastFailedStep.map(Step::getStatus).ifPresent(step::setStatus);
-        lastFailedStep.map(Step::getStatusMessage).ifPresent(step::setStatusMessage);
-        lastFailedStep.map(Step::getStatusTrace).ifPresent(step::setStatusTrace);
+        Optional<TestResultStep> lastFailedStep = step.getSteps().stream()
+                .filter(s -> !s.getStatus().equals(TestStatus.PASSED)).sorted((a, b) -> -1).findFirst();
+        lastFailedStep.map(TestResultStep::getStatus).ifPresent(step::setStatus);
+        lastFailedStep.map(TestResultStep::getMessage).ifPresent(step::setMessage);
+        lastFailedStep.map(TestResultStep::getTrace).ifPresent(step::setTrace);
     }
 
     private void addAttachment(final Path directory,
                                final ResultsVisitor visitor,
                                final Map<String, Object> props,
-                               final Step step) {
+                               final TestResultStep step) {
         String uuid = props.get("UUID").toString();
         Path attachments = directory.resolve("Attachments");
         Stream.of("jpg", "png")
-            .map(ext -> attachments.resolve(String.format("Screenshot_%s.%s", uuid, ext)))
-            .filter(Files::exists)
-            .map(visitor::visitAttachmentFile)
-            .forEach(step.getAttachments()::add);
+                .map(ext -> attachments.resolve(String.format("Screenshot_%s.%s", uuid, ext)))
+                .filter(Files::exists)
+                .map(visitor::visitAttachmentFile)
+                .forEach(step.getAttachments()::add);
     }
 
     @SuppressWarnings("unchecked")
@@ -197,6 +192,27 @@ public class XcTestPlugin implements Reader {
         } catch (DateTimeException | ParseException e) {
             return Optional.empty();
         }
+    }
+
+    private static void setTime(final Object testOrStep, final Long start) {
+        if (testOrStep instanceof TestResult) {
+            final TestResult test = (TestResult) testOrStep;
+            test.setStart(start);
+            test.setStop(getStop(start, test.getDuration()));
+        }
+
+        if (testOrStep instanceof TestResultStep) {
+            final TestResultStep step = (TestResultStep) testOrStep;
+            step.setStart(start);
+            step.setStop(getStop(start, step.getDuration()));
+        }
+    }
+
+    private static Long getStop(final Long start, final Long duration) {
+        if (nonNull(start) && nonNull(duration)) {
+            return start + duration;
+        }
+        return null;
     }
 
 }

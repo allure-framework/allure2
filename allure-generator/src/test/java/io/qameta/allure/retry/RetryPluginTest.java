@@ -1,9 +1,8 @@
 package io.qameta.allure.retry;
 
 import io.qameta.allure.core.LaunchResults;
-import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.entity.Time;
+import io.qameta.allure.entity.TestStatus;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -117,8 +116,8 @@ public class RetryPluginTest {
     public void shouldNotMarkLatestAsFlakyIfRetriesArePassed() throws Exception {
         String historyId = UUID.randomUUID().toString();
         List<LaunchResults> launchResultsList = createSingleLaunchResults(
-                createTestResult(FIRST_RESULT, historyId, 1L, 9L).setStatus(Status.PASSED),
-                createTestResult(SECOND_RESULT, historyId, 11L, 19L).setStatus(Status.PASSED)
+                createTestResult(FIRST_RESULT, historyId, 1L, 9L).setStatus(TestStatus.PASSED),
+                createTestResult(SECOND_RESULT, historyId, 11L, 19L).setStatus(TestStatus.PASSED)
         );
         retryPlugin.aggregate(null, launchResultsList, null);
         Set<TestResult> results = launchResultsList.get(0).getAllResults();
@@ -138,9 +137,9 @@ public class RetryPluginTest {
     public void shouldNotMarkLatestAsFlakyIfRetriesSkipped() throws Exception {
         String historyId = UUID.randomUUID().toString();
         List<LaunchResults> launchResultsList = createSingleLaunchResults(
-                createTestResult(FIRST_RESULT, historyId, 1L, 9L).setStatus(Status.SKIPPED),
-                createTestResult(SECOND_RESULT, historyId, 11L, 19L).setStatus(Status.PASSED),
-                createTestResult(LAST_RESULT, historyId, 12L, 20L).setHidden(true).setStatus(Status.PASSED)
+                createTestResult(FIRST_RESULT, historyId, 1L, 9L).setStatus(TestStatus.SKIPPED),
+                createTestResult(SECOND_RESULT, historyId, 11L, 19L).setStatus(TestStatus.PASSED),
+                createTestResult(LAST_RESULT, historyId, 12L, 20L).setHidden(true).setStatus(TestStatus.PASSED)
         );
         retryPlugin.aggregate(null, launchResultsList, null);
         Set<TestResult> results = launchResultsList.get(0).getAllResults();
@@ -160,7 +159,9 @@ public class RetryPluginTest {
         return new TestResult()
                 .setName(name)
                 .setHistoryId(historyId)
-                .setStatus(Status.BROKEN)
-                .setTime(new Time().setStart(start).setStop(stop));
+                .setStatus(TestStatus.BROKEN)
+                .setStart(start)
+                .setStop(stop)
+                .setDuration(stop - start);
     }
 }

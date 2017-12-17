@@ -4,7 +4,6 @@ import io.qameta.allure.DefaultLaunchResults;
 import io.qameta.allure.Issue;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.entity.Time;
 import io.qameta.allure.tree.Tree;
 import org.junit.Test;
 
@@ -149,13 +148,13 @@ public class PackagesPluginTest {
     public void shouldSortByStartTimeAsc() throws Exception {
         final TestResult first = new TestResult()
                 .setName("first")
-                .setTime(new Time().setStart(10L));
+                .setStart(10L);
         final TestResult second = new TestResult()
                 .setName("second")
-                .setTime(new Time().setStart(100L));
+                .setStart(100L);
         final TestResult third = new TestResult()
                 .setName("third")
-                .setTime(new Time().setStart(50L));
+                .setStart(50L);
         final TestResult timeless = new TestResult()
                 .setName("timeless");
 

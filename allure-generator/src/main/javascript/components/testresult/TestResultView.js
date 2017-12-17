@@ -1,6 +1,6 @@
 import './styles.scss';
 import {View} from 'backbone.marionette';
-import {behavior, className, on, regions} from '../../decorators';
+import {behavior, className, regions} from '../../decorators';
 import template from './TestResultView.hbs';
 import TestResultOverviewView from '../testresult-overview/TestResultOverviewView';
 import ErrorSplashView from '../error-splash/ErrorSplashView';
@@ -81,11 +81,6 @@ class TestResultView extends View {
                 };
             })
         };
-    }
-
-    @on('click .status-details__trace-toggle')
-    onStacktraceClick(e) {
-        this.$(e.currentTarget).closest('.status-details').toggleClass('status-details__expanded');
     }
 }
 
