@@ -1,9 +1,9 @@
 import {View} from 'backbone.marionette';
 import {className} from '../../decorators';
-import template from './DescriptionView.hbs';
+import template from './TestResultBlockDescriptionView.hbs';
 
 @className('pane__section')
-class DescriptionView extends View {
+class TestResultBlockDescriptionView extends View {
     template = template;
 
     serializeData() {
@@ -13,4 +13,4 @@ class DescriptionView extends View {
     }
 }
 
-export default DescriptionView;
+export default TestResultBlockDescriptionView;

@@ -1,9 +1,9 @@
 import {View} from 'backbone.marionette';
 import {className} from '../../decorators';
-import template from './TagsView.hbs';
+import template from './TestResultBlockTagsView.hbs';
 
 @className('pane__section')
-class TagsView extends View {
+class TestResultBlockTagsView extends View {
     template = template;
 
     serializeData() {
@@ -14,4 +14,4 @@ class TagsView extends View {
     }
 }
 
-export default TagsView;
+export default TestResultBlockTagsView;

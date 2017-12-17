@@ -1,19 +1,19 @@
 import {addTranslation} from './translation';
 import router from '../router';
-import {showView, notFound} from '../app';
+import {notFound, showView} from '../app';
 import translate from '../helpers/t.js';
 import WidgetsModel from '../data/widgets/WidgetsModel';
 
+const positions = {
+    'before': 30,
+    'after': 150,
+    'tag': 10
+};
 
 class AllurePluginsRegistry {
     tabs = [];
     testResultTabs = [];
-
-    testResultBlocks = {
-        tag: [],
-        before: [],
-        after: []
-    };
+    testResultBlocks = [];
 
     widgets = {};
 
@@ -39,8 +39,12 @@ class AllurePluginsRegistry {
         translate(name, options);
     }
 
-    addTestResultBlock(view, {position}) {
-        this.testResultBlocks[position].push(view);
+    addTestResultBlock(view, {position, order = 100, condition = () => true}) {
+        this.testResultBlocks.push({
+            view,
+            order: position ? positions[position] : order,
+            condition
+        });
     }
 
     addTestResultTab(id, name, View) {

@@ -1,10 +1,10 @@
 import './styles.scss';
 import {View} from 'backbone.marionette';
 import {className, on} from '../../decorators';
-import template from './ParametersView.hbs';
+import template from './TestResultBlockParametersView.hbs';
 
 @className('pane__section')
-class ParametersView extends View {
+class TestResultBlockParametersView extends View {
     template = template;
 
     serializeData() {
@@ -19,4 +19,4 @@ class ParametersView extends View {
     }
 }
 
-export default ParametersView;
+export default TestResultBlockParametersView;

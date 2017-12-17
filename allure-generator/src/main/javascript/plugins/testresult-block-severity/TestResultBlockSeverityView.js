@@ -4,10 +4,8 @@ import {escapeExpression} from 'handlebars/runtime';
 import translate from '../../helpers/t';
 
 @className('pane__section')
-class SeverityView extends View {
-    template(data) {
-        return data.severity ? `${translate('testResult.severity.name')}: ${escapeExpression(data.severity)}` : '';
-    }
+class TestResultBlockSeverityView extends View {
+    template = (data) => `${translate('testResult.severity.name')}: ${escapeExpression(data.severity)}`;
 
     serializeData() {
         const extra = this.model.get('extra');
@@ -17,4 +15,4 @@ class SeverityView extends View {
     }
 }
 
-export default SeverityView;
+export default TestResultBlockSeverityView;

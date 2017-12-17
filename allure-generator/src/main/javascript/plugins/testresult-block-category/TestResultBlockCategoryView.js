@@ -1,9 +1,9 @@
 import {View} from 'backbone.marionette';
-import template from './CategoryView.hbs';
+import template from './TestResultBlockCategoryView.hbs';
 import {className} from '../../decorators/index';
 
 @className('pane__section')
-class SeverityView extends View {
+class TestResultBlockCategoryView extends View {
     template = template;
 
     serializeData() {
@@ -14,4 +14,4 @@ class SeverityView extends View {
     }
 }
 
-export default SeverityView;
+export default TestResultBlockCategoryView;
