@@ -1,7 +1,7 @@
 [
   {
   "buildOrder": 12,
-  "reportUrl": "http://example.org/build#13/AllureReport",
+  "reportUrl": "https://ci.qameta.io/job/allure2/job/master/Demo2_Report/index.html",
   "reportName": "Demo allure report",
   "data": {
     "retry": 4,
@@ -10,7 +10,7 @@
 },
   {
     "buildOrder": 11,
-    "reportUrl": "http://example.org/build#13/AllureReport",
+    "reportUrl": "https://ci.qameta.io/job/allure2/job/master/Demo2_Report/index.html",
     "reportName": "Demo allure report",
     "data": {
       "retry": 2,
@@ -19,7 +19,6 @@
   },
   {
     "buildOrder": 10,
-    "reportUrl": "http://example.org/build#13/AllureReport",
     "reportName": "Demo allure report",
     "data": {
       "retry": 5,
@@ -27,7 +26,6 @@
     }
   },  {
   "buildOrder": 9,
-  "reportUrl": "http://example.org/build#13/AllureReport",
   "reportName": "Demo allure report",
   "data": {
     "retry": 14,
@@ -36,7 +34,6 @@
 },
   {
     "buildOrder": 8,
-    "reportUrl": "http://example.org/build#13/AllureReport",
     "reportName": "Demo allure report",
     "data": {
       "retry": 5,
@@ -45,7 +42,6 @@
   },
   {
     "buildOrder": 7,
-    "reportUrl": "http://example.org/build#13/AllureReport",
     "reportName": "Demo allure report",
     "data": {
       "retry": 4,

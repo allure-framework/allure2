@@ -16,7 +16,7 @@ class TrendChartView extends BaseChartView {
         this.x = scalePoint();
         this.y = scaleLinear();
 
-        this.tooltip = new TooltipView({position: 'center'});
+        this.tooltip = new TooltipView({position: 'top'});
         this.keys = options.keys || this.model.keys();
 
         this.stack = stack()
@@ -25,7 +25,8 @@ class TrendChartView extends BaseChartView {
 
         this.color = options.colors || scaleOrdinal(schemeCategory20);
 
-        options.notStacked && this.stack.offset(() => {});
+        options.notStacked && this.stack.offset(() => {
+        });
         this.yTickFormat = options.yTickFormat || (d => d);
     }
 
@@ -131,15 +132,36 @@ class TrendChartView extends BaseChartView {
 
     showSlices(data) {
         this.plot
-            .selectAll('.edge')
+            .selectAll('.slice')
             .data(data)
             .enter()
+            .append('g')
+            .attr('class', 'slice');
+
+        this.plot.selectAll('.slice')
+            .filter((d) => d.reportUrl)
             .append('a')
-            .attr('class', 'slice')
+            .attr('class', 'edge')
             .filter((d) => d.reportUrl)
             .attr('xlink:href', d => d.reportUrl);
 
         this.plot.selectAll('.slice')
+            .filter((d) => !d.reportUrl)
+            .append('g')
+            .attr('class', 'edge');
+
+        this.plot.selectAll('.edge')
+            .append('line')
+            .attr('id', d => d.id)
+            .attr('x1', d => this.x(d.id))
+            .attr('y1', d => this.y(d.total))
+            .attr('x2', d => this.x(d.id))
+            .attr('y2', this.y(0))
+            .attr('stroke', 'white')
+            .attr('stroke-width', 1)
+            .attr('class', 'report-line');
+
+        this.plot.selectAll('.edge')
             .append('rect')
             .style('opacity', .0)
             .attr('class', 'report-edge')
@@ -152,7 +174,7 @@ class TrendChartView extends BaseChartView {
                     .append('circle')
                     .attr('class', 'anchor')
                     .attr('cx', `${this.x(d.id)}`)
-                    .attr('cy', `${this.y(d.total)}`);
+                    .attr('cy', `${this.y(d.total/2)}`);
                 this.showTooltip(d, anchor.node());
             })
             .on('mouseout', () => {
