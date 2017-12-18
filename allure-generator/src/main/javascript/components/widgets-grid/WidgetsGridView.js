@@ -8,7 +8,7 @@ import {getSettingsForWidgetGridPlugin} from '../../utils/settingsFactory';
 import {fetchAndShow} from '../../utils/loading';
 
 
-const widgetTpl = (id) => `<div class="widget island" data-id="${id}">
+const widgetTpl = (id) => `<div class="widget" data-id="${id}">
     <div class="widget__handle">
         <span class="draggable-icon"></span>
     </div>

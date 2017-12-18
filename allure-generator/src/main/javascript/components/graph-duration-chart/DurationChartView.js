@@ -16,7 +16,7 @@ export default class DurationChart extends BaseChartView {
 
     getChartData() {
         this.data = this.collection.map(testResult => ({
-            value: testResult.time.duration,
+            value: testResult.duration,
             name: testResult.name
         })).filter(testResult => {
             return testResult.value !== null;

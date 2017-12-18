@@ -51,9 +51,9 @@ class StepRowView extends View {
                 this.showChildView('attachments', new AttachmentListView({collection: new Collection(attachments)}));
             }
 
-            const leaf = this.model.get('leaf');
+            const shouldDisplayMessage = this.model.get('shouldDisplayMessage');
             const message = this.model.get('message');
-            if (leaf && message) {
+            if (shouldDisplayMessage && message) {
                 const statusDetails = new Model({
                     message: message,
                     trace: this.model.get('trace'),

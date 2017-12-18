@@ -3,6 +3,9 @@
 .widget {
   margin-bottom: $gap-size;
   position: relative;
+  background: $content-bg;
+  border: 1px solid $border-accent-color;
+  padding: $gap-size $gap-size 0 $gap-size;
 
   &_ghost {
     border: 1px dashed $border-accent-color;

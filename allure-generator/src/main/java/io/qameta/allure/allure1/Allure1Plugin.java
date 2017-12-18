@@ -275,7 +275,7 @@ public class Allure1Plugin implements Reader {
         //Copy test status details to each step set the same status
         if (Objects.equals(status, testStatus)) {
             current.setMessage(message);
-            current.setMessage(trace);
+            current.setTrace(trace);
         }
         return current;
     }

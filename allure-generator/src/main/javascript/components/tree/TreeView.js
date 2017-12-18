@@ -14,6 +14,7 @@ class TreeView extends View {
     template = template;
 
     cachedQuery = '';
+
     initialize({routeState, state, tabName, baseUrl, settings}) {
         this.state = state;
         this.routeState = routeState;
@@ -161,7 +162,7 @@ class TreeView extends View {
             if (this.routeState.get('attachment')) {
                 router.setSearch({attachment: null});
             }
-            else{
+            else {
                 router.toUrl(`${this.baseUrl}/${current.testGroup}`);
             }
         } else if (current.testGroup) {

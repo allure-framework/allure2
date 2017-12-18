@@ -135,13 +135,19 @@ export default class TreeCollection extends Collection {
                 updateTime(time, item.time, 'maxDuration', Math.max);
                 updateTime(time, item.time, 'minDuration', Math.min);
                 updateTime(time, item.time, 'sumDuration', (a, b) => a + b);
-            } else if (item.time && isFinite(item.time.duration)) {
-                time.maxDuration = Math.max(time.maxDuration, item.time.duration);
-                time.minDuration = Math.min(time.minDuration, item.time.duration);
-                time.sumDuration = time.sumDuration + item.time.duration;
+                updateTime(time, item.time, 'start', Math.min);
+                updateTime(time, item.time, 'stop', Math.max);
+            } else {
+                updateTime(time, item, 'start', Math.min);
+                updateTime(time, item, 'stop', Math.max);
+
+                if (isFinite(item.duration)) {
+                    time.maxDuration = Math.max(time.maxDuration, item.duration);
+                    time.minDuration = Math.min(time.minDuration, item.duration);
+                    time.sumDuration = time.sumDuration + item.duration;
+                }
             }
-            updateTime(time, item.time, 'start', Math.min);
-            updateTime(time, item.time, 'stop', Math.max);
+
             time.duration = time.stop - time.start;
         });
         return time;

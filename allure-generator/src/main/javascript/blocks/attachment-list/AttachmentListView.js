@@ -29,7 +29,7 @@ class AttachmentRowView extends View {
         if (!expanded) {
             const attachmentView = new AttachmentView({
                 attachment: {
-                    id: this.model.id,
+                    uid: this.model.get('uid'),
                     type: this.model.get('type'),
                     source: this.model.get('source')
                 }
