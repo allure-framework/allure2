@@ -214,6 +214,18 @@ public class Allure2PluginTest {
                 .containsOnly(Allure2Plugin.ALLURE2_RESULTS_FORMAT);
     }
 
+    @Test
+    public void shouldAddAttachmentsWithURI() throws Exception {
+        Set<TestResult> testResults = process(
+                "allure2/uri-attachment.json", generateTestResultName()
+        ).getResults();
+
+        testResults.forEach(testResult -> assertThat(testResult.getTestStage().getSteps())
+                .flatExtracting(Step::getAttachments)
+                .extracting(Attachment::getSource)
+                .contains("http://www.fakewebsite.com/test-sample-attachment.txt"));
+    }
+
     private LaunchResults process(String... strings) throws IOException {
         Path resultsDirectory = folder.newFolder().toPath();
         Iterator<String> iterator = Arrays.asList(strings).iterator();
