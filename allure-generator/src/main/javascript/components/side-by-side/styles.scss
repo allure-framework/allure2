@@ -49,6 +49,9 @@
 
 .gutter {
   background: $border-color no-repeat 50%;
+  &:hover {
+    cursor: ew-resize;
+  }
 }
 
 .gutter-horizontal {
