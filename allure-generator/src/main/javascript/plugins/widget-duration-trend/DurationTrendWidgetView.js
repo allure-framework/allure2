@@ -20,7 +20,9 @@ export default class DurationTrendWidgetView extends View {
         const key = 'duration';
         const values = this.model.map(model => model.get('data')[key]);
         const lastExtremum = Math.min(
-            ...[d => d >= 0, d => d <= 0].map(op => values.reduce((m, c, i) => op(c - values[i - 1]) ? i : m, -1))
+            ...[d => d >= 0, d => d <= 0].map(
+                op => values.reduce((m, c, i) => op(c - values[i - 1]) ? i : m, last(values))
+            )
         );
         const amplitude = Math.max(...values) - Math.min(...values);
         const lastDelta = values[lastExtremum] - last(values);
