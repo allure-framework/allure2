@@ -86,8 +86,8 @@ public class Allure2Plugin implements Reader {
             dest.setTrace(details.getTrace());
         });
 
-        dest.setLinks(convert(result.getLinks(), this::convert));
-        dest.setLabels(convert(result.getLabels(), this::convert));
+        dest.setLinks(convertSet(result.getLinks(), this::convert));
+        dest.setLabels(convertSet(result.getLabels(), this::convert));
         dest.setParameters(getParameters(result));
 
         dest.addLabelIfNotExists(RESULT_FORMAT, ALLURE2_RESULTS_FORMAT);
@@ -202,13 +202,19 @@ public class Allure2Plugin implements Reader {
                 .orElse(TestStatus.UNKNOWN);
     }
 
-    private List<TestParameter> getParameters(final TestResult result) {
+    private <T, R> Set<R> convertSet(final List<T> source, final Function<T, R> converter) {
+        return Objects.isNull(source) ? Collections.emptySet() : source.stream()
+                .map(converter)
+                .collect(Collectors.toSet());
+    }
+
+    private Set<TestParameter> getParameters(final TestResult result) {
         final TreeSet<TestParameter> parametersSet = new TreeSet<>(
                 comparing(TestParameter::getName, nullsFirst(naturalOrder()))
                         .thenComparing(TestParameter::getValue, nullsFirst(naturalOrder()))
         );
         parametersSet.addAll(convert(result.getParameters(), this::convert));
-        return new ArrayList<>(parametersSet);
+        return new HashSet<>(parametersSet);
     }
 
     private StageResult getTestStage(final Path source,

@@ -6,8 +6,8 @@ import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.TestStatus;
-import io.qameta.allure.tree.Tree;
-import io.qameta.allure.tree.TreeNode;
+import io.qameta.allure.tree.Node;
+import io.qameta.allure.tree.TestResultTree;
 import io.qameta.allure.tree.TreeWidgetData;
 import io.qameta.allure.tree.TreeWidgetItem;
 import org.assertj.core.groups.Tuple;
@@ -40,10 +40,10 @@ public class BehaviorsPluginTest {
         final Set<TestResult> testResults = new HashSet<>();
         testResults.add(new TestResult()
                 .setStatus(TestStatus.PASSED)
-                .setLabels(asList(FEATURE.label("feature1"), FEATURE.label("feature2"), STORY.label("story1"), STORY.label("story2"))));
+                .setLabels(new HashSet<>(asList(FEATURE.label("feature1"), FEATURE.label("feature2"), STORY.label("story1"), STORY.label("story2")))));
         testResults.add(new TestResult()
                 .setStatus(TestStatus.FAILED)
-                .setLabels(asList(FEATURE.label("feature2"), FEATURE.label("feature3"), STORY.label("story2"), STORY.label("story3"))));
+                .setLabels(new HashSet<>(asList(FEATURE.label("feature2"), FEATURE.label("feature3"), STORY.label("story2"), STORY.label("story3")))));
 
         LaunchResults results = new DefaultLaunchResults(testResults, Collections.emptyMap(), Collections.emptyMap());
 
@@ -74,10 +74,10 @@ public class BehaviorsPluginTest {
         final Set<TestResult> testResults = new HashSet<>();
         testResults.add(new TestResult()
                 .setStatus(TestStatus.PASSED)
-                .setLabels(asList(EPIC.label("e1"), FEATURE.label("f1"), STORY.label("s1"))));
+                .setLabels(new HashSet<>(asList(EPIC.label("e1"), FEATURE.label("f1"), STORY.label("s1")))));
         testResults.add(new TestResult()
                 .setStatus(TestStatus.FAILED)
-                .setLabels(asList(EPIC.label("e2"), FEATURE.label("f2"), STORY.label("s2"))));
+                .setLabels(new HashSet<>(asList(EPIC.label("e2"), FEATURE.label("f2"), STORY.label("s2")))));
 
         LaunchResults results = new DefaultLaunchResults(testResults, Collections.emptyMap(), Collections.emptyMap());
         TreeWidgetData behaviorsData = new BehaviorsPlugin.WidgetAggregator()
@@ -107,10 +107,10 @@ public class BehaviorsPluginTest {
                 Collections.emptyMap()
         );
 
-        final Tree<TestResult> tree = BehaviorsPlugin.getData(Collections.singletonList(results));
+        final TestResultTree tree = BehaviorsPlugin.getData(Collections.singletonList(results));
 
         assertThat(tree.getChildren())
-                .extracting(TreeNode::getName)
+                .extracting(Node::getName)
                 .containsExactly("timeless", "first", "second");
     }
 }

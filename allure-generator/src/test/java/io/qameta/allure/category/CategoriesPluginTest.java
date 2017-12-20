@@ -6,8 +6,8 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.TestStatus;
-import io.qameta.allure.tree.Tree;
-import io.qameta.allure.tree.TreeNode;
+import io.qameta.allure.tree.Node;
+import io.qameta.allure.tree.TestResultTree;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -139,11 +139,11 @@ public class CategoriesPluginTest {
         other.addExtraBlock(CATEGORIES, singletonList(new Category().setName("C3")));
 
         final List<LaunchResults> launchResults = createSingleLaunchResults(first, second, third, other);
-        final Tree<TestResult> tree = CategoriesPlugin.getData(launchResults);
+        final TestResultTree tree = CategoriesPlugin.getData(launchResults);
 
         assertThat(tree.getChildren())
                 .hasSize(3)
-                .extracting(TreeNode::getName)
+                .extracting(Node::getName)
                 .containsExactlyInAnyOrder("C1", "C2", "C3");
 
         assertThat(tree.getChildren())
@@ -245,7 +245,7 @@ public class CategoriesPluginTest {
                 .setStatus(TestStatus.FAILED);
         timeless.addExtraBlock(CATEGORIES, singletonList(category));
 
-        final Tree<TestResult> tree = CategoriesPlugin.getData(
+        final TestResultTree tree = CategoriesPlugin.getData(
                 createSingleLaunchResults(second, first, timeless)
         );
 

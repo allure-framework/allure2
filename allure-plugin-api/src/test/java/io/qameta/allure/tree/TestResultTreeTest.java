@@ -5,6 +5,7 @@ import io.qameta.allure.entity.TestResult;
 import org.junit.Test;
 
 import java.util.Collections;
+import java.util.HashSet;
 
 import static io.qameta.allure.entity.LabelName.FEATURE;
 import static io.qameta.allure.entity.LabelName.STORY;
@@ -19,7 +20,7 @@ public class TestResultTreeTest {
 
     @Test
     public void shouldCreateEmptyTree() throws Exception {
-        final Tree<TestResult> tree = new TestResultTree(
+        final TestResultTree tree = new TestResultTree(
                 "default",
                 item -> Collections.emptyList()
         );
@@ -30,23 +31,23 @@ public class TestResultTreeTest {
 
     @Test
     public void shouldCrossGroup() throws Exception {
-        final Tree<TestResult> behaviors = new TestResultTree(
+        final TestResultTree behaviors = new TestResultTree(
                 "behaviors",
                 testResult -> groupByLabels(testResult, FEATURE, STORY)
         );
 
         final TestResult first = new TestResult()
                 .setName("first")
-                .setLabels(asList(feature("f1"), feature("f2"), story("s1"), story("s2")));
+                .setLabels(new HashSet<>(asList(feature("f1"), feature("f2"), story("s1"), story("s2"))));
         final TestResult second = new TestResult()
                 .setName("second")
-                .setLabels(asList(feature("f2"), feature("f3"), story("s2"), story("s3")));
+                .setLabels(new HashSet<>(asList(feature("f2"), feature("f3"), story("s2"), story("s3"))));
         behaviors.add(first);
         behaviors.add(second);
 
         assertThat(behaviors.getChildren())
                 .hasSize(3)
-                .extracting(TreeNode::getName)
+                .extracting(Node::getName)
                 .containsExactlyInAnyOrder("f1", "f2", "f3");
 
         assertThat(behaviors.getChildren())

@@ -8,11 +8,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.naturalOrder;
@@ -53,9 +57,9 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
     protected List<StageResult> afterStages = new ArrayList<>();
 
     //    Meta
-    protected List<TestLabel> labels = new ArrayList<>();
-    protected List<TestParameter> parameters = new ArrayList<>();
-    protected List<TestLink> links = new ArrayList<>();
+    protected Set<TestLabel> labels = new HashSet<>();
+    protected Set<TestParameter> parameters = new HashSet<>();
+    protected Set<TestLink> links = new HashSet<>();
     protected boolean hidden;
     protected boolean retry;
     protected final Map<String, Object> extra = new HashMap<>();
@@ -81,6 +85,26 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
 
     public boolean hasExtraBlock(final String blockName) {
         return extra.containsKey(blockName);
+    }
+
+    public Stream<TestLabel> findAllLabelsStream(final String name) {
+        final Set<TestLabel> labels = getLabels();
+        final Stream<TestLabel> stream = Objects.isNull(labels) ? Stream.empty() : labels.stream();
+        return stream
+                .filter(label -> name.equals(label.getName()));
+    }
+
+    public Stream<String> findAllLabelValuesStream(final String name) {
+        return findAllLabelsStream(name)
+                .map(TestLabel::getValue);
+    }
+
+    public <T> T findAllLabelValues(final String name, final Collector<String, ?, T> collector) {
+        return findAllLabelValuesStream(name).collect(collector);
+    }
+
+    public List<String> findAllLabelValues(final String name) {
+        return findAllLabelValues(name, Collectors.toList());
     }
 
     public <T> T findAllLabels(final LabelName name, final Collector<String, ?, T> collector) {

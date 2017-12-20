@@ -6,6 +6,8 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
+import static io.qameta.allure.tree.TreeUtils.calculateStatisticByLeafs;
+
 /**
  * @author charlie (Dmitry Baev).
  */
@@ -18,5 +20,12 @@ public class TreeWidgetItem implements Serializable {
     protected String uid;
     protected String name;
     protected Statistic statistic;
+
+    public static TreeWidgetItem create(final TestResultGroupNode groupNode) {
+        return new TreeWidgetItem()
+                .setUid(groupNode.getUid())
+                .setName(groupNode.getName())
+                .setStatistic(calculateStatisticByLeafs(groupNode));
+    }
 
 }

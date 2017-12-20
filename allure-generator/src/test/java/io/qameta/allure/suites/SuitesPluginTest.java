@@ -6,8 +6,8 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.TestLabel;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.tree.Tree;
-import io.qameta.allure.tree.TreeNode;
+import io.qameta.allure.tree.Node;
+import io.qameta.allure.tree.TestResultTree;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,7 +21,7 @@ import java.util.List;
 import static io.qameta.allure.suites.SuitesPlugin.CSV_FILE_NAME;
 import static io.qameta.allure.suites.SuitesPlugin.JSON_FILE_NAME;
 import static io.qameta.allure.testdata.TestData.createSingleLaunchResults;
-import static java.util.Collections.singletonList;
+import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -44,12 +44,11 @@ public class SuitesPluginTest {
 
     @Test
     public void shouldCreateTree() throws Exception {
-
-        final Tree<TestResult> tree = SuitesPlugin.getData(getSimpleLaunchResults());
+        final TestResultTree tree = SuitesPlugin.getData(getSimpleLaunchResults());
 
         assertThat(tree.getChildren())
                 .hasSize(2)
-                .extracting(TreeNode::getName)
+                .extracting(Node::getName)
                 .containsExactlyInAnyOrder("s1", "s2");
     }
 
@@ -66,12 +65,12 @@ public class SuitesPluginTest {
         final TestResult timeless = new TestResult()
                 .setName("timeless");
 
-        final Tree<TestResult> tree = SuitesPlugin.getData(
+        final TestResultTree tree = SuitesPlugin.getData(
                 createSingleLaunchResults(second, first, timeless)
         );
 
         assertThat(tree.getChildren())
-                .extracting(TreeNode::getName)
+                .extracting(Node::getName)
                 .containsExactly("timeless", "first", "second");
     }
 
@@ -92,13 +91,13 @@ public class SuitesPluginTest {
     private List<LaunchResults> getSimpleLaunchResults() {
         final TestResult first = new TestResult()
                 .setName("first")
-                .setLabels(singletonList(new TestLabel().setName("suite").setValue("s1")));
+                .setLabels(singleton(new TestLabel().setName("suite").setValue("s1")));
         final TestResult second = new TestResult()
                 .setName("second")
-                .setLabels(singletonList(new TestLabel().setName("suite").setValue("s1")));
+                .setLabels(singleton(new TestLabel().setName("suite").setValue("s1")));
         final TestResult third = new TestResult()
                 .setName("third")
-                .setLabels(singletonList(new TestLabel().setName("suite").setValue("s2")));
+                .setLabels(singleton(new TestLabel().setName("suite").setValue("s2")));
         return createSingleLaunchResults(second, first, third);
     }
 }

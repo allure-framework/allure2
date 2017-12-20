@@ -3,9 +3,7 @@ package io.qameta.allure.timeline;
 import io.qameta.allure.CommonJsonAggregator;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.LabelName;
-import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.tree.TestResultTree;
-import io.qameta.allure.tree.Tree;
 
 import java.util.Collection;
 import java.util.List;
@@ -24,10 +22,10 @@ public class TimelinePlugin extends CommonJsonAggregator {
     }
 
     @Override
-    protected Tree<TestResult> getData(final List<LaunchResults> launchResults) {
+    protected TestResultTree getData(final List<LaunchResults> launchResults) {
 
         // @formatter:off
-        final Tree<TestResult> timeline = new TestResultTree(
+        final TestResultTree timeline = new TestResultTree(
             "timeline",
             testResult -> groupByLabels(testResult, LabelName.HOST, LabelName.THREAD)
         );

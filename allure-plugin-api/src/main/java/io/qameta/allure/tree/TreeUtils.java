@@ -9,6 +9,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -23,33 +24,56 @@ public final class TreeUtils {
         throw new IllegalStateException("Do not instance");
     }
 
-    public static String createGroupUid(final String parentUid, final String groupName) {
+    public static String createGroupUid(final String parentUid, final GroupNodeContext groupNodeContext) {
         final MessageDigest md = getMessageDigest();
         md.update(Objects.toString(parentUid).getBytes(UTF_8));
-        md.update(Objects.toString(groupName).getBytes(UTF_8));
+        md.update(Objects.toString(groupNodeContext.getKey()).getBytes(UTF_8));
+        md.update(Objects.toString(groupNodeContext.getValue()).getBytes(UTF_8));
         return DatatypeConverter.printHexBinary(md.digest()).toLowerCase();
     }
 
-    public static List<TreeLayer> groupByLabels(final TestResult testResult,
-                                                final LabelName... labelNames) {
+    public static List<Layer> groupByLabels(final TestResult testResult, final LabelName... labelNames) {
+        final String[] names = Stream.of(labelNames)
+                .map(LabelName::value)
+                .toArray(String[]::new);
+        return groupByLabels(testResult, names);
+    }
+
+    public static List<Layer> groupByLabels(final TestResult testResult,
+                                            final String... labelNames) {
         return Stream.of(labelNames)
-                .map(testResult::findAllLabels)
-                .filter(strings -> !strings.isEmpty())
-                .map(DefaultTreeLayer::new)
+                .map(name -> createLayer(name, testResult))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .collect(Collectors.toList());
     }
 
-    public static Statistic calculateStatisticByLeafs(final TestResultTreeGroup group) {
-        return group.getChildren().stream()
+    private static Optional<Layer> createLayer(final String name, final TestResult testResult) {
+        final List<String> values = testResult.findAllLabelValues(name);
+        if (values.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(new Layer(name, values));
+    }
+
+    public static Statistic calculateStatisticByLeafs(final TestResultGroupNode group) {
+        final Statistic groupStatistic = group.getGroups().stream()
                 .reduce(
                         new Statistic(),
                         TreeUtils::updateStatisticRecursive,
                         TreeUtils::mergeStatistic
                 );
+        final Statistic leafStatistic = group.getLeafs().stream()
+                .reduce(
+                        new Statistic(),
+                        TreeUtils::updateStatisticRecursive,
+                        TreeUtils::mergeStatistic
+                );
+        return mergeStatistic(groupStatistic, leafStatistic);
     }
 
-    public static Statistic calculateStatisticByChildren(final TestResultTreeGroup group) {
-        return group.getChildren().stream()
+    public static Statistic calculateStatisticByChildren(final TestResultGroupNode group) {
+        return group.getGroups().stream()
                 .reduce(
                         new Statistic(),
                         TreeUtils::updateStatistic,
@@ -57,22 +81,19 @@ public final class TreeUtils {
                 );
     }
 
-    public static Statistic updateStatisticRecursive(final Statistic statistic, final TreeNode treeNode) {
-        if (treeNode instanceof TestResultTreeGroup) {
-            statistic.merge(calculateStatisticByLeafs((TestResultTreeGroup) treeNode));
-        } else if (treeNode instanceof TestResultTreeLeaf) {
-            statistic.update(((TestResultTreeLeaf) treeNode).getStatus());
-        }
+    public static Statistic updateStatisticRecursive(final Statistic statistic, final TestResultLeafNode treeNode) {
+        statistic.update(treeNode.getStatus());
         return statistic;
     }
 
-    public static Statistic updateStatistic(final Statistic statistic, final TreeNode treeNode) {
-        if (treeNode instanceof TestResultTreeGroup) {
-            final Statistic byLeafs = calculateStatisticByLeafs((TestResultTreeGroup) treeNode);
-            statistic.update(byLeafs.getStatus());
-        } else if (treeNode instanceof TestResultTreeLeaf) {
-            statistic.update(((TestResultTreeLeaf) treeNode).getStatus());
-        }
+    public static Statistic updateStatisticRecursive(final Statistic statistic, final TestResultGroupNode treeNode) {
+        statistic.merge(calculateStatisticByLeafs(treeNode));
+        return statistic;
+    }
+
+    public static Statistic updateStatistic(final Statistic statistic, final TestResultGroupNode treeNode) {
+        final Statistic byLeafs = calculateStatisticByLeafs(treeNode);
+        statistic.update(byLeafs.getStatus());
         return statistic;
     }
 

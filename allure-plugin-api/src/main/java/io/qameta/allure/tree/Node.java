@@ -3,8 +3,8 @@ package io.qameta.allure.tree;
 /**
  * @author charlie (Dmitry Baev).
  */
-public interface Tree<T> extends TreeGroup {
+public interface Node {
 
-    void add(T item);
+    String getName();
 
 }

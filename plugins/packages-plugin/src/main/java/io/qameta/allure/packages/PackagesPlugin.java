@@ -6,13 +6,8 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.tree.DefaultTreeLayer;
-import io.qameta.allure.tree.TestResultGroupFactory;
+import io.qameta.allure.tree.Layer;
 import io.qameta.allure.tree.TestResultTree;
-import io.qameta.allure.tree.TestResultTreeGroup;
-import io.qameta.allure.tree.TestResultTreeLeaf;
-import io.qameta.allure.tree.Tree;
-import io.qameta.allure.tree.TreeLayer;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -46,13 +41,11 @@ public class PackagesPlugin implements Aggregator {
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
-        /* default */ Tree<TestResult> getData(final List<LaunchResults> launchResults) {
+        /* default */ TestResultTree getData(final List<LaunchResults> launchResults) {
 
-        final Tree<TestResult> packages = new TestResultTree(
+        final TestResultTree packages = new TestResultTree(
                 "packages",
-                this::groupByPackages,
-                new TestResultGroupFactory(),
-                this::createLeaf
+                this::groupByPackages
         );
 
         launchResults.stream()
@@ -61,69 +54,16 @@ public class PackagesPlugin implements Aggregator {
                 .sorted(comparingByTimeAsc())
                 .forEach(packages::add);
 
-        return collapseGroupsWithOnlyOneChild(packages);
+        return packages;
     }
 
-    protected List<TreeLayer> groupByPackages(final TestResult testResult) {
+    protected List<Layer> groupByPackages(final TestResult testResult) {
         return testResult.findOneLabel(LabelName.PACKAGE)
                 .map(packageName -> Arrays.asList(packageName.split("\\.")))
                 .orElseGet(Collections::emptyList)
                 .stream()
-                .map(DefaultTreeLayer::new)
+                .map(value -> new Layer("package", Collections.singletonList(value)))
                 .collect(Collectors.toList());
     }
-
-    protected Tree<TestResult> collapseGroupsWithOnlyOneChild(final Tree<TestResult> packages) {
-        packages.getChildren().stream()
-                .filter(TestResultTreeGroup.class::isInstance)
-                .map(TestResultTreeGroup.class::cast)
-                .forEach(this::collapseGroupsWithOnlyOneChild);
-        return packages;
-    }
-
-    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    protected void collapseGroupsWithOnlyOneChild(final TestResultTreeGroup groupNode) {
-        groupNode.getChildren().stream()
-                .filter(TestResultTreeGroup.class::isInstance)
-                .map(TestResultTreeGroup.class::cast)
-                .forEach(this::collapseGroupsWithOnlyOneChild);
-
-        final long count = groupNode.getChildren().stream()
-                .filter(TestResultTreeGroup.class::isInstance)
-                .count();
-
-        if (groupNode.getChildren().size() == 1 && count == 1) {
-            groupNode.getChildren().stream()
-                    .filter(TestResultTreeGroup.class::isInstance)
-                    .map(TestResultTreeGroup.class::cast)
-                    .forEach(next -> {
-                        final String name = getName(groupNode, next);
-                        groupNode.setName(name);
-                        groupNode.setUid(name);
-                        groupNode.setChildren(next.getChildren());
-                    });
-        }
-    }
-
-    protected String getName(final TestResultTreeGroup parent, final TestResultTreeGroup child) {
-        return String.format("%s.%s", parent.getName(), child.getName());
-    }
-
-    private TestResultTreeLeaf createLeaf(final TestResultTreeGroup parent, final TestResult testResult) {
-        final String name = testResult
-                .findOneLabel(LabelName.TEST_METHOD)
-                .filter(method -> !method.isEmpty())
-                .orElseGet(testResult::getName);
-        return new TestResultTreeLeaf(
-                parent.getUid(),
-                name,
-                testResult.getId(),
-                testResult.getStatus(),
-                testResult.getStart(),
-                testResult.getStop(),
-                testResult.getDuration(),
-                testResult.isFlaky(),
-                testResult.getParameterValues()
-        );
-    }
 }
+

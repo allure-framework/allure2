@@ -7,9 +7,8 @@ import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.csv.CsvExportBehavior;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.tree.TestResultGroupNode;
 import io.qameta.allure.tree.TestResultTree;
-import io.qameta.allure.tree.TestResultTreeGroup;
-import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeWidgetData;
 import io.qameta.allure.tree.TreeWidgetItem;
 import org.apache.commons.collections.CollectionUtils;
@@ -47,7 +46,7 @@ public class BehaviorsPlugin extends CompositeAggregator {
     protected static final String CSV_FILE_NAME = "behaviors.csv";
 
     @SuppressWarnings("PMD.DefaultPackage")
-    /* default */ static final LabelName[] LABEL_NAMES = new LabelName[] {EPIC, FEATURE, STORY};
+    /* default */ static final LabelName[] LABEL_NAMES = new LabelName[]{EPIC, FEATURE, STORY};
 
     public BehaviorsPlugin() {
         super(Arrays.asList(
@@ -56,10 +55,10 @@ public class BehaviorsPlugin extends CompositeAggregator {
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
-    /* default */ static Tree<TestResult> getData(final List<LaunchResults> launchResults) {
+    /* default */ static TestResultTree getData(final List<LaunchResults> launchResults) {
 
         // @formatter:off
-        final Tree<TestResult> behaviors = new TestResultTree(
+        final TestResultTree behaviors = new TestResultTree(
             BEHAVIORS,
             testResult -> groupByLabels(testResult, LABEL_NAMES)
         );
@@ -80,7 +79,7 @@ public class BehaviorsPlugin extends CompositeAggregator {
         }
 
         @Override
-        protected Tree<TestResult> getData(final List<LaunchResults> launches) {
+        protected TestResultTree getData(final List<LaunchResults> launches) {
             return BehaviorsPlugin.getData(launches);
         }
     }
@@ -96,16 +95,18 @@ public class BehaviorsPlugin extends CompositeAggregator {
             final List<CsvExportBehavior> exportBehaviors = new ArrayList<>();
             launchesResults.stream().flatMap(launch -> launch.getResults().stream()).forEach(result -> {
                 Map<LabelName, List<String>> epicFeatureStoryMap = new HashMap<>();
+                // @formatter:off
                 Arrays.asList(LABEL_NAMES).forEach(
                     label -> epicFeatureStoryMap.put(label, result.findAllLabels(label))
                 );
+                // @formatter:on
                 addTestResult(exportBehaviors, result, epicFeatureStoryMap);
             });
             return exportBehaviors;
         }
 
         private void addTestResult(final List<CsvExportBehavior> exportBehaviors, final TestResult result,
-                                             final Map<LabelName, List<String>> epicFeatureStoryMap) {
+                                   final Map<LabelName, List<String>> epicFeatureStoryMap) {
             if (epicFeatureStoryMap.isEmpty()) {
                 addTestResultWithLabels(exportBehaviors, result, null, null, null);
             } else {
@@ -116,9 +117,11 @@ public class BehaviorsPlugin extends CompositeAggregator {
         private void addTestResultWithEpic(final List<CsvExportBehavior> exportBehaviors, final TestResult result,
                                            final Map<LabelName, List<String>> epicFeatureStoryMap) {
             if (!CollectionUtils.isEmpty(epicFeatureStoryMap.get(EPIC))) {
+                // @formatter:off
                 epicFeatureStoryMap.get(EPIC).forEach(
                     epic -> addTestResultWithFeature(exportBehaviors, result, epicFeatureStoryMap, epic)
                 );
+                // @formatter:on
             } else {
                 addTestResultWithFeature(exportBehaviors, result, epicFeatureStoryMap, null);
             }
@@ -128,21 +131,25 @@ public class BehaviorsPlugin extends CompositeAggregator {
                                               final Map<LabelName, List<String>> epicFeatureStoryMap,
                                               final String epic) {
             if (!CollectionUtils.isEmpty(epicFeatureStoryMap.get(FEATURE))) {
+                // @formatter:off
                 epicFeatureStoryMap.get(FEATURE).forEach(
                     feature -> addTestResultWithStories(exportBehaviors, result, epicFeatureStoryMap, epic, feature)
                 );
+                // @formatter:on
             } else {
                 addTestResultWithStories(exportBehaviors, result, epicFeatureStoryMap, epic, null);
             }
         }
 
         private void addTestResultWithStories(final List<CsvExportBehavior> exportBehaviors, final TestResult result,
-                                                 final Map<LabelName, List<String>> epicFeatureStoryMap,
-                                                 final String epic, final String feature) {
+                                              final Map<LabelName, List<String>> epicFeatureStoryMap,
+                                              final String epic, final String feature) {
             if (!CollectionUtils.isEmpty(epicFeatureStoryMap.get(STORY))) {
+                // @formatter:off
                 epicFeatureStoryMap.get(STORY).forEach(
                     story -> addTestResultWithLabels(exportBehaviors, result, epic, feature, story)
                 );
+                // @formatter:on
             } else {
                 addTestResultWithLabels(exportBehaviors, result, epic, feature, null);
             }
@@ -170,18 +177,16 @@ public class BehaviorsPlugin extends CompositeAggregator {
 
         @Override
         public TreeWidgetData getData(final List<LaunchResults> launches) {
-            final Tree<TestResult> data = BehaviorsPlugin.getData(launches);
-            final List<TreeWidgetItem> items = data.getChildren().stream()
-                    .filter(TestResultTreeGroup.class::isInstance)
-                    .map(TestResultTreeGroup.class::cast)
+            final TestResultTree data = BehaviorsPlugin.getData(launches);
+            final List<TreeWidgetItem> items = data.getGroups().stream()
                     .map(WidgetAggregator::toWidgetItem)
                     .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
                     .limit(10)
                     .collect(Collectors.toList());
-            return new TreeWidgetData().setItems(items).setTotal(data.getChildren().size());
+            return new TreeWidgetData().setItems(items).setTotal(data.getGroups().size());
         }
 
-        private static TreeWidgetItem toWidgetItem(final TestResultTreeGroup group) {
+        private static TreeWidgetItem toWidgetItem(final TestResultGroupNode group) {
             return new TreeWidgetItem()
                     .setUid(group.getUid())
                     .setName(group.getName())

@@ -1,58 +1,115 @@
 package io.qameta.allure.tree;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
  * @author charlie (Dmitry Baev).
  */
-public abstract class AbstractTree<T, S extends TreeGroup, U extends TreeLeaf> implements Tree<T> {
+@SuppressWarnings("checkstyle:all")
+public abstract class AbstractTree<ITEM, LEAF extends LeafNode, GROUP extends GroupNode<LEAF, GROUP>>
+        implements GroupNode<LEAF, GROUP> {
 
-    protected final S root;
+    private final GROUP root;
 
-    private final TreeClassifier<T> treeClassifier;
+    private final Classifier<ITEM> classifier;
 
-    private final TreeGroupFactory<T, S> groupFactory;
+    private final GroupFactory<GROUP> groupFactory;
+    private final LeafFactory<ITEM, LEAF, GROUP> leafFactory;
 
-    private final TreeLeafFactory<T, S, U> leafFactory;
+    private long total = -1;
+    private long shown = 0;
 
-    public AbstractTree(final S root, final TreeClassifier<T> treeClassifier,
-                        final TreeGroupFactory<T, S> groupFactory, final TreeLeafFactory<T, S, U> leafFactory) {
+    protected AbstractTree(final GROUP root,
+                           final Classifier<ITEM> classifier,
+                           final GroupFactory<GROUP> groupFactory,
+                           final LeafFactory<ITEM, LEAF, GROUP> leafFactory) {
         this.root = root;
-        this.treeClassifier = treeClassifier;
+        this.classifier = classifier;
         this.groupFactory = groupFactory;
         this.leafFactory = leafFactory;
     }
 
-    @Override
-    public void add(final T item) {
-        getEndNodes(item, root, treeClassifier.classify(item), 0)
-                .forEach(node -> {
-                    final TreeLeaf leafNode = leafFactory.create(node, item);
-                    node.addChild(leafNode);
+    public List<GROUP> getPathForNode(final String groupNodeUid) {
+        return getPathForNode(root, groupNodeUid);
+    }
+
+    private List<GROUP> getPathForNode(final GROUP node, final String groupNodeUid) {
+        if (Objects.equals(node.getUid(), groupNodeUid)) {
+            return Collections.singletonList(node);
+        }
+        return node.getGroups().stream()
+                .map(group -> getPathForNode(group, groupNodeUid))
+                .filter(Objects::nonNull)
+                .findAny()
+                .map(groups -> {
+                    final List<GROUP> path = new ArrayList<>();
+                    path.add(node);
+                    path.addAll(groups);
+                    return path;
+                })
+                .orElse(null);
+    }
+
+    public void add(ITEM item) {
+        shown++;
+        final List<Layer> treeLayers = classifier.classify(item);
+        getEndNodes(root, treeLayers, 0)
+                .forEach(group -> {
+                    final LEAF leaf = leafFactory.create(group, item);
+                    group.getLeafs().add(leaf);
                 });
     }
 
-    protected Stream<S> getEndNodes(final T item, final S node,
-                                    final List<TreeLayer> classifiers,
-                                    final int index) {
-        if (index >= classifiers.size()) {
+    protected Stream<GROUP> getEndNodes(final GROUP node,
+                                        final List<Layer> layers,
+                                        final int index) {
+        if (index >= layers.size()) {
             return Stream.of(node);
         }
-        final TreeLayer layer = classifiers.get(index);
-        return layer.getGroupNames().stream()
-                .flatMap(name -> {
-                    // @formatter:off
-                    final S child = node.findNodeOfType(name, getRootType())
-                        .orElseGet(() -> {
-                            final S created = groupFactory.create(node, name, item);
-                            node.addChild(created);
-                            return created;
-                        });
-                    // @formatter:on
-                    return getEndNodes(item, child, classifiers, index + 1);
+        final Layer layer = layers.get(index);
+        return layer.getGroups().stream()
+                .flatMap(context -> {
+                    final GROUP groupNode = node.getGroups().stream()
+                            .filter(group -> Objects.equals(group.getContext(), context))
+                            .findAny()
+                            .orElseGet(() -> {
+                                final GROUP newGroup = groupFactory.create(node, context);
+                                node.getGroups().add(newGroup);
+                                return newGroup;
+                            });
+                    return getEndNodes(groupNode, layers, index + 1);
                 });
+    }
+
+    public long getTotal() {
+        return total;
+    }
+
+    public void setTotal(final long total) {
+        this.total = total;
+    }
+
+    public long getShown() {
+        return shown;
+    }
+
+    @Override
+    public GroupNodeContext getContext() {
+        return root.getContext();
+    }
+
+    @Override
+    public List<GROUP> getGroups() {
+        return root.getGroups();
+    }
+
+    @Override
+    public List<LEAF> getLeafs() {
+        return root.getLeafs();
     }
 
     @Override
@@ -61,15 +118,7 @@ public abstract class AbstractTree<T, S extends TreeGroup, U extends TreeLeaf> i
     }
 
     @Override
-    public List<TreeNode> getChildren() {
-        return Collections.unmodifiableList(root.getChildren());
+    public String getUid() {
+        return root.getUid();
     }
-
-    @Override
-    public void addChild(final TreeNode node) {
-        root.addChild(node);
-    }
-
-    protected abstract Class<S> getRootType();
-
 }

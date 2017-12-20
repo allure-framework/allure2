@@ -1,6 +1,7 @@
 package io.qameta.allure.entity;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -8,7 +9,7 @@ import java.util.stream.Collectors;
  */
 public interface Parameterizable {
 
-    List<TestParameter> getParameters();
+    Set<TestParameter> getParameters();
 
     default List<String> getParameterValues() {
         return getParameters().stream()

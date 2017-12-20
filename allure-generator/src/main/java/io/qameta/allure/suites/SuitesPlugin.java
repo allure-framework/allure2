@@ -5,12 +5,11 @@ import io.qameta.allure.CommonJsonAggregator;
 import io.qameta.allure.CompositeAggregator;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.csv.CsvExportSuite;
-import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.tree.TestResultGroupNode;
 import io.qameta.allure.tree.TestResultTree;
-import io.qameta.allure.tree.TestResultTreeGroup;
-import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeWidgetData;
 import io.qameta.allure.tree.TreeWidgetItem;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
@@ -35,23 +34,27 @@ public class SuitesPlugin extends CompositeAggregator {
 
     private static final String SUITES = "suites";
 
-    /** Name of the json file. */
+    /**
+     * Name of the json file.
+     */
     protected static final String JSON_FILE_NAME = "suites.json";
 
-    /** Name of the csv file. */
+    /**
+     * Name of the csv file.
+     */
     protected static final String CSV_FILE_NAME = "suites.csv";
 
     public SuitesPlugin() {
         super(Arrays.asList(
-            new JsonAggregator(), new CsvExportAggregator(), new WidgetAggregator()
+                new JsonAggregator(), new CsvExportAggregator(), new WidgetAggregator()
         ));
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
-    static /* default */ Tree<TestResult> getData(final List<LaunchResults> launchResults) {
+    static /* default */ TestResultTree getData(final List<LaunchResults> launchResults) {
 
         // @formatter:off
-        final Tree<TestResult> xunit = new TestResultTree(
+        final TestResultTree xunit = new TestResultTree(
                 SUITES,
             testResult -> groupByLabels(testResult, PARENT_SUITE, SUITE, SUB_SUITE)
         );
@@ -72,7 +75,7 @@ public class SuitesPlugin extends CompositeAggregator {
         }
 
         @Override
-        protected Tree<TestResult> getData(final List<LaunchResults> launches) {
+        protected TestResultTree getData(final List<LaunchResults> launches) {
             return SuitesPlugin.getData(launches);
         }
     }
@@ -99,22 +102,20 @@ public class SuitesPlugin extends CompositeAggregator {
 
         @Override
         protected Object getData(final List<LaunchResults> launches) {
-            final Tree<TestResult> data = SuitesPlugin.getData(launches);
-            final List<TreeWidgetItem> items = data.getChildren().stream()
-                .filter(TestResultTreeGroup.class::isInstance)
-                .map(TestResultTreeGroup.class::cast)
-                .map(WidgetAggregator::toWidgetItem)
-                .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
-                .limit(10)
-                .collect(Collectors.toList());
-            return new TreeWidgetData().setItems(items).setTotal(data.getChildren().size());
+            final TestResultTree data = SuitesPlugin.getData(launches);
+            final List<TreeWidgetItem> items = data.getGroups().stream()
+                    .map(WidgetAggregator::toWidgetItem)
+                    .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
+                    .limit(10)
+                    .collect(Collectors.toList());
+            return new TreeWidgetData().setItems(items).setTotal(data.getGroups().size());
         }
 
-        private static TreeWidgetItem toWidgetItem(final TestResultTreeGroup group) {
+        private static TreeWidgetItem toWidgetItem(final TestResultGroupNode groupNode) {
             return new TreeWidgetItem()
-                    .setUid(group.getUid())
-                    .setName(group.getName())
-                    .setStatistic(calculateStatisticByLeafs(group));
+                    .setUid(groupNode.getUid())
+                    .setName(groupNode.getName())
+                    .setStatistic(calculateStatisticByLeafs(groupNode));
         }
     }
 }

@@ -12,11 +12,8 @@ import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.csv.CsvExportCategory;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.TestStatus;
-import io.qameta.allure.tree.DefaultTreeLayer;
+import io.qameta.allure.tree.Layer;
 import io.qameta.allure.tree.TestResultTree;
-import io.qameta.allure.tree.TestResultTreeGroup;
-import io.qameta.allure.tree.Tree;
-import io.qameta.allure.tree.TreeLayer;
 import io.qameta.allure.tree.TreeWidgetData;
 import io.qameta.allure.tree.TreeWidgetItem;
 
@@ -36,7 +33,6 @@ import java.util.stream.Collectors;
 
 import static io.qameta.allure.entity.Statistic.comparator;
 import static io.qameta.allure.entity.TestResult.comparingByTimeAsc;
-import static io.qameta.allure.tree.TreeUtils.calculateStatisticByLeafs;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -86,10 +82,10 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
-            /* default */ static Tree<TestResult> getData(final List<LaunchResults> launchResults) {
+    /* default */ static TestResultTree getData(final List<LaunchResults> launchResults) {
 
         // @formatter:off
-        final Tree<TestResult> categories = new TestResultTree(CATEGORIES, CategoriesPlugin::groupByCategories);
+        final TestResultTree categories = new TestResultTree(CATEGORIES, CategoriesPlugin::groupByCategories);
         // @formatter:on
 
         launchResults.stream()
@@ -101,7 +97,7 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
-            /* default */ static void addCategoriesForResults(final List<LaunchResults> launchesResults) {
+    /* default */ static void addCategoriesForResults(final List<LaunchResults> launchesResults) {
         launchesResults.forEach(launch -> {
             final List<Category> categories = launch.getExtra(CATEGORIES, Collections::emptyList);
             launch.getResults().forEach(result -> {
@@ -121,14 +117,14 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
         });
     }
 
-    protected static List<TreeLayer> groupByCategories(final TestResult testResult) {
+    protected static List<Layer> groupByCategories(final TestResult testResult) {
         final Set<String> categories = testResult
                 .<List<Category>>getExtraBlock(CATEGORIES, new ArrayList<>())
                 .stream()
                 .map(Category::getName)
                 .collect(Collectors.toSet());
-        final TreeLayer categoriesLayer = new DefaultTreeLayer(categories);
-        final TreeLayer messageLayer = new DefaultTreeLayer(testResult.getMessage());
+        final Layer categoriesLayer = new Layer("category", categories);
+        final Layer messageLayer = new Layer("message", Collections.singletonList(testResult.getMessage()));
         return Arrays.asList(categoriesLayer, messageLayer);
     }
 
@@ -150,13 +146,6 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
         return Pattern.compile(pattern, Pattern.DOTALL).matcher(message).matches();
     }
 
-    protected static TreeWidgetItem toWidgetItem(final TestResultTreeGroup group) {
-        return new TreeWidgetItem()
-                .setUid(group.getUid())
-                .setName(group.getName())
-                .setStatistic(calculateStatisticByLeafs(group));
-    }
-
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
@@ -172,7 +161,7 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
         }
 
         @Override
-        protected Tree<TestResult> getData(final List<LaunchResults> launches) {
+        protected TestResultTree getData(final List<LaunchResults> launches) {
             return CategoriesPlugin.getData(launches);
         }
     }
@@ -186,11 +175,9 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
         @Override
         protected List<CsvExportCategory> getData(final List<LaunchResults> launchesResults) {
             final List<CsvExportCategory> exportLabels = new ArrayList<>();
-            final Tree<TestResult> data = CategoriesPlugin.getData(launchesResults);
-            final List<TreeWidgetItem> items = data.getChildren().stream()
-                    .filter(TestResultTreeGroup.class::isInstance)
-                    .map(TestResultTreeGroup.class::cast)
-                    .map(CategoriesPlugin::toWidgetItem)
+            final TestResultTree data = CategoriesPlugin.getData(launchesResults);
+            final List<TreeWidgetItem> items = data.getGroups().stream()
+                    .map(TreeWidgetItem::create)
                     .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
                     .collect(Collectors.toList());
             items.forEach(item -> exportLabels.add(new CsvExportCategory(item)));
@@ -206,15 +193,13 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
 
         @Override
         protected Object getData(final List<LaunchResults> launches) {
-            final Tree<TestResult> data = CategoriesPlugin.getData(launches);
-            final List<TreeWidgetItem> items = data.getChildren().stream()
-                    .filter(TestResultTreeGroup.class::isInstance)
-                    .map(TestResultTreeGroup.class::cast)
-                    .map(CategoriesPlugin::toWidgetItem)
+            final TestResultTree data = CategoriesPlugin.getData(launches);
+            final List<TreeWidgetItem> items = data.getGroups().stream()
+                    .map(TreeWidgetItem::create)
                     .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
                     .limit(10)
                     .collect(Collectors.toList());
-            return new TreeWidgetData().setItems(items).setTotal(data.getChildren().size());
+            return new TreeWidgetData().setItems(items).setTotal(data.getGroups().size());
         }
     }
 }

@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.qameta.allure.entity.LabelName.FRAMEWORK;
@@ -175,12 +176,12 @@ public class XunitXmlPlugin implements Reader {
                 .map(XmlElement::getValue);
     }
 
-    private Optional<List<TestParameter>> getParameters(final XmlElement testElement) {
+    private Optional<Set<TestParameter>> getParameters(final XmlElement testElement) {
         return testElement.getFirst(TRAITS_ELEMENT_NAME)
                 .map(traits -> traits.get(TRAIT_ELEMENT_NAME))
                 .map(Collection::stream)
                 .map(stream -> stream.map(this::getParameter))
-                .map(stream -> stream.collect(Collectors.toList()));
+                .map(stream -> stream.collect(Collectors.toSet()));
     }
 
     private TestParameter getParameter(final XmlElement traitElement) {

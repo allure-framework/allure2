@@ -6,8 +6,8 @@ import java.util.List;
  * @author charlie (Dmitry Baev).
  */
 @FunctionalInterface
-public interface TreeLayer {
+public interface Classifier<T> {
 
-    List<String> getGroupNames();
+    List<Layer> classify(T item);
 
 }

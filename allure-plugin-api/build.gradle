@@ -26,3 +26,7 @@ task sourceJar(type: Jar, dependsOn: classes) {
 artifacts {
     archives sourceJar
 }
+
+quality {
+    exclude('**/tree/**')
+}

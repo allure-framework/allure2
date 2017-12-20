@@ -34,10 +34,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -76,7 +76,7 @@ import static java.util.stream.Collectors.toList;
  *
  * @since 2.0
  */
-@SuppressWarnings({"PMD.ExcessiveImports", "PMD.GodClass", "PMD.TooManyMethods"})
+@SuppressWarnings({"PMD.ExcessiveImports", "PMD.GodClass", "PMD.TooManyMethods", "PMD.CouplingBetweenObjects"})
 public class Allure1Plugin implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Allure1Plugin.class);
@@ -163,7 +163,7 @@ public class Allure1Plugin implements Reader {
         );
         final String name = firstNonNull(source.getTitle(), source.getName(), "unknown test case");
 
-        final List<TestParameter> parameters = getParameters(source);
+        final Set<TestParameter> parameters = getParameters(source);
         final Optional<ru.yandex.qatools.allure.model.Label> historyId = findLabel(source.getLabels(), "historyId");
         if (historyId.isPresent()) {
             dest.setHistoryId(historyId.get().getValue());
@@ -212,7 +212,7 @@ public class Allure1Plugin implements Reader {
         );
         set.addAll(convert(testSuite.getLabels(), this::convert));
         set.addAll(convert(source.getLabels(), this::convert));
-        dest.setLabels(new ArrayList<>(set));
+        dest.setLabels(new HashSet<>(set));
         dest.findAllLabels(ISSUE).forEach(issue ->
                 dest.getLinks().add(getLink(ISSUE, issue, getIssueUrl(issue, properties)))
         );
@@ -334,13 +334,13 @@ public class Allure1Plugin implements Reader {
         }
     }
 
-    private List<TestParameter> getParameters(final TestCaseResult source) {
+    private Set<TestParameter> getParameters(final TestCaseResult source) {
         final TreeSet<TestParameter> parametersSet = new TreeSet<>(
                 comparing(TestParameter::getName, nullsFirst(naturalOrder()))
                         .thenComparing(TestParameter::getValue, nullsFirst(naturalOrder()))
         );
         parametersSet.addAll(convert(source.getParameters(), this::hasArgumentType, this::convert));
-        return new ArrayList<>(parametersSet);
+        return new HashSet<>(parametersSet);
     }
 
     private String getDescription(final Description... descriptions) {
@@ -456,7 +456,7 @@ public class Allure1Plugin implements Reader {
                 ));
     }
 
-    private static String getHistoryId(final String name, final List<TestParameter> parameters) {
+    private static String getHistoryId(final String name, final Set<TestParameter> parameters) {
         final MessageDigest digest = getMessageDigest();
         digest.update(name.getBytes(UTF_8));
         parameters.stream()
