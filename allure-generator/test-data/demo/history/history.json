@@ -11,19 +11,9 @@
     "items" : [ {
       "uid" : "e97b31dfa2eb359d",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/e97b31dfa2eb359d",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949529363,
-        "stop" : 1412949549730,
-        "duration" : 20367
-      }
+      "status" : "passed"
     }, {
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949549730,
-        "stop" : 1412949549745,
-        "duration" : 15
-      }
+      "status" : "passed"
     } ]
   },
   "edb5af9120411032c1265fe45ae214c3" : {
@@ -31,28 +21,25 @@
       "failed" : 0,
       "broken" : 0,
       "skipped" : 0,
-      "passed" : 2,
+      "passed" : 3,
       "unknown" : 0,
-      "total" : 2
+      "total" : 3
     },
     "items" : [ {
+      "uid" : "e646c5824689be4a",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testresult/e646c5824689be4a",
+      "status" : "passed",
+      "start" : 1412949551164,
+      "stop" : 1412949558826,
+      "duration" : 7662
+    }, {
       "uid" : "d602e160c3983146",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/d602e160c3983146",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949551164,
-        "stop" : 1412949558826,
-        "duration" : 7662
-      }
+      "status" : "passed"
     }, {
       "uid" : "d3069eab75cde5f2",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/d3069eab75cde5f2",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949551164,
-        "stop" : 1412949558826,
-        "duration" : 7662
-      }
+      "status" : "passed"
     } ]
   },
   "my.company.NonAsciiTest#test_raise_cyrilling (невероятный тест кодировки!)" : {
@@ -68,20 +55,10 @@
       "uid" : "8cdacdd71c63a7c7",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/8cdacdd71c63a7c7",
       "status" : "broken",
-      "statusDetails" : "Exception: Невероятная проблема!",
-      "time" : {
-        "start" : 1412949540562,
-        "stop" : 1412949540660,
-        "duration" : 98
-      }
+      "statusDetails" : "Exception: Невероятная проблема!"
     }, {
       "status" : "broken",
-      "statusDetails" : "Exception: Невероятная проблема!",
-      "time" : {
-        "start" : 1412949558830,
-        "stop" : 1412949558866,
-        "duration" : 36
-      }
+      "statusDetails" : "Exception: Невероятная проблема!"
     } ]
   },
   "Search tests#Wildcard search test" : {
@@ -94,12 +71,7 @@
       "total" : 1
     },
     "items" : [ {
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949558830,
-        "stop" : 1412949558866,
-        "duration" : 36
-      }
+      "status" : "passed"
     } ]
   },
   "my.company.SimpleTest#skippedSimpleTest" : {
@@ -115,20 +87,10 @@
       "uid" : "9738d6e81b17bb7",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/9738d6e81b17bb7",
       "status" : "skipped",
-      "statusDetails" : "Test ignored (without reason)!",
-      "time" : {
-        "start" : 1412949558831,
-        "stop" : 1412949558832,
-        "duration" : 1
-      }
+      "statusDetails" : "Test ignored (without reason)!"
     }, {
       "status" : "skipped",
-      "statusDetails" : "Test ignored (without reason)!",
-      "time" : {
-        "start" : 1412949558830,
-        "stop" : 1412949558866,
-        "duration" : 36
-      }
+      "statusDetails" : "Test ignored (without reason)!"
     } ]
   },
   "my.company.AlwaysPassingTest#testTwo" : {
@@ -143,19 +105,9 @@
     "items" : [ {
       "uid" : "26ed546144a3aa2b",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/26ed546144a3aa2b",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949539363,
-        "stop" : 1412949539372,
-        "duration" : 9
-      }
+      "status" : "passed"
     }, {
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949558830,
-        "stop" : 1412949558866,
-        "duration" : 36
-      }
+      "status" : "passed"
     } ]
   },
   "8b6d2d46c6c6c3e82eaea4fd4cd550d" : {
@@ -164,27 +116,24 @@
       "broken" : 0,
       "skipped" : 0,
       "passed" : 0,
-      "unknown" : 2,
-      "total" : 2
+      "unknown" : 3,
+      "total" : 3
     },
     "items" : [ {
+      "uid" : "416023d2070808dc",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testresult/416023d2070808dc",
+      "status" : "unknown",
+      "start" : 1412949539363,
+      "stop" : 1412949539730,
+      "duration" : 367
+    }, {
       "uid" : "8b4d32782c3b255a",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/8b4d32782c3b255a",
-      "status" : "unknown",
-      "time" : {
-        "start" : 1412949539363,
-        "stop" : 1412949539730,
-        "duration" : 367
-      }
+      "status" : "unknown"
     }, {
       "uid" : "9fb187a529aa9f52",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/9fb187a529aa9f52",
-      "status" : "unknown",
-      "time" : {
-        "start" : 1412949539363,
-        "stop" : 1412949539730,
-        "duration" : 367
-      }
+      "status" : "unknown"
     } ]
   },
   "fd34a77df67c626394a0ed738b11a036" : {
@@ -192,28 +141,25 @@
       "failed" : 0,
       "broken" : 0,
       "skipped" : 0,
-      "passed" : 2,
+      "passed" : 3,
       "unknown" : 0,
-      "total" : 2
+      "total" : 3
     },
     "items" : [ {
+      "uid" : "c675bec729ebbd88",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testresult/c675bec729ebbd88",
+      "status" : "passed",
+      "start" : 1412949540562,
+      "stop" : 1412949540565,
+      "duration" : 3
+    }, {
       "uid" : "f72816617a302c6e",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/f72816617a302c6e",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949540562,
-        "stop" : 1412949540565,
-        "duration" : 3
-      }
+      "status" : "passed"
     }, {
       "uid" : "a4be58c01f0e3a03",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/a4be58c01f0e3a03",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949540562,
-        "stop" : 1412949540565,
-        "duration" : 3
-      }
+      "status" : "passed"
     } ]
   },
   "my.company.ManyInfoTest#lotOfStepsTest" : {
@@ -229,20 +175,10 @@
       "uid" : "fb96ec69ee610b61",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/fb96ec69ee610b61",
       "status" : "broken",
-      "statusDetails" : "FileNotFoundException: No file found.",
-      "time" : {
-        "start" : 1412949539801,
-        "stop" : 1412949539862,
-        "duration" : 61
-      }
+      "statusDetails" : "FileNotFoundException: No file found."
     }, {
       "status" : "broken",
-      "statusDetails" : "FileNotFoundException: No file found.",
-      "time" : {
-        "start" : 1412949558830,
-        "stop" : 1412949558866,
-        "duration" : 36
-      }
+      "statusDetails" : "FileNotFoundException: No file found."
     } ]
   },
   "748164f14cb42b4f07731ba813528dc9" : {
@@ -250,57 +186,51 @@
       "failed" : 0,
       "broken" : 0,
       "skipped" : 0,
-      "passed" : 2,
+      "passed" : 3,
       "unknown" : 0,
-      "total" : 2
+      "total" : 3
     },
     "items" : [ {
+      "uid" : "671acc914b47a9c5",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testresult/671acc914b47a9c5",
+      "status" : "passed",
+      "start" : 1412949039950,
+      "stop" : 1412949051895,
+      "duration" : 11945
+    }, {
       "uid" : "a4491c948045be26",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/a4491c948045be26",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949039950,
-        "stop" : 1412949051895,
-        "duration" : 11945
-      }
+      "status" : "passed"
     }, {
       "uid" : "bda54a0a63bc4853",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/bda54a0a63bc4853",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949039950,
-        "stop" : 1412949051895,
-        "duration" : 11945
-      }
+      "status" : "passed"
     } ]
   },
   "a529591490936e126a2bd0fd4d58c236" : {
     "statistic" : {
       "failed" : 0,
       "broken" : 0,
-      "skipped" : 2,
+      "skipped" : 3,
       "passed" : 0,
       "unknown" : 0,
-      "total" : 2
+      "total" : 3
     },
     "items" : [ {
+      "uid" : "15b35403a0306eeb",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testresult/15b35403a0306eeb",
+      "status" : "skipped",
+      "start" : 1412949953580,
+      "stop" : 1412949953780,
+      "duration" : 200
+    }, {
       "uid" : "4373cfb13bba3b1b",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/4373cfb13bba3b1b",
-      "status" : "skipped",
-      "time" : {
-        "start" : 1412949953580,
-        "stop" : 1412949953780,
-        "duration" : 200
-      }
+      "status" : "skipped"
     }, {
       "uid" : "e55a8ab8517d4b4f",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/e55a8ab8517d4b4f",
-      "status" : "skipped",
-      "time" : {
-        "start" : 1412949953580,
-        "stop" : 1412949953780,
-        "duration" : 200
-      }
+      "status" : "skipped"
     } ]
   },
   "6206f694e7782fab07b604436317de65" : {
@@ -309,58 +239,53 @@
       "broken" : 0,
       "skipped" : 0,
       "passed" : 0,
-      "unknown" : 2,
-      "total" : 2
+      "unknown" : 3,
+      "total" : 3
     },
     "items" : [ {
+      "uid" : "7bf9e589cc7b5740",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testresult/7bf9e589cc7b5740",
+      "status" : "unknown",
+      "start" : 1412949539364,
+      "stop" : 1412949539746,
+      "duration" : 382
+    }, {
       "uid" : "2d62252f00268cf1",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/2d62252f00268cf1",
-      "status" : "unknown",
-      "time" : {
-        "start" : 1412949539364,
-        "stop" : 1412949539746,
-        "duration" : 382
-      }
+      "status" : "unknown"
     }, {
       "uid" : "97d776008d46f1a7",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/97d776008d46f1a7",
-      "status" : "unknown",
-      "time" : {
-        "start" : 1412949539364,
-        "stop" : 1412949539746,
-        "duration" : 382
-      }
+      "status" : "unknown"
     } ]
   },
   "51eb908b0edc1c42ebe74516c45fb1e2" : {
     "statistic" : {
-      "failed" : 2,
+      "failed" : 3,
       "broken" : 0,
       "skipped" : 0,
       "passed" : 0,
       "unknown" : 0,
-      "total" : 2
+      "total" : 3
     },
     "items" : [ {
+      "uid" : "6d414c4222f5e0dd",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testresult/6d414c4222f5e0dd",
+      "status" : "failed",
+      "statusDetails" : "AlarmAssertionErrorAssertionErrorAssertionErrorAssertionErrorAssertionError: This test should be failed",
+      "start" : 1412949539794,
+      "stop" : 1412949540559,
+      "duration" : 765
+    }, {
       "uid" : "ada594c5310ecb90",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/ada594c5310ecb90",
       "status" : "failed",
-      "statusDetails" : "AlarmAssertionErrorAssertionErrorAssertionErrorAssertionErrorAssertionError: This test should be failed",
-      "time" : {
-        "start" : 1412949539794,
-        "stop" : 1412949540559,
-        "duration" : 765
-      }
+      "statusDetails" : "AlarmAssertionErrorAssertionErrorAssertionErrorAssertionErrorAssertionError: This test should be failed"
     }, {
       "uid" : "d2278b18b9dd44d",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/d2278b18b9dd44d",
       "status" : "failed",
-      "statusDetails" : "AlarmAssertionErrorAssertionErrorAssertionErrorAssertionErrorAssertionError: This test should be failed",
-      "time" : {
-        "start" : 1412949539794,
-        "stop" : 1412949540559,
-        "duration" : 765
-      }
+      "statusDetails" : "AlarmAssertionErrorAssertionErrorAssertionErrorAssertionErrorAssertionError: This test should be failed"
     } ]
   },
   "my.company.ScreenshotTest#Empty text search" : {
@@ -375,12 +300,7 @@
     "items" : [ {
       "uid" : "2bbb46a2cd4db271",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/2bbb46a2cd4db271",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949551164,
-        "stop" : 1412949558344,
-        "duration" : 7180
-      }
+      "status" : "passed"
     } ]
   },
   "Search tests#Usual search test" : {
@@ -393,12 +313,7 @@
       "total" : 1
     },
     "items" : [ {
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949558830,
-        "stop" : 1412949558866,
-        "duration" : 36
-      }
+      "status" : "passed"
     } ]
   },
   "ea2b096fd373f2135ea1303b476eba80" : {
@@ -406,28 +321,25 @@
       "failed" : 0,
       "broken" : 0,
       "skipped" : 0,
-      "passed" : 2,
+      "passed" : 3,
       "unknown" : 0,
-      "total" : 2
+      "total" : 3
     },
     "items" : [ {
+      "uid" : "4f531c32d9d48c91",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testresult/4f531c32d9d48c91",
+      "status" : "passed",
+      "start" : 1412949558829,
+      "stop" : 1412949558829,
+      "duration" : 0
+    }, {
       "uid" : "d6c0cb730e56850e",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/d6c0cb730e56850e",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949558829,
-        "stop" : 1412949558829,
-        "duration" : 0
-      }
+      "status" : "passed"
     }, {
       "uid" : "85701c5f49e28f88",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/85701c5f49e28f88",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949558829,
-        "stop" : 1412949558829,
-        "duration" : 0
-      }
+      "status" : "passed"
     } ]
   },
   "6a7f6d7c554ed5fca751cfc5cea1264f" : {
@@ -435,59 +347,54 @@
       "failed" : 0,
       "broken" : 0,
       "skipped" : 0,
-      "passed" : 2,
+      "passed" : 3,
       "unknown" : 0,
-      "total" : 2
+      "total" : 3
     },
     "items" : [ {
+      "uid" : "a48d8ce1f2a1a331",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testresult/a48d8ce1f2a1a331",
+      "status" : "passed",
+      "start" : 1412949529363,
+      "stop" : 1412949549730,
+      "duration" : 20367
+    }, {
       "uid" : "7f9a7eb8bdc990f3",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/7f9a7eb8bdc990f3",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949529363,
-        "stop" : 1412949549730,
-        "duration" : 20367
-      }
+      "status" : "passed"
     }, {
       "uid" : "87daabcd192dda69",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/87daabcd192dda69",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949529363,
-        "stop" : 1412949549730,
-        "duration" : 20367
-      }
+      "status" : "passed"
     } ]
   },
   "c2c92094ded87a52e7b44915824223bc" : {
     "statistic" : {
       "failed" : 0,
-      "broken" : 2,
+      "broken" : 3,
       "skipped" : 0,
       "passed" : 0,
       "unknown" : 0,
-      "total" : 2
+      "total" : 3
     },
     "items" : [ {
+      "uid" : "3e6bf99f82e48976",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testresult/3e6bf99f82e48976",
+      "status" : "broken",
+      "statusDetails" : "ArrayIndexOutOfBoundsException: 1",
+      "start" : 1412949558829,
+      "stop" : 1412949558832,
+      "duration" : 3
+    }, {
       "uid" : "933b983ce735f8ce",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/933b983ce735f8ce",
       "status" : "broken",
-      "statusDetails" : "ArrayIndexOutOfBoundsException: 1",
-      "time" : {
-        "start" : 1412949558829,
-        "stop" : 1412949558832,
-        "duration" : 3
-      }
+      "statusDetails" : "ArrayIndexOutOfBoundsException: 1"
     }, {
       "uid" : "da4a9996a08c0a92",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/da4a9996a08c0a92",
       "status" : "broken",
-      "statusDetails" : "ArrayIndexOutOfBoundsException: 1",
-      "time" : {
-        "start" : 1412949558829,
-        "stop" : 1412949558832,
-        "duration" : 3
-      }
+      "statusDetails" : "ArrayIndexOutOfBoundsException: 1"
     } ]
   },
   "my.company.AllureMigrationTest#Test what do nothing and always passed right, but have a very long title, over 100 symbols, seriously" : {
@@ -502,19 +409,9 @@
     "items" : [ {
       "uid" : "798a028433530d97",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/798a028433530d97",
-      "status" : "skipped",
-      "time" : {
-        "start" : 1412949993580,
-        "stop" : 1412949993780,
-        "duration" : 200
-      }
+      "status" : "skipped"
     }, {
-      "status" : "skipped",
-      "time" : {
-        "start" : 1412949558830,
-        "stop" : 1412949558866,
-        "duration" : 36
-      }
+      "status" : "skipped"
     } ]
   },
   "918a67f7a1fbe63a6b5b37efbefa8d56" : {
@@ -522,59 +419,54 @@
       "failed" : 0,
       "broken" : 0,
       "skipped" : 0,
-      "passed" : 2,
+      "passed" : 3,
       "unknown" : 0,
-      "total" : 2
+      "total" : 3
     },
     "items" : [ {
+      "uid" : "46637ae70e18f749",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testresult/46637ae70e18f749",
+      "status" : "passed",
+      "start" : 1412949551164,
+      "stop" : 1412949558344,
+      "duration" : 7180
+    }, {
       "uid" : "50abb23195b9f2c7",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/50abb23195b9f2c7",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949551164,
-        "stop" : 1412949558344,
-        "duration" : 7180
-      }
+      "status" : "passed"
     }, {
       "uid" : "213060f559c8f328",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/213060f559c8f328",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949551164,
-        "stop" : 1412949558344,
-        "duration" : 7180
-      }
+      "status" : "passed"
     } ]
   },
   "d83c2f8379a76891eb37c6d8d889a3ce" : {
     "statistic" : {
-      "failed" : 2,
+      "failed" : 3,
       "broken" : 0,
       "skipped" : 0,
       "passed" : 0,
       "unknown" : 0,
-      "total" : 2
+      "total" : 3
     },
     "items" : [ {
+      "uid" : "4ca22ce9682779a7",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testresult/4ca22ce9682779a7",
+      "status" : "failed",
+      "statusDetails" : "AssertionError: Text on current page should be correct\nExpected: element text is \"Yandex\"\n     but: <[[PhantomJSDriver: phantomjs on MAC (9e679b20-5085-11e4-ad6d-87edf8da84a7)] -> css selector: title]> text is \"\"",
+      "start" : 1412949551164,
+      "stop" : 1412949556298,
+      "duration" : 5134
+    }, {
       "uid" : "f489a802f4a742f9",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/f489a802f4a742f9",
       "status" : "failed",
-      "statusDetails" : "AssertionError: Text on current page should be correct\nExpected: element text is \"Yandex\"\n     but: <[[PhantomJSDriver: phantomjs on MAC (9e679b20-5085-11e4-ad6d-87edf8da84a7)] -> css selector: title]> text is \"\"",
-      "time" : {
-        "start" : 1412949551164,
-        "stop" : 1412949556298,
-        "duration" : 5134
-      }
+      "statusDetails" : "AssertionError: Text on current page should be correct\nExpected: element text is \"Yandex\"\n     but: <[[PhantomJSDriver: phantomjs on MAC (9e679b20-5085-11e4-ad6d-87edf8da84a7)] -> css selector: title]> text is \"\""
     }, {
       "uid" : "b23b7ed47b1a8f68",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/b23b7ed47b1a8f68",
       "status" : "failed",
-      "statusDetails" : "AssertionError: Text on current page should be correct\nExpected: element text is \"Yandex\"\n     but: <[[PhantomJSDriver: phantomjs on MAC (9e679b20-5085-11e4-ad6d-87edf8da84a7)] -> css selector: title]> text is \"\"",
-      "time" : {
-        "start" : 1412949551164,
-        "stop" : 1412949556298,
-        "duration" : 5134
-      }
+      "statusDetails" : "AssertionError: Text on current page should be correct\nExpected: element text is \"Yandex\"\n     but: <[[PhantomJSDriver: phantomjs on MAC (9e679b20-5085-11e4-ad6d-87edf8da84a7)] -> css selector: title]> text is \"\""
     } ]
   },
   "my.company.AlwaysPassingTest#testOne" : {
@@ -589,50 +481,38 @@
     "items" : [ {
       "uid" : "8d49e3090e19c43f",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/8d49e3090e19c43f",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949539363,
-        "stop" : 1412949539715,
-        "duration" : 352
-      }
+      "status" : "passed"
     }, {
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949539715,
-        "stop" : 1412949539718,
-        "duration" : 3
-      }
+      "status" : "passed"
     } ]
   },
   "93d2dee14b8d8223af7c697f043e6078" : {
     "statistic" : {
-      "failed" : 2,
+      "failed" : 3,
       "broken" : 0,
       "skipped" : 0,
       "passed" : 0,
       "unknown" : 0,
-      "total" : 2
+      "total" : 3
     },
     "items" : [ {
+      "uid" : "9a7fed1a873f343f",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testresult/9a7fed1a873f343f",
+      "status" : "failed",
+      "statusDetails" : "AssertionError: \nExpected: \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"ok value\\\"\\n}\"\n     but: was \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"bad value\\\"\\n}\"",
+      "start" : 1412949539800,
+      "stop" : 1412949540461,
+      "duration" : 661
+    }, {
       "uid" : "23d3b2a704fc90c8",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/23d3b2a704fc90c8",
       "status" : "failed",
-      "statusDetails" : "AssertionError: \nExpected: \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"ok value\\\"\\n}\"\n     but: was \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"bad value\\\"\\n}\"",
-      "time" : {
-        "start" : 1412949539800,
-        "stop" : 1412949540461,
-        "duration" : 661
-      }
+      "statusDetails" : "AssertionError: \nExpected: \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"ok value\\\"\\n}\"\n     but: was \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"bad value\\\"\\n}\""
     }, {
       "uid" : "8e0ac2712f83c24a",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/8e0ac2712f83c24a",
       "status" : "failed",
-      "statusDetails" : "AssertionError: \nExpected: \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"ok value\\\"\\n}\"\n     but: was \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"bad value\\\"\\n}\"",
-      "time" : {
-        "start" : 1412949539800,
-        "stop" : 1412949540461,
-        "duration" : 661
-      }
+      "statusDetails" : "AssertionError: \nExpected: \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"ok value\\\"\\n}\"\n     but: was \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"bad value\\\"\\n}\""
     } ]
   },
   "my.company.SimpleTest#failedSimpleTest" : {
@@ -648,20 +528,10 @@
       "uid" : "d522275afb1a8471",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/d522275afb1a8471",
       "status" : "failed",
-      "statusDetails" : "AssertionError: 5 is not 2 + 2\nExpected: is <4>\n     but: was <5>",
-      "time" : {
-        "start" : 1412949558829,
-        "stop" : 1412949558830,
-        "duration" : 1
-      }
+      "statusDetails" : "AssertionError: 5 is not 2 + 2\nExpected: is <4>\n     but: was <5>"
     }, {
       "status" : "failed",
-      "statusDetails" : "AssertionError: 5 is not 2 + 2\nExpected: is <4>\n     but: was <5>",
-      "time" : {
-        "start" : 1412949558830,
-        "stop" : 1412949558866,
-        "duration" : 36
-      }
+      "statusDetails" : "AssertionError: 5 is not 2 + 2\nExpected: is <4>\n     but: was <5>"
     } ]
   },
   "974244cc45b28b57b6cf91e585ad0e51" : {
@@ -669,28 +539,25 @@
       "failed" : 0,
       "broken" : 0,
       "skipped" : 0,
-      "passed" : 2,
+      "passed" : 3,
       "unknown" : 0,
-      "total" : 2
+      "total" : 3
     },
     "items" : [ {
+      "uid" : "83f6d402f8847e8e",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testresult/83f6d402f8847e8e",
+      "status" : "passed",
+      "start" : 1412949539363,
+      "stop" : 1412949539715,
+      "duration" : 352
+    }, {
       "uid" : "abd62039f679a98d",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/abd62039f679a98d",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949539363,
-        "stop" : 1412949539715,
-        "duration" : 352
-      }
+      "status" : "passed"
     }, {
       "uid" : "586cdec6ce3363f5",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/586cdec6ce3363f5",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949539363,
-        "stop" : 1412949539715,
-        "duration" : 352
-      }
+      "status" : "passed"
     } ]
   },
   "my.company.NonAsciiTest#test_pass" : {
@@ -705,50 +572,38 @@
     "items" : [ {
       "uid" : "135df51d59c39e68",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/135df51d59c39e68",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949540562,
-        "stop" : 1412949540565,
-        "duration" : 3
-      }
+      "status" : "passed"
     }, {
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949558830,
-        "stop" : 1412949558866,
-        "duration" : 36
-      }
+      "status" : "passed"
     } ]
   },
   "fe000adfa23e5f69b4ad2b4670a0f0a1" : {
     "statistic" : {
       "failed" : 0,
-      "broken" : 2,
+      "broken" : 3,
       "skipped" : 0,
       "passed" : 0,
       "unknown" : 0,
-      "total" : 2
+      "total" : 3
     },
     "items" : [ {
+      "uid" : "20355d1e84c7c74b",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testresult/20355d1e84c7c74b",
+      "status" : "broken",
+      "statusDetails" : "Exception: Невероятная проблема!",
+      "start" : 1412949540562,
+      "stop" : 1412949540660,
+      "duration" : 98
+    }, {
       "uid" : "c8d6bad3ec28338",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/c8d6bad3ec28338",
       "status" : "broken",
-      "statusDetails" : "Exception: Невероятная проблема!",
-      "time" : {
-        "start" : 1412949540562,
-        "stop" : 1412949540660,
-        "duration" : 98
-      }
+      "statusDetails" : "Exception: Невероятная проблема!"
     }, {
       "uid" : "7d2df1ce5e08dbe7",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/7d2df1ce5e08dbe7",
       "status" : "broken",
-      "statusDetails" : "Exception: Невероятная проблема!",
-      "time" : {
-        "start" : 1412949540562,
-        "stop" : 1412949540660,
-        "duration" : 98
-      }
+      "statusDetails" : "Exception: Невероятная проблема!"
     } ]
   },
   "Search tests#Empty text search" : {
@@ -761,12 +616,7 @@
       "total" : 1
     },
     "items" : [ {
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949558830,
-        "stop" : 1412949558866,
-        "duration" : 36
-      }
+      "status" : "passed"
     } ]
   },
   "my.company.AlwaysPassingTest#testFour" : {
@@ -781,19 +631,9 @@
     "items" : [ {
       "uid" : "1ea7c7f96d4894ea",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/1ea7c7f96d4894ea",
-      "status" : "unknown",
-      "time" : {
-        "start" : 1412949539363,
-        "stop" : 1412949539730,
-        "duration" : 367
-      }
+      "status" : "unknown"
     }, {
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949558830,
-        "stop" : 1412949558866,
-        "duration" : 36
-      }
+      "status" : "passed"
     } ]
   },
   "my.company.SimpleTest#Test what do nothing and always passed right, but have a very long title, over 100 symbols, seriously" : {
@@ -808,19 +648,9 @@
     "items" : [ {
       "uid" : "dafa0d235010d733",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/dafa0d235010d733",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949558829,
-        "stop" : 1412949558829,
-        "duration" : 0
-      }
+      "status" : "passed"
     }, {
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949558830,
-        "stop" : 1412949558866,
-        "duration" : 36
-      }
+      "status" : "passed"
     } ]
   },
   "my.company.ManyInfoTest#Test with long assertion text" : {
@@ -836,20 +666,10 @@
       "uid" : "541aa2bc40916161",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/541aa2bc40916161",
       "status" : "failed",
-      "statusDetails" : "AssertionError: \nExpected: \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"ok value\\\"\\n}\"\n     but: was \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"bad value\\\"\\n}\"",
-      "time" : {
-        "start" : 1412949539800,
-        "stop" : 1412949540461,
-        "duration" : 661
-      }
+      "statusDetails" : "AssertionError: \nExpected: \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"ok value\\\"\\n}\"\n     but: was \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"bad value\\\"\\n}\""
     }, {
       "status" : "passed",
-      "statusDetails" : "AssertionError: \nExpected: \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"ok value\\\"\\n}\"\n     but: was \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"bad value\\\"\\n}\"",
-      "time" : {
-        "start" : 1412949558830,
-        "stop" : 1412949558866,
-        "duration" : 36
-      }
+      "statusDetails" : "AssertionError: \nExpected: \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"ok value\\\"\\n}\"\n     but: was \"{\\n\\\"name\\\": \\\"test\\\",\\n\\\"value\\\": \\\"bad value\\\"\\n}\""
     } ]
   },
   "my.company.BeforeClassFailTest#BeforeClassFailTest" : {
@@ -865,51 +685,39 @@
       "uid" : "f6a3cda74272ea80",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/f6a3cda74272ea80",
       "status" : "broken",
-      "statusDetails" : "RuntimeException: bye-bye",
-      "time" : {
-        "start" : 1412949539770,
-        "stop" : 1412949539779,
-        "duration" : 9
-      }
+      "statusDetails" : "RuntimeException: bye-bye"
     }, {
       "status" : "broken",
-      "statusDetails" : "RuntimeException: bye-bye",
-      "time" : {
-        "start" : 1412949558830,
-        "stop" : 1412949558866,
-        "duration" : 36
-      }
+      "statusDetails" : "RuntimeException: bye-bye"
     } ]
   },
   "45284d7134231f80356aad038e8976ed" : {
     "statistic" : {
       "failed" : 0,
-      "broken" : 2,
+      "broken" : 3,
       "skipped" : 0,
       "passed" : 0,
       "unknown" : 0,
-      "total" : 2
+      "total" : 3
     },
     "items" : [ {
+      "uid" : "20bae9478218e145",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testresult/20bae9478218e145",
+      "status" : "broken",
+      "statusDetails" : "FileNotFoundException: No file found.",
+      "start" : 1412949539801,
+      "stop" : 1412949539862,
+      "duration" : 61
+    }, {
       "uid" : "342b7804dddc8158",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/342b7804dddc8158",
       "status" : "broken",
-      "statusDetails" : "FileNotFoundException: No file found.",
-      "time" : {
-        "start" : 1412949539801,
-        "stop" : 1412949539862,
-        "duration" : 61
-      }
+      "statusDetails" : "FileNotFoundException: No file found."
     }, {
       "uid" : "379f6b320fed9c0a",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/379f6b320fed9c0a",
       "status" : "broken",
-      "statusDetails" : "FileNotFoundException: No file found.",
-      "time" : {
-        "start" : 1412949539801,
-        "stop" : 1412949539862,
-        "duration" : 61
-      }
+      "statusDetails" : "FileNotFoundException: No file found."
     } ]
   },
   "my.company.AlwaysPassingTest#testThree" : {
@@ -924,81 +732,67 @@
     "items" : [ {
       "uid" : "97a3edf2521d6be",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/97a3edf2521d6be",
-      "status" : "unknown",
-      "time" : {
-        "start" : 1412949539364,
-        "stop" : 1412949539746,
-        "duration" : 382
-      }
+      "status" : "unknown"
     }, {
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949558830,
-        "stop" : 1412949558866,
-        "duration" : 36
-      }
+      "status" : "passed"
     } ]
   },
   "caaff03984d29ec68cc05f72f3931bff" : {
     "statistic" : {
-      "failed" : 2,
+      "failed" : 3,
       "broken" : 0,
       "skipped" : 0,
       "passed" : 0,
       "unknown" : 0,
-      "total" : 2
+      "total" : 3
     },
     "items" : [ {
+      "uid" : "757a01642d27c996",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testresult/757a01642d27c996",
+      "status" : "failed",
+      "statusDetails" : "AssertionError: 5 is not 2 + 2\nExpected: is <4>\n     but: was <5>",
+      "start" : 1412949558829,
+      "stop" : 1412949558830,
+      "duration" : 1
+    }, {
       "uid" : "dc894b39dc85fa9a",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/dc894b39dc85fa9a",
       "status" : "failed",
-      "statusDetails" : "AssertionError: 5 is not 2 + 2\nExpected: is <4>\n     but: was <5>",
-      "time" : {
-        "start" : 1412949558829,
-        "stop" : 1412949558830,
-        "duration" : 1
-      }
+      "statusDetails" : "AssertionError: 5 is not 2 + 2\nExpected: is <4>\n     but: was <5>"
     }, {
       "uid" : "eedaaf0f004a413d",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/eedaaf0f004a413d",
       "status" : "failed",
-      "statusDetails" : "AssertionError: 5 is not 2 + 2\nExpected: is <4>\n     but: was <5>",
-      "time" : {
-        "start" : 1412949558829,
-        "stop" : 1412949558830,
-        "duration" : 1
-      }
+      "statusDetails" : "AssertionError: 5 is not 2 + 2\nExpected: is <4>\n     but: was <5>"
     } ]
   },
   "38586c38a5a06809465a5c72670e19ff" : {
     "statistic" : {
       "failed" : 0,
-      "broken" : 2,
+      "broken" : 3,
       "skipped" : 0,
       "passed" : 0,
       "unknown" : 0,
-      "total" : 2
+      "total" : 3
     },
     "items" : [ {
+      "uid" : "8ad6ae630a4059f6",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testresult/8ad6ae630a4059f6",
+      "status" : "broken",
+      "statusDetails" : "RuntimeException: bye-bye",
+      "start" : 1412949539770,
+      "stop" : 1412949539779,
+      "duration" : 9
+    }, {
       "uid" : "68e7fc103de2ba03",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/68e7fc103de2ba03",
       "status" : "broken",
-      "statusDetails" : "RuntimeException: bye-bye",
-      "time" : {
-        "start" : 1412949539770,
-        "stop" : 1412949539779,
-        "duration" : 9
-      }
+      "statusDetails" : "RuntimeException: bye-bye"
     }, {
       "uid" : "ade5dbd571b895c5",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/ade5dbd571b895c5",
       "status" : "broken",
-      "statusDetails" : "RuntimeException: bye-bye",
-      "time" : {
-        "start" : 1412949539770,
-        "stop" : 1412949539779,
-        "duration" : 9
-      }
+      "statusDetails" : "RuntimeException: bye-bye"
     } ]
   },
   "Search tests#Page loading test" : {
@@ -1012,12 +806,7 @@
     },
     "items" : [ {
       "status" : "failed",
-      "statusDetails" : "AssertionError: Text on current page should be correct\nExpected: element text is \"Yandex\"\n     but: <[[PhantomJSDriver: phantomjs on MAC (9e679b20-5085-11e4-ad6d-87edf8da84a7)] -> css selector: title]> text is \"\"",
-      "time" : {
-        "start" : 1412949558830,
-        "stop" : 1412949558866,
-        "duration" : 36
-      }
+      "statusDetails" : "AssertionError: Text on current page should be correct\nExpected: element text is \"Yandex\"\n     but: <[[PhantomJSDriver: phantomjs on MAC (9e679b20-5085-11e4-ad6d-87edf8da84a7)] -> css selector: title]> text is \"\""
     } ]
   },
   "my.company.ManyInfoTest#<script>3443</script>" : {
@@ -1033,20 +822,10 @@
       "uid" : "e43b4de92b1ca911",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/e43b4de92b1ca911",
       "status" : "failed",
-      "statusDetails" : "AlarmAssertionErrorAssertionErrorAssertionErrorAssertionErrorAssertionError: This test should be failed",
-      "time" : {
-        "start" : 1412949539801,
-        "stop" : 1412949540559,
-        "duration" : 758
-      }
+      "statusDetails" : "AlarmAssertionErrorAssertionErrorAssertionErrorAssertionErrorAssertionError: This test should be failed"
     }, {
       "status" : "failed",
-      "statusDetails" : "AlarmAssertionErrorAssertionErrorAssertionErrorAssertionErrorAssertionError: This test should be failed",
-      "time" : {
-        "start" : 1412949558830,
-        "stop" : 1412949558866,
-        "duration" : 36
-      }
+      "statusDetails" : "AlarmAssertionErrorAssertionErrorAssertionErrorAssertionErrorAssertionError: This test should be failed"
     } ]
   },
   "my.company.ScreenshotTest#Page loading test" : {
@@ -1062,12 +841,7 @@
       "uid" : "99ebbe49adbca5ce",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/99ebbe49adbca5ce",
       "status" : "failed",
-      "statusDetails" : "AssertionError: Text on current page should be correct\nExpected: element text is \"Yandex\"\n     but: <[[PhantomJSDriver: phantomjs on MAC (9e679b20-5085-11e4-ad6d-87edf8da84a7)] -> css selector: title]> text is \"\"",
-      "time" : {
-        "start" : 1412949551164,
-        "stop" : 1412949556298,
-        "duration" : 5134
-      }
+      "statusDetails" : "AssertionError: Text on current page should be correct\nExpected: element text is \"Yandex\"\n     but: <[[PhantomJSDriver: phantomjs on MAC (9e679b20-5085-11e4-ad6d-87edf8da84a7)] -> css selector: title]> text is \"\""
     } ]
   },
   "my.company.SimpleTest#brokenSimpleTest" : {
@@ -1083,20 +857,10 @@
       "uid" : "fd5a45b76f24cdcc",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/fd5a45b76f24cdcc",
       "status" : "broken",
-      "statusDetails" : "ArrayIndexOutOfBoundsException: 1",
-      "time" : {
-        "start" : 1412949558829,
-        "stop" : 1412949558832,
-        "duration" : 3
-      }
+      "statusDetails" : "ArrayIndexOutOfBoundsException: 1"
     }, {
       "status" : "broken",
-      "statusDetails" : "ArrayIndexOutOfBoundsException: 1",
-      "time" : {
-        "start" : 1412949558830,
-        "stop" : 1412949558866,
-        "duration" : 36
-      }
+      "statusDetails" : "ArrayIndexOutOfBoundsException: 1"
     } ]
   },
   "298ff916f7c25573e5cf565cdf17a560" : {
@@ -1104,28 +868,25 @@
       "failed" : 0,
       "broken" : 0,
       "skipped" : 0,
-      "passed" : 2,
+      "passed" : 3,
       "unknown" : 0,
-      "total" : 2
+      "total" : 3
     },
     "items" : [ {
+      "uid" : "854d808e1fc41aa7",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testresult/854d808e1fc41aa7",
+      "status" : "passed",
+      "start" : 1412949551164,
+      "stop" : 1412949558737,
+      "duration" : 7573
+    }, {
       "uid" : "bd762e8f8ca3c6dd",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/bd762e8f8ca3c6dd",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949551164,
-        "stop" : 1412949558737,
-        "duration" : 7573
-      }
+      "status" : "passed"
     }, {
       "uid" : "31f86f9461f8988f",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/31f86f9461f8988f",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949551164,
-        "stop" : 1412949558737,
-        "duration" : 7573
-      }
+      "status" : "passed"
     } ]
   },
   "my.company.ScreenshotTest#Wildcard search test" : {
@@ -1140,43 +901,36 @@
     "items" : [ {
       "uid" : "e3c4fe013914274f",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/e3c4fe013914274f",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949551164,
-        "stop" : 1412949558737,
-        "duration" : 7573
-      }
+      "status" : "passed"
     } ]
   },
   "48bc21772cdd3732986f5274bbfe8aaa" : {
     "statistic" : {
       "failed" : 0,
       "broken" : 0,
-      "skipped" : 2,
+      "skipped" : 3,
       "passed" : 0,
       "unknown" : 0,
-      "total" : 2
+      "total" : 3
     },
     "items" : [ {
+      "uid" : "234671fd30311a3",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testresult/234671fd30311a3",
+      "status" : "skipped",
+      "statusDetails" : "Test ignored (without reason)!",
+      "start" : 1412949558831,
+      "stop" : 1412949558832,
+      "duration" : 1
+    }, {
       "uid" : "bd097ddebe95fdd3",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/bd097ddebe95fdd3",
       "status" : "skipped",
-      "statusDetails" : "Test ignored (without reason)!",
-      "time" : {
-        "start" : 1412949558831,
-        "stop" : 1412949558832,
-        "duration" : 1
-      }
+      "statusDetails" : "Test ignored (without reason)!"
     }, {
       "uid" : "b0871f45403c9c01",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/b0871f45403c9c01",
       "status" : "skipped",
-      "statusDetails" : "Test ignored (without reason)!",
-      "time" : {
-        "start" : 1412949558831,
-        "stop" : 1412949558832,
-        "duration" : 1
-      }
+      "statusDetails" : "Test ignored (without reason)!"
     } ]
   },
   "my.company.ScreenshotTest#Usual search test" : {
@@ -1191,12 +945,7 @@
     "items" : [ {
       "uid" : "1390204629acfa78",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/1390204629acfa78",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949551164,
-        "stop" : 1412949558826,
-        "duration" : 7662
-      }
+      "status" : "passed"
     } ]
   },
   "7db5f5ec8d8300fe2f14c008f7b9f5e7" : {
@@ -1204,28 +953,25 @@
       "failed" : 0,
       "broken" : 0,
       "skipped" : 0,
-      "passed" : 2,
+      "passed" : 3,
       "unknown" : 0,
-      "total" : 2
+      "total" : 3
     },
     "items" : [ {
+      "uid" : "a40352754aec5604",
+      "reportUrl" : "http://example.org/build#13/AllureReport/#testresult/a40352754aec5604",
+      "status" : "passed",
+      "start" : 1412949539363,
+      "stop" : 1412949539372,
+      "duration" : 9
+    }, {
       "uid" : "2bf84d161b8ca318",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/2bf84d161b8ca318",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949539363,
-        "stop" : 1412949539372,
-        "duration" : 9
-      }
+      "status" : "passed"
     }, {
       "uid" : "d81b4c00a9acbb19",
       "reportUrl" : "http://example.org/build#13/AllureReport/#testcase/d81b4c00a9acbb19",
-      "status" : "passed",
-      "time" : {
-        "start" : 1412949539363,
-        "stop" : 1412949539372,
-        "duration" : 9
-      }
+      "status" : "passed"
     } ]
   }
 }

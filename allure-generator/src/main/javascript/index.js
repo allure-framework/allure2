@@ -33,18 +33,19 @@ import './plugins/widget-categories';
 import './plugins/widget-environment';
 import './plugins/widget-executor';
 
-import './plugins/testresult-block-description';
-import './plugins/testresult-block-execution';
-import './plugins/testresult-block-message';
-import './plugins/testresult-block-tags';
 import './plugins/testresult-block-category';
-import './plugins/testresult-history';
-import './plugins/testresult-retries';
-import './plugins/testresult-block-owner';
-import './plugins/testresult-block-severity';
+import './plugins/testresult-block-description';
 import './plugins/testresult-block-duration';
-import './plugins/testresult-block-parameters';
+import './plugins/testresult-block-execution';
 import './plugins/testresult-block-links';
+import './plugins/testresult-block-history';
+import './plugins/testresult-block-message';
+import './plugins/testresult-block-owner';
+import './plugins/testresult-block-parameters';
+import './plugins/testresult-block-severity';
+import './plugins/testresult-block-tags';
+import './plugins/testresult-tab-retries';
+import './plugins/testresult-tab-history';
 
 window.jQuery = $;
 

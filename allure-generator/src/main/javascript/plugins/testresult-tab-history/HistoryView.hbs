@@ -8,9 +8,10 @@
         </div>
         {{#each history.items}}
             {{#if reportUrl}}
-                <div class="{{b ../cls 'row'}}">
-                    <a class="link" href="{{reportUrl}}" target="_blank">
+                <div class="{{b ../cls 'row'}} long-line">
+                    <a class="link link__no-decoration" href="{{reportUrl}}" target="_blank">
                         <span class="label label_status_{{status}}">{{status}}</span>
+                        <span>{{statusDetails}}</span>
                         <span>{{date start}} at {{time start}}</span>
                     </a>
                 </div>
