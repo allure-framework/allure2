@@ -4,9 +4,10 @@
 .bar {
   height: 18px;
   overflow: hidden;
-  position: relative;
-  border-radius: 4px;
+  border-radius: 3px;
   background: #eee;
+  display: inline-flex;
+  width: 100%;
   &__fill {
     display: inline-block;
     overflow: hidden;

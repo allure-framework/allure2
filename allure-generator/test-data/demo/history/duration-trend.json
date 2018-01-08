@@ -1,0 +1,46 @@
+[
+  {
+    "buildOrder": 12,
+    "reportUrl": "https://ci.qameta.io/job/allure2/job/master/Demo2_Report/index.html",
+    "reportName": "Demo allure report",
+    "data": {
+      "duration": 1013830
+    }
+  },
+  {
+    "buildOrder": 11,
+    "reportUrl": "https://ci.qameta.io/job/allure2/job/master/Demo2_Report/index.html",
+    "reportName": "Demo report 1",
+    "data": {
+      "duration": 903830
+    }
+  },
+  {
+    "buildOrder": 10,
+    "reportName": "Demo report",
+    "data": {
+      "duration": 1003840
+    }
+  },
+  {
+    "buildOrder": 9,
+    "reportName": "Demo allure report",
+    "data": {
+      "duration": 1513830
+    }
+  },
+  {
+    "buildOrder": 8,
+    "reportName": "Demo report 1",
+    "data": {
+      "duration": 813830
+    }
+  },
+  {
+    "buildOrder": 7,
+    "reportName": "Demo report",
+    "data": {
+      "duration": 803840
+    }
+  }
+]

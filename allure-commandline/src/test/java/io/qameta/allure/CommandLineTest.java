@@ -122,7 +122,7 @@ public class CommandLineTest {
     public void shouldRunOpen() throws Exception {
         final int port = randomPort();
         final Path report = folder.newFolder().toPath();
-        when(commands.open(report, port))
+        when(commands.open(report, null, port))
                 .thenReturn(NO_ERROR);
 
         final Optional<ExitCode> exitCode = commandLine.parse(
@@ -132,7 +132,7 @@ public class CommandLineTest {
                 .isEmpty();
 
         final ExitCode code = commandLine.run();
-        verify(commands, times(1)).open(report, port);
+        verify(commands, times(1)).open(report, null, port);
         assertThat(code)
                 .isEqualTo(NO_ERROR);
     }
@@ -179,12 +179,14 @@ public class CommandLineTest {
     @Test
     public void shouldParseServeCommand() throws Exception {
         final int port = randomPort();
+        final String host = randomString();
         final String profile = randomString();
         final Path first = folder.newFolder().toPath();
         final Path second = folder.newFolder().toPath();
         final Optional<ExitCode> code = commandLine.parse(
                 SERVE_COMMAND,
                 "--port", String.valueOf(port),
+                "--host", host,
                 "--profile", profile,
                 first.toString(), second.toString()
         );
@@ -194,7 +196,7 @@ public class CommandLineTest {
 
         final ArgumentCaptor<ConfigOptions> captor = ArgumentCaptor.forClass(ConfigOptions.class);
 
-        when(commands.serve(eq(Arrays.asList(first, second)), eq(port), captor.capture())).thenReturn(NO_ERROR);
+        when(commands.serve(eq(Arrays.asList(first, second)), eq(host), eq(port), captor.capture())).thenReturn(NO_ERROR);
         final ExitCode run = commandLine.run();
         assertThat(run)
                 .isEqualTo(NO_ERROR);

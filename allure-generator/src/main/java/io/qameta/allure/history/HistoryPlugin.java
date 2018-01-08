@@ -96,13 +96,13 @@ public class HistoryPlugin implements Reader, Aggregator {
 
         data.getStatistic().update(result);
         if (!data.getItems().isEmpty()) {
-            result.setExtraBlock(HISTORY_BLOCK_NAME, copy(data));
+            result.addExtraBlock(HISTORY_BLOCK_NAME, copy(data));
         }
 
         final HistoryItem newItem = new HistoryItem()
                 .setUid(result.getUid())
                 .setStatus(result.getStatus())
-                .setStatusDetails(result.getStatusMessage().orElse(null))
+                .setStatusDetails(result.getStatusMessage())
                 .setTime(result.getTime());
 
         if (Objects.nonNull(info.getReportUrl())) {

@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import java.awt.Desktop;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -95,6 +96,7 @@ public class Commands {
     }
 
     public ExitCode serve(final List<Path> resultsDirectories,
+                          final String host,
                           final int port,
                           final ConfigOptions configOptions) {
         LOGGER.info("Generating report to temp directory...");
@@ -116,14 +118,14 @@ public class Commands {
                 configOptions
         );
         if (exitCode.isSuccess()) {
-            return open(reportDirectory, port);
+            return open(reportDirectory, host, port);
         }
         return exitCode;
     }
 
-    public ExitCode open(final Path reportDirectory, final int port) {
+    public ExitCode open(final Path reportDirectory, final String host, final int port) {
         LOGGER.info("Starting web server...");
-        final Server server = setUpServer(port, reportDirectory);
+        final Server server = setUpServer(host, port, reportDirectory);
         try {
             server.start();
         } catch (Exception e) {
@@ -187,8 +189,10 @@ public class Commands {
     /**
      * Set up Jetty server to serve Allure Report
      */
-    protected Server setUpServer(final int port, final Path reportDirectory) {
-        final Server server = new Server(port);
+    protected Server setUpServer(final String host, final int port, final Path reportDirectory) {
+        final Server server = Objects.isNull(host)
+                ? new Server(port)
+                : new Server(new InetSocketAddress(host, port));
         ResourceHandler handler = new ResourceHandler();
         handler.setRedirectWelcome(true);
         handler.setDirectoriesListed(true);

@@ -12,7 +12,7 @@ export default class DurationWidgetView extends View {
 
     onRender() {
         this.showChildView('chart', new DurationChartView({
-            model: this.model,
+            model: this.model.get('items'),
         }));
     }
 }

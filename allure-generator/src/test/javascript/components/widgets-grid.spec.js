@@ -4,22 +4,23 @@ import WidgetsGridView from 'components/widgets-grid/WidgetsGridView';
 import WidgetsModel from 'data/widgets/WidgetsModel';
 import {getSettingsForWidgetGridPlugin} from 'utils/settingsFactory';
 
+
 describe('WidgetsGridView', function() {
-    let settings = getSettingsForWidgetGridPlugin('ALLURE_TEST');
+    let settings = getSettingsForWidgetGridPlugin('group');
     function PageObject(el) {
         this.column = (i) => el.find('.widgets-grid__col').eq(i);
         this.widgetsAtCol = (i) => this.column(i).find('.widget');
     }
 
     beforeEach(() => {
-        settings = getSettingsForWidgetGridPlugin('ALLURE_TEST');
+        settings = getSettingsForWidgetGridPlugin('group');
         pluginsRegistry.widgets = {
             group: {
-                a: View,
-                b: View,
-                c: View,
-                d: View,
-                e: View
+                a: {widget: View, model: WidgetsModel},
+                b: {widget: View, model: WidgetsModel},
+                c: {widget: View, model: WidgetsModel},
+                d: {widget: View, model: WidgetsModel},
+                e: {widget: View, model: WidgetsModel}
             }
         };
         this.model = new WidgetsModel({

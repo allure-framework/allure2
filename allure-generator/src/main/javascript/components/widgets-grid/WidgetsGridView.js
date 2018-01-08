@@ -5,6 +5,7 @@ import Sortable from 'sortablejs';
 import {className} from '../../decorators';
 import pluginsRegistry from '../../utils/pluginsRegistry';
 import {getSettingsForWidgetGridPlugin} from '../../utils/settingsFactory';
+import {fetchAndShow} from '../../utils/loading';
 
 
 const widgetTpl = (id) => `<div class="widget island" data-id="${id}">
@@ -19,19 +20,19 @@ const colTpl = '<div class="widgets-grid__col"></div>';
 class WidgetsGridView extends View {
     template = () => '';
 
-    initialize({settings = getSettingsForWidgetGridPlugin('overview')}) {
+    initialize() {
         this.widgets = pluginsRegistry.widgets[this.options.tabName];
-        this.settings = settings;
+        this.settings = this.options.settings || getSettingsForWidgetGridPlugin(this.options.tabName);
     }
 
     onRender() {
         this.getWidgetsArrangement().map(col => {
-            return col.map(widgetName => [widgetName, this.widgets[widgetName]]);
+            return col.map(widgetName => [widgetName, this.widgets[widgetName].widget, this.widgets[widgetName].model]);
         }).forEach(widgetCol => {
             const col = $(colTpl);
             this.$el.append(col);
-            widgetCol.forEach(([name, Widget]) => {
-                this.addWidget(col, name, Widget);
+            widgetCol.forEach(([name, Widget, Model]) => {
+                this.addWidget(col, name, Widget, Model);
             });
         });
         this.$('.widgets-grid__col').each((i, colEl) => new Sortable(colEl, {
@@ -65,14 +66,12 @@ class WidgetsGridView extends View {
         }));
     }
 
-    addWidget(col, name, Widget) {
+    addWidget(col, name, Widget, Model) {
         const el = $(widgetTpl(name));
         col.append(el);
-
         this.addRegion(name, {el: el.find('.widget__body')});
-        /// fetchAndShow(this, name, this.model, new Widget({model: this.model}))
-        const model = this.model;
-        this.getRegion(name).show(new Widget({model, name}));
+        const widget = new Model({}, {name});
+        fetchAndShow(this, name, widget, new Widget({model: widget}));
     }
 }
 

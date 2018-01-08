@@ -7,7 +7,6 @@ import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import io.qameta.allure.parser.XmlElement;
@@ -142,7 +141,8 @@ public class JunitXmlPlugin implements Reader {
         final Status status = getStatus(testCaseElement);
         final TestResult result = createStatuslessTestResult(info, testCaseElement, parsedFile, context);
         result.setStatus(status);
-        result.setStatusDetails(getStatusDetails(testCaseElement));
+        result.setFlaky(isFlaky(testCaseElement));
+        setStatusDetails(result, testCaseElement);
 
         getLogFile(resultsDirectory, className)
                 .filter(Files::exists)
@@ -158,11 +158,8 @@ public class JunitXmlPlugin implements Reader {
             final TestResult retried = createStatuslessTestResult(info, testCaseElement, parsedFile, context);
             retried.setHidden(true);
             retried.setStatus(retryStatus);
-            retried.setStatusDetails(new StatusDetails()
-                    .setMessage(failure.getAttribute(MESSAGE_ATTRIBUTE_NAME))
-                    .setTrace(failure.getValue())
-                    .setFlaky(true)
-            );
+            retried.setStatusMessage(failure.getAttribute(MESSAGE_ATTRIBUTE_NAME));
+            retried.setStatusTrace(failure.getValue());
             visitor.visitTestResult(retried);
         }));
     }
@@ -217,19 +214,19 @@ public class JunitXmlPlugin implements Reader {
         return Status.PASSED;
     }
 
-    private StatusDetails getStatusDetails(final XmlElement testCaseElement) {
-        final boolean flaky = isFlaky(testCaseElement);
-        return Stream.of(FAILURE_ELEMENT_NAME, ERROR_ELEMENT_NAME, SKIPPED_ELEMENT_NAME)
+    private void setStatusDetails(final TestResult result, final XmlElement testCaseElement) {
+        Stream.of(FAILURE_ELEMENT_NAME, ERROR_ELEMENT_NAME, SKIPPED_ELEMENT_NAME)
                 .filter(testCaseElement::contains)
                 .map(testCaseElement::get)
                 .filter(elements -> !elements.isEmpty())
                 .flatMap(Collection::stream)
                 .findFirst()
-                .map(element -> new StatusDetails()
-                        .setMessage(element.getAttribute(MESSAGE_ATTRIBUTE_NAME))
-                        .setTrace(element.getValue())
-                        .setFlaky(flaky))
-                .orElseGet(() -> new StatusDetails().setFlaky(flaky));
+                .ifPresent(element -> {
+                    //@formatter:off
+                    result.setStatusMessage(element.getAttribute(MESSAGE_ATTRIBUTE_NAME));
+                    result.setStatusTrace(element.getValue());
+                    //@formatter:on
+                });
     }
 
     private Time getTime(final Long suiteStart, final XmlElement testCaseElement, final Path parsedFile) {

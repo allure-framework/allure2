@@ -23,6 +23,10 @@ Fork, then clone the repo:
 $ git clone git@github.com:your-username/allure2.git
 ```
 
+Prepare your IDE for work (Intellij IDEA example): 
+1. Install [Lombok plugin](https://plugins.jetbrains.com/plugin/6317-lombok-plugin)
+2. Make sure you have `Enable annotation processing` checkbox enabled in `Compiler` settings
+
 Then build the project (build requires JDK 1.8 or higher):
 
 ```bash

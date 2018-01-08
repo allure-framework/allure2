@@ -4,7 +4,6 @@ import io.qameta.allure.Reader;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Timeable;
@@ -27,6 +26,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
 import static io.qameta.allure.entity.LabelName.SUITE;
@@ -100,7 +100,8 @@ public class XcTestPlugin implements Reader {
                 .forEach(activity -> parseStep(directory, result, activity, visitor));
         Optional<Step> lastFailedStep = result.getTestStage().getSteps().stream()
                 .filter(s -> !s.getStatus().equals(Status.PASSED)).sorted((a, b) -> -1).findFirst();
-        lastFailedStep.map(Step::getStatusDetails).ifPresent(result::setStatusDetails);
+        lastFailedStep.map(Step::getStatusMessage).ifPresent(result::setStatusMessage);
+        lastFailedStep.map(Step::getStatusTrace).ifPresent(result::setStatusTrace);
         visitor.visitTestResult(result);
     }
 
@@ -121,16 +122,12 @@ public class XcTestPlugin implements Reader {
         }
         final Step step = ResultsUtils.getStep(props);
         if (activityTitle.startsWith("Assertion Failure:")) {
-            step.setStatusDetails(new StatusDetails().setMessage(activityTitle));
+            step.setStatusMessage(activityTitle);
             step.setStatus(Status.FAILED);
         }
 
         if (props.containsKey(HAS_SCREENSHOT)) {
-            String uuid = props.get("UUID").toString();
-            Path attachmentPath = directory.resolve("Attachments").resolve(String.format("Screenshot_%s.png", uuid));
-            if (Files.exists(attachmentPath)) {
-                step.getAttachments().add(visitor.visitAttachmentFile(attachmentPath));
-            }
+            addAttachment(directory, visitor, props, step);
         }
 
         if (parent instanceof TestResult) {
@@ -147,7 +144,21 @@ public class XcTestPlugin implements Reader {
         Optional<Step> lastFailedStep = step.getSteps().stream()
                 .filter(s -> !s.getStatus().equals(Status.PASSED)).sorted((a, b) -> -1).findFirst();
         lastFailedStep.map(Step::getStatus).ifPresent(step::setStatus);
-        lastFailedStep.map(Step::getStatusDetails).ifPresent(step::setStatusDetails);
+        lastFailedStep.map(Step::getStatusMessage).ifPresent(step::setStatusMessage);
+        lastFailedStep.map(Step::getStatusTrace).ifPresent(step::setStatusTrace);
+    }
+
+    private void addAttachment(final Path directory,
+                               final ResultsVisitor visitor,
+                               final Map<String, Object> props,
+                               final Step step) {
+        String uuid = props.get("UUID").toString();
+        Path attachments = directory.resolve("Attachments");
+        Stream.of("jpg", "png")
+            .map(ext -> attachments.resolve(String.format("Screenshot_%s.%s", uuid, ext)))
+            .filter(Files::exists)
+            .map(visitor::visitAttachmentFile)
+            .forEach(step.getAttachments()::add);
     }
 
     @SuppressWarnings("unchecked")

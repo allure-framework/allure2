@@ -3,7 +3,7 @@ package io.qameta.allure.command;
 import com.beust.jcommander.Parameters;
 import com.beust.jcommander.ParametersDelegate;
 import io.qameta.allure.option.ConfigOptions;
-import io.qameta.allure.option.PortOptions;
+import io.qameta.allure.option.HostPortOptions;
 import io.qameta.allure.option.ResultsOptions;
 
 /**
@@ -19,7 +19,7 @@ public class ServeCommand {
     private ResultsOptions resultsOptions = new ResultsOptions();
 
     @ParametersDelegate
-    private PortOptions portOptions = new PortOptions();
+    private HostPortOptions hostPortOptions = new HostPortOptions();
 
     @ParametersDelegate
     private ConfigOptions configOptions = new ConfigOptions();
@@ -28,8 +28,8 @@ public class ServeCommand {
         return resultsOptions;
     }
 
-    public PortOptions getPortOptions() {
-        return portOptions;
+    public HostPortOptions getHostPortOptions() {
+        return hostPortOptions;
     }
 
     public ConfigOptions getConfigOptions() {

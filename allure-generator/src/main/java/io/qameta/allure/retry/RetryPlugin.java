@@ -18,7 +18,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static io.qameta.allure.entity.TestResult.comparingByTimeDesc;
+import static io.qameta.allure.entity.TestResult.comparingByTime;
 
 /**
  * The plugin that process test retries.
@@ -27,7 +27,7 @@ import static io.qameta.allure.entity.TestResult.comparingByTimeDesc;
  */
 public class RetryPlugin implements Aggregator {
 
-    public static final String RETRY_BLOCK_NAME = "retries";
+    protected static final String RETRY_BLOCK_NAME = "retries";
 
     @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.AvoidInstantiatingObjectsInLoops"})
     @Override
@@ -46,16 +46,12 @@ public class RetryPlugin implements Aggregator {
     private Consumer<TestResult> addRetries(final List<TestResult> results) {
         return latest -> {
             final List<RetryItem> retries = results.stream()
-                    .sorted(comparingByTimeDesc())
+                    .sorted(comparingByTime())
                     .filter(result -> !latest.equals(result))
-                    .map(retry -> retry.setHidden(true))
-                    .map(retry -> new RetryItem()
-                            .setStatus(retry.getStatus())
-                            .setStatusDetails(retry.getStatusDetailsSafe().getMessage())
-                            .setTime(retry.getTime())
-                            .setUid(retry.getUid()))
+                    .map(this::prepareRetry)
+                    .map(this::createRetryItem)
                     .collect(Collectors.toList());
-            latest.setExtraBlock(RETRY_BLOCK_NAME, retries);
+            latest.addExtraBlock(RETRY_BLOCK_NAME, retries);
             final Set<Status> statuses = retries.stream()
                     .map(RetryItem::getStatus)
                     .distinct()
@@ -64,14 +60,28 @@ public class RetryPlugin implements Aggregator {
             statuses.remove(Status.PASSED);
             statuses.remove(Status.SKIPPED);
 
-            latest.getStatusDetailsSafe().setFlaky(!statuses.isEmpty());
+            latest.setFlaky(!statuses.isEmpty());
         };
+    }
+
+    private TestResult prepareRetry(final TestResult result) {
+        result.setHidden(true);
+        result.setRetry(true);
+        return result;
+    }
+
+    private RetryItem createRetryItem(final TestResult result) {
+        return new RetryItem()
+                .setStatus(result.getStatus())
+                .setStatusDetails(result.getStatusMessage())
+                .setTime(result.getTime())
+                .setUid(result.getUid());
     }
 
     private Optional<TestResult> findLatest(final List<TestResult> results) {
         return results.stream()
                 .filter(result -> !result.isHidden())
-                .sorted(comparingByTimeDesc())
+                .sorted(comparingByTime())
                 .findFirst();
     }
 
