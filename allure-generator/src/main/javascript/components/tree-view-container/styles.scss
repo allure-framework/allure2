@@ -1,6 +1,8 @@
 @import "../../variables.scss";
 
-.tree {
+.tree-container {
+  padding: $gap-size;
+
   &__ctrl {
     display: flex;
     flex-wrap: wrap;
@@ -25,5 +27,10 @@
   &__info, &__download {
     color: $text-muted-color;
     padding: 7px;
+  }
+
+  &__content {
+    padding-top: $gap-size;
+    margin-bottom: 300px;
   }
 }

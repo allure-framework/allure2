@@ -1,4 +1,4 @@
-import './styles.scss';
+// import './styles.scss';
 import {View} from 'backbone.marionette';
 import hotkeys from '../../utils/hotkeys';
 import template from './TreeView.hbs';

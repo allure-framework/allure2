@@ -1,21 +1,29 @@
 import './styles.scss';
 import {View} from 'backbone.marionette';
 import template from './TreeViewContainer.hbs';
-import {behavior, className, on, regions} from '../../decorators';
+import {behavior, className, events, on, regions, ui} from '../../decorators';
 import NodeSorterView from '../node-sorter/NodeSorterView';
 import NodeSearchView from '../node-search/NodeSearchView';
 import StatusToggleView from '../status-toggle/StatusToggleView';
-import TreeView from '../tree/TreeView';
+import TreeView from '../tree2/TreeView';
 import {Model} from 'backbone';
 import {getSettingsForTreePlugin} from '../../utils/settingsFactory';
+import hotkeys from '../../utils/hotkeys';
 
-@className('tree')
+@className('tree-container')
 @behavior('TooltipBehavior', {position: 'bottom'})
+@ui({
+    content: '.tree-container__content'
+})
 @regions({
     search: '.pane__search',
-    sorter: '.tree__sorter',
-    filter: '.tree__filter',
-    content: '.tree__content'
+    sorter: '.tree-container__sorter',
+    filter: '.tree-container__filter',
+    content: '@ui.content'
+})
+@events({
+    'focus @ui.content': 'onContentFocus',
+    'blur @ui.content': 'onContentBlur'
 })
 class TreeViewContainer extends View {
     template = template;
@@ -38,26 +46,59 @@ class TreeViewContainer extends View {
     }
 
     onRender() {
+        const treeNode = this.routeState.get('treeNode');
+        const testGroup = treeNode ? treeNode.testGroup : null;
+        const testResult = treeNode ? treeNode.testResult : null;
+
+        console.log('group:', testGroup)
+        console.log('result:', testResult)
+
         this.showChildView('content', new TreeView({
             state: this.state,
             routeState: this.routeState,
             tabName: this.tabName,
             baseUrl: this.baseUrl,
+            selectedGroup: testGroup,
+            selectedLeaf: testResult,
             settings: this.settings,
             collection: this.collection
         }));
 
-        this.showChildView('search', new NodeSearchView({
-            state: this.state
-        }));
-        this.showChildView('sorter', new NodeSorterView({
-            settings: this.settings
-        }));
-        this.showChildView('filter', new StatusToggleView({
-            settings: this.settings,
-            statistic: this.collection.statistic
-        }));
+        // this.showChildView('search', new NodeSearchView({
+        //     state: this.state
+        // }));
+        // this.showChildView('sorter', new NodeSorterView({
+        //     settings: this.settings
+        // }));
+        // this.showChildView('filter', new StatusToggleView({
+        //     settings: this.settings,
+        //     statistic: this.collection.statistic
+        // }));
     }
+
+    onContentFocus() {
+        this.listenTo(hotkeys, 'key:up', this.onKeyUp, this);
+        this.listenTo(hotkeys, 'key:down', this.onKeyDown, this);
+    }
+
+    onContentBlur() {
+        this.stopListening(hotkeys, 'key:up');
+        this.stopListening(hotkeys, 'key:down');
+    }
+
+    onKeyUp(e) {
+        e.preventDefault();
+        console.log('UP');
+        this.getChildView('content').triggerMethod('key:up');
+    }
+
+    onKeyDown(e) {
+        e.preventDefault();
+        console.log('DOWN')
+        this.getChildView('content').triggerMethod('key:down');
+    }
+
+
 
     templateContext() {
         return {

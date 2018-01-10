@@ -1,0 +1,71 @@
+@import "../../variables.scss";
+
+.tree {
+  list-style: none none;
+  padding: 0;
+  margin: 0;
+}
+
+.tree-node {
+  position: relative;
+  list-style: none none;
+  line-height: 1.8em;
+  padding: 0;
+  margin: 0;
+
+  &__arrow {
+    left: 7px;
+    position: absolute;
+  }
+  &__status {
+    left: 7px;
+    position: absolute;
+  }
+  &__name {
+    //flex: 1;
+  }
+  &__parameters {
+    display: none;
+
+    color: $text-muted-color;
+    min-width: 2ch;
+    &_separator:last-child {
+      display: none;
+    }
+  }
+  &__strut {
+    flex: 1;
+  }
+
+  &__row {
+    cursor: pointer;
+
+    padding: 7px $gap-size 7px 30px;
+    line-height: 1.2em;
+    display: flex;
+    flex: 1;
+
+    border-bottom: 1px solid $border-color;
+
+    &:hover {
+      background: $hover-color;
+    }
+
+    &_selected {
+      background: $selected-color;
+    }
+
+    &_leaf {
+      padding: 7px $gap-size 7px 35px;
+    }
+  }
+
+  &__children {
+    margin-left: 15px;
+    padding-bottom: 10px;
+    display: none;
+    &_expanded {
+      display: block;
+    }
+  }
+}
