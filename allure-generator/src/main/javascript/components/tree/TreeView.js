@@ -107,7 +107,7 @@ class TreeView extends View {
     }
 
     restoreState() {
-        this.$('[data-uid]').each((i, node) => {
+        this.$('[data-id]').each((i, node) => {
             const el = this.$(node);
             const uid = el.data('uid');
             el.toggleClass('node__expanded', this.state.has(uid));

@@ -2,9 +2,6 @@ import './styles.scss';
 import {View} from 'backbone.marionette';
 import template from './TreeViewContainer.hbs';
 import {behavior, className, events, on, regions, ui} from '../../decorators';
-import NodeSorterView from '../node-sorter/NodeSorterView';
-import NodeSearchView from '../node-search/NodeSearchView';
-import StatusToggleView from '../status-toggle/StatusToggleView';
 import TreeView from '../tree2/TreeView';
 import {Model} from 'backbone';
 import {getSettingsForTreePlugin} from '../../utils/settingsFactory';
@@ -50,9 +47,6 @@ class TreeViewContainer extends View {
         const testGroup = treeNode ? treeNode.testGroup : null;
         const testResult = treeNode ? treeNode.testResult : null;
 
-        console.log('group:', testGroup)
-        console.log('result:', testResult)
-
         this.showChildView('content', new TreeView({
             state: this.state,
             routeState: this.routeState,
@@ -63,17 +57,6 @@ class TreeViewContainer extends View {
             settings: this.settings,
             collection: this.collection
         }));
-
-        // this.showChildView('search', new NodeSearchView({
-        //     state: this.state
-        // }));
-        // this.showChildView('sorter', new NodeSorterView({
-        //     settings: this.settings
-        // }));
-        // this.showChildView('filter', new StatusToggleView({
-        //     settings: this.settings,
-        //     statistic: this.collection.statistic
-        // }));
     }
 
     onContentFocus() {
@@ -88,17 +71,13 @@ class TreeViewContainer extends View {
 
     onKeyUp(e) {
         e.preventDefault();
-        console.log('UP');
         this.getChildView('content').triggerMethod('key:up');
     }
 
     onKeyDown(e) {
         e.preventDefault();
-        console.log('DOWN')
         this.getChildView('content').triggerMethod('key:down');
     }
-
-
 
     templateContext() {
         return {

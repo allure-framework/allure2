@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.CommonJsonAggregator;
 import io.qameta.allure.CompositeAggregator;
-import io.qameta.allure.Reader;
+import io.qameta.allure.ResultsReader;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
@@ -38,7 +38,7 @@ import static java.util.stream.StreamSupport.stream;
  * Plugin that generates data for Duration-Trend graph.
  */
 @SuppressWarnings("PMD.ExcessiveImports")
-public class DurationTrendPlugin extends CompositeAggregator implements Reader {
+public class DurationTrendPlugin extends CompositeAggregator implements ResultsReader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DurationTrendPlugin.class);
 

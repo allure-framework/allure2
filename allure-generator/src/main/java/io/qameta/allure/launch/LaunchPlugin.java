@@ -1,7 +1,7 @@
 package io.qameta.allure.launch;
 
 import io.qameta.allure.CommonJsonAggregator;
-import io.qameta.allure.Reader;
+import io.qameta.allure.ResultsReader;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class LaunchPlugin extends CommonJsonAggregator implements Reader {
+public class LaunchPlugin extends CommonJsonAggregator implements ResultsReader {
 
     private static final String LAUNCH_BLOCK_NAME = "launch";
     private static final String JSON_FILE_NAME = "launch.json";

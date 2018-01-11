@@ -14,7 +14,7 @@ import java.util.List;
 @Accessors(chain = true)
 public class TestResultLeafNode implements LeafNode {
 
-    private final String uid;
+    private final Long id;
 
     private final String name;
 
@@ -47,12 +47,12 @@ public class TestResultLeafNode implements LeafNode {
     }
 
     @SuppressWarnings("ParameterNumber")
-    public TestResultLeafNode(final String parentUid, final String name, final String uid,
+    public TestResultLeafNode(final String parentUid, final String name, final Long id,
                               final TestStatus status, final Long start, final Long stop, final Long duration,
                               final boolean flaky, final List<String> parameters) {
         this.name = name;
         this.parentUid = parentUid;
-        this.uid = uid;
+        this.id = id;
         this.status = status;
         this.start = start;
         this.stop = stop;

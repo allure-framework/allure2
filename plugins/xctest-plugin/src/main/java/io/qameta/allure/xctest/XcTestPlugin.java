@@ -1,6 +1,6 @@
 package io.qameta.allure.xctest;
 
-import io.qameta.allure.Reader;
+import io.qameta.allure.ResultsReader;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.TestResult;
@@ -35,7 +35,7 @@ import static java.util.Objects.nonNull;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class XcTestPlugin implements Reader {
+public class XcTestPlugin implements ResultsReader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XcTestPlugin.class);
 

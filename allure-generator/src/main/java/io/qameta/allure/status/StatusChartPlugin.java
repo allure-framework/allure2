@@ -28,7 +28,7 @@ public class StatusChartPlugin extends CommonJsonAggregator {
 
     private StatusChartData createData(final TestResult result) {
         return new StatusChartData()
-                .setUid(result.getId())
+                .setId(result.getId())
                 .setName(result.getName())
                 .setStatus(result.getStatus())
                 .setStart(result.getStart())

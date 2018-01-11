@@ -1,7 +1,6 @@
 package io.qameta.allure.xunitxml;
 
-import io.qameta.allure.Reader;
-import io.qameta.allure.context.RandomUidContext;
+import io.qameta.allure.ResultsReader;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.TestParameter;
@@ -40,7 +39,7 @@ import static java.util.Objects.nonNull;
  * @author charlie (Dmitry Baev).
  */
 @SuppressWarnings("PMD.ExcessiveImports")
-public class XunitXmlPlugin implements Reader {
+public class XunitXmlPlugin implements ResultsReader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XunitXmlPlugin.class);
 
@@ -71,11 +70,10 @@ public class XunitXmlPlugin implements Reader {
     public void readResults(final Configuration configuration,
                             final ResultsVisitor visitor,
                             final Path directory) {
-        final RandomUidContext context = configuration.requireContext(RandomUidContext.class);
-        listResults(directory).forEach(result -> parseAssemblies(result, context, visitor));
+        listResults(directory).forEach(result -> parseAssemblies(result, visitor));
     }
 
-    private void parseAssemblies(final Path parsedFile, final RandomUidContext context, final ResultsVisitor visitor) {
+    private void parseAssemblies(final Path parsedFile, final ResultsVisitor visitor) {
         try {
             LOGGER.debug("Parsing file {}", parsedFile);
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -89,33 +87,32 @@ public class XunitXmlPlugin implements Reader {
             }
 
             assembliesElement.get(ASSEMBLY_ELEMENT_NAME)
-                    .forEach(element -> parseAssembly(element, context, visitor));
+                    .forEach(element -> parseAssembly(element, visitor));
         } catch (SAXException | ParserConfigurationException | IOException e) {
             LOGGER.error("Could not parse file {}: {}", parsedFile, e);
         }
     }
 
     private void parseAssembly(final XmlElement assemblyElement,
-                               final RandomUidContext context, final ResultsVisitor visitor) {
+                               final ResultsVisitor visitor) {
         final String framework = getFramework(assemblyElement);
         assemblyElement.get(COLLECTION_ELEMENT_NAME)
-                .forEach(element -> parseCollection(element, framework, context, visitor));
+                .forEach(element -> parseCollection(element, framework, visitor));
     }
 
     private void parseCollection(final XmlElement collectionElement, final String framework,
-                                 final RandomUidContext context, final ResultsVisitor visitor) {
+                                 final ResultsVisitor visitor) {
         collectionElement.get(TEST_ELEMENT_NAME)
-                .forEach(element -> parseTest(element, framework, context, visitor));
+                .forEach(element -> parseTest(element, framework, visitor));
     }
 
     private void parseTest(final XmlElement testElement, final String framework,
-                           final RandomUidContext context, final ResultsVisitor visitor) {
+                           final ResultsVisitor visitor) {
         final Optional<String> fullName = Optional.ofNullable(testElement.getAttribute(NAME_ATTRIBUTE_NAME));
         final String className = testElement.getAttribute(TYPE_ATTRIBUTE_NAME);
         final String methodName = testElement.getAttribute(METHOD_ATTRIBUTE_NAME);
         final TestResult result = new TestResult();
 
-        result.setId(context.getValue().get());
         result.setName(methodName);
         result.setStatus(getStatus(testElement));
         result.setDuration(getDuration(testElement));

@@ -1,8 +1,7 @@
 package io.qameta.allure.allure2;
 
 import io.qameta.allure.FileSystemResultsReader;
-import io.qameta.allure.Reader;
-import io.qameta.allure.context.RandomUidContext;
+import io.qameta.allure.ResultsReader;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Attachment;
@@ -30,7 +29,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -46,7 +44,7 @@ import static java.util.Objects.nonNull;
  * @since 2.0
  */
 @SuppressWarnings("PMD.ExcessiveImports")
-public class Allure2Plugin implements Reader {
+public class Allure2Plugin implements ResultsReader {
 
     public static final String ALLURE2_RESULTS_FORMAT = "allure2";
 
@@ -59,19 +57,16 @@ public class Allure2Plugin implements Reader {
     public void readResults(final Configuration configuration,
                             final ResultsVisitor visitor,
                             final Path resultsDirectory) {
-        final RandomUidContext context = configuration.requireContext(RandomUidContext.class);
         final FileSystemResultsReader reader = new FileSystemResultsReader(resultsDirectory);
         final List<TestResultContainer> groups = reader.readTestResultsContainers().collect(Collectors.toList());
         reader.readTestResults()
-                .forEach(result -> convert(context.getValue(), resultsDirectory, visitor, groups, result));
+                .forEach(result -> convert(resultsDirectory, visitor, groups, result));
     }
 
-    private void convert(final Supplier<String> uidGenerator,
-                         final Path resultsDirectory,
+    private void convert(final Path resultsDirectory,
                          final ResultsVisitor visitor,
                          final List<TestResultContainer> groups, final TestResult result) {
         final io.qameta.allure.entity.TestResult dest = new io.qameta.allure.entity.TestResult();
-        dest.setId(uidGenerator.get());
         dest.setHistoryId(result.getHistoryId());
         dest.setFullName(result.getFullName());
         dest.setName(firstNonNull(result.getName(), result.getFullName(), "Unknown test"));

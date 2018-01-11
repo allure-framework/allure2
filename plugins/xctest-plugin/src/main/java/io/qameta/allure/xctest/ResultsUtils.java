@@ -8,7 +8,6 @@ import io.qameta.allure.entity.TestStatus;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import static java.util.Objects.nonNull;
 
@@ -31,7 +30,6 @@ public final class ResultsUtils {
 
     public static TestResult getTestResult(final Map<String, Object> props) {
         return new TestResult()
-                .setId(UUID.randomUUID().toString())
                 .setName(ResultsUtils.getTestName(props))
                 .setStatus(ResultsUtils.getTestStatus(props))
                 .setFullName(ResultsUtils.getFullName(props))

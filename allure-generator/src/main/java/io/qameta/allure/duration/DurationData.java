@@ -16,7 +16,7 @@ public class DurationData implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    protected String uid;
+    protected Long id;
     protected String name;
 
     protected Long start;

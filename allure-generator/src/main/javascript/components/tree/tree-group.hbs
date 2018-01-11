@@ -1,6 +1,6 @@
 {{#if children}}
     <div class="node">
-        <div class="node__title long-line" data-uid="{{uid}}">
+        <div class="node__title long-line" data-id="{{id}}">
             <span class="node__arrow block__arrow">{{angle}}</span>
             {{#if name}}
                 <div class="node__name">
@@ -18,7 +18,7 @@
         <div class="node__children">
             {{#if showGroupInfo}}
                 <div class="node">
-                    <div class="node__info long-line" data-uid="{{uid}}">
+                    <div class="node__info long-line" data-id="{{id}}">
                         <span class="fa fa-clock-o"></span>
                         {{> tree-time value=duration name=(t 'component.tree.time.total.name') tooltip=(t 'component.tree.time.total.tooltip')}}
                         {{> tree-time value=maxDuration name=(t 'component.tree.time.max.name') tooltip=(t 'component.tree.time.max.tooltip')}}

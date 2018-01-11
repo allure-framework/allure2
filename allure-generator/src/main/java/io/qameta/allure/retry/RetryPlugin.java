@@ -76,7 +76,7 @@ public class RetryPlugin implements Aggregator {
                 .setStart(result.getStart())
                 .setStop(result.getStop())
                 .setDuration(result.getDuration())
-                .setUid(result.getId());
+                .setId(result.getId());
     }
 
     private Optional<TestResult> findLatest(final List<TestResult> results) {

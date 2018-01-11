@@ -2,6 +2,7 @@ package io.qameta.allure.core;
 
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.entity.TestResultExecution;
 
 import java.nio.file.Path;
 
@@ -27,7 +28,15 @@ public interface ResultsVisitor {
      *
      * @param result the result to process.
      */
-    void visitTestResult(TestResult result);
+    TestResult visitTestResult(TestResult result);
+
+    /**
+     * Process test results's execution.
+     *
+     * @param testResultId the id of test result to process.
+     * @param execution    the execution of test result.
+     */
+    TestResultExecution visitTestResultExecution(String testResultId, TestResultExecution execution);
 
     /**
      * Visit extra block. You can access this block using {@link LaunchResults#getExtra(String)}.

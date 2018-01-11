@@ -109,7 +109,7 @@ describe('Tree', function () {
         view.destroy();
     });
 
-    describe('empty data', () => {
+    xdescribe('empty data', () => {
 
         it('should render correctly', () => {
             const {view, page} = renderView({children: []});
@@ -122,7 +122,7 @@ describe('Tree', function () {
         });
     });
 
-    describe('sorting', () => {
+    xdescribe('sorting', () => {
 
         it('should render all nodes', () => {
             expect(page.nodes().length).toBe(7);
@@ -165,7 +165,7 @@ describe('Tree', function () {
         });
     });
 
-    describe('filtering', () => {
+    xdescribe('filtering', () => {
 
         it('should hide nodes', () => {
             filterTree({failed: false, broken: false, passed: false, skipped: false, unknown: false});
@@ -184,7 +184,7 @@ describe('Tree', function () {
 
     });
 
-    describe('searching', () => {
+    xdescribe('searching', () => {
 
         it('should hide nodes which don\'t contain searchQuery in its name(ignoring case)', () => {
             searchInTree('Like');
@@ -201,7 +201,7 @@ describe('Tree', function () {
 
     });
 
-    describe('groupInfo', () => {
+    xdescribe('groupInfo', () => {
 
         it('should showing and hiding the group node info', () => {
             settings.setShowGroupInfo(true);

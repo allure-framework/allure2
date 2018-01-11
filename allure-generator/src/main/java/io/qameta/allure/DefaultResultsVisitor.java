@@ -6,6 +6,7 @@ import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.entity.TestResultExecution;
 import org.apache.tika.metadata.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static java.nio.file.Files.newInputStream;
 import static java.nio.file.Files.size;
@@ -35,6 +37,8 @@ public class DefaultResultsVisitor implements ResultsVisitor {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultResultsVisitor.class);
 
     private static final Metadata METADATA = new Metadata();
+
+    private static final AtomicLong TEST_RESULT_ID = new AtomicLong();
 
     private final Configuration configuration;
 
@@ -73,8 +77,17 @@ public class DefaultResultsVisitor implements ResultsVisitor {
     }
 
     @Override
-    public void visitTestResult(final TestResult result) {
+    public TestResult visitTestResult(final TestResult result) {
+        final long id = TEST_RESULT_ID.incrementAndGet();
+        result.setId(id);
         results.add(result);
+        return result;
+    }
+
+    @Override
+    public TestResultExecution visitTestResultExecution(final String testResultId,
+                                                        final TestResultExecution execution) {
+        return execution;
     }
 
     @Override

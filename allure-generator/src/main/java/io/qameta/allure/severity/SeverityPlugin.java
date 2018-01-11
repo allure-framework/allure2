@@ -68,7 +68,7 @@ public class SeverityPlugin extends CompositeAggregator {
 
         private SeverityData createData(final TestResult result) {
             return new SeverityData()
-                    .setUid(result.getId())
+                    .setId(result.getId())
                     .setName(result.getName())
                     .setStatus(result.getStatus())
                     .setStart(result.getStart())

@@ -2,7 +2,7 @@ package io.qameta.allure.history;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.qameta.allure.Aggregator;
-import io.qameta.allure.Reader;
+import io.qameta.allure.ResultsReader;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
@@ -29,7 +29,7 @@ import java.util.stream.Stream;
  *
  * @since 2.0
  */
-public class HistoryPlugin implements Reader, Aggregator {
+public class HistoryPlugin implements ResultsReader, Aggregator {
 
     private static final String HISTORY_BLOCK_NAME = "history";
 
@@ -100,7 +100,7 @@ public class HistoryPlugin implements Reader, Aggregator {
         }
 
         final HistoryItem newItem = new HistoryItem()
-                .setUid(result.getId())
+                .setId(result.getId())
                 .setStatus(result.getStatus())
                 .setStatusDetails(result.getMessage())
                 .setStart(result.getStart())
@@ -126,8 +126,8 @@ public class HistoryPlugin implements Reader, Aggregator {
                 .setItems(items);
     }
 
-    private static String createReportUrl(final String reportUrl, final String uuid) {
-        final String pattern = reportUrl.endsWith("index.html") ? "%s#testresult/%s" : "%s/#testresult/%s";
-        return String.format(pattern, reportUrl, uuid);
+    private static String createReportUrl(final String reportUrl, final Long id) {
+        final String pattern = reportUrl.endsWith("index.html") ? "%s#testresult/%d" : "%s/#testresult/%d";
+        return String.format(pattern, reportUrl, id);
     }
 }

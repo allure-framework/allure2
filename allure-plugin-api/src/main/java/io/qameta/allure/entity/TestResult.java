@@ -32,7 +32,7 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
 
     private static final long serialVersionUID = 1L;
 
-    protected String id;
+    protected Long id;
     protected String name;
     protected String fullName;
     protected String historyId;
@@ -51,10 +51,17 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
 
     protected boolean flaky;
 
+    protected TestResultType type = TestResultType.TEST;
+
     //    Execution
     protected List<StageResult> beforeStages = new ArrayList<>();
     protected StageResult testStage;
     protected List<StageResult> afterStages = new ArrayList<>();
+
+    //    Markers
+    protected Set<EnvironmentVariable> environmentVariables = new HashSet<>();
+    protected Set<CustomField> customFields = new HashSet<>();
+    protected Set<TestTag> tags = new HashSet<>();
 
     //    Meta
     protected Set<TestLabel> labels = new HashSet<>();

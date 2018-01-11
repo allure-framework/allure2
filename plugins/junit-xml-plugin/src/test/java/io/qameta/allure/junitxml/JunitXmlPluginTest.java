@@ -86,7 +86,7 @@ public class JunitXmlPluginTest {
 
     @Test
     public void shouldAddLogAsAttachment() throws Exception {
-        final Attachment hey = new Attachment().setUid("some-uid");
+        final Attachment hey = new Attachment().setUid("some-id");
         when(visitor.visitAttachmentFile(any())).thenReturn(hey);
         process(
                 "junitdata/TEST-test.SampleTest.xml", "TEST-test.SampleTest.xml",
@@ -111,9 +111,9 @@ public class JunitXmlPluginTest {
         assertThat(testStage.getAttachments())
                 .describedAs("Should add an attachment")
                 .hasSize(1)
-                .describedAs("Attachment should has right uid and name")
+                .describedAs("Attachment should has right id and name")
                 .extracting(Attachment::getName, Attachment::getUid)
-                .containsExactly(Tuple.tuple("System out", "some-uid"));
+                .containsExactly(Tuple.tuple("System out", "some-id"));
     }
 
     @Test

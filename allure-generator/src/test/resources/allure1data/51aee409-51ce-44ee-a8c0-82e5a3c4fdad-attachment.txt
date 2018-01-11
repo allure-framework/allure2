@@ -1,5 +1,5 @@
 {
-    "uid": "9a86126cdcb922afbf4f950b533f49045b595c826c0b44938a3421ae58fce017",
+    "id": "9a86126cdcb922afbf4f950b533f49045b595c826c0b44938a3421ae58fce017",
     "parentUid": "c51469d88be9f49cf313cabc267314e84dd67d1824608e01a03a8cc0bfe25a88",
     "name": "failedTestWithoutSteps",
     "title": "Failed test without steps",

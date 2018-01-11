@@ -12,7 +12,7 @@ import java.nio.file.Path;
  * @since 2.0
  */
 @FunctionalInterface
-public interface Reader extends Extension {
+public interface ResultsReader extends Extension {
 
     /**
      * Process results directory.

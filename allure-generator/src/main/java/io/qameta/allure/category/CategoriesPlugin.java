@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import io.qameta.allure.CommonCsvExportAggregator;
 import io.qameta.allure.CommonJsonAggregator;
 import io.qameta.allure.CompositeAggregator;
-import io.qameta.allure.Reader;
+import io.qameta.allure.ResultsReader;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
@@ -42,7 +42,7 @@ import static java.util.Objects.nonNull;
  * @since 2.0
  */
 @SuppressWarnings("PMD.ExcessiveImports")
-public class CategoriesPlugin extends CompositeAggregator implements Reader {
+public class CategoriesPlugin extends CompositeAggregator implements ResultsReader {
 
     public static final String CATEGORIES = "categories";
 

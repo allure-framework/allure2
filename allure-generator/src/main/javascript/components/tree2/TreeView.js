@@ -47,7 +47,7 @@ class GroupView extends View {
     onRender() {
         const {baseUrl, selectedGroup, selectedLeaf} = this.options;
 
-        if (selectedGroup && !selectedLeaf && selectedGroup === this.model.get('uid')) {
+        if (selectedGroup && !selectedLeaf && selectedGroup === this.model.id) {
             this.model.set('selected', true);
             this.model.set('expanded', true);
         }
@@ -94,7 +94,7 @@ class LeafView extends View {
     onRender() {
         const {selectedGroup, selectedLeaf} = this.options;
         const matchGroup = selectedGroup ? selectedGroup === this.model.get('parentUid') : true;
-        const matchLeaf = selectedLeaf && selectedLeaf === this.model.get('uid');
+        const matchLeaf = selectedLeaf && selectedLeaf === this.model.id;
 
         if (matchGroup && matchLeaf) {
             this.model.set('selected', true);
@@ -103,7 +103,7 @@ class LeafView extends View {
 
     onRowClick() {
         const {baseUrl} = this.options;
-        router.toUrl(`${baseUrl}/${this.model.get('parentUid')}/${this.model.get('uid')}`);
+        router.toUrl(`${baseUrl}/${this.model.get('parentUid')}/${this.model.id}`);
     }
 
     templateContext() {

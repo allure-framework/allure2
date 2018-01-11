@@ -1,6 +1,6 @@
 package io.qameta.allure.trx;
 
-import io.qameta.allure.Reader;
+import io.qameta.allure.ResultsReader;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
@@ -37,7 +37,7 @@ import static java.util.Objects.nonNull;
  * @author charlie (Dmitry Baev).
  */
 @SuppressWarnings("PMD.ExcessiveImports")
-public class TrxPlugin implements Reader {
+public class TrxPlugin implements ResultsReader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TrxPlugin.class);
 
@@ -153,9 +153,7 @@ public class TrxPlugin implements Reader {
         final String startTime = unitTestResult.getAttribute(START_TIME_ATTRIBUTE);
         final String endTime = unitTestResult.getAttribute(END_TIME_ATTRIBUTE);
         final String outcome = unitTestResult.getAttribute(OUTCOME_ATTRIBUTE);
-        final String uid = context.getValue().get();
         final TestResult result = new TestResult()
-                .setId(uid)
                 .setName(testName)
                 .setStatus(parseStatus(outcome));
         parseTime(startTime).ifPresent(result::setStart);

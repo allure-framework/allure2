@@ -1,7 +1,7 @@
 package io.qameta.allure.core;
 
 import io.qameta.allure.Aggregator;
-import io.qameta.allure.Reader;
+import io.qameta.allure.ResultsReader;
 import io.qameta.allure.exception.ContextNotFoundException;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public interface Configuration {
      *
      * @return configured readers.
      */
-    List<Reader> getReaders();
+    List<ResultsReader> getReaders();
 
     /**
      * Resolve context by given type.

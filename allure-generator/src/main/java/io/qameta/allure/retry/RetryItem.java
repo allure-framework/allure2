@@ -15,7 +15,7 @@ public class RetryItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    protected String uid;
+    protected Long id;
     protected TestStatus status;
     protected String statusDetails;
 

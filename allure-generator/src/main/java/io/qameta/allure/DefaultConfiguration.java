@@ -39,10 +39,10 @@ public class DefaultConfiguration implements Configuration {
     }
 
     @Override
-    public List<Reader> getReaders() {
+    public List<ResultsReader> getReaders() {
         return extensions.stream()
-                .filter(Reader.class::isInstance)
-                .map(Reader.class::cast)
+                .filter(ResultsReader.class::isInstance)
+                .map(ResultsReader.class::cast)
                 .collect(Collectors.toList());
     }
 

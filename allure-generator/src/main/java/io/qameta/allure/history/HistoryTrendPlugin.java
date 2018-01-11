@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.CommonJsonAggregator;
 import io.qameta.allure.CompositeAggregator;
-import io.qameta.allure.Reader;
+import io.qameta.allure.ResultsReader;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
@@ -43,7 +43,7 @@ import static java.util.stream.StreamSupport.stream;
  * @since 2.0
  */
 @SuppressWarnings("PMD.ExcessiveImports")
-public class HistoryTrendPlugin extends CompositeAggregator implements Reader {
+public class HistoryTrendPlugin extends CompositeAggregator implements ResultsReader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HistoryTrendPlugin.class);
 

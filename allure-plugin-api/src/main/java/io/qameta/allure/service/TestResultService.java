@@ -12,8 +12,6 @@ public interface TestResultService {
 
     TestResult create(TestResult testResult);
 
-    TestResult update(TestResult testResult);
-
     Optional<TestResult> findOneById(Long id);
 
     List<TestResult> findAllTests();

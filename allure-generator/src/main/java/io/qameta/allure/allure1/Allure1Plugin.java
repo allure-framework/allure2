@@ -5,8 +5,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
-import io.qameta.allure.Reader;
-import io.qameta.allure.context.RandomUidContext;
+import io.qameta.allure.ResultsReader;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Attachment;
@@ -47,7 +46,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -77,7 +75,7 @@ import static java.util.stream.Collectors.toList;
  * @since 2.0
  */
 @SuppressWarnings({"PMD.ExcessiveImports", "PMD.GodClass", "PMD.TooManyMethods", "PMD.CouplingBetweenObjects"})
-public class Allure1Plugin implements Reader {
+public class Allure1Plugin implements ResultsReader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Allure1Plugin.class);
     private static final String UNKNOWN = "unknown";
@@ -108,12 +106,11 @@ public class Allure1Plugin implements Reader {
                             final ResultsVisitor visitor,
                             final Path resultsDirectory) {
         final Properties allureProperties = loadAllureProperties(resultsDirectory);
-        final RandomUidContext context = configuration.requireContext(RandomUidContext.class);
 
         final Map<String, String> environment = processEnvironment(resultsDirectory);
         getStreamOfAllure1Results(resultsDirectory).forEach(testSuite -> testSuite.getTestCases()
                 .forEach(testCase -> {
-                    convert(context.getValue(), resultsDirectory, visitor, testSuite, testCase, allureProperties);
+                    convert(resultsDirectory, visitor, testSuite, testCase, allureProperties);
                     getEnvironmentParameters(testCase).forEach(param ->
                             environment.put(param.getName(), param.getValue())
                     );
@@ -142,8 +139,7 @@ public class Allure1Plugin implements Reader {
     }
 
     @SuppressWarnings("PMD.ExcessiveMethodLength")
-    private void convert(final Supplier<String> randomUid,
-                         final Path directory,
+    private void convert(final Path directory,
                          final ResultsVisitor visitor,
                          final TestSuiteResult testSuite,
                          final TestCaseResult source,
@@ -170,7 +166,6 @@ public class Allure1Plugin implements Reader {
         } else {
             dest.setHistoryId(getHistoryId(String.format("%s#%s", testClass, name), parameters));
         }
-        dest.setId(randomUid.get());
         dest.setName(name);
         dest.setFullName(String.format("%s.%s", testClass, testMethod));
 
