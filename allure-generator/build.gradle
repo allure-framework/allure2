@@ -17,7 +17,6 @@ task testWeb(type: YarnTask) {
     inputs.files(fileTree('src/main/javascript'))
     inputs.files(fileTree('src/test/javascript'))
     inputs.file('package.json')
-    inputs.file('jasmine.json')
     inputs.file('webpack.config.js')
     inputs.file('.babelrc')
     inputs.file('.eslintrc')
@@ -32,7 +31,6 @@ task buildWeb(type: YarnTask) {
     inputs.files(fileTree('node_modules'))
     inputs.files(fileTree('src/main/javascript'))
     inputs.file('package.json')
-    inputs.file('jasmine.json')
     inputs.file('webpack.config.js')
     inputs.file('.babelrc')
     inputs.file('.eslintrc')
@@ -51,25 +49,22 @@ dependencies {
     allurePlugin project(path: ':behaviors-plugin', configuration: 'allurePlugin')
     allurePlugin project(path: ':packages-plugin', configuration: 'allurePlugin')
     allurePlugin project(path: ':screen-diff-plugin', configuration: 'allurePlugin')
-
-    compile project(':allure-plugin-api')
-    compile('org.allurefw:allure1-model')
-    compile('io.qameta.allure:allure2-model-api')
-    compile('org.apache.tika:tika-core')
-    compile('commons-io:commons-io')
-    compile('com.fasterxml.jackson.dataformat:jackson-dataformat-yaml')
     compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
+    compile project(':allure-plugin-api')
+    compile('com.fasterxml.jackson.dataformat:jackson-dataformat-yaml')
+    compile('commons-io:commons-io')
+    compile('io.qameta.allure:allure2-model-api')
+    compile('org.allurefw:allure1-model')
     compile('org.apache.httpcomponents:httpclient')
+    compile('org.apache.tika:tika-core')
     compileOnly('org.projectlombok:lombok')
-
-
+    testCompile('com.google.guava:guava')
+    testCompile('io.qameta.allure:allure-java-commons')
     testCompile('junit:junit')
+    testCompile('org.apache.commons:commons-text')
     testCompile('org.assertj:assertj-core')
     testCompile('org.mockito:mockito-core')
     testCompile('org.slf4j:slf4j-simple')
-    testCompile('org.apache.commons:commons-text')
-    testCompile('com.google.guava:guava')
-    testCompile('io.qameta.allure:allure-java-commons')
 }
 
 task sourceJar(type: Jar, dependsOn: classes) {

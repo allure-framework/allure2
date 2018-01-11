@@ -23,25 +23,22 @@ build.dependsOn installDist
 
 dependencies {
     allurePlugin project(path: ':behaviors-plugin', configuration: 'allurePlugin')
+    allurePlugin project(path: ':custom-logo-plugin', configuration: 'allurePlugin')
     allurePlugin project(path: ':junit-xml-plugin', configuration: 'allurePlugin')
-    allurePlugin project(path: ':xunit-xml-plugin', configuration: 'allurePlugin')
+    allurePlugin project(path: ':packages-plugin', configuration: 'allurePlugin')
+    allurePlugin project(path: ':screen-diff-plugin', configuration: 'allurePlugin')
     allurePlugin project(path: ':trx-plugin', configuration: 'allurePlugin')
     allurePlugin project(path: ':xctest-plugin', configuration: 'allurePlugin')
-    allurePlugin project(path: ':packages-plugin', configuration: 'allurePlugin')
-    allurePlugin project(path: ':custom-logo-plugin', configuration: 'allurePlugin')
-    allurePlugin project(path: ':screen-diff-plugin', configuration: 'allurePlugin')
-
+    allurePlugin project(path: ':xunit-xml-plugin', configuration: 'allurePlugin')
     compile project(':allure-generator')
     compile('com.beust:jcommander')
-
     compile('org.eclipse.jetty:jetty-server')
     compile('org.slf4j:slf4j-log4j12')
     compileOnly('org.projectlombok:lombok')
-
     testCompile('junit:junit')
+    testCompile('org.apache.commons:commons-text')
     testCompile('org.assertj:assertj-core')
     testCompile('org.mockito:mockito-core')
-    testCompile('org.apache.commons:commons-text')
 }
 
 configurations.archives.artifacts.removeAll { it.archiveTask.is jar }

@@ -6,14 +6,14 @@ import {getSettingsForWidgetGridPlugin} from 'utils/settingsFactory';
 
 
 describe('WidgetsGridView', function() {
-    let settings = getSettingsForWidgetGridPlugin('ALLURE_TEST');
+    let settings = getSettingsForWidgetGridPlugin('group');
     function PageObject(el) {
         this.column = (i) => el.find('.widgets-grid__col').eq(i);
         this.widgetsAtCol = (i) => this.column(i).find('.widget');
     }
 
     beforeEach(() => {
-        settings = getSettingsForWidgetGridPlugin('ALLURE_TEST');
+        settings = getSettingsForWidgetGridPlugin('group');
         pluginsRegistry.widgets = {
             group: {
                 a: {widget: View, model: WidgetsModel},
