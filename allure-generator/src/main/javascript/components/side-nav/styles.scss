@@ -70,12 +70,12 @@
   &__icon {
     position: absolute;
     left: $gap-size;
-    font-size: 22px;
+    font-size: $sidebar-icon-size;
     vertical-align: middle;
-    margin: 0 3px;
+    margin: 0 5px;
   }
   &__text {
-    padding-left: 55px;
+    padding-left: 64px;
     padding-right: 7px;
    }
 
