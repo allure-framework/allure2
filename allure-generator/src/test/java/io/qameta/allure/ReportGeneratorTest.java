@@ -141,7 +141,7 @@ public class ReportGeneratorTest {
 
     @Test
     public void shouldGenerateAttachments() throws Exception {
-        final Path attachmentsFolder = output.resolve("data/attachments");
+        final Path attachmentsFolder = output.resolve("data/attachment");
         assertThat(attachmentsFolder)
                 .isDirectory();
         assertThat(Files.list(attachmentsFolder))

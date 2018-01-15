@@ -48,7 +48,7 @@ class AttachmentRowView extends View {
 @className('attachment')
 @tagName('li')
 class EmptyView extends View {
-    template = () => 'There are no attachments present';
+    template = () => 'There are no attachment present';
 }
 
 @className('attachments')

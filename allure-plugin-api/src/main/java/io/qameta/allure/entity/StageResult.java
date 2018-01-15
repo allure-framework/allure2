@@ -27,7 +27,7 @@ public class StageResult implements Serializable, Summarizable {
     protected String trace;
 
     protected List<TestResultStep> steps = new ArrayList<>();
-    protected List<Attachment> attachments = new ArrayList<>();
+    protected List<AttachmentLink> attachments = new ArrayList<>();
     protected List<TestParameter> parameters = new ArrayList<>();
 
 }

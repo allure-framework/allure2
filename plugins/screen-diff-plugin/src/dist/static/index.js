@@ -3,7 +3,7 @@
 
     function renderImage(src) {
         return '<div class="screen-diff__container">' +
-            '<img class="screen-diff__image" src="data/attachments/' + src + '">' +
+            '<img class="screen-diff__image" src="data/attachment/' + src + '">' +
             '</div>';
     }
 
@@ -33,9 +33,9 @@
         }
         if (type === 'overlay') {
             return '<div class="screen-diff__overlay screen-diff__container">' +
-                '<img class="screen-diff__image" src="data/attachments/' + expectedImage.source + '">' +
+                '<img class="screen-diff__image" src="data/attachment/' + expectedImage.source + '">' +
                 '<div class="screen-diff__image-over">' +
-                '<img class="screen-diff__image" src="data/attachments/' + actualImage.source + '">' +
+                '<img class="screen-diff__image" src="data/attachment/' + actualImage.source + '">' +
                 '</div>' +
                 '</div>';
         }

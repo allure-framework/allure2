@@ -1,0 +1,28 @@
+description = 'Allure Reader'
+
+apply from: "${gradleScriptDir}/maven-publish.gradle"
+apply from: "${gradleScriptDir}/bintray.gradle"
+apply plugin: 'maven'
+
+dependencies {
+    compile('com.fasterxml.jackson.dataformat:jackson-dataformat-xml')
+    compile('io.qameta.allure:allure2-model-api')
+    compile('io.reactivex.rxjava2:rxjava')
+    compile('org.allurefw:allure1-model')
+    compileOnly project(':allure-plugin-api')
+    compileOnly('org.projectlombok:lombok')
+    testCompile project(':allure-plugin-api')
+    testCompile('junit:junit')
+    testCompile('org.assertj:assertj-core')
+    testCompile('org.mockito:mockito-core')
+    testCompile('org.slf4j:slf4j-simple')
+}
+
+task sourceJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allJava
+}
+
+artifacts {
+    archives sourceJar
+}

@@ -24,9 +24,9 @@ public class WithSummaryTest {
     @Test
     public void shouldCountAttachments() throws Exception {
         final TestResultStep step = new TestResultStep().setSteps(asList(
-                new TestResultStep().setAttachments(asList(new Attachment(), new Attachment())),
-                new TestResultStep().setAttachments(singletonList(new Attachment())).setSteps(singletonList(new TestResultStep()))
-        )).setAttachments(singletonList(new Attachment()));
+                new TestResultStep().setAttachments(asList(new AttachmentLink(), new AttachmentLink())),
+                new TestResultStep().setAttachments(singletonList(new AttachmentLink())).setSteps(singletonList(new TestResultStep()))
+        )).setAttachments(singletonList(new AttachmentLink()));
         assertThat(step.getAttachmentsCount())
                 .isEqualTo(4L);
     }
@@ -40,7 +40,7 @@ public class WithSummaryTest {
 
     @Test
     public void shouldCountAttachmentsForHasContent() throws Exception {
-        final TestResultStep step = new TestResultStep().setAttachments(singletonList(new Attachment()));
+        final TestResultStep step = new TestResultStep().setAttachments(singletonList(new AttachmentLink()));
         assertThat(step.hasContent())
                 .isTrue();
     }

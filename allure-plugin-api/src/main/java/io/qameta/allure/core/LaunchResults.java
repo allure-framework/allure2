@@ -36,9 +36,9 @@ public interface LaunchResults {
     Set<TestResult> getAllResults();
 
     /**
-     * Returns all attachments.
+     * Returns all attachment.
      *
-     * @return attachments.
+     * @return attachment.
      */
     Map<Path, Attachment> getAttachments();
 

@@ -49,8 +49,8 @@ dependencies {
     allurePlugin project(path: ':behaviors-plugin', configuration: 'allurePlugin')
     allurePlugin project(path: ':packages-plugin', configuration: 'allurePlugin')
     allurePlugin project(path: ':screen-diff-plugin', configuration: 'allurePlugin')
-    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
     compile project(':allure-plugin-api')
+    compile('com.fasterxml.jackson.dataformat:jackson-dataformat-xml')
     compile('com.fasterxml.jackson.dataformat:jackson-dataformat-yaml')
     compile('commons-io:commons-io')
     compile('io.qameta.allure:allure2-model-api')

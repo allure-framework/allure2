@@ -6,6 +6,7 @@ apply plugin: 'maven'
 
 dependencies {
     compile('com.fasterxml.jackson.core:jackson-databind')
+    compile('com.fasterxml.jackson.dataformat:jackson-dataformat-yaml')
     compile('com.fasterxml.jackson.module:jackson-module-jaxb-annotations')
     compile('com.opencsv:opencsv')
     compile('com.vladsch.flexmark:flexmark')

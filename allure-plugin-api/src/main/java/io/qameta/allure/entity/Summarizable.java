@@ -18,7 +18,7 @@ public interface Summarizable {
 
     List<TestResultStep> getSteps();
 
-    List<Attachment> getAttachments();
+    List<AttachmentLink> getAttachments();
 
     List<TestParameter> getParameters();
 
@@ -33,7 +33,7 @@ public interface Summarizable {
 
     @JsonProperty
     default long getAttachmentsCount() {
-        final List<Attachment> attachments = isNull(getAttachments()) ? emptyList() : getAttachments();
+        final List<AttachmentLink> attachments = isNull(getAttachments()) ? emptyList() : getAttachments();
         final List<TestResultStep> steps = isNull(getSteps()) ? emptyList() : getSteps();
         final long attachmentsCount = isNull(attachments) ? 0 : attachments.size();
         return steps.stream()
@@ -57,7 +57,7 @@ public interface Summarizable {
 
     @JsonProperty
     default boolean hasContent() {
-        final List<Attachment> attachments = isNull(getAttachments()) ? emptyList() : getAttachments();
+        final List<AttachmentLink> attachments = isNull(getAttachments()) ? emptyList() : getAttachments();
         final List<TestResultStep> steps = isNull(getSteps()) ? emptyList() : getSteps();
         final List<TestParameter> parameters = isNull(getParameters()) ? emptyList() : getParameters();
         return steps.size() + attachments.size() + parameters.size() > 0 || shouldDisplayMessage();

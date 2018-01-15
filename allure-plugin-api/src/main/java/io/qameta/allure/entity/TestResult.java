@@ -5,8 +5,6 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -17,10 +15,6 @@ import java.util.Set;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static java.util.Comparator.comparing;
-import static java.util.Comparator.naturalOrder;
-import static java.util.Comparator.nullsFirst;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -52,11 +46,6 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
     protected boolean flaky;
 
     protected TestResultType type = TestResultType.TEST;
-
-    //    Execution
-    protected List<StageResult> beforeStages = new ArrayList<>();
-    protected StageResult testStage;
-    protected List<StageResult> afterStages = new ArrayList<>();
 
     //    Markers
     protected Set<EnvironmentVariable> environmentVariables = new HashSet<>();
@@ -163,13 +152,5 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
 
     public void addLabel(final String name, final String value) {
         getLabels().add(new TestLabel().setName(name).setValue(value));
-    }
-
-    public static Comparator<TestResult> comparingByTime() {
-        return comparingByTimeAsc().reversed();
-    }
-
-    public static Comparator<TestResult> comparingByTimeAsc() {
-        return comparing(TestResult::getStart, nullsFirst(naturalOrder()));
     }
 }

@@ -1,0 +1,43 @@
+version: '1'
+
+reportName: Allure Demo report
+
+environmentVariables:
+  - browser
+  - os
+customFields:
+  - suite
+  - epic
+  - feature
+  - story
+tags:
+  - version
+
+groups:
+  suites:
+    name: Suites
+    fields:
+      - parentSuite
+      - suite
+      - subSuite
+    order: 1
+  behaviors:
+    name: Behaviors
+    fields:
+      - epic
+      - feature
+      - story
+    order: 2
+  packages:
+    name: Packages
+    fields:
+      - package
+    order: 3
+
+categories:
+  - name: Ignored tests
+    matchedRegex: ".*ignored.*"
+    matchedStatuses: ["skipped"]
+  - name: Outaded tests
+    matchedRegex: ".*FileNotFound.*"
+    matchedStatuses: ["broken"]

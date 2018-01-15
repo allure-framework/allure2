@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Plugin that stores attachments to report data folder.
+ * Plugin that stores attachment to report data folder.
  *
  * @since 2.0
  */
@@ -21,7 +21,7 @@ public class AttachmentsPlugin implements Aggregator {
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
                           final Path outputDirectory) throws IOException {
-        final Path attachmentsFolder = Files.createDirectories(outputDirectory.resolve("data/attachments"));
+        final Path attachmentsFolder = Files.createDirectories(outputDirectory.resolve("data/attachment"));
         for (LaunchResults launch : launchesResults) {
             for (Map.Entry<Path, Attachment> entry : launch.getAttachments().entrySet()) {
                 final Path file = attachmentsFolder.resolve(entry.getValue().getSource());

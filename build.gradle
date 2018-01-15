@@ -90,6 +90,7 @@ allprojects {
             dependency 'commons-io:commons-io:2.6'
             dependency 'io.qameta.allure:allure-java-commons:2.0-BETA21'
             dependency 'io.qameta.allure:allure2-model-api:1.0-BETA4'
+            dependency 'io.reactivex.rxjava2:rxjava:2.1.8'
             dependency 'javax.xml.bind:jaxb-api:2.3.0'
             dependency 'junit:junit:4.12'
             dependency 'org.allurefw:allure1-model:1.0'

@@ -17,7 +17,7 @@ class AttachmentView extends View {
         this.fullScreen = !!this.options.fullScreen;
         this.attachment = this.options.attachment;
         this.attachmentInfo = attachmentType(this.attachment.type);
-        this.sourceUrl = 'data/attachments/' + this.attachment.source;
+        this.sourceUrl = 'data/attachment/' + this.attachment.source;
     }
 
     onRender() {
