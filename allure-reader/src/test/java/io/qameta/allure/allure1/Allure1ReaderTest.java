@@ -44,7 +44,7 @@ public class Allure1ReaderTest {
     @Test
     @SuppressWarnings("unchecked")
     public void shouldProcessEmptyOrNullStatus() throws Exception {
-        processFile("allure1/empty-status-testsuite.xml", generateTestSuiteXmlName());
+        processFile("allure1data/empty-status-testsuite.xml", generateTestSuiteXmlName());
 
         final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
         verify(visitor, times(4))
@@ -62,14 +62,14 @@ public class Allure1ReaderTest {
 
     @Test
     public void shouldReadTestSuiteXml() throws Exception {
-        processFile("allure1/sample-testsuite.xml", generateTestSuiteXmlName());
+        processFile("allure1data/sample-testsuite.xml", generateTestSuiteXmlName());
         verify(visitor, times(4))
                 .visitTestResult(any());
     }
 
     @Test
     public void shouldExcludeDuplicatedParams() throws Exception {
-        processFile("allure1/duplicated-params.xml", generateTestSuiteXmlName());
+        processFile("allure1data/duplicated-params.xml", generateTestSuiteXmlName());
 
         final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
         verify(visitor, times(1))

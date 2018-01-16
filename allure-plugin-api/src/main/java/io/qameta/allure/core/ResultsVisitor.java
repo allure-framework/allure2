@@ -36,7 +36,7 @@ public interface ResultsVisitor {
      * @param testResultId the id of test result to process.
      * @param execution    the execution of test result.
      */
-    TestResultExecution visitTestResultExecution(String testResultId, TestResultExecution execution);
+    TestResultExecution visitTestResultExecution(Long testResultId, TestResultExecution execution);
 
     /**
      * Visit extra block. You can access this block using {@link LaunchResults#getExtra(String)}.

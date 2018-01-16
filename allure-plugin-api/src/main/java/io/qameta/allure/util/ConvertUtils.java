@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -31,6 +32,13 @@ public final class ConvertUtils {
                 .orElseThrow(() -> new IllegalStateException(
                         "firstNonNull method should have at least one non null parameter"
                 ));
+    }
+
+    @SafeVarargs
+    public static <T> Optional<T> firstNonNullSafe(final T... items) {
+        return Stream.of(items)
+                .filter(Objects::nonNull)
+                .findFirst();
     }
 
     public static <T, R> List<R> convertList(final Collection<T> source,
