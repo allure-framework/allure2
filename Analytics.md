@@ -22,6 +22,8 @@ every event:
 - The Google Analytics anonymous IP setting is enabled i.e. `1` (https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#aip)
 - The count of test results e.g `21` (https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cm_)
 - The count of plugins used e.g. `11` (https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cm_)
+- The test framework used e.g. `TestNG` (https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cm_)
+- The language used e.g. `Java` (https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cm_)
 - The Allure report analytics hit type is event (https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#t)
 
 With the recorded information, it is not possible for us to match any particular real user with the anonymized user ID. 
