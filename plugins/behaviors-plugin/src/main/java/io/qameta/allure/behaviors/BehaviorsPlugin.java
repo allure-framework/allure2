@@ -1,10 +1,9 @@
 package io.qameta.allure.behaviors;
 
-import io.qameta.allure.CommonCsvExportAggregator;
-import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.AbstractCsvExportAggregator;
+import io.qameta.allure.AbstractJsonAggregator;
 import io.qameta.allure.CompositeAggregator;
 import io.qameta.allure.core.LaunchResults;
-import io.qameta.allure.csv.CsvExportBehavior;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.tree.TestResultGroupNode;
@@ -72,7 +71,7 @@ public class BehaviorsPlugin extends CompositeAggregator {
         return behaviors;
     }
 
-    private static class JsonAggregator extends CommonJsonAggregator {
+    private static class JsonAggregator extends AbstractJsonAggregator {
 
         JsonAggregator() {
             super(JSON_FILE_NAME);
@@ -84,7 +83,7 @@ public class BehaviorsPlugin extends CompositeAggregator {
         }
     }
 
-    private static class CsvExportAggregator extends CommonCsvExportAggregator<CsvExportBehavior> {
+    private static class CsvExportAggregator extends AbstractCsvExportAggregator<CsvExportBehavior> {
 
         CsvExportAggregator() {
             super(CSV_FILE_NAME, CsvExportBehavior.class);
@@ -169,7 +168,7 @@ public class BehaviorsPlugin extends CompositeAggregator {
         }
     }
 
-    protected static class WidgetAggregator extends CommonJsonAggregator {
+    protected static class WidgetAggregator extends AbstractJsonAggregator {
 
         WidgetAggregator() {
             super("widgets", JSON_FILE_NAME);

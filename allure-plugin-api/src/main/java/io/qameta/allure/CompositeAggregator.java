@@ -1,7 +1,6 @@
 package io.qameta.allure;
 
-import io.qameta.allure.core.Configuration;
-import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.service.TestResultService;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -21,11 +20,10 @@ public class CompositeAggregator implements Aggregator {
     }
 
     @Override
-    public void aggregate(final Configuration configuration,
-                          final List<LaunchResults> launchesResults,
+    public void aggregate(final TestResultService testResultService,
                           final Path outputDirectory) throws IOException {
         for (Aggregator aggregator : aggregators) {
-            aggregator.aggregate(configuration, launchesResults, outputDirectory);
+            aggregator.aggregate(testResultService, outputDirectory);
         }
     }
 }

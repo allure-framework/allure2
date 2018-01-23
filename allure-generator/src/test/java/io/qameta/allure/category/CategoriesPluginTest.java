@@ -177,7 +177,7 @@ public class CategoriesPluginTest {
 
         CategoriesPlugin plugin = new CategoriesPlugin();
 
-        plugin.aggregate(configuration, launchResultsList, reportPath);
+        plugin.aggregate(launchResultsList, reportPath);
 
         Set<TestResult> results = launchResultsList.get(0).getAllResults();
         List<Category> categories = results.toArray(new TestResult[]{})[0]
@@ -210,7 +210,7 @@ public class CategoriesPluginTest {
 
         CategoriesPlugin plugin = new CategoriesPlugin();
 
-        plugin.aggregate(configuration, launchResultsList, reportPath);
+        plugin.aggregate(launchResultsList, reportPath);
 
         Set<TestResult> results = launchResultsList.get(0).getAllResults();
         List<Category> categories = results.toArray(new TestResult[]{})[0]

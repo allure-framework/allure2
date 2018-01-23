@@ -1,6 +1,6 @@
 package io.qameta.allure.timeline;
 
-import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.AbstractJsonAggregator;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.tree.TestResultTree;
@@ -15,7 +15,7 @@ import static io.qameta.allure.tree.TreeUtils.groupByLabels;
  *
  * @since 2.0
  */
-public class TimelinePlugin extends CommonJsonAggregator {
+public class TimelinePlugin extends AbstractJsonAggregator {
 
     public TimelinePlugin() {
         super("timeline.json");

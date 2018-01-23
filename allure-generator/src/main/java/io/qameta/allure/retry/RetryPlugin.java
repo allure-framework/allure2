@@ -1,7 +1,6 @@
 package io.qameta.allure.retry;
 
 import io.qameta.allure.Aggregator;
-import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.TestStatus;
@@ -17,6 +16,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import static io.qameta.allure.entity.EntityComparators.comparingTestResultsByStartAsc;
 import static io.qameta.allure.entity.TestResult.comparingByTime;
 
 /**
@@ -30,14 +30,13 @@ public class RetryPlugin implements Aggregator {
 
     @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.AvoidInstantiatingObjectsInLoops"})
     @Override
-    public void aggregate(final Configuration configuration,
-                          final List<LaunchResults> launchesResults,
+    public void aggregate(final List<LaunchResults> launchesResults,
                           final Path outputDirectory) {
 
         Map<String, List<TestResult>> byHistory = launchesResults.stream()
                 .flatMap(results -> results.getAllResults().stream())
-                .filter(result -> Objects.nonNull(result.getHistoryId()))
-                .collect(Collectors.toMap(TestResult::getHistoryId, Arrays::asList, this::merge));
+                .filter(result -> Objects.nonNull(result.getHistoryKey()))
+                .collect(Collectors.toMap(TestResult::getHistoryKey, Arrays::asList, this::merge));
         byHistory.forEach((historyId, results) ->
                 findLatest(results).ifPresent(addRetries(results)));
     }
@@ -45,7 +44,7 @@ public class RetryPlugin implements Aggregator {
     private Consumer<TestResult> addRetries(final List<TestResult> results) {
         return latest -> {
             final List<RetryItem> retries = results.stream()
-                    .sorted(comparingByTime())
+                    .sorted(comparingTestResultsByStartAsc().reversed())
                     .filter(result -> !latest.equals(result))
                     .map(this::prepareRetry)
                     .map(this::createRetryItem)

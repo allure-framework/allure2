@@ -59,7 +59,7 @@ public class TrxReader implements ResultsReader {
     public static final String ERROR_INFO_ELEMENT_NAME = "ErrorInfo";
 
     @Override
-    public void readResults(final ResultsVisitor visitor, final Path file) {
+    public void readResultFile(final ResultsVisitor visitor, final Path file) {
         if (file.getFileName().toString().endsWith(".trx")) {
             parseTestRun(visitor, file);
         }

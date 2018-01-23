@@ -1,15 +1,14 @@
 package io.qameta.allure.category;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import io.qameta.allure.CommonCsvExportAggregator;
-import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.AbstractCsvExportAggregator;
+import io.qameta.allure.AbstractJsonAggregator;
 import io.qameta.allure.CompositeAggregator;
 import io.qameta.allure.ResultsReader;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
-import io.qameta.allure.csv.CsvExportCategory;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.TestStatus;
 import io.qameta.allure.tree.Layer;
@@ -147,14 +146,13 @@ public class CategoriesPlugin extends CompositeAggregator implements ResultsRead
     }
 
     @Override
-    public void aggregate(final Configuration configuration,
-                          final List<LaunchResults> launchesResults,
+    public void aggregate(final List<LaunchResults> launchesResults,
                           final Path outputDirectory) throws IOException {
         addCategoriesForResults(launchesResults);
-        super.aggregate(configuration, launchesResults, outputDirectory);
+        super.aggregate(launchesResults, outputDirectory);
     }
 
-    private static class JsonAggregator extends CommonJsonAggregator {
+    private static class JsonAggregator extends AbstractJsonAggregator {
 
         JsonAggregator() {
             super(JSON_FILE_NAME);
@@ -166,7 +164,7 @@ public class CategoriesPlugin extends CompositeAggregator implements ResultsRead
         }
     }
 
-    private static class CsvExportAggregator extends CommonCsvExportAggregator<CsvExportCategory> {
+    private static class CsvExportAggregator extends AbstractCsvExportAggregator<CsvExportCategory> {
 
         CsvExportAggregator() {
             super(CSV_FILE_NAME, CsvExportCategory.class);
@@ -185,7 +183,7 @@ public class CategoriesPlugin extends CompositeAggregator implements ResultsRead
         }
     }
 
-    private static class WidgetAggregator extends CommonJsonAggregator {
+    private static class WidgetAggregator extends AbstractJsonAggregator {
 
         WidgetAggregator() {
             super("widgets", JSON_FILE_NAME);

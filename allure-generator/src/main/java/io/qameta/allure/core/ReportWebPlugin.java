@@ -3,7 +3,8 @@ package io.qameta.allure.core;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import io.qameta.allure.Aggregator;
-import io.qameta.allure.PluginConfiguration;
+import io.qameta.allure.Plugin;
+import io.qameta.allure.config.PluginConfiguration;
 import io.qameta.allure.context.FreemarkerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,8 +33,7 @@ public class ReportWebPlugin implements Aggregator {
     private final List<String> staticFiles = Arrays.asList("app.js", "styles.css", "favicon.ico");
 
     @Override
-    public void aggregate(final Configuration configuration,
-                          final List<LaunchResults> launchesResults,
+    public void aggregate(final List<LaunchResults> launchesResults,
                           final Path outputDirectory) throws IOException {
         writePluginsStatic(configuration, outputDirectory);
         writeIndexHtml(configuration, outputDirectory);

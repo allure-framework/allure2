@@ -6,7 +6,6 @@ import io.reactivex.schedulers.Schedulers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -33,6 +32,7 @@ public class DirectoryWatcher {
     private final AtomicBoolean stop = new AtomicBoolean();
     private final AtomicBoolean completed = new AtomicBoolean();
 
+    private int maxDepth = Integer.MAX_VALUE;
     private int batchSize = 10;
 
     private int processInterval = 2;
@@ -53,15 +53,12 @@ public class DirectoryWatcher {
                 })
                 .flatMap(aLong -> Observable.concat(list))
                 .flatMap(Observable::just)
-                .zipWith(
-                        interval(processInterval, processIntervalUnit, Schedulers.newThread()),
-                        (paths, aLong) -> paths
-                )
+                .buffer(processInterval, processIntervalUnit, batchSize)
                 .subscribeOn(Schedulers.computation())
                 .subscribe(
-                        path -> {
-                            processedFiles.add(path);
-                            fileConsumer.accept(path);
+                        paths -> {
+                            processedFiles.addAll(paths);
+                            paths.forEach(fileConsumer);
                         },
                         throwable -> LOGGER.error("Could not process files", throwable),
                         () -> completed.set(true)
@@ -70,13 +67,8 @@ public class DirectoryWatcher {
 
     private ObservableOnSubscribe<Path> getIndexer(final Path resultsDirectory) {
         return emitter -> {
-            try (DirectoryStream<Path> stream = Files.newDirectoryStream(resultsDirectory)) {
-                for (Path path : stream) {
-                    if (!indexedFiles.contains(path)) {
-                        indexedFiles.add(path);
-                        emitter.onNext(path);
-                    }
-                }
+            try (Stream<Path> stream = Files.walk(resultsDirectory, maxDepth)) {
+                stream.filter(indexedFiles::add).forEach(emitter::onNext);
                 emitter.onComplete();
             } catch (Exception e) {
                 emitter.onError(e);
@@ -134,5 +126,13 @@ public class DirectoryWatcher {
 
     public TimeUnit getIndexIntervalUnit() {
         return indexIntervalUnit;
+    }
+
+    public int getMaxDepth() {
+        return maxDepth;
+    }
+
+    public void setMaxDepth(final int maxDepth) {
+        this.maxDepth = maxDepth;
     }
 }

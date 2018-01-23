@@ -156,7 +156,7 @@ public class JunitReaderTest {
 
         final List<TestResult> results = captor.getAllValues();
         assertThat(results)
-                .extracting(TestResult::getName, TestResult::getStatus, TestResult::isHidden, TestResult::getHistoryId)
+                .extracting(TestResult::getName, TestResult::getStatus, TestResult::isHidden, TestResult::getHistoryKey)
                 .containsExactlyInAnyOrder(
                         Tuple.tuple("searchTest", TestStatus.BROKEN, false, "my.company.tests.SearchTest:my.company.tests.SearchTest#searchTest"),
                         Tuple.tuple("searchTest", TestStatus.BROKEN, true, "my.company.tests.SearchTest:my.company.tests.SearchTest#searchTest"),
@@ -271,7 +271,7 @@ public class JunitReaderTest {
         final Path resultsDirectory = folder.newFolder().toPath();
         final Path file = copyFile(resultsDirectory, resourceName, fileName);
         final JunitReader reader = new JunitReader();
-        reader.readResults(visitor, file);
+        reader.readResultFile(visitor, file);
     }
 
     private Path copyFile(Path dir, String resourceName, String fileName) throws IOException {

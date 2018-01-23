@@ -57,7 +57,7 @@ public class XcTestReader implements ResultsReader {
 
 
     @Override
-    public void readResults(final ResultsVisitor visitor, final Path file) {
+    public void readResultFile(final ResultsVisitor visitor, final Path file) {
         if (file.getFileName().toString().endsWith(".plist")) {
             readSummaries(visitor, file);
         }

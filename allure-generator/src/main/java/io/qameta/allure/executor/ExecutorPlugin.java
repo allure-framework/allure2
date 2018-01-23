@@ -1,6 +1,6 @@
 package io.qameta.allure.executor;
 
-import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.AbstractJsonAggregator;
 import io.qameta.allure.ResultsReader;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class ExecutorPlugin extends CommonJsonAggregator implements ResultsReader {
+public class ExecutorPlugin extends AbstractJsonAggregator implements ResultsReader {
 
     public static final String EXECUTORS_BLOCK_NAME = "executor";
     protected static final String JSON_FILE_NAME = "executor.json";

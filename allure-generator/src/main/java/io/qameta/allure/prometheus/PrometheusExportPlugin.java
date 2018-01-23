@@ -1,6 +1,6 @@
 package io.qameta.allure.prometheus;
 
-import io.qameta.allure.CommonMetricAggregator;
+import io.qameta.allure.AbstractMetricAggregator;
 import io.qameta.allure.category.CategoriesMetric;
 import io.qameta.allure.metric.Metric;
 import io.qameta.allure.metric.StatusMetric;
@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class PrometheusExportPlugin extends CommonMetricAggregator {
+public class PrometheusExportPlugin extends AbstractMetricAggregator {
 
     public PrometheusExportPlugin() {
         super("prometheusData.txt");

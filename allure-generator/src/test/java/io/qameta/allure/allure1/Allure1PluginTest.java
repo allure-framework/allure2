@@ -243,7 +243,7 @@ public class Allure1PluginTest {
         ).getResults();
 
         assertThat(testResults)
-                .extracting(TestResult::getHistoryId)
+                .extracting(TestResult::getHistoryKey)
                 .as("History ids for parameterized tests must be different")
                 .containsExactlyInAnyOrder(historyId1, historyId2);
     }
@@ -294,12 +294,12 @@ public class Allure1PluginTest {
 
         assertThat(results)
                 .filteredOn("name", "test1")
-                .extracting(TestResult::getHistoryId)
+                .extracting(TestResult::getHistoryKey)
                 .containsExactly("something");
 
         assertThat(results)
                 .filteredOn("name", "test2")
-                .extracting(TestResult::getHistoryId)
+                .extracting(TestResult::getHistoryKey)
                 .containsNull();
     }
 

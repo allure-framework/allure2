@@ -3,7 +3,6 @@ package io.qameta.allure;
 import com.beust.jcommander.JCommander;
 import io.qameta.allure.config.ConfigLoader;
 import io.qameta.allure.core.Configuration;
-import io.qameta.allure.core.Plugin;
 import io.qameta.allure.option.ConfigOptions;
 import io.qameta.allure.plugin.DefaultPluginLoader;
 import org.apache.commons.io.FileUtils;

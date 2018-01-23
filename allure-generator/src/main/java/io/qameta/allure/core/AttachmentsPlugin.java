@@ -18,8 +18,7 @@ import java.util.Map;
 public class AttachmentsPlugin implements Aggregator {
 
     @Override
-    public void aggregate(final Configuration configuration,
-                          final List<LaunchResults> launchesResults,
+    public void aggregate(final List<LaunchResults> launchesResults,
                           final Path outputDirectory) throws IOException {
         final Path attachmentsFolder = Files.createDirectories(outputDirectory.resolve("data/attachment"));
         for (LaunchResults launch : launchesResults) {

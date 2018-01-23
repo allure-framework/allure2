@@ -12,7 +12,6 @@ import io.qameta.allure.core.AttachmentsPlugin;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.MarkdownDescriptionsPlugin;
-import io.qameta.allure.core.Plugin;
 import io.qameta.allure.core.ReportWebPlugin;
 import io.qameta.allure.core.TestsResultsPlugin;
 import io.qameta.allure.duration.DurationPlugin;
@@ -90,8 +89,7 @@ public final class DummyReportGenerator {
             new Allure2Plugin(),
             new ReportWebPlugin() {
                 @Override
-                public void aggregate(final Configuration configuration,
-                                      final List<LaunchResults> launchesResults,
+                public void aggregate(final List<LaunchResults> launchesResults,
                                       final Path outputDirectory) throws IOException {
                     writePluginsStatic(configuration, outputDirectory);
                     writeIndexHtml(configuration, outputDirectory);

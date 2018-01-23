@@ -1,6 +1,6 @@
 package io.qameta.allure.status;
 
-import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.AbstractJsonAggregator;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.TestResult;
 
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  *
  * @since 2.0
  */
-public class StatusChartPlugin extends CommonJsonAggregator {
+public class StatusChartPlugin extends AbstractJsonAggregator {
 
     public StatusChartPlugin() {
         super("widgets", "status-chart.json");

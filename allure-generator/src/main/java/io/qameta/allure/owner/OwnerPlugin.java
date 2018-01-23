@@ -1,7 +1,6 @@
 package io.qameta.allure.owner;
 
 import io.qameta.allure.Aggregator;
-import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.TestResult;
@@ -19,8 +18,7 @@ public class OwnerPlugin implements Aggregator {
     private static final String OWNER_BLOCK_NAME = "owner";
 
     @Override
-    public void aggregate(final Configuration configuration,
-                          final List<LaunchResults> launchesResults,
+    public void aggregate(final List<LaunchResults> launchesResults,
                           final Path outputDirectory) {
         launchesResults.stream()
                 .flatMap(results -> results.getResults().stream())

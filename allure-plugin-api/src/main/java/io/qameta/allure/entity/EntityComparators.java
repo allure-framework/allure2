@@ -18,4 +18,14 @@ public final class EntityComparators {
     public static Comparator<TestResult> comparingTestResultsByStartAsc() {
         return comparing(TestResult::getStart, nullsFirst(naturalOrder()));
     }
+
+    public static Comparator<TestParameter> comparingParametersByNameAndValue() {
+        return comparing(TestParameter::getName, nullsFirst(naturalOrder()))
+                .thenComparing(TestParameter::getValue, nullsFirst(naturalOrder()));
+    }
+
+    public static Comparator<EnvironmentVariable> comparingEnvironmentByKeyAndValue() {
+        return comparing(EnvironmentVariable::getKey, nullsFirst(naturalOrder()))
+                .thenComparing(EnvironmentVariable::getValue, nullsFirst(naturalOrder()));
+    }
 }

@@ -11,7 +11,7 @@ import java.nio.file.Path;
 public class AllureAttachmentsReader implements ResultsReader {
 
     @Override
-    public void readResults(final ResultsVisitor visitor, final Path resultsFile) {
+    public void readResultFile(final ResultsVisitor visitor, final Path resultsFile) {
         if (resultsFile.getFileName().toString().matches(".*-attachment\\..*")) {
             visitor.visitAttachmentFile(resultsFile);
         }

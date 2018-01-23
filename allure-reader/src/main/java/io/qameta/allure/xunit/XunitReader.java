@@ -60,7 +60,7 @@ public class XunitReader implements ResultsReader {
     private static final String VALUE_ATTRIBUTE_NAME = "value";
 
     @Override
-    public void readResults(final ResultsVisitor visitor, final Path file) {
+    public void readResultFile(final ResultsVisitor visitor, final Path file) {
         if (file.getFileName().toString().endsWith(".xml")) {
             parseAssemblies(visitor, file);
         }
@@ -111,7 +111,7 @@ public class XunitReader implements ResultsReader {
         result.setDuration(getDuration(testElement));
 
         fullName.ifPresent(result::setFullName);
-        fullName.ifPresent(result::setHistoryId);
+        fullName.ifPresent(result::setHistoryKey);
         getStatusMessage(testElement).ifPresent(result::setMessage);
         getStatusTrace(testElement).ifPresent(result::setTrace);
         getParameters(testElement).ifPresent(result::setParameters);

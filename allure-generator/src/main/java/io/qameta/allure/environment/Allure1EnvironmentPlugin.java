@@ -1,6 +1,6 @@
 package io.qameta.allure.environment;
 
-import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.AbstractJsonAggregator;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.EnvironmentItem;
 
@@ -16,7 +16,7 @@ import static java.util.stream.Collectors.toList;
 /**
  * @author Egor Borisov ehborisov@gmail.com
  */
-public class Allure1EnvironmentPlugin extends CommonJsonAggregator {
+public class Allure1EnvironmentPlugin extends AbstractJsonAggregator {
 
     public Allure1EnvironmentPlugin() {
         super("widgets", "environment.json");

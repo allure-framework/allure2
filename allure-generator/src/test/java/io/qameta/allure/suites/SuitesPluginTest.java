@@ -79,7 +79,7 @@ public class SuitesPluginTest {
 
         final SuitesPlugin plugin = new SuitesPlugin();
 
-        plugin.aggregate(configuration, getSimpleLaunchResults(), reportPath);
+        plugin.aggregate(getSimpleLaunchResults(), reportPath);
 
         assertThat(reportPath.resolve("data").resolve(JSON_FILE_NAME))
                 .exists();

@@ -6,13 +6,13 @@
         <test-case start="1412949539364" stop="1412949539746" status="passed">
             <name>test1</name>
             <labels>
-                <label name="historyId" value="something"/>
+                <label name="historyKey" value="something"/>
             </labels>
         </test-case>
         <test-case start="1412949539364" stop="1412949539746" status="passed">
             <name>test2</name>
             <labels>
-                <label name="historyId"/>
+                <label name="historyKey"/>
             </labels>
         </test-case>
     </test-cases>

@@ -15,7 +15,9 @@ public class CompositeResultsReader implements ResultsReader {
     }
 
     @Override
-    public void readResults(final ResultsVisitor visitor, final Path file) {
-        readers.forEach(reader -> reader.readResults(visitor, file));
+    public void readResultFile(final ResultsVisitor visitor, final Path file) throws Exception {
+        for (ResultsReader reader : readers) {
+            reader.readResultFile(visitor, file);
+        }
     }
 }

@@ -1,7 +1,6 @@
 package io.qameta.allure.ga;
 
 import io.qameta.allure.Aggregator;
-import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.LabelName;
@@ -55,8 +54,7 @@ public class GaPlugin implements Aggregator {
     private static final String GA_API_VERSION = "1";
 
     @Override
-    public void aggregate(final Configuration configuration,
-                          final List<LaunchResults> launchesResults,
+    public void aggregate(final List<LaunchResults> launchesResults,
                           final Path outputDirectory) {
         if (Objects.nonNull(System.getenv(GA_DISABLE))) {
             LOGGER.debug("analytics is disabled");

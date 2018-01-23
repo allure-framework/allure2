@@ -1,9 +1,8 @@
 package io.qameta.allure.severity;
 
 import io.qameta.allure.Aggregator;
-import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.AbstractJsonAggregator;
 import io.qameta.allure.CompositeAggregator;
-import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.TestResult;
 
@@ -35,8 +34,7 @@ public class SeverityPlugin extends CompositeAggregator {
     private static class SeverityAggregator implements Aggregator {
 
         @Override
-        public void aggregate(final Configuration configuration,
-                              final List<LaunchResults> launchesResults,
+        public void aggregate(final List<LaunchResults> launchesResults,
                               final Path outputDirectory) {
             launchesResults.stream()
                     .flatMap(results -> results.getResults().stream())
@@ -52,7 +50,7 @@ public class SeverityPlugin extends CompositeAggregator {
         }
     }
 
-    private static class WidgetAggregator extends CommonJsonAggregator {
+    private static class WidgetAggregator extends AbstractJsonAggregator {
 
         WidgetAggregator() {
             super("widgets", JSON_FILE_NAME);

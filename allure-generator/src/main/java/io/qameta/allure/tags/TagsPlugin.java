@@ -1,7 +1,6 @@
 package io.qameta.allure.tags;
 
 import io.qameta.allure.Aggregator;
-import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.LabelName;
 
@@ -18,8 +17,7 @@ import java.util.Set;
 public class TagsPlugin implements Aggregator {
 
     @Override
-    public void aggregate(final Configuration configuration,
-                          final List<LaunchResults> launchesResults,
+    public void aggregate(final List<LaunchResults> launchesResults,
                           final Path outputDirectory) throws IOException {
         launchesResults.stream()
                 .map(LaunchResults::getAllResults)

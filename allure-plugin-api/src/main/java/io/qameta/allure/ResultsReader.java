@@ -1,8 +1,5 @@
 package io.qameta.allure;
 
-import io.qameta.allure.core.Configuration;
-import io.qameta.allure.core.ResultsVisitor;
-
 import java.nio.file.Path;
 
 /**
@@ -17,10 +14,9 @@ public interface ResultsReader extends Extension {
     /**
      * Process results directory.
      *
-     * @param configuration the report configuration.
-     * @param visitor       the visitor to store data into results storage.
-     * @param directory     the results directory to process.
+     * @param visitor the visitor to store data into results storage.
+     * @param file    the result file to process.
      */
-    void readResults(Configuration configuration, ResultsVisitor visitor, Path directory);
+    void readResultFile(ResultsVisitor visitor, Path file) throws Exception;
 
 }

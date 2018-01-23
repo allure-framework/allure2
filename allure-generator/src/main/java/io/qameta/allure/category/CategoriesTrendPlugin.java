@@ -3,7 +3,7 @@ package io.qameta.allure.category;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.AbstractJsonAggregator;
 import io.qameta.allure.CompositeAggregator;
 import io.qameta.allure.ResultsReader;
 import io.qameta.allure.context.JacksonContext;
@@ -140,7 +140,7 @@ public class CategoriesTrendPlugin extends CompositeAggregator implements Result
                 .findFirst();
     }
 
-    private static class JsonAggregator extends CommonJsonAggregator {
+    private static class JsonAggregator extends AbstractJsonAggregator {
 
         JsonAggregator() {
             super(HISTORY, JSON_FILE_NAME);
@@ -152,7 +152,7 @@ public class CategoriesTrendPlugin extends CompositeAggregator implements Result
         }
     }
 
-    private static class WidgetAggregator extends CommonJsonAggregator {
+    private static class WidgetAggregator extends AbstractJsonAggregator {
 
         WidgetAggregator() {
             super("widgets", JSON_FILE_NAME);

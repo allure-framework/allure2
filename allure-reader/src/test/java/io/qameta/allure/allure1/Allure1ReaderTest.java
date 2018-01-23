@@ -90,7 +90,7 @@ public class Allure1ReaderTest {
         final Path resultsDirectory = folder.newFolder().toPath();
         final Path file = copyFile(resultsDirectory, resourceName, fileName);
         final Allure1Reader reader = new Allure1Reader();
-        reader.readResults(visitor, file);
+        reader.readResultFile(visitor, file);
     }
 
     private Path copyFile(Path dir, String resourceName, String fileName) throws IOException {

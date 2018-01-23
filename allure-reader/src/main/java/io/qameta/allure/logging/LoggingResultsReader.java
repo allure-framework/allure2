@@ -15,7 +15,7 @@ public class LoggingResultsReader implements ResultsReader {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoggingResultsReader.class);
 
     @Override
-    public void readResults(final ResultsVisitor visitor, final Path file) {
+    public void readResultFile(final ResultsVisitor visitor, final Path file) {
         LOGGER.info("Process results file {}", file);
     }
 

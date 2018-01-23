@@ -57,8 +57,7 @@ public class HistoryPlugin implements ResultsReader, Aggregator {
     }
 
     @Override
-    public void aggregate(final Configuration configuration,
-                          final List<LaunchResults> launchesResults,
+    public void aggregate(final List<LaunchResults> launchesResults,
                           final Path outputDirectory) throws IOException {
         final JacksonContext context = configuration.requireContext(JacksonContext.class);
         final Path historyFolder = Files.createDirectories(outputDirectory.resolve(HISTORY_BLOCK_NAME));
@@ -74,7 +73,7 @@ public class HistoryPlugin implements ResultsReader, Aggregator {
                     ExecutorInfo executorInfo = launch.getExtra("executor", ExecutorInfo::new);
                     final Map<String, HistoryData> history = launch.getExtra(HISTORY_BLOCK_NAME, HashMap::new);
                     launch.getResults().stream()
-                            .filter(result -> Objects.nonNull(result.getHistoryId()))
+                            .filter(result -> Objects.nonNull(result.getHistoryKey()))
                             .forEach(result -> updateHistory(history, result, executorInfo));
                     return history;
                 })
@@ -89,7 +88,7 @@ public class HistoryPlugin implements ResultsReader, Aggregator {
                                final ExecutorInfo info) {
         //@formatter:off
         final HistoryData data = history.computeIfAbsent(
-            result.getHistoryId(),
+            result.getHistoryKey(),
             id -> new HistoryData().setStatistic(new Statistic())
         );
         //@formatter:on

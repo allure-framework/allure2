@@ -29,7 +29,7 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
     protected Long id;
     protected String name;
     protected String fullName;
-    protected String historyId;
+    protected String historyKey;
     protected String testId;
 
     protected Long start;

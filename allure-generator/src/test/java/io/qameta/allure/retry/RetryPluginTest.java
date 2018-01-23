@@ -40,7 +40,7 @@ public class RetryPluginTest {
                 createTestResult(LAST_RESULT, historyId, 21L, 29L)
         );
 
-        retryPlugin.aggregate(null, launchResultsList, null);
+        retryPlugin.aggregate(launchResultsList, null);
 
         Set<TestResult> results = launchResultsList.get(0).getAllResults();
 
@@ -77,7 +77,7 @@ public class RetryPluginTest {
                 createTestResult(SECOND_RESULT, secondHistoryId, 11L, 19L)
         );
 
-        retryPlugin.aggregate(null, launchResultsList, null);
+        retryPlugin.aggregate(launchResultsList, null);
 
         Set<TestResult> results = launchResultsList.get(0).getAllResults();
 
@@ -98,7 +98,7 @@ public class RetryPluginTest {
                 createTestResult(SECOND_RESULT, historyId, 11L, 19L),
                 createTestResult(LAST_RESULT, historyId, 21L, 29L).setHidden(true)
         );
-        retryPlugin.aggregate(null, launchResultsList, null);
+        retryPlugin.aggregate(launchResultsList, null);
         Set<TestResult> results = launchResultsList.get(0).getAllResults();
 
         assertThat(results)
@@ -119,7 +119,7 @@ public class RetryPluginTest {
                 createTestResult(FIRST_RESULT, historyId, 1L, 9L).setStatus(TestStatus.PASSED),
                 createTestResult(SECOND_RESULT, historyId, 11L, 19L).setStatus(TestStatus.PASSED)
         );
-        retryPlugin.aggregate(null, launchResultsList, null);
+        retryPlugin.aggregate(launchResultsList, null);
         Set<TestResult> results = launchResultsList.get(0).getAllResults();
 
         assertThat(results)
@@ -141,7 +141,7 @@ public class RetryPluginTest {
                 createTestResult(SECOND_RESULT, historyId, 11L, 19L).setStatus(TestStatus.PASSED),
                 createTestResult(LAST_RESULT, historyId, 12L, 20L).setHidden(true).setStatus(TestStatus.PASSED)
         );
-        retryPlugin.aggregate(null, launchResultsList, null);
+        retryPlugin.aggregate(launchResultsList, null);
         Set<TestResult> results = launchResultsList.get(0).getAllResults();
 
         assertThat(results)
@@ -158,7 +158,7 @@ public class RetryPluginTest {
     private TestResult createTestResult(String name, String historyId, long start, long stop) {
         return new TestResult()
                 .setName(name)
-                .setHistoryId(historyId)
+                .setHistoryKey(historyId)
                 .setStatus(TestStatus.BROKEN)
                 .setStart(start)
                 .setStop(stop)

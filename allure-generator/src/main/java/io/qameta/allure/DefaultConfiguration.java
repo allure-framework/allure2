@@ -1,7 +1,6 @@
 package io.qameta.allure;
 
 import io.qameta.allure.core.Configuration;
-import io.qameta.allure.core.Plugin;
 
 import java.util.Collections;
 import java.util.List;

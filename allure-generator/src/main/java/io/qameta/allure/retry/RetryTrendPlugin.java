@@ -3,7 +3,7 @@ package io.qameta.allure.retry;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.AbstractJsonAggregator;
 import io.qameta.allure.CompositeAggregator;
 import io.qameta.allure.ResultsReader;
 import io.qameta.allure.context.JacksonContext;
@@ -140,7 +140,7 @@ public class RetryTrendPlugin extends CompositeAggregator implements ResultsRead
                 .findFirst();
     }
 
-    protected static class JsonAggregator extends CommonJsonAggregator {
+    protected static class JsonAggregator extends AbstractJsonAggregator {
 
         JsonAggregator() {
             super(HISTORY, JSON_FILE_NAME);
@@ -152,7 +152,7 @@ public class RetryTrendPlugin extends CompositeAggregator implements ResultsRead
         }
     }
 
-    private static class WidgetAggregator extends CommonJsonAggregator {
+    private static class WidgetAggregator extends AbstractJsonAggregator {
 
         WidgetAggregator() {
             super("widgets", JSON_FILE_NAME);

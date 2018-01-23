@@ -131,7 +131,7 @@ public class HistoryTrendPluginTest {
                 .thenReturn(mapper);
 
         final HistoryTrendPlugin.JsonAggregator aggregator = new HistoryTrendPlugin.JsonAggregator();
-        aggregator.aggregate(configuration, Collections.emptyList(), outputDirectory);
+        aggregator.aggregate(Collections.emptyList(), outputDirectory);
 
         final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.forClass(List.class);
         verify(mapper, times(1))

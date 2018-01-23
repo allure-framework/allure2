@@ -85,7 +85,7 @@ public class TrxPluginTest {
         final Path resultsDirectory = folder.newFolder().toPath();
         final Path file = copyFile(resultsDirectory, resourceName, fileName);
         final TrxReader reader = new TrxReader();
-        reader.readResults(visitor, file);
+        reader.readResultFile(visitor, file);
     }
 
     private Path copyFile(Path dir, String resourceName, String fileName) throws IOException {

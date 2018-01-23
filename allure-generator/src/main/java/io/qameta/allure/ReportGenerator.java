@@ -35,7 +35,7 @@ public class ReportGenerator {
 
     public void aggregate(final List<LaunchResults> results, final Path outputDirectory) throws IOException {
         for (Aggregator aggregator : configuration.getAggregators()) {
-            aggregator.aggregate(configuration, results, outputDirectory);
+            aggregator.aggregate(results, outputDirectory);
         }
     }
 

@@ -19,8 +19,7 @@ import java.util.stream.Collectors;
 public class TestsResultsPlugin implements Aggregator {
 
     @Override
-    public void aggregate(final Configuration configuration,
-                          final List<LaunchResults> launchesResults,
+    public void aggregate(final List<LaunchResults> launchesResults,
                           final Path outputDirectory) throws IOException {
         final JacksonContext context = configuration.requireContext(JacksonContext.class);
         final Path testCasesFolder = Files.createDirectories(outputDirectory.resolve("data/test-cases"));

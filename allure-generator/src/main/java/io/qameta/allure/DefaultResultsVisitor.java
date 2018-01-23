@@ -57,7 +57,6 @@ public class DefaultResultsVisitor implements ResultsVisitor {
 
     @Override
     public Attachment visitAttachmentFile(final Path attachmentFile) {
-        final RandomUidContext context = configuration.requireContext(RandomUidContext.class);
         return attachments.computeIfAbsent(attachmentFile, file -> {
             final String uid = context.getValue().get();
             final String realType = probeContentType(file);

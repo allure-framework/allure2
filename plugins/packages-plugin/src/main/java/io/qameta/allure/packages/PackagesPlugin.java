@@ -2,7 +2,6 @@ package io.qameta.allure.packages;
 
 import io.qameta.allure.Aggregator;
 import io.qameta.allure.context.JacksonContext;
-import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.TestResult;
@@ -29,8 +28,7 @@ import static io.qameta.allure.entity.TestResult.comparingByTimeAsc;
 public class PackagesPlugin implements Aggregator {
 
     @Override
-    public void aggregate(final Configuration configuration,
-                          final List<LaunchResults> launchesResults,
+    public void aggregate(final List<LaunchResults> launchesResults,
                           final Path outputDirectory) throws IOException {
         final JacksonContext jacksonContext = configuration.requireContext(JacksonContext.class);
         final Path dataFolder = Files.createDirectories(outputDirectory.resolve("data"));

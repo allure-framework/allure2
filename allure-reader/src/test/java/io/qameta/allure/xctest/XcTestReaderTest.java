@@ -48,7 +48,7 @@ public class XcTestReaderTest {
             Files.copy(is, file);
         }
 
-        new XcTestReader().readResults(visitor, file);
+        new XcTestReader().readResultFile(visitor, file);
 
         verify(visitor, times(14))
                 .visitTestResult(any(TestResult.class));

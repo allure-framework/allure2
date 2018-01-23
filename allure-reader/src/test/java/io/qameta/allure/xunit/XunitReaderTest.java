@@ -65,7 +65,7 @@ public class XunitReaderTest {
 
         assertThat(captor.getAllValues())
                 .hasSize(1)
-                .extracting(TestResult::getName, TestResult::getHistoryId, TestResult::getStatus)
+                .extracting(TestResult::getName, TestResult::getHistoryKey, TestResult::getStatus)
                 .containsExactlyInAnyOrder(
                         Tuple.tuple("passedTest", "Some test", TestStatus.PASSED)
                 );
@@ -168,7 +168,7 @@ public class XunitReaderTest {
         final Path resultsDirectory = folder.newFolder().toPath();
         final Path file = copyFile(resultsDirectory, resourceName, fileName);
         final XunitReader reader = new XunitReader();
-        reader.readResults(visitor, file);
+        reader.readResultFile(visitor, file);
     }
 
     private Path copyFile(Path dir, String resourceName, String fileName) throws IOException {

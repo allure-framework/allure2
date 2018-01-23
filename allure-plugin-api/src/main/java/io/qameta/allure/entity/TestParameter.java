@@ -17,4 +17,9 @@ public class TestParameter implements Serializable {
     protected String name;
     protected String value;
 
+    protected boolean hidden;
+
+    public boolean isNotHidden() {
+        return !isHidden();
+    }
 }

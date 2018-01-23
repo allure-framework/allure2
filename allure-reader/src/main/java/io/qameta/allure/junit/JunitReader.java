@@ -66,7 +66,7 @@ public class JunitReader implements ResultsReader {
     }
 
     @Override
-    public void readResults(final ResultsVisitor visitor, final Path file) {
+    public void readResultFile(final ResultsVisitor visitor, final Path file) {
         if (file.getFileName().toString().endsWith(".xml")) {
             parseRootElement(visitor, file);
         }
@@ -157,7 +157,7 @@ public class JunitReader implements ResultsReader {
         final String historyId = String.format("%s:%s#%s", info.getName(), className, name);
         final TestResult result = new TestResult();
         if (nonNull(className) && nonNull(name)) {
-            result.setHistoryId(historyId);
+            result.setHistoryKey(historyId);
         }
         result.setName(isNull(name) ? "Unknown test case" : name);
         result.setStart(info.getTimestamp());

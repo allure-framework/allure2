@@ -14,7 +14,7 @@ import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.TestResultExecution;
 import io.qameta.allure.entity.TestResultStep;
 import io.qameta.allure.entity.TestStatus;
-import io.qameta.allure.jackson.XmlParserModule;
+import io.qameta.allure.parser.XmlParserModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.yandex.qatools.allure.model.Description;
@@ -76,6 +76,7 @@ public class Allure1Reader implements ResultsReader {
     private static final Logger LOGGER = LoggerFactory.getLogger(Allure1Reader.class);
     private static final String UNKNOWN = "unknown";
     private static final String MD_5 = "md5";
+
     private static final Comparator<TestParameter> PARAMETER_COMPARATOR =
             comparing(TestParameter::getName, nullsFirst(naturalOrder()))
                     .thenComparing(TestParameter::getValue, nullsFirst(naturalOrder()));
@@ -95,8 +96,8 @@ public class Allure1Reader implements ResultsReader {
     }
 
     @Override
-    public void readResults(final ResultsVisitor visitor,
-                            final Path resultsFile) {
+    public void readResultFile(final ResultsVisitor visitor,
+                               final Path resultsFile) {
 
         if (resultsFile.getFileName().toString().endsWith("-testsuite.xml")) {
             readXmlTestSuiteFile(resultsFile)
@@ -134,14 +135,11 @@ public class Allure1Reader implements ResultsReader {
         final String name = firstNonNull(source.getTitle(), source.getName(), "unknown test case");
 
         final Set<TestParameter> parameters = getParameters(source);
-        final Optional<String> historyId = findLabel(source.getLabels(), "historyId");
-        if (historyId.isPresent()) {
-            dest.setHistoryId(historyId.get());
-        } else {
-            dest.setHistoryId(getHistoryId(String.format("%s#%s", testClass, name), parameters));
-        }
+
+        findLabel(source.getLabels(), "historyId").ifPresent(dest::setHistoryKey);
         dest.setName(name);
         dest.setFullName(String.format("%s.%s", testClass, testMethod));
+        dest.setTestId(String.format("%s#%s", testClass, name));
 
         final TestStatus status = convert(source.getStatus());
         dest.setStatus(status);

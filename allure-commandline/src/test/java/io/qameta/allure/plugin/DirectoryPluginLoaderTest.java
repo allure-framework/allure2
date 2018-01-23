@@ -2,7 +2,7 @@ package io.qameta.allure.plugin;
 
 import io.qameta.allure.Aggregator;
 import io.qameta.allure.Extension;
-import io.qameta.allure.core.Plugin;
+import io.qameta.allure.Plugin;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;

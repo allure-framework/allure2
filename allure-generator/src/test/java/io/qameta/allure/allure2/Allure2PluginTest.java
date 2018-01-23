@@ -225,7 +225,7 @@ public class Allure2PluginTest {
         Allure2Plugin reader = new Allure2Plugin();
         final Configuration configuration = new ConfigurationBuilder().useDefault().build();
         final DefaultResultsVisitor resultsVisitor = new DefaultResultsVisitor(configuration);
-        reader.readResults(configuration, resultsVisitor, resultsDirectory);
+        reader.readResultFile(configuration, resultsVisitor, resultsDirectory);
         return resultsVisitor.getLaunchResults();
     }
 

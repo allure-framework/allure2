@@ -25,7 +25,7 @@ public class MarkdownAggregatorTest {
     public void shouldNotFailIfEmptyResults() throws Exception {
         final Path output = folder.newFolder().toPath();
         final MarkdownDescriptionsPlugin aggregator = new MarkdownDescriptionsPlugin();
-        aggregator.aggregate(configuration, Collections.emptyList(), output);
+        aggregator.aggregate(Collections.emptyList(), output);
     }
 
     @Test
@@ -39,7 +39,7 @@ public class MarkdownAggregatorTest {
                 Collections.emptyMap(),
                 Collections.emptyMap()
         );
-        aggregator.aggregate(configuration, Collections.singletonList(launchResults), output);
+        aggregator.aggregate(Collections.singletonList(launchResults), output);
         assertThat(result)
                 .extracting(TestResult::getDescription, TestResult::getDescriptionHtml)
                 .containsExactly(null, null);
@@ -59,7 +59,7 @@ public class MarkdownAggregatorTest {
                 Collections.emptyMap(),
                 Collections.emptyMap()
         );
-        aggregator.aggregate(configuration, Collections.singletonList(launchResults), output);
+        aggregator.aggregate(Collections.singletonList(launchResults), output);
         assertThat(result)
                 .extracting(TestResult::getDescription, TestResult::getDescriptionHtml)
                 .containsExactly("desc", "descHtml");
@@ -78,7 +78,7 @@ public class MarkdownAggregatorTest {
                 Collections.emptyMap(),
                 Collections.emptyMap()
         );
-        aggregator.aggregate(configuration, Collections.singletonList(launchResults), output);
+        aggregator.aggregate(Collections.singletonList(launchResults), output);
         assertThat(result)
                 .extracting(TestResult::getDescription, TestResult::getDescriptionHtml)
                 .containsExactly("desc", "<p>desc</p>\n");

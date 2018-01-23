@@ -1,11 +1,9 @@
 package io.qameta.allure;
 
-import io.qameta.allure.core.Configuration;
-import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.service.TestResultService;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
 
 /**
  * Aggregator extension. Can be used to process results and/or generate
@@ -19,13 +17,11 @@ public interface Aggregator extends Extension {
     /**
      * Process report data.
      *
-     * @param configuration   the report configuration.
-     * @param launchesResults all the parsed test results.
+     * @param service         the service that can be used to access report data.
      * @param outputDirectory the report directory.
      * @throws IOException if any occurs.
      */
-    void aggregate(Configuration configuration,
-                   List<LaunchResults> launchesResults,
+    void aggregate(TestResultService service,
                    Path outputDirectory) throws IOException;
 
 }
