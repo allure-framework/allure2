@@ -70,6 +70,20 @@ allure.api.addTranslation('he', {
     }
 });
 
+allure.api.addTranslation('br', {
+    tab: {
+        behaviors: {
+            name: 'Comportamentos'
+        }
+    }, 
+    widget: {
+        behaviors: {
+            name: 'Funcionalidades por história', 
+            showAll: 'Mostrar tudo'
+        }
+    }
+});
+
 allure.api.addTab('behaviors', {
     title: 'tab.behaviors.name', icon: 'fa fa-list',
     route: 'behaviors(/)(:testGroup)(/)(:testResult)(/)(:testResultTab)(/)',

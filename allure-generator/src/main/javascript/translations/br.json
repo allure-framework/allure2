@@ -1,0 +1,195 @@
+{
+  "status": {
+    "failed": "Falhou",
+    "broken": "Quebrado",
+    "passed": "Passou",
+    "skipped": "Ignorado",
+    "unknown": "Desconhecido",
+    "flaky": "Teste é inconsistente"
+  },
+  "sorter": {
+    "order": "ordem",
+    "name": "nome",
+    "duration": "duração",
+    "status": "situação"
+  },
+  "tab": {
+    "overview": {
+      "name": "Visão geral"
+    },
+    "categories": {
+      "name": "Categorias"
+    },
+    "suites": {
+      "name": "Suítes"
+    },
+    "graph": {
+      "name": "Gráficos"
+    },
+    "timeline": {
+      "name": "Linha do tempo",
+      "selected": "Selecionado {{count}} teste ({{percent}}%) com duração acima de {{duration}}",
+      "selected_plural": "Selecionados {{count}} testes ({{percent}}%) com duração acima de {{duration}}"
+    }
+  },
+  "widget": {
+    "summary": {
+      "aggregatedName": "Relatório agregado",
+      "launches": "execução",
+      "launches_plural": "execuções",
+      "testResults": "caso de teste",
+      "testResults_plural": "casos de teste"
+    },
+    "trend": {
+      "name": "Tendência"
+    },
+    "categoriesTrend": {
+      "name": "Tendência das categorias"
+    },
+    "durationTrend": {
+      "name": "Tendência das durações"
+    },
+    "retryTrend": {
+      "name": "Tendência das tentativas"
+    },
+    "executors": {
+      "name": "Executores",
+      "unknown": "Desconhecido",
+      "empty": "Não há informação sobre os executores dos testes."
+    },
+    "launches": {
+      "name": "Execuções",
+      "empty": "Não há informações sobre execuções"
+    },
+    "environment": {
+      "name": "Ambiente",
+      "empty": "Não há variáveis de ambiente.",
+      "showAll": "Mostrar tudo"
+    },
+    "suites": {
+      "name": "Suítes"
+    },
+    "categories": {
+      "name": "Categorias"
+    }
+  },
+  "chart": {
+    "duration": {
+      "name": "Duração",
+      "empty": "Não há nada para mostrar"
+    },
+    "trend": {
+      "empty": "Não há nada para mostrar"
+    },
+    "severity": {
+      "name": "Severidade"
+    },
+    "status": {
+      "name": "Situação"
+    }
+  },
+  "testResult": {
+    "status": {
+      "empty": "Detalhes da situação vazio.",
+      "trace": "Mostrar trace"
+    },
+    "overview": {
+      "name": "Visão geral"
+    },
+    "categories": {
+      "name": "Categorias"
+    },
+    "description": {
+      "name": "Descrição"
+    },
+    "duration": {
+      "name": "Duração"
+    },
+    "history": {
+      "name": "Histórico",
+      "successRate": "Taxa de sucesso"
+    },
+    "owner": {
+      "name": "Proprietário"
+    },
+    "retries": {
+      "name": "Tentativas",
+      "empty": "Não há informação disponível sobre as tentativas de testes."
+    },
+    "parameters": {
+      "name": "Parâmetros"
+    },
+    "links": {
+      "name": "Links"
+    },
+    "severity": {
+      "name": "Severidade"
+    },
+    "execution": {
+      "name": "Execução",
+      "setup": "Pré-execução",
+      "teardown": "Pós-execução",
+      "body": "Corpo do teste"
+    },
+    "stats": {
+      "count": {
+        "steps": "{{count}} sub-passo",
+        "steps_plural": "{{count}} sub-passos",
+        "attachments": "{{count}} anexo",
+        "attachments_plural": "{{count}} anexos",
+        "parameters": "{{count}} parâmetro",
+        "parameters_plural": "{{count}} parâmetros"
+      }
+    }
+  },
+  "controls": {
+    "collapse": "Reduzir",
+    "expand": "Expandir",
+    "fullscreen": "Tela cheia",
+    "language": "Mudar a linguagem",
+    "clipboard": "Copiar para área de transferência",
+    "clipboardSuccess": "Copiado com sucesso",
+    "clipboardError": "Não é possível copiar o valor para área de transferência. Parece que está funcionalidade não é suportada pelo seu browser",
+    "backto": "Voltar para"
+  },
+  "errors": {
+    "missedAttachment": "Anexo não encontrado",
+    "notFound": "Não encontrado"
+  },
+  "component": {
+    "tree": {
+      "filter": "Filtrar por situação",
+      "groups": "Alternar informações do grupo",
+      "download": "Download CSV",
+      "empty": "Não há itens",
+      "time": {
+        "total": {
+          "name": "Total",
+          "tooltip": "Duração de inicio do primeiro teste até o ultimo teste finalizar"
+        },
+        "max": {
+          "name": "Max",
+          "tooltip": "Teste mais demorado"
+        },
+        "sum": {
+          "name": "Soma",
+          "tooltip": "Soma da duração de todos os testes"
+        }
+      },
+      "filtered": {
+        "total": "resultado do teste {{count}}",
+        "total_plural": "resultados dos testes {{count}}",
+        "shown": "mostrar {{count}}"
+      }
+    },
+    "widgetStatus": {
+      "showAll": "Mostrar tudo",
+      "total": "total de item {{count}}",
+      "total_plural": "total de itens {{count}}"
+    },
+    "statusToggle": {
+      "showCases": "Mostrar resultados dos testes com situação {{status}}",
+      "hideCases": "Ocultar resultados dos testes com situação {{status}}"
+    }
+  }
+}
