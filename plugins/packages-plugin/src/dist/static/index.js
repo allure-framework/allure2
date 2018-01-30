@@ -43,7 +43,7 @@ allure.api.addTranslation('he', {
 allure.api.addTranslation('br', {
     tab: {
         packages: {
-            name = 'Pacote'
+            name = 'Pacotes'
         }
     }
 });
