@@ -91,7 +91,8 @@
   "testResult": {
     "status": {
       "empty": "Empty status details",
-      "trace": "Show trace"
+      "trace": "Show trace",
+      "expandTrace": "Click to see stack trace"
     },
     "overview": {
       "name": "Overview"
