@@ -184,12 +184,13 @@ public class JunitXmlPluginTest {
 
 
         final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
-        verify(visitor, times(1)).visitTestResult(captor.capture());
+        verify(visitor, times(2)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
                 .extracting(TestResult::getStatusMessage, TestResult::getStatusTrace)
                 .containsExactlyInAnyOrder(
-                        tuple("some-message", "some-trace")
+                        tuple("output" + System.getProperty("line.separator") + "some-message", "some-trace"),
+                        tuple("test output" + System.getProperty("line.separator"), null)
                 );
 
     }
