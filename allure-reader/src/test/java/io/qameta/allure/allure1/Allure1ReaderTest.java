@@ -86,6 +86,16 @@ public class Allure1ReaderTest {
                 );
     }
 
+    @Test
+    public void shouldParseMigrationSuiteFile() throws IOException {
+        processFile("allure1data/migration-testsuite.xml", generateTestSuiteXmlName());
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(1))
+                .visitTestResult(captor.capture());
+
+    }
+
     private void processFile(final String resourceName, final String fileName) throws IOException {
         final Path resultsDirectory = folder.newFolder().toPath();
         final Path file = copyFile(resultsDirectory, resourceName, fileName);

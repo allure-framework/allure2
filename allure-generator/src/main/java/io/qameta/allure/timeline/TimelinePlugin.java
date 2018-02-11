@@ -1,12 +1,10 @@
 package io.qameta.allure.timeline;
 
 import io.qameta.allure.AbstractJsonAggregator;
-import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.ReportContext;
 import io.qameta.allure.entity.LabelName;
+import io.qameta.allure.service.TestResultService;
 import io.qameta.allure.tree.TestResultTree;
-
-import java.util.Collection;
-import java.util.List;
 
 import static io.qameta.allure.tree.TreeUtils.groupByLabels;
 
@@ -22,7 +20,7 @@ public class TimelinePlugin extends AbstractJsonAggregator {
     }
 
     @Override
-    protected TestResultTree getData(final List<LaunchResults> launchResults) {
+    protected TestResultTree getData(final ReportContext context, final TestResultService testResultService) {
 
         // @formatter:off
         final TestResultTree timeline = new TestResultTree(
@@ -31,9 +29,8 @@ public class TimelinePlugin extends AbstractJsonAggregator {
         );
         // @formatter:on
 
-        launchResults.stream()
-                .map(LaunchResults::getResults)
-                .flatMap(Collection::stream)
+        testResultService
+                .findAll()
                 .forEach(timeline::add);
         return timeline;
     }

@@ -17,11 +17,12 @@ public interface Aggregator extends Extension {
     /**
      * Process report data.
      *
+     * @param context         the context of generated report.
      * @param service         the service that can be used to access report data.
      * @param outputDirectory the report directory.
      * @throws IOException if any occurs.
      */
-    void aggregate(TestResultService service,
+    void aggregate(final ReportContext context, TestResultService service,
                    Path outputDirectory) throws IOException;
 
 }

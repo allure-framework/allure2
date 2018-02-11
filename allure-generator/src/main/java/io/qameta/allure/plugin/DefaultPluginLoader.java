@@ -3,8 +3,8 @@ package io.qameta.allure.plugin;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import io.qameta.allure.Extension;
-import io.qameta.allure.config.PluginConfiguration;
 import io.qameta.allure.Plugin;
+import io.qameta.allure.config.PluginConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

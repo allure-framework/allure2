@@ -329,7 +329,7 @@ public class Allure1Reader implements ResultsReader {
         try (InputStream is = Files.newInputStream(source)) {
             return Optional.of(xmlMapper.readValue(is, TestSuiteResult.class));
         } catch (IOException e) {
-            LOGGER.error("Could not read result {}: {}", source, e);
+            LOGGER.error("Could not read result {}", source, e);
         }
         return Optional.empty();
     }
@@ -338,7 +338,7 @@ public class Allure1Reader implements ResultsReader {
         try (InputStream is = Files.newInputStream(source)) {
             return Optional.of(jsonMapper.readValue(is, TestSuiteResult.class));
         } catch (IOException e) {
-            LOGGER.error("Could not read result {}: {}", source, e);
+            LOGGER.error("Could not read result {}", source, e);
             return Optional.empty();
         }
     }

@@ -1,5 +1,8 @@
 package io.qameta.allure;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.nio.file.Path;
 import java.util.List;
 
@@ -8,6 +11,8 @@ import java.util.List;
  */
 public class CompositeResultsReader implements ResultsReader {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CompositeResultsReader.class);
+
     private final List<ResultsReader> readers;
 
     public CompositeResultsReader(final List<ResultsReader> readers) {
@@ -15,9 +20,13 @@ public class CompositeResultsReader implements ResultsReader {
     }
 
     @Override
-    public void readResultFile(final ResultsVisitor visitor, final Path file) throws Exception {
+    public void readResultFile(final ResultsVisitor visitor, final Path file) {
         for (ResultsReader reader : readers) {
-            reader.readResultFile(visitor, file);
+            try {
+                reader.readResultFile(visitor, file);
+            } catch (Exception e) {
+                LOGGER.error("Could not parse result file {}", file, e);
+            }
         }
     }
 }

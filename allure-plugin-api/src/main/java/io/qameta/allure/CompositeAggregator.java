@@ -4,7 +4,7 @@ import io.qameta.allure.service.TestResultService;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Composite aggregator extension. Can be used to process the list of aggregator.
@@ -13,17 +13,17 @@ import java.util.List;
  */
 public class CompositeAggregator implements Aggregator {
 
-    private final List<Aggregator> aggregators;
+    private final Set<Aggregator> aggregators;
 
-    public CompositeAggregator(final List<Aggregator> aggregators) {
+    public CompositeAggregator(final Set<Aggregator> aggregators) {
         this.aggregators = aggregators;
     }
 
     @Override
-    public void aggregate(final TestResultService testResultService,
+    public void aggregate(final ReportContext context, final TestResultService testResultService,
                           final Path outputDirectory) throws IOException {
         for (Aggregator aggregator : aggregators) {
-            aggregator.aggregate(testResultService, outputDirectory);
+            aggregator.aggregate(context, testResultService, outputDirectory);
         }
     }
 }

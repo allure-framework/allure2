@@ -3,6 +3,7 @@ package io.qameta.allure.core;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
 import io.qameta.allure.Aggregator;
+import io.qameta.allure.ReportContext;
 import io.qameta.allure.service.TestResultService;
 
 import java.nio.file.Path;
@@ -16,7 +17,7 @@ import java.util.Objects;
 public class MarkdownDescriptionsPlugin implements Aggregator {
 
     @Override
-    public void aggregate(final TestResultService resultService,
+    public void aggregate(final ReportContext context, final TestResultService resultService,
                           final Path outputDirectory) {
 
         final Parser parser = Parser.builder().build();

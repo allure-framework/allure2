@@ -1,39 +1,6 @@
 package io.qameta.allure;
 
-import io.qameta.allure.allure1.Allure1Plugin;
-import io.qameta.allure.allure2.Allure2Plugin;
-import io.qameta.allure.category.CategoriesPlugin;
-import io.qameta.allure.category.CategoriesTrendPlugin;
-import io.qameta.allure.context.FreemarkerContext;
-import io.qameta.allure.context.JacksonContext;
-import io.qameta.allure.context.MarkdownContext;
-import io.qameta.allure.context.RandomUidContext;
-import io.qameta.allure.core.AttachmentsPlugin;
-import io.qameta.allure.core.Configuration;
-import io.qameta.allure.core.LaunchResults;
-import io.qameta.allure.core.MarkdownDescriptionsPlugin;
-import io.qameta.allure.core.ReportWebPlugin;
-import io.qameta.allure.core.TestsResultsPlugin;
-import io.qameta.allure.duration.DurationPlugin;
-import io.qameta.allure.duration.DurationTrendPlugin;
-import io.qameta.allure.environment.Allure1EnvironmentPlugin;
-import io.qameta.allure.executor.ExecutorPlugin;
-import io.qameta.allure.history.HistoryPlugin;
-import io.qameta.allure.history.HistoryTrendPlugin;
-import io.qameta.allure.influxdb.InfluxDbExportPlugin;
-import io.qameta.allure.launch.LaunchPlugin;
-import io.qameta.allure.mail.MailPlugin;
-import io.qameta.allure.owner.OwnerPlugin;
 import io.qameta.allure.plugin.DefaultPluginLoader;
-import io.qameta.allure.prometheus.PrometheusExportPlugin;
-import io.qameta.allure.retry.RetryPlugin;
-import io.qameta.allure.retry.RetryTrendPlugin;
-import io.qameta.allure.severity.SeverityPlugin;
-import io.qameta.allure.status.StatusChartPlugin;
-import io.qameta.allure.suites.SuitesPlugin;
-import io.qameta.allure.summary.SummaryPlugin;
-import io.qameta.allure.tags.TagsPlugin;
-import io.qameta.allure.timeline.TimelinePlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,46 +23,6 @@ public final class DummyReportGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DummyReportGenerator.class);
     private static final int MIN_ARGUMENTS_COUNT = 2;
-    private static final List<Extension> EXTENSIONS = Arrays.asList(
-            new JacksonContext(),
-            new MarkdownContext(),
-            new FreemarkerContext(),
-            new RandomUidContext(),
-            new MarkdownDescriptionsPlugin(),
-            new RetryPlugin(),
-            new RetryTrendPlugin(),
-            new TagsPlugin(),
-            new SeverityPlugin(),
-            new OwnerPlugin(),
-            new CategoriesPlugin(),
-            new CategoriesTrendPlugin(),
-            new HistoryPlugin(),
-            new HistoryTrendPlugin(),
-            new DurationPlugin(),
-            new DurationTrendPlugin(),
-            new StatusChartPlugin(),
-            new TimelinePlugin(),
-            new SuitesPlugin(),
-            new TestsResultsPlugin(),
-            new AttachmentsPlugin(),
-            new MailPlugin(),
-            new InfluxDbExportPlugin(),
-            new PrometheusExportPlugin(),
-            new SummaryPlugin(),
-            new ExecutorPlugin(),
-            new LaunchPlugin(),
-            new Allure1Plugin(),
-            new Allure1EnvironmentPlugin(),
-            new Allure2Plugin(),
-            new ReportWebPlugin() {
-                @Override
-                public void aggregate(final List<LaunchResults> launchesResults,
-                                      final Path outputDirectory) throws IOException {
-                    writePluginsStatic(configuration, outputDirectory);
-                    writeIndexHtml(configuration, outputDirectory);
-                }
-            }
-    );
 
     private DummyReportGenerator() {
         throw new IllegalStateException("Do not instance");
@@ -107,7 +34,7 @@ public final class DummyReportGenerator {
      * @param args a list of directory paths. First (args.length - 1) arguments -
      *             results directories, last argument - the folder to generated data
      */
-    public static void main(final String... args) throws IOException {
+    public static void main(final String... args) throws IOException, InterruptedException {
         if (args.length < MIN_ARGUMENTS_COUNT) {
             LOGGER.error("There must be at least two arguments");
             return;
@@ -117,11 +44,7 @@ public final class DummyReportGenerator {
         final List<Plugin> plugins = loadPlugins();
         LOGGER.info("Found {} plugins", plugins.size());
         plugins.forEach(plugin -> LOGGER.info(plugin.getConfig().getName()));
-        final Configuration configuration = new ConfigurationBuilder()
-                .fromExtensions(EXTENSIONS)
-                .fromPlugins(plugins)
-                .build();
-        final ReportGenerator generator = new ReportGenerator(configuration);
+        final ReportGenerator generator = new ReportGenerator();
         generator.generate(files[lastIndex], Arrays.copyOf(files, lastIndex));
     }
 

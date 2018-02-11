@@ -47,7 +47,7 @@ public class DirectoryWatcher {
                 .map(Observable::create)
                 .collect(Collectors.toList());
 
-        interval(indexInterval, indexIntervalUnit, Schedulers.newThread())
+        interval(indexInterval, indexIntervalUnit, Schedulers.io())
                 .takeUntil(aLong -> {
                     return stop.get();
                 })

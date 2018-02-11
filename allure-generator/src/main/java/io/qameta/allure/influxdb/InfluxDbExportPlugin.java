@@ -1,11 +1,9 @@
 package io.qameta.allure.influxdb;
 
 import io.qameta.allure.AbstractMetricAggregator;
-import io.qameta.allure.category.CategoriesMetric;
 import io.qameta.allure.metric.Metric;
 import io.qameta.allure.metric.StatusMetric;
 import io.qameta.allure.metric.TimeMetric;
-import io.qameta.allure.retry.RetryMetric;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -30,18 +28,9 @@ public class InfluxDbExportPlugin extends AbstractMetricAggregator {
         final TimeMetric timeMetric = new TimeMetric((key, time) ->
                 new InfluxDbMetricLine("launch_time", key, String.valueOf(time), timestamp));
 
-        final CategoriesMetric categoriesMetric = new CategoriesMetric((category, count) ->
-                new InfluxDbMetricLine("launch_problems", category, String.valueOf(count), timestamp));
-
-        final RetryMetric retryMetric = new RetryMetric((key, count) ->
-                new InfluxDbMetricLine("launch_retries", key, String.valueOf(count), timestamp)
-        );
-
         return Arrays.asList(
                 statusMetric,
-                timeMetric,
-                categoriesMetric,
-                retryMetric
+                timeMetric
         );
     }
 

@@ -1,69 +1,72 @@
 package io.qameta.allure;
 
-import io.qameta.allure.core.Configuration;
-import io.qameta.allure.core.LaunchResults;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.qameta.allure.allure1.Allure1Reader;
+import io.qameta.allure.attachment.AllureAttachmentsReader;
+import io.qameta.allure.config.ReportConfig;
+import io.qameta.allure.core.ReportWebPlugin;
+import io.qameta.allure.entity.Executor;
+import io.qameta.allure.entity.Job;
+import io.qameta.allure.entity.Project;
+import io.qameta.allure.junit.JunitReader;
+import io.qameta.allure.trx.TrxReader;
+import io.qameta.allure.xctest.XcTestReader;
+import io.qameta.allure.xunit.XunitReader;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author charlie (Dmitry Baev).
  */
 public class ReportGenerator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReportGenerator.class);
-
-    private final Configuration configuration;
-
-    public ReportGenerator(final Configuration configuration) {
-        this.configuration = configuration;
+    public void generate(final Path outputDirectory,
+                         final List<Path> resultsDirectories) throws IOException, InterruptedException {
+        generate(outputDirectory, resultsDirectories.toArray(new Path[resultsDirectories.size()]));
     }
 
-    public LaunchResults readResults(final Path resultsDirectory) {
-        final DefaultResultsVisitor visitor = new DefaultResultsVisitor(configuration);
-        configuration
-                .getReaders()
-                .forEach(reader -> reader.readResults(configuration, visitor, resultsDirectory));
-        return visitor.getLaunchResults();
-    }
+    public void generate(final Path outputDirectory,
+                         final Path... resultsDirectories) throws IOException, InterruptedException {
+        final ReportConfig config = new ReportConfig()
+                .setVersion("1.0")
+                .setProjectName("some report")
+                .setCategories(Collections.emptyList())
+                .setEnvironmentVariables(Collections.singletonList("browser"))
+                .setCustomFields(Arrays.asList("epic", "feature", "story", "suite"))
+                .setTags(Collections.singletonList("tag"));
 
-    public void aggregate(final List<LaunchResults> results, final Path outputDirectory) throws IOException {
-        for (Aggregator aggregator : configuration.getAggregators()) {
-            aggregator.aggregate(results, outputDirectory);
-        }
-    }
+        final Project project = new Project().setName(config.getProjectName());
+        final Job job = new Job()
+                .setName("Some jenkins job")
+                .setType("jenkins")
+                .setUrl("https://example.org/jenkins");
+        final Executor executor = new Executor().setName("Jenkins").setClassifier("jenkins");
 
-    public void generate(final Path outputDirectory, final List<Path> resultsDirectories) throws IOException {
-        generate(outputDirectory, resultsDirectories.stream());
-    }
+        final DefaultReportContext context = new DefaultReportContext(project, executor, job);
+        final TestResultNotifier notifier = new TestResultNotifier(Collections.emptyList());
+        final DefaultTestResultService resultService = new DefaultTestResultService(config, notifier);
+        final DefaultResultsVisitor visitor = new DefaultResultsVisitor(resultService);
+        final CompositeResultsReader reader = new CompositeResultsReader(Arrays.asList(
+                new Allure1Reader(),
+                new AllureAttachmentsReader(),
+                new JunitReader(),
+                new TrxReader(),
+                new XcTestReader(),
+                new XunitReader()
+        ));
+        final DefaultPluginRegistry registry = new DefaultPluginRegistry();
+        registry.addAggregator(new ReportWebPlugin());
 
-    public void generate(final Path outputDirectory, final Path... resultsDirectories) throws IOException {
-        generate(outputDirectory, Stream.of(resultsDirectories));
-    }
+        final CompositeAggregator aggregator = new CompositeAggregator(registry.getAggregators());
 
-    private void generate(final Path outputDirectory, final Stream<Path> resultsDirectories) throws IOException {
-        final List<LaunchResults> results = resultsDirectories
-                .filter(this::isValidResultsDirectory)
-                .map(this::readResults)
-                .collect(Collectors.toList());
-        aggregate(results, outputDirectory);
-    }
+        final DirectoryWatcher watcher = new DirectoryWatcher();
+        watcher.watch(file -> reader.readResultFile(visitor, file), resultsDirectories);
+        watcher.stop();
+        watcher.waitCompletion();
 
-    private boolean isValidResultsDirectory(final Path resultsDirectory) {
-        if (Files.notExists(resultsDirectory)) {
-            LOGGER.warn("{} does not exists", resultsDirectory);
-            return false;
-        }
-        if (!Files.isDirectory(resultsDirectory)) {
-            LOGGER.warn("{} is not a directory", resultsDirectory);
-            return false;
-        }
-        return true;
+        aggregator.aggregate(context, resultService, outputDirectory);
     }
 }

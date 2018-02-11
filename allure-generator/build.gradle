@@ -50,6 +50,7 @@ dependencies {
     allurePlugin project(path: ':packages-plugin', configuration: 'allurePlugin')
     allurePlugin project(path: ':screen-diff-plugin', configuration: 'allurePlugin')
     compile project(':allure-plugin-api')
+    compile project(':allure-reader')
     compile('com.fasterxml.jackson.dataformat:jackson-dataformat-xml')
     compile('com.fasterxml.jackson.dataformat:jackson-dataformat-yaml')
     compile('commons-io:commons-io')

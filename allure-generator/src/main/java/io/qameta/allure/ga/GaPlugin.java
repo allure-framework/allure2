@@ -1,10 +1,12 @@
 package io.qameta.allure.ga;
 
 import io.qameta.allure.Aggregator;
-import io.qameta.allure.core.LaunchResults;
-import io.qameta.allure.entity.ExecutorInfo;
+import io.qameta.allure.ReportContext;
+import io.qameta.allure.entity.Executor;
+import io.qameta.allure.entity.Job;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.TestLabel;
+import io.qameta.allure.service.TestResultService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -22,7 +24,6 @@ import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -33,8 +34,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
-import static io.qameta.allure.executor.ExecutorPlugin.EXECUTORS_BLOCK_NAME;
-
 /**
  * @author charlie (Dmitry Baev).
  */
@@ -44,17 +43,15 @@ public class GaPlugin implements Aggregator {
     private static final Logger LOGGER = LoggerFactory.getLogger(GaPlugin.class);
 
     private static final String LOCAL = "Local";
-
     private static final String UNDEFINED = "Undefined";
-
     private static final String GA_DISABLE = "ALLURE_NO_ANALYTICS";
-
     private static final String GA_ID = "UA-88115679-3";
     private static final String GA_ENDPOINT = "https://www.google-analytics.com/collect";
     private static final String GA_API_VERSION = "1";
 
     @Override
-    public void aggregate(final List<LaunchResults> launchesResults,
+    public void aggregate(final ReportContext context,
+                          final TestResultService testResultService,
                           final Path outputDirectory) {
         if (Objects.nonNull(System.getenv(GA_DISABLE))) {
             LOGGER.debug("analytics is disabled");
@@ -63,13 +60,13 @@ public class GaPlugin implements Aggregator {
         LOGGER.debug("send analytics");
         final GaParameters parameters = new GaParameters()
                 .setAllureVersion(getAllureVersion())
-                .setExecutorType(getExecutorType(launchesResults))
-                .setResultsCount(getTestResultsCount(launchesResults))
-                .setResultsFormat(getLabelValuesAsString(launchesResults, LabelName.RESULT_FORMAT))
-                .setFramework(getLabelValuesAsString(launchesResults, LabelName.FRAMEWORK))
-                .setLanguage(getLabelValuesAsString(launchesResults, LabelName.LANGUAGE));
+                .setExecutorType(getExecutorType(context))
+                .setResultsCount(testResultService.findAllTests().size())
+                .setResultsFormat(getLabelValuesAsString(testResultService, LabelName.RESULT_FORMAT))
+                .setFramework(getLabelValuesAsString(testResultService, LabelName.FRAMEWORK))
+                .setLanguage(getLabelValuesAsString(testResultService, LabelName.LANGUAGE));
 
-        final String cid = getClientId(launchesResults);
+        final String cid = getClientId(context);
 
         try {
             CompletableFuture
@@ -113,13 +110,9 @@ public class GaPlugin implements Aggregator {
         }
     }
 
-    private static String getClientId(final List<LaunchResults> launchesResults) {
-        final Optional<String> executorHostName = launchesResults.stream()
-                .map(results -> results.<ExecutorInfo>getExtra(EXECUTORS_BLOCK_NAME))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .findFirst()
-                .map(ExecutorInfo::getBuildUrl)
+    private static String getClientId(final ReportContext context) {
+        final Optional<String> executorHostName = Optional.ofNullable(context.getJob())
+                .map(Job::getUrl)
                 .map(URI::create)
                 .map(URI::getHost);
 
@@ -135,27 +128,15 @@ public class GaPlugin implements Aggregator {
                 .orElse(UNDEFINED);
     }
 
-    private static String getExecutorType(final List<LaunchResults> launchesResults) {
-        return launchesResults.stream()
-                .map(results -> results.<ExecutorInfo>getExtra(EXECUTORS_BLOCK_NAME))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .findFirst()
-                .map(ExecutorInfo::getType)
+    private static String getExecutorType(final ReportContext context) {
+        return Optional.ofNullable(context.getExecutor())
+                .map(Executor::getClassifier)
                 .orElse(LOCAL);
     }
 
-    private static long getTestResultsCount(final List<LaunchResults> launchesResults) {
-        return launchesResults.stream()
-                .map(LaunchResults::getResults)
-                .mapToLong(Collection::size)
-                .sum();
-    }
-
-    private static String getLabelValuesAsString(final List<LaunchResults> launchesResults,
+    private static String getLabelValuesAsString(final TestResultService service,
                                                  final LabelName labelName) {
-        String values = launchesResults.stream()
-                .flatMap(results -> results.getResults().stream())
+        String values = service.findAllTests(true).stream()
                 .flatMap(result -> result.getLabels().stream())
                 .filter(label -> labelName.value().equals(label.getName()))
                 .map(TestLabel::getValue)

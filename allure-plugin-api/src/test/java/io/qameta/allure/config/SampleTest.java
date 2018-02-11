@@ -21,7 +21,7 @@ public class SampleTest {
             final ReportConfig config = mapper.readValue(is, ReportConfig.class);
 
             System.out.println(config.getVersion());
-            System.out.println(config.getReportName());
+            System.out.println(config.getProjectName());
             System.out.println("Categories:");
             config.getCategories().forEach(System.out::println);
             System.out.println("Custom fields:");

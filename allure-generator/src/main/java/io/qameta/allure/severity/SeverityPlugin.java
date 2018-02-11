@@ -1,13 +1,15 @@
 package io.qameta.allure.severity;
 
-import io.qameta.allure.Aggregator;
 import io.qameta.allure.AbstractJsonAggregator;
+import io.qameta.allure.Aggregator;
 import io.qameta.allure.CompositeAggregator;
-import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.ReportContext;
 import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.service.TestResultService;
 
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,18 +28,18 @@ public class SeverityPlugin extends CompositeAggregator {
     protected static final String JSON_FILE_NAME = "severity.json";
 
     public SeverityPlugin() {
-        super(Arrays.asList(
+        super(new HashSet<>(Arrays.asList(
                 new SeverityAggregator(), new WidgetAggregator()
-        ));
+        )));
     }
 
     private static class SeverityAggregator implements Aggregator {
 
         @Override
-        public void aggregate(final List<LaunchResults> launchesResults,
+        public void aggregate(final ReportContext context,
+                              final TestResultService service,
                               final Path outputDirectory) {
-            launchesResults.stream()
-                    .flatMap(results -> results.getResults().stream())
+            service.findAllTests()
                     .forEach(this::setSeverityLevel);
 
         }
@@ -57,9 +59,9 @@ public class SeverityPlugin extends CompositeAggregator {
         }
 
         @Override
-        protected List<SeverityData> getData(final List<LaunchResults> launchesResults) {
-            return launchesResults.stream()
-                    .flatMap(launch -> launch.getResults().stream())
+        protected List<SeverityData> getData(final ReportContext context,
+                                             final TestResultService service) {
+            return service.findAllTests().stream()
                     .map(this::createData)
                     .collect(Collectors.toList());
         }

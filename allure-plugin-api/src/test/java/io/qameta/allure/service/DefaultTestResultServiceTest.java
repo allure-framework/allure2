@@ -21,7 +21,7 @@ public class DefaultTestResultServiceTest {
         final TestResult result = new TestResult();
         result.getLabels().add(new TestLabel().setName("os").setValue("HUOS"));
 
-        final DefaultTestResultService service = new DefaultTestResultService(getConfig());
+        final DefaultTestResultService service = new DefaultTestResultService(getConfig(), notifier);
         final TestResult created = service.create(result);
 
         System.out.println(created);

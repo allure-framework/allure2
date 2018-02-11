@@ -1,11 +1,8 @@
 package io.qameta.allure.testdata;
 
 import com.google.common.reflect.ClassPath;
-import io.qameta.allure.DefaultLaunchResults;
-import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.history.HistoryTrendItem;
 import org.apache.commons.text.RandomStringGenerator;
 
 import java.io.IOException;
@@ -13,10 +10,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -29,20 +22,6 @@ public final class TestData {
 
     private TestData() {
         throw new IllegalStateException("Do not instance");
-    }
-
-    public static List<LaunchResults> createSingleLaunchResults(TestResult... input) {
-        return createSingleLaunchResults(new HashMap<>(), input);
-    }
-
-    public static List<LaunchResults> createSingleLaunchResults(Map<String, Object> extra, TestResult... input) {
-        List<LaunchResults> launchResultsList = new ArrayList<>();
-        launchResultsList.add(createLaunchResults(extra, input));
-        return launchResultsList;
-    }
-
-    public static DefaultLaunchResults createLaunchResults(final Map<String, Object> extra, final TestResult... input) {
-        return new DefaultLaunchResults(Arrays.stream(input).collect(Collectors.toSet()), null, extra);
     }
 
     public static void unpackFile(final String name, final Path output) throws IOException {
@@ -69,21 +48,6 @@ public final class TestData {
         });
     }
 
-    public static List<HistoryTrendItem> randomHistoryTrendItems() {
-        return Arrays.asList(
-                randomHistoryTrendItem(),
-                randomHistoryTrendItem(),
-                randomHistoryTrendItem()
-        );
-    }
-
-    public static HistoryTrendItem randomHistoryTrendItem() {
-        return new HistoryTrendItem()
-                .setStatistic(randomStatistic())
-                .setBuildOrder(current().nextLong(100))
-                .setReportName(randomString())
-                .setReportUrl(randomString());
-    }
 
     public static Statistic randomStatistic() {
         return new Statistic()

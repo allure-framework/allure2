@@ -1,8 +1,9 @@
 package io.qameta.allure.status;
 
 import io.qameta.allure.AbstractJsonAggregator;
-import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.ReportContext;
 import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.service.TestResultService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,9 +20,9 @@ public class StatusChartPlugin extends AbstractJsonAggregator {
     }
 
     @Override
-    protected List<StatusChartData> getData(final List<LaunchResults> launchesResults) {
-        return launchesResults.stream()
-                .flatMap(launch -> launch.getResults().stream())
+    protected List<StatusChartData> getData(final ReportContext context,
+                                            final TestResultService testResultService) {
+        return testResultService.findAllTests().stream()
                 .map(this::createData)
                 .collect(Collectors.toList());
     }

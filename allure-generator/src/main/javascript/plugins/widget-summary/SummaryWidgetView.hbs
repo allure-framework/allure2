@@ -5,7 +5,7 @@
                 {{t 'widget.summary.aggregatedName'}}
                 <span class="{{b 'widget' 'subtitle'}}">{{launchesCount}} {{t 'widget.summary.launches' count=launchesCount}}</span>
             {{else}}
-                {{reportName}} {{date stop}}
+                {{projectName}} {{date stop}}
             {{/if}}
             <div class="{{b 'widget' 'subtitle'}}">
                 {{time start}} - {{time stop}} ({{duration duration 2}})

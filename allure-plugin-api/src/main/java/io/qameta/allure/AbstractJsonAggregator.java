@@ -30,7 +30,7 @@ public abstract class AbstractJsonAggregator implements Aggregator {
     }
 
     @Override
-    public void aggregate(final TestResultService service,
+    public void aggregate(final ReportContext context, final TestResultService service,
                           final Path outputDirectory) throws IOException {
         final ObjectMapper mapper = new ObjectMapper()
                 .enable(SerializationFeature.INDENT_OUTPUT)
@@ -40,9 +40,9 @@ public abstract class AbstractJsonAggregator implements Aggregator {
         final Path dataFolder = Files.createDirectories(outputDirectory.resolve(this.location));
         final Path dataFile = dataFolder.resolve(this.fileName);
         try (OutputStream os = Files.newOutputStream(dataFile)) {
-            mapper.writeValue(os, getData(service));
+            mapper.writeValue(os, getData(context, service));
         }
     }
 
-    protected abstract Object getData(TestResultService service);
+    protected abstract Object getData(final ReportContext context, TestResultService service);
 }

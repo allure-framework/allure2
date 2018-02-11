@@ -14,13 +14,13 @@ import java.util.Map;
 public class ReportConfig {
 
     protected String version;
-    protected String reportName;
+    protected String projectName;
 
     protected List<String> environmentVariables;
     protected List<String> customFields;
     protected List<String> tags;
 
     protected Map<String, Group> groups;
-    protected List<Category> categories;
+    protected List<CategoryMatcher> categories;
 
 }

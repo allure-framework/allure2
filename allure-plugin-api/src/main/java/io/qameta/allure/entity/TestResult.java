@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 @Data
 @Accessors(chain = true)
 @SuppressWarnings("PMD.TooManyFields")
-public class TestResult implements Serializable, Nameable, Parameterizable, Statusable, Timeable {
+public class TestResult implements Serializable, Nameable, Statusable, Timeable {
 
     private static final long serialVersionUID = 1L;
 
@@ -59,6 +59,14 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
     protected boolean hidden;
     protected boolean retry;
     protected final Map<String, Object> extra = new HashMap<>();
+
+    public boolean isNotHidden() {
+        return !isHidden();
+    }
+
+    public boolean isTest() {
+        return TestResultType.TEST.equals(getType());
+    }
 
     @JsonProperty
     public String getSource() {

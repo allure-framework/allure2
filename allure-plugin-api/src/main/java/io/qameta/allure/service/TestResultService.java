@@ -19,9 +19,17 @@ public interface TestResultService {
 
     Optional<TestResult> findOneById(Long id);
 
-    List<TestResult> findAll();
+    default List<TestResult> findAll() {
+        return findAll(false);
+    }
 
-    List<TestResult> findAllTests();
+    List<TestResult> findAll(boolean includeHidden);
+
+    default List<TestResult> findAllTests() {
+        return findAllTests(false);
+    }
+
+    List<TestResult> findAllTests(boolean includeHidden);
 
     List<TestResult> findHistory(Long id);
 

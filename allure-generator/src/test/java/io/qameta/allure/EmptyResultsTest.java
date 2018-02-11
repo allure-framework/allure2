@@ -1,6 +1,5 @@
 package io.qameta.allure;
 
-import io.qameta.allure.core.Configuration;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -19,9 +18,7 @@ public class EmptyResultsTest {
     public void shouldAllowEmptyResultsDirectory() throws Exception {
         final Path resultsDirectory = folder.newFolder().toPath();
         final Path outputDirectory = folder.newFolder().toPath();
-        final Configuration configuration = new ConfigurationBuilder().useDefault().build();
-        final ReportGenerator generator = new ReportGenerator(configuration);
-
+        final ReportGenerator generator = new ReportGenerator();
         generator.generate(outputDirectory, resultsDirectory);
     }
 
@@ -29,9 +26,7 @@ public class EmptyResultsTest {
     public void shouldAllowNonExistsResultsDirectory() throws Exception {
         final Path resultsDirectory = folder.newFolder().toPath().resolve("some-dir");
         final Path outputDirectory = folder.newFolder().toPath();
-        final Configuration configuration = new ConfigurationBuilder().useDefault().build();
-        final ReportGenerator generator = new ReportGenerator(configuration);
-
+        final ReportGenerator generator = new ReportGenerator();
         generator.generate(outputDirectory, resultsDirectory);
     }
 
@@ -39,8 +34,7 @@ public class EmptyResultsTest {
     public void shouldAllowRegularFileAsResultsDirectory() throws Exception {
         final Path resultsDirectory = folder.newFile().toPath();
         final Path outputDirectory = folder.newFolder().toPath();
-        final Configuration configuration = new ConfigurationBuilder().useDefault().build();
-        final ReportGenerator generator = new ReportGenerator(configuration);
+        final ReportGenerator generator = new ReportGenerator();
 
         generator.generate(outputDirectory, resultsDirectory);
     }

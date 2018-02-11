@@ -1,11 +1,10 @@
 package io.qameta.allure.summary;
 
 import io.qameta.allure.AbstractJsonAggregator;
-import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.ReportContext;
 import io.qameta.allure.entity.GroupTime;
 import io.qameta.allure.entity.Statistic;
-
-import java.util.List;
+import io.qameta.allure.service.TestResultService;
 
 /**
  * Plugins generates Summary widget.
@@ -14,7 +13,9 @@ import java.util.List;
  */
 public class SummaryPlugin extends AbstractJsonAggregator {
 
-    /** Name of the json file. */
+    /**
+     * Name of the json file.
+     */
     protected static final String JSON_FILE_NAME = "summary.json";
 
     public SummaryPlugin() {
@@ -22,13 +23,14 @@ public class SummaryPlugin extends AbstractJsonAggregator {
     }
 
     @Override
-    protected SummaryData getData(final List<LaunchResults> launches) {
+    protected SummaryData getData(final ReportContext context,
+                                  final TestResultService testResultService) {
         final SummaryData data = new SummaryData()
                 .setStatistic(new Statistic())
                 .setTime(new GroupTime())
-                .setReportName("Allure Report");
-        launches.stream()
-                .flatMap(launch -> launch.getResults().stream())
+                .setReportName(context.getProject().getName());
+
+        testResultService.findAllTests()
                 .forEach(result -> {
                     data.getStatistic().update(result);
                     data.getTime().update(result);

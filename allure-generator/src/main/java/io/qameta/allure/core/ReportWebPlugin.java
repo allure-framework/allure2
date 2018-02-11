@@ -1,11 +1,11 @@
 package io.qameta.allure.core;
 
+import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import io.qameta.allure.Aggregator;
-import io.qameta.allure.Plugin;
-import io.qameta.allure.config.PluginConfiguration;
-import io.qameta.allure.context.FreemarkerContext;
+import io.qameta.allure.ReportContext;
+import io.qameta.allure.service.TestResultService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,10 +16,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 /**
  * Plugins that stores report static files to data directory.
@@ -30,37 +31,29 @@ public class ReportWebPlugin implements Aggregator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReportWebPlugin.class);
 
+    public static final String BASE_PACKAGE_PATH = "tpl";
+
     private final List<String> staticFiles = Arrays.asList("app.js", "styles.css", "favicon.ico");
 
     @Override
-    public void aggregate(final List<LaunchResults> launchesResults,
+    public void aggregate(final ReportContext context,
+                          final TestResultService service,
                           final Path outputDirectory) throws IOException {
-        writePluginsStatic(configuration, outputDirectory);
-        writeIndexHtml(configuration, outputDirectory);
+        writeIndexHtml(outputDirectory);
         writeStatic(outputDirectory);
     }
 
-    protected void writePluginsStatic(final Configuration configuration,
-                                    final Path outputDirectory) throws IOException {
-        final Path pluginsFolder = outputDirectory.resolve("plugins");
-        for (Plugin plugin : configuration.getPlugins()) {
-            final Path pluginDirectory = Files.createDirectories(pluginsFolder.resolve(plugin.getConfig().getId()));
-            plugin.unpackReportStatic(pluginDirectory);
-        }
-    }
+    protected void writeIndexHtml(final Path outputDirectory) throws IOException {
+        final Configuration configuration = new Configuration(Configuration.VERSION_2_3_23);
+        configuration.setLocalizedLookup(false);
+        configuration.setTemplateUpdateDelayMilliseconds(0);
+        configuration.setClassLoaderForTemplateLoading(getClass().getClassLoader(), BASE_PACKAGE_PATH);
 
-    protected void writeIndexHtml(final Configuration configuration,
-                                final Path outputDirectory) throws IOException {
-        final FreemarkerContext context = configuration.requireContext(FreemarkerContext.class);
         final Path indexHtml = outputDirectory.resolve("index.html");
-        final List<PluginConfiguration> pluginConfigurations = configuration.getPlugins().stream()
-                .map(Plugin::getConfig)
-                .collect(Collectors.toList());
-
         try (BufferedWriter writer = Files.newBufferedWriter(indexHtml)) {
-            final Template template = context.getValue().getTemplate("index.html.ftl");
+            final Template template = configuration.getTemplate("index.html.ftl");
             final Map<String, Object> dataModel = new HashMap<>();
-            dataModel.put("plugins", pluginConfigurations);
+            dataModel.put("plugins", Collections.emptyEnumeration());
             template.process(dataModel, writer);
         } catch (TemplateException e) {
             LOGGER.error("Could't write index file", e);
@@ -70,6 +63,10 @@ public class ReportWebPlugin implements Aggregator {
     protected void writeStatic(final Path outputDirectory) {
         staticFiles.forEach(resourceName -> {
             try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourceName)) {
+                if (Objects.isNull(is)) {
+                    LOGGER.info("Could not find resource {}", resourceName);
+                    return;
+                }
                 Files.copy(is, outputDirectory.resolve(resourceName), StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
                 LOGGER.error("Couldn't unpack report static");

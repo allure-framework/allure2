@@ -1,11 +1,13 @@
 package io.qameta.allure.tree;
 
+import io.qameta.allure.entity.TestParameter;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.TestStatus;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -42,7 +44,10 @@ public class TestResultLeafNode implements LeafNode {
                 testResult.getStop(),
                 testResult.getDuration(),
                 testResult.isFlaky(),
-                testResult.getParameterValues()
+                testResult.getParameters().stream()
+                        .filter(TestParameter::isNotHidden)
+                        .map(TestParameter::getValue)
+                        .collect(Collectors.toList())
         );
     }
 

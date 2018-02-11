@@ -31,7 +31,8 @@ public abstract class AbstractCsvExportAggregator<T> implements Aggregator {
     }
 
     @Override
-    public void aggregate(final TestResultService testResultService,
+    public void aggregate(final ReportContext context,
+                          final TestResultService testResultService,
                           final Path outputDirectory) throws IOException {
         final Path dataFolder = Files.createDirectories(outputDirectory.resolve("data"));
         final Path csv = dataFolder.resolve(fileName);
