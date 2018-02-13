@@ -6,6 +6,7 @@ import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.TestResultExecution;
 import io.qameta.allure.entity.TestResultStep;
 import io.qameta.allure.entity.TestStatus;
+import io.qameta.allure.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xmlwise.Plist;
@@ -44,7 +45,7 @@ public class XcTestReader implements ResultsReader {
     private static final String TITLE = "Title";
     private static final String SUB_ACTIVITIES = "SubActivities";
     private static final String ACTIVITY_SUMMARIES = "ActivitySummaries";
-    private static final String HAS_SCREENSHOT = "HasScreenshotData";
+//    private static final String HAS_SCREENSHOT = "HasScreenshotData";
 
     private static final String TEST_NAME = "TestName";
     private static final String TEST_STATUS = "TestStatus";
@@ -55,10 +56,9 @@ public class XcTestReader implements ResultsReader {
     private static final String STEP_START_TIME = "StartTimeInterval";
     private static final String STEP_STOP_TIME = "FinishTimeInterval";
 
-
     @Override
     public void readResultFile(final ResultsVisitor visitor, final Path file) {
-        if (file.getFileName().toString().endsWith(".plist")) {
+        if (FileUtils.endsWith(file, ".plist")) {
             readSummaries(visitor, file);
         }
     }
@@ -135,9 +135,9 @@ public class XcTestReader implements ResultsReader {
             step.setStatus(TestStatus.FAILED);
         }
 
-        if (props.containsKey(HAS_SCREENSHOT)) {
-            addAttachment(visitor, props, step);
-        }
+//        if (props.containsKey(HAS_SCREENSHOT)) {
+//            addAttachment(visitor, props, step);
+//        }
 
         if (parent instanceof TestResultExecution) {
             ((TestResultExecution) parent).getSteps().add(step);
@@ -157,19 +157,6 @@ public class XcTestReader implements ResultsReader {
         lastFailedStep.map(TestResultStep::getStatus).ifPresent(step::setStatus);
         lastFailedStep.map(TestResultStep::getMessage).ifPresent(step::setMessage);
         lastFailedStep.map(TestResultStep::getTrace).ifPresent(step::setTrace);
-    }
-
-    private void addAttachment(final ResultsVisitor visitor,
-                               final Map<String, Object> props,
-                               final TestResultStep step) {
-        //TODO attachments support
-//        String uuid = props.get("UUID").toString();
-//        Path attachments = directory.resolve("Attachments");
-//        Stream.of("jpg", "png")
-//                .map(ext -> attachments.resolve(String.format("Screenshot_%s.%s", uuid, ext)))
-//                .filter(Files::exists)
-//                .map(visitor::visitAttachmentFile)
-//                .forEach(step.getAttachments()::add);
     }
 
     @SuppressWarnings("unchecked")

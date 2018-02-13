@@ -2,9 +2,7 @@ package io.qameta.allure;
 
 import com.beust.jcommander.JCommander;
 import io.qameta.allure.config.ConfigLoader;
-import io.qameta.allure.core.Configuration;
 import io.qameta.allure.option.ConfigOptions;
-import io.qameta.allure.plugin.DefaultPluginLoader;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -25,7 +23,6 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -84,9 +81,9 @@ public class Commands {
             return ExitCode.GENERIC_ERROR;
         }
         try {
-            ReportGenerator generator = new ReportGenerator(createReportConfiguration(profile));
+            ReportGenerator generator = new ReportGenerator();
             generator.generate(reportDirectory, resultsDirectories);
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOGGER.error("Could not generate report: {}", e);
             return ExitCode.GENERIC_ERROR;
         }
@@ -160,29 +157,6 @@ public class Commands {
             return ExitCode.GENERIC_ERROR;
         }
         return ExitCode.NO_ERROR;
-    }
-
-    /**
-     * Creates report configuration for a given profile.
-     *
-     * @param profile selected profile.
-     * @return created report configuration.
-     * @throws IOException if any occurs.
-     */
-    protected Configuration createReportConfiguration(final ConfigOptions profile) throws IOException {
-        final DefaultPluginLoader loader = new DefaultPluginLoader();
-        final CommandlineConfig commandlineConfig = getConfig(profile);
-        final ClassLoader classLoader = getClass().getClassLoader();
-        final List<Plugin> plugins = commandlineConfig.getPlugins().stream()
-                .map(name -> loader.loadPlugin(classLoader, allureHome.resolve("plugins").resolve(name)))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toList());
-
-        return new ConfigurationBuilder()
-                .useDefault()
-                .fromPlugins(plugins)
-                .build();
     }
 
     /**

@@ -2,22 +2,31 @@ package io.qameta.allure;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.functions.Predicate;
+import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static io.reactivex.Observable.interval;
+import static java.util.Collections.unmodifiableSet;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -28,9 +37,11 @@ public class DirectoryWatcher {
 
     private final Set<Path> processedFiles = new CopyOnWriteArraySet<>();
     private final Set<Path> indexedFiles = new CopyOnWriteArraySet<>();
+    private final Set<Path> errors = new CopyOnWriteArraySet<>();
 
+    private final CountDownLatch completed = new CountDownLatch(1);
     private final AtomicBoolean stop = new AtomicBoolean();
-    private final AtomicBoolean completed = new AtomicBoolean();
+    private final AtomicBoolean started = new AtomicBoolean();
 
     private int maxDepth = Integer.MAX_VALUE;
     private int batchSize = 10;
@@ -41,34 +52,69 @@ public class DirectoryWatcher {
     private int indexInterval = 1;
     private TimeUnit indexIntervalUnit = TimeUnit.SECONDS;
 
-    public void watch(final Consumer<Path> fileConsumer, final Path... resultsDirectories) {
-        final List<Observable<Path>> list = Stream.of(resultsDirectories)
+    private int uploadThreadsCount = 3;
+
+    private DisposableObserver<List<Path>> observer;
+
+    public void watch(final Consumer<List<Path>> filesConsumer, final Path... resultsDirectories) {
+        started.set(true);
+
+        final List<Observable<List<Path>>> list = Stream.of(resultsDirectories)
                 .map(this::getIndexer)
                 .map(Observable::create)
                 .collect(Collectors.toList());
 
-        interval(indexInterval, indexIntervalUnit, Schedulers.io())
-                .takeUntil(aLong -> {
-                    return stop.get();
-                })
+        final ExecutorService pool = Executors.newFixedThreadPool(getUploadThreadsCount());
+
+        final Function<List<Path>, List<Path>> processing = files -> {
+            try {
+                filesConsumer.accept(files);
+            } catch (Exception e) {
+                LOGGER.error("Could not process files", e);
+                errors.addAll(files);
+                return Collections.emptyList();
+            }
+            return files;
+        };
+
+        observer = interval(indexInterval, indexIntervalUnit, Schedulers.io())
+                .takeUntil(getStopPredicate())
                 .flatMap(aLong -> Observable.concat(list))
-                .flatMap(Observable::just)
+                .flatMap(Observable::fromIterable)
                 .buffer(processInterval, processIntervalUnit, batchSize)
-                .subscribeOn(Schedulers.computation())
-                .subscribe(
-                        paths -> {
-                            processedFiles.addAll(paths);
-                            paths.forEach(fileConsumer);
-                        },
-                        throwable -> LOGGER.error("Could not process files", throwable),
-                        () -> completed.set(true)
-                );
+                .flatMap(files -> Observable.just(files).subscribeOn(Schedulers.from(pool)).map(processing::apply))
+                .subscribeWith(new DisposableObserver<List<Path>>() {
+                    @Override
+                    public void onNext(final List<Path> paths) {
+                        processedFiles.addAll(paths);
+                    }
+
+                    @Override
+                    public void onError(final Throwable e) {
+                        LOGGER.error("Could not process files", e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        completed.countDown();
+                    }
+                });
     }
 
-    private ObservableOnSubscribe<Path> getIndexer(final Path resultsDirectory) {
+    protected Predicate<Long> getStopPredicate() {
+        return aLong -> isStopped();
+    }
+
+    private ObservableOnSubscribe<List<Path>> getIndexer(final Path resultsDirectory) {
         return emitter -> {
+            if (Files.notExists(resultsDirectory)) {
+                emitter.onComplete();
+                return;
+            }
+
             try (Stream<Path> stream = Files.walk(resultsDirectory, maxDepth)) {
-                stream.filter(indexedFiles::add).forEach(emitter::onNext);
+                final List<Path> files = stream.filter(indexedFiles::add).collect(Collectors.toList());
+                emitter.onNext(files);
                 emitter.onComplete();
             } catch (Exception e) {
                 emitter.onError(e);
@@ -76,22 +122,39 @@ public class DirectoryWatcher {
         };
     }
 
-    public void stop() {
+    public void shutdown() {
         stop.set(true);
     }
 
-    public void waitCompletion() throws InterruptedException {
-        while (!completed.get()) {
-            Thread.sleep(100);
+    public void shutdownNow() {
+        stop.set(true);
+        if (Objects.nonNull(observer)) {
+            observer.dispose();
         }
     }
 
+    public boolean awaitTermination(final long timeout, final TimeUnit unit) throws InterruptedException {
+        return completed.await(timeout, unit);
+    }
+
+    public boolean isStopped() {
+        return stop.get();
+    }
+
+    public boolean isCompleted() {
+        return 0 == completed.getCount();
+    }
+
     public Set<Path> getProcessedFiles() {
-        return processedFiles;
+        return unmodifiableSet(processedFiles);
     }
 
     public Set<Path> getIndexedFiles() {
-        return indexedFiles;
+        return unmodifiableSet(indexedFiles);
+    }
+
+    public Set<Path> getErrors() {
+        return unmodifiableSet(errors);
     }
 
     public void setBatchSize(final int batchSize) {
@@ -103,7 +166,7 @@ public class DirectoryWatcher {
         this.processIntervalUnit = unit;
     }
 
-    public void setReadInterval(final int interval, final TimeUnit unit) {
+    public void setIndexInterval(final int interval, final TimeUnit unit) {
         this.indexInterval = interval;
         this.indexIntervalUnit = unit;
     }
@@ -134,5 +197,13 @@ public class DirectoryWatcher {
 
     public void setMaxDepth(final int maxDepth) {
         this.maxDepth = maxDepth;
+    }
+
+    public int getUploadThreadsCount() {
+        return uploadThreadsCount;
+    }
+
+    public void setUploadThreadsCount(final int uploadThreadsCount) {
+        this.uploadThreadsCount = uploadThreadsCount;
     }
 }

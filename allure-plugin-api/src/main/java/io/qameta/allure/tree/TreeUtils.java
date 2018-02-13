@@ -33,15 +33,22 @@ public final class TreeUtils {
     }
 
     public static List<Layer> groupByLabels(final TestResult testResult, final LabelName... labelNames) {
-        final String[] names = Stream.of(labelNames)
-                .map(LabelName::value)
-                .toArray(String[]::new);
-        return groupByLabels(testResult, names);
+        return groupByLabels(testResult, Stream.of(labelNames).map(LabelName::value));
     }
 
     public static List<Layer> groupByLabels(final TestResult testResult,
                                             final String... labelNames) {
-        return Stream.of(labelNames)
+        return groupByLabels(testResult, Stream.of(labelNames));
+    }
+
+    public static List<Layer> groupByLabels(final TestResult testResult,
+                                            final List<String> labelNames) {
+        return groupByLabels(testResult, labelNames.stream());
+    }
+
+    public static List<Layer> groupByLabels(final TestResult testResult,
+                                            final Stream<String> labelNames) {
+        return labelNames
                 .map(name -> createLayer(name, testResult))
                 .filter(Optional::isPresent)
                 .map(Optional::get)

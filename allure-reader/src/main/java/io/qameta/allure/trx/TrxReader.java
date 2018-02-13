@@ -5,6 +5,7 @@ import io.qameta.allure.ResultsVisitor;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.TestStatus;
 import io.qameta.allure.parser.XmlElement;
+import io.qameta.allure.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -58,9 +59,10 @@ public class TrxReader implements ResultsReader {
     public static final String STACK_TRACE_ELEMENT_NAME = "StackTrace";
     public static final String ERROR_INFO_ELEMENT_NAME = "ErrorInfo";
 
+    @SuppressWarnings("all")
     @Override
     public void readResultFile(final ResultsVisitor visitor, final Path file) {
-        if (file.getFileName().toString().endsWith(".trx")) {
+        if (FileUtils.endsWith(file, ".trx")) {
             parseTestRun(visitor, file);
         }
     }

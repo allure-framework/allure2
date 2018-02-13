@@ -15,7 +15,7 @@ import io.qameta.allure.model.Attachment;
 import io.qameta.allure.model.ExecutableItem;
 import io.qameta.allure.model.StepResult;
 import io.qameta.allure.model.TestResult;
-import io.qameta.allure.model.TestResultContainer;
+import io.qameta.allure.util.FileUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,9 +26,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static io.qameta.allure.AllureConstants.TEST_RESULT_CONTAINER_FILE_SUFFIX;
 import static io.qameta.allure.AllureConstants.TEST_RESULT_FILE_SUFFIX;
 import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
 import static io.qameta.allure.util.ConvertUtils.convertList;
@@ -45,24 +45,20 @@ import static java.util.Objects.nonNull;
  * @since 2.0
  */
 @SuppressWarnings("PMD.ExcessiveImports")
-public class Allure2Plugin implements ResultsReader {
+public class Allure2Reader implements ResultsReader {
 
     public static final String ALLURE2_RESULTS_FORMAT = "allure2";
 
     private final ObjectMapper mapper = Allure2ModelJackson.createMapper();
 
     @Override
-    public void readResultFile(final ResultsVisitor visitor, final Path resultsFile) throws IOException {
-        if (resultsFile.getFileName().toString().endsWith(TEST_RESULT_FILE_SUFFIX)) {
-            convert(visitor, readTestResult(resultsFile));
+    public void readResultFile(final ResultsVisitor visitor, final Path file) throws IOException {
+        if (FileUtils.endsWith(file, TEST_RESULT_FILE_SUFFIX)) {
+            convert(visitor, readTestResult(file));
         }
-        if (resultsFile.getFileName().toString().endsWith(TEST_RESULT_CONTAINER_FILE_SUFFIX)) {
-            convert(visitor, readTestResultContainer(resultsFile));
-        }
-    }
-
-    private void convert(final ResultsVisitor visitor, final TestResultContainer testResultContainer) {
-        //TODO support test containers
+//        if (FileUtils.endsWith(file, TEST_RESULT_CONTAINER_FILE_SUFFIX)) {
+//            convert(visitor, readTestResultContainer(file));
+//        }
     }
 
     private void convert(final ResultsVisitor visitor,
@@ -169,14 +165,10 @@ public class Allure2Plugin implements ResultsReader {
                                              final Long testResultId,
                                              final ExecutableItem executableItem) {
         final TestResultExecution execution = new TestResultExecution();
-        execution.setSteps(convertList(
-                executableItem.getSteps(),
-                step -> convert(visitor, testResultId, step)
-        ));
-        execution.setAttachments(convertList(
-                executableItem.getAttachments(),
-                attachment -> convert(visitor, testResultId, attachment)
-        ));
+        final Function<StepResult, TestResultStep> convertStep = step -> convert(visitor, testResultId, step);
+        execution.setSteps(convertList(executableItem.getSteps(), convertStep));
+        final Function<Attachment, AttachmentLink> convertAttachment = attach -> convert(visitor, testResultId, attach);
+        execution.setAttachments(convertList(executableItem.getAttachments(), convertAttachment));
         return execution;
     }
 
@@ -187,12 +179,6 @@ public class Allure2Plugin implements ResultsReader {
     private TestResult readTestResult(final Path file) throws IOException {
         try (InputStream is = Files.newInputStream(file)) {
             return mapper.readValue(is, TestResult.class);
-        }
-    }
-
-    private TestResultContainer readTestResultContainer(final Path file) throws IOException {
-        try (InputStream is = Files.newInputStream(file)) {
-            return mapper.readValue(is, TestResultContainer.class);
         }
     }
 }

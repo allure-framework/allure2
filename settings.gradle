@@ -4,15 +4,3 @@ include 'allure-reader'
 include 'allure-plugin-api'
 include 'allure-generator'
 include 'allure-commandline'
-
-def plugins = [
-        'behaviors-plugin',
-        'packages-plugin',
-        'custom-logo-plugin',
-        'screen-diff-plugin',
-]
-
-plugins.forEach({
-    include "plugins/$it"
-    project(":plugins/$it").name = it
-})

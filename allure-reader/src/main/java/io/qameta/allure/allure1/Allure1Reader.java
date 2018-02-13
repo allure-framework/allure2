@@ -8,15 +8,16 @@ import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import io.qameta.allure.ResultsReader;
 import io.qameta.allure.ResultsVisitor;
 import io.qameta.allure.entity.AttachmentLink;
-import io.qameta.allure.entity.TestLabel;
 import io.qameta.allure.entity.TestParameter;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.TestResultExecution;
 import io.qameta.allure.entity.TestResultStep;
 import io.qameta.allure.entity.TestStatus;
 import io.qameta.allure.parser.XmlParserModule;
+import io.qameta.allure.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.yandex.qatools.allure.model.Attachment;
 import ru.yandex.qatools.allure.model.Description;
 import ru.yandex.qatools.allure.model.DescriptionType;
 import ru.yandex.qatools.allure.model.Label;
@@ -27,18 +28,15 @@ import ru.yandex.qatools.allure.model.TestSuiteResult;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -58,7 +56,6 @@ import static io.qameta.allure.entity.TestStatus.SKIPPED;
 import static io.qameta.allure.util.ConvertUtils.convertList;
 import static io.qameta.allure.util.ConvertUtils.convertSet;
 import static io.qameta.allure.util.ConvertUtils.firstNonNull;
-import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsFirst;
@@ -75,11 +72,6 @@ public class Allure1Reader implements ResultsReader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Allure1Reader.class);
     private static final String UNKNOWN = "unknown";
-    private static final String MD_5 = "md5";
-
-    private static final Comparator<TestParameter> PARAMETER_COMPARATOR =
-            comparing(TestParameter::getName, nullsFirst(naturalOrder()))
-                    .thenComparing(TestParameter::getValue, nullsFirst(naturalOrder()));
 
     public static final String ALLURE1_RESULTS_FORMAT = "allure1";
 
@@ -95,16 +87,16 @@ public class Allure1Reader implements ResultsReader {
                 .registerModule(module);
     }
 
+    @SuppressWarnings("all")
     @Override
     public void readResultFile(final ResultsVisitor visitor,
-                               final Path resultsFile) {
-
-        if (resultsFile.getFileName().toString().endsWith("-testsuite.xml")) {
-            readXmlTestSuiteFile(resultsFile)
+                               final Path file) {
+        if (FileUtils.endsWith(file, "-testsuite.xml")) {
+            readXmlTestSuiteFile(file)
                     .ifPresent(testSuite -> convert(visitor, testSuite));
         }
-        if (resultsFile.getFileName().toString().endsWith("-testsuite.json")) {
-            readJsonTestSuiteFile(resultsFile)
+        if (FileUtils.endsWith(file, "-testsuite.json")) {
+            readJsonTestSuiteFile(file)
                     .ifPresent(testSuite -> convert(visitor, testSuite));
         }
     }
@@ -174,25 +166,14 @@ public class Allure1Reader implements ResultsReader {
                 .findAny()
                 .ifPresent(value -> dest.setFlaky(true));
         dest.addLabelIfNotExists(RESULT_FORMAT, ALLURE1_RESULTS_FORMAT);
-        final Set<TestLabel> set = new TreeSet<>(
-                comparing(TestLabel::getName, nullsFirst(naturalOrder()))
-                        .thenComparing(TestLabel::getValue, nullsFirst(naturalOrder()))
-        );
-        set.addAll(convertSet(testSuite.getLabels(), this::convert));
-        set.addAll(convertSet(source.getLabels(), this::convert));
-        dest.setLabels(new HashSet<>(set));
 
         final TestResult stored = visitor.visitTestResult(dest);
 
         if (!source.getSteps().isEmpty() || !source.getAttachments().isEmpty()) {
-            final List<TestResultStep> steps = convertList(
-                    source.getSteps(),
-                    step -> convert(stored, visitor, step)
-            );
-            final List<AttachmentLink> attachments = convertList(
-                    source.getAttachments(),
-                    attachment -> convert(stored, visitor, attachment)
-            );
+            final Function<Step, TestResultStep> convertStep = step -> convert(stored, visitor, step);
+            final List<TestResultStep> steps = convertList(source.getSteps(), convertStep);
+            final Function<Attachment, AttachmentLink> convertAttachment = attach -> convert(stored, visitor, attach);
+            final List<AttachmentLink> attachments = convertList(source.getAttachments(), convertAttachment);
 
             final TestResultExecution testResultExecution = new TestResultExecution()
                     .setAttachments(attachments)
@@ -233,7 +214,7 @@ public class Allure1Reader implements ResultsReader {
 
     private AttachmentLink convert(final TestResult testResult,
                                    final ResultsVisitor visitor,
-                                   final ru.yandex.qatools.allure.model.Attachment attachment) {
+                                   final Attachment attachment) {
         final AttachmentLink link = new AttachmentLink()
                 .setName(attachment.getTitle())
                 .setContentLength(isNull(attachment.getSize()) ? null : Long.valueOf(attachment.getSize()))
@@ -243,13 +224,6 @@ public class Allure1Reader implements ResultsReader {
         return link;
     }
 
-
-    private TestLabel convert(final ru.yandex.qatools.allure.model.Label label) {
-        return new TestLabel()
-                .setName(label.getName())
-                .setValue(label.getValue());
-    }
-
     private TestParameter convert(final ru.yandex.qatools.allure.model.Parameter parameter) {
         return new TestParameter()
                 .setName(parameter.getName())
@@ -257,7 +231,7 @@ public class Allure1Reader implements ResultsReader {
     }
 
     public static TestStatus convert(final ru.yandex.qatools.allure.model.Status status) {
-        if (Objects.isNull(status)) {
+        if (isNull(status)) {
             return TestStatus.UNKNOWN;
         }
         switch (status) {
@@ -305,16 +279,15 @@ public class Allure1Reader implements ResultsReader {
         return description -> DescriptionType.HTML.equals(description.getType());
     }
 
-    private String findLabelValue(final List<ru.yandex.qatools.allure.model.Label> labels, final String labelName) {
+    private String findLabelValue(final List<Label> labels, final String labelName) {
         return labels.stream()
                 .filter(label -> labelName.equals(label.getName()))
-                .map(ru.yandex.qatools.allure.model.Label::getValue)
+                .map(Label::getValue)
                 .findAny()
                 .orElse(null);
     }
 
-    private Optional<String> findLabel(
-            final List<ru.yandex.qatools.allure.model.Label> labels, final String labelName) {
+    private Optional<String> findLabel(final List<Label> labels, final String labelName) {
         return labels.stream()
                 .filter(label -> labelName.equals(label.getName()))
                 .map(Label::getValue)
@@ -322,7 +295,7 @@ public class Allure1Reader implements ResultsReader {
     }
 
     private boolean hasArgumentType(final ru.yandex.qatools.allure.model.Parameter parameter) {
-        return Objects.isNull(parameter.getKind()) || ParameterKind.ARGUMENT.equals(parameter.getKind());
+        return isNull(parameter.getKind()) || ParameterKind.ARGUMENT.equals(parameter.getKind());
     }
 
     private Optional<TestSuiteResult> readXmlTestSuiteFile(final Path source) {
@@ -340,27 +313,6 @@ public class Allure1Reader implements ResultsReader {
         } catch (IOException e) {
             LOGGER.error("Could not read result {}", source, e);
             return Optional.empty();
-        }
-    }
-
-    private static String getHistoryId(final String name, final Set<TestParameter> parameters) {
-        final MessageDigest digest = getMessageDigest();
-        digest.update(name.getBytes(UTF_8));
-        parameters.stream()
-                .sorted(PARAMETER_COMPARATOR)
-                .forEachOrdered(parameter -> {
-                    digest.update(Objects.toString(parameter.getName()).getBytes(UTF_8));
-                    digest.update(Objects.toString(parameter.getValue()).getBytes(UTF_8));
-                });
-        final byte[] bytes = digest.digest();
-        return new BigInteger(1, bytes).toString(16);
-    }
-
-    private static MessageDigest getMessageDigest() {
-        try {
-            return MessageDigest.getInstance(MD_5);
-        } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Could not find md5 hashing algorithm", e);
         }
     }
 

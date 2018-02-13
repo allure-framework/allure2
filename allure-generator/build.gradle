@@ -46,9 +46,6 @@ processResources.dependsOn buildWeb
 test.dependsOn testWeb
 
 dependencies {
-    allurePlugin project(path: ':behaviors-plugin', configuration: 'allurePlugin')
-    allurePlugin project(path: ':packages-plugin', configuration: 'allurePlugin')
-    allurePlugin project(path: ':screen-diff-plugin', configuration: 'allurePlugin')
     compile project(':allure-plugin-api')
     compile project(':allure-reader')
     compile('com.fasterxml.jackson.dataformat:jackson-dataformat-xml')

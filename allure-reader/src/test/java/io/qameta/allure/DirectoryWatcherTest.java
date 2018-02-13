@@ -15,7 +15,7 @@ public class DirectoryWatcherTest {
         final DirectoryWatcher watcher = new DirectoryWatcher();
         watcher.setBatchSize(10);
         watcher.setMaxDepth(1);
-        watcher.setReadInterval(1, TimeUnit.SECONDS);
+        watcher.setIndexInterval(1, TimeUnit.SECONDS);
         watcher.setProcessInterval(1, TimeUnit.SECONDS);
         watcher.watch(file -> {
             try {
@@ -27,7 +27,7 @@ public class DirectoryWatcherTest {
             }
         }, Paths.get("/Users/charlie/projects/allure2/allure-generator/test-data"));
 
-        watcher.stop();
-        watcher.waitCompletion();
+        watcher.shutdown();
+        watcher.awaitTermination(10, TimeUnit.SECONDS);
     }
 }

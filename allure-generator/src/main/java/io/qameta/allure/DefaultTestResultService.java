@@ -12,6 +12,8 @@ import io.qameta.allure.event.TestResultCreated;
 import io.qameta.allure.exception.NotFoundException;
 import io.qameta.allure.listener.TestResultListener;
 import io.qameta.allure.service.TestResultService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -33,12 +35,15 @@ import static io.qameta.allure.entity.EntityComparators.comparingTestResultsBySt
 import static io.qameta.allure.util.Hashing.md5;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 /**
  * @author charlie (Dmitry Baev).
  */
 @SuppressWarnings("PMD.ExcessiveImports")
 public class DefaultTestResultService implements TestResultService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultTestResultService.class);
 
     private final AtomicLong testResultId = new AtomicLong();
 
@@ -58,27 +63,29 @@ public class DefaultTestResultService implements TestResultService {
 
     @Override
     public TestResult create(final TestResult testResult) {
-        testResult.setId(testResultId.incrementAndGet());
-        if (isNull(testResult.getType())) {
-            testResult.setType(TestResultType.TEST);
-        }
-        if (isNull(testResult.getTestId())) {
-            //TODO dynamic tests?
-            testResult.setTestId(UUID.randomUUID().toString());
-        }
+        synchronized (this) {
+            testResult.setId(testResultId.incrementAndGet());
+            if (isNull(testResult.getType())) {
+                testResult.setType(TestResultType.TEST);
+            }
+            if (isNull(testResult.getTestId())) {
+                //TODO dynamic tests?
+                testResult.setTestId(UUID.randomUUID().toString());
+            }
 
-        testResult.getTags().addAll(getTestTags(testResult));
-        testResult.getCustomFields().addAll(getCustomFields(testResult));
-        testResult.getEnvironmentVariables().addAll(getEnvironmentVariables(testResult));
+            testResult.getTags().addAll(getTestTags(testResult));
+            testResult.getCustomFields().addAll(getCustomFields(testResult));
+            testResult.getEnvironmentVariables().addAll(getEnvironmentVariables(testResult));
 
-        if (isNull(testResult.getHistoryKey())) {
-            testResult.setHistoryKey(calculateHistoryKey(testResult));
+            if (isNull(testResult.getHistoryKey())) {
+                calculateHistoryKey(testResult).ifPresent(testResult::setHistoryKey);
+            }
+
+            processRetries(testResult);
+            results.put(testResult.getId(), testResult);
+            notifier.onTestResultCreated(new TestResultCreated(testResult));
+            return testResult;
         }
-
-        processRetries(testResult);
-        results.put(testResult.getId(), testResult);
-        notifier.onTestResultCreated(new TestResultCreated(testResult));
-        return testResult;
     }
 
     @Override
@@ -144,12 +151,21 @@ public class DefaultTestResultService implements TestResultService {
     //TODO sync
     private void processRetries(final TestResult testResult) {
         final Optional<TestResult> found = results.values().stream()
-                .filter(result -> !result.isHidden())
-                .filter(result -> Objects.equals(result.getHistoryKey(), result.getHistoryKey()))
+                .filter(candidate -> !candidate.isHidden())
+                .filter(candidate -> nonNull(candidate.getHistoryKey()))
+                .filter(candidate -> Objects.equals(testResult.getHistoryKey(), candidate.getHistoryKey()))
                 .findAny();
+
 
         if (found.isPresent()) {
             final TestResult retryCandidate = found.get();
+            LOGGER.info(
+                    "For result {} ({}) found retry candidate: {} ({})",
+                    testResult.getName(),
+                    testResult.getHistoryKey(),
+                    retryCandidate.getName(),
+                    retryCandidate.getHistoryKey()
+            );
             if (isNull(testResult.getStart()) || isNull(retryCandidate.getStart())
                     || retryCandidate.getStart() <= testResult.getStart()) {
                 retryCandidate.setHidden(true);
@@ -158,6 +174,8 @@ public class DefaultTestResultService implements TestResultService {
                 testResult.setHidden(true);
                 testResult.setRetry(true);
             }
+        } else {
+            LOGGER.info("For result {} no retry candidate", testResult.getName());
         }
     }
 
@@ -183,7 +201,10 @@ public class DefaultTestResultService implements TestResultService {
                 .collect(Collectors.toList());
     }
 
-    private String calculateHistoryKey(final TestResult testResult) {
+    private Optional<String> calculateHistoryKey(final TestResult testResult) {
+        if (isNull(testResult.getTestId())) {
+            return Optional.empty();
+        }
         final MessageDigest digest = md5();
         digest.update(testResult.getType().value().getBytes(UTF_8));
         digest.update(testResult.getTestId().getBytes(UTF_8));
@@ -202,7 +223,7 @@ public class DefaultTestResultService implements TestResultService {
                 });
 
         final byte[] bytes = digest.digest();
-        return new BigInteger(1, bytes).toString(16);
+        return Optional.of(new BigInteger(1, bytes).toString(16));
     }
 
 }

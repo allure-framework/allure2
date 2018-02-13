@@ -8,6 +8,7 @@ import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.TestResultExecution;
 import io.qameta.allure.entity.TestStatus;
 import io.qameta.allure.parser.XmlElement;
+import io.qameta.allure.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -65,9 +66,10 @@ public class JunitReader implements ResultsReader {
         RETRIES.put(RERUN_ERROR_ELEMENT_NAME, TestStatus.BROKEN);
     }
 
+    @SuppressWarnings("all")
     @Override
     public void readResultFile(final ResultsVisitor visitor, final Path file) {
-        if (file.getFileName().toString().endsWith(".xml")) {
+        if (FileUtils.endsWith(file, ".xml")) {
             parseRootElement(visitor, file);
         }
     }

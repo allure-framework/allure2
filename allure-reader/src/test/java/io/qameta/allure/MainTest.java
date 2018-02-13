@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -26,10 +27,9 @@ public class MainTest {
                 Paths.get("/Users/charlie/projects/allure2/allure-reader/build/b")
         );
 
-        Thread.sleep(60000);
-
-        watcher.stop();
-        watcher.waitCompletion();
+        watcher.shutdown();
+        watcher.awaitTermination(1, TimeUnit.MINUTES);
+        watcher.shutdownNow();
     }
 
     @Test
@@ -45,11 +45,12 @@ public class MainTest {
         ));
         final DirectoryWatcher watcher = new DirectoryWatcher();
         watcher.watch(
-                file -> reader.readResultFile(visitor, file),
+                files -> files.forEach(file -> reader.readResultFile(visitor, file)),
                 Paths.get("/Users/charlie/projects/allure2/allure-generator/test-data/demo")
         );
 
-        watcher.stop();
-        watcher.waitCompletion();
+        watcher.shutdown();
+        watcher.awaitTermination(1, TimeUnit.MINUTES);
+        watcher.shutdownNow();
     }
 }

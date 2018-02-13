@@ -6,6 +6,7 @@ import io.qameta.allure.entity.TestParameter;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.TestStatus;
 import io.qameta.allure.parser.XmlElement;
+import io.qameta.allure.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -61,7 +62,7 @@ public class XunitReader implements ResultsReader {
 
     @Override
     public void readResultFile(final ResultsVisitor visitor, final Path file) {
-        if (file.getFileName().toString().endsWith(".xml")) {
+        if (FileUtils.endsWith(file, ".xml")) {
             parseAssemblies(visitor, file);
         }
     }

@@ -5,6 +5,8 @@ import io.qameta.allure.entity.AttachmentLink;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.TestResultExecution;
 import io.qameta.allure.service.TestResultService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
 
@@ -12,6 +14,8 @@ import java.nio.file.Path;
  * @author charlie (Dmitry Baev).
  */
 public class DefaultResultsVisitor implements ResultsVisitor {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultResultsVisitor.class);
 
     private final TestResultService testResultService;
 
@@ -22,6 +26,7 @@ public class DefaultResultsVisitor implements ResultsVisitor {
     @Override
     public TestResult visitTestResult(
             final TestResult result) {
+        LOGGER.info("Visit test result {}", result.getFullName());
         return testResultService.create(result);
     }
 

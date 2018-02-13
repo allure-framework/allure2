@@ -1,9 +1,11 @@
 package io.qameta.allure;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import io.qameta.allure.allure1.Allure1Reader;
 import io.qameta.allure.attachment.AllureAttachmentsReader;
 import io.qameta.allure.config.ReportConfig;
-import io.qameta.allure.core.ReportWebPlugin;
 import io.qameta.allure.entity.Executor;
 import io.qameta.allure.entity.Job;
 import io.qameta.allure.entity.Project;
@@ -11,17 +13,24 @@ import io.qameta.allure.junit.JunitReader;
 import io.qameta.allure.trx.TrxReader;
 import io.qameta.allure.xctest.XcTestReader;
 import io.qameta.allure.xunit.XunitReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 /**
  * @author charlie (Dmitry Baev).
  */
 public class ReportGenerator {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReportGenerator.class);
 
     public void generate(final Path outputDirectory,
                          final List<Path> resultsDirectories) throws IOException, InterruptedException {
@@ -30,14 +39,7 @@ public class ReportGenerator {
 
     public void generate(final Path outputDirectory,
                          final Path... resultsDirectories) throws IOException, InterruptedException {
-        final ReportConfig config = new ReportConfig()
-                .setVersion("1.0")
-                .setProjectName("some report")
-                .setCategories(Collections.emptyList())
-                .setEnvironmentVariables(Collections.singletonList("browser"))
-                .setCustomFields(Arrays.asList("epic", "feature", "story", "suite"))
-                .setTags(Collections.singletonList("tag"));
-
+        final ReportConfig config = readConfig();
         final Project project = new Project().setName(config.getProjectName());
         final Job job = new Job()
                 .setName("Some jenkins job")
@@ -58,15 +60,33 @@ public class ReportGenerator {
                 new XunitReader()
         ));
         final DefaultPluginRegistry registry = new DefaultPluginRegistry();
-        registry.addAggregator(new ReportWebPlugin());
+        config.getGroups().forEach((id, group) -> registry.addAggregator(new DefaultTreeAggregator(id, group)));
 
         final CompositeAggregator aggregator = new CompositeAggregator(registry.getAggregators());
 
         final DirectoryWatcher watcher = new DirectoryWatcher();
-        watcher.watch(file -> reader.readResultFile(visitor, file), resultsDirectories);
-        watcher.stop();
-        watcher.waitCompletion();
+        final Consumer<List<Path>> filesConsumer = files -> files.forEach(file -> reader.readResultFile(visitor, file));
+        watcher.watch(filesConsumer, resultsDirectories);
+        watcher.shutdown();
+        watcher.awaitTermination(1, TimeUnit.MINUTES);
+        watcher.shutdownNow();
+
+        resultService.findAll(true).forEach(result -> {
+            LOGGER.info(
+                    "Result {}: {} {}, labels: {}",
+                    result.getName(), result.getType(),
+                    result.isHidden(), result.getLabels()
+            );
+        });
 
         aggregator.aggregate(context, resultService, outputDirectory);
+    }
+
+    protected ReportConfig readConfig() throws IOException {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("sample-config.yml")) {
+            final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+            mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+            return mapper.readValue(is, ReportConfig.class);
+        }
     }
 }
