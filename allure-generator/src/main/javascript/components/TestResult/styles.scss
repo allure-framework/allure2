@@ -1,0 +1,26 @@
+@import "../../variables.scss";
+
+.TestResult {
+  overflow: auto;
+
+  &__flaky-icon {
+    padding-right: 3px;
+  }
+  &__name {
+    flex: 1;
+    vertical-align: middle;
+  }
+  &__link {
+    color: $text-muted-color;
+    padding: 5px;
+    margin: 0;
+    font-size: 18px;
+  }
+  &__status {
+    text-align: center;
+    padding-bottom: $gap-size;
+  }
+  &__status-text {
+    padding: 5px;
+  }
+}

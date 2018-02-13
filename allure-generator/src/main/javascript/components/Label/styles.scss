@@ -1,0 +1,16 @@
+@import "../../mixins.scss";
+
+.Label {
+  vertical-align: baseline;
+  letter-spacing: 1px;
+  color: #fff;
+  padding: 2px 4px 2px 5px;
+  font-size: 80%;
+  border-radius: 3px;
+  margin: 0 2px;
+  @include status-bg-bright();
+
+  &__info {
+    background: #3c58e4;
+  }
+}

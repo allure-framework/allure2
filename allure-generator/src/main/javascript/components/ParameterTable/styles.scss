@@ -1,0 +1,9 @@
+@import '../../variables.scss';
+
+.ParameterTable {
+  width: 100%;
+
+  &__name {
+    color: $text-muted-color;
+  }
+}

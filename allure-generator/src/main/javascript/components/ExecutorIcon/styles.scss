@@ -1,0 +1,20 @@
+.ExecutorIcon {
+  width: 32px;
+  height: 32px;
+  background: url(./default-icon.png) center no-repeat;
+  background-size: contain;
+  display: inline-block;
+  line-height: 32px;
+
+  &_type_jenkins {
+    background-image: url(./jenkins.svg)
+  }
+
+  &_type_bamboo {
+    background-image: url(./bamboo.svg)
+  }
+
+  &_type_teamcity {
+    background-image: url(./teamcity.svg)
+  }
+}

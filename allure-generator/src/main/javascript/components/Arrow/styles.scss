@@ -1,0 +1,7 @@
+.Arrow {
+  transition: transform 0.1s;
+
+  &_expanded {
+    transform: rotate(90deg);
+  }
+}

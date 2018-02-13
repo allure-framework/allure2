@@ -1,0 +1,14 @@
+@import "../../mixins.scss";
+
+.Alert {
+  vertical-align: baseline;
+  letter-spacing: 1px;
+  line-height: $line-height;
+  margin-bottom: $gap-size;
+
+  &_center {
+    text-align: center;
+  }
+
+  @include status-bg-bright();
+}

@@ -1,0 +1,97 @@
+@import "../../variables";
+
+.SideNavigation {
+  background: $sidebar-bg-color;
+  width: $sidebar-collapsed-width;
+  margin: 0;
+  padding: 0;
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  &_expanded {
+    width: $sidebar-full-width;
+  }
+
+  &__head {
+    margin: $gap-size 0;
+    padding-bottom: 5px;
+    border-bottom: 1px solid $sidebar-separator-color;
+  }
+
+  &__brand {
+    text-decoration: none;
+    display: block;
+    font-size: 26px;
+    line-height: 40px;
+    padding-left: 40px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    transition: all 0.3s;
+    background-size: auto auto;
+    background: url('allure_logo.svg') no-repeat left center;
+  }
+
+  &__brand-text {
+    padding-left: $gap-size;
+    color: $sidebar-brand-text-color;
+  }
+
+  &__menu {
+    margin: 0;
+    left: 0;
+    padding: 0;
+    list-style-type: none;
+    transition: width 0.3s;
+  }
+
+  &__item {
+    padding: 3px 0;
+  }
+
+  &__footer {
+    margin-top: auto;
+    margin-bottom: 30px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  &__link, &__collapse {
+    display: flex;
+    line-height: $sidebar-line-height;
+    color: $sidebar-text-color;
+    text-decoration: none;
+    cursor: pointer;
+    vertical-align: middle;
+
+    &_active {
+      color: $sidebar-active-text-color;
+      border-right: 4px solid $sidebar-active-accent-color;
+    }
+    &:hover {
+      color: $sidebar-active-text-color;
+      background: $sidebar-hover-bg-color;
+    }
+  }
+
+  &__icon {
+    width: $sidebar-collapsed-width;
+    height: $sidebar-line-height;
+
+    font-size: $sidebar-icon-size;
+    text-align: center;
+
+    padding: calc((#{$sidebar-line-height} - #{$sidebar-icon-size}) / 2) 0;
+  }
+
+  &__text {
+    display: none;
+    flex: 1;
+    font-size: $sidebar-font-size;
+
+    &_expanded {
+      display: block;
+    }
+  }
+}

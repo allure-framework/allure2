@@ -1,15 +1,4 @@
-@import "../../../node_modules/normalize-css/normalize.css";
-@import "../../../node_modules/highlight.js/styles/github-gist.css";
-@import "./rtl.scss";
-
-@import "./elements/bar/styles.scss";
-@import "./elements/button/styles.scss";
-@import "./elements/label/styles.scss";
-@import "./elements/spinner/styles.scss";
-@import "./elements/splash/styles.scss";
-@import "./elements/text/styles.scss";
-
-@import "./variables.scss";
+@import "./mixins";
 
 body {
   color: $text-color;
@@ -22,42 +11,8 @@ body {
 
 html, body {
   height: 100%;
-  margin: 0;
   font-size: 15px;
-}
-
-#content {
-  height: 100%;
-  min-height: 100%;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  .app {
-    flex: 1;
-  }
-  & > .spinner {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%)
-  }
-}
-
-.view {
-  padding: 0 15px;
-  margin: 0 auto;
-  &_narrow {
-    max-width: 1100px;
-  }
-  &-small {
-    max-width: 300px;
-  }
-  &-medium {
-    max-width: 600px;
-  }
-  &-large {
-    max-width: 1200px;
-  }
+  margin: 0;
 }
 
 .clickable {
@@ -65,7 +20,7 @@ html, body {
 }
 
 .long-line {
-  word-break: break-word;
+  word-break: break-all;
 }
 
 .line-nobreak {
@@ -81,4 +36,19 @@ html, body {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+.link {
+  color: $brand-blue;
+  &:hover {
+    color: $brand-red;
+  }
+  &__no-decoration {
+    color: black;
+    text-decoration: none;
+  }
+}
+
+.text {
+  @include status-text();
 }

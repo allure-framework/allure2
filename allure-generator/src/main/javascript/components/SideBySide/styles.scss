@@ -1,0 +1,33 @@
+@import "../../variables.scss";
+
+.SideBySide {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+
+  &__left {
+    overflow: auto;
+    flex: 0 0 auto;
+  }
+
+  &__right {
+    overflow: auto;
+    flex: 1 1 auto;
+  }
+}
+
+.gutter {
+  background: $border-color no-repeat 50%;
+  &:hover {
+    cursor: ew-resize;
+  }
+}
+
+.gutter-horizontal {
+  background-image: url('vertical.png')
+}

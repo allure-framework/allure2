@@ -1,0 +1,33 @@
+@import "../../mixins.scss";
+
+.StatusDetails {
+  overflow: auto;
+
+  @include status-border();
+  @include status-bg-light();
+
+  &__message-wrapper {
+    display: flex;
+  }
+
+  &__message {
+    overflow: auto;
+    word-break: break-all;
+    padding: $gap-size;
+    flex: 1;
+  }
+
+  &__controls {
+    padding: 5px;
+  }
+
+  &__trace {
+    overflow: auto;
+    display: block;
+    word-break: break-all;
+    word-wrap: break-word;
+    padding: $gap-size;
+    white-space: pre-line;
+    border-top: 1px solid $pane-bg-color;
+  }
+}

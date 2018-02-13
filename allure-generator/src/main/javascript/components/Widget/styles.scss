@@ -1,0 +1,48 @@
+@import "../../mixins.scss";
+
+.Widget {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  border: 1px solid $border-accent-color;
+  padding: $gap-size;
+  background: $pane-bg-color;
+
+  &__header {
+    display: flex;
+    border-bottom: 1px solid $border-accent-color;
+    padding-bottom: $gap-size;
+    margin-bottom: $gap-size;
+  }
+
+  &__title {
+    flex: 1;
+    margin: 0;
+    padding: 0;
+
+    font-weight: normal;
+    word-break: break-all;
+    @include ellipsis();
+  }
+
+  &__controls {
+    color: $text-muted-color;
+  }
+
+  &__icon {
+    position: absolute;
+    width: 10px;
+    height: 15px;
+    right: 0;
+
+    background-image: url("./draggable.svg");
+    z-index: 1;
+  }
+
+  > img {
+    max-width: 100%;
+    width: 100%;
+    display: block;
+  }
+}

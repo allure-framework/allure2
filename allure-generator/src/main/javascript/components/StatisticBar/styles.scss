@@ -1,0 +1,23 @@
+@import "../../variables.scss";
+@import "../../mixins.scss";
+
+.Bar {
+  height: 18px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: #eee;
+  display: inline-flex;
+  width: 100%;
+  min-width: 100px;
+  &__fill {
+    display: inline-block;
+    overflow: hidden;
+    height: 18px;
+    background: $brand-blue;
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+    line-height: 18px;
+    @include status-bg-bright();
+  }
+}

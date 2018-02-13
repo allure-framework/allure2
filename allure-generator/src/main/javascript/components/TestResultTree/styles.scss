@@ -1,0 +1,62 @@
+@import "../../variables";
+
+.TestResultTree {
+  list-style: none none;
+  padding: 0;
+  margin: 0;
+  line-height: $line-height;
+
+  &__row {
+    position: relative;
+    align-items: center;
+    padding: 5px $gap-size 5px 35px;
+    display: flex;
+    border-bottom: 1px solid $border-color;
+    cursor: pointer;
+
+    &:hover {
+      background: $hover-color;
+    }
+  }
+
+  &__arrow {
+    position: absolute;
+    left: 10px;
+  }
+
+  &__status {
+    position: absolute;
+    left: 5px;
+  }
+
+  &__name {
+    flex: 1;
+  }
+
+  &__children {
+    margin-left: $gap-size;
+  }
+
+  &__item {
+    display: block;
+    text-decoration: none;
+    padding: 5px 15px;
+    &:hover {
+      background: $hover-color;
+    }
+    &_active {
+      background: $selected-color;
+    }
+  }
+  &__title {
+    cursor: pointer;
+    &::before {
+      color: #aaa;
+      content: "+";
+      padding-right: 10px;
+    }
+    &_expanded::before {
+      content: "-";
+    }
+  }
+}

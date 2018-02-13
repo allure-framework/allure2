@@ -8,42 +8,24 @@ apply plugin: 'com.moowork.node'
 
 node {
     version = '8.1.3'
-    yarnVersion = '0.24.6'
+    npmVersion = '5.6.0'
     download = true
 }
 
-task testWeb(type: YarnTask) {
-    inputs.files(fileTree('node_modules'))
-    inputs.files(fileTree('src/main/javascript'))
-    inputs.files(fileTree('src/test/javascript'))
-    inputs.file('package.json')
-    inputs.file('webpack.config.js')
-    inputs.file('.babelrc')
-    inputs.file('.eslintrc')
-
-    outputs.dir('build/resources/main')
-    outputs.dir('build/resources/test')
-
-    args = ['run', 'test']
-}
-
-task buildWeb(type: YarnTask) {
+task buildWeb(type: NpmTask) {
     inputs.files(fileTree('node_modules'))
     inputs.files(fileTree('src/main/javascript'))
     inputs.file('package.json')
+    inputs.file('package-lock.json')
     inputs.file('webpack.config.js')
-    inputs.file('.babelrc')
-    inputs.file('.eslintrc')
 
     outputs.dir('build/resources/main')
 
     args = ['run', 'build']
 }
 
-buildWeb.dependsOn yarn
-testWeb.dependsOn yarn
+buildWeb.dependsOn npm_install
 processResources.dependsOn buildWeb
-test.dependsOn testWeb
 
 dependencies {
     compile project(':allure-plugin-api')
@@ -72,29 +54,4 @@ task sourceJar(type: Jar, dependsOn: classes) {
 
 artifacts {
     archives sourceJar
-}
-
-def resultsDirectory = findProperty('results') ?: 'demo'
-
-task cleanUpDemoReport(type: Delete) {
-    delete file('build/demo-report')
-}
-
-task generateDemoReport(type: JavaExec) {
-    dependsOn cleanUpDemoReport
-    main = 'io.qameta.allure.DummyReportGenerator'
-    classpath = sourceSets.test.runtimeClasspath
-    systemProperty('allure.plugins.directory', 'build/plugins')
-    args = [
-            file("test-data/${resultsDirectory}"),
-            file('build/demo-report')
-    ]
-}
-
-task write {
-    println("start up development server on localhost:3000 (${resultsDirectory})")
-}
-
-task dev {
-    dependsOn write, generateDemoReport, copyPlugins, yarn_start
 }

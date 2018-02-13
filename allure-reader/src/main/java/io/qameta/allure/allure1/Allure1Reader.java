@@ -8,6 +8,7 @@ import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import io.qameta.allure.ResultsReader;
 import io.qameta.allure.ResultsVisitor;
 import io.qameta.allure.entity.AttachmentLink;
+import io.qameta.allure.entity.TestLabel;
 import io.qameta.allure.entity.TestParameter;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.TestResultExecution;
@@ -146,6 +147,9 @@ public class Allure1Reader implements ResultsReader {
             dest.setTrace(failure.getStackTrace());
         });
 
+        dest.getLabels().addAll(convertSet(testSuite.getLabels(), this::convert));
+        dest.getLabels().addAll(convertSet(source.getLabels(), this::convert));
+
         //TestNG nested suite
         final Optional<String> testGroupLabel = dest.findOneLabel("testGroup");
         final Optional<String> testSuiteLabel = dest.findOneLabel("testSuite");
@@ -228,6 +232,12 @@ public class Allure1Reader implements ResultsReader {
         return new TestParameter()
                 .setName(parameter.getName())
                 .setValue(parameter.getValue());
+    }
+
+    private TestLabel convert(final Label label) {
+        return new TestLabel()
+                .setName(label.getName())
+                .setValue(label.getValue());
     }
 
     public static TestStatus convert(final ru.yandex.qatools.allure.model.Status status) {

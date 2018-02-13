@@ -1,0 +1,28 @@
+@import "../../variables.scss";
+
+.Tabs {
+  list-style-type: none;
+  position: relative;
+  background: #fff;
+  border-bottom: 1px solid $border-color;
+  padding: 0;
+  margin: 0;
+
+  &__item {
+    display: inline-block;
+    font-size: 16px;
+
+    & > &_active {
+      border-bottom-color: $text-color;
+    }
+
+    & > a {
+      padding: $gap-size / 2 $gap-size;
+      border-bottom: 3px solid transparent;
+      display: inline-block;
+      &:hover {
+        border-bottom-color: $border-color;
+      }
+    }
+  }
+}

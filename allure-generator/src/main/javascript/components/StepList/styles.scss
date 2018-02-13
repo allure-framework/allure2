@@ -1,0 +1,42 @@
+@import "../../variables.scss";
+
+.StepList {
+  list-style: none none;
+  padding: 0;
+  margin: 0;
+  line-height: $line-height;
+
+  &__row {
+    position: relative;
+    align-items: center;
+    padding: 5px $gap-size 5px 30px;
+    display: flex;
+    border-bottom: 1px solid $border-color;
+    cursor: pointer;
+
+    &:hover {
+      background: $hover-color;
+    }
+  }
+
+  &__arrow {
+    position: absolute;
+    left: 10px;
+  }
+
+  &__name {
+    word-break: break-all;
+    flex: 1;
+  }
+
+  &__duration {
+    white-space: nowrap;
+    color: $text-muted-color;
+    font-size: small;
+  }
+
+  &__content {
+    padding-left: $gap-size;
+    padding-bottom: $gap-size;
+  }
+}

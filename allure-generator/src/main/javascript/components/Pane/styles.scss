@@ -1,0 +1,35 @@
+@import "../../mixins.scss";
+
+.Pane {
+  padding: $gap-size;
+  background: $pane-bg-color;
+  position: relative;
+
+  &__header {
+  }
+
+  &__subtitle {
+    color: $text-muted-color;
+    padding: 5px 0;
+    margin: 0;
+    font-size: 18px;
+
+    word-break: break-all;
+
+    @include ellipsis();
+  }
+
+  &__title {
+    display: flex;
+    padding: $gap-size 0;
+    margin: 0;
+    font-size: 26px;
+
+    word-break: break-all;
+  }
+
+  &__content {
+    padding-top: $gap-size;
+    margin-bottom: $pane-bottom-margin;
+  }
+}

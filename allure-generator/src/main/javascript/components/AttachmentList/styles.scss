@@ -1,0 +1,68 @@
+@import "../../variables.scss";
+
+.AttachmentList {
+  list-style: none none;
+  padding: 0;
+  margin: 0;
+  line-height: $line-height;
+
+  &__row {
+    position: relative;
+    align-items: center;
+    padding: 5px $gap-size 5px 30px;
+    display: flex;
+    border-bottom: 1px solid $border-color;
+    cursor: pointer;
+
+    &:hover {
+      background: $hover-color;
+    }
+
+    &_expanded {
+      background: $selected-color;
+    }
+  }
+
+  &__arrow {
+    position: absolute;
+    left: 7px;
+    transition: transform 0.1s;
+
+    &_expanded {
+      transform: rotate(90deg);
+    }
+  }
+
+  &__name {
+    word-break: break-all;
+  }
+
+  &__type {
+    padding-left: 10px;
+    flex: 1;
+
+    color: $text-muted-color;
+    font-size: small;
+  }
+
+  &__links {
+    display: flex;
+    flex-direction: row;
+    font-size: small;
+  }
+
+  &__link {
+    align-items: center;
+    padding: 0 5px;
+    margin-left: 2px;
+
+    &:hover {
+      background: $selected-color;
+    }
+  }
+
+  &__content {
+    padding: 10px;
+    background-color: $attachment-bg;
+  }
+}

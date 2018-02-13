@@ -1,0 +1,11 @@
+.App {
+  display: flex;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  &__nav {
+  }
+  &__body {
+    flex: 1;
+  }
+}

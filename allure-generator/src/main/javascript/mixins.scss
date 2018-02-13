@@ -57,6 +57,7 @@
 @mixin status-bg-bright() {
   &_status_failed {
     background: $color-failed;
+    color: white;
   }
   &_status_broken {
     background: $color-broken;
@@ -69,6 +70,9 @@
   }
   &_status_unknown {
     background: $color-unknown;
+  }
+  &_status_info {
+    background: $color-info;
   }
 }
 
@@ -123,5 +127,13 @@
   }
   &_status_unknown {
     fill: $color-unknown;
+  }
+}
+
+@mixin ellipsis() {
+  &_ellipsis {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 }
