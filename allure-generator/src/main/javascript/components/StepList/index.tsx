@@ -1,6 +1,6 @@
 import "./styles.scss";
 import * as React from "react";
-import {AllureStep} from "../TestResult/interfaces";
+import {AllureStep} from "../../interfaces";
 import * as bem from "b_";
 import Arrow from "../Arrow";
 import AttachmentList from "../AttachmentList";

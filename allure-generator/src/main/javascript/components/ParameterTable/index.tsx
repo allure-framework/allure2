@@ -1,7 +1,7 @@
 import './styles.scss';
 import * as React from "react";
 import * as bem from "b_";
-import {AllureTestParameter} from "../TestResult/interfaces";
+import {AllureTestParameter} from "../../interfaces";
 
 const b = bem.with("ParameterTable");
 

@@ -1,8 +1,8 @@
 import * as React from "react";
-import {statuses} from "../TestResult/interfaces";
+import {AllureStatistic, statuses} from "../../interfaces";
 import Label from "../Label";
 
-const Statistic: React.SFC<{ statistic: { [key: string]: number } }> = ({statistic}) => (
+const Statistic: React.SFC<{ statistic: AllureStatistic }> = ({statistic}) => (
     <>
         {statuses.map(status => {
             const count = statistic[status];

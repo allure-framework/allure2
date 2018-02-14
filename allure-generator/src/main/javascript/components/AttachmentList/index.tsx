@@ -1,6 +1,6 @@
 import "./styles.scss";
 import * as React from "react";
-import {AllureAttachmentLink} from "../TestResult/interfaces";
+import {AllureAttachmentLink} from "../../interfaces";
 import * as bem from "b_";
 import Arrow from "../Arrow";
 import AttachmentContent from "../AttachmentContent";

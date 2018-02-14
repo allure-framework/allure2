@@ -1,11 +1,11 @@
 import "./styles.scss";
 import * as React from "react";
-import {statuses} from "../TestResult/interfaces";
+import {AllureStatistic, statuses} from "../../interfaces";
 import * as bem from "b_";
 
 const b = bem.with("Bar");
 
-const StatisticBar: React.SFC<{ statistic: { [key: string]: number } }> = ({statistic}) => (
+const StatisticBar: React.SFC<{ statistic: AllureStatistic }> = ({statistic}) => (
     <div className={b()}>
         {statuses.map(status => {
             const count = statistic[status];

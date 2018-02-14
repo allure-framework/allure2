@@ -2,7 +2,7 @@ import './styles.scss';
 import * as React from "react";
 import {Pane, PaneContent, PaneHeader, PaneTitle} from "../Pane";
 import axios from "axios";
-import {AllureTreeGroup, AllureTreeLeaf} from "../TestResultTree/interfaces";
+import {AllureStatistic, AllureTreeGroup, AllureTreeLeaf, statuses} from "../../interfaces";
 import * as bem from "b_";
 import SideBySide from "../SideBySide";
 import ErrorSplash from "../ErrorSplash";
@@ -19,30 +19,66 @@ const Empty: React.SFC = () => (
     <p>No result selected</p>
 );
 
-const calculateStatistic = (treeRoot: AllureTreeGroup): AllureTreeGroup => {
-    return treeRoot;
+const calculateStatistic = (treeGroup: AllureTreeGroup): AllureTreeGroup => {
+    const statistic: AllureStatistic = {};
+    if (treeGroup.leafs) {
+        treeGroup.leafs.forEach(leaf => {
+            const value = statistic[leaf.status] || 0;
+            statistic[leaf.status] = value + 1;
+        });
+    }
+
+    if (treeGroup.groups) {
+        treeGroup.groups && treeGroup.groups.forEach(calculateStatistic);
+        treeGroup.groups && treeGroup.groups.forEach(group => {
+            statuses.forEach(status => {
+                const currentValue = statistic[status] || 0;
+                const groupValue = group.statistic[status] || 0;
+                statistic[status] = currentValue + groupValue;
+            });
+        });
+    }
+
+    treeGroup.statistic = statistic;
+    return treeGroup;
 };
+
+//SORTING
 
 type Comparator<A> = (a: A, b: A) => number;
 
-interface Sorter {
+interface TreeSorter {
     name: string;
-    leafComparator: (asc: boolean) => Comparator<AllureTreeLeaf>;
-    groupComparator: (asc: boolean) => Comparator<AllureTreeGroup>;
+    leafComparator: Comparator<AllureTreeLeaf>;
+    groupComparator: Comparator<AllureTreeGroup>;
 }
 
-const sorterKeys = ["id", "name"];
-const sorters: { [key: string]: Sorter } = {
+const sorterKeys = ["id", "name", "status"];
+
+const sorters: { [key: string]: TreeSorter } = {
     id: {
-        name: "Id",
-        leafComparator: (asc) => (a, b) => (a.id - b.id) * (asc ? 1 : -1),
-        groupComparator: (asc) => (a, b) => (a.uid.localeCompare(b.uid)) * (asc ? 1 : -1),
+        name: "id",
+        leafComparator: (a, b) => (a.id - b.id),
+        groupComparator: (a, b) => (a.uid.localeCompare(b.uid)),
     },
     name: {
-        name: "Name",
-        leafComparator: (asc) => (a, b) => (a.name.localeCompare(b.name)) * (asc ? 1 : -1),
-        groupComparator: (asc) => (a, b) => (a.name.localeCompare(b.name)) * (asc ? 1 : -1),
+        name: "name",
+        leafComparator: (a, b) => (a.name.localeCompare(b.name)),
+        groupComparator: (a, b) => (a.name.localeCompare(b.name)),
+    },
+    status: {
+        name: "status",
+        leafComparator: (a, b) => (statuses.indexOf(a.status) > statuses.indexOf(b.status) ? -1 : 1),
+        groupComparator: (a, b) => {
+            return statuses.reduce((all, cur) => {
+                return ((a.statistic[cur] !== b.statistic[cur]) && all === 0) ? (a.statistic[cur] || 0) - (b.statistic[cur] || 0) : all;
+            }, 0);
+        },
     }
+};
+
+const withDirection = <T extends {}>(asc: boolean, comparator: Comparator<T>): Comparator<T> => {
+    return (a, b) => comparator(a, b) * (asc ? 1 : -1);
 };
 
 const sort = (treeRoot: AllureTreeGroup,
@@ -81,7 +117,7 @@ export default class TestResultTreeContainer extends React.Component<TestResultT
     async loadResult() {
         try {
             const {data} = await axios.get(`data/${this.state.treeId}.json`);
-            this.setState({treeRoot: data, error: undefined});
+            this.setState({treeRoot: calculateStatistic(data), error: undefined});
         } catch (error) {
             this.setState({error});
         }
@@ -103,7 +139,11 @@ export default class TestResultTreeContainer extends React.Component<TestResultT
 
             const sorter = sorters[id];
             return {
-                treeRoot: sort(prevState.treeRoot, sorter.leafComparator(asc), sorter.groupComparator(asc))
+                treeRoot: sort(
+                    prevState.treeRoot,
+                    withDirection(asc, sorter.leafComparator),
+                    withDirection(asc, sorter.groupComparator)
+                )
             };
         });
     };
@@ -124,7 +164,9 @@ export default class TestResultTreeContainer extends React.Component<TestResultT
         const leftPane = (
             <Pane>
                 <PaneHeader>
-                    <PaneTitle>{name}</PaneTitle>
+                    <PaneTitle>
+                        {name}
+                    </PaneTitle>
                     <DropdownList defaultValue={this.state.treeId}
                                   data={["suites", "behaviors"]}
                                   onChange={this.onDropdownChange}

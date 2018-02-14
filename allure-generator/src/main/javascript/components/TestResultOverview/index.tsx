@@ -1,7 +1,7 @@
 import * as React from "react";
 import StatusDetails from "../StatusDetails";
 import ParameterTable from "../ParameterTable";
-import {AllureTestResult} from "../TestResult/interfaces";
+import {AllureTestResult} from "../../interfaces";
 import AttachmentList from "../AttachmentList";
 import StepList from "../StepList";
 

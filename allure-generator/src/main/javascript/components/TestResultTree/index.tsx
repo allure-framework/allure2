@@ -1,6 +1,6 @@
 import './styles.scss';
 import * as React from "react";
-import {AllureTreeGroup, AllureTreeLeaf} from "./interfaces";
+import {AllureTreeGroup, AllureTreeLeaf} from "../../interfaces";
 import * as bem from "b_";
 import {NavLink} from "react-router-dom";
 import Arrow from "../Arrow";
@@ -41,7 +41,7 @@ const TreeGroupRow: React.SFC<{ node: AllureTreeGroup, expanded: boolean }> = ({
             {node.name}
         </div>
         <div className={b("statistic")}>
-            <Statistic statistic={{failed: 2, broken: 7}}/>
+            <Statistic statistic={node.statistic}/>
         </div>
     </>
 );

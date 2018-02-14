@@ -38,4 +38,10 @@ const PaneContent: React.SFC = ({children}) => (
     </div>
 );
 
-export {Pane, PaneHeader, PaneContent, PaneTitle, PaneSubtitle};
+export {
+    Pane,
+    PaneHeader,
+    PaneContent,
+    PaneTitle,
+    PaneSubtitle,
+};

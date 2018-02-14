@@ -1,7 +1,7 @@
 import "./styles.scss";
 import * as React from "react";
 import * as bem from "b_";
-import {AllureTestResult} from "./interfaces";
+import {AllureTestResult} from "../../interfaces";
 import axios from "axios";
 import ErrorSplash from "../ErrorSplash";
 import Loader from "../Loader";

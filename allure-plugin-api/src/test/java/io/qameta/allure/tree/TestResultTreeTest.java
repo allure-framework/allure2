@@ -25,7 +25,10 @@ public class TestResultTreeTest {
                 item -> Collections.emptyList()
         );
 
-        assertThat(tree.getChildren())
+        assertThat(tree.getLeafs())
+                .hasSize(0);
+
+        assertThat(tree.getGroups())
                 .hasSize(0);
     }
 
@@ -45,43 +48,43 @@ public class TestResultTreeTest {
         behaviors.add(first);
         behaviors.add(second);
 
-        assertThat(behaviors.getChildren())
+        assertThat(behaviors.getGroups())
                 .hasSize(3)
                 .extracting(Node::getName)
                 .containsExactlyInAnyOrder("f1", "f2", "f3");
 
-        assertThat(behaviors.getChildren())
-                .flatExtracting("children")
-                .extracting("name")
+        assertThat(behaviors.getGroups())
+                .flatExtracting(TestResultGroupNode::getGroups)
+                .extracting(TestResultGroupNode::getName)
                 .containsExactlyInAnyOrder("s1", "s2", "s1", "s2", "s3", "s2", "s3");
 
-        assertThat(behaviors.getChildren())
+        assertThat(behaviors.getGroups())
                 .filteredOn("name", "f2")
-                .flatExtracting("children")
+                .flatExtracting(TestResultGroupNode::getGroups)
                 .extracting("name")
                 .containsExactlyInAnyOrder("s1", "s2", "s3");
 
-        assertThat(behaviors.getChildren())
+        assertThat(behaviors.getGroups())
                 .filteredOn("name", "f2")
-                .flatExtracting("children")
+                .flatExtracting(TestResultGroupNode::getGroups)
                 .filteredOn("name", "s1")
-                .flatExtracting("children")
-                .extracting("name")
+                .flatExtracting(TestResultGroupNode::getLeafs)
+                .extracting(TestResultLeafNode::getName)
                 .containsExactlyInAnyOrder("first");
 
-        assertThat(behaviors.getChildren())
+        assertThat(behaviors.getGroups())
                 .filteredOn("name", "f2")
-                .flatExtracting("children")
+                .flatExtracting(TestResultGroupNode::getGroups)
                 .filteredOn("name", "s2")
-                .flatExtracting("children")
-                .extracting("name")
+                .flatExtracting(TestResultGroupNode::getLeafs)
+                .extracting(TestResultLeafNode::getName)
                 .containsExactlyInAnyOrder("first", "second");
 
-        assertThat(behaviors.getChildren())
+        assertThat(behaviors.getGroups())
                 .filteredOn("name", "f2")
-                .flatExtracting("children")
+                .flatExtracting(TestResultGroupNode::getGroups)
                 .filteredOn("name", "s3")
-                .flatExtracting("children")
+                .flatExtracting(TestResultGroupNode::getLeafs)
                 .extracting("name")
                 .containsExactlyInAnyOrder("second");
     }

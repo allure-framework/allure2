@@ -1,4 +1,6 @@
-export const statuses = ["failed", "broken", "passed", "skipped", "unknown"];
+export type AllureStatus = "failed" | "broken" | "passed" | "skipped" | "unknown";
+
+export const statuses: Array<AllureStatus> = ["failed", "broken", "passed", "skipped", "unknown"];
 
 export interface AllureStatistic {
     failed?: number;
@@ -14,7 +16,7 @@ export interface AllureStep {
     attachments?: Array<AllureAttachmentLink>;
     parameters?: Array<AllureTestParameter>;
 
-    status: string;
+    status: AllureStatus;
     statusMessage?: string;
 
     start?: number;
@@ -43,7 +45,7 @@ export interface AllureTestStage {
 export interface AllureTestResult {
     fullName?: string;
     name: string;
-    status: string;
+    status: AllureStatus;
 
     statusMessage?: string;
     statusTrace?: string;
@@ -52,3 +54,30 @@ export interface AllureTestResult {
 
     testStage?: AllureTestStage;
 }
+
+export interface AllureNodeContext {
+    key?: string,
+    value?: string
+}
+
+export interface AllureTreeLeaf {
+    id: number,
+    name: string,
+    parentUid: string,
+    status: AllureStatus,
+    start: number,
+    stop: number,
+    duration: number
+    flaky: boolean,
+    parameters: Array<string>
+}
+
+export interface AllureTreeGroup {
+    uid: string,
+    name: string,
+    context: AllureNodeContext,
+    statistic: AllureStatistic
+    groups?: Array<AllureTreeGroup>,
+    leafs?: Array<AllureTreeLeaf>
+}
+
