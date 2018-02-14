@@ -30,7 +30,7 @@ module.exports = (env) => {
                 exclude: /node_modules/,
                 use: 'ts-loader'
             }, {
-                test: /\.(png|svg|woff2?|ttf|eot)(\?.*)?$/,
+                test: /\.(png|svg|woff2?|ttf|eot|gif)(\?.*)?$/,
                 use: 'url-loader'
             }, {
                 test: /\.css$/,

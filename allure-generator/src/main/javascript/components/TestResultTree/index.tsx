@@ -1,6 +1,6 @@
 import './styles.scss';
 import * as React from "react";
-import {AllureTreeNode} from "./interfaces";
+import {AllureTreeGroup, AllureTreeLeaf} from "./interfaces";
 import * as bem from "b_";
 import {NavLink} from "react-router-dom";
 import Arrow from "../Arrow";
@@ -9,7 +9,30 @@ import Statistic from "../Statistic";
 
 const b = bem.with("TestResultTree");
 
-const TreeGroupRow: React.SFC<{ node: AllureTreeNode, expanded: boolean }> = ({node, expanded}) => (
+const TreeLeafNode: React.SFC<{ node: AllureTreeLeaf, route: string }> = ({node, route}) => (
+    <div className={b("node")}>
+        <NavLink
+            className={[b("row"), "link__no-decoration"].join(' ')}
+            activeClassName={`${b("row")}_active`}
+            to={`/${route}/${node.parentUid}/${node.id}`}
+        >
+            <TreeLeafRow node={node}/>
+        </NavLink>
+    </div>
+);
+
+const TreeLeafRow: React.SFC<{ node: AllureTreeLeaf }> = ({node}) => (
+    <>
+        <div className={b("status")}>
+            <StatusIcon status={node.status} extraClasses={"fa-lg"}/>
+        </div>
+        <div className={b("name")}>
+            {node.name}
+        </div>
+    </>
+);
+
+const TreeGroupRow: React.SFC<{ node: AllureTreeGroup, expanded: boolean }> = ({node, expanded}) => (
     <>
         <div className={b("arrow")}>
             <Arrow expanded={expanded}/>
@@ -23,33 +46,17 @@ const TreeGroupRow: React.SFC<{ node: AllureTreeNode, expanded: boolean }> = ({n
     </>
 );
 
-const TreeLeafRow: React.SFC<{ node: AllureTreeNode }> = ({node}) => (
-    <>
-        <div className={b("status")}>
-            <StatusIcon status={node.status} extraClasses={"fa-lg"}/>
-        </div>
-        <div className={b("name")}>
-            {node.name}
-        </div>
-    </>
-);
-
-const TreeChildren: React.SFC<{ children: Array<AllureTreeNode>, route: string }> = ({children, route}) => (
-    <>
-        {children.map(child => <TreeNode key={child.uid} node={child} route={route}/>)}
-    </>
-);
-
-interface TreeNodeProps {
+interface TreeGroupNodeProps {
     route: string;
-    node: AllureTreeNode;
+    node: AllureTreeGroup;
+    selectedGroupId?: string;
 }
 
-interface TreeNodeState {
+interface TreeGroupNodeState {
     expanded: boolean;
 }
 
-class TreeNode extends React.Component<TreeNodeProps, TreeNodeState> {
+class TreeGroupNode extends React.Component<TreeGroupNodeProps, TreeGroupNodeState> {
     state = {
         expanded: false
     };
@@ -61,46 +68,45 @@ class TreeNode extends React.Component<TreeNodeProps, TreeNodeState> {
     };
 
     render(): React.ReactNode {
-        const {node, route} = this.props;
+        const {node, route, selectedGroupId} = this.props;
         const {expanded} = this.state;
 
-        if (node.children) {
-            return (
-                <div className={b("node")}>
-                    <div className={b("row")} onClick={this.handleNodeClick}>
-                        <TreeGroupRow node={node} expanded={expanded}/>
-                    </div>
-                    {
-                        expanded
-                            ? (
-                                <div className={b("children")}>
-                                    <TreeChildren children={node.children} route={route}/>
-                                </div>
-                            )
-                            : null
-                    }
-                </div>
-            );
-        }
         return (
             <div className={b("node")}>
-                <NavLink
-                    className={[b("row"), "link__no-decoration"].join(' ')}
-                    activeClassName={`${b("row")}_active`}
-                    to={`/${route}/${node.id}`}
-                >
-                    <TreeLeafRow node={node}/>
-                </NavLink>
+                <div className={b("row", {active: selectedGroupId === node.uid})} onClick={this.handleNodeClick}>
+                    <TreeGroupRow node={node} expanded={expanded}/>
+                </div>
+                {
+                    expanded
+                        ? (
+                            <div className={b("children")}>
+                                <TreeChildren leafs={node.leafs} groups={node.groups} route={route}/>
+                            </div>
+                        )
+                        : null
+                }
             </div>
         );
-
     }
 }
 
-const TestResultTree: React.SFC<{ root: AllureTreeNode, route: string }> = ({root, route}) => {
+const TreeChildren: React.SFC<{ leafs?: Array<AllureTreeLeaf>, groups?: Array<AllureTreeGroup>, route: string }> = ({leafs, groups, route}) => (
+    <>
+        {groups
+            ? groups.map(child => <TreeGroupNode key={child.uid} node={child} route={route}/>)
+            : null
+        }
+        {leafs
+            ? leafs.map(child => <TreeLeafNode key={child.id} node={child} route={route}/>)
+            : null
+        }
+    </>
+);
+
+const TestResultTree: React.SFC<{ root: AllureTreeGroup, route: string }> = ({root, route}) => {
     return (
         <div className={b()}>
-            <TreeChildren children={root.children || []} route={route}/>
+            <TreeChildren leafs={root.leafs} groups={root.groups} route={route}/>
         </div>
     );
 };

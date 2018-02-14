@@ -3,12 +3,7 @@ export interface AllureNodeContext {
     value?: string
 }
 
-//TODO split groups and leafs
-export interface AllureTreeNode {
-    uid: string,
-    context?: AllureNodeContext,
-    children?: Array<AllureTreeNode>
-
+export interface AllureTreeLeaf {
     id: number,
     name: string,
     parentUid: string,
@@ -18,5 +13,13 @@ export interface AllureTreeNode {
     duration: number
     flaky: boolean,
     parameters: Array<string>
+}
+
+export interface AllureTreeGroup {
+    uid: string,
+    name: string,
+    context: AllureNodeContext,
+    groups?: Array<AllureTreeGroup>,
+    leafs?: Array<AllureTreeLeaf>
 }
 

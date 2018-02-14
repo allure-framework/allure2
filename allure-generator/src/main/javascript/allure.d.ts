@@ -5,7 +5,7 @@ interface ReportTabConfiguration {
     name?: string;
     order?: number;
     icon?: string;
-    render: () => ReactChild;
+    render: (id: string, name?: string) => ReactChild;
 }
 
 interface TestResultTabConfiguration {

@@ -17,6 +17,10 @@
     &:hover {
       background: $hover-color;
     }
+
+    &_active {
+      background-color: $selected-color;
+    }
   }
 
   &__arrow {

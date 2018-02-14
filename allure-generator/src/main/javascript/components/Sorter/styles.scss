@@ -1,0 +1,14 @@
+@import "../../variables.scss";
+
+.Sorter {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  margin: 0 10px 0 0;
+  &__icon {
+    color: $text-muted-color;
+    &_enabled {
+      color: $text-color;
+    }
+  }
+}

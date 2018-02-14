@@ -1,10 +1,7 @@
 package io.qameta.allure.tree;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.qameta.allure.entity.TestResult;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,24 +18,14 @@ public class TestResultTree extends AbstractTree<TestResult, TestResultLeafNode,
         );
     }
 
-    @JsonIgnore
     @Override
     public List<TestResultGroupNode> getGroups() {
         return super.getGroups();
     }
 
-    @JsonIgnore
     @Override
     public List<TestResultLeafNode> getLeafs() {
         return super.getLeafs();
-    }
-
-    @JsonProperty
-    public List<Node> getChildren() {
-        final List<Node> nodes = new ArrayList<>();
-        nodes.addAll(getGroups());
-        nodes.addAll(getLeafs());
-        return nodes;
     }
 
     private static LeafFactory<TestResult, TestResultLeafNode, TestResultGroupNode> getLeafFactory() {

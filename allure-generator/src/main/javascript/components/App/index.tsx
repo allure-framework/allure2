@@ -14,11 +14,11 @@ export default function App() {
                 <SideNavigation tabs={tabs}/>
             </div>
             <div className={b('body')}>
-                {tabs.map(({id, render}) => (
+                {tabs.map(({id, name, render}) => (
                     <Route
                         key={id}
                         path={`/${id}`}
-                        render={render}
+                        render={() => render(id, name)}
                         exact={!id.length}
                     />
                 ))}

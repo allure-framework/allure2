@@ -1,7 +1,5 @@
 package io.qameta.allure.tree;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -31,23 +29,14 @@ public class TestResultGroupNode implements GroupNode<TestResultLeafNode, TestRe
         return context.getValue();
     }
 
-    @JsonIgnore
     @Override
     public List<TestResultGroupNode> getGroups() {
         return groups;
     }
 
-    @JsonIgnore
     @Override
     public List<TestResultLeafNode> getLeafs() {
         return leafs;
     }
 
-    @JsonProperty
-    public List<Node> getChildren() {
-        final List<Node> nodes = new ArrayList<>();
-        nodes.addAll(getGroups());
-        nodes.addAll(getLeafs());
-        return nodes;
-    }
 }
