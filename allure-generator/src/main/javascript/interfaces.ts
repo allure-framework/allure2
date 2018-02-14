@@ -47,12 +47,10 @@ export interface AllureTestResult {
     name: string;
     status: AllureStatus;
 
-    statusMessage?: string;
-    statusTrace?: string;
+    message?: string;
+    trace?: string;
 
     parameters?: Array<AllureTestParameter>;
-
-    testStage?: AllureTestStage;
 }
 
 export interface AllureNodeContext {

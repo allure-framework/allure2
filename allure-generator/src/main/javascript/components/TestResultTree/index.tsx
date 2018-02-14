@@ -6,6 +6,7 @@ import {NavLink} from "react-router-dom";
 import Arrow from "../Arrow";
 import StatusIcon from "../StatusIcon";
 import Statistic from "../Statistic";
+import Duration from "../Duration";
 
 const b = bem.with("TestResultTree");
 
@@ -28,6 +29,9 @@ const TreeLeafRow: React.SFC<{ node: AllureTreeLeaf }> = ({node}) => (
         </div>
         <div className={b("name")}>
             {node.name}
+        </div>
+        <div className={b("statistic")}>
+            <Duration value={node.duration}/>
         </div>
     </>
 );

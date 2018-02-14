@@ -7,12 +7,13 @@
   line-height: $line-height;
 
   &__row {
+    display: flex;
     position: relative;
     align-items: center;
-    padding: 5px $gap-size 5px 35px;
-    display: flex;
+    padding: 5px $gap-size 5px 0;
     border-bottom: 1px solid $border-color;
     cursor: pointer;
+    word-break: break-all;
 
     &:hover {
       background: $hover-color;
@@ -24,17 +25,21 @@
   }
 
   &__arrow {
-    position: absolute;
-    left: 10px;
+    padding-left: 7px;
+    padding-right: 3px;
   }
 
   &__status {
-    position: absolute;
-    left: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
   }
 
   &__name {
     flex: 1;
+  }
+
+  &__statistic {
+    padding-left: $gap-size;
   }
 
   &__children {
