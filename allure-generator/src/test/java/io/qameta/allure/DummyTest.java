@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class MainTest {
+public class DummyTest {
 
     @Test
     public void shouldGenerate() throws IOException, InterruptedException {

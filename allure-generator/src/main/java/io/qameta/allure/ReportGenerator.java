@@ -6,6 +6,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import io.qameta.allure.allure1.Allure1Reader;
 import io.qameta.allure.attachment.AllureAttachmentsReader;
 import io.qameta.allure.config.ReportConfig;
+import io.qameta.allure.core.ReportWebPlugin;
 import io.qameta.allure.core.ResultsAggregator;
 import io.qameta.allure.entity.Executor;
 import io.qameta.allure.entity.Job;
@@ -63,6 +64,7 @@ public class ReportGenerator {
         final DefaultPluginRegistry registry = new DefaultPluginRegistry();
         config.getGroups().forEach((id, group) -> registry.addAggregator(new DefaultTreeAggregator(id, group)));
         registry.addAggregator(new ResultsAggregator());
+        registry.addAggregator(new ReportWebPlugin());
 
         final CompositeAggregator aggregator = new CompositeAggregator(registry.getAggregators());
 
@@ -72,14 +74,6 @@ public class ReportGenerator {
         watcher.shutdown();
         watcher.awaitTermination(1, TimeUnit.MINUTES);
         watcher.shutdownNow();
-
-        resultService.findAll(true).forEach(result -> {
-            LOGGER.info(
-                    "Result {}: {} {}, labels: {}",
-                    result.getName(), result.getType(),
-                    result.isHidden(), result.getLabels()
-            );
-        });
 
         aggregator.aggregate(context, resultService, outputDirectory);
     }
