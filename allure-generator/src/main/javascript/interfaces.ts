@@ -77,5 +77,8 @@ export interface AllureTreeGroup {
     statistic: AllureStatistic
     groups?: Array<AllureTreeGroup>,
     leafs?: Array<AllureTreeLeaf>
+
+    total?: number;
+    shown?: number;
 }
 

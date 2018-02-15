@@ -4,11 +4,14 @@
   display: inline-flex;
   align-items: center;
   cursor: pointer;
-  margin: 0 10px 0 0;
+  padding: 5px 0 5px 10px;
   &__icon {
     color: $text-muted-color;
     &_enabled {
       color: $text-color;
     }
+  }
+  &:hover {
+    background: $selected-color;
   }
 }

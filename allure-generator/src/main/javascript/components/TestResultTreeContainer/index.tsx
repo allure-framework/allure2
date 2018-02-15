@@ -117,7 +117,10 @@ export default class TestResultTreeContainer extends React.Component<TestResultT
     async loadResult() {
         try {
             const {data} = await axios.get(`data/${this.state.treeId}.json`);
-            this.setState({treeRoot: calculateStatistic(data), error: undefined});
+            this.setState({
+                treeRoot: calculateStatistic(data),
+                error: undefined
+            });
         } catch (error) {
             this.setState({error});
         }
@@ -127,8 +130,7 @@ export default class TestResultTreeContainer extends React.Component<TestResultT
         this.setState({
             treeId: value,
             treeRoot: undefined
-        });
-        this.loadResult();
+        }, this.loadResult);
     };
 
     handleSorterChange = (id: string, asc: boolean) => {
@@ -164,17 +166,25 @@ export default class TestResultTreeContainer extends React.Component<TestResultT
         const leftPane = (
             <Pane>
                 <PaneHeader>
-                    <PaneTitle>
-                        {name}
-                    </PaneTitle>
-                    <DropdownList defaultValue={this.state.treeId}
-                                  data={["suites", "behaviors"]}
-                                  onChange={this.onDropdownChange}
-                    />
-                    <SorterGroup
-                        sorters={sorterKeys.map(id => ({id, name: sorters[id].name}))}
-                        onSorterChange={this.handleSorterChange}
-                    />
+                    <div style={{display: "flex"}}>
+                        <PaneTitle>
+                            {name}
+                        </PaneTitle>
+                        <div style={{flex: "1 0", padding: "15px 0"}}>
+                            <DropdownList defaultValue={this.state.treeId}
+                                          data={["suites", "behaviors"]}
+                                          onChange={this.onDropdownChange}
+
+                            />
+                        </div>
+                    </div>
+
+                    <div style={{borderBottom: "1px solid #eee"}}>
+                        <SorterGroup
+                            sorters={sorterKeys.map(id => ({id, name: sorters[id].name}))}
+                            onSorterChange={this.handleSorterChange}
+                        />
+                    </div>
                 </PaneHeader>
                 <PaneContent>
                     <TestResultTree root={treeRoot} route={route}/>

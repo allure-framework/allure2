@@ -20,11 +20,16 @@
   }
 
   &__title {
+    flex: 1;
     padding: $gap-size 0;
     margin: 0;
     font-size: 26px;
 
     word-break: break-all;
+  }
+
+  &__title-wrapper {
+    display: flex;
   }
 
   &__content {

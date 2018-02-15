@@ -22,6 +22,12 @@ const PaneTitle: React.SFC = ({children}) => (
     </h2>
 );
 
+const PaneTitleWrapper: React.SFC = ({children}) => (
+    <h2 className={b("title-wrapper")}>
+        {children}
+    </h2>
+);
+
 interface PaneSubtitleProps {
     ellipsis?: boolean;
 }
@@ -43,5 +49,6 @@ export {
     PaneHeader,
     PaneContent,
     PaneTitle,
+    PaneTitleWrapper,
     PaneSubtitle,
 };

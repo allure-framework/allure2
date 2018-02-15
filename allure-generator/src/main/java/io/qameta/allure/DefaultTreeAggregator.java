@@ -8,6 +8,8 @@ import io.qameta.allure.tree.TestResultTree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 import static io.qameta.allure.tree.TreeUtils.groupByLabels;
 
 /**
@@ -33,7 +35,9 @@ public class DefaultTreeAggregator extends AbstractJsonAggregator {
 
         final Classifier<TestResult> classifier = testResult -> groupByLabels(testResult, group.getFields());
         final TestResultTree tree = new TestResultTree(id, classifier);
-        service.findAllTests(false).forEach(tree::add);
+        final List<TestResult> allTests = service.findAllTests(false);
+        allTests.forEach(tree::add);
+        tree.setTotal(allTests.size());
         return tree;
     }
 }
