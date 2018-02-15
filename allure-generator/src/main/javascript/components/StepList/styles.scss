@@ -7,21 +7,30 @@
   line-height: $line-height;
 
   &__row {
+    display: flex;
     position: relative;
     align-items: center;
-    padding: 5px $gap-size 5px 30px;
-    display: flex;
+    padding: 5px $gap-size 5px 0;
     border-bottom: 1px solid $border-color;
-    cursor: pointer;
+    word-break: break-all;
 
     &:hover {
       background: $hover-color;
     }
+
+    &_hasContent {
+      cursor: pointer;
+    }
   }
 
   &__arrow {
-    position: absolute;
-    left: 10px;
+    padding-left: 15px;
+    padding-right: 10px;
+  }
+
+  &__status {
+    padding-left: 5px;
+    padding-right: 5px;
   }
 
   &__name {
@@ -30,6 +39,7 @@
   }
 
   &__duration {
+    padding-left: $gap-size;
     white-space: nowrap;
     color: $text-muted-color;
     font-size: small;

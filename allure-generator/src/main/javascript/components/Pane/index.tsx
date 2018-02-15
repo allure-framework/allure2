@@ -28,11 +28,7 @@ const PaneTitleWrapper: React.SFC = ({children}) => (
     </h2>
 );
 
-interface PaneSubtitleProps {
-    ellipsis?: boolean;
-}
-
-const PaneSubtitle: React.SFC<PaneSubtitleProps> = ({ellipsis, children}) => (
+const PaneSubtitle: React.SFC<{ ellipsis?: boolean }> = ({ellipsis, children}) => (
     <div className={b("subtitle", {ellipsis})}>
         {children}
     </div>
@@ -44,6 +40,13 @@ const PaneContent: React.SFC = ({children}) => (
     </div>
 );
 
+const PaneSection: React.SFC<{ title: string }> = ({title, children}) => (
+    <div className={b("section")}>
+        <h3 className={b("section-title")}>{title}</h3>
+        {children}
+    </div>
+);
+
 export {
     Pane,
     PaneHeader,
@@ -51,4 +54,5 @@ export {
     PaneTitle,
     PaneTitleWrapper,
     PaneSubtitle,
+    PaneSection
 };

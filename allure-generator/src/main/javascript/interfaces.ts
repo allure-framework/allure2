@@ -37,12 +37,14 @@ export interface AllureTestParameter {
     value: string;
 }
 
-export interface AllureTestStage {
+export interface AllureTestResultExecution {
     steps?: Array<AllureStep>;
     attachments?: Array<AllureAttachmentLink>;
 }
 
 export interface AllureTestResult {
+    id: number;
+
     fullName?: string;
     name: string;
     status: AllureStatus;

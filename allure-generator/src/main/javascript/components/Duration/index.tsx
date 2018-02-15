@@ -36,7 +36,7 @@ const dateTokens: Array<DateToken> = [
 
 const b = bem.with("Duration");
 
-const Duration: React.SFC<{ value: number, count?: number }> = ({value, count}) => {
+const Duration: React.SFC<{ value?: number, count?: number }> = ({value, count}) => {
     if (value === 0) {
         return <span className={b()}>0s</span>
     }

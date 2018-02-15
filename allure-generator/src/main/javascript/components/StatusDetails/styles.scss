@@ -11,10 +11,16 @@
   }
 
   &__message {
+    flex: 1;
     overflow: auto;
     word-break: break-all;
+    word-wrap: break-word;
+
     padding: $gap-size;
-    flex: 1;
+
+    & > pre {
+      white-space: pre-wrap;
+    }
   }
 
   &__controls {
@@ -29,5 +35,11 @@
     padding: $gap-size;
     white-space: pre-line;
     border-top: 1px solid $pane-bg-color;
+
+    & > pre {
+      display: inline-block;
+      width: 200%;
+      white-space: pre-wrap;
+    }
   }
 }

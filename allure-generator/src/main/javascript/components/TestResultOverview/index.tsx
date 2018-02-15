@@ -2,20 +2,20 @@ import * as React from "react";
 import StatusDetails from "../StatusDetails";
 import ParameterTable from "../ParameterTable";
 import {AllureTestResult} from "../../interfaces";
-import AttachmentList from "../AttachmentList";
-import StepList from "../StepList";
+import Execution from "../Execution";
+import * as bem from "b_";
+import {PaneSection} from "../Pane";
+
+const b = bem.with("TestResultOverview");
 
 interface TestResultOverviewProps {
     testResult: AllureTestResult
 }
 
-interface TestResultOverviewState {
-}
-
-export default class TestResultOverview extends React.Component<TestResultOverviewProps, TestResultOverviewState> {
+export default class TestResultOverview extends React.Component<TestResultOverviewProps, any> {
 
     render() {
-        const {message, trace, status, parameters} = this.props.testResult;
+        const {id, message, trace, status, parameters} = this.props.testResult;
 
         const statusDetailsBlock = message
             ? <StatusDetails message={message} trace={trace} status={status}/>
@@ -25,20 +25,13 @@ export default class TestResultOverview extends React.Component<TestResultOvervi
             ? <ParameterTable parameters={parameters}/>
             : null;
 
-        // const attachmentsBlock = attachments
-        //     ? <AttachmentList attachments={attachments}/>
-        //     : null;
-        //
-        // const stepsBlock = steps
-        //     ? <StepList steps={steps}/>
-        //     : null;
-
         return (
             <>
                 {statusDetailsBlock}
                 {parametersBlock}
-                {/*{stepsBlock}*/}
-                {/*{attachmentsBlock}*/}
+                <PaneSection title={"Execution"}>
+                    <Execution testResultId={id}/>
+                </PaneSection>
             </>
         );
     }

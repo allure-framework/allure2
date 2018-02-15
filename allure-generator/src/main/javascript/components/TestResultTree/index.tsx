@@ -30,7 +30,7 @@ const TreeLeafRow: React.SFC<{ node: AllureTreeLeaf }> = ({node}) => (
         <div className={b("name")}>
             {node.name}
         </div>
-        <div className={b("statistic")}>
+        <div className={b("duration")}>
             <Duration value={node.duration}/>
         </div>
     </>

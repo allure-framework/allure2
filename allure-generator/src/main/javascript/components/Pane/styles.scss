@@ -36,4 +36,14 @@
     padding-top: $gap-size;
     margin-bottom: $pane-bottom-margin;
   }
+
+  &__section {
+
+  }
+
+  &__section-title {
+    padding: $gap-size 0;
+    font-size: 18px;
+    margin: 0;
+  }
 }

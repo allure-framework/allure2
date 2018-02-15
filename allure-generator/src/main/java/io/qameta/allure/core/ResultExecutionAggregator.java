@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.qameta.allure.Aggregator;
 import io.qameta.allure.ReportContext;
+import io.qameta.allure.entity.TestResultExecution;
 import io.qameta.allure.service.TestResultService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,9 +19,9 @@ import java.nio.file.Path;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class ResultsAggregator implements Aggregator {
+public class ResultExecutionAggregator implements Aggregator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ResultsAggregator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResultExecutionAggregator.class);
 
     @Override
     public void aggregate(final ReportContext context,
@@ -33,11 +34,14 @@ public class ResultsAggregator implements Aggregator {
 
         final Path directory = Files.createDirectories(outputDirectory.resolve("data").resolve("results"));
         service.findAll(true).forEach(testResult -> {
-            final Path file = directory.resolve(String.format("%d.json", testResult.getId()));
+            final TestResultExecution found = service.findExecution(testResult.getId())
+                    .orElseGet(TestResultExecution::new);
+
+            final Path file = directory.resolve(String.format("%d-execution.json", testResult.getId()));
             try (OutputStream os = Files.newOutputStream(file)) {
-                mapper.writeValue(os, testResult);
+                mapper.writeValue(os, found);
             } catch (IOException e) {
-                LOGGER.error("Could not write result", e);
+                LOGGER.error("Could not write execution for result", e);
             }
         });
     }

@@ -7,6 +7,8 @@ import AttachmentList from "../AttachmentList";
 import ParameterTable from "../ParameterTable";
 import StatusDetails from "../StatusDetails";
 import * as Moment from "moment";
+import Duration from "../Duration";
+import StatusIcon from "../StatusIcon";
 
 const b = bem.with("StepList");
 
@@ -50,22 +52,42 @@ class StepRow extends React.Component<StepRowProps, StepRowState> {
 
     render() {
         const {step} = this.props;
-        const durationString = Moment.duration(step.duration).milliseconds();
+        const hasContent = (step.steps || []).length
+            + (step.attachments || []).length
+            + (step.parameters || []).length > 0;
+
+        if (!hasContent) {
+            return (
+                <>
+                    <div className={b("row")}>
+                        <div className={b("status")}>
+                            <StatusIcon status={step.status} extraClasses={"fa-lg"}/>
+                        </div>
+                        <div className={b("name")}>{step.name}</div>
+                        <div className={b("duration")}>
+                            <Duration value={step.duration}/>
+                        </div>
+                    </div>
+                </>
+            );
+        }
 
         return (
-            <li className={b()}>
-                <div className={b("row")} onClick={this.handleRowClick}>
+            <>
+                <div className={b("row", {hasContent})} onClick={this.handleRowClick}>
                     <div className={b("arrow")}>
                         <Arrow status={step.status} expanded={this.state.expanded}/>
                     </div>
                     <div className={b("name")}>{step.name}</div>
-                    <div className={b("duration")}>{durationString}</div>
+                    <div className={b("duration")}>
+                        <Duration value={step.duration}/>
+                    </div>
                 </div>
                 {this.state.expanded
                     ? <StepRowContent step={step}/>
                     : null
                 }
-            </li>
+            </>
         );
     }
 }
@@ -77,7 +99,9 @@ interface StepListProps {
 const StepList: React.SFC<StepListProps> = ({steps}) => (
     <ul className={b()}>
         {steps.map((step, index) => (
-            <StepRow key={index} step={step}/>
+            <li key={index} className={b()}>
+                <StepRow step={step}/>
+            </li>
         ))}
     </ul>
 );

@@ -40,6 +40,14 @@
 
   &__statistic {
     padding-left: $gap-size;
+    white-space: nowrap;
+  }
+
+  &__duration {
+    padding-left: $gap-size;
+    white-space: nowrap;
+    color: $text-muted-color;
+    font-size: small;
   }
 
   &__children {

@@ -82,7 +82,7 @@
     font-size: $sidebar-icon-size;
     text-align: center;
 
-    padding: calc((#{$sidebar-line-height} - #{$sidebar-icon-size}) / 2) 0;
+    //padding: calc((#{$sidebar-line-height} - #{$sidebar-icon-size}) / 2) 0;
   }
 
   &__text {

@@ -17,7 +17,7 @@ interface SideNavigationState {
 
 export default class SideNavigation extends React.Component<SideNavigationProps, SideNavigationState> {
     state = {
-        expanded: true
+        expanded: false
     };
 
     handleCollapseClick = () => {

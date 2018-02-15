@@ -93,7 +93,7 @@ export default class TestResult extends React.Component<TestResultProps, TestRes
                 <PaneContent>
                     {tabs.map(({href, render}) => (
                         <Route
-                            key={href}
+                            key={`${testResult.id}-${href}`}
                             path={`${this.props.match.url}${href}`}
                             render={() => render(testResult)}
                             exact={true}
