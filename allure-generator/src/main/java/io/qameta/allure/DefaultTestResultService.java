@@ -1,11 +1,13 @@
 package io.qameta.allure;
 
 import io.qameta.allure.config.ReportConfig;
+import io.qameta.allure.entity.AttachmentLink;
 import io.qameta.allure.entity.CustomField;
 import io.qameta.allure.entity.EnvironmentVariable;
 import io.qameta.allure.entity.TestParameter;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.TestResultExecution;
+import io.qameta.allure.entity.TestResultStep;
 import io.qameta.allure.entity.TestResultType;
 import io.qameta.allure.entity.TestTag;
 import io.qameta.allure.event.TestResultCreated;
@@ -28,6 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static io.qameta.allure.entity.EntityComparators.comparingEnvironmentByKeyAndValue;
 import static io.qameta.allure.entity.EntityComparators.comparingParametersByNameAndValue;
@@ -50,6 +53,8 @@ public class DefaultTestResultService implements TestResultService {
     private final Map<Long, TestResult> results = new ConcurrentHashMap<>();
 
     private final Map<Long, TestResultExecution> executions = new ConcurrentHashMap<>();
+
+    private final Map<Long, List<AttachmentLink>> attachments = new ConcurrentHashMap<>();
 
     private final ReportConfig config;
 
@@ -125,6 +130,17 @@ public class DefaultTestResultService implements TestResultService {
                 .filter(TestResult::isTest)
                 .collect(Collectors.toList());
 
+    }
+
+    @Override
+    public List<AttachmentLink> findAttachments(final Long id) {
+        final TestResultExecution execution = findExecution(id).orElseGet(TestResultExecution::new);
+        final Stream<AttachmentLink> stepAttachments = execution.getSteps().stream()
+                .map(this::extractAttachments)
+                .flatMap(Collection::stream);
+
+        return Stream.concat(stepAttachments, execution.getAttachments().stream())
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -224,6 +240,15 @@ public class DefaultTestResultService implements TestResultService {
 
         final byte[] bytes = digest.digest();
         return Optional.of(new BigInteger(1, bytes).toString(16));
+    }
+
+    private List<AttachmentLink> extractAttachments(final TestResultStep step) {
+        final Stream<AttachmentLink> childrenAttachments = step.getSteps().stream()
+                .map(this::extractAttachments)
+                .flatMap(Collection::stream);
+
+        return Stream.concat(childrenAttachments, step.getAttachments().stream())
+                .collect(Collectors.toList());
     }
 
 }

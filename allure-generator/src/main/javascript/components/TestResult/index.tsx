@@ -31,7 +31,7 @@ const tabs = [{
 }, {
     name: 'Attachments',
     href: '/attachments',
-    render: () => <TestResultAttachments/>
+    render: (testResult: AllureTestResult) => <TestResultAttachments testResultId={testResult.id}/>
 }];
 
 interface TestResultProps {
@@ -93,7 +93,7 @@ export default class TestResult extends React.Component<TestResultProps, TestRes
                 <PaneContent>
                     {tabs.map(({href, render}) => (
                         <Route
-                            key={`${testResult.id}-${href}`}
+                            key={`testresult-${testResult.id}-tab-${href}`}
                             path={`${this.props.match.url}${href}`}
                             render={() => render(testResult)}
                             exact={true}

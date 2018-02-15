@@ -74,7 +74,7 @@ interface AttachmentListProps {
 const AttachmentList: React.SFC<AttachmentListProps> = ({attachments}) => (
     <ul className={b()}>
         {attachments.map(attachment => (
-            <AttachmentRow key={attachment.uid} attachment={attachment}/>
+            <AttachmentRow key={`attachment-row-${attachment.uid}`} attachment={attachment}/>
         ))}
     </ul>
 );

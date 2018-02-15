@@ -1,5 +1,6 @@
 package io.qameta.allure.service;
 
+import io.qameta.allure.entity.AttachmentLink;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.TestResultExecution;
 
@@ -30,6 +31,8 @@ public interface TestResultService {
     }
 
     List<TestResult> findAllTests(boolean includeHidden);
+
+    List<AttachmentLink> findAttachments(Long id);
 
     List<TestResult> findHistory(Long id);
 

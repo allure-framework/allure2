@@ -8,6 +8,7 @@ import io.qameta.allure.attachment.AllureAttachmentsReader;
 import io.qameta.allure.config.ReportConfig;
 import io.qameta.allure.core.ReportWebPlugin;
 import io.qameta.allure.core.ResultAggregator;
+import io.qameta.allure.core.ResultAttachmentAggregator;
 import io.qameta.allure.core.ResultExecutionAggregator;
 import io.qameta.allure.entity.Executor;
 import io.qameta.allure.entity.Job;
@@ -66,6 +67,7 @@ public class ReportGenerator {
         config.getGroups().forEach((id, group) -> registry.addAggregator(new DefaultTreeAggregator(id, group)));
         registry.addAggregator(new ResultAggregator());
         registry.addAggregator(new ResultExecutionAggregator());
+        registry.addAggregator(new ResultAttachmentAggregator());
         registry.addAggregator(new ReportWebPlugin());
 
         final CompositeAggregator aggregator = new CompositeAggregator(registry.getAggregators());
