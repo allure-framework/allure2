@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
@@ -43,6 +44,10 @@ public class ReportGenerator {
 
     public void generate(final Path outputDirectory,
                          final Path... resultsDirectories) throws IOException, InterruptedException {
+        LOGGER.info("Generate report from {} results to {}", resultsDirectories, outputDirectory);
+        Files.createDirectories(outputDirectory);
+        LOGGER.info("Configure the report");
+
         final ReportConfig config = readConfig();
         final Project project = new Project().setName(config.getProjectName());
         final Job job = new Job()
@@ -72,6 +77,7 @@ public class ReportGenerator {
 
         final CompositeAggregator aggregator = new CompositeAggregator(registry.getAggregators());
 
+        LOGGER.info("Start results watcher");
         final DirectoryWatcher watcher = new DirectoryWatcher();
         final Consumer<List<Path>> filesConsumer = files -> files.forEach(file -> reader.readResultFile(visitor, file));
         watcher.watch(filesConsumer, resultsDirectories);
@@ -79,7 +85,9 @@ public class ReportGenerator {
         watcher.awaitTermination(1, TimeUnit.MINUTES);
         watcher.shutdownNow();
 
+        LOGGER.info("Results processed successfully");
         aggregator.aggregate(context, resultService, outputDirectory);
+        LOGGER.info("Report successfully generated");
     }
 
     protected ReportConfig readConfig() throws IOException {

@@ -55,3 +55,23 @@ task sourceJar(type: Jar, dependsOn: classes) {
 artifacts {
     archives sourceJar
 }
+
+def resultsDirectory = findProperty('results') ?: 'demo'
+
+task cleanUpDevReport(type: Delete) {
+    delete file('build/dev-report')
+}
+
+task generateDevReport(type: JavaExec) {
+    dependsOn cleanUpDevReport
+    main = 'io.qameta.allure.DummyReportGenerator'
+    classpath = sourceSets.test.runtimeClasspath
+    args = [
+            file("test-data/${resultsDirectory}"),
+            file('build/dev-report')
+    ]
+}
+
+task dev {
+    dependsOn generateDevReport, npm_install, npm_start
+}

@@ -175,13 +175,6 @@ public class DefaultTestResultService implements TestResultService {
 
         if (found.isPresent()) {
             final TestResult retryCandidate = found.get();
-            LOGGER.info(
-                    "For result {} ({}) found retry candidate: {} ({})",
-                    testResult.getName(),
-                    testResult.getHistoryKey(),
-                    retryCandidate.getName(),
-                    retryCandidate.getHistoryKey()
-            );
             if (isNull(testResult.getStart()) || isNull(retryCandidate.getStart())
                     || retryCandidate.getStart() <= testResult.getStart()) {
                 retryCandidate.setHidden(true);
@@ -190,8 +183,6 @@ public class DefaultTestResultService implements TestResultService {
                 testResult.setHidden(true);
                 testResult.setRetry(true);
             }
-        } else {
-            LOGGER.info("For result {} no retry candidate", testResult.getName());
         }
     }
 

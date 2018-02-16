@@ -61,7 +61,7 @@ module.exports = (env) => {
         ],
         devServer: {
             disableHostCheck: true,
-            contentBase: './build/test-report/',
+            contentBase: './build/dev-report/',
             stats: {colors: true},
             host: '0.0.0.0',
             port: 3000,
