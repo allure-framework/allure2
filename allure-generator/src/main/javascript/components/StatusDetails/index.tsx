@@ -1,5 +1,6 @@
 import './styles.scss';
 import * as React from "react";
+import * as Modal from "react-modal";
 import * as bem from "b_";
 import Button, {ButtonSize} from "../Button";
 
@@ -13,48 +14,97 @@ interface StatusDetailsProps {
 
 interface StatusDetailsState {
     expanded: boolean;
+    showModal: boolean;
 }
 
 export default class StatusDetails extends React.Component<StatusDetailsProps, StatusDetailsState> {
     state = {
-        expanded: false
+        expanded: false,
+        showModal: false
     };
 
-    constructor(props: StatusDetailsProps) {
-        super(props);
+    componentDidMount() {
+        Modal.setAppElement("#app");
+    };
 
-        this.handleClick = this.handleClick.bind(this);
-    }
-
-    handleClick() {
+    handleTraceButtonClick = () => {
         this.setState(prevState => ({
             expanded: !prevState.expanded
         }))
-    }
+    };
+
+    handleExpandButtonClick = () => {
+        this.setState(prevState => ({
+            showModal: !prevState.showModal
+        }))
+    };
+
+    closeModal = () => {
+        this.setState({
+            showModal: false
+        })
+    };
 
     render() {
-        const traceBlock = this.state.expanded
-            ? (
-                <div className={b('trace')}>
-                    <pre><code>{this.props.trace || 'Empty status details'}</code></pre>
-                </div>
-            )
-            : null;
+        const {expanded, showModal} = this.state;
+        const {status} = this.props;
+        const messageBlock = (
+            <div className={b("message")}>
+                <pre><code>{this.props.message}</code></pre>
+            </div>
+        );
+        const traceBlock = (
+            <div className={b('trace')}>
+                <pre><code>{this.props.trace || 'Empty status details'}</code></pre>
+            </div>
+        );
 
         return (
-            <div className={`StatusDetails_status_${this.props.status}`}>
-                <div className={b("message-wrapper")}>
-                    <div className={b("message")}>
-                        <pre><code>{this.props.message}</code></pre>
-                    </div>
+            <>
+                <div className={b("", {status})}>
                     <div className={b("controls")}>
-                        <Button size={ButtonSize.Large} onClick={this.handleClick}>
-                            {this.state.expanded ? 'Hide trace' : 'Show trace'}
-                        </Button>
+                        <div className={b("strut")}/>
+                        <div>
+                            <Button size={ButtonSize.Large} onClick={this.handleExpandButtonClick}>
+                                <span className={"fa fa-expand fa-lg"}/>
+                            </Button>
+                        </div>
+                        <div>
+                            <Button size={ButtonSize.Large} onClick={this.handleTraceButtonClick}>
+                                {expanded ? 'Hide trace' : 'Show trace'}
+                            </Button>
+                        </div>
                     </div>
+                    {messageBlock}
+                    {expanded ? traceBlock : null}
                 </div>
-                {traceBlock}
-            </div>
+                <Modal isOpen={showModal}
+                       shouldCloseOnEsc
+                       shouldFocusAfterRender
+                       shouldReturnFocusAfterClose
+                       shouldCloseOnOverlayClick={true}
+                       style={{
+                           overlay: {
+                               backgroundColor: 'rgba(0, 0, 0, 0.75)'
+                           }
+                       }}
+                       onRequestClose={this.closeModal}
+                >
+                    <div className={b("controls")}>
+                        <div className={b("strut")}/>
+                        <div>
+                            <Button size={ButtonSize.Large} onClick={this.handleExpandButtonClick}>
+                                Close
+                            </Button>
+                        </div>
+                    </div>
+
+                    <div className={b("", {status})}>
+                        {messageBlock}
+                        {traceBlock}
+                    </div>
+                </Modal>
+            </>
         );
     }
 }

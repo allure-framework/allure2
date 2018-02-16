@@ -7,16 +7,14 @@
   @include status-bg-light();
 
   &__message-wrapper {
-    display: flex;
   }
 
   &__message {
-    flex: 1;
     overflow: auto;
     word-break: break-all;
     word-wrap: break-word;
 
-    padding: $gap-size;
+    padding: 0 $gap-size;
 
     & > pre {
       white-space: pre-wrap;
@@ -24,7 +22,16 @@
   }
 
   &__controls {
+    display: flex;
     padding: 5px;
+
+    & > div {
+      margin-left: 5px;
+    }
+  }
+
+  &__strut {
+    flex: 1;
   }
 
   &__trace {
@@ -32,7 +39,7 @@
     display: block;
     word-break: break-all;
     word-wrap: break-word;
-    padding: $gap-size;
+    padding: 0 $gap-size;
     white-space: pre-line;
     border-top: 1px solid $pane-bg-color;
 
