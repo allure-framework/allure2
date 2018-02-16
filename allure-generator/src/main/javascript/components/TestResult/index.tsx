@@ -88,15 +88,17 @@ export default class TestResult extends React.Component<TestResultProps, TestRes
                         {testResult.name}
                     </PaneTitle>
                     <Alert status={testResult.status} center={true}>
-                        {testResult.status}
-                        {' '}
-                        <Unix2Date value={testResult.stop}/>
-                        {' '}
-                        at
-                        {' '}
-                        <Unix2Time value={testResult.stop}/>
-                        {' '}
-                        (<Duration value={testResult.duration}/>)
+                        <div className={b("status-text")}>
+                            {testResult.status}
+                            {' '}
+                            <Unix2Date value={testResult.stop}/>
+                            {' '}
+                            at
+                            {' '}
+                            <Unix2Time value={testResult.stop}/>
+                            {' '}
+                            (<Duration value={testResult.duration}/>)
+                        </div>
                     </Alert>
                     <Tabs tabs={tabs} match={this.props.match}/>
                 </PaneHeader>
