@@ -25,7 +25,7 @@ export interface AllureStep {
 }
 
 export interface AllureAttachmentLink {
-    uid: string;
+    id: string;
     name: string;
     source: string;
     type: string;
@@ -47,8 +47,12 @@ export interface AllureTestResult {
 
     fullName?: string;
     name: string;
-    status: AllureStatus;
 
+    start?: number;
+    stop?: number;
+    duration?: number;
+
+    status: AllureStatus;
     message?: string;
     trace?: string;
 

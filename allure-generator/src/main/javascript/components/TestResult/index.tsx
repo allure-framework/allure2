@@ -13,6 +13,8 @@ import TestResultRetries from "../TestResultRetries";
 import TestResultAttachments from "../TestResultAttachments";
 import {Pane, PaneContent, PaneHeader, PaneSubtitle, PaneTitle} from "../Pane";
 import Alert from "../Alert";
+import {Unix2Date, Unix2Time} from "../DateTime";
+import Duration from "../Duration";
 
 const b = bem.with("TestResult");
 
@@ -87,6 +89,14 @@ export default class TestResult extends React.Component<TestResultProps, TestRes
                     </PaneTitle>
                     <Alert status={testResult.status} center={true}>
                         {testResult.status}
+                        {' '}
+                        <Unix2Date value={testResult.stop}/>
+                        {' '}
+                        at
+                        {' '}
+                        <Unix2Time value={testResult.stop}/>
+                        {' '}
+                        (<Duration value={testResult.duration}/>)
                     </Alert>
                     <Tabs tabs={tabs} match={this.props.match}/>
                 </PaneHeader>

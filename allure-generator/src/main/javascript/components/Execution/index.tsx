@@ -45,14 +45,16 @@ export default class Execution extends React.Component<ExecutionProps, Execution
             return <Loader/>
         }
 
-        if (!data.steps && !data.attachments) {
+        const steps = data.steps || [];
+        const attachments = data.attachments || [];
+        if (steps.length + attachments.length === 0) {
             return <>No content</>
         }
 
         return (
             <>
-                {data.steps && <StepList steps={data.steps}/>}
-                {data.attachments && <AttachmentList attachments={data.attachments}/>}
+                {steps.length > 0 && <StepList steps={steps}/>}
+                {attachments.length > 0 && <AttachmentList attachments={attachments}/>}
             </>
         );
     }

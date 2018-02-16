@@ -7,6 +7,7 @@ import io.qameta.allure.entity.TestResultExecution;
 import io.qameta.allure.service.TestResultService;
 
 import java.nio.file.Path;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -14,6 +15,8 @@ import java.nio.file.Path;
 public class DefaultResultsVisitor implements ResultsVisitor {
 
     private final TestResultService testResultService;
+
+    private final AtomicLong attachmentId = new AtomicLong(1);
 
     public DefaultResultsVisitor(final TestResultService testResultService) {
         this.testResultService = testResultService;
@@ -35,6 +38,7 @@ public class DefaultResultsVisitor implements ResultsVisitor {
     @Override
     public AttachmentLink visitAttachmentLink(
             final Long testResultId, final AttachmentLink link) {
+        link.setId(attachmentId.incrementAndGet());
         return null;
     }
 
