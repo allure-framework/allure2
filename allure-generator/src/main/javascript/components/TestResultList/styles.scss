@@ -1,0 +1,44 @@
+@import "../../variables.scss";
+
+.TestResultList {
+  list-style: none none;
+  padding: 0;
+  margin: 0;
+  line-height: $line-height;
+
+  &__row {
+    position: relative;
+    align-items: center;
+    padding: 5px $gap-size 5px 30px;
+    display: flex;
+    border-bottom: 1px solid $border-color;
+    cursor: pointer;
+
+    &:hover {
+      background: $hover-color;
+    }
+
+    &_expanded {
+      background: $selected-color;
+    }
+  }
+
+  &__arrow {
+    position: absolute;
+    left: 7px;
+    transition: transform 0.1s;
+
+    &_expanded {
+      transform: rotate(90deg);
+    }
+  }
+
+  &__id {
+    word-break: break-all;
+    flex: 1;
+  }
+
+  &__content {
+    padding: 10px;
+  }
+}

@@ -29,7 +29,7 @@ const tabs = [{
 }, {
     name: 'Retries',
     href: '/retries',
-    render: () => <TestResultRetries/>
+    render: (testResult: AllureTestResult) => <TestResultRetries testResultId={testResult.id}/>
 }, {
     name: 'Attachments',
     href: '/attachments',

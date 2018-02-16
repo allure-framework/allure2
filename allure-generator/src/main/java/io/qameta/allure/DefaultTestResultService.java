@@ -145,6 +145,15 @@ public class DefaultTestResultService implements TestResultService {
 
     @Override
     public List<TestResult> findHistory(final Long id) {
+        final Optional<TestResult> found = findOneById(id);
+        if (!found.isPresent()) {
+            return Collections.emptyList();
+        }
+
+        final TestResult testResult = found.get();
+        if (isNull(testResult.getHistoryKey())) {
+            return Collections.emptyList();
+        }
         return Collections.emptyList();
     }
 
@@ -155,6 +164,7 @@ public class DefaultTestResultService implements TestResultService {
 
         return results.values().stream()
                 .filter(item -> Objects.equals(item.getHistoryKey(), result.getHistoryKey()))
+                .filter(item -> !Objects.equals(item.getId(), result.getId()))
                 .sorted(comparingTestResultsByStartAsc().reversed())
                 .collect(Collectors.toList());
     }
@@ -164,7 +174,6 @@ public class DefaultTestResultService implements TestResultService {
         return Collections.emptyList();
     }
 
-    //TODO sync
     private void processRetries(final TestResult testResult) {
         final Optional<TestResult> found = results.values().stream()
                 .filter(candidate -> !candidate.isHidden())
