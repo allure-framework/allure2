@@ -56,10 +56,11 @@ artifacts {
     archives sourceJar
 }
 
-def resultsDirectory = findProperty('results') ?: 'demo'
+def resultsDirectoryPath = (findProperty('results') ?: 'demo') as String
+def resultsDirectory = new File(resultsDirectoryPath).isAbsolute() ? file(resultsDirectoryPath) : file("test-data/${resultsDirectoryPath}")
 
 task cleanUpDevReport(type: Delete) {
-    delete file('build/dev-report')
+    file('build/dev-report')
 }
 
 task generateDevReport(type: JavaExec) {
@@ -67,7 +68,7 @@ task generateDevReport(type: JavaExec) {
     main = 'io.qameta.allure.DummyReportGenerator'
     classpath = sourceSets.test.runtimeClasspath
     args = [
-            file("test-data/${resultsDirectory}"),
+            resultsDirectory,
             file('build/dev-report')
     ]
 }
