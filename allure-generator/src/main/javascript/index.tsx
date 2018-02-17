@@ -16,14 +16,14 @@ window.allure.api.addReportTab({
     id: "",
     name: "Overview",
     icon: "fa fa-home",
-    render: () => <Overview/>
+    render: () => <Overview/>,
 });
 
 window.allure.api.addReportTab({
     id: "tree",
     name: "Tree",
     icon: "fa fa-sitemap",
-    render: (id, name) => <TestResultTreeContainer name={name || id} route={id}/>
+    render: (id, name) => <TestResultTreeContainer name={name || id} route={id}/>,
 });
 
 // const pluginsRequire = require.context("./plugins", true, /^\.\/[^\/]+\/index\.tsx$/);
@@ -33,5 +33,5 @@ render(
     <HashRouter>
         <App/>
     </HashRouter>,
-    document.getElementById("app")
+    document.getElementById("app"),
 );

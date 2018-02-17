@@ -1,218 +1,219 @@
-import './styles.scss';
+import "./styles.scss";
 import * as React from "react";
-import {Pane, PaneContent, PaneHeader, PaneTitle} from "../Pane";
+import { Pane, PaneContent, PaneHeader, PaneTitle } from "../Pane";
 import axios from "axios";
-import {AllureStatistic, AllureTreeGroup, AllureTreeLeaf, statuses} from "../../interfaces";
+import { AllureStatistic, AllureTreeGroup, AllureTreeLeaf, statuses } from "../../interfaces";
 import * as bem from "b_";
 import SideBySide from "../SideBySide";
 import ErrorSplash from "../ErrorSplash";
 import Loader from "../Loader";
-import {Route} from "react-router";
+import { Route } from "react-router";
 import TestResult from "../TestResult";
 import TestResultTree from "../TestResultTree";
-import {DropdownList} from "react-widgets";
+import { DropdownList } from "react-widgets";
 import SorterGroup from "../SorterGroup";
 
 const b = bem.with("TestResultTreeContainer");
 
-const Empty: React.SFC = () => (
-    <p>No result selected</p>
-);
+const Empty: React.SFC = () => <p>No result selected</p>;
 
 const calculateStatistic = (treeGroup: AllureTreeGroup): AllureTreeGroup => {
-    const statistic: AllureStatistic = {};
-    if (treeGroup.leafs) {
-        treeGroup.leafs.forEach(leaf => {
-            const value = statistic[leaf.status] || 0;
-            statistic[leaf.status] = value + 1;
-        });
-    }
+  const statistic: AllureStatistic = {};
+  if (treeGroup.leafs) {
+    treeGroup.leafs.forEach(leaf => {
+      const value = statistic[leaf.status] || 0;
+      statistic[leaf.status] = value + 1;
+    });
+  }
 
-    if (treeGroup.groups) {
-        treeGroup.groups && treeGroup.groups.forEach(calculateStatistic);
-        treeGroup.groups && treeGroup.groups.forEach(group => {
-            statuses.forEach(status => {
-                const currentValue = statistic[status] || 0;
-                const groupValue = group.statistic[status] || 0;
-                statistic[status] = currentValue + groupValue;
-            });
-        });
-    }
+  if (treeGroup.groups) {
+    treeGroup.groups.forEach(calculateStatistic);
+    treeGroup.groups.forEach(group => {
+      statuses.forEach(status => {
+        const currentValue = statistic[status] || 0;
+        const groupValue = group.statistic[status] || 0;
+        statistic[status] = currentValue + groupValue;
+      });
+    });
+  }
 
-    treeGroup.statistic = statistic;
-    return treeGroup;
+  treeGroup.statistic = statistic;
+  return treeGroup;
 };
 
-//SORTING
+// SORTING
 
-type Comparator<A> = (a: A, b: A) => number;
+type Comparator<A> = (x: A, y: A) => number;
 
 interface TreeSorter {
-    name: string;
-    leafComparator: Comparator<AllureTreeLeaf>;
-    groupComparator: Comparator<AllureTreeGroup>;
+  name: string;
+  leafComparator: Comparator<AllureTreeLeaf>;
+  groupComparator: Comparator<AllureTreeGroup>;
 }
 
 const sorterKeys = ["id", "name", "status"];
 
 const sorters: { [key: string]: TreeSorter } = {
-    id: {
-        name: "id",
-        leafComparator: (a, b) => (a.id - b.id),
-        groupComparator: (a, b) => (a.uid.localeCompare(b.uid)),
+  id: {
+    name: "id",
+    leafComparator: (x, y) => x.id - y.id,
+    groupComparator: (x, y) => x.uid.localeCompare(y.uid),
+  },
+  name: {
+    name: "name",
+    leafComparator: (x, y) => x.name.localeCompare(y.name),
+    groupComparator: (x, y) => x.name.localeCompare(y.name),
+  },
+  status: {
+    name: "status",
+    leafComparator: (x, y) => (statuses.indexOf(x.status) > statuses.indexOf(y.status) ? -1 : 1),
+    groupComparator: (x, y) => {
+      return statuses.reduce((all, cur) => {
+        return x.statistic[cur] !== y.statistic[cur] && all === 0
+          ? (x.statistic[cur] || 0) - (y.statistic[cur] || 0)
+          : all;
+      }, 0);
     },
-    name: {
-        name: "name",
-        leafComparator: (a, b) => (a.name.localeCompare(b.name)),
-        groupComparator: (a, b) => (a.name.localeCompare(b.name)),
-    },
-    status: {
-        name: "status",
-        leafComparator: (a, b) => (statuses.indexOf(a.status) > statuses.indexOf(b.status) ? -1 : 1),
-        groupComparator: (a, b) => {
-            return statuses.reduce((all, cur) => {
-                return ((a.statistic[cur] !== b.statistic[cur]) && all === 0) ? (a.statistic[cur] || 0) - (b.statistic[cur] || 0) : all;
-            }, 0);
-        },
-    }
+  },
 };
 
 const withDirection = <T extends {}>(asc: boolean, comparator: Comparator<T>): Comparator<T> => {
-    return (a, b) => comparator(a, b) * (asc ? 1 : -1);
+  return (x, y) => comparator(x, y) * (asc ? 1 : -1);
 };
 
-const sort = (treeRoot: AllureTreeGroup,
-              leafComparator: Comparator<AllureTreeLeaf>,
-              groupComparator: Comparator<AllureTreeGroup>): AllureTreeGroup => {
-    return {
-        ...treeRoot,
-        groups: treeRoot.groups && treeRoot.groups
-            .map(group => sort(group, leafComparator, groupComparator))
-            .sort(groupComparator),
-        leafs: treeRoot.leafs && treeRoot.leafs.sort(leafComparator)
-    };
+const sort = (
+  treeRoot: AllureTreeGroup,
+  leafComparator: Comparator<AllureTreeLeaf>,
+  groupComparator: Comparator<AllureTreeGroup>,
+): AllureTreeGroup => {
+  return {
+    ...treeRoot,
+    groups:
+      treeRoot.groups &&
+      treeRoot.groups
+        .map(group => sort(group, leafComparator, groupComparator))
+        .sort(groupComparator),
+    leafs: treeRoot.leafs && treeRoot.leafs.sort(leafComparator),
+  };
 };
 
 interface TestResultTreeContainerProps {
-    route: string;
-    name: string;
+  route: string;
+  name: string;
 }
 
 interface TestResultTreeContainerState {
-    treeId?: string;
-    treeRoot?: AllureTreeGroup;
-    error?: Error;
-    testResultTab?: string;
+  treeId?: string;
+  treeRoot?: AllureTreeGroup;
+  error?: Error;
+  testResultTab?: string;
 }
 
-export default class TestResultTreeContainer extends React.Component<TestResultTreeContainerProps, TestResultTreeContainerState> {
-    state: TestResultTreeContainerState = {
-        treeId: 'behaviors'
-    };
+export default class TestResultTreeContainer extends React.Component<
+  TestResultTreeContainerProps,
+  TestResultTreeContainerState
+> {
+  state: TestResultTreeContainerState = {
+    treeId: "behaviors",
+  };
 
-    async componentDidMount() {
-        this.loadResult();
+  async componentDidMount() {
+    this.loadResult();
+  }
+
+  async loadResult() {
+    try {
+      const { data } = await axios.get(`data/${this.state.treeId}.json`);
+      this.setState({
+        treeRoot: calculateStatistic(data),
+        error: undefined,
+      });
+    } catch (error) {
+      this.setState({ error });
+    }
+  }
+
+  onDropdownChange = (value: string) => {
+    this.setState(
+      {
+        treeId: value,
+        treeRoot: undefined,
+      },
+      this.loadResult,
+    );
+  };
+
+  handleSorterChange = (id: string, asc: boolean) => {
+    this.setState(prevState => {
+      if (!prevState.treeRoot) {
+        return prevState;
+      }
+
+      const sorter = sorters[id];
+      return {
+        treeRoot: sort(
+          prevState.treeRoot,
+          withDirection(asc, sorter.leafComparator),
+          withDirection(asc, sorter.groupComparator),
+        ),
+      };
+    });
+  };
+
+  render() {
+    const { treeRoot, error } = this.state;
+
+    if (error) {
+      return <ErrorSplash name={error.name} message={error.message} stack={error.stack} />;
     }
 
-    async loadResult() {
-        try {
-            const {data} = await axios.get(`data/${this.state.treeId}.json`);
-            this.setState({
-                treeRoot: calculateStatistic(data),
-                error: undefined
-            });
-        } catch (error) {
-            this.setState({error});
-        }
+    if (!treeRoot) {
+      return <Loader />;
     }
 
-    onDropdownChange = (value: string) => {
-        this.setState({
-            treeId: value,
-            treeRoot: undefined
-        }, this.loadResult);
-    };
+    const { name, route } = this.props;
 
-    handleSorterChange = (id: string, asc: boolean) => {
-        this.setState(prevState => {
-            if (!prevState.treeRoot) {
-                return prevState;
-            }
-
-            const sorter = sorters[id];
-            return {
-                treeRoot: sort(
-                    prevState.treeRoot,
-                    withDirection(asc, sorter.leafComparator),
-                    withDirection(asc, sorter.groupComparator)
-                )
-            };
-        });
-    };
-
-    render() {
-        const {treeRoot, error} = this.state;
-
-        if (error) {
-            return <ErrorSplash name={error.name} message={error.message} stack={error.stack}/>
-        }
-
-        if (!treeRoot) {
-            return <Loader/>
-        }
-
-        const {name, route} = this.props;
-
-        const leftPane = (
-            <Pane>
-                <PaneHeader>
-                    <div style={{display: "flex"}}>
-                        <PaneTitle>
-                            {name}
-                        </PaneTitle>
-                        <div style={{flex: "1 0", padding: "15px 0"}}>
-                            <DropdownList defaultValue={this.state.treeId}
-                                          data={["suites", "behaviors"]}
-                                          onChange={this.onDropdownChange}
-
-                            />
-                        </div>
-                    </div>
-
-                    <div style={{borderBottom: "1px solid #eee"}}>
-                        <SorterGroup
-                            sorters={sorterKeys.map(id => ({id, name: sorters[id].name}))}
-                            onSorterChange={this.handleSorterChange}
-                        />
-                    </div>
-                </PaneHeader>
-                <PaneContent>
-                    <TestResultTree root={treeRoot} route={route}/>
-                </PaneContent>
-            </Pane>
-        );
-
-        const rightPane = (
-            <>
-                <Route
-                    path={`/${route}`}
-                    render={() => <Empty/>}
-                    exact={true}
-                />
-                <Route
-                    path={`/${route}/:groupId/:testResultId`}
-                    render={props => <TestResult
-                        id={props.match.params.testResultId}
-                        match={props.match}
-                    />}
-                />
-            </>
-        );
-
-        return (
-            <div className={b()}>
-                <SideBySide left={leftPane} right={rightPane}/>
+    const leftPane = (
+      <Pane>
+        <PaneHeader>
+          <div style={{ display: "flex" }}>
+            <PaneTitle>{name}</PaneTitle>
+            <div style={{ flex: "1 0", padding: "15px 0" }}>
+              <DropdownList
+                defaultValue={this.state.treeId}
+                data={["suites", "behaviors"]}
+                onChange={this.onDropdownChange}
+              />
             </div>
-        );
-    }
+          </div>
+
+          <div style={{ borderBottom: "1px solid #eee" }}>
+            <SorterGroup
+              sorters={sorterKeys.map(id => ({ id, name: sorters[id].name }))}
+              onSorterChange={this.handleSorterChange}
+            />
+          </div>
+        </PaneHeader>
+        <PaneContent>
+          <TestResultTree root={treeRoot} route={route} />
+        </PaneContent>
+      </Pane>
+    );
+
+    const rightPane = (
+      <>
+        <Route path={`/${route}`} render={() => <Empty />} exact={true} />
+        <Route
+          path={`/${route}/:groupId/:testResultId`}
+          render={props => <TestResult id={props.match.params.testResultId} match={props.match} />}
+        />
+      </>
+    );
+
+    return (
+      <div className={b()}>
+        <SideBySide left={leftPane} right={rightPane} />
+      </div>
+    );
+  }
 }

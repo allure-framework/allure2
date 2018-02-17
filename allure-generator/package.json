@@ -7,7 +7,7 @@
   "scripts": {
     "build": "webpack --optimize-minimize",
     "start": "webpack-dev-server --inline --hot --env.development",
-    "pretest": "eslint --ignore-path=.gitignore .",
+    "pretest": "tslint --project .",
     "test": "jest",
     "test:watch": "jest --colors --watch",
     "coverage": "jest --coverage --collectCoverageFrom=src/main/javascript/**/*.js"
@@ -27,6 +27,7 @@
     "sass-loader": "^6.0.6",
     "style-loader": "^0.20.1",
     "ts-loader": "^3.4.0",
+    "tslint": "^5.9.1",
     "typescript": "^2.7.1",
     "underscore.string": "^3.3.4",
     "url-loader": "^0.6.2",
