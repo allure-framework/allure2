@@ -2,7 +2,7 @@ import {
     AllurePlugins,
     ReportTabConfiguration,
     TestResultBlockConfiguration,
-    TestResultTabConfiguration
+    TestResultTabConfiguration,
 } from "./allure";
 
 class AllurePluginsRegistry implements AllurePlugins {
@@ -37,5 +37,5 @@ class AllurePluginsRegistry implements AllurePlugins {
 }
 
 window.allure = {
-    api: new AllurePluginsRegistry()
+    api: new AllurePluginsRegistry(),
 };

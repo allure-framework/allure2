@@ -6,7 +6,7 @@ const Statistic: React.SFC<{ statistic: AllureStatistic }> = ({statistic}) => (
     <>
         {statuses.map(status => {
             const count = statistic[status];
-            return !!count && <Label key={status} status={status} text={count.toString()}/>
+            return !!count && <Label key={status} status={status} text={count.toString()}/>;
         })}
     </>
 );

@@ -1,4 +1,4 @@
-import "./styles.scss"
+import "./styles.scss";
 import * as React from "react";
 import * as bem from "b_";
 
