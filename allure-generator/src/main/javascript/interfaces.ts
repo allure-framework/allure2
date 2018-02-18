@@ -3,87 +3,87 @@ export type AllureStatus = "failed" | "broken" | "passed" | "skipped" | "unknown
 export const statuses: Array<AllureStatus> = ["failed", "broken", "passed", "skipped", "unknown"];
 
 export interface AllureStatistic {
-    failed?: number;
-    broken?: number;
-    passed?: number;
-    skipped?: number;
-    unknown?: number;
+  failed?: number;
+  broken?: number;
+  passed?: number;
+  skipped?: number;
+  unknown?: number;
 }
 
 export interface AllureStep {
-    name: string;
-    steps?: Array<AllureStep>;
-    attachments?: Array<AllureAttachmentLink>;
-    parameters?: Array<AllureTestParameter>;
+  name: string;
+  steps?: Array<AllureStep>;
+  attachments?: Array<AllureAttachmentLink>;
+  parameters?: Array<AllureTestParameter>;
 
-    status: AllureStatus;
-    statusMessage?: string;
+  status: AllureStatus;
+  statusMessage?: string;
 
-    start?: number;
-    stop?: number;
-    duration?: number;
+  start?: number;
+  stop?: number;
+  duration?: number;
 }
 
 export interface AllureAttachmentLink {
-    id: string;
-    name: string;
-    source: string;
-    type: string;
-    size: number;
+  id: string;
+  name: string;
+  source: string;
+  type: string;
+  size: number;
 }
 
 export interface AllureTestParameter {
-    name: string;
-    value: string;
+  name: string;
+  value: string;
 }
 
 export interface AllureTestResultExecution {
-    steps?: Array<AllureStep>;
-    attachments?: Array<AllureAttachmentLink>;
+  steps?: Array<AllureStep>;
+  attachments?: Array<AllureAttachmentLink>;
 }
 
 export interface AllureTestResult {
-    id: number;
+  id: number;
 
-    fullName?: string;
-    name: string;
+  fullName?: string;
+  name: string;
 
-    start?: number;
-    stop?: number;
-    duration?: number;
+  start?: number;
+  stop?: number;
+  duration?: number;
 
-    status: AllureStatus;
-    message?: string;
-    trace?: string;
+  status: AllureStatus;
+  message?: string;
+  trace?: string;
 
-    parameters?: Array<AllureTestParameter>;
+  parameters?: Array<AllureTestParameter>;
 }
 
 export interface AllureNodeContext {
-    key?: string;
-    value?: string;
+  key?: string;
+  value?: string;
 }
 
 export interface AllureTreeLeaf {
-    id: number;
-    name: string;
-    parentUid: string;
-    status: AllureStatus;
-    start: number;
-    stop: number;
-    duration: number;
-    flaky: boolean;
-    parameters: Array<string>;
+  id: number;
+  name: string;
+  parentUid: string;
+  status: AllureStatus;
+  start: number;
+  stop: number;
+  duration: number;
+  flaky: boolean;
+  parameters: Array<string>;
 }
 
 export interface AllureTreeGroup {
-    uid: string;
-    name: string;
-    context: AllureNodeContext;
-    statistic: AllureStatistic;
-    groups?: Array<AllureTreeGroup>;
-    leafs?: Array<AllureTreeLeaf>;
+  uid: string;
+  name: string;
+  context: AllureNodeContext;
+  statistic: AllureStatistic;
+  groups?: Array<AllureTreeGroup>;
+  leafs?: Array<AllureTreeLeaf>;
 
-    total?: number;
-    shown?: number;
+  total?: number;
+  shown?: number;
 }

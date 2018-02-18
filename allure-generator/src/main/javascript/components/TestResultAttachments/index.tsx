@@ -1,54 +1,53 @@
 import * as React from "react";
-import {AllureAttachmentLink} from "../../interfaces";
+import { AllureAttachmentLink } from "../../interfaces";
 import axios from "axios";
 import Loader from "../Loader";
 import ErrorSplash from "../ErrorSplash";
 import AttachmentList from "../AttachmentList";
 
 interface TestResultAttachmentsProps {
-    testResultId: number;
+  testResultId: number;
 }
 
 interface TestResultAttachmentsState {
-    data?: Array<AllureAttachmentLink>;
-    error?: Error;
+  data?: Array<AllureAttachmentLink>;
+  error?: Error;
 }
 
-export default class TestResultAttachments
-    extends React.Component<TestResultAttachmentsProps, TestResultAttachmentsState> {
+export default class TestResultAttachments extends React.Component<
+  TestResultAttachmentsProps,
+  TestResultAttachmentsState
+> {
+  state: TestResultAttachmentsState = {};
 
-    state: TestResultAttachmentsState = {};
+  async componentDidMount() {
+    this.loadData();
+  }
 
-    async componentDidMount() {
-        this.loadData();
+  async loadData() {
+    try {
+      const { data } = await axios.get(`data/results/${this.props.testResultId}-attachments.json`);
+      this.setState({ data, error: undefined });
+    } catch (error) {
+      this.setState({ data: undefined, error });
+    }
+  }
+
+  render() {
+    const { data, error } = this.state;
+
+    if (error) {
+      return <ErrorSplash name={error.name} message={error.message} stack={error.stack} />;
     }
 
-    async loadData() {
-        try {
-            const {data} = await axios.get(`data/results/${this.props.testResultId}-attachments.json`);
-            this.setState({data, error: undefined});
-        } catch (error) {
-            this.setState({data: undefined, error});
-        }
+    if (!data) {
+      return <Loader />;
     }
 
-    render() {
-        const {data, error} = this.state;
-
-        if (error) {
-            return <ErrorSplash name={error.name} message={error.message} stack={error.stack}/>
-        }
-
-        if (!data) {
-            return <Loader/>
-        }
-
-        if (!data.length) {
-            return <>No content</>
-        }
-
-        return (
-            <AttachmentList attachments={data}/>
-        );
+    if (!data.length) {
+      return <>No content</>;
     }
+
+    return <AttachmentList attachments={data} />;
+  }
 }

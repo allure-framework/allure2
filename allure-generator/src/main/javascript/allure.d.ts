@@ -1,48 +1,47 @@
-import {ReactChild} from "react";
+import { ReactChild } from "react";
 
 interface ReportTabConfiguration {
-    id: string;
-    name?: string;
-    order?: number;
-    icon?: string;
-    render: (id: string, name?: string) => ReactChild;
+  id: string;
+  name?: string;
+  order?: number;
+  icon?: string;
+  render: (id: string, name?: string) => ReactChild;
 }
 
 interface TestResultTabConfiguration {
-    id: string;
-    name: string;
-    render: () => ReactChild;
+  id: string;
+  name: string;
+  render: () => ReactChild;
 }
 
 interface TestResultBlockConfiguration {
-    id: string;
-    name?: string;
-    order?: number;
-    displayCondition?: () => boolean;
-    render: () => ReactChild;
+  id: string;
+  name?: string;
+  order?: number;
+  displayCondition?: () => boolean;
+  render: () => ReactChild;
 }
 
 interface AllurePlugins {
+  addReportTab(config: ReportTabConfiguration): void;
 
-    addReportTab(config: ReportTabConfiguration): void;
+  addTestResultTab(config: TestResultTabConfiguration): void;
 
-    addTestResultTab(config: TestResultTabConfiguration): void;
+  addTestResultBlock(config: TestResultBlockConfiguration): void;
 
-    addTestResultBlock(config: TestResultBlockConfiguration): void;
+  getReportTabs(): Array<ReportTabConfiguration>;
 
-    getReportTabs(): Array<ReportTabConfiguration>;
+  getTestResultTabs(): Array<TestResultTabConfiguration>;
 
-    getTestResultTabs(): Array<TestResultTabConfiguration>;
-
-    getTestResultBlocks(): Array<TestResultBlockConfiguration>;
+  getTestResultBlocks(): Array<TestResultBlockConfiguration>;
 }
 
 interface AllureApi {
-    api: AllurePlugins;
+  api: AllurePlugins;
 }
 
 declare global {
-    interface Window {
-        allure: AllureApi;
-    }
+  interface Window {
+    allure: AllureApi;
+  }
 }
