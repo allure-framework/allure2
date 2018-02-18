@@ -60,7 +60,7 @@ def resultsDirectoryPath = (findProperty('results') ?: 'demo') as String
 def resultsDirectory = new File(resultsDirectoryPath).isAbsolute() ? file(resultsDirectoryPath) : file("test-data/${resultsDirectoryPath}")
 
 task cleanUpDevReport(type: Delete) {
-    file('build/dev-report')
+    delete 'build/dev-report'
 }
 
 task generateDevReport(type: JavaExec) {

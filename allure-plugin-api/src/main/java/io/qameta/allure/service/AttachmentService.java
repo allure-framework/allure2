@@ -1,6 +1,5 @@
 package io.qameta.allure.service;
 
-import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.AttachmentLink;
 
 import java.nio.file.Path;
@@ -11,10 +10,10 @@ import java.util.List;
  */
 public interface AttachmentService {
 
-    Attachment storeAttachmentLink(long testResultId, AttachmentLink link);
+    AttachmentLink storeAttachmentLink(long testResultId, AttachmentLink link);
 
-    Attachment storeAttachmentFile(Path file);
+    AttachmentLink storeAttachmentFile(Path file);
 
-    List<Attachment> getAttachments(long testResultId);
+    List<AttachmentLink> getAttachments(long testResultId);
 
 }
