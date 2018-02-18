@@ -30,7 +30,7 @@
     margin-left: 10px;
     transition: all 0.3s;
     background-size: auto auto;
-    background: url('allure_logo.svg') no-repeat left center;
+    background: url("allure_logo.svg") no-repeat left center;
   }
 
   &__brand-text {
@@ -57,7 +57,8 @@
     padding-right: 0;
   }
 
-  &__link, &__collapse {
+  &__link,
+  &__collapse {
     display: flex;
     line-height: $sidebar-line-height;
     color: $sidebar-text-color;
