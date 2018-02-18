@@ -21,16 +21,23 @@ interface ExecutionState {
 export default class Execution extends React.Component<ExecutionProps, ExecutionState> {
   state: ExecutionState = {};
 
-  async componentDidMount() {
+  componentDidMount() {
     this.loadData();
   }
 
   async loadData() {
     try {
+      this.setState({ data: undefined });
       const { data } = await axios.get(`data/results/${this.props.testResultId}-execution.json`);
       this.setState({ data, error: undefined });
     } catch (error) {
       this.setState({ data: undefined, error });
+    }
+  }
+
+  componentDidUpdate(prevProps: ExecutionProps) {
+    if (prevProps.testResultId !== this.props.testResultId) {
+      this.loadData();
     }
   }
 

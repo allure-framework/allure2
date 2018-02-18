@@ -9,6 +9,7 @@
         "arrow-parens": false,
         "interface-name": false,
         "member-access": false,
+        "no-console": false,
         "no-empty-interface": false,
         "object-literal-sort-keys": false,
         "ordered-imports": false,
