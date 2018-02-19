@@ -65,6 +65,7 @@ public class Allure2Plugin implements Reader {
         final List<TestResultContainer> groups = reader.readTestResultsContainers().collect(Collectors.toList());
         reader.readTestResults()
                 .forEach(result -> convert(context.getValue(), resultsDirectory, visitor, groups, result));
+        reader.getErrors().stream().forEach(System.out::println);
     }
 
     private void convert(final Supplier<String> uidGenerator,
