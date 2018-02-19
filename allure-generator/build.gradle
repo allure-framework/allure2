@@ -54,6 +54,7 @@ dependencies {
     compile('com.fasterxml.jackson.dataformat:jackson-dataformat-yaml')
     compile('commons-io:commons-io')
     compile('io.qameta.allure:allure2-model-api')
+    compile('io.qameta.allure:allure-model')
     compile('org.allurefw:allure1-model')
     compile('org.apache.httpcomponents:httpclient')
     compile('org.apache.tika:tika-core')

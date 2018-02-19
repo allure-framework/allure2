@@ -1,0 +1,66 @@
+{
+  "type": "tearDown",
+  "uuid": "3e63d110-ba12-42f5-8aad-13dbd22aa473",
+  "name": "tearDown2",
+  "fullName": "io.qameta.allure.test.Test.tearDown2",
+  "historyId": "bd56949bc637e11769b2ddac95b1e548",
+  "start": 1518966398864,
+  "stop": 1518966398864,
+  "description": "",
+  "stage": "finished",
+  "status": "passed",
+  "flaky": false,
+  "muted": false,
+  "known": false,
+  "steps": [],
+  "attachments": [
+    {
+      "name": "String attachment in after",
+      "source": "after-sample-attachment.txt",
+      "contentType": "text/plain"
+    }
+  ],
+  "parameters": [],
+  "labels": [
+    {
+      "name": "package",
+      "value": "io.qameta.allure.test.Test"
+    },
+    {
+      "name": "tag",
+      "value": "All"
+    },
+    {
+      "name": "host",
+      "value": "host"
+    },
+    {
+      "name": "suite",
+      "value": "My suite"
+    },
+    {
+      "name": "epic",
+      "value": "TestNG integration"
+    },
+    {
+      "name": "testClass",
+      "value": "io.qameta.allure.test.Test"
+    },
+    {
+      "name": "subSuite",
+      "value": "io.qameta.allure.test.Test"
+    },
+    {
+      "name": "thread",
+      "value": "6795@host.Test worker(11)"
+    },
+    {
+      "name": "testMethod",
+      "value": "tearDown"
+    }
+  ],
+  "links": [],
+  "children": [
+    "0c135085-9c26-4b2e-9064-b25a881f49e4"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "type": "test",
+  "uuid": "0c135085-9c26-4b2e-9064-b25a881f49e4",
+  "name": "Before test fixtures tests",
+  "fullName": "io.qameta.allure.test.Test.beforeTestFixtures",
+  "historyId": "bd56949bc637e11769b2ddac95b1e548",
+  "start": 1518966397467,
+  "stop": 1518966397490,
+  "description": "Before test fixtures tests",
+  "stage": "finished",
+  "status": "passed",
+  "flaky": false,
+  "muted": false,
+  "known": false
+}

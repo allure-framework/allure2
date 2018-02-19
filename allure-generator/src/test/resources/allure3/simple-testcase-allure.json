@@ -1,0 +1,78 @@
+{
+  "type": "test",
+  "uuid": "0c135085-9c26-4b2e-9064-b25a881f49e4",
+  "name": "Before test fixtures tests",
+  "fullName": "io.qameta.allure.test.Test.beforeTestFixtures",
+  "historyId": "bd56949bc637e11769b2ddac95b1e548",
+  "start": 1518966397467,
+  "stop": 1518966397490,
+  "description": "Before test fixtures tests",
+  "stage": "finished",
+  "status": "passed",
+  "flaky": false,
+  "muted": false,
+  "known": false,
+  "steps" : [ {
+    "status" : "passed",
+    "name" : "someSimpleStep",
+    "start" : 1518966397468,
+    "stop" : 1518966397487,
+    "attachments" : [ {
+      "name" : "String attachment in test",
+      "source" : "test-sample-attachment.txt",
+      "contentType" : "text/plain"
+    }]
+  }],
+  "attachments": [],
+  "parameters": [],
+  "labels": [
+    {
+      "name": "package",
+      "value": "io.qameta.allure.test.Test"
+    },
+    {
+      "name": "tag",
+      "value": "All"
+    },
+    {
+      "name": "host",
+      "value": "host"
+    },
+    {
+      "name": "testMethod",
+      "value": "beforeTestFixtures"
+    },
+    {
+      "name": "suite",
+      "value": "My suite"
+    },
+    {
+      "name": "epic",
+      "value": "TestNG integration"
+    },
+    {
+      "name": "testClass",
+      "value": "io.qameta.allure.test.Test"
+    },
+    {
+      "name": "subSuite",
+      "value": "io.qameta.allure.test.Test"
+    },
+    {
+      "name": "thread",
+      "value": "6795@host.Test worker(11)"
+    },
+    {
+      "name": "feature",
+      "value": "Basic framework support"
+    }
+  ],
+  "links": [
+    {
+      "name": "67",
+      "url": "https://github.com/allure-framework/allure-java/issues/67",
+      "type": "issue"
+    }
+  ],
+  "children": []
+}

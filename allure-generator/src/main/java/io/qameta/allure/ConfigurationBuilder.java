@@ -2,6 +2,7 @@ package io.qameta.allure;
 
 import io.qameta.allure.allure1.Allure1Plugin;
 import io.qameta.allure.allure2.Allure2Plugin;
+import io.qameta.allure.allure3.Allure3Plugin;
 import io.qameta.allure.category.CategoriesPlugin;
 import io.qameta.allure.category.CategoriesTrendPlugin;
 import io.qameta.allure.context.FreemarkerContext;
@@ -86,6 +87,7 @@ public class ConfigurationBuilder {
                 new Allure1Plugin(),
                 new Allure1EnvironmentPlugin(),
                 new Allure2Plugin(),
+                new Allure3Plugin(),
                 new GaPlugin()
         ));
         return this;
