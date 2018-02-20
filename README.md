@@ -35,6 +35,13 @@ You can use one of the following ways to get Allure:
     $ brew update
     $ brew install allure
     ```
+* For Windows, Allure is available from the [Scoop](http://scoop.sh/) commandline-installer.
+To install Allure, download and install Scoop and then execute in the Powershell:
+
+    ```bash
+    scoop install allure
+    ```
+    
 
 ## Documentation 
 
