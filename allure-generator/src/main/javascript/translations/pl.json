@@ -186,7 +186,7 @@
         "total_1": "{{count}} rezultaty testów",
         "total_2": "{{count}} rezultatów testów",
         "shown_0": "{{count}} pokazany",
-		"shown_1": "{{count}} pokazane",
+        "shown_1": "{{count}} pokazane",
         "shown_2": "{{count}} pokazanych"
       }
     },
