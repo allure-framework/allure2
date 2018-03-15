@@ -29,8 +29,8 @@
     "timeline": {
       "name": "Oś czasowa",
       "selected_0": "{{count}} wybrany test({{percent}}%) z czasem trwania powyżej {{duration}}",
-      "selected_1": "{{count}} wybrane testy ({{percent}}%) z czasem trwania powyżej {{duration}}"
-	  "selected_2": "{{count}} wybranych testów ({{percent}}%) z czasem trwania powyżej {{duration}}"
+      "selected_1": "{{count}} wybrane testy ({{percent}}%) z czasem trwania powyżej {{duration}}",
+      "selected_2": "{{count}} wybranych testów ({{percent}}%) z czasem trwania powyżej {{duration}}"
     }
   },
   "widget": {
@@ -38,10 +38,10 @@
       "aggregatedName": "Raport zbiorczy",
       "launches_0": "uruchomienie",
       "launches_1": "uruchomienia",
-	  "launches_3": "uruchomień",
+      "launches_3": "uruchomień",
       "testResults_0": "przypadek testowy",
       "testResults_1": "przypadki testowe",
-	  "testResults_3": "przypadków testowych",
+      "testResults_3": "przypadków testowych",
     },
     "trend": {
       "name": "Trend"
@@ -140,10 +140,10 @@
         "steps_plural": "{{count}} sub-steps",
         "attachments_0": "{{count}} załącznik",
         "attachments_1": "{{count}} załączniki",
-		"attachments_2": "{{count}} załączników",
+        "attachments_2": "{{count}} załączników",
         "parameters_0": "{{count}} parametr",
         "parameters_1": "{{count}} parametry",
-		"parameters_1": "{{count}} parametrów"
+        "parameters_1": "{{count}} parametrów"
       }
     }
   },
@@ -184,17 +184,17 @@
       "filtered": {
         "total_0": "{{count}} rezultat testu",
         "total_1": "{{count}} rezultaty testów",
-		"total_2": "{{count}} rezultatów testów",
+        "total_2": "{{count}} rezultatów testów",
         "shown_0": "{{count}} pokazany",
 		"shown_1": "{{count}} pokazane",
-		"shown_2": "{{count}} pokazanych"
+        "shown_2": "{{count}} pokazanych"
       }
     },
     "widgetStatus": {
       "showAll": "Pokaż wszystko",
       "total_0": "Razem {{count}} pozycja",
       "total_1": "Razem {{count}} pozycje",
-	  "total_2": "Razem {{count}} pozycji"
+      "total_2": "Razem {{count}} pozycji"
     },
     "statusToggle": {
       "showCases": "Pokaż rezultaty testów ze statusem {{status}}",
