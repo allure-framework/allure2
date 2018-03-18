@@ -41,7 +41,7 @@
       "launches_3": "uruchomień",
       "testResults_0": "przypadek testowy",
       "testResults_1": "przypadki testowe",
-      "testResults_3": "przypadków testowych",
+      "testResults_3": "przypadków testowych"
     },
     "trend": {
       "name": "Trend"
@@ -143,7 +143,7 @@
         "attachments_2": "{{count}} załączników",
         "parameters_0": "{{count}} parametr",
         "parameters_1": "{{count}} parametry",
-        "parameters_1": "{{count}} parametrów"
+        "parameters_2": "{{count}} parametrów"
       }
     }
   },
