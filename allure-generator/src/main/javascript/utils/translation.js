@@ -7,7 +7,8 @@ export const LANGUAGES = [
     {id: 'zh', title: '中文'},
     {id: 'de', title: 'Deutsch'},
     {id: 'he', title: 'Hebrew'},
-    {id: 'br', title: 'Brazil'}
+    {id: 'br', title: 'Brazil'},
+    {id: 'pl', title: 'Polski'},
 ];
 
 LANGUAGES
