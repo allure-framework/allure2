@@ -67,6 +67,13 @@ public class Commands {
         return Optional.empty();
     }
 
+    public Optional<Path> getPluginPath(final ConfigOptions configOptions) {
+        if (Objects.nonNull(configOptions.getPluginDirectory())) {
+            return Optional.of(Paths.get(configOptions.getPluginDirectory()));
+        }
+        return Optional.empty();
+    }
+
     public String getConfigFileName(final String profile) {
         return Objects.isNull(profile)
                 ? "allure.yml"
@@ -174,8 +181,17 @@ public class Commands {
         final DefaultPluginLoader loader = new DefaultPluginLoader();
         final CommandlineConfig commandlineConfig = getConfig(profile);
         final ClassLoader classLoader = getClass().getClassLoader();
+
+        Path pluginPath;
+
+        if (profile.getPluginDirectory() != null) {
+            pluginPath = Paths.get(profile.getPluginDirectory());
+        } else {
+            pluginPath = allureHome.resolve("plugins");
+        }
+
         final List<Plugin> plugins = commandlineConfig.getPlugins().stream()
-                .map(name -> loader.loadPlugin(classLoader, allureHome.resolve("plugins").resolve(name)))
+                .map(name -> loader.loadPlugin(classLoader, pluginPath.resolve(name)))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toList());
@@ -184,6 +200,8 @@ public class Commands {
                 .useDefault()
                 .fromPlugins(plugins)
                 .build();
+
+//
     }
 
     /**

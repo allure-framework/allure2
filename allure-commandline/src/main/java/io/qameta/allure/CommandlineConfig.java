@@ -17,4 +17,8 @@ public class CommandlineConfig implements Serializable {
     private static final long serialVersionUID = 1L;
 
     protected List<String> plugins = new ArrayList<>();
+
+    public List<String> getPlugins() {
+        return plugins;
+    }
 }

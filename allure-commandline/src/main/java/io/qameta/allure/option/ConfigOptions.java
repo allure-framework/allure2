@@ -30,6 +30,12 @@ public class ConfigOptions {
     )
     private String configPath;
 
+    @Parameter(
+            names = {"--pluginDirectory"},
+            description = "Allure commandline plugins directory."
+    )
+    private String pluginDirectory;
+
     public String getProfile() {
         return profile;
     }
@@ -40,5 +46,9 @@ public class ConfigOptions {
 
     public String getConfigPath() {
         return configPath;
+    }
+
+    public String getPluginDirectory() {
+        return pluginDirectory;
     }
 }
