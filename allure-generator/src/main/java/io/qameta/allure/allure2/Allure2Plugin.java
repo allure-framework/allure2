@@ -220,6 +220,8 @@ public class Allure2Plugin implements Reader {
         testStage.setSteps(convert(result.getSteps(), step -> convert(source, visitor, step)));
         testStage.setAttachments(convert(result.getAttachments(), attachment -> convert(source, visitor, attachment)));
         testStage.setStatus(convert(result.getStatus()));
+        testStage.setDescription(result.getDescription());
+        testStage.setDescriptionHtml(result.getDescriptionHtml());
         Optional.of(result)
                 .map(ExecutableItem::getStatusDetails)
                 .ifPresent(statusDetails -> {
