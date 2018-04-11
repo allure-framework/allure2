@@ -19,6 +19,9 @@ public class StageResult implements Serializable, Summarizable {
     protected String name;
     protected Time time;
 
+    protected String description;
+    protected String descriptionHtml;
+
     protected Status status;
     protected String statusMessage;
     protected String statusTrace;
