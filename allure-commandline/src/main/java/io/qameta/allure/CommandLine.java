@@ -137,7 +137,8 @@ public class CommandLine {
                         serveCommand.getResultsOptions().getResultsDirectories(),
                         serveCommand.getHostPortOptions().getHost(),
                         serveCommand.getHostPortOptions().getPort(),
-                        serveCommand.getConfigOptions());
+                        serveCommand.getConfigOptions()
+                );
             case OPEN_COMMAND:
                 return commands.open(
                         openCommand.getReportDirectories().get(0),
