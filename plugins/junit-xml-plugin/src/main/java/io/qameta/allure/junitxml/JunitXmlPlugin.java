@@ -25,6 +25,8 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -71,8 +73,9 @@ public class JunitXmlPlugin implements Reader {
 
     private static final String XML_GLOB = "*.xml";
 
-    private static final Map<String, Status> RETRIES;
+    private static final String ZULU_TIME_FORMAT = "[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z";
 
+    private static final Map<String, Status> RETRIES;
 
     static {
         RETRIES = new HashMap<>();
@@ -127,11 +130,21 @@ public class JunitXmlPlugin implements Reader {
                         resultsDirectory, parsedFile, context, visitor));
     }
 
+    private LocalDateTime getZuluTime(final String timestamp) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").withZone(ZoneOffset.UTC);
+        return LocalDateTime.parse(timestamp, dtf);
+    }
+
     private Long getUnix(final String timestamp) {
         if (isNull(timestamp)) {
             return null;
         }
-        final LocalDateTime parsed = LocalDateTime.parse(timestamp);
+        final LocalDateTime parsed;
+        if (timestamp.matches(ZULU_TIME_FORMAT)) {
+            parsed = getZuluTime(timestamp);
+        } else {
+            parsed = LocalDateTime.parse(timestamp);
+        }
         return parsed.atZone(ZoneId.systemDefault()).toEpochSecond();
     }
 
