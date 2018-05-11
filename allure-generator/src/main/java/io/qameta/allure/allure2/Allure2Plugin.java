@@ -115,6 +115,8 @@ public class Allure2Plugin implements Reader {
                 .setTime(convert(result.getStart(), result.getStop()))
                 .setStatus(convert(result.getStatus()))
                 .setSteps(convert(result.getSteps(), step -> convert(source, visitor, step)))
+                .setDescription(result.getDescription())
+                .setDescriptionHtml(result.getDescriptionHtml())
                 .setAttachments(convert(result.getAttachments(), attach -> convert(source, visitor, attach)))
                 .setParameters(convert(result.getParameters(), this::convert));
         Optional.of(result)
@@ -239,6 +241,7 @@ public class Allure2Plugin implements Reader {
                                         final Function<TestResultContainer, Stream<StageResult>> getter) {
         return parents.stream()
                 .flatMap(getter)
+                .sorted(BY_START)
                 .collect(Collectors.toList());
     }
 

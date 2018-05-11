@@ -1,0 +1,51 @@
+{
+  "uuid": "1915a4bf-4872-4c6e-a0d1-5f5b4a280a1c",
+  "historyId": "e2a7b949149527fe850704a67f1bd2f0",
+  "fullName": "io.qameta.allure.testng.samples.BeforeFixturesCombination.test",
+  "labels": [
+    {
+      "name": "package",
+      "value": "io.qameta.allure.testng.samples.BeforeFixturesCombination"
+    },
+    {
+      "name": "testClass",
+      "value": "io.qameta.allure.testng.samples.BeforeFixturesCombination"
+    },
+    {
+      "name": "testMethod",
+      "value": "test"
+    },
+    {
+      "name": "parentSuite",
+      "value": "Default Suite"
+    },
+    {
+      "name": "suite",
+      "value": "allure-java"
+    },
+    {
+      "name": "subSuite",
+      "value": "io.qameta.allure.testng.samples.BeforeFixturesCombination"
+    },
+    {
+      "name": "host",
+      "value": "vrn-spotanin2"
+    },
+    {
+      "name": "thread",
+      "value": "806@vrn-spotanin2.main(1)"
+    }
+  ],
+  "links": [],
+  "name": "test",
+  "status": "passed",
+  "statusDetails": {
+    "known": false,
+    "muted": false,
+    "flaky": false
+  },
+  "stage": "finished",
+  "start": 1526052814789,
+  "stop": 1526052814795,
+  "parameters": []
+}

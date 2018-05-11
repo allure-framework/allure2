@@ -1,0 +1,19 @@
+{
+  "uuid": "6be4dbf5-ff62-423e-985a-ec1027954348",
+  "name": "Default Suite",
+  "start": 1526052814482,
+  "stop": 1526052814818,
+  "children": [
+    "afcb739d-e46a-4374-89e6-f48df3b9eb21"
+  ],
+  "befores": [
+    {
+      "name": "beforeSuite",
+      "status": "passed",
+      "stage": "finished",
+      "description": "",
+      "start": 1526052814506,
+      "stop": 1526052814516
+    }
+  ]
+}

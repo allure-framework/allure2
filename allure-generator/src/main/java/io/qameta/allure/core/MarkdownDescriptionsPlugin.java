@@ -2,10 +2,12 @@ package io.qameta.allure.core;
 
 import io.qameta.allure.Aggregator;
 import io.qameta.allure.context.MarkdownContext;
+import io.qameta.allure.entity.StageResult;
 
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Plugin that converts descriptions from markdown to html.
@@ -29,6 +31,10 @@ public class MarkdownDescriptionsPlugin implements Aggregator {
                 .forEach(result -> {
                     final String html = context.getValue().apply(result.getDescription());
                     result.setDescriptionHtml(html);
+                    String fixturesDescriptionHtml = result.getBeforeStages().stream()
+                            .map(StageResult::getDescriptionHtml)
+                            .collect(Collectors.joining());
+                    result.setDescriptionHtml(fixturesDescriptionHtml + result.getDescriptionHtml());
                 });
     }
 
