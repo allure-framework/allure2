@@ -225,8 +225,8 @@ public class Allure2PluginTest {
         ).getResults();
 
         assertThat(testResults)
-        .flatExtracting(TestResult::getBeforeStages)
-        .extracting(StageResult::getName)
+                .flatExtracting(TestResult::getBeforeStages)
+                .extracting(StageResult::getName)
                 .containsExactly("beforeSuite", "beforeTest", "beforeClass", "beforeMethod");
     }
 
