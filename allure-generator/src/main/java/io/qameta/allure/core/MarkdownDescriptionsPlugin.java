@@ -27,14 +27,31 @@ public class MarkdownDescriptionsPlugin implements Aggregator {
     private void processDescriptions(final List<LaunchResults> launches, final MarkdownContext context) {
         launches.stream()
                 .flatMap(launch -> launch.getResults().stream())
+                .peek(result -> {
+                    if (result.getDescription() == null) {
+                        result.setDescription("");
+                    }
+                    if (result.getDescriptionHtml() == null) {
+                        result.setDescriptionHtml("");
+                    }
+                })
+                .peek(result -> {
+                    String fixturesDescriptionHtml = result.getBeforeStages().stream()
+                            .map(StageResult::getDescriptionHtml)
+                            .filter(stageResult -> !isEmpty(stageResult))
+                            .collect(Collectors.joining("</br>"));
+                    if (!isEmpty(fixturesDescriptionHtml)) {
+                        if (isEmpty(result.getDescriptionHtml())) {
+                            result.setDescriptionHtml(fixturesDescriptionHtml);
+                        } else {
+                            result.setDescriptionHtml(fixturesDescriptionHtml + "</br>" + result.getDescriptionHtml());
+                        }
+                    }
+                })
                 .filter(result -> isEmpty(result.getDescriptionHtml()) && !isEmpty(result.getDescription()))
                 .forEach(result -> {
                     final String html = context.getValue().apply(result.getDescription());
                     result.setDescriptionHtml(html);
-                    String fixturesDescriptionHtml = result.getBeforeStages().stream()
-                            .map(StageResult::getDescriptionHtml)
-                            .collect(Collectors.joining());
-                    result.setDescriptionHtml(fixturesDescriptionHtml + result.getDescriptionHtml());
                 });
     }
 
