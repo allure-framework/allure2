@@ -11,6 +11,12 @@
     background-color: rgba(235, 235, 235, 0.7);
     z-index: 1000;
   }
+  &__title {
+    display: flex;
+  }
+  &__close {
+    margin-left: auto;
+  }
   &__window {
     position: absolute;
     width: 90%;
