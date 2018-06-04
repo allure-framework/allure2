@@ -272,6 +272,23 @@ public class JunitXmlPluginTest {
 
     }
 
+    @Test
+    public void shouldReadSkippedStatus() throws Exception {
+        process(
+                "junitdata/TEST-status-attribute.xml", "TEST-test.SampleTest.xml"
+        );
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(3)).visitTestResult(captor.capture());
+
+        List<TestResult> skipped = filterByStatus(captor.getAllValues(), Status.SKIPPED);
+
+        assertThat(skipped)
+                .describedAs("Should parse skipped elements and status attribute")
+                .hasSize(2);
+
+    }
+
     private void process(String... strings) throws IOException {
         Path resultsDirectory = folder.newFolder().toPath();
         Iterator<String> iterator = Arrays.asList(strings).iterator();

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+   <testsuite name="JUnitXmlReporter" errors="0" tests="0" failures="0" time="0" timestamp="2013-05-24T10:23:58" />
+   <testsuite name="JUnitXmlReporter.constructor" errors="0" skipped="2" tests="3" failures="0" time="0.06" timestamp="2013-05-24T10:23:58">
+      <testcase classname="JUnitXmlReporter.constructor" name="skipped by element" time="0">
+         <skipped />
+      </testcase>
+      <testcase classname="JUnitXmlReporter.constructor" name="skipped by attribute" status="notrun" time="0" />
+      <testcase classname="JUnitXmlReporter.constructor" name="normal test" time="0.06" />
+   </testsuite>
+</testsuites>
