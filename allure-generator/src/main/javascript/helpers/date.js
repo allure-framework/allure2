@@ -1,4 +1,4 @@
-import pad from 'underscore.string/pad';
+import i18next from '../utils/translation';
 
 export default function (date) {
     if(!date) {
@@ -7,5 +7,5 @@ export default function (date) {
     if(!(date instanceof Date)) {
         date = new Date(date);
     }
-    return [pad(date.getDate(), 2, '0'), pad(date.getMonth() + 1, 2, '0'), date.getFullYear()].join('/');
+    return new Intl.DateTimeFormat(i18next.language).format(date);
 }
