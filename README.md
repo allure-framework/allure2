@@ -12,7 +12,7 @@
 [release-badge]: https://img.shields.io/github/release/allure-framework/allure2.svg?style=flat
 [CONTRIBUTING.md]: .github/CONTRIBUTING.md
 [CODE_OF_CONDUCT.md]: CODE_OF_CONDUCT.md
-[docs]: https://docs.qameta.io/allure/2.0/
+[docs]: https://docs.qameta.io/allure/
 
 # Allure Report [![build-badge][]][build] [![release-badge][]][release] [![bintray-badge][]][bintray] [![Backers on Open Collective](https://opencollective.com/allure-report/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/allure-report/sponsors/badge.svg)](#sponsors) 
 
