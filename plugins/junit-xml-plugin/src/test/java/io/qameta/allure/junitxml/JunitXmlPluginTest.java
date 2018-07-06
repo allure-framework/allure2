@@ -272,6 +272,21 @@ public class JunitXmlPluginTest {
 
     }
 
+    @Test
+    public void shouldProcessFilesWithZuluTimestamp() throws Exception {
+        process(
+                "junitdata/TEST-org.allurefw.report.junit.JunitTestResultsTest-zulu.xml",
+                "TEST-test.SampleTest.xml"
+        );
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(2)).visitTestResult(captor.capture());
+
+        assertThat(captor.getAllValues())
+                .extracting(TestResult::getTime)
+                .isNotNull();
+    }
+
     private void process(String... strings) throws IOException {
         Path resultsDirectory = folder.newFolder().toPath();
         Iterator<String> iterator = Arrays.asList(strings).iterator();
