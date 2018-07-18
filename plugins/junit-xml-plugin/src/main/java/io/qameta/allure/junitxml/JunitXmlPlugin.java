@@ -68,6 +68,8 @@ public class JunitXmlPlugin implements Reader {
     private static final String RERUN_ERROR_ELEMENT_NAME = "rerunError";
     private static final String HOSTNAME_ATTRIBUTE_NAME = "hostname";
     private static final String TIMESTAMP_ATTRIBUTE_NAME = "timestamp";
+    private static final String STATUS_ATTRIBUTE_NAME = "status";
+    private static final String SKIPPED_ATTRIBUTE_VALUE = "notrun";
 
     private static final String XML_GLOB = "*.xml";
 
@@ -211,6 +213,12 @@ public class JunitXmlPlugin implements Reader {
         if (testCaseElement.contains(SKIPPED_ELEMENT_NAME)) {
             return Status.SKIPPED;
         }
+
+        if ((testCaseElement.containsAttribute(STATUS_ATTRIBUTE_NAME))
+                && (testCaseElement.getAttribute(STATUS_ATTRIBUTE_NAME).equals(SKIPPED_ATTRIBUTE_VALUE))) {
+            return Status.SKIPPED;
+        }
+
         return Status.PASSED;
     }
 
