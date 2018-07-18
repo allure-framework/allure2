@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+    <testsuite name="caffe_tests.x" errors="0" failures="0" tests="65255" hostname="tbd" time="457.675"
+               timestamp="2018-05-06T07:41:51Z">
+        <testcase classname="test_all.x.global" name="Caffe FAST/Model" time="16.211949">
+            <system-out>
+                running fast A
+                Layer 0 (A1)
+                Layer 1 (A2)
+                Layer 2 (A3)
+                Layer 3 (A4)
+                Layer 4 (A5)
+            </system-out>
+            <system-err/>
+        </testcase>
+        <testcase classname="test_all.x.global" name="Caffe Weights/Model" time="8.477497">
+            <system-out>
+                Weights of A
+                Weights of B
+                Weights of C
+                Weights of D
+            </system-out>
+        </testcase>
+    </testsuite>
+</testsuites>
