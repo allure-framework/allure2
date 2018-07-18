@@ -22,7 +22,7 @@ public class Allure1EnvironmentPlugin extends CommonJsonAggregator {
         super("widgets", "environment.json");
     }
 
-
+    @Override
     protected List<EnvironmentItem> getData(final List<LaunchResults> launches) {
         final List<Map.Entry<String, String>> launchEnvironments = launches.stream()
                 .flatMap(launch -> launch.getExtra(ENVIRONMENT_BLOCK_NAME,

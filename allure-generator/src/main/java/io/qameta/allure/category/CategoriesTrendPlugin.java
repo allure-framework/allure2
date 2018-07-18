@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.CommonJsonAggregator;
 import io.qameta.allure.CompositeAggregator;
+import io.qameta.allure.Constants;
 import io.qameta.allure.Reader;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
@@ -42,9 +43,9 @@ public class CategoriesTrendPlugin extends CompositeAggregator implements Reader
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CategoriesTrendPlugin.class);
 
-    protected static final String JSON_FILE_NAME = "categories-trend.json";
-    private static final String CATEGORIES_TREND_BLOCK_NAME = "categories-trend";
-    protected static final String HISTORY = "history";
+    private static final String JSON_FILE_NAME = "categories-trend.json";
+
+    public static final String CATEGORIES_TREND_BLOCK_NAME = "categories-trend";
 
     public CategoriesTrendPlugin() {
         super(Arrays.asList(
@@ -57,7 +58,7 @@ public class CategoriesTrendPlugin extends CompositeAggregator implements Reader
                             final ResultsVisitor visitor,
                             final Path directory) {
         final JacksonContext context = configuration.requireContext(JacksonContext.class);
-        final Path historyFile = directory.resolve(HISTORY).resolve(JSON_FILE_NAME);
+        final Path historyFile = directory.resolve(Constants.HISTORY_DIR).resolve(JSON_FILE_NAME);
         if (Files.exists(historyFile)) {
             try (InputStream is = Files.newInputStream(historyFile)) {
                 final ObjectMapper mapper = context.getValue();
@@ -92,8 +93,7 @@ public class CategoriesTrendPlugin extends CompositeAggregator implements Reader
         }
     }
 
-    @SuppressWarnings("PMD.DefaultPackage")
-    /* default */ static List<CategoriesTrendItem> getData(final List<LaunchResults> launchesResults) {
+    protected static List<CategoriesTrendItem> getData(final List<LaunchResults> launchesResults) {
         final CategoriesTrendItem item = createCurrent(launchesResults);
         final List<CategoriesTrendItem> data = getHistoryItems(launchesResults);
 
@@ -136,14 +136,16 @@ public class CategoriesTrendPlugin extends CompositeAggregator implements Reader
                 .map(Optional::get)
                 .filter(ExecutorInfo.class::isInstance)
                 .map(ExecutorInfo.class::cast)
-                .sorted(comparator.reversed())
-                .findFirst();
+                .max(comparator);
     }
 
+    /**
+     * Generates history trend data.
+     */
     private static class JsonAggregator extends CommonJsonAggregator {
 
         JsonAggregator() {
-            super(HISTORY, JSON_FILE_NAME);
+            super(Constants.HISTORY_DIR, JSON_FILE_NAME);
         }
 
         @Override
@@ -152,6 +154,9 @@ public class CategoriesTrendPlugin extends CompositeAggregator implements Reader
         }
     }
 
+    /**
+     * Generates widget data.
+     */
     private static class WidgetAggregator extends CommonJsonAggregator {
 
         WidgetAggregator() {

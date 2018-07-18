@@ -221,7 +221,7 @@ public class TrxPlugin implements Reader {
     }
 
     private static List<Path> listResults(final Path directory) {
-        List<Path> result = new ArrayList<>();
+        final List<Path> result = new ArrayList<>();
         if (!Files.isDirectory(directory)) {
             return result;
         }

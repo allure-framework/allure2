@@ -46,7 +46,11 @@ import java.util.List;
  * @see Configuration
  * @since 2.0
  */
-@SuppressWarnings("PMD.ExcessiveImports")
+@SuppressWarnings({
+        "PMD.ExcessiveImports",
+        "ClassDataAbstractionCoupling",
+        "ClassFanOutComplexity"
+})
 public class ConfigurationBuilder {
 
     private final List<Extension> extensions = new ArrayList<>();

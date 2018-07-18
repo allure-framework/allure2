@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import io.qameta.allure.CommonCsvExportAggregator;
 import io.qameta.allure.CommonJsonAggregator;
 import io.qameta.allure.CompositeAggregator;
+import io.qameta.allure.Constants;
 import io.qameta.allure.Reader;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
@@ -45,7 +46,7 @@ import static java.util.Objects.nonNull;
  *
  * @since 2.0
  */
-@SuppressWarnings("PMD.ExcessiveImports")
+@SuppressWarnings({"PMD.ExcessiveImports", "ClassDataAbstractionCoupling"})
 public class CategoriesPlugin extends CompositeAggregator implements Reader {
 
     public static final String CATEGORIES = "categories";
@@ -60,7 +61,7 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
 
     //@formatter:off
     private static final TypeReference<List<Category>> CATEGORIES_TYPE =
-        new TypeReference<List<Category>>() {};
+        new TypeReference<List<Category>>() { };
     //@formatter:on
 
     public CategoriesPlugin() {
@@ -133,16 +134,16 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
     }
 
     public static boolean matches(final TestResult result, final Category category) {
-        boolean matchesStatus = category.getMatchedStatuses().isEmpty()
+        final boolean matchesStatus = category.getMatchedStatuses().isEmpty()
                 || nonNull(result.getStatus())
                 && category.getMatchedStatuses().contains(result.getStatus());
-        boolean matchesMessage = isNull(category.getMessageRegex())
+        final boolean matchesMessage = isNull(category.getMessageRegex())
                 || nonNull(result.getStatusMessage())
                 && matches(result.getStatusMessage(), category.getMessageRegex());
-        boolean matchesTrace = isNull(category.getTraceRegex())
+        final boolean matchesTrace = isNull(category.getTraceRegex())
                 || nonNull(result.getStatusTrace())
                 && matches(result.getStatusTrace(), category.getTraceRegex());
-        boolean matchesFlaky = result.isFlaky() == category.isFlaky();
+        final boolean matchesFlaky = result.isFlaky() == category.isFlaky();
         return matchesStatus && matchesMessage && matchesTrace && matchesFlaky;
     }
 
@@ -165,6 +166,9 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
         super.aggregate(configuration, launchesResults, outputDirectory);
     }
 
+    /**
+     * Generates tree data.
+     */
     private static class JsonAggregator extends CommonJsonAggregator {
 
         JsonAggregator() {
@@ -177,6 +181,9 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
         }
     }
 
+    /**
+     * Generates export data.
+     */
     private static class CsvExportAggregator extends CommonCsvExportAggregator<CsvExportCategory> {
 
         CsvExportAggregator() {
@@ -198,10 +205,13 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
         }
     }
 
+    /**
+     * Generates widget data.
+     */
     private static class WidgetAggregator extends CommonJsonAggregator {
 
         WidgetAggregator() {
-            super("widgets", JSON_FILE_NAME);
+            super(Constants.WIDGETS_DIR, JSON_FILE_NAME);
         }
 
         @Override

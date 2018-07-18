@@ -4,8 +4,9 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 /**
- * eroshenkoam
- * 06.08.17
+ * Parameters for {@link GaPlugin}.
+ *
+ * @author eroshnkoam
  */
 @Data
 @Accessors(chain = true)

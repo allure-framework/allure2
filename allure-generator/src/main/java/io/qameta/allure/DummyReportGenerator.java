@@ -52,7 +52,12 @@ import java.util.stream.Collectors;
  * @author Artem Eroshenko eroshenkoam@qameta.io
  * Date: 1/22/14
  */
-@SuppressWarnings("PMD.ExcessiveImports")
+@SuppressWarnings({
+        "PMD.ExcessiveImports",
+        "PMD.ClassNamingConventions",
+        "ClassFanOutComplexity",
+        "ClassDataAbstractionCoupling"
+})
 public final class DummyReportGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DummyReportGenerator.class);
@@ -114,7 +119,7 @@ public final class DummyReportGenerator {
             LOGGER.error("There must be at least two arguments");
             return;
         }
-        int lastIndex = args.length - 1;
+        final int lastIndex = args.length - 1;
         final Path[] files = getFiles(args);
         final List<Plugin> plugins = loadPlugins();
         LOGGER.info("Found {} plugins", plugins.size());

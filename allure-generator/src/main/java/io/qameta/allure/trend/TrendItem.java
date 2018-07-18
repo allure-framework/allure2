@@ -10,8 +10,9 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * eroshenkoam
- * 08.11.17
+ * Trend item data.
+ *
+ * @author eroshenkoam
  */
 @Getter
 @Setter
@@ -29,7 +30,7 @@ public class TrendItem implements Serializable {
     protected Map<String, Long> data = new HashMap<>();
 
     protected void increaseMetric(final String metric) {
-        long current = Optional.ofNullable(data.get(metric)).orElse(0L);
+        final long current = Optional.ofNullable(data.get(metric)).orElse(0L);
         data.put(metric, current + 1);
     }
 

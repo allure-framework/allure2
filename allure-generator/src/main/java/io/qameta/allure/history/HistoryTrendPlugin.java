@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.CommonJsonAggregator;
 import io.qameta.allure.CompositeAggregator;
+import io.qameta.allure.Constants;
 import io.qameta.allure.Reader;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
@@ -149,10 +150,12 @@ public class HistoryTrendPlugin extends CompositeAggregator implements Reader {
                 .map(Optional::get)
                 .filter(ExecutorInfo.class::isInstance)
                 .map(ExecutorInfo.class::cast)
-                .sorted(comparator.reversed())
-                .findFirst();
+                .max(comparator);
     }
 
+    /**
+     * Generates history trend data.
+     */
     protected static class JsonAggregator extends CommonJsonAggregator {
 
         JsonAggregator() {
@@ -165,10 +168,13 @@ public class HistoryTrendPlugin extends CompositeAggregator implements Reader {
         }
     }
 
+    /**
+     * Generates widget data.
+     */
     private static class WidgetAggregator extends CommonJsonAggregator {
 
         WidgetAggregator() {
-            super("widgets", JSON_FILE_NAME);
+            super(Constants.WIDGETS_DIR, JSON_FILE_NAME);
         }
 
         @Override

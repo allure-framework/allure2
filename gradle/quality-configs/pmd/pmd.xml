@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Base ruleset" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+
+    <description>
+        General Java quality rules.
+    </description>
+
+    <!-- Best practices (https://pmd.github.io/pmd-6.0.1/pmd_rules_java_bestpractices.html) -->
+    <rule ref="category/java/bestpractices.xml">
+        <exclude name="AbstractClassWithoutAbstractMethod"/>
+        <!-- disabled as it's important for android and doesn't matter for general java (also fixes will
+             conflict with checkstyle's VisibilityModifier check -->
+        <exclude name="AccessorMethodGeneration"/>
+        <exclude name="ArrayIsStoredDirectly"/>
+        <exclude name="GuardLogStatement"/>
+        <exclude name="JUnitAssertionsShouldIncludeMessage"/>
+        <exclude name="JUnit4SuitesShouldUseSuiteAnnotation"/>
+        <exclude name="JUnitTestsShouldIncludeAssert"/>
+        <exclude name="JUnit4TestShouldUseBeforeAnnotation"/>
+        <exclude name="JUnit4TestShouldUseAfterAnnotation"/>
+        <exclude name="JUnit4TestShouldUseTestAnnotation"/>
+    </rule>
+
+
+    <!-- Code style (https://pmd.github.io/pmd-6.0.1/pmd_rules_java_codestyle.html) -->
+    <rule ref="category/java/codestyle.xml">
+        <exclude name="AbstractNaming"/>
+        <exclude name="AtLeastOneConstructor"/>
+        <exclude name="AvoidFinalLocalVariable"/>
+        <exclude name="CallSuperInConstructor"/>
+        <exclude name="CommentDefaultAccessModifier"/>
+        <exclude name="ConfusingTernary"/>
+        <exclude name="LocalHomeNamingConvention"/> <!-- earlier j2ee group-->
+        <exclude name="LocalInterfaceSessionNamingConvention"/> <!-- earlier j2ee group-->
+        <exclude name="LocalVariableCouldBeFinal"/>
+        <exclude name="LongVariable"/>
+        <exclude name="MDBAndSessionBeanNamingConvention"/> <!-- earlier j2ee group-->
+        <exclude name="OnlyOneReturn"/> <!-- disabled in favour of checkstyle ReturnCount check -->
+        <exclude name="RemoteInterfaceNamingConvention"/> <!-- earlier j2ee group-->
+        <exclude name="RemoteSessionInterfaceNamingConvention"/> <!-- earlier j2ee group-->
+        <exclude name="ShortClassName"/>
+        <exclude name="ShortMethodName"/>
+        <exclude name="ShortVariable"/>
+        <exclude name="TooManyStaticImports"/>
+        <exclude name="UselessParentheses"/>
+    </rule>
+
+
+    <!-- Design (https://pmd.github.io/pmd-6.0.1/pmd_rules_java_design.html) -->
+    <rule ref="category/java/design.xml">
+        <exclude name="AvoidCatchingGenericException"/>
+        <exclude name="DataClass"/>
+        <exclude name="ExcessiveClassLength"/> <!-- replaced by NcssCount -->
+        <exclude name="ExcessiveImports"/>
+        <exclude name="ExcessiveMethodLength"/> <!-- replaced by NcssCount -->
+        <exclude name="LawOfDemeter"/>
+        <exclude name="LoosePackageCoupling"/>
+        <exclude name="ModifiedCyclomaticComplexity"/>
+        <exclude name="SignatureDeclareThrowsException"/>
+        <exclude name="StdCyclomaticComplexity"/>
+        <exclude name="TooManyFields"/>
+    </rule>
+    <rule ref="category/java/design.xml/AvoidDeeplyNestedIfStmts">
+        <properties>
+            <property name="problemDepth" value="4"/>
+        </properties>
+    </rule>
+    <rule ref="category/java/design.xml/CyclomaticComplexity">
+        <properties>
+            <property name="cycloOptions" value="ignoreBooleanPaths"/>
+            <property name="classReportLevel" value="81"/>
+            <property name="methodReportLevel" value="11"/>
+        </properties>
+    </rule>
+    <rule ref="category/java/design.xml/NcssCount">
+        <properties>
+            <property name="methodReportLevel" value="30"/>
+            <property name="classReportLevel" value="300"/>
+        </properties>
+    </rule>
+    <rule ref="category/java/design.xml/NPathComplexity">
+        <properties>
+            <property name="reportLevel" value="201"/>
+        </properties>
+    </rule>
+    <rule ref="category/java/design.xml/TooManyMethods" message="Avoid classes longer than 20 methods">
+        <properties>
+            <property name="maxmethods" value="20"/>
+        </properties>
+    </rule>
+
+
+    <!-- Documentation (https://pmd.github.io/pmd-6.0.1/pmd_rules_java_documentation.html) -->
+    <rule ref="category/java/documentation.xml">
+        <exclude name="CommentRequired"/>
+        <exclude name="CommentSize"/>
+    </rule>
+
+
+    <!-- Error prone (https://pmd.github.io/pmd-6.0.1/pmd_rules_java_errorprone.html) -->
+    <rule ref="category/java/errorprone.xml">
+        <exclude name="AvoidCatchingThrowable"/>
+        <exclude name="BeanMembersShouldSerialize"/>
+        <exclude name="DataflowAnomalyAnalysis"/>
+        <exclude name="DoNotCallSystemExit"/> <!-- earlier j2ee group-->
+        <exclude name="EmptyFinalizer"/>
+        <exclude name="FinalizeOnlyCallsSuperFinalize"/>
+        <exclude name="FinalizeDoesNotCallSuperFinalize"/>
+        <exclude name="JUnitSpelling"/>
+        <exclude name="JUnitStaticSuite"/>
+        <exclude name="InvalidSlf4jMessageFormat"/>
+        <exclude name="LoggerIsNotStaticFinal"/>
+        <exclude name="MissingSerialVersionUID"/>
+        <exclude name="NullAssignment"/> <!-- disabled due to false positive for initialization with ternary operator -->
+        <exclude name="StaticEJBFieldShouldBeFinal"/> <!-- earlier j2ee group-->
+        <exclude name="UseCorrectExceptionLogging"/>
+        <exclude name="UseLocaleWithCaseConversions"/>
+        <exclude name="UseProperClassLoader"/> <!-- earlier j2ee group-->
+    </rule>
+    <rule ref="category/java/errorprone.xml/AvoidDuplicateLiterals">
+        <properties>
+            <property name="skipAnnotations" value="true"/>
+        </properties>
+    </rule>
+
+
+    <!-- Error prone (https://pmd.github.io/pmd-6.0.1/pmd_rules_java_multithreading.html) -->
+    <rule ref="category/java/multithreading.xml">
+        <exclude name="DoNotUseThreads"/> <!-- earlier j2ee group-->
+        <exclude name="UseConcurrentHashMap"/>
+    </rule>
+
+
+    <!-- Performance (https://pmd.github.io/pmd-6.0.1/pmd_rules_java_performance.html) -->
+    <rule ref="category/java/performance.xml"/>
+
+
+    <!-- Security (no rules) -->
+    <rule ref="category/java/security.xml"/>
+
+</ruleset>

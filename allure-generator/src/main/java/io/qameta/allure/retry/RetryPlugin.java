@@ -6,7 +6,6 @@ import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,15 +26,15 @@ import static io.qameta.allure.entity.TestResult.comparingByTime;
  */
 public class RetryPlugin implements Aggregator {
 
-    protected static final String RETRY_BLOCK_NAME = "retries";
+    public static final String RETRY_BLOCK_NAME = "retries";
 
     @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.AvoidInstantiatingObjectsInLoops"})
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
-                          final Path outputDirectory) throws IOException {
+                          final Path outputDirectory) {
 
-        Map<String, List<TestResult>> byHistory = launchesResults.stream()
+        final Map<String, List<TestResult>> byHistory = launchesResults.stream()
                 .flatMap(results -> results.getAllResults().stream())
                 .filter(result -> Objects.nonNull(result.getHistoryId()))
                 .collect(Collectors.toMap(TestResult::getHistoryId, Arrays::asList, this::merge));
@@ -81,8 +80,7 @@ public class RetryPlugin implements Aggregator {
     private Optional<TestResult> findLatest(final List<TestResult> results) {
         return results.stream()
                 .filter(result -> !result.isHidden())
-                .sorted(comparingByTime())
-                .findFirst();
+                .min(comparingByTime());
     }
 
     private List<TestResult> merge(final List<TestResult> first,

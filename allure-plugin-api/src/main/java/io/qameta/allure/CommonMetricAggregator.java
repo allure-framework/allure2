@@ -25,7 +25,7 @@ public abstract class CommonMetricAggregator implements Aggregator {
     private final String fileName;
 
     protected CommonMetricAggregator(final String fileName) {
-        this("export", fileName);
+        this(Constants.EXPORT_DIR, fileName);
     }
 
     protected CommonMetricAggregator(final String location, final String fileName) {
@@ -46,6 +46,7 @@ public abstract class CommonMetricAggregator implements Aggregator {
 
     public abstract List<Metric> getMetrics();
 
+    @SuppressWarnings("MultipleStringLiterals")
     protected String getData(final List<LaunchResults> launchesResults) {
         final List<Metric> metrics = getMetrics();
         final List<TestResult> results = launchesResults.stream()

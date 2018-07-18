@@ -49,7 +49,7 @@ import static java.util.Objects.nonNull;
  *
  * @since 2.0
  */
-@SuppressWarnings("PMD.ExcessiveImports")
+@SuppressWarnings({"PMD.ExcessiveImports", "ClassDataAbstractionCoupling", "ClassFanOutComplexity"})
 public class JunitXmlPlugin implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JunitXmlPlugin.class);
@@ -279,7 +279,7 @@ public class JunitXmlPlugin implements Reader {
     }
 
     private static List<Path> listResults(final Path directory) {
-        List<Path> result = new ArrayList<>();
+        final List<Path> result = new ArrayList<>();
         if (!Files.isDirectory(directory)) {
             return result;
         }

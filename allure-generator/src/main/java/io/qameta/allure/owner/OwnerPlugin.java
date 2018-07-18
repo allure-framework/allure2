@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class OwnerPlugin implements Aggregator {
 
-    private static final String OWNER_BLOCK_NAME = "owner";
+    public static final String OWNER_BLOCK_NAME = "owner";
 
     @Override
     public void aggregate(final Configuration configuration,
