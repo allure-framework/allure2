@@ -4,6 +4,10 @@ import io.qameta.allure.Reader;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
+import io.qameta.allure.datetime.CompositeDateTimeParser;
+import io.qameta.allure.datetime.DateTimeParser;
+import io.qameta.allure.datetime.LocalDateTimeParser;
+import io.qameta.allure.datetime.ZonedDateTimeParser;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
@@ -23,8 +27,8 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -75,11 +79,23 @@ public class JunitXmlPlugin implements Reader {
 
     private static final Map<String, Status> RETRIES;
 
-
     static {
         RETRIES = new HashMap<>();
         RETRIES.put(RERUN_FAILURE_ELEMENT_NAME, Status.FAILED);
         RETRIES.put(RERUN_ERROR_ELEMENT_NAME, Status.BROKEN);
+    }
+
+    private final DateTimeParser parser;
+
+    public JunitXmlPlugin() {
+        this(ZoneOffset.systemDefault());
+    }
+
+    public JunitXmlPlugin(final ZoneId defaultZoneId) {
+        parser = new CompositeDateTimeParser(
+                new ZonedDateTimeParser(),
+                new LocalDateTimeParser(defaultZoneId)
+        );
     }
 
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
@@ -133,8 +149,8 @@ public class JunitXmlPlugin implements Reader {
         if (isNull(timestamp)) {
             return null;
         }
-        final LocalDateTime parsed = LocalDateTime.parse(timestamp);
-        return parsed.atZone(ZoneId.systemDefault()).toEpochSecond();
+        return parser.getEpochMilli(timestamp)
+                .orElse(null);
     }
 
     private void parseTestCase(final TestSuiteInfo info, final XmlElement testCaseElement, final Path resultsDirectory,
