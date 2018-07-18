@@ -10,6 +10,7 @@ import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.executor.ExecutorPlugin;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,7 +38,7 @@ public class HistoryPlugin implements Reader, Aggregator {
 
     //@formatter:off
     private static final TypeReference<Map<String, HistoryData>> HISTORY_TYPE =
-        new TypeReference<Map<String, HistoryData>>() {};
+        new TypeReference<Map<String, HistoryData>>() { };
     //@formatter:on
 
     @Override
@@ -71,7 +72,10 @@ public class HistoryPlugin implements Reader, Aggregator {
     protected Map<String, HistoryData> getData(final List<LaunchResults> launches) {
         return launches.stream()
                 .map(launch -> {
-                    ExecutorInfo executorInfo = launch.getExtra("executor", ExecutorInfo::new);
+                    final ExecutorInfo executorInfo = launch.getExtra(
+                            ExecutorPlugin.EXECUTORS_BLOCK_NAME,
+                            ExecutorInfo::new
+                    );
                     final Map<String, HistoryData> history = launch.getExtra(HISTORY_BLOCK_NAME, HashMap::new);
                     launch.getResults().stream()
                             .filter(result -> Objects.nonNull(result.getHistoryId()))

@@ -20,7 +20,7 @@ public class RandomUidContext implements Context<Supplier<String>> {
     @Override
     public Supplier<String> getValue() {
         return () -> {
-            byte[] randomBytes = new byte[UID_RANDOM_BYTES_COUNT];
+            final byte[] randomBytes = new byte[UID_RANDOM_BYTES_COUNT];
             ThreadLocalRandom.current().nextBytes(randomBytes);
             return new BigInteger(1, randomBytes).toString(RADIX);
         };

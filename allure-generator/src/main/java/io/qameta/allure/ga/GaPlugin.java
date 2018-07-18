@@ -85,14 +85,13 @@ public class GaPlugin implements Aggregator {
     protected void sendStats(final String clientId, final GaParameters parameters) {
         final HttpClientBuilder builder = HttpClientBuilder.create();
         try (CloseableHttpClient client = builder.build()) {
-            List<NameValuePair> pairs = Arrays.asList(
+            final List<NameValuePair> pairs = Arrays.asList(
                     pair("v", GA_API_VERSION),
                     pair("aip", GA_API_VERSION),
                     pair("tid", GA_ID),
                     pair("z", UUID.randomUUID().toString()),
                     pair("sc", "end"),
                     pair("t", "event"),
-                    pair("ds", "allure cli"),
                     pair("cid", clientId),
                     pair("an", "Allure Report"),
                     pair("ec", "Allure CLI events"),
@@ -156,7 +155,7 @@ public class GaPlugin implements Aggregator {
 
     private static String getLabelValuesAsString(final List<LaunchResults> launchesResults,
                                                  final LabelName labelName) {
-        String values = launchesResults.stream()
+        final String values = launchesResults.stream()
                 .flatMap(results -> results.getResults().stream())
                 .flatMap(result -> result.getLabels().stream())
                 .filter(label -> labelName.value().equals(label.getName()))

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.CommonJsonAggregator;
 import io.qameta.allure.CompositeAggregator;
+import io.qameta.allure.Constants;
 import io.qameta.allure.Reader;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
@@ -41,10 +42,9 @@ import static java.util.stream.StreamSupport.stream;
 public class DurationTrendPlugin extends CompositeAggregator implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DurationTrendPlugin.class);
+    private static final String DURATION_TREND_BLOCK_NAME = "duration-trend";
 
     protected static final String JSON_FILE_NAME = "duration-trend.json";
-    private static final String DURATION_TREND_BLOCK_NAME = "duration-trend";
-    protected static final String HISTORY = "history";
 
     public DurationTrendPlugin() {
         super(Arrays.asList(
@@ -57,7 +57,7 @@ public class DurationTrendPlugin extends CompositeAggregator implements Reader {
                             final ResultsVisitor visitor,
                             final Path directory) {
         final JacksonContext context = configuration.requireContext(JacksonContext.class);
-        final Path historyFile = directory.resolve(HISTORY).resolve(JSON_FILE_NAME);
+        final Path historyFile = directory.resolve(Constants.HISTORY_DIR).resolve(JSON_FILE_NAME);
         if (Files.exists(historyFile)) {
             try (InputStream is = Files.newInputStream(historyFile)) {
                 final ObjectMapper mapper = context.getValue();
@@ -136,14 +136,16 @@ public class DurationTrendPlugin extends CompositeAggregator implements Reader {
                 .map(Optional::get)
                 .filter(ExecutorInfo.class::isInstance)
                 .map(ExecutorInfo.class::cast)
-                .sorted(comparator.reversed())
-                .findFirst();
+                .max(comparator);
     }
 
+    /**
+     * Generates tree data.
+     */
     private static class JsonAggregator extends CommonJsonAggregator {
 
         JsonAggregator() {
-            super(HISTORY, JSON_FILE_NAME);
+            super(Constants.HISTORY_DIR, JSON_FILE_NAME);
         }
 
         @Override
@@ -152,10 +154,13 @@ public class DurationTrendPlugin extends CompositeAggregator implements Reader {
         }
     }
 
+    /**
+     * Generates widget data.
+     */
     private static class WidgetAggregator extends CommonJsonAggregator {
 
         WidgetAggregator() {
-            super("widgets", JSON_FILE_NAME);
+            super(Constants.WIDGETS_DIR, JSON_FILE_NAME);
         }
 
         @Override

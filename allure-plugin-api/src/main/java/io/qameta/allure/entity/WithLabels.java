@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author Dmitry Baev baev@qameta.io
- *         Date: 31.01.16
+ * Date: 31.01.16
  */
 public interface WithLabels {
 
@@ -53,7 +53,7 @@ public interface WithLabels {
         if (value == null || name == null) {
             return;
         }
-        Optional<String> any = getLabels().stream()
+        final Optional<String> any = getLabels().stream()
                 .map(Label::getName)
                 .filter(name::equals)
                 .findAny();

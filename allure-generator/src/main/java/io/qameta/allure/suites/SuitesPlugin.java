@@ -3,6 +3,7 @@ package io.qameta.allure.suites;
 import io.qameta.allure.CommonCsvExportAggregator;
 import io.qameta.allure.CommonJsonAggregator;
 import io.qameta.allure.CompositeAggregator;
+import io.qameta.allure.Constants;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.csv.CsvExportSuite;
 import io.qameta.allure.entity.TestResult;
@@ -11,6 +12,7 @@ import io.qameta.allure.tree.TestResultTreeGroup;
 import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeWidgetData;
 import io.qameta.allure.tree.TreeWidgetItem;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
@@ -35,15 +37,19 @@ public class SuitesPlugin extends CompositeAggregator {
 
     private static final String SUITES = "suites";
 
-    /** Name of the json file. */
+    /**
+     * Name of the json file.
+     */
     protected static final String JSON_FILE_NAME = "suites.json";
 
-    /** Name of the csv file. */
+    /**
+     * Name of the csv file.
+     */
     protected static final String CSV_FILE_NAME = "suites.csv";
 
     public SuitesPlugin() {
         super(Arrays.asList(
-            new JsonAggregator(), new CsvExportAggregator(), new WidgetAggregator()
+                new JsonAggregator(), new CsvExportAggregator(), new WidgetAggregator()
         ));
     }
 
@@ -65,6 +71,9 @@ public class SuitesPlugin extends CompositeAggregator {
         return xunit;
     }
 
+    /**
+     * Generates tree data.
+     */
     private static class JsonAggregator extends CommonJsonAggregator {
 
         JsonAggregator() {
@@ -77,6 +86,9 @@ public class SuitesPlugin extends CompositeAggregator {
         }
     }
 
+    /**
+     * Generates export data.
+     */
     private static class CsvExportAggregator extends CommonCsvExportAggregator<CsvExportSuite> {
 
         CsvExportAggregator() {
@@ -91,22 +103,25 @@ public class SuitesPlugin extends CompositeAggregator {
         }
     }
 
+    /**
+     * Generates widget data.
+     */
     private static class WidgetAggregator extends CommonJsonAggregator {
 
         WidgetAggregator() {
-            super("widgets", JSON_FILE_NAME);
+            super(Constants.WIDGETS_DIR, JSON_FILE_NAME);
         }
 
         @Override
         protected Object getData(final List<LaunchResults> launches) {
             final Tree<TestResult> data = SuitesPlugin.getData(launches);
             final List<TreeWidgetItem> items = data.getChildren().stream()
-                .filter(TestResultTreeGroup.class::isInstance)
-                .map(TestResultTreeGroup.class::cast)
-                .map(WidgetAggregator::toWidgetItem)
-                .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
-                .limit(10)
-                .collect(Collectors.toList());
+                    .filter(TestResultTreeGroup.class::isInstance)
+                    .map(TestResultTreeGroup.class::cast)
+                    .map(WidgetAggregator::toWidgetItem)
+                    .sorted(Comparator.comparing(TreeWidgetItem::getStatistic, comparator()).reversed())
+                    .limit(10)
+                    .collect(Collectors.toList());
             return new TreeWidgetData().setItems(items).setTotal(data.getChildren().size());
         }
 

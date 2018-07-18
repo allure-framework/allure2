@@ -46,7 +46,11 @@ import static java.util.Objects.nonNull;
  *
  * @since 2.0
  */
-@SuppressWarnings("PMD.ExcessiveImports")
+@SuppressWarnings({
+        "PMD.ExcessiveImports",
+        "ClassDataAbstractionCoupling",
+        "ClassFanOutComplexity"
+})
 public class Allure2Plugin implements Reader {
 
     public static final String ALLURE2_RESULTS_FORMAT = "allure2";
@@ -218,7 +222,7 @@ public class Allure2Plugin implements Reader {
     private StageResult getTestStage(final Path source,
                                      final ResultsVisitor visitor,
                                      final TestResult result) {
-        StageResult testStage = new StageResult();
+        final StageResult testStage = new StageResult();
         testStage.setSteps(convert(result.getSteps(), step -> convert(source, visitor, step)));
         testStage.setAttachments(convert(result.getAttachments(), attachment -> convert(source, visitor, attachment)));
         testStage.setStatus(convert(result.getStatus()));

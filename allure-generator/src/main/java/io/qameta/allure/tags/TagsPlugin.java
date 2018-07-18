@@ -5,7 +5,6 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.LabelName;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.HashSet;
@@ -17,16 +16,18 @@ import java.util.Set;
  */
 public class TagsPlugin implements Aggregator {
 
+    public static final String TAGS_BLOCK_NAME = "tags";
+
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
-                          final Path outputDirectory) throws IOException {
+                          final Path outputDirectory) {
         launchesResults.stream()
                 .map(LaunchResults::getAllResults)
                 .flatMap(Collection::stream)
                 .forEach(result -> {
                     final Set<String> tags = new HashSet<>(result.findAllLabels(LabelName.TAG));
-                    result.addExtraBlock("tags", tags);
+                    result.addExtraBlock(TAGS_BLOCK_NAME, tags);
                 });
     }
 }

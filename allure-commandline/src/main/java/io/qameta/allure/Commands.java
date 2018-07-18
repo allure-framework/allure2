@@ -33,6 +33,7 @@ import static java.lang.String.format;
 /**
  * @author charlie (Dmitry Baev).
  */
+@SuppressWarnings({"ClassDataAbstractionCoupling", "ClassFanOutComplexity", "ReturnCount"})
 public class Commands {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Commands.class);
@@ -85,7 +86,7 @@ public class Commands {
             return ExitCode.GENERIC_ERROR;
         }
         try {
-            ReportGenerator generator = new ReportGenerator(createReportConfiguration(profile));
+            final ReportGenerator generator = new ReportGenerator(createReportConfiguration(profile));
             generator.generate(reportDirectory, resultsDirectories);
         } catch (IOException e) {
             LOGGER.error("Could not generate report: {}", e);
@@ -187,17 +188,17 @@ public class Commands {
     }
 
     /**
-     * Set up Jetty server to serve Allure Report
+     * Set up Jetty server to serve Allure Report.
      */
     protected Server setUpServer(final String host, final int port, final Path reportDirectory) {
         final Server server = Objects.isNull(host)
                 ? new Server(port)
                 : new Server(new InetSocketAddress(host, port));
-        ResourceHandler handler = new ResourceHandler();
+        final ResourceHandler handler = new ResourceHandler();
         handler.setRedirectWelcome(true);
         handler.setDirectoriesListed(true);
         handler.setResourceBase(reportDirectory.toAbsolutePath().toString());
-        HandlerList handlers = new HandlerList();
+        final HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[]{handler, new DefaultHandler()});
         server.setStopAtShutdown(true);
         server.setHandler(handlers);

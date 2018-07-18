@@ -15,8 +15,8 @@ public class MarkdownContext implements Context<Function<String, String>> {
 
     @Override
     public Function<String, String> getValue() {
-        Parser parser = Parser.builder().build();
-        HtmlRenderer renderer = HtmlRenderer.builder().build();
+        final Parser parser = Parser.builder().build();
+        final HtmlRenderer renderer = HtmlRenderer.builder().build();
         return s -> renderer.render(parser.parse(s));
     }
 }

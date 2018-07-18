@@ -20,7 +20,7 @@ public abstract class CommonJsonAggregator implements Aggregator {
     private final String fileName;
 
     protected CommonJsonAggregator(final String fileName) {
-        this("data", fileName);
+        this(Constants.DATA_DIR, fileName);
     }
 
     protected CommonJsonAggregator(final String location, final String fileName) {
@@ -40,5 +40,5 @@ public abstract class CommonJsonAggregator implements Aggregator {
         }
     }
 
-    protected abstract Object getData(final List<LaunchResults> launches);
+    protected abstract Object getData(List<LaunchResults> launches);
 }

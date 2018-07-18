@@ -76,7 +76,14 @@ import static java.util.stream.Collectors.toList;
  *
  * @since 2.0
  */
-@SuppressWarnings({"PMD.ExcessiveImports", "PMD.GodClass", "PMD.TooManyMethods"})
+@SuppressWarnings({
+        "PMD.ExcessiveImports",
+        "PMD.GodClass",
+        "PMD.TooManyMethods",
+        "ClassDataAbstractionCoupling",
+        "ClassFanOutComplexity",
+        "MultipleStringLiterals"
+})
 public class Allure1Plugin implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Allure1Plugin.class);
@@ -141,7 +148,12 @@ public class Allure1Plugin implements Reader {
         return properties;
     }
 
-    @SuppressWarnings("PMD.ExcessiveMethodLength")
+    @SuppressWarnings({
+            "PMD.ExcessiveMethodLength",
+            "JavaNCSS",
+            "ExecutableStatementCount",
+            "PMD.NcssCount"
+    })
     private void convert(final Supplier<String> randomUid,
                          final Path directory,
                          final ResultsVisitor visitor,
@@ -186,7 +198,7 @@ public class Allure1Plugin implements Reader {
         });
 
         if (!source.getSteps().isEmpty() || !source.getAttachments().isEmpty()) {
-            StageResult testStage = new StageResult();
+            final StageResult testStage = new StageResult();
             if (!source.getSteps().isEmpty()) {
                 //@formatter:off
                 testStage.setSteps(convert(
@@ -313,6 +325,7 @@ public class Allure1Plugin implements Reader {
         }
     }
 
+    @SuppressWarnings("ReturnCount")
     public static Status convert(final ru.yandex.qatools.allure.model.Status status) {
         if (Objects.isNull(status)) {
             return Status.UNKNOWN;
@@ -431,7 +444,7 @@ public class Allure1Plugin implements Reader {
         try (InputStream is = Files.newInputStream(source)) {
             return Optional.of(xmlMapper.readValue(is, TestSuiteResult.class));
         } catch (IOException e) {
-            LOGGER.error("Could not read result {}: {}", source, e);
+            LOGGER.error("Could not read xml result {}: {}", source, e);
         }
         return Optional.empty();
     }
@@ -440,7 +453,7 @@ public class Allure1Plugin implements Reader {
         try (InputStream is = Files.newInputStream(source)) {
             return Optional.of(jsonMapper.readValue(is, TestSuiteResult.class));
         } catch (IOException e) {
-            LOGGER.error("Could not read result {}: {}", source, e);
+            LOGGER.error("Could not read json result {}: {}", source, e);
             return Optional.empty();
         }
     }

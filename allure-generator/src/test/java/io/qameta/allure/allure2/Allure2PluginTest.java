@@ -73,9 +73,7 @@ public class Allure2PluginTest {
         ).getResults();
 
         assertThat(testResults)
-                .hasSize(1)
                 .flatExtracting(TestResult::getParameters)
-                .hasSize(4)
                 .extracting(Parameter::getName, Parameter::getValue)
                 .containsExactlyInAnyOrder(
                         tuple("name", "value"),

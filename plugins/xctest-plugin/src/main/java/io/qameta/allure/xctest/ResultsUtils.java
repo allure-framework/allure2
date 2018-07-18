@@ -13,6 +13,7 @@ import java.util.UUID;
 /**
  * The collection of Test result utils methods.
  */
+@SuppressWarnings("MultipleStringLiterals")
 public final class ResultsUtils {
 
     private static final String TEST_NAME = "TestName";
@@ -80,8 +81,8 @@ public final class ResultsUtils {
     }
 
     private static Time getStepTime(final Map<String, Object> props) {
-        long start = parseTime(props.getOrDefault(STEP_START_TIME, "0").toString());
-        long stop = parseTime(props.getOrDefault(STEP_STOP_TIME, "0").toString());
+        final long start = parseTime(props.getOrDefault(STEP_START_TIME, "0").toString());
+        final long stop = parseTime(props.getOrDefault(STEP_STOP_TIME, "0").toString());
         return new Time().setStart(start).setStop(stop).setDuration(stop - start);
     }
 
