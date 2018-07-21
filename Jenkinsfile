@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'java' }
+    agent none
     parameters {
         booleanParam(name: 'RELEASE', defaultValue: false, description: 'Perform release?')
         string(name: 'RELEASE_VERSION', defaultValue: '', description: 'Release version')
@@ -7,11 +7,13 @@ pipeline {
     }
     stages {
         stage('Build') {
+            agent { docker 'gradle:jdk8' }
             steps {
                 sh './gradlew build'
             }
         }
         stage('Demo') {
+            agent { docker 'gradle:jdk8' }
             steps {
                 sh 'allure-commandline/build/install/allure/bin/allure generate ' +
                         'allure-generator/test-data/demo --clean -o build/report-demo'
@@ -25,6 +27,7 @@ pipeline {
             }
         }
         stage('Release') {
+            agent { docker 'gradle:jdk8' }
             when { expression { return params.RELEASE } }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'qameta-ci_bintray',
