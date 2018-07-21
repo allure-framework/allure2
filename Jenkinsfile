@@ -1,5 +1,5 @@
 pipeline {
-    agent { docker 'gradle:jdk8' }
+    agent { docker 'openjdk:8' }
     parameters {
         booleanParam(name: 'RELEASE', defaultValue: false, description: 'Perform release?')
         string(name: 'RELEASE_VERSION', defaultValue: '', description: 'Release version')
