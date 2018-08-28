@@ -4,6 +4,10 @@ import io.qameta.allure.Reader;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
+import io.qameta.allure.datetime.CompositeDateTimeParser;
+import io.qameta.allure.datetime.DateTimeParser;
+import io.qameta.allure.datetime.LocalDateTimeParser;
+import io.qameta.allure.datetime.ZonedDateTimeParser;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
@@ -23,8 +27,8 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -45,7 +49,7 @@ import static java.util.Objects.nonNull;
  *
  * @since 2.0
  */
-@SuppressWarnings("PMD.ExcessiveImports")
+@SuppressWarnings({"PMD.ExcessiveImports", "ClassDataAbstractionCoupling", "ClassFanOutComplexity"})
 public class JunitXmlPlugin implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JunitXmlPlugin.class);
@@ -68,16 +72,30 @@ public class JunitXmlPlugin implements Reader {
     private static final String RERUN_ERROR_ELEMENT_NAME = "rerunError";
     private static final String HOSTNAME_ATTRIBUTE_NAME = "hostname";
     private static final String TIMESTAMP_ATTRIBUTE_NAME = "timestamp";
+    private static final String STATUS_ATTRIBUTE_NAME = "status";
+    private static final String SKIPPED_ATTRIBUTE_VALUE = "notrun";
 
     private static final String XML_GLOB = "*.xml";
 
     private static final Map<String, Status> RETRIES;
 
-
     static {
         RETRIES = new HashMap<>();
         RETRIES.put(RERUN_FAILURE_ELEMENT_NAME, Status.FAILED);
         RETRIES.put(RERUN_ERROR_ELEMENT_NAME, Status.BROKEN);
+    }
+
+    private final DateTimeParser parser;
+
+    public JunitXmlPlugin() {
+        this(ZoneOffset.systemDefault());
+    }
+
+    public JunitXmlPlugin(final ZoneId defaultZoneId) {
+        parser = new CompositeDateTimeParser(
+                new ZonedDateTimeParser(),
+                new LocalDateTimeParser(defaultZoneId)
+        );
     }
 
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
@@ -131,8 +149,8 @@ public class JunitXmlPlugin implements Reader {
         if (isNull(timestamp)) {
             return null;
         }
-        final LocalDateTime parsed = LocalDateTime.parse(timestamp);
-        return parsed.atZone(ZoneId.systemDefault()).toEpochSecond();
+        return parser.getEpochMilli(timestamp)
+                .orElse(null);
     }
 
     private void parseTestCase(final TestSuiteInfo info, final XmlElement testCaseElement, final Path resultsDirectory,
@@ -211,6 +229,12 @@ public class JunitXmlPlugin implements Reader {
         if (testCaseElement.contains(SKIPPED_ELEMENT_NAME)) {
             return Status.SKIPPED;
         }
+
+        if ((testCaseElement.containsAttribute(STATUS_ATTRIBUTE_NAME))
+                && (testCaseElement.getAttribute(STATUS_ATTRIBUTE_NAME).equals(SKIPPED_ATTRIBUTE_VALUE))) {
+            return Status.SKIPPED;
+        }
+
         return Status.PASSED;
     }
 
@@ -255,7 +279,7 @@ public class JunitXmlPlugin implements Reader {
     }
 
     private static List<Path> listResults(final Path directory) {
-        List<Path> result = new ArrayList<>();
+        final List<Path> result = new ArrayList<>();
         if (!Files.isDirectory(directory)) {
             return result;
         }

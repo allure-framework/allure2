@@ -3,6 +3,7 @@ package io.qameta.allure.mail;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import io.qameta.allure.Aggregator;
+import io.qameta.allure.Constants;
 import io.qameta.allure.context.FreemarkerContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
@@ -30,7 +31,7 @@ public class MailPlugin implements Aggregator {
                           final List<LaunchResults> launchesResults,
                           final Path outputDirectory) throws IOException {
         final FreemarkerContext context = configuration.requireContext(FreemarkerContext.class);
-        final Path exportFolder = Files.createDirectories(outputDirectory.resolve("export"));
+        final Path exportFolder = Files.createDirectories(outputDirectory.resolve(Constants.EXPORT_DIR));
         final Path mailFile = exportFolder.resolve("mail.html");
         try (BufferedWriter writer = Files.newBufferedWriter(mailFile)) {
             final Template template = context.getValue().getTemplate("mail.html.ftl");

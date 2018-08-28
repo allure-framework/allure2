@@ -30,11 +30,12 @@ import static org.apache.tika.mime.MimeTypes.getDefaultMimeTypes;
 /**
  * @author charlie (Dmitry Baev).
  */
+@SuppressWarnings("MultipleStringLiterals")
 public class DefaultResultsVisitor implements ResultsVisitor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultResultsVisitor.class);
 
-    private static final Metadata METADATA = new Metadata();
+    public static final String WILDCARD = "*/*";
 
     private final Configuration configuration;
 
@@ -109,21 +110,23 @@ public class DefaultResultsVisitor implements ResultsVisitor {
         }
     }
 
-    private static String probeContentType(final Path path) {
+    public static String probeContentType(final Path path) {
         try (InputStream stream = newInputStream(path)) {
             return probeContentType(stream, Objects.toString(path.getFileName()));
         } catch (IOException e) {
-            LOGGER.warn("Couldn't detect the mime-type of attachment {} {}", path, e);
-            return "unknown";
+            LOGGER.warn("Couldn't detect the media type of attachment {} {}", path, e);
+            return WILDCARD;
         }
     }
 
-    private static String probeContentType(final InputStream is, final String name) {
+    public static String probeContentType(final InputStream is, final String name) {
         try (InputStream stream = new BufferedInputStream(is)) {
-            return getDefaultMimeTypes().detect(stream, METADATA).toString();
+            final Metadata metadata = new Metadata();
+            metadata.set(Metadata.RESOURCE_NAME_KEY, name);
+            return getDefaultMimeTypes().detect(stream, metadata).toString();
         } catch (IOException e) {
-            LOGGER.warn("Couldn't detect the mime-type of attachment {} {}", name, e);
-            return "unknown";
+            LOGGER.warn("Couldn't detect the media type of attachment {} {}", name, e);
+            return WILDCARD;
         }
     }
 

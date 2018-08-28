@@ -98,7 +98,7 @@ public class XcTestPlugin implements Reader {
 
         asList(props.getOrDefault(ACTIVITY_SUMMARIES, emptyList()))
                 .forEach(activity -> parseStep(directory, result, activity, visitor));
-        Optional<Step> lastFailedStep = result.getTestStage().getSteps().stream()
+        final Optional<Step> lastFailedStep = result.getTestStage().getSteps().stream()
                 .filter(s -> !s.getStatus().equals(Status.PASSED)).sorted((a, b) -> -1).findFirst();
         lastFailedStep.map(Step::getStatusMessage).ifPresent(result::setStatusMessage);
         lastFailedStep.map(Step::getStatusTrace).ifPresent(result::setStatusTrace);
@@ -114,7 +114,7 @@ public class XcTestPlugin implements Reader {
         if (activityTitle.startsWith("Start Test at")) {
             getStartTime(activityTitle).ifPresent(start -> {
                 final Timeable withTime = (Timeable) parent;
-                long duration = withTime.getTime().getDuration();
+                final long duration = withTime.getTime().getDuration();
                 withTime.getTime().setStart(start);
                 withTime.getTime().setStop(start + duration);
             });
@@ -141,7 +141,7 @@ public class XcTestPlugin implements Reader {
         asList(props.getOrDefault(SUB_ACTIVITIES, emptyList()))
                 .forEach(subActivity -> parseStep(directory, step, subActivity, visitor));
 
-        Optional<Step> lastFailedStep = step.getSteps().stream()
+        final Optional<Step> lastFailedStep = step.getSteps().stream()
                 .filter(s -> !s.getStatus().equals(Status.PASSED)).sorted((a, b) -> -1).findFirst();
         lastFailedStep.map(Step::getStatus).ifPresent(step::setStatus);
         lastFailedStep.map(Step::getStatusMessage).ifPresent(step::setStatusMessage);
@@ -152,8 +152,8 @@ public class XcTestPlugin implements Reader {
                                final ResultsVisitor visitor,
                                final Map<String, Object> props,
                                final Step step) {
-        String uuid = props.get("UUID").toString();
-        Path attachments = directory.resolve("Attachments");
+        final String uuid = props.get("UUID").toString();
+        final Path attachments = directory.resolve("Attachments");
         Stream.of("jpg", "png")
             .map(ext -> attachments.resolve(String.format("Screenshot_%s.%s", uuid, ext)))
             .filter(Files::exists)
@@ -172,7 +172,7 @@ public class XcTestPlugin implements Reader {
     }
 
     private static List<Path> listSummaries(final Path directory) {
-        List<Path> result = new ArrayList<>();
+        final List<Path> result = new ArrayList<>();
         if (!Files.isDirectory(directory)) {
             return result;
         }

@@ -19,17 +19,18 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * @author Artem Eroshenko <eroshenkoam@qameta.io>
+ * @author eroshenkoam Artem Eroshenko
  */
+@SuppressWarnings("DeclarationOrder")
 public class CommandLine {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommandLine.class);
 
-    public static final String PROGRAM_NAME = "allure";
-    public static final String SERVE_COMMAND = "serve";
-    public static final String GENERATE_COMMAND = "generate";
-    public static final String OPEN_COMMAND = "open";
-    public static final String PLUGIN_COMMAND = "plugin";
+    protected static final String PROGRAM_NAME = "allure";
+    protected static final String SERVE_COMMAND = "serve";
+    protected static final String GENERATE_COMMAND = "generate";
+    protected static final String OPEN_COMMAND = "open";
+    protected static final String PLUGIN_COMMAND = "plugin";
 
     private final MainCommand mainCommand;
     private final ServeCommand serveCommand;
@@ -73,7 +74,7 @@ public class CommandLine {
         System.exit(exitCode.getCode());
     }
 
-    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
+    @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "ReturnCount"})
     public Optional<ExitCode> parse(final String... args) {
         if (args.length == 0) {
             printUsage(commander);
@@ -98,7 +99,14 @@ public class CommandLine {
         return Optional.empty();
     }
 
-    @SuppressWarnings({"PMD.NPathComplexity", "PMD.ExcessiveMethodLength"})
+    @SuppressWarnings({
+            "CyclomaticComplexity",
+            "NPathComplexity",
+            "ReturnCount",
+            "PMD.NPathComplexity",
+            "PMD.CyclomaticComplexity",
+            "PMD.ExcessiveMethodLength"
+    })
     public ExitCode run() {
         if (mainCommand.getVerboseOptions().isQuiet()) {
             LogManager.getRootLogger().setLevel(Level.OFF);
@@ -109,7 +117,7 @@ public class CommandLine {
         }
 
         if (mainCommand.isVersion()) {
-            String toolVersion = CommandLine.class.getPackage().getImplementationVersion();
+            final String toolVersion = CommandLine.class.getPackage().getImplementationVersion();
             LOGGER.info(Objects.isNull(toolVersion) ? "unknown" : toolVersion);
             return ExitCode.NO_ERROR;
         }

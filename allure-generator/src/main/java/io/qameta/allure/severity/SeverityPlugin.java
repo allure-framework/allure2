@@ -21,7 +21,11 @@ import static io.qameta.allure.entity.LabelName.SEVERITY;
  */
 public class SeverityPlugin extends CompositeAggregator {
 
-    /** Name of the json file. */
+    public static final String SEVERITY_BLOCK_NAME = "severity";
+
+    /**
+     * Name of the json file.
+     */
     protected static final String JSON_FILE_NAME = "severity.json";
 
     public SeverityPlugin() {
@@ -30,6 +34,9 @@ public class SeverityPlugin extends CompositeAggregator {
         ));
     }
 
+    /**
+     * Adds severity to test results.
+     */
     private static class SeverityAggregator implements Aggregator {
 
         @Override
@@ -46,10 +53,13 @@ public class SeverityPlugin extends CompositeAggregator {
             final SeverityLevel severityLevel = result.findOneLabel(SEVERITY)
                     .flatMap(SeverityLevel::fromValue)
                     .orElse(SeverityLevel.NORMAL);
-            result.addExtraBlock("severity", severityLevel);
+            result.addExtraBlock(SEVERITY_BLOCK_NAME, severityLevel);
         }
     }
 
+    /**
+     * Generates widget data.
+     */
     private static class WidgetAggregator extends CommonJsonAggregator {
 
         WidgetAggregator() {
@@ -70,7 +80,7 @@ public class SeverityPlugin extends CompositeAggregator {
                     .setName(result.getName())
                     .setStatus(result.getStatus())
                     .setTime(result.getTime())
-                    .setSeverity(result.getExtraBlock("severity"));
+                    .setSeverity(result.getExtraBlock(SEVERITY_BLOCK_NAME));
         }
     }
 }

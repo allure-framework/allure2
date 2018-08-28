@@ -3,6 +3,7 @@ package io.qameta.allure.core;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import io.qameta.allure.Aggregator;
+import io.qameta.allure.Constants;
 import io.qameta.allure.PluginConfiguration;
 import io.qameta.allure.context.FreemarkerContext;
 import org.slf4j.Logger;
@@ -41,8 +42,8 @@ public class ReportWebPlugin implements Aggregator {
     }
 
     protected void writePluginsStatic(final Configuration configuration,
-                                    final Path outputDirectory) throws IOException {
-        final Path pluginsFolder = outputDirectory.resolve("plugins");
+                                      final Path outputDirectory) throws IOException {
+        final Path pluginsFolder = outputDirectory.resolve(Constants.PLUGINS_DIR);
         for (Plugin plugin : configuration.getPlugins()) {
             final Path pluginDirectory = Files.createDirectories(pluginsFolder.resolve(plugin.getConfig().getId()));
             plugin.unpackReportStatic(pluginDirectory);
@@ -50,7 +51,7 @@ public class ReportWebPlugin implements Aggregator {
     }
 
     protected void writeIndexHtml(final Configuration configuration,
-                                final Path outputDirectory) throws IOException {
+                                  final Path outputDirectory) throws IOException {
         final FreemarkerContext context = configuration.requireContext(FreemarkerContext.class);
         final Path indexHtml = outputDirectory.resolve("index.html");
         final List<PluginConfiguration> pluginConfigurations = configuration.getPlugins().stream()
@@ -60,7 +61,7 @@ public class ReportWebPlugin implements Aggregator {
         try (BufferedWriter writer = Files.newBufferedWriter(indexHtml)) {
             final Template template = context.getValue().getTemplate("index.html.ftl");
             final Map<String, Object> dataModel = new HashMap<>();
-            dataModel.put("plugins", pluginConfigurations);
+            dataModel.put(Constants.PLUGINS_DIR, pluginConfigurations);
             template.process(dataModel, writer);
         } catch (TemplateException e) {
             LOGGER.error("Could't write index file", e);

@@ -1,0 +1,244 @@
+<?xml version="1.0" ?>
+<!DOCTYPE module PUBLIC
+        "-//Puppy Crawl//DTD Check Configuration 1.2//EN"
+        "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
+<module name="Checker">
+    <!-- Properties (http://checkstyle.sourceforge.net/config.html#Properties#Checker) -->
+    <property name="fileExtensions" value="java, properties, xml"/>
+
+    <!-- Filters (http://checkstyle.sourceforge.net/config_filters.html) -->
+    <module name="SuppressWarningsFilter"/>
+
+    <module name="NewlineAtEndOfFile">
+        <property name="lineSeparator" value="lf"/>
+    </module>
+    <!-- disabled in favour of PMD ExcessiveClassLength check, which correctly checks class length not file length -->
+    <!--<module name="FileLength">-->
+    <!--<property name="max" value="500"/>-->
+    <!--</module>-->
+    <module name="FileTabCharacter"/>
+    <module name="Translation"/>
+    <module name="UniqueProperties"/>
+
+    <module name="TreeWalker">
+        <!-- http://checkstyle.sourceforge.net/config_filters.html#SuppressionCommentFilter -->
+        <module name="SuppressionCommentFilter"/>
+
+        <!-- Annotations (http://checkstyle.sourceforge.net/config_annotation.html) -->
+        <!--<module name="AnnotationLocation"/>-->
+        <!--<module name="AnnotationOnSameLine">-->
+        <!--<module name="AnnotationUseStyle"/>-->
+        <module name="MissingDeprecated"/>
+        <module name="MissingOverride"/>
+        <module name="PackageAnnotation"/>
+        <module name="SuppressWarningsHolder"/>
+        <module name="SuppressWarnings"/>
+
+
+        <!-- Block Checks (http://checkstyle.sourceforge.net/config_blocks.html) -->
+        <module name="AvoidNestedBlocks"/>
+        <module name="EmptyBlock"/>
+        <module name="EmptyCatchBlock"/>
+        <module name="LeftCurly"/>
+        <module name="NeedBraces"/>
+        <module name="RightCurly"/>
+
+
+        <!-- Class Design (http://checkstyle.sourceforge.net/config_design.html) -->
+        <!--<module name="DesignForExtension">-->
+        <module name="FinalClass"/>
+        <module name="HideUtilityClassConstructor"/>
+        <module name="InnerTypeLast"/>
+        <module name="InterfaceIsType"/>
+        <module name="MutableException"/>
+        <module name="OneTopLevelClass"/>
+        <module name="ThrowsCount"/>
+        <module name="VisibilityModifier">
+            <property name="protectedAllowed" value="true"/>
+        </module>
+
+
+        <!-- Coding (http://checkstyle.sourceforge.net/config_coding.html) -->
+        <module name="ArrayTrailingComma"/>
+        <!--<module name="AvoidInlineConditionals"/>-->
+        <module name="CovariantEquals"/>
+        <!--<module name="DeclarationOrder"/>-->
+        <module name="DefaultComesLast"/>
+        <module name="EmptyStatement"/>
+        <module name="EqualsAvoidNull"/>
+        <module name="EqualsHashCode"/>
+        <module name="ExplicitInitialization"/>
+        <module name="FallThrough"/>
+        <module name="FinalLocalVariable"/>
+        <!--<module name="HiddenField"/>-->
+        <!--<module name="IllegalCatch"/>-->
+        <module name="IllegalInstantiation"/>
+        <!--<module name="IllegalThrows"/>-->
+        <!--<module name="IllegalToken"/>-->
+        <module name="IllegalTokenText"/>
+        <!--<module name="IllegalType"/>-->
+        <module name="InnerAssignment"/>
+        <!--<module name="MagicNumber"/>-->
+        <!--<module name="MissingCtor"/>-->
+        <module name="MissingSwitchDefault"/>
+        <module name="ModifiedControlVariable"/>
+        <module name="MultipleStringLiterals"/>
+        <module name="MultipleVariableDeclarations"/>
+        <module name="NestedForDepth">
+            <property name="max" value="2"/>
+        </module>
+        <module name="NestedIfDepth">
+            <property name="max" value="3"/>
+        </module>
+        <module name="NestedTryDepth">
+            <property name="max" value="2"/>
+        </module>
+        <module name="NoClone"/>
+        <module name="NoFinalizer"/>
+        <module name="OneStatementPerLine"/>
+        <module name="OverloadMethodsDeclarationOrder"/>
+        <module name="PackageDeclaration"/>
+        <module name="ParameterAssignment"/>  <!-- more strict version is FinalParameters -->
+        <!--<module name="RequireThis"/>-->
+        <module name="ReturnCount">
+            <property name="max" value="5"/>
+            <property name="maxForVoid" value="3"/>
+        </module>
+        <module name="SimplifyBooleanExpression"/>
+        <module name="SimplifyBooleanReturn"/>
+        <module name="StringLiteralEquality"/>
+        <!--<module name="SuperClone"/>-->
+        <!--<module name="SuperFinalize"/>-->
+        <module name="UnnecessaryParentheses"/>
+        <module name="VariableDeclarationUsageDistance">
+            <property name="allowedDistance" value="5"/>
+        </module>
+
+
+        <!-- Headers (http://checkstyle.sourceforge.net/config_header.html) -->
+        <!--<module name="Header"/>-->
+        <!--<module name="RegexpHeader"/>-->
+
+
+        <!-- Imports (http://checkstyle.sourceforge.net/config_imports.html) -->
+        <!--<module name="AvoidStarImport"/>-->
+        <!--<module name="AvoidStaticImport"/>-->
+        <!--<module name="CustomImportOrder"/>-->
+        <module name="IllegalImport"/>
+        <!--<module name="ImportControl"/>-->
+        <!--<module name="ImportOrder"/>-->
+        <module name="RedundantImport"/>
+        <module name="UnusedImports"/>
+
+
+        <!-- Javadoc Comments (http://checkstyle.sourceforge.net/config_javadoc.html) -->
+        <!--<module name="AtclauseOrder"/>-->
+        <!--<module name="JavadocMethod"/>-->
+        <!--<module name="JavadocPackage"/>-->
+        <!--<module name="JavadocParagraph"/>-->
+        <module name="JavadocStyle"/>
+        <!--<module name="JavadocTagContinuationIndentation"/>-->
+        <module name="JavadocType"/>
+        <!--<module name="JavadocVariable"/>-->
+        <module name="NonEmptyAtclauseDescription"/>
+        <!--<module name="SingleLineJavadoc"/>-->
+        <!--<module name="SummaryJavadoc"/>-->
+        <!--<module name="WriteTag"/>-->
+
+
+        <!-- Metrics (http://checkstyle.sourceforge.net/config_metrics.html) -->
+        <module name="BooleanExpressionComplexity"/>
+        <module name="ClassDataAbstractionCoupling"/>
+        <module name="ClassFanOutComplexity"/>
+        <module name="CyclomaticComplexity"/>
+        <module name="JavaNCSS"/>
+        <module name="NPathComplexity"/>
+
+
+        <!--  Miscellaneous (http://checkstyle.sourceforge.net/config_misc.html) -->
+        <module name="ArrayTypeStyle"/>
+        <!--<module name="AvoidEscapedUnicodeCharacters"/>-->
+        <!--<module name="CommentsIndentation"/>-->
+        <module name="DescendantToken"/>
+        <!--<module name="FinalParameters"/>-->  <!-- DISABLED in favor of less restricted ParameterAssignment -->
+        <!--<module name="Indentation"/>-->
+        <module name="OuterTypeFilename"/>
+        <!--<module name="TodoComment"/>-->
+        <!--<module name="TrailingComment"/>-->
+        <!--<module name="UncommentedMain"/>-->
+        <module name="UpperEll"/>
+
+
+        <!-- Modifiers (http://checkstyle.sourceforge.net/config_modifier.html) -->
+        <module name="ModifierOrder"/>
+        <module name="RedundantModifier"/>
+
+
+        <!-- Naming Conventions (http://checkstyle.sourceforge.net/config_naming.html) -->
+        <module name="AbbreviationAsWordInName"/>
+        <!--<module name="AbstractClassName"/>-->
+        <!--<module name="CatchParameterName"/>-->
+        <module name="ClassTypeParameterName">
+            <property name="format" value="^[A-Z]*$"/>
+        </module>
+        <module name="ConstantName"/>
+        <module name="InterfaceTypeParameterName">
+            <property name="format" value="^[A-Z]*$"/>
+        </module>
+        <module name="LocalFinalVariableName"/>
+        <module name="LocalVariableName"/>
+        <module name="MemberName"/>
+        <module name="MethodName"/>
+        <module name="MethodTypeParameterName">
+            <property name="format" value="^[A-Z]*$"/>
+        </module>
+        <module name="PackageName"/>
+        <module name="ParameterName"/>
+        <module name="StaticVariableName"/>
+        <module name="TypeName"/>
+
+
+        <!-- Regexp (http://checkstyle.sourceforge.net/config_regexp.html) -->
+        <!--<module name="Regexp"/>-->
+        <!--<module name="RegexpMultiline"/>-->
+        <!--<module name="RegexpSingleline"/>-->
+        <!--<module name="RegexpSinglelineJava"/>-->
+
+
+        <!-- Size Violations (http://checkstyle.sourceforge.net/config_sizes.html) -->
+        <module name="AnonInnerLength"/>
+        <module name="ExecutableStatementCount"/>
+        <module name="LineLength">
+            <property name="max" value="120"/>
+        </module>
+        <module name="MethodCount"/>
+        <module name="MethodLength"/>
+        <module name="OuterTypeNumber"/>
+        <module name="ParameterNumber"/>
+
+
+        <!-- Whitespace (http://checkstyle.sourceforge.net/config_whitespace.html) -->
+        <module name="EmptyForInitializerPad"/>
+        <module name="EmptyForIteratorPad"/>
+        <!--<module name="EmptyLineSeparator"/>-->
+        <module name="GenericWhitespace"/>
+        <module name="MethodParamPad"/>
+        <module name="NoLineWrap"/>
+        <module name="NoWhitespaceAfter"/>
+        <module name="NoWhitespaceBefore"/>
+        <module name="OperatorWrap"/>
+        <module name="ParenPad"/>
+        <module name="SeparatorWrap">
+            <property name="tokens" value="COMMA"/>
+            <property name="option" value="eol"/>
+        </module>
+        <module name="SeparatorWrap">
+            <property name="tokens" value="DOT"/>
+            <property name="option" value="nl"/>
+        </module>
+        <module name="SingleSpaceSeparator"/>
+        <module name="TypecastParenPad"/>
+        <module name="WhitespaceAfter"/>
+        <module name="WhitespaceAround"/>
+    </module>
+</module>

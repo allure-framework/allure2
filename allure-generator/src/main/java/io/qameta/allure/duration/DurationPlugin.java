@@ -1,8 +1,10 @@
 package io.qameta.allure.duration;
 
 import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.Constants;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.severity.SeverityPlugin;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,7 +17,7 @@ import java.util.stream.Collectors;
 public class DurationPlugin extends CommonJsonAggregator {
 
     public DurationPlugin() {
-        super("widgets", "duration.json");
+        super(Constants.WIDGETS_DIR, "duration.json");
     }
 
     @Override
@@ -32,6 +34,6 @@ public class DurationPlugin extends CommonJsonAggregator {
                 .setName(result.getName())
                 .setStatus(result.getStatus())
                 .setTime(result.getTime())
-                .setSeverity(result.getExtraBlock("severity"));
+                .setSeverity(result.getExtraBlock(SeverityPlugin.SEVERITY_BLOCK_NAME));
     }
 }

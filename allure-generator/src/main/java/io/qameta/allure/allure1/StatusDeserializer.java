@@ -19,7 +19,7 @@ public class StatusDeserializer extends StdDeserializer<Status> {
 
     @Override
     public Status deserialize(final JsonParser p, final DeserializationContext ctxt) throws IOException {
-        String value = p.readValueAs(String.class);
+        final String value = p.readValueAs(String.class);
         return Stream.of(Status.values())
                 .filter(status -> status.value().equalsIgnoreCase(value))
                 .findAny()

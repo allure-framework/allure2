@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -224,18 +225,10 @@ public class JunitXmlPluginTest {
 
         assertThat(captor.getAllValues())
                 .extracting(TestResult::getTime)
-                .extracting(Time::getDuration)
-                .containsExactly(1051L);
-
-        assertThat(captor.getAllValues())
-                .extracting(TestResult::getTime)
-                .extracting(Time::getStart)
-                .isNotNull();
-
-        assertThat(captor.getAllValues())
-                .extracting(TestResult::getTime)
-                .extracting(Time::getStop)
-                .isNotNull();
+                .extracting(Time::getStart, Time::getStop, Time::getDuration)
+                .containsExactlyInAnyOrder(
+                        tuple(1507199782000L, 1507199783051L, 1051L)
+                );
     }
 
     @Test
@@ -272,6 +265,42 @@ public class JunitXmlPluginTest {
 
     }
 
+    @Test
+    public void shouldReadSkippedStatus() throws Exception {
+        process(
+                "junitdata/TEST-status-attribute.xml", "TEST-test.SampleTest.xml"
+        );
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(3)).visitTestResult(captor.capture());
+
+        List<TestResult> skipped = filterByStatus(captor.getAllValues(), Status.SKIPPED);
+
+        assertThat(skipped)
+                .describedAs("Should parse skipped elements and status attribute")
+                .hasSize(2);
+
+    }
+
+    @Test
+    public void shouldProcessFilesWithZuluTimestamp() throws Exception {
+        process(
+                "junitdata/zulu-timestamp.xml",
+                "TEST-test.SampleTest.xml"
+        );
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(2)).visitTestResult(captor.capture());
+
+        assertThat(captor.getAllValues())
+                .extracting(TestResult::getTime)
+                .extracting(Time::getStart, Time::getStop, Time::getDuration)
+                .containsExactlyInAnyOrder(
+                        tuple(1525592511000L, 1525592527211L, 16211L),
+                        tuple(1525592511000L, 1525592519477L, 8477L)
+                );
+    }
+
     private void process(String... strings) throws IOException {
         Path resultsDirectory = folder.newFolder().toPath();
         Iterator<String> iterator = Arrays.asList(strings).iterator();
@@ -280,7 +309,7 @@ public class JunitXmlPluginTest {
             String second = iterator.next();
             copyFile(resultsDirectory, first, second);
         }
-        JunitXmlPlugin reader = new JunitXmlPlugin();
+        JunitXmlPlugin reader = new JunitXmlPlugin(ZoneOffset.UTC);
 
         reader.readResults(configuration, visitor, resultsDirectory);
     }

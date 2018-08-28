@@ -1,6 +1,7 @@
 package io.qameta.allure.launch;
 
 import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.Constants;
 import io.qameta.allure.Reader;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
@@ -25,7 +26,7 @@ public class LaunchPlugin extends CommonJsonAggregator implements Reader {
     private static final String JSON_FILE_NAME = "launch.json";
 
     public LaunchPlugin() {
-        super("widgets", JSON_FILE_NAME);
+        super(Constants.WIDGETS_DIR, JSON_FILE_NAME);
     }
 
     @Override

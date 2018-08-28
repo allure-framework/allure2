@@ -1,6 +1,7 @@
 package io.qameta.allure.summary;
 
 import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.Constants;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.GroupTime;
 import io.qameta.allure.entity.Statistic;
@@ -14,11 +15,13 @@ import java.util.List;
  */
 public class SummaryPlugin extends CommonJsonAggregator {
 
-    /** Name of the json file. */
+    /**
+     * Name of the json file.
+     */
     protected static final String JSON_FILE_NAME = "summary.json";
 
     public SummaryPlugin() {
-        super("widgets", JSON_FILE_NAME);
+        super(Constants.WIDGETS_DIR, JSON_FILE_NAME);
     }
 
     @Override

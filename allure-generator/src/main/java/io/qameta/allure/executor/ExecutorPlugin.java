@@ -1,6 +1,7 @@
 package io.qameta.allure.executor;
 
 import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.Constants;
 import io.qameta.allure.Reader;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
@@ -25,7 +26,7 @@ public class ExecutorPlugin extends CommonJsonAggregator implements Reader {
     protected static final String JSON_FILE_NAME = "executor.json";
 
     public ExecutorPlugin() {
-        super("widgets", "executors.json");
+        super(Constants.WIDGETS_DIR, "executors.json");
     }
 
     @Override

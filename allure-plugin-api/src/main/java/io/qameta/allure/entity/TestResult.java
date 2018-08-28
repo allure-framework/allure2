@@ -116,7 +116,7 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
         if (value == null || name == null) {
             return;
         }
-        Optional<String> any = getLabels().stream()
+        final Optional<String> any = getLabels().stream()
                 .map(Label::getName)
                 .filter(name::equals)
                 .findAny();

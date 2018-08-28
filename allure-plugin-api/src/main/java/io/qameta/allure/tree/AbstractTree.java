@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.stream.Stream;
 
 /**
+ * @param <T> the type of accepted items
+ * @param <S> the type of tree group
+ * @param <U> the type of tree leaf
  * @author charlie (Dmitry Baev).
  */
 public abstract class AbstractTree<T, S extends TreeGroup, U extends TreeLeaf> implements Tree<T> {

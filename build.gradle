@@ -9,12 +9,13 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.bmuschko:gradle-docker-plugin:3.2.1'
+        classpath 'com.bmuschko:gradle-docker-plugin:3.2.4'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0'
         classpath 'com.moowork.gradle:gradle-node-plugin:1.2.0'
-        classpath 'io.spring.gradle:dependency-management-plugin:1.0.4.RELEASE'
+        classpath 'gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:1.6.2'
+        classpath 'io.spring.gradle:dependency-management-plugin:1.0.5.RELEASE'
         classpath 'net.researchgate:gradle-release:2.6.0'
-        classpath 'ru.vyarus:gradle-quality-plugin:2.4.0'
+        classpath 'ru.vyarus:gradle-quality-plugin:3.1.0'
     }
 }
 
@@ -42,7 +43,7 @@ configure(rootProject) {
     }
 
     task wrapper(type: Wrapper) {
-        gradleVersion = '4.4'
+        gradleVersion = '4.8.1'
     }
 
     task deleteDemoReport(type: Delete) {
@@ -80,33 +81,33 @@ allprojects {
     apply plugin: 'io.spring.dependency-management'
     dependencyManagement {
         imports {
-            mavenBom 'com.fasterxml.jackson:jackson-bom:2.9.3'
+            mavenBom 'com.fasterxml.jackson:jackson-bom:2.9.6'
         }
         dependencies {
             dependency 'com.beust:jcommander:1.72'
             dependency 'com.google.guava:guava:23.5-jre'
-            dependency 'com.opencsv:opencsv:4.1'
-            dependency 'com.vladsch.flexmark:flexmark:0.28.18'
+            dependency 'com.opencsv:opencsv:4.2'
+            dependency 'com.vladsch.flexmark:flexmark:0.34.8'
             dependency 'commons-io:commons-io:2.6'
-            dependency 'io.qameta.allure:allure-java-commons:2.0-BETA21'
-            dependency 'io.qameta.allure:allure2-model-api:1.0-BETA4'
+            dependency 'io.qameta.allure:allure-java-commons:2.6.0'
+            dependency 'io.qameta.allure:allure2-model-api:1.0.0'
             dependency 'javax.xml.bind:jaxb-api:2.3.0'
             dependency 'junit:junit:4.12'
             dependency 'org.allurefw:allure1-model:1.0'
             dependency 'org.apache.commons:commons-lang3:3.7'
-            dependency 'org.apache.commons:commons-text:1.1'
-            dependency 'org.apache.httpcomponents:httpclient:4.5.4'
-            dependency 'org.apache.tika:tika-core:1.16'
-            dependency 'org.assertj:assertj-core:3.8.0'
-            dependency 'org.eclipse.jetty:jetty-server:9.4.8.v20171121'
-            dependency 'org.freemarker:freemarker:2.3.23'
-            dependency 'org.mockito:mockito-core:2.13.0'
-            dependency 'org.projectlombok:lombok:1.16.18'
+            dependency 'org.apache.commons:commons-text:1.4'
+            dependency 'org.apache.httpcomponents:httpclient:4.5.6'
+            dependency 'org.apache.tika:tika-core:1.18'
+            dependency 'org.assertj:assertj-core:3.10.0'
+            dependency 'org.eclipse.jetty:jetty-server:9.4.11.v20180605'
+            dependency 'org.freemarker:freemarker:2.3.28'
+            dependency 'org.mockito:mockito-core:2.19.1'
+            dependency 'org.projectlombok:lombok:1.18.0'
             dependency 'org.slf4j:slf4j-api:1.7.25'
             dependency 'org.slf4j:slf4j-log4j12:1.7.25'
             dependency 'org.slf4j:slf4j-nop:1.7.25'
             dependency 'org.slf4j:slf4j-simple:1.7.25'
-            dependency 'org.zeroturnaround:zt-zip:1.12'
+            dependency 'org.zeroturnaround:zt-zip:1.13'
         }
     }
 
@@ -171,11 +172,9 @@ subprojects { project ->
     apply plugin: 'ru.vyarus.quality'
 
     quality {
-        checkstyleVersion = '7.6.1'
-        pmdVersion = '5.8.1'
-        findbugsVersion = '3.0.1'
-        codenarcVersion = '0.26.0'
+        configDir = "$gradleScriptDir/quality-configs"
         excludeSources = fileTree('build/generated-sources')
+        exclude '**/*.json'
     }
 
     apply plugin: 'jacoco'
