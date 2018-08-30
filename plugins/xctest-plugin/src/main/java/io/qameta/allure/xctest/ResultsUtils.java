@@ -76,6 +76,21 @@ public final class ResultsUtils {
                 .setStatus(Status.PASSED);
     }
 
+    public static StepType isTechnicalSteps(final String activityTitle) {
+        if (activityTitle.startsWith("allure.")) {
+            for (StepType stepName : StepType.values()) {
+                if (activityTitle.startsWith(stepName.value())) {
+                    return stepName;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static String extractStepValue(final String labelType, final String activityTitle) {
+        return activityTitle.substring(labelType.length() + 1).trim();
+    }
+
     private static String getStepName(final Map<String, Object> props) {
         return (String) props.getOrDefault(STEP_NAME, "Unknown");
     }
