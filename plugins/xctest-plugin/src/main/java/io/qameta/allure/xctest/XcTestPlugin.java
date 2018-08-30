@@ -3,6 +3,7 @@ package io.qameta.allure.xctest;
 import io.qameta.allure.Reader;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
+import io.qameta.allure.entity.Link;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
@@ -13,9 +14,11 @@ import xmlwise.Plist;
 import xmlwise.XmlParseException;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,11 +28,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.stream.Stream;
 
 import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
 import static io.qameta.allure.entity.LabelName.SUITE;
+import static io.qameta.allure.xctest.StepType.ISSUE;
+import static io.qameta.allure.xctest.StepType.TMS;
 import static java.util.Collections.emptyList;
 
 /**
@@ -48,6 +55,7 @@ public class XcTestPlugin implements Reader {
     private static final String SUB_ACTIVITIES = "SubActivities";
     private static final String ACTIVITY_SUMMARIES = "ActivitySummaries";
     private static final String HAS_SCREENSHOT = "HasScreenshotData";
+    private static final String ALLURE_PROPERTIES_FILE_NAME = "allure.properties";
 
 
     @Override
@@ -110,7 +118,6 @@ public class XcTestPlugin implements Reader {
 
         final Map<String, Object> props = asMap(activity);
         final String activityTitle = (String) props.get(TITLE);
-
         if (activityTitle.startsWith("Start Test at")) {
             getStartTime(activityTitle).ifPresent(start -> {
                 final Timeable withTime = (Timeable) parent;
@@ -124,6 +131,12 @@ public class XcTestPlugin implements Reader {
         if (activityTitle.startsWith("Assertion Failure:")) {
             step.setStatusMessage(activityTitle);
             step.setStatus(Status.FAILED);
+        }
+
+        final StepType technicalStepType = ResultsUtils.isTechnicalSteps(activityTitle);
+        if (technicalStepType != null && parent instanceof TestResult) {
+            parseTechnicalSteps(parent, technicalStepType, activityTitle, directory);
+            return;
         }
 
         if (props.containsKey(HAS_SCREENSHOT)) {
@@ -148,6 +161,30 @@ public class XcTestPlugin implements Reader {
         lastFailedStep.map(Step::getStatusTrace).ifPresent(step::setStatusTrace);
     }
 
+    private void parseTechnicalSteps(final Object parent, final StepType stepType,
+                                     final String activityTitle, final Path directory) {
+        final String value = ResultsUtils.extractStepValue(stepType.value(), activityTitle);
+        if (stepType == ISSUE || stepType == TMS) {
+            final String linkUrl = getLinkUrl(value, stepType.value(), directory);
+            final Link link = new Link().setName(value).setType(stepType.value()).setUrl(linkUrl);
+            ((TestResult) parent).getLinks().add(link);
+        } else {
+            ((TestResult) parent).addLabel(stepType.value(), value);
+        }
+    }
+
+    private static String getLinkUrl(final String name, final String type, final Path resultDirectory) {
+        final Properties properties = loadAllureProperties(resultDirectory);
+        final String pattern = properties.getProperty(getLinkTypePatternPropertyName(type));
+        if (Objects.isNull(pattern)) {
+            return null;
+        }
+        return pattern.replaceAll("\\{}", Objects.isNull(name) ? "" : name);
+    }
+
+    public static String getLinkTypePatternPropertyName(final String type) {
+        return String.format("allure.link.%s.pattern", type);
+    }
     private void addAttachment(final Path directory,
                                final ResultsVisitor visitor,
                                final Map<String, Object> props,
@@ -199,4 +236,24 @@ public class XcTestPlugin implements Reader {
         }
     }
 
+    private static Properties loadAllureProperties(final Path resultsDirectory) {
+        Path propertiesFile = resultsDirectory.resolve(ALLURE_PROPERTIES_FILE_NAME);
+        final Properties properties = new Properties();
+
+        if (!Files.exists(propertiesFile)) {
+            final Path workingDir = Paths.get(System.getProperty("user.dir"));
+            propertiesFile = workingDir.resolve(ALLURE_PROPERTIES_FILE_NAME);
+        }
+
+        if (Files.exists(propertiesFile)) {
+            try (InputStream propFile = Files.newInputStream(propertiesFile)) {
+                properties.load(propFile);
+                return properties;
+            } catch (IOException e) {
+                LOGGER.error("Error while reading allure.properties file: %s", e.getMessage());
+            }
+        }
+        properties.putAll(System.getProperties());
+        return properties;
+    }
 }
