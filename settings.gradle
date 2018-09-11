@@ -6,13 +6,14 @@ include 'allure-commandline'
 
 def plugins = [
         'behaviors-plugin',
-        'packages-plugin',
         'custom-logo-plugin',
-        'screen-diff-plugin',
+        'jira-plugin',
         'junit-xml-plugin',
-        'xunit-xml-plugin',
+        'packages-plugin',
+        'screen-diff-plugin',
+        'trx-plugin',
         'xctest-plugin',
-        'trx-plugin'
+        'xunit-xml-plugin',
 ]
 
 plugins.forEach({
