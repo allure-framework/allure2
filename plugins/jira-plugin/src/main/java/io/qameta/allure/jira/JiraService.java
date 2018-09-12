@@ -18,4 +18,10 @@ public interface JiraService {
     @GET("allure/1.0/launch")
     List<JiraLaunch> getJiraLaunches(@Query("issueKey") String issueKey);
 
+    @POST("allure/1.0/testresult")
+    JiraTestResult createTestResult(@Body JiraTestResult launch);
+
+    @GET("allure/1.0/testresult")
+    List<JiraTestResult> getTestResults(@Query("issueKey") String issueKey);
+
 }
