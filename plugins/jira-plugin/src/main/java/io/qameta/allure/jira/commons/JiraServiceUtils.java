@@ -5,6 +5,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.CallAdapter;
 import retrofit2.Retrofit;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Objects;
 
 import static io.qameta.allure.util.PropertyUtils.requireProperty;
 
@@ -51,6 +53,18 @@ public final class JiraServiceUtils {
         final String slash = "/";
         return endpoint.endsWith(slash) ? endpoint : endpoint + slash;
     }
+
+    private static String getErrorMessage(final retrofit2.Response<?> response) {
+        final ResponseBody errorBody = response.errorBody();
+        final String errorMessage;
+        try {
+            errorMessage = Objects.isNull(errorBody) ? response.message() : errorBody.string();
+        } catch (IOException e) {
+            throw new ServiceException("could not read error body", e);
+        }
+        return errorMessage;
+    }
+
 
     /**
      * Basic authenticator for okhttp client.
@@ -108,11 +122,17 @@ public final class JiraServiceUtils {
 
             @Override
             public retrofit2.Response<T> adapt(final Call<T> call) {
+                final retrofit2.Response<T> response;
                 try {
-                    return call.execute();
+                    response = call.execute();
                 } catch (IOException e) {
                     throw new ServiceException("Could not execute request", e);
                 }
+
+                if (!response.isSuccessful()) {
+                    throw new ServiceException(getErrorMessage(response));
+                }
+                return response;
             }
         }
 
@@ -120,6 +140,8 @@ public final class JiraServiceUtils {
          * Call adapter factory for instances.
          */
         private class InstanceCallAdapter implements CallAdapter<T, Object> {
+
+            private static final int NOT_FOUND = 404;
 
             private final Type returnType;
 
@@ -134,11 +156,19 @@ public final class JiraServiceUtils {
 
             @Override
             public Object adapt(final Call<T> call) {
+                final retrofit2.Response<T> response;
                 try {
-                    return call.execute().body();
+                    response = call.execute();
                 } catch (IOException e) {
                     throw new ServiceException("Could not get request body", e);
                 }
+                if (!response.isSuccessful()) {
+                    if (response.code() == NOT_FOUND) {
+                        return null;
+                    }
+                    throw new ServiceException(getErrorMessage(response));
+                }
+                return response.body();
             }
         }
 
@@ -148,6 +178,10 @@ public final class JiraServiceUtils {
      * Service exception when something wrong when execution call.
      */
     public static final class ServiceException extends RuntimeException {
+
+        public ServiceException(final String message) {
+            super(message);
+        }
 
         public ServiceException(final String message, final Throwable e) {
             super(message, e);

@@ -10,7 +10,7 @@ You can find it at [Atlassian Marketplace](https://marketplace.atlassian.com).
 
 How it works:
 * add issue link in your test cases (for example in java: `@Issue("ALLURE-1")`)
-* enable plugin - add env property `-Dallure.jira.testresult.enabled=true`
+* enable plugin - add env property `ALLURE_JIRA_TESTRESULT_ENABLED=true`
 * setup Jira env variables: 
   * `ALLURE_JIRA_ENDPOINT=https://<jira>/jira/rest/`
   * `ALLURE_JIRA_USERNAME=<username>`
