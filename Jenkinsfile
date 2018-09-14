@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'java' }
+    agent { docker 'openjdk:8' }
     parameters {
         booleanParam(name: 'RELEASE', defaultValue: false, description: 'Perform release?')
         string(name: 'RELEASE_VERSION', defaultValue: '', description: 'Release version')
@@ -41,7 +41,7 @@ pipeline {
     }
     post {
         always {
-            deleteDir()
+            allure results: [[path: '**/build/test-results/test']]
         }
         failure {
             slackSend message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} failed (<${env.BUILD_URL}|Open>)",
