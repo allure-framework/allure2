@@ -5,7 +5,7 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.Statistic;
-import io.qameta.allure.jira.commons.JiraServiceFactory;
+import io.qameta.allure.jira.commons.JiraServiceUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
+import static io.qameta.allure.util.PropertyUtils.getProperty;
+
 /**
  * Plugins exports Launch information to Jira Ticket.
  */
@@ -23,7 +25,8 @@ public class JiraLaunchExportPlugin implements Aggregator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JiraLaunchExportPlugin.class);
 
-    private static final String ALLURE_JIRA_LAUNCH_ISSUE_KEY = "allure.jira.launch.issue";
+    private static final String ALLURE_JIRA_LAUNCH_ENABLED = "allure.jira.launch.enabled";
+    private static final String ALLURE_JIRA_LAUNCH_ISSUE = "allure.jira.launch.issue";
 
     private static final String EXECUTORS_BLOCK_NAME = "executor";
 
@@ -31,9 +34,10 @@ public class JiraLaunchExportPlugin implements Aggregator {
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
                           final Path outputDirectory) {
-
-        final Optional<String> issueKey = getIssueKey();
-        issueKey.ifPresent(key -> exportLaunchesToJira(key, launchesResults));
+        if (getProperty(ALLURE_JIRA_LAUNCH_ENABLED).map(Boolean::parseBoolean).orElse(false)) {
+            final Optional<String> issueKey = getIssueKey();
+            issueKey.ifPresent(key -> exportLaunchesToJira(key, launchesResults));
+        }
     }
 
     private void exportLaunchesToJira(final String issueKey,
@@ -74,7 +78,7 @@ public class JiraLaunchExportPlugin implements Aggregator {
 
     private void exportLaunchToJira(final String issueKey,
                                     final JiraLaunch jiraLaunch) {
-        final JiraService jiraService = JiraServiceFactory.newInstance(JiraService.class);
+        final JiraService jiraService = JiraServiceUtils.newInstance(JiraService.class);
         try {
             final JiraLaunch created = jiraService.createJiraLaunch(jiraLaunch);
             LOGGER.info(String.format("Allure launch '%s' synced with issue '%s' successfully",
@@ -88,7 +92,7 @@ public class JiraLaunchExportPlugin implements Aggregator {
         final Properties properties = new Properties();
         properties.putAll(System.getProperties());
         properties.putAll(System.getenv());
-        return Optional.ofNullable(properties.getProperty(ALLURE_JIRA_LAUNCH_ISSUE_KEY))
+        return Optional.ofNullable(properties.getProperty(ALLURE_JIRA_LAUNCH_ISSUE))
                 .filter(StringUtils::isNotBlank);
     }
 

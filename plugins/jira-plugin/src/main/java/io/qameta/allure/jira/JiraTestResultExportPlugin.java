@@ -6,7 +6,7 @@ import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.Link;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.jira.commons.JiraServiceFactory;
+import io.qameta.allure.jira.commons.JiraServiceUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static io.qameta.allure.util.PropertyUtils.getProperty;
+
 /**
  * Plugins exports TestResult information to Jira Ticket.
  */
@@ -24,12 +26,21 @@ public class JiraTestResultExportPlugin implements Aggregator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JiraLaunchExportPlugin.class);
 
+    private static final String ALLURE_JIRA_TEST_RESULT_ENABLED = "allure.jira.testresult.enabled";
+
     private static final String EXECUTORS_BLOCK_NAME = "executor";
 
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
                           final Path outputDirectory) {
+
+        if (getProperty(ALLURE_JIRA_TEST_RESULT_ENABLED).map(Boolean::parseBoolean).orElse(false)) {
+            exportTestResultsToJira(launchesResults);
+        }
+    }
+
+    private void exportTestResultsToJira(final List<LaunchResults> launchesResults) {
         final Optional<ExecutorInfo> executorInfo = launchesResults.stream()
                 .map(launchResults -> launchResults.getExtra(EXECUTORS_BLOCK_NAME))
                 .filter(Optional::isPresent)
@@ -45,7 +56,6 @@ public class JiraTestResultExportPlugin implements Aggregator {
                     .collect(Collectors.toList());
             exportTestResultsToJira(info, testResults);
         });
-
     }
 
     private void exportTestResultsToJira(final ExecutorInfo executorInfo,
@@ -58,7 +68,7 @@ public class JiraTestResultExportPlugin implements Aggregator {
 
     private void exportTestResultToJira(final JiraTestResult jiraTestResult) {
         final String issueKey = jiraTestResult.getIssueKey();
-        final JiraService jiraService = JiraServiceFactory.newInstance(JiraService.class);
+        final JiraService jiraService = JiraServiceUtils.newInstance(JiraService.class);
         try {
             final JiraTestResult created = jiraService.createTestResult(jiraTestResult);
             LOGGER.info(String.format("Allure test result '%s' synced with issue '%s' successfully",

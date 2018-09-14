@@ -5,7 +5,6 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.apache.commons.lang3.StringUtils;
 import retrofit2.Call;
 import retrofit2.CallAdapter;
 import retrofit2.Retrofit;
@@ -15,19 +14,19 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Optional;
-import java.util.Properties;
+
+import static io.qameta.allure.util.PropertyUtils.requireProperty;
 
 /**
- * Jira service factory.
+ * Jira service util.
  */
-public final class JiraServiceFactory {
+public final class JiraServiceUtils {
 
     private static final String JIRA_ENDPOINT = "allure.jira.endpoint";
     private static final String JIRA_USERNAME = "allure.jira.username";
     private static final String JIRA_PASSWORD = "allure.jira.password";
 
-    private JiraServiceFactory() {
+    private JiraServiceUtils() {
     }
 
     public static <T> T newInstance(final Class<T> jiraService) {
@@ -46,15 +45,6 @@ public final class JiraServiceFactory {
                 .client(client)
                 .build();
         return retrofit.create(jiraService);
-    }
-
-    @SuppressWarnings("PMD.AvoidThrowingNullPointerException")
-    private static String requireProperty(final String key) {
-        final Properties properties = new Properties();
-        properties.putAll(System.getProperties());
-        properties.putAll(System.getenv());
-        return Optional.ofNullable(properties.getProperty(key)).filter(StringUtils::isNotBlank)
-                .orElseThrow(() -> new NullPointerException(String.format("Property '%s' can't be null", key)));
     }
 
     /**
