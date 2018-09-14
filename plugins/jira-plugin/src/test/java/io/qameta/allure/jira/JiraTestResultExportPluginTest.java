@@ -9,7 +9,7 @@ import io.qameta.allure.entity.TestResult;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.contrib.java.lang.system.ProvideSystemProperty;
+import org.junit.contrib.java.lang.system.EnvironmentVariables;
 
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -32,8 +32,8 @@ public class JiraTestResultExportPluginTest {
     private static final String ISSUE = "ALLURE-1";
 
     @Rule
-    public final ProvideSystemProperty jiraEnabled = new ProvideSystemProperty()
-            .and("allure.jira.testresult.enabled", "true");
+    public final EnvironmentVariables jiraEnabled = new EnvironmentVariables()
+            .set("ALLURE_JIRA_TESTRESULT_ENABLED", "true");
 
     @Test
     public void shouldExportTestResultToJira() {

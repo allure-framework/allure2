@@ -16,7 +16,6 @@ public final class PropertyUtils {
 
     public static Optional<String> getProperty(final String key) {
         final Properties properties = new Properties();
-        properties.putAll(System.getProperties());
         properties.putAll(System.getenv());
         return Optional.ofNullable(properties.getProperty(key)).filter(StringUtils::isNotBlank);
     }

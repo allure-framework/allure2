@@ -16,7 +16,7 @@ public class PropertyNotFoundException extends RuntimeException {
      * @param key the key of property.
      */
     public PropertyNotFoundException(final String key) {
-        super(String.format("Required context not found: %s", key));
+        super(String.format("Required property not found: %s", key));
     }
 
 }

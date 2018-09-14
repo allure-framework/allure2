@@ -22,15 +22,15 @@ import static io.qameta.allure.util.PropertyUtils.requireProperty;
  */
 public final class JiraServiceUtils {
 
-    private static final String JIRA_ENDPOINT = "allure.jira.endpoint";
-    private static final String JIRA_USERNAME = "allure.jira.username";
-    private static final String JIRA_PASSWORD = "allure.jira.password";
+    private static final String JIRA_ENDPOINT = "ALLURE_JIRA_ENDPOINT";
+    private static final String JIRA_USERNAME = "ALLURE_JIRA_USERNAME";
+    private static final String JIRA_PASSWORD = "ALLURE_JIRA_PASSWORD";
 
     private JiraServiceUtils() {
     }
 
     public static <T> T newInstance(final Class<T> jiraService) {
-        final String endpoint = requireProperty(JIRA_ENDPOINT);
+        final String endpoint = addSlashIfMissing(requireProperty(JIRA_ENDPOINT));
         final String username = requireProperty(JIRA_USERNAME);
         final String password = requireProperty(JIRA_PASSWORD);
 
@@ -148,6 +148,10 @@ public final class JiraServiceUtils {
             super(message, e);
         }
 
+    }
+
+    private static String addSlashIfMissing(String endpoint) {
+        return endpoint.endsWith("/") ? endpoint : endpoint + "/";
     }
 
 }

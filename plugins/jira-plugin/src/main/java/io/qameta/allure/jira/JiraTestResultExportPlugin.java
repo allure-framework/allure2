@@ -26,7 +26,7 @@ public class JiraTestResultExportPlugin implements Aggregator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JiraLaunchExportPlugin.class);
 
-    private static final String ALLURE_JIRA_TEST_RESULT_ENABLED = "allure.jira.testresult.enabled";
+    private static final String ALLURE_JIRA_TEST_RESULT_ENABLED = "ALLURE_JIRA_TESTRESULT_ENABLED";
 
     private static final String EXECUTORS_BLOCK_NAME = "executor";
 
