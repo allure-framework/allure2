@@ -6,7 +6,6 @@ import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.jira.commons.JiraServiceUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +13,6 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.Properties;
 
 import static io.qameta.allure.util.PropertyUtils.getProperty;
 
@@ -30,12 +28,22 @@ public class JiraLaunchExportPlugin implements Aggregator {
 
     private static final String EXECUTORS_BLOCK_NAME = "executor";
 
+    private final JiraService jiraService;
+
+    public JiraLaunchExportPlugin() {
+        this(JiraServiceUtils.newInstance(JiraService.class));
+    }
+
+    public JiraLaunchExportPlugin(final JiraService jiraService) {
+        this.jiraService = jiraService;
+    }
+
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
                           final Path outputDirectory) {
         if (getProperty(ALLURE_JIRA_LAUNCH_ENABLED).map(Boolean::parseBoolean).orElse(false)) {
-            final Optional<String> issueKey = getIssueKey();
+            final Optional<String> issueKey = getProperty(ALLURE_JIRA_LAUNCH_ISSUE);
             issueKey.ifPresent(key -> exportLaunchesToJira(key, launchesResults));
         }
     }
@@ -78,7 +86,6 @@ public class JiraLaunchExportPlugin implements Aggregator {
 
     private void exportLaunchToJira(final String issueKey,
                                     final JiraLaunch jiraLaunch) {
-        final JiraService jiraService = JiraServiceUtils.newInstance(JiraService.class);
         try {
             final JiraLaunch created = jiraService.createJiraLaunch(jiraLaunch);
             LOGGER.info(String.format("Allure launch '%s' synced with issue '%s' successfully",
@@ -86,14 +93,6 @@ public class JiraLaunchExportPlugin implements Aggregator {
         } catch (Throwable e) {
             LOGGER.error(String.format("Allure launch sync with issue '%s' error", issueKey), e);
         }
-    }
-
-    private Optional<String> getIssueKey() {
-        final Properties properties = new Properties();
-        properties.putAll(System.getProperties());
-        properties.putAll(System.getenv());
-        return Optional.ofNullable(properties.getProperty(ALLURE_JIRA_LAUNCH_ISSUE))
-                .filter(StringUtils::isNotBlank);
     }
 
 }

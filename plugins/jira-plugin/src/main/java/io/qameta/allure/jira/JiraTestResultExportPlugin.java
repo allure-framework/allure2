@@ -30,6 +30,16 @@ public class JiraTestResultExportPlugin implements Aggregator {
 
     private static final String EXECUTORS_BLOCK_NAME = "executor";
 
+    private final JiraService jiraService;
+
+    public JiraTestResultExportPlugin() {
+        this(JiraServiceUtils.newInstance(JiraService.class));
+    }
+
+    public JiraTestResultExportPlugin(final JiraService jiraService) {
+        this.jiraService = jiraService;
+    }
+
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
@@ -51,7 +61,7 @@ public class JiraTestResultExportPlugin implements Aggregator {
 
         executorInfo.ifPresent(info -> {
             final List<TestResult> testResults = launchesResults.stream()
-                    .map(LaunchResults::getResults)
+                    .map(LaunchResults::getAllResults)
                     .flatMap(Collection::stream)
                     .collect(Collectors.toList());
             exportTestResultsToJira(info, testResults);
@@ -68,7 +78,6 @@ public class JiraTestResultExportPlugin implements Aggregator {
 
     private void exportTestResultToJira(final JiraTestResult jiraTestResult) {
         final String issueKey = jiraTestResult.getIssueKey();
-        final JiraService jiraService = JiraServiceUtils.newInstance(JiraService.class);
         try {
             final JiraTestResult created = jiraService.createTestResult(jiraTestResult);
             LOGGER.info(String.format("Allure test result '%s' synced with issue '%s' successfully",

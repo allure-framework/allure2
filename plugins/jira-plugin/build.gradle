@@ -9,6 +9,12 @@ dependencies {
 
     compile('com.squareup.retrofit2:retrofit:2.4.0')
     compile('com.squareup.retrofit2:converter-jackson:2.4.0')
+
+    testCompile project(':allure-plugin-api')
+
+    testCompile('com.github.stefanbirkner:system-rules:1.18.0')
+    testCompile('org.mockito:mockito-core')
+    testCompile('junit:junit')
 }
 
 configurations.archives.artifacts.removeAll { it.archiveTask.is jar }
