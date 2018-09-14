@@ -1,7 +1,10 @@
 # Allure Jira Plugin
 
-This plugin requited `execution.json` file in test result directory. 
-This file contains information about report location for backlinks from Jira.  
+This plugin requires `execution.json` file in test result directory. 
+This file contains information about report location for backlinks from Jira.
+
+This plugin requires 'Allure for Jira' plugin installed in your Jira. 
+You can find it at [Atlassian Marketplace](https://marketplace.atlassian.com).   
 
 ## Export TestResult information
 
