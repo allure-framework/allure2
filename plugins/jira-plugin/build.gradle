@@ -1,0 +1,31 @@
+description = 'Allure Jira Plugin'
+
+apply plugin: 'java-library-distribution'
+apply from: "${gradleScriptDir}/bintray.gradle"
+
+dependencies {
+    compileOnly project(':allure-plugin-api')
+    compileOnly('org.projectlombok:lombok')
+
+    compile('com.squareup.retrofit2:retrofit:2.4.0')
+    compile('com.squareup.retrofit2:converter-jackson:2.4.0')
+
+    testCompile project(':allure-plugin-api')
+
+    testCompile('com.github.stefanbirkner:system-rules:1.18.0')
+    testCompile('org.mockito:mockito-core')
+    testCompile('junit:junit')
+}
+
+configurations.archives.artifacts.removeAll { it.archiveTask.is jar }
+
+artifacts {
+    allurePlugin distZip
+}
+
+bintray {
+    configurations = ['allurePlugin']
+    pkg {
+        repo = 'generic'
+    }
+}
