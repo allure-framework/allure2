@@ -47,6 +47,11 @@ public final class JiraServiceUtils {
         return retrofit.create(jiraService);
     }
 
+    private static String addSlashIfMissing(final String endpoint) {
+        final String slash = "/";
+        return endpoint.endsWith(slash) ? endpoint : endpoint + slash;
+    }
+
     /**
      * Basic authenticator for okhttp client.
      */
@@ -148,10 +153,6 @@ public final class JiraServiceUtils {
             super(message, e);
         }
 
-    }
-
-    private static String addSlashIfMissing(String endpoint) {
-        return endpoint.endsWith("/") ? endpoint : endpoint + "/";
     }
 
 }
