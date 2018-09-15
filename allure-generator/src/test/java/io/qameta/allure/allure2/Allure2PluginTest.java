@@ -212,6 +212,22 @@ public class Allure2PluginTest {
                 .containsOnly(Allure2Plugin.ALLURE2_RESULTS_FORMAT);
     }
 
+    @Test
+    public void checkBeforesOrder() throws Exception {
+        Set<TestResult> testResults = process(
+                "befores/test-result.json", generateTestResultName(),
+                "befores/before-class-container.json", generateTestResultContainerName(),
+                "befores/before-method-container.json", generateTestResultContainerName(),
+                "befores/before-suite-container.json", generateTestResultContainerName(),
+                "befores/before-test-container.json", generateTestResultContainerName()
+        ).getResults();
+
+        assertThat(testResults)
+                .flatExtracting(TestResult::getBeforeStages)
+                .extracting(StageResult::getName)
+                .containsExactly("beforeSuite", "beforeTest", "beforeClass", "beforeMethod");
+    }
+
     private LaunchResults process(String... strings) throws IOException {
         Path resultsDirectory = folder.newFolder().toPath();
         Iterator<String> iterator = Arrays.asList(strings).iterator();

@@ -245,6 +245,7 @@ public class Allure2Plugin implements Reader {
                                         final Function<TestResultContainer, Stream<StageResult>> getter) {
         return parents.stream()
                 .flatMap(getter)
+                .sorted(BY_START)
                 .collect(Collectors.toList());
     }
 

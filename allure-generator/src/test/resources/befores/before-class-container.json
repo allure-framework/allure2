@@ -1,0 +1,19 @@
+{
+  "uuid": "a426e991-7481-4f22-beef-0d5d490a0024",
+  "name": "io.qameta.allure.testng.samples.BeforeFixturesCombination",
+  "start": 1526052814519,
+  "stop": 1526052814816,
+  "children": [
+    "1915a4bf-4872-4c6e-a0d1-5f5b4a280a1c"
+  ],
+  "befores": [
+    {
+      "name": "beforeClass",
+      "status": "passed",
+      "stage": "finished",
+      "description": "",
+      "start": 1526052814524,
+      "stop": 1526052814524
+    }
+  ]
+}
