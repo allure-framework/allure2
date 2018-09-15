@@ -1,5 +1,6 @@
 rootProject.name = 'allure2'
 
+include 'allure-jira-commons'
 include 'allure-plugin-api'
 include 'allure-generator'
 include 'allure-commandline'

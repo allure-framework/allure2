@@ -1,6 +1,5 @@
 package io.qameta.allure.jira;
 
-import io.qameta.allure.entity.Status;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -21,7 +20,7 @@ public class JiraTestResult {
     private String launchUrl;
     private String launchName;
 
-    private Status status;
+    private String status;
     private Long date;
 
 }

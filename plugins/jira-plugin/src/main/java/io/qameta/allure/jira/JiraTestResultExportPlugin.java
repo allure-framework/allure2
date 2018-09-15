@@ -6,7 +6,6 @@ import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.Link;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.jira.commons.JiraServiceUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +32,7 @@ public class JiraTestResultExportPlugin implements Aggregator {
     private final JiraService jiraService;
 
     public JiraTestResultExportPlugin() {
-        this(JiraServiceUtils.newInstance(JiraService.class));
+        this(new JiraServiceBuilder().defaults().build());
     }
 
     public JiraTestResultExportPlugin(final JiraService jiraService) {
@@ -99,7 +98,7 @@ public class JiraTestResultExportPlugin implements Aggregator {
                     jiraTestResult.setUrl(getJiraTestResultUrl(executorInfo.getReportUrl(), testResult.getUid()));
                     jiraTestResult.setLaunchName(executorInfo.getBuildName());
                     jiraTestResult.setLaunchUrl(executorInfo.getReportUrl());
-                    jiraTestResult.setStatus(testResult.getStatus());
+                    jiraTestResult.setStatus(testResult.getStatus().toString());
                     jiraTestResult.setDate(testResult.getTime().getStop());
                     return jiraTestResult;
                 })
