@@ -12,7 +12,6 @@ import org.junit.Test;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
 
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
@@ -41,7 +40,7 @@ public class JiraTestResultExportPluginTest {
         final TestResult testResult = createTestResult(Status.PASSED)
                 .setLinks(Collections.singletonList(new Link().setName(ISSUE).setType("issue")));
 
-        final Set<TestResult> results = new HashSet<>(Arrays.asList(testResult));
+        final Set<TestResult> results = new HashSet<>(Collections.singletonList(testResult));
         when(launchResults.getAllResults()).thenReturn(results);
 
         final ExecutorInfo executorInfo = new ExecutorInfo()
@@ -61,12 +60,11 @@ public class JiraTestResultExportPluginTest {
         verify(service, times(1)).createTestResult(any(JiraTestResult.class));
         verify(service).createTestResult(argThat(result -> ISSUE.equals(result.getIssueKey())));
         verify(service).createTestResult(argThat(result -> testResult.getName().equals(result.getName())));
-        verify(service).createTestResult(argThat(result -> testResult.getStatus().equals(result.getStatus())));
+        verify(service).createTestResult(argThat(result -> testResult.getStatus().toString().equals(result.getStatus())));
         verify(service).createTestResult(argThat(result -> result.getUrl().contains(testResult.getUid())));
 
         verify(service).createTestResult(argThat(result -> executorInfo.getBuildName().equals(result.getLaunchName())));
         verify(service).createTestResult(argThat(result -> executorInfo.getReportUrl().equals(result.getLaunchUrl())));
-
     }
 
 }

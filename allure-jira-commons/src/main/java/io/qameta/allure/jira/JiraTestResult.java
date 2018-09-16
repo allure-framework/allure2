@@ -1,14 +1,15 @@
 package io.qameta.allure.jira;
 
-import io.qameta.allure.entity.Status;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 /**
- * Jira TestResult export data.
+ * Jira test result export data.
  */
 @Data
 @Accessors(chain = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class JiraTestResult {
 
     private int id;
@@ -21,7 +22,7 @@ public class JiraTestResult {
     private String launchUrl;
     private String launchName;
 
-    private Status status;
+    private String status;
     private Long date;
 
 }

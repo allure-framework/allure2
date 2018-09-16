@@ -5,7 +5,6 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.Statistic;
-import io.qameta.allure.jira.commons.JiraServiceUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +30,7 @@ public class JiraLaunchExportPlugin implements Aggregator {
     private final JiraService jiraService;
 
     public JiraLaunchExportPlugin() {
-        this(JiraServiceUtils.newInstance(JiraService.class));
+        this(new JiraServiceBuilder().defaults().build());
     }
 
     public JiraLaunchExportPlugin(final JiraService jiraService) {

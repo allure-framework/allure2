@@ -8,7 +8,7 @@ dependencies {
     compile project(':allure-jira-commons')
 
     testCompile project(':allure-plugin-api')
-    
+
     testCompile('com.github.stefanbirkner:system-rules:1.18.0')
     testCompile('org.mockito:mockito-core')
     testCompile('junit:junit')
