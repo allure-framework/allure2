@@ -5,24 +5,15 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 /**
- * Jira test result export data.
+ * Xray test execution data.
  */
 @Data
 @Accessors(chain = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JiraTestResult {
+public class XrayTestRun {
 
     private int id;
-
-    private String issueKey;
-
-    private String name;
-    private String url;
-
-    private String launchUrl;
-    private String launchName;
-
+    private String key;
     private String status;
-    private Long date;
 
 }

@@ -1,13 +1,15 @@
 package io.qameta.allure.jira;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 /**
- * Jira Launch Export Data.
+ * Jira launch export data.
  */
 @Data
 @Accessors(chain = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class JiraLaunch {
 
     private int id;
