@@ -66,7 +66,7 @@ public class XrayTestRunExportPluginTest {
                 Paths.get("/")
         );
 
-        final String reportLink = String.format("[%s|%s]", executorInfo.getName(), executorInfo.getReportUrl());
+        final String reportLink = String.format("[%s|%s]", executorInfo.getBuildName(), executorInfo.getReportUrl());
         verify(service, times(1)).createIssueComment(
                 argThat(issue -> issue.equals(EXECUTION_ISSUES)),
                 argThat(comment -> comment.getBody().contains(reportLink)

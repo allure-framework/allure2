@@ -31,6 +31,7 @@ dependencies {
     allurePlugin project(path: ':xctest-plugin', configuration: 'allurePlugin')
     allurePlugin project(path: ':xunit-xml-plugin', configuration: 'allurePlugin')
     allurePlugin project(path: ':jira-plugin', configuration: 'allurePlugin')
+    allurePlugin project(path: ':xray-plugin', configuration: 'allurePlugin')
     compile project(':allure-generator')
     compile('com.beust:jcommander')
     compile('org.eclipse.jetty:jetty-server')

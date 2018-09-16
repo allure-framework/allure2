@@ -108,7 +108,7 @@ public class XrayTestRunExportPlugin implements Aggregator {
     private void addExecutionComment(final String executionIssueKey, final ExecutorInfo info) {
         try {
             final String message = String.format("Execution updated from launch [%s|%s]",
-                    info.getName(), info.getReportUrl());
+                    info.getBuildName(), info.getReportUrl());
             jiraService.createIssueComment(executionIssueKey, new JiraIssueComment().setBody(message));
             LOGGER.debug(String.format("Xray execution '%s' commented successfully", executionIssueKey));
         } catch (Exception e) {

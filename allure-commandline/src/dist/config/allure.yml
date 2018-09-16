@@ -7,3 +7,4 @@ plugins:
   - screen-diff-plugin
   - xctest-plugin
   - jira-plugin
+  - xray-plugin
