@@ -8,8 +8,8 @@ dependencies {
     compileOnly project(':allure-plugin-api')
     compileOnly('org.projectlombok:lombok')
 
-    compile('com.squareup.retrofit2:retrofit:2.4.0')
-    compile('com.squareup.retrofit2:converter-jackson:2.4.0')
+    compile('com.squareup.retrofit2:retrofit')
+    compile('com.squareup.retrofit2:converter-jackson')
 }
 
 task sourceJar(type: Jar, dependsOn: classes) {
