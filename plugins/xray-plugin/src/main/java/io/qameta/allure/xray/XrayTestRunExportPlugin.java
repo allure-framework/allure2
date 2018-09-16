@@ -27,6 +27,9 @@ import java.util.stream.Collectors;
 import static io.qameta.allure.util.PropertyUtils.getProperty;
 import static io.qameta.allure.util.PropertyUtils.requireProperty;
 
+/**
+ * Plugin update Xray test run status from test result.
+ */
 public class XrayTestRunExportPlugin implements Aggregator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XrayTestRunExportPlugin.class);
@@ -41,6 +44,10 @@ public class XrayTestRunExportPlugin implements Aggregator {
     private static final String ALLURE_XRAY_STATUS_BROKEN = "ALLURE_XRAY_STATUS_BROKEN";
     private static final String ALLURE_XRAY_STATUS_FAILED = "ALLURE_XRAY_STATUS_FAILED";
     private static final String ALLURE_XRAY_STATUS_PASSED = "ALLURE_XRAY_STATUS_PASSED";
+
+    private static final String XRAY_STATUS_PASS = "PASS";
+    private static final String XRAY_STATUS_FAIL = "FAIL";
+    private static final String XRAY_STATUS_TODO = "TODO";
 
     private final JiraService jiraService;
 
@@ -124,11 +131,11 @@ public class XrayTestRunExportPlugin implements Aggregator {
 
     private static Map<Status, String> getStatusesMap() {
         final Map<Status, String> statues = new HashMap<>();
-        statues.put(Status.PASSED, getProperty(ALLURE_XRAY_STATUS_PASSED).orElse("PASS"));
-        statues.put(Status.FAILED, getProperty(ALLURE_XRAY_STATUS_FAILED).orElse("FAIL"));
-        statues.put(Status.BROKEN, getProperty(ALLURE_XRAY_STATUS_BROKEN).orElse("FAIL"));
-        statues.put(Status.SKIPPED, getProperty(ALLURE_XRAY_STATUS_SKIPPED).orElse("TODO"));
-        statues.put(Status.UNKNOWN, getProperty(ALLURE_XRAY_STATUS_UNKNOWN).orElse("TODO"));
+        statues.put(Status.PASSED, getProperty(ALLURE_XRAY_STATUS_PASSED).orElse(XRAY_STATUS_PASS));
+        statues.put(Status.FAILED, getProperty(ALLURE_XRAY_STATUS_FAILED).orElse(XRAY_STATUS_FAIL));
+        statues.put(Status.BROKEN, getProperty(ALLURE_XRAY_STATUS_BROKEN).orElse(XRAY_STATUS_FAIL));
+        statues.put(Status.SKIPPED, getProperty(ALLURE_XRAY_STATUS_SKIPPED).orElse(XRAY_STATUS_TODO));
+        statues.put(Status.UNKNOWN, getProperty(ALLURE_XRAY_STATUS_UNKNOWN).orElse(XRAY_STATUS_TODO));
         return statues;
     }
 
