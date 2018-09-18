@@ -110,6 +110,7 @@ allprojects {
             dependency 'org.slf4j:slf4j-nop:1.7.25'
             dependency 'org.slf4j:slf4j-simple:1.7.25'
             dependency 'org.zeroturnaround:zt-zip:1.13'
+            dependency 'com.github.stefanbirkner:system-rules:1.18.0'
         }
     }
 
