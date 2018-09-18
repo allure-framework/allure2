@@ -58,8 +58,10 @@ dependencies {
     compile('org.apache.httpcomponents:httpclient')
     compile('org.apache.tika:tika-core')
     compileOnly('org.projectlombok:lombok')
+
     testCompile('com.google.guava:guava')
     testCompile('io.qameta.allure:allure-java-commons')
+    testCompile('com.github.stefanbirkner:system-rules')
     testCompile('junit:junit')
     testCompile('org.apache.commons:commons-text')
     testCompile('org.assertj:assertj-core')
