@@ -49,22 +49,25 @@ public class XrayTestRunExportPlugin implements Aggregator {
     private static final String XRAY_STATUS_FAIL = "FAIL";
     private static final String XRAY_STATUS_TODO = "TODO";
 
-    private final JiraService jiraService;
-
-    public XrayTestRunExportPlugin() {
-        this(new JiraServiceBuilder().defaults().build());
-    }
-
-    public XrayTestRunExportPlugin(final JiraService jiraService) {
-        this.jiraService = jiraService;
-    }
+    private JiraService jiraService;
 
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
                           final Path outputDirectory) {
         if (getProperty(ALLURE_XRAY_ENABLED).map(Boolean::parseBoolean).orElse(false)) {
+            setDefaultJiraServiceIfRequired();
             updateTestRunStatuses(launchesResults);
+        }
+    }
+
+    protected void setJiraService(final JiraService jiraService) {
+        this.jiraService = jiraService;
+    }
+
+    private void setDefaultJiraServiceIfRequired() {
+        if (Objects.isNull(this.jiraService)) {
+            setJiraService(new JiraServiceBuilder().defaults().build());
         }
     }
 

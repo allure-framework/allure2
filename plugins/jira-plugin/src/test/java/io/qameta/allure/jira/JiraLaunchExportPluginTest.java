@@ -54,7 +54,8 @@ public class JiraLaunchExportPluginTest {
         when(launchResults.getExtra("executor")).thenReturn(Optional.of(executorInfo));
 
         final JiraService service = mockJiraService();
-        final JiraLaunchExportPlugin jiraLaunchExportPlugin = new JiraLaunchExportPlugin(service);
+        final JiraLaunchExportPlugin jiraLaunchExportPlugin = new JiraLaunchExportPlugin();
+        jiraLaunchExportPlugin.setJiraService(service);
 
         jiraLaunchExportPlugin.aggregate(
                 mock(Configuration.class),

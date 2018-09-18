@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -29,15 +30,7 @@ public class JiraTestResultExportPlugin implements Aggregator {
 
     private static final String EXECUTORS_BLOCK_NAME = "executor";
 
-    private final JiraService jiraService;
-
-    public JiraTestResultExportPlugin() {
-        this(new JiraServiceBuilder().defaults().build());
-    }
-
-    public JiraTestResultExportPlugin(final JiraService jiraService) {
-        this.jiraService = jiraService;
-    }
+    private JiraService jiraService;
 
     @Override
     public void aggregate(final Configuration configuration,
@@ -45,10 +38,21 @@ public class JiraTestResultExportPlugin implements Aggregator {
                           final Path outputDirectory) {
 
         if (getProperty(ALLURE_JIRA_TEST_RESULT_ENABLED).map(Boolean::parseBoolean).orElse(false)) {
+            setDefaultJiraServiceIfRequired();
             exportTestResultsToJira(launchesResults);
         }
     }
 
+
+    protected void setJiraService(final JiraService jiraService) {
+        this.jiraService = jiraService;
+    }
+
+    private void setDefaultJiraServiceIfRequired() {
+        if (Objects.isNull(this.jiraService)) {
+            setJiraService(new JiraServiceBuilder().defaults().build());
+        }
+    }
     private void exportTestResultsToJira(final List<LaunchResults> launchesResults) {
         final ExecutorInfo info = launchesResults.stream()
                 .map(launchResults -> launchResults.getExtra(EXECUTORS_BLOCK_NAME))

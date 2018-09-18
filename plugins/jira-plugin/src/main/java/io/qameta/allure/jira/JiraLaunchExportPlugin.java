@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static io.qameta.allure.util.PropertyUtils.getProperty;
@@ -29,23 +30,27 @@ public class JiraLaunchExportPlugin implements Aggregator {
 
     private static final String EXECUTORS_BLOCK_NAME = "executor";
 
-    private final JiraService jiraService;
-
-    public JiraLaunchExportPlugin() {
-        this(new JiraServiceBuilder().defaults().build());
-    }
-
-    public JiraLaunchExportPlugin(final JiraService jiraService) {
-        this.jiraService = jiraService;
-    }
+    private JiraService jiraService;
 
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
                           final Path outputDirectory) {
         if (getProperty(ALLURE_JIRA_LAUNCH_ENABLED).map(Boolean::parseBoolean).orElse(false)) {
+            setDefaultJiraServiceIfRequired();
             final List<String> issues = splitByComma(requireProperty(ALLURE_JIRA_LAUNCH_ISSUES));
             issues.forEach(issue -> exportLaunchesToJira(issue, launchesResults));
+        }
+    }
+
+
+    protected void setJiraService(final JiraService jiraService) {
+        this.jiraService = jiraService;
+    }
+
+    private void setDefaultJiraServiceIfRequired() {
+        if (Objects.isNull(this.jiraService)) {
+            setJiraService(new JiraServiceBuilder().defaults().build());
         }
     }
 
