@@ -21,6 +21,7 @@ import io.qameta.allure.executor.ExecutorPlugin;
 import io.qameta.allure.ga.GaPlugin;
 import io.qameta.allure.history.HistoryPlugin;
 import io.qameta.allure.history.HistoryTrendPlugin;
+import io.qameta.allure.idea.IdeaLinksPlugin;
 import io.qameta.allure.influxdb.InfluxDbExportPlugin;
 import io.qameta.allure.launch.LaunchPlugin;
 import io.qameta.allure.mail.MailPlugin;
@@ -69,6 +70,7 @@ public class ConfigurationBuilder {
                 new TagsPlugin(),
                 new SeverityPlugin(),
                 new OwnerPlugin(),
+                new IdeaLinksPlugin(),
                 new CategoriesPlugin(),
                 new CategoriesTrendPlugin(),
                 new HistoryPlugin(),
