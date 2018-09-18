@@ -50,21 +50,19 @@ public class JiraTestResultExportPlugin implements Aggregator {
     }
 
     private void exportTestResultsToJira(final List<LaunchResults> launchesResults) {
-        final Optional<ExecutorInfo> executorInfo = launchesResults.stream()
+        final ExecutorInfo info = launchesResults.stream()
                 .map(launchResults -> launchResults.getExtra(EXECUTORS_BLOCK_NAME))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .filter(ExecutorInfo.class::isInstance)
                 .map(ExecutorInfo.class::cast)
-                .findFirst();
+                .findFirst().orElse(new ExecutorInfo());
 
-        executorInfo.ifPresent(info -> {
-            final List<TestResult> testResults = launchesResults.stream()
-                    .map(LaunchResults::getAllResults)
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toList());
-            exportTestResultsToJira(info, testResults);
-        });
+        final List<TestResult> testResults = launchesResults.stream()
+                .map(LaunchResults::getAllResults)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        exportTestResultsToJira(info, testResults);
     }
 
     private void exportTestResultsToJira(final ExecutorInfo executorInfo,

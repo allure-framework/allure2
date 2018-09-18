@@ -33,7 +33,7 @@ public class JiraLaunchExportPluginTest {
     @Rule
     public final EnvironmentVariables jiraEnabled = new EnvironmentVariables()
             .set("ALLURE_JIRA_LAUNCH_ENABLED", "true")
-            .set("ALLURE_JIRA_LAUNCH_ISSUE", ISSUE);
+            .set("ALLURE_JIRA_LAUNCH_ISSUES", ISSUE);
 
 
     @Test

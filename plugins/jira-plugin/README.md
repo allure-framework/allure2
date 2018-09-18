@@ -1,6 +1,6 @@
 # Allure Jira Plugin
 
-This plugin requires `execution.json` file (which automatically generates by Jenkins, TeamCity, Bamboo) in test result directory. 
+This plugin requires `executor.json` file (which automatically generates by Jenkins, TeamCity, Bamboo) in test result directory.
 This file contains information about report location for backlinks from Jira.
 
 This plugin requires 'Allure for Jira' plugin installed in your Jira. 
@@ -25,7 +25,7 @@ After that you will see such panel in Jira issue:
 
 How it works:
 * enable plugin - add env property `ALLURE_JIRA_LAUNCH_ENABLED=true`
-* set issue for launch export - add env property `ALLURE_JIRA_LAUNCH_ISSUE=ALLURE-2`
+* set issue for launch export - add env property `ALLURE_JIRA_LAUNCH_ISSUES=ALLURE-2`
 * setup Jira env variables: 
   * `ALLURE_JIRA_ENDPOINT=https://<jira>/jira/rest/`
   * `ALLURE_JIRA_USERNAME=<username>`

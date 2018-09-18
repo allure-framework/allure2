@@ -9,11 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 import static io.qameta.allure.util.PropertyUtils.getProperty;
+import static io.qameta.allure.util.PropertyUtils.requireProperty;
 
 /**
  * Plugins exports Launch information to Jira Ticket.
@@ -23,7 +25,7 @@ public class JiraLaunchExportPlugin implements Aggregator {
     private static final Logger LOGGER = LoggerFactory.getLogger(JiraLaunchExportPlugin.class);
 
     private static final String ALLURE_JIRA_LAUNCH_ENABLED = "ALLURE_JIRA_LAUNCH_ENABLED";
-    private static final String ALLURE_JIRA_LAUNCH_ISSUE = "ALLURE_JIRA_LAUNCH_ISSUE";
+    private static final String ALLURE_JIRA_LAUNCH_ISSUES = "ALLURE_JIRA_LAUNCH_ISSUES";
 
     private static final String EXECUTORS_BLOCK_NAME = "executor";
 
@@ -42,28 +44,27 @@ public class JiraLaunchExportPlugin implements Aggregator {
                           final List<LaunchResults> launchesResults,
                           final Path outputDirectory) {
         if (getProperty(ALLURE_JIRA_LAUNCH_ENABLED).map(Boolean::parseBoolean).orElse(false)) {
-            final Optional<String> issueKey = getProperty(ALLURE_JIRA_LAUNCH_ISSUE);
-            issueKey.ifPresent(key -> exportLaunchesToJira(key, launchesResults));
+            final List<String> issues = splitByComma(requireProperty(ALLURE_JIRA_LAUNCH_ISSUES));
+            issues.forEach(issue -> exportLaunchesToJira(issue, launchesResults));
         }
     }
 
     private void exportLaunchesToJira(final String issueKey,
                                       final List<LaunchResults> launchesResults) {
-        final Optional<ExecutorInfo> executorInfo = launchesResults.stream()
+        final ExecutorInfo info = launchesResults.stream()
                 .map(launchResults -> launchResults.getExtra(EXECUTORS_BLOCK_NAME))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .filter(ExecutorInfo.class::isInstance)
                 .map(ExecutorInfo.class::cast)
-                .findFirst();
-        executorInfo.ifPresent(info -> {
-            final Statistic statistic = new Statistic();
-            launchesResults.stream()
-                    .map(LaunchResults::getAllResults)
-                    .flatMap(Collection::stream)
-                    .forEach(statistic::update);
-            exportLaunchToJira(issueKey, info, statistic);
-        });
+                .findFirst()
+                .orElse(new ExecutorInfo());
+        final Statistic statistic = new Statistic();
+        launchesResults.stream()
+                .map(LaunchResults::getAllResults)
+                .flatMap(Collection::stream)
+                .forEach(statistic::update);
+        exportLaunchToJira(issueKey, info, statistic);
     }
 
     private void exportLaunchToJira(final String issueKey,
@@ -92,6 +93,10 @@ public class JiraLaunchExportPlugin implements Aggregator {
         } catch (Throwable e) {
             LOGGER.error(String.format("Allure launch sync with issue '%s' error", issueKey), e);
         }
+    }
+
+    private static List<String> splitByComma(final String value) {
+        return Arrays.asList(value.split(","));
     }
 
 }
