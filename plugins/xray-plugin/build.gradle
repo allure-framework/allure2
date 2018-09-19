@@ -9,7 +9,7 @@ dependencies {
 
     testCompile project(':allure-plugin-api')
 
-    testCompile('com.github.stefanbirkner:system-rules:1.18.0')
+    testCompile('com.github.stefanbirkner:system-rules')
     testCompile('org.mockito:mockito-core')
     testCompile('junit:junit')
 }
