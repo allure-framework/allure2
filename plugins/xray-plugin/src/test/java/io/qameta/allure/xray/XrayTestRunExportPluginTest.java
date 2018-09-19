@@ -58,7 +58,8 @@ public class XrayTestRunExportPluginTest {
                 Collections.singletonList(new XrayTestRun().setId(TESTRUN_ID).setKey(TESTRUN_KEY).setStatus("TODO"))
         );
 
-        final XrayTestRunExportPlugin xrayTestRunExportPlugin = new XrayTestRunExportPlugin(service);
+        final XrayTestRunExportPlugin xrayTestRunExportPlugin = new XrayTestRunExportPlugin();
+        xrayTestRunExportPlugin.setJiraService(service);
 
         xrayTestRunExportPlugin.aggregate(
                 mock(Configuration.class),
