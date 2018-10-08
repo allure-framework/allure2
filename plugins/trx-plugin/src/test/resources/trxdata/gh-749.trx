@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="d32752e7-f92d-4636-8aa4-3c5c13c81fd7" name="@computerName 2018-10-08 15:34:14" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+    <Times creation="2018-10-08T15:34:14.0933035+02:00" queuing="2018-10-08T15:34:14.0933035+02:00" start="2018-10-08T15:34:12.5177742+02:00" finish="2018-10-08T15:34:17.5631430+02:00" />
+    <TestSettings name="default" id="1809e9e4-7476-4883-b0f9-da4351c5a870">
+        <Deployment runDeploymentRoot="_computerName_2018-10-08_15_34_14" />
+    </TestSettings>
+    <Results>
+        <UnitTestResult executionId="3f66826e-4985-4f0c-8487-fb22efe22dd6" testId="baee4da8-a695-8106-f452-fc8078d9cc22" testName="testMethod" computerName="computerName" duration="00:00:00.1054123" startTime="2018-10-08T15:34:12.7049658+02:00" endTime="2018-10-08T15:34:12.8453595+02:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3f66826e-4985-4f0c-8487-fb22efe22dd6" />
+    </Results>
+    <TestDefinitions>
+        <UnitTest name="testMethod" storage="C:\tmp\bin\debug\test.dll" id="baee4da8-a695-8106-f452-fc8078d9cc22">
+            <Execution id="3f66826e-4985-4f0c-8487-fb22efe22dd6" />
+            <TestMethod codeBase="C:\tmp\bin\Debug\Test.dll" adapterTypeName="executor://mstestadapter/v2" className="TestClass" name="testMethod" />
+        </UnitTest>
+    </TestDefinitions>
+    <TestEntries>
+        <TestEntry testId="baee4da8-a695-8106-f452-fc8078d9cc22" executionId="3f66826e-4985-4f0c-8487-fb22efe22dd6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    </TestEntries>
+    <TestLists>
+        <TestList name="Ergebnisse nicht in einer Liste" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+        <TestList name="Alle geladenen Ergebnisse" id="19431567-8539-422a-85d7-44ee4e166bda" />
+    </TestLists>
+    <ResultSummary outcome="Failed">
+        <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    </ResultSummary>
+</TestRun>

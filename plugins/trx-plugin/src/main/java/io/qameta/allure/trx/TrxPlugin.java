@@ -35,6 +35,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
+import static io.qameta.allure.entity.LabelName.PACKAGE;
+import static io.qameta.allure.entity.LabelName.SUITE;
+import static io.qameta.allure.entity.LabelName.TEST_CLASS;
 import static java.nio.file.Files.newDirectoryStream;
 
 /**
@@ -57,6 +60,8 @@ public class TrxPlugin implements Reader {
     public static final String TEST_DEFINITIONS_ELEMENT = "TestDefinitions";
     public static final String UNIT_TEST_ELEMENT = "UnitTest";
     public static final String NAME_ATTRIBUTE = "name";
+    public static final String TEST_METHOD_ELEMENT = "TestMethod";
+    public static final String CLASS_NAME_ATTRIBUTE = "className";
     public static final String PROPERTIES_ELEMENT = "Properties";
     public static final String PROPERTY_ATTRIBUTE = "Property";
     public static final String KEY_ELEMENT = "Key";
@@ -109,6 +114,9 @@ public class TrxPlugin implements Reader {
 
     protected UnitTest parseUnitTest(final XmlElement unitTestElement) {
         final String name = unitTestElement.getAttribute(NAME_ATTRIBUTE);
+        final String fullName = unitTestElement.getFirst(TEST_METHOD_ELEMENT)
+                .map(testMethod -> testMethod.getAttribute(CLASS_NAME_ATTRIBUTE))
+                .orElse(null);
         final String description = unitTestElement.getFirst(DESCRIPTION_ELEMENT)
                 .map(XmlElement::getValue)
                 .orElse(null);
@@ -116,7 +124,7 @@ public class TrxPlugin implements Reader {
                 .map(execution -> execution.getAttribute(ID_ATTRIBUTE))
                 .orElse(null);
         final Map<String, String> properties = parseProperties(unitTestElement);
-        return new UnitTest(name, executionId, description, properties);
+        return new UnitTest(name, fullName, executionId, description, properties);
     }
 
     private Map<String, String> parseProperties(final XmlElement unitTestElement) {
@@ -177,8 +185,14 @@ public class TrxPlugin implements Reader {
             result.setTestStage(stageResult);
         });
         Optional.ofNullable(tests.get(executionId)).ifPresent(unitTest -> {
+            final String fullNameWithTestName = unitTest.getFullName() + "." + testName;
             result.setParameters(unitTest.getParameters());
             result.setDescription(unitTest.getDescription());
+            result.setFullName(fullNameWithTestName);
+            result.setHistoryId(fullNameWithTestName);
+            result.addLabelIfNotExists(SUITE, unitTest.getFullName());
+            result.addLabelIfNotExists(TEST_CLASS, unitTest.getFullName());
+            result.addLabelIfNotExists(PACKAGE, unitTest.getFullName());
         });
 
         result.addLabelIfNotExists(RESULT_FORMAT, TRX_RESULTS_FORMAT);
