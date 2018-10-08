@@ -65,6 +65,7 @@ public class TrxPlugin implements Reader {
     public static final String MESSAGE_ELEMENT_NAME = "Message";
     public static final String STACK_TRACE_ELEMENT_NAME = "StackTrace";
     public static final String ERROR_INFO_ELEMENT_NAME = "ErrorInfo";
+    public static final String STDOUT_ELEMENT_NAME = "StdOut";
 
     @Override
     public void readResults(final Configuration configuration,
@@ -161,6 +162,11 @@ public class TrxPlugin implements Reader {
                 .setTime(getTime(startTime, endTime));
         getStatusMessage(unitTestResult).ifPresent(result::setStatusMessage);
         getStatusTrace(unitTestResult).ifPresent(result::setStatusTrace);
+        if (result.getStatus() != Status.PASSED) {
+            getLogMessage(unitTestResult).ifPresent(logMessage -> {
+                result.setStatusTrace(result.getStatusTrace() + logMessage);
+            });
+        }
         Optional.ofNullable(tests.get(executionId)).ifPresent(unitTest -> {
             result.setParameters(unitTest.getParameters());
             result.setDescription(unitTest.getDescription());
@@ -168,6 +174,12 @@ public class TrxPlugin implements Reader {
 
         result.addLabelIfNotExists(RESULT_FORMAT, TRX_RESULTS_FORMAT);
         visitor.visitTestResult(result);
+    }
+
+    private Optional<String> getLogMessage(final XmlElement unitTestResult) {
+        return unitTestResult.getFirst(OUTPUT_ELEMENT_NAME)
+                .flatMap(output -> output.getFirst(STDOUT_ELEMENT_NAME))
+                .map(XmlElement::getValue);
     }
 
     private Optional<String> getStatusMessage(final XmlElement unitTestResult) {

@@ -90,6 +90,23 @@ public class TrxPluginTest {
                 .containsExactly(tuple("Some message", "Some trace"));
     }
 
+    @Test
+    public void shouldParseStdOutOnFail() throws Exception {
+        process(
+                "trxdata/sample.trx",
+                "sample.trx"
+        );
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(4)).visitTestResult(captor.capture());
+
+        assertThat(captor.getAllValues())
+                .filteredOn(result -> result.getStatus() == Status.FAILED)
+                .filteredOn(result -> result.getStatusTrace().contains("Given I have entered 50 into the calculator"))
+                .filteredOn(result -> result.getStatusTrace().contains("And I have entered -1 into the calculator"))
+                .hasSize(1);
+    }
+
     private void process(String... strings) throws IOException {
         Path resultsDirectory = folder.newFolder().toPath();
         Iterator<String> iterator = Arrays.asList(strings).iterator();
