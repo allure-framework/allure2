@@ -185,14 +185,15 @@ public class TrxPlugin implements Reader {
             result.setTestStage(stageResult);
         });
         Optional.ofNullable(tests.get(executionId)).ifPresent(unitTest -> {
-            final String fullName = String.format("%s.%s", unitTest.getFullName(), testName);
+            final String className = unitTest.getClassName();
+            final String fullName = String.format("%s.%s", className, testName);
             result.setParameters(unitTest.getParameters());
             result.setDescription(unitTest.getDescription());
             result.setFullName(fullName);
             result.setHistoryId(fullName);
-            result.addLabelIfNotExists(SUITE, unitTest.getFullName());
-            result.addLabelIfNotExists(TEST_CLASS, unitTest.getFullName());
-            result.addLabelIfNotExists(PACKAGE, unitTest.getFullName());
+            result.addLabelIfNotExists(SUITE, className);
+            result.addLabelIfNotExists(TEST_CLASS, className);
+            result.addLabelIfNotExists(PACKAGE, className);
         });
 
         result.addLabelIfNotExists(RESULT_FORMAT, TRX_RESULTS_FORMAT);
