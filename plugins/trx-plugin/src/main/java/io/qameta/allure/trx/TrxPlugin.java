@@ -166,18 +166,16 @@ public class TrxPlugin implements Reader {
                 .setTime(getTime(startTime, endTime));
         getStatusMessage(unitTestResult).ifPresent(result::setStatusMessage);
         getStatusTrace(unitTestResult).ifPresent(result::setStatusTrace);
-        if (result.getStatus() != Status.PASSED) {
-            getLogMessage(unitTestResult).ifPresent(logMessage -> {
-                final List<String> lines = splitLines(logMessage);
-                final List<Step> steps = lines
-                        .stream()
-                        .map(line -> new Step().setName(line))
-                        .collect(Collectors.toList());
-                final StageResult stageResult = new StageResult()
-                        .setSteps(steps);
-                result.setTestStage(stageResult);
-            });
-        }
+        getLogMessage(unitTestResult).ifPresent(logMessage -> {
+            final List<String> lines = splitLines(logMessage);
+            final List<Step> steps = lines
+                    .stream()
+                    .map(line -> new Step().setName(line))
+                    .collect(Collectors.toList());
+            final StageResult stageResult = new StageResult()
+                    .setSteps(steps);
+            result.setTestStage(stageResult);
+        });
         Optional.ofNullable(tests.get(executionId)).ifPresent(unitTest -> {
             result.setParameters(unitTest.getParameters());
             result.setDescription(unitTest.getDescription());
