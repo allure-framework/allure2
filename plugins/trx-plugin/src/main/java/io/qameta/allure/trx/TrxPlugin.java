@@ -114,7 +114,7 @@ public class TrxPlugin implements Reader {
 
     protected UnitTest parseUnitTest(final XmlElement unitTestElement) {
         final String name = unitTestElement.getAttribute(NAME_ATTRIBUTE);
-        final String fullName = unitTestElement.getFirst(TEST_METHOD_ELEMENT)
+        final String className = unitTestElement.getFirst(TEST_METHOD_ELEMENT)
                 .map(testMethod -> testMethod.getAttribute(CLASS_NAME_ATTRIBUTE))
                 .orElse(null);
         final String description = unitTestElement.getFirst(DESCRIPTION_ELEMENT)
@@ -124,7 +124,7 @@ public class TrxPlugin implements Reader {
                 .map(execution -> execution.getAttribute(ID_ATTRIBUTE))
                 .orElse(null);
         final Map<String, String> properties = parseProperties(unitTestElement);
-        return new UnitTest(name, fullName, executionId, description, properties);
+        return new UnitTest(name, className, executionId, description, properties);
     }
 
     private Map<String, String> parseProperties(final XmlElement unitTestElement) {
@@ -185,11 +185,11 @@ public class TrxPlugin implements Reader {
             result.setTestStage(stageResult);
         });
         Optional.ofNullable(tests.get(executionId)).ifPresent(unitTest -> {
-            final String fullNameWithTestName = unitTest.getFullName() + "." + testName;
+            final String fullName = String.format("%s.%s", unitTest.getFullName(), testName);
             result.setParameters(unitTest.getParameters());
             result.setDescription(unitTest.getDescription());
-            result.setFullName(fullNameWithTestName);
-            result.setHistoryId(fullNameWithTestName);
+            result.setFullName(fullName);
+            result.setHistoryId(fullName);
             result.addLabelIfNotExists(SUITE, unitTest.getFullName());
             result.addLabelIfNotExists(TEST_CLASS, unitTest.getFullName());
             result.addLabelIfNotExists(PACKAGE, unitTest.getFullName());
