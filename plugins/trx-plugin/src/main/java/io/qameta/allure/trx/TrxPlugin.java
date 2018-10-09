@@ -171,7 +171,7 @@ public class TrxPlugin implements Reader {
                 final List<String> lines = splitLines(logMessage);
                 final List<Step> steps = lines
                         .stream()
-                        .map(line -> new Step.setName(line))
+                        .map(line -> new Step().setName(line))
                         .collect(Collectors.toList());
                 final StageResult stageResult = new StageResult()
                         .setSteps(steps);
