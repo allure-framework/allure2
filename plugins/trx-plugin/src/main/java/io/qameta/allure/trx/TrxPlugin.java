@@ -4,7 +4,9 @@ import io.qameta.allure.Reader;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
+import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
+import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import io.qameta.allure.parser.XmlElement;
@@ -24,11 +26,13 @@ import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.chrono.ChronoZonedDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
 import static java.nio.file.Files.newDirectoryStream;
@@ -65,6 +69,7 @@ public class TrxPlugin implements Reader {
     public static final String MESSAGE_ELEMENT_NAME = "Message";
     public static final String STACK_TRACE_ELEMENT_NAME = "StackTrace";
     public static final String ERROR_INFO_ELEMENT_NAME = "ErrorInfo";
+    public static final String STDOUT_ELEMENT_NAME = "StdOut";
 
     @Override
     public void readResults(final Configuration configuration,
@@ -161,6 +166,16 @@ public class TrxPlugin implements Reader {
                 .setTime(getTime(startTime, endTime));
         getStatusMessage(unitTestResult).ifPresent(result::setStatusMessage);
         getStatusTrace(unitTestResult).ifPresent(result::setStatusTrace);
+        getLogMessage(unitTestResult).ifPresent(logMessage -> {
+            final List<String> lines = splitLines(logMessage);
+            final List<Step> steps = lines
+                    .stream()
+                    .map(line -> new Step().setName(line))
+                    .collect(Collectors.toList());
+            final StageResult stageResult = new StageResult()
+                    .setSteps(steps);
+            result.setTestStage(stageResult);
+        });
         Optional.ofNullable(tests.get(executionId)).ifPresent(unitTest -> {
             result.setParameters(unitTest.getParameters());
             result.setDescription(unitTest.getDescription());
@@ -168,6 +183,16 @@ public class TrxPlugin implements Reader {
 
         result.addLabelIfNotExists(RESULT_FORMAT, TRX_RESULTS_FORMAT);
         visitor.visitTestResult(result);
+    }
+
+    private List<String> splitLines(final String str) {
+        return Arrays.asList(str.split("\\r?\\n"));
+    }
+
+    private Optional<String> getLogMessage(final XmlElement unitTestResult) {
+        return unitTestResult.getFirst(OUTPUT_ELEMENT_NAME)
+                .flatMap(output -> output.getFirst(STDOUT_ELEMENT_NAME))
+                .map(XmlElement::getValue);
     }
 
     private Optional<String> getStatusMessage(final XmlElement unitTestResult) {
