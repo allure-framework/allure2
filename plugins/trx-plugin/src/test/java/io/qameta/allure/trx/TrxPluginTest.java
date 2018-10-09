@@ -102,8 +102,9 @@ public class TrxPluginTest {
 
         assertThat(captor.getAllValues())
                 .filteredOn(result -> result.getStatus() == Status.FAILED)
-                .filteredOn(result -> result.getStatusTrace().contains("Given I have entered 50 into the calculator"))
-                .filteredOn(result -> result.getStatusTrace().contains("And I have entered -1 into the calculator"))
+                .filteredOn(result -> result.getTestStage().getSteps().size() == 10)
+                .filteredOn(result -> result.getTestStage().getSteps().get(1).getName().contains("Given I have entered 50 into the calculator"))
+                .filteredOn(result -> result.getTestStage().getSteps().get(3).getName().contains("And I have entered -1 into the calculator"))
                 .hasSize(1);
     }
 

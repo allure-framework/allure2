@@ -4,7 +4,9 @@ import io.qameta.allure.Reader;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
+import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
+import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import io.qameta.allure.parser.XmlElement;
@@ -24,11 +26,13 @@ import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.chrono.ChronoZonedDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
 import static java.nio.file.Files.newDirectoryStream;
@@ -164,7 +168,14 @@ public class TrxPlugin implements Reader {
         getStatusTrace(unitTestResult).ifPresent(result::setStatusTrace);
         if (result.getStatus() != Status.PASSED) {
             getLogMessage(unitTestResult).ifPresent(logMessage -> {
-                result.setStatusTrace(result.getStatusTrace() + logMessage);
+                final List<String> lines = splitLines(logMessage);
+                final List<Step> steps = lines
+                        .stream()
+                        .map(line -> new Step.setName(line))
+                        .collect(Collectors.toList());
+                final StageResult stageResult = new StageResult()
+                        .setSteps(steps);
+                result.setTestStage(stageResult);
             });
         }
         Optional.ofNullable(tests.get(executionId)).ifPresent(unitTest -> {
@@ -174,6 +185,10 @@ public class TrxPlugin implements Reader {
 
         result.addLabelIfNotExists(RESULT_FORMAT, TRX_RESULTS_FORMAT);
         visitor.visitTestResult(result);
+    }
+
+    private List<String> splitLines(final String str) {
+        return Arrays.asList(str.split("\\r?\\n"));
     }
 
     private Optional<String> getLogMessage(final XmlElement unitTestResult) {
