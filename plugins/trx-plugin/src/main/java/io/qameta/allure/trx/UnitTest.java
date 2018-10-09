@@ -13,13 +13,15 @@ public class UnitTest {
 
     public static final String PARAMETER_PREFIX = "Parameter:";
     private final String name;
+    private final String className;
     private final String executionId;
     private final String description;
     private final Map<String, String> properties;
 
-    public UnitTest(final String name, final String executionId,
+    public UnitTest(final String name, final String className, final String executionId,
                     final String description, final Map<String, String> properties) {
         this.name = name;
+        this.className = className;
         this.executionId = executionId;
         this.description = description;
         this.properties = properties;
@@ -27,6 +29,10 @@ public class UnitTest {
 
     public String getName() {
         return name;
+    }
+
+    public String getClassName() {
+        return className;
     }
 
     public String getExecutionId() {

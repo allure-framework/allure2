@@ -90,6 +90,23 @@ public class TrxPluginTest {
                 .containsExactly(tuple("Some message", "Some trace"));
     }
 
+    @Issue("749")
+    @Test
+    public void shouldParseClassNameAsSuite() throws Exception {
+        process(
+                "trxdata/gh-749.trx",
+                "sample.trx"
+        );
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(1)).visitTestResult(captor.capture());
+
+        assertThat(captor.getAllValues())
+                .extracting(result -> result.findOneLabel(LabelName.SUITE))
+                .extracting(Optional::get)
+                .containsOnly("TestClass");
+    }
+	
     @Test
     public void shouldParseStdOutOnFail() throws Exception {
         process(
