@@ -16,7 +16,7 @@ export default class RetryTrendWidgetView extends View {
 
     onRender() {
         const {retry, run} = this.model.last().get('data');
-        const retriesPercent = Math.min(retry, run)/run;
+        const retriesPercent = Math.min(0.3 + Math.min(retry, run)/run, 1);
         const colors = scaleOrdinal(['#4682b4', interpolateYlOrRd(retriesPercent)]);
         this.showChildView('chart', new TrendChartView({
             model: this.model,
