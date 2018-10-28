@@ -8,6 +8,9 @@
     {{#if flaky}}
         {{allure-icon 'flaky'}}
     {{/if}}
+    {{#if newFailed}}
+        {{allure-icon 'newFailed'}}
+    {{/if}}
     <div class="{{b cls 'status'}}">
         <span class="label label_status_{{status}}">{{t statusName}}</span>
     </div>

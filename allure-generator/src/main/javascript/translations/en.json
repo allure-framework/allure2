@@ -5,7 +5,8 @@
     "passed": "Passed",
     "skipped": "Skipped",
     "unknown": "Unknown",
-    "flaky": "Test is flaky"
+    "flaky": "Test is flaky",
+    "newFailed": "Test is new failed"
   },
   "sorter": {
     "order": "order",

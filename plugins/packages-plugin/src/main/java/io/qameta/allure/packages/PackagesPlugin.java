@@ -120,6 +120,7 @@ public class PackagesPlugin implements Aggregator {
                 testResult.getUid(),
                 testResult.getStatus(), testResult.getTime(),
                 testResult.isFlaky(),
+                testResult.isNewFailed(),
                 testResult.getParameterValues()
         );
     }

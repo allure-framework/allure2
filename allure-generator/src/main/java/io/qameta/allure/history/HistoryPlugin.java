@@ -9,6 +9,7 @@ import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.Statistic;
+import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.executor.ExecutorPlugin;
 
@@ -17,13 +18,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static io.qameta.allure.entity.TestResult.comparingByTime;
 
 /**
  * Plugin that adds history to the report.
@@ -69,6 +69,16 @@ public class HistoryPlugin implements Reader, Aggregator {
         }
     }
 
+    private boolean is_new_failed(List<HistoryItem> histories) {
+        if (histories.get(0).status == Status.FAILED && histories.size() > 1) {
+            for (HistoryItem history : histories.subList(1, histories.size() - 1)) {
+                if (history.status == Status.FAILED)
+                    return false;
+            }
+        } else return false;
+        return true;
+    }
+
     protected Map<String, HistoryData> getData(final List<LaunchResults> launches) {
         return launches.stream()
                 .map(launch -> {
@@ -102,7 +112,6 @@ public class HistoryPlugin implements Reader, Aggregator {
         if (!data.getItems().isEmpty()) {
             result.addExtraBlock(HISTORY_BLOCK_NAME, copy(data));
         }
-
         final HistoryItem newItem = new HistoryItem()
                 .setUid(result.getUid())
                 .setStatus(result.getStatus())
@@ -116,6 +125,7 @@ public class HistoryPlugin implements Reader, Aggregator {
         final List<HistoryItem> newItems = Stream.concat(Stream.of(newItem), data.getItems().stream())
                 .limit(5)
                 .collect(Collectors.toList());
+        result.setNewFailed(is_new_failed(newItems));
         data.setItems(newItems);
     }
 
