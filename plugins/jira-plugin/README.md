@@ -10,7 +10,7 @@ You can find it at [Atlassian Marketplace](https://marketplace.atlassian.com).
 
 How it works:
 * add issue link in your test cases (for example in java: `@Issue("ALLURE-1")`)
-* enable plugin - add env property `ALLURE_JIRA_TESTRESULT_ENABLED=true`
+* enable plugin - add env property `ALLURE_JIRA_ENABLED=true`
 * setup Jira env variables: 
   * `ALLURE_JIRA_ENDPOINT=https://<jira>/jira/rest/`
   * `ALLURE_JIRA_USERNAME=<username>`
@@ -24,7 +24,7 @@ After that you will see such panel in Jira issue:
 ## Export Launch information
 
 How it works:
-* enable plugin - add env property `ALLURE_JIRA_LAUNCH_ENABLED=true`
+* enable plugin - add env property `ALLURE_JIRA_ENABLED=true`
 * set issue for launch export - add env property `ALLURE_JIRA_LAUNCH_ISSUES=ALLURE-2`
 * setup Jira env variables: 
   * `ALLURE_JIRA_ENDPOINT=https://<jira>/jira/rest/`

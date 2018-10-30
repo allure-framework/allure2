@@ -21,6 +21,11 @@ public final class TestData {
             launch.setId(RandomUtils.nextInt());
             return launch;
         });
+        when(service.createTestResult(any(JiraTestResult.class))).thenAnswer(i -> {
+            final JiraTestResult testResult = i.getArgument(0);
+            testResult.setId(RandomUtils.nextInt());
+            return testResult;
+        });
         return service;
     }
 

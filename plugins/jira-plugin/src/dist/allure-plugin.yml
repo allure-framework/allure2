@@ -2,6 +2,4 @@ id: jira
 name: Jira Plugin
 description: The plugin that adds support for Jira integration.
 extensions:
-  - io.qameta.allure.jira.JiraLaunchExportPlugin
-  - io.qameta.allure.jira.JiraTestResultExportPlugin
-  
+  - io.qameta.allure.jira.JiraExportPlugin

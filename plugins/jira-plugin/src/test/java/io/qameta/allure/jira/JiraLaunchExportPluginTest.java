@@ -14,8 +14,10 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static io.qameta.allure.jira.TestData.createTestResult;
 import static io.qameta.allure.jira.TestData.mockJiraService;
@@ -28,12 +30,12 @@ import static org.mockito.Mockito.when;
 
 public class JiraLaunchExportPluginTest {
 
-    private static final String ISSUE = "ALLURE-1";
+    private static final List<String> ISSUES = Arrays.asList("ALLURE-1", "ALLURE-2");
 
     @Rule
     public final EnvironmentVariables jiraEnabled = new EnvironmentVariables()
-            .set("ALLURE_JIRA_LAUNCH_ENABLED", "true")
-            .set("ALLURE_JIRA_LAUNCH_ISSUES", ISSUE);
+            .set("ALLURE_JIRA_ENABLED", "true")
+            .set("ALLURE_JIRA_LAUNCH_ISSUES", String.join(",", ISSUES));
 
 
     @Test
@@ -54,8 +56,7 @@ public class JiraLaunchExportPluginTest {
         when(launchResults.getExtra("executor")).thenReturn(Optional.of(executorInfo));
 
         final JiraService service = mockJiraService();
-        final JiraLaunchExportPlugin jiraLaunchExportPlugin = new JiraLaunchExportPlugin();
-        jiraLaunchExportPlugin.setJiraService(service);
+        final JiraExportPlugin jiraLaunchExportPlugin = new JiraExportPlugin(() -> service);
 
         jiraLaunchExportPlugin.aggregate(
                 mock(Configuration.class),
@@ -64,7 +65,8 @@ public class JiraLaunchExportPluginTest {
         );
 
         verify(service, times(1)).createJiraLaunch(any(JiraLaunch.class));
-        verify(service).createJiraLaunch(argThat(launch -> ISSUE.equals(launch.getIssueKey())));
+        verify(service).createJiraLaunch(argThat(launch -> launch.getIssueKeys().size() == 2));
+        verify(service).createJiraLaunch(argThat(launch -> ISSUES.equals(launch.getIssueKeys())));
 
         verify(service).createJiraLaunch(argThat(launch -> executorInfo.getBuildName().equals(launch.getName())));
         verify(service).createJiraLaunch(argThat(launch -> executorInfo.getReportUrl().equals(launch.getUrl())));

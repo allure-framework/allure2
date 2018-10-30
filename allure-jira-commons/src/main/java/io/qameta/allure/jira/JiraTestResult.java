@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.util.List;
+
 /**
  * Jira test result export data.
  */
@@ -14,15 +16,13 @@ public class JiraTestResult {
 
     private int id;
 
-    private String issueKey;
+    private Integer launchId;
+    private List<String> issueKeys;
 
     private String name;
     private String url;
-
-    private String launchUrl;
-    private String launchName;
+    private Long date;
 
     private String status;
-    private Long date;
 
 }
