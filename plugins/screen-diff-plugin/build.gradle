@@ -15,7 +15,4 @@ artifacts {
 
 bintray {
     configurations = ['allurePlugin']
-    pkg {
-        repo = 'generic'
-    }
 }
