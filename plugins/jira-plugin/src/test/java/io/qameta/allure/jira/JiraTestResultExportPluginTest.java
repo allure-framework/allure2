@@ -12,10 +12,14 @@ import org.junit.Test;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
 
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static io.qameta.allure.jira.TestData.createTestResult;
 import static io.qameta.allure.jira.TestData.mockJiraService;
@@ -28,17 +32,21 @@ import static org.mockito.Mockito.when;
 
 public class JiraTestResultExportPluginTest {
 
-    private static final String ISSUE = "ALLURE-1";
+    private static final List<String> ISSUES = Arrays.asList("ALLURE-1", "ALLURE_2");
 
     @Rule
     public final EnvironmentVariables jiraEnabled = new EnvironmentVariables()
-            .set("ALLURE_JIRA_TESTRESULT_ENABLED", "true");
+            .set("ALLURE_JIRA_ENABLED", "true");
 
     @Test
     public void shouldExportTestResultToJira() {
         final LaunchResults launchResults = mock(LaunchResults.class);
+        final List<Link> links = ISSUES.stream()
+                .map(issue -> new Link().setName(issue).setType("issue"))
+                .collect(Collectors.toList());
+
         final TestResult testResult = createTestResult(Status.PASSED)
-                .setLinks(Collections.singletonList(new Link().setName(ISSUE).setType("issue")));
+                .setLinks(links);
 
         final Set<TestResult> results = new HashSet<>(Collections.singletonList(testResult));
         when(launchResults.getAllResults()).thenReturn(results);
@@ -49,23 +57,24 @@ public class JiraTestResultExportPluginTest {
         when(launchResults.getExtra("executor")).thenReturn(Optional.of(executorInfo));
 
         final JiraService service = mockJiraService();
-        final JiraTestResultExportPlugin jiraTestResultExportPlugin = new JiraTestResultExportPlugin();
-        jiraTestResultExportPlugin.setJiraService(service);
+        final JiraExportPlugin jiraExportPlugin = new JiraExportPlugin(() -> service);
 
-        jiraTestResultExportPlugin.aggregate(
+        jiraExportPlugin.aggregate(
                 mock(Configuration.class),
                 Collections.singletonList(launchResults),
                 Paths.get("/")
         );
+        verify(service, times(1)).createJiraLaunch(any(JiraLaunch.class));
+        verify(service).createJiraLaunch(argThat(launch -> executorInfo.getBuildName().equals(launch.getName())));
+        verify(service).createJiraLaunch(argThat(launch -> executorInfo.getReportUrl().equals(launch.getUrl())));
 
         verify(service, times(1)).createTestResult(any(JiraTestResult.class));
-        verify(service).createTestResult(argThat(result -> ISSUE.equals(result.getIssueKey())));
+        verify(service).createTestResult(argThat(result -> result.getIssueKeys().size() == 2));
         verify(service).createTestResult(argThat(result -> testResult.getName().equals(result.getName())));
         verify(service).createTestResult(argThat(result -> testResult.getStatus().toString().equals(result.getStatus())));
         verify(service).createTestResult(argThat(result -> result.getUrl().contains(testResult.getUid())));
+        verify(service).createTestResult(argThat(result -> Objects.nonNull(result.getLaunchId())));
 
-        verify(service).createTestResult(argThat(result -> executorInfo.getBuildName().equals(result.getLaunchName())));
-        verify(service).createTestResult(argThat(result -> executorInfo.getReportUrl().equals(result.getLaunchUrl())));
     }
 
 }
