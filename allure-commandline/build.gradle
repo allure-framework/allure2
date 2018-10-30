@@ -44,9 +44,3 @@ dependencies {
 }
 
 configurations.archives.artifacts.removeAll { it.archiveTask.is jar }
-
-bintray {
-    pkg {
-        repo = 'generic'
-    }
-}
