@@ -17,12 +17,3 @@ dependencies {
     testCompile('org.assertj:assertj-core')
     testCompile('org.slf4j:slf4j-simple')
 }
-
-task sourceJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allJava
-}
-
-artifacts {
-    archives sourceJar
-}

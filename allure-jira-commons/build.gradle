@@ -11,12 +11,3 @@ dependencies {
     compile('com.squareup.retrofit2:retrofit')
     compile('com.squareup.retrofit2:converter-jackson')
 }
-
-task sourceJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allJava
-}
-
-artifacts {
-    archives sourceJar
-}

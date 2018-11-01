@@ -69,15 +69,6 @@ dependencies {
     testCompile('org.slf4j:slf4j-simple')
 }
 
-task sourceJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allJava
-}
-
-artifacts {
-    archives sourceJar
-}
-
 def resultsDirectory = findProperty('results') ?: 'demo'
 
 task cleanUpDemoReport(type: Delete) {
