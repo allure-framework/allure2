@@ -1,8 +1,6 @@
 description = 'Allure Commandline'
 
 apply plugin: 'application'
-apply from: "${gradleScriptDir}/bintray.gradle"
-
 mainClassName = 'io.qameta.allure.CommandLine'
 
 startScripts {

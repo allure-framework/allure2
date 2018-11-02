@@ -1,7 +1,6 @@
 description = 'Allure Cucumber json plugin'
 
 apply plugin: 'java-library-distribution'
-apply from: "${gradleScriptDir}/bintray.gradle"
 
 jar {
     archiveName = 'plugin.jar'

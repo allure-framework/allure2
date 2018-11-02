@@ -1,7 +1,6 @@
 description = 'Allure Packages Plugin'
 
 apply plugin: 'java-library-distribution'
-apply from: "${gradleScriptDir}/bintray.gradle"
 
 jar {
     archiveName = 'plugin.jar'

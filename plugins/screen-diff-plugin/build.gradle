@@ -1,7 +1,6 @@
 description = 'Allure Screen Diff Plugin'
 
 apply plugin: 'java-library-distribution'
-apply from: "${gradleScriptDir}/bintray.gradle"
 
 jar {
     enabled = false

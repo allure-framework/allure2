@@ -1,9 +1,5 @@
 description = 'Allure Jira Commons'
 
-apply from: "${gradleScriptDir}/maven-publish.gradle"
-apply from: "${gradleScriptDir}/bintray.gradle"
-apply plugin: 'maven'
-
 dependencies {
     compileOnly project(':allure-plugin-api')
     compileOnly('org.projectlombok:lombok')

@@ -121,6 +121,10 @@ allprojects {
 
 subprojects { project ->
     apply plugin: 'java'
+    apply plugin: 'maven'
+    apply from: "${gradleScriptDir}/bintray.gradle"
+    apply from: "${gradleScriptDir}/maven-publish.gradle"
+
     compileJava.dependsOn(processResources)
 
     compileJava {

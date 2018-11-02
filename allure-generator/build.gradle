@@ -1,9 +1,5 @@
 description = 'Allure Report Generator'
 
-apply from: "${gradleScriptDir}/maven-publish.gradle"
-apply from: "${gradleScriptDir}/bintray.gradle"
-apply plugin: 'maven'
-
 apply plugin: 'com.moowork.node'
 
 node {

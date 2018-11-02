@@ -1,7 +1,6 @@
 description = 'Allure Xunit.net XML v2 Plugin'
 
 apply plugin: 'java-library-distribution'
-apply from: "${gradleScriptDir}/bintray.gradle"
 
 dependencies {
     compileOnly project(':allure-plugin-api')

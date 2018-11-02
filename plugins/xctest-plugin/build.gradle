@@ -1,7 +1,6 @@
 description = 'Allure XCTest Plugin'
 
 apply plugin: 'java-library-distribution'
-apply from: "${gradleScriptDir}/bintray.gradle"
 
 dependencies {
     compile('xmlwise:xmlwise:1.2.11')

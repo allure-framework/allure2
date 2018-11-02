@@ -1,9 +1,5 @@
 description = 'Allure Plugin Api'
 
-apply from: "${gradleScriptDir}/maven-publish.gradle"
-apply from: "${gradleScriptDir}/bintray.gradle"
-apply plugin: 'maven'
-
 dependencies {
     compile('com.fasterxml.jackson.core:jackson-databind')
     compile('com.fasterxml.jackson.module:jackson-module-jaxb-annotations')
