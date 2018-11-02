@@ -2,6 +2,12 @@ description = 'Allure Commandline'
 
 apply plugin: 'application'
 mainClassName = 'io.qameta.allure.CommandLine'
+distZip {
+    into("allure-${project.version}")
+}
+distTar {
+    into("allure-${project.version}")
+}
 
 startScripts {
     classpath += files('src/lib/config')
