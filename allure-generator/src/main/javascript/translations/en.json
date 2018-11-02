@@ -6,7 +6,11 @@
     "skipped": "Skipped",
     "unknown": "Unknown",
     "flaky": "Test is flaky",
-    "newFailed": "Test is new failed"
+    "newFailed": "Test is new failed."
+  },
+  "marks": {
+    "flaky": "Flaky",
+    "newFailed": "New Failed"
   },
   "sorter": {
     "order": "order",
@@ -159,7 +163,8 @@
   },
   "component": {
     "tree": {
-      "filter": "Filter by status",
+      "filter": "Status",
+      "filter-marks": "Marks",
       "groups": "Toggle groups info",
       "download": "Download CSV",
       "empty": "There are no items",
@@ -191,6 +196,10 @@
     "statusToggle": {
       "showCases": "Show test results with {{status}} status",
       "hideCases": "Hide test results with {{status}} status"
+    },
+    "markToggle": {
+      "showCases": "Show {{mark}} test results",
+      "hideCases": "Hide {{mark}} test results"
     }
   }
 }

@@ -1,0 +1,14 @@
+<div class="{{b 'marks-toggle' 'items'}}">
+    {{t 'component.tree.filter-marks'}}:
+    {{#each marks}}
+        <div class="{{b 'marks-toggle' 'item'}}">
+        {{#if active}}
+            <span class="y-label-mark y-label_mark_{{mark}}" data-mark="{{mark}}"
+                    data-tooltip="{{t 'component.markToggle.hideCases' mark=markName}}">{{allure-icon mark tooltip=''}}</span>
+        {{else}}
+            <span class="n-label-mark n-label_mark_{{mark}}" data-mark="{{mark}}"
+                    data-tooltip="{{t 'component.markToggle.showCases' mark=markName}}">{{allure-icon mark tooltip=''}}</span>
+        {{/if}}
+        </div>
+    {{/each}}
+</div>

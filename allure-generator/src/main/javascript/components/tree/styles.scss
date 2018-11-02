@@ -19,6 +19,7 @@
   }
   &__flaky {
     padding-left: 10px;
+    padding-right: 5px;
     opacity: 0;
     &_shown {
       opacity: 1;
@@ -26,6 +27,7 @@
   }
   &__newFailed {
     padding-left: 10px;
+    padding-right: 5px;
     opacity: 0;
     &_shown {
       opacity: 1;

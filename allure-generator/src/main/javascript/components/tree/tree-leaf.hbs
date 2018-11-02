@@ -12,9 +12,11 @@
             {{allure-icon 'flaky'}}
         </div>
         {{/if}}
+        {{#if newFailed}}
         <div class="{{b 'node' 'newFailed' shown=newFailed}}">
             {{allure-icon 'newFailed'}}
         </div>
+        {{/if}}
         {{#if parameters}}
 
         <div class="node__parameters long-line line-ellipsis">
