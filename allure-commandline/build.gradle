@@ -16,6 +16,7 @@ distTar {
 }
 
 startScripts {
+    applicationName='allure'
     classpath += files('src/lib/config')
     doLast {
         unixScript.text = unixScript.text
