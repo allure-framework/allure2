@@ -3,10 +3,16 @@ description = 'Allure Commandline'
 apply plugin: 'application'
 mainClassName = 'io.qameta.allure.CommandLine'
 distZip {
-    into("allure-${project.version}")
+    includeEmptyDirs=false
+    eachFile {
+        it.path = it.path.replace("-commandline", '')
+    }
 }
 distTar {
-    into("allure-${project.version}")
+    includeEmptyDirs=false
+    eachFile {
+        it.path = it.path.replace("-commandline", '')
+    }
 }
 
 startScripts {
