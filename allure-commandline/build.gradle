@@ -1,12 +1,22 @@
 description = 'Allure Commandline'
 
 apply plugin: 'application'
-apply from: "${gradleScriptDir}/bintray.gradle"
-
-applicationName = 'allure'
 mainClassName = 'io.qameta.allure.CommandLine'
+distZip {
+    includeEmptyDirs=false
+    eachFile {
+        it.path = it.path.replace("-commandline", '')
+    }
+}
+distTar {
+    includeEmptyDirs=false
+    eachFile {
+        it.path = it.path.replace("-commandline", '')
+    }
+}
 
 startScripts {
+    applicationName='allure'
     classpath += files('src/lib/config')
     doLast {
         unixScript.text = unixScript.text
@@ -44,9 +54,3 @@ dependencies {
 }
 
 configurations.archives.artifacts.removeAll { it.archiveTask.is jar }
-
-bintray {
-    pkg {
-        repo = 'generic'
-    }
-}

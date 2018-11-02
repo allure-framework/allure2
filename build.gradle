@@ -121,6 +121,10 @@ allprojects {
 
 subprojects { project ->
     apply plugin: 'java'
+    apply plugin: 'maven'
+    apply from: "${gradleScriptDir}/bintray.gradle"
+    apply from: "${gradleScriptDir}/maven-publish.gradle"
+
     compileJava.dependsOn(processResources)
 
     compileJava {
@@ -151,8 +155,14 @@ subprojects { project ->
         from javadoc.destinationDir
     }
 
+    task sourceJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allJava
+    }
+
     artifacts {
         archives javadocJar
+        archives sourceJar
     }
 
     configurations {

@@ -1,22 +1,9 @@
 description = 'Allure Jira Commons'
 
-apply from: "${gradleScriptDir}/maven-publish.gradle"
-apply from: "${gradleScriptDir}/bintray.gradle"
-apply plugin: 'maven'
-
 dependencies {
     compileOnly project(':allure-plugin-api')
     compileOnly('org.projectlombok:lombok')
 
     compile('com.squareup.retrofit2:retrofit')
     compile('com.squareup.retrofit2:converter-jackson')
-}
-
-task sourceJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allJava
-}
-
-artifacts {
-    archives sourceJar
 }

@@ -1,9 +1,5 @@
 description = 'Allure Plugin Api'
 
-apply from: "${gradleScriptDir}/maven-publish.gradle"
-apply from: "${gradleScriptDir}/bintray.gradle"
-apply plugin: 'maven'
-
 dependencies {
     compile('com.fasterxml.jackson.core:jackson-databind')
     compile('com.fasterxml.jackson.module:jackson-module-jaxb-annotations')
@@ -16,13 +12,4 @@ dependencies {
     testCompile('junit:junit')
     testCompile('org.assertj:assertj-core')
     testCompile('org.slf4j:slf4j-simple')
-}
-
-task sourceJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allJava
-}
-
-artifacts {
-    archives sourceJar
 }
