@@ -5,13 +5,13 @@ mainClassName = 'io.qameta.allure.CommandLine'
 distZip {
     includeEmptyDirs=false
     eachFile {
-        it.path = it.path.replace("-commandline", '')
+        it.path = it.path.replaceFirst("-commandline", '')
     }
 }
 distTar {
     includeEmptyDirs=false
     eachFile {
-        it.path = it.path.replace("-commandline", '')
+        it.path = it.path.replaceFirst("-commandline", '')
     }
 }
 
