@@ -64,11 +64,11 @@ public class CsvExportSuite implements Serializable {
         this.duration = result.getTime().getDuration() != null ? result.getTime().getDuration().toString() : null;
         this.start = result.getTime().getStart() != null ? new Date(result.getTime().getStart()).toString() : null;
         this.stop = result.getTime().getStop() != null ? new Date(result.getTime().getStop()).toString() : null;
-        this.parentSuite = resultMap.get("parentSuite");
-        this.suite = resultMap.get("suite");
-        this.subSuite = resultMap.get("subSuite");
-        this.testClass = resultMap.get("testClass");
-        this.testMethod = resultMap.get("testMethod");
+        this.parentSuite = resultMap.getOrDefault("parentSuite", null);
+        this.suite = resultMap.getOrDefault("suite", null);
+        this.subSuite = resultMap.getOrDefault("subSuite", null);
+        this.testClass = resultMap.getOrDefault("testClass", null);
+        this.testMethod = resultMap.getOrDefault("testMethod", null);
         this.name = result.getName();
         this.description = result.getDescription();
     }
