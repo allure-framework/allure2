@@ -69,7 +69,7 @@ public class HistoryPlugin implements Reader, Aggregator {
 
     private boolean isNewFailed(final List<HistoryItem> histories) {
         if (histories.get(0).status == Status.FAILED && histories.size() > 1) {
-            for (HistoryItem history : histories.subList(1, histories.size() - 1)) {
+            for (HistoryItem history : histories.subList(1, histories.size())) {
                 if (history.status == Status.FAILED) {
                     return false;
                 }

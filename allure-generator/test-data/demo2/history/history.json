@@ -83,12 +83,12 @@
   },
   "43b42ce3e76e8235a67cb29a361bf6a3": {
     "statistic": {
-      "failed": 3,
+      "failed": 1,
       "broken": 0,
       "skipped": 0,
       "passed": 0,
       "unknown": 0,
-      "total": 3
+      "total": 1
     },
     "items": [
       {
@@ -99,26 +99,6 @@
           "start": 1494783330258,
           "stop": 1494783330260,
           "duration": 2
-        }
-      },
-      {
-        "uid": "99780c122e1bae9f",
-        "status": "failed",
-        "statusDetails": "2[Dummy status] \nExpecting:\n <true>\nto be equal to:\n <false>\nbut was not.",
-        "time": {
-          "start": 1494780337026,
-          "stop": 1494780337276,
-          "duration": 250
-        }
-      },
-      {
-        "uid": "8f0de2fec29089b8",
-        "status": "failed",
-        "statusDetails": "3[Dummy status] \nExpecting:\n <true>\nto be equal to:\n <false>\nbut was not.",
-        "time": {
-          "start": 1494780337026,
-          "stop": 1494780337276,
-          "duration": 250
         }
       }
     ]
