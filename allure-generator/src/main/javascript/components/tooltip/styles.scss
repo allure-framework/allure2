@@ -8,6 +8,7 @@
   padding: 0 8px;
   line-height: 24px;
   font-size: 12px;
+  pointer-events: none;
   z-index: 5;
   &:before {
     content: '';
