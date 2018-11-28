@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.Comparator;
+
+import static java.util.Comparator.*;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -22,4 +25,13 @@ public class HistoryItem implements Serializable {
     protected String statusDetails;
     protected Time time;
 
+    public static Comparator<HistoryItem> comparingByTime() {
+        return comparingByTimeAsc().reversed();
+    }
+
+    public static Comparator<HistoryItem> comparingByTimeAsc() {
+        return comparing(HistoryItem::getTime,
+                nullsFirst(comparing(Time::getStart, nullsFirst(naturalOrder())))
+        );
+    }
 }

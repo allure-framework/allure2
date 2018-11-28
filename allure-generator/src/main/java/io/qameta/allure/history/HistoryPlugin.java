@@ -7,10 +7,7 @@ import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
-import io.qameta.allure.entity.ExecutorInfo;
-import io.qameta.allure.entity.Statistic;
-import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.entity.*;
 import io.qameta.allure.executor.ExecutorPlugin;
 
 import java.io.IOException;
@@ -21,6 +18,7 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import static io.qameta.allure.history.HistoryItem.comparingByTime;
 
 
 /**
@@ -68,16 +66,24 @@ public class HistoryPlugin implements Reader, Aggregator {
     }
 
     private boolean isNewFailed(final List<HistoryItem> histories) {
-        if (histories.get(0).status == Status.FAILED && histories.size() > 1) {
-            for (HistoryItem history : histories.subList(1, histories.size())) {
-                if (history.status == Status.FAILED) {
-                    return false;
-                }
-            }
-        } else {
-            return false;
+        final List<Status> statuses = histories.stream()
+                .sorted(comparingByTime())
+                .map(HistoryItem::getStatus)
+                .collect(Collectors.toList());
+        return (histories.size() > 1 && histories.get(0).status == Status.FAILED && histories.get(1).status == Status.PASSED);
+    }
+
+    private boolean isFlaky(final List<HistoryItem> histories) {
+        if (histories.size() > 1 && histories.get(0).status == Status.FAILED) {
+            final List<Status> statuses = histories.subList(1, histories.size())
+                    .stream()
+                    .sorted(comparingByTime())
+                    .map(HistoryItem::getStatus)
+                    .collect(Collectors.toList());
+            return statuses.indexOf(Status.PASSED) < statuses.lastIndexOf(Status.FAILED)
+                    && statuses.indexOf(Status.PASSED) != -1;
         }
-        return true;
+        return false;
     }
 
     protected Map<String, HistoryData> getData(final List<LaunchResults> launches) {
@@ -127,6 +133,7 @@ public class HistoryPlugin implements Reader, Aggregator {
                 .limit(5)
                 .collect(Collectors.toList());
         result.setNewFailed(isNewFailed(newItems));
+        result.setFlaky(isFlaky(newItems));
         data.setItems(newItems);
     }
 
