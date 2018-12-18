@@ -29,28 +29,21 @@ public class TestResultTreeLeaf extends DefaultTreeLeaf {
         this(
                 parentUid,
                 testResult.getName(),
-                testResult.getUid(),
-                testResult.getStatus(),
-                testResult.getTime(),
-                testResult.isFlaky(),
-                testResult.isNewFailed(),
-                testResult.getParameterValues()
+                testResult
         );
     }
 
-    public TestResultTreeLeaf(final String parentUid, final String name, final String uid,
-                              final Status status, final Time time,
-                              final boolean flaky, final boolean newFailed, final List<String> parameters) {
+    public TestResultTreeLeaf(final String parentUid, final String name, final TestResult testResult) {
         super(name);
         this.parentUid = parentUid;
-        this.uid = uid;
-        this.status = status;
-        this.time = time;
-        this.flaky = flaky;
-        this.newFailed = newFailed;
-        this.parameters = parameters;
-    }
+        this.uid = testResult.getUid();
+        this.status = testResult.getStatus();
+        this.time = testResult.getTime();
+        this.flaky = testResult.isFlaky();
+        this.newFailed = testResult.isNewFailed();
+        this.parameters = testResult.getParameterValues();
 
+    }
     public String getParentUid() {
         return parentUid;
     }
