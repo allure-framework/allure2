@@ -8,7 +8,9 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import static java.util.Comparator.*;
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.naturalOrder;
+import static java.util.Comparator.nullsFirst;
 
 /**
  * @author charlie (Dmitry Baev).

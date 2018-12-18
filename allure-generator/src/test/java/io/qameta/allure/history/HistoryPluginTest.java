@@ -6,9 +6,14 @@ import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
-import static io.qameta.allure.testdata.TestData.*;
+import static io.qameta.allure.testdata.TestData.createLaunchResults;
+import static io.qameta.allure.testdata.TestData.randomTestResult;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 public class HistoryPluginTest {
@@ -31,8 +36,8 @@ public class HistoryPluginTest {
     new HistoryPlugin().getData(Arrays.asList(
             createLaunchResults(extra, testResult)
     ));
-    assert testResult.isNewFailed();
-    assert !testResult.isFlaky();
+    assertThat(testResult.isNewFailed()).isTrue();
+    assertThat(testResult.isFlaky()).isFalse();
   }
 
   @Test
@@ -52,8 +57,8 @@ public class HistoryPluginTest {
     new HistoryPlugin().getData(Arrays.asList(
             createLaunchResults(extra, testResult)
     ));
-    assert testResult.isFlaky();
-    assert testResult.isNewFailed();
+    assertThat(testResult.isNewFailed()).isTrue();
+    assertThat(testResult.isFlaky()).isTrue();
   }
 
   private TestResult createTestResult(Status status, String historyId, long start, long stop) {

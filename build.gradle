@@ -52,14 +52,8 @@ configure(rootProject) {
 
     task generateDemoReport(type: Exec) {
         dependsOn = ['deleteDemoReport', 'allure-commandline:build']
-        executable = "${root}/allure-commandline/build/install/allure/bin/allure.bat"
-        args = ['generate', "${root}/allure-generator/test-data/demo2", '-o', "${root}/build/docker/report"]
-    }
-
-    task serveDemoReport(type: Exec) {
-        dependsOn = ['allure-commandline:build']
-        executable = "${root}/allure-commandline/build/install/allure/bin/allure.bat"
-        args = ['serve', "${root}/allure-generator/test-data/demo2"]
+        executable = "${root}/allure-commandline/build/install/allure/bin/allure"
+        args = ['generate', "${root}/allure-web/test-data/demo", '-o', "${root}/build/docker/report"]
     }
 
     task generateDemoDockerfile(type: Dockerfile) {

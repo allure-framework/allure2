@@ -7,7 +7,10 @@ import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
-import io.qameta.allure.entity.*;
+import io.qameta.allure.entity.ExecutorInfo;
+import io.qameta.allure.entity.Statistic;
+import io.qameta.allure.entity.Status;
+import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.executor.ExecutorPlugin;
 
 import java.io.IOException;
@@ -15,7 +18,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
