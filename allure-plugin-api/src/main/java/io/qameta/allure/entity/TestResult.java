@@ -139,4 +139,12 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
                 nullsFirst(comparing(Time::getStart, nullsFirst(naturalOrder())))
         );
     }
+
+    public Map<String, String> toMap() {
+        final Map<String, String> map = new HashMap<String, String>();
+        for (Label l : getLabels()) {
+            map.put(l.getName(), l.getValue());
+        }
+        return map;
+    }
 }
