@@ -18,6 +18,7 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import static io.qameta.allure.history.HistoryItem.comparingByTime;
 
 
@@ -34,7 +35,8 @@ public class HistoryPlugin implements Reader, Aggregator {
 
     //@formatter:off
     private static final TypeReference<Map<String, HistoryData>> HISTORY_TYPE =
-        new TypeReference<Map<String, HistoryData>>() { };
+            new TypeReference<Map<String, HistoryData>>() {
+            };
     //@formatter:on
 
     @Override
@@ -70,7 +72,9 @@ public class HistoryPlugin implements Reader, Aggregator {
                 .sorted(comparingByTime())
                 .map(HistoryItem::getStatus)
                 .collect(Collectors.toList());
-        return (histories.size() > 1 && histories.get(0).status == Status.FAILED && histories.get(1).status == Status.PASSED);
+        return statuses.size() > 1
+                && statuses.get(0) == Status.FAILED
+                && statuses.get(1) == Status.PASSED;
     }
 
     private boolean isFlaky(final List<HistoryItem> histories) {
@@ -110,8 +114,8 @@ public class HistoryPlugin implements Reader, Aggregator {
                                final ExecutorInfo info) {
         //@formatter:off
         final HistoryData data = history.computeIfAbsent(
-            result.getHistoryId(),
-            id -> new HistoryData().setStatistic(new Statistic())
+                result.getHistoryId(),
+                id -> new HistoryData().setStatistic(new Statistic())
         );
         //@formatter:on
 
