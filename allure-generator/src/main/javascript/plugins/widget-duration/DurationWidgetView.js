@@ -7,7 +7,7 @@ import DurationChartView from '../../components/graph-duration-chart/DurationCha
 @regions({
     chart: '.duration-widget__content'
 })
-export default class DurationWidgetView extends View {
+class DurationWidgetView extends View {
     template = template;
 
     onRender() {
@@ -16,3 +16,5 @@ export default class DurationWidgetView extends View {
         }));
     }
 }
+
+export default DurationWidgetView;

@@ -3,42 +3,48 @@ description = 'Allure Report Generator'
 apply plugin: 'com.moowork.node'
 
 node {
-    version = '8.1.3'
-    yarnVersion = '0.24.6'
+    version = '10.10.0'
+    npmVersion = '6.4.1'
     download = true
 }
 
-task testWeb(type: YarnTask) {
-    inputs.files(fileTree('node_modules'))
-    inputs.files(fileTree('src/main/javascript'))
-    inputs.files(fileTree('src/test/javascript'))
-    inputs.file('package.json')
-    inputs.file('webpack.config.js')
-    inputs.file('.babelrc')
+def generatedStatic = 'build/www'
+
+task buildWeb(type: NpmTask) {
+    group = 'Build'
+    dependsOn npmInstall
+
+    inputs.file(".prettierrc")
+    inputs.file("package-lock.json")
+    inputs.file("package.json")
     inputs.file('.eslintrc')
+    inputs.files(fileTree("src/main/javascript"))
+    inputs.files(fileTree("webpack"))
 
-    outputs.dir('build/resources/main')
-    outputs.dir('build/resources/test')
-
-    args = ['run', 'test']
-}
-
-task buildWeb(type: YarnTask) {
-    inputs.files(fileTree('node_modules'))
-    inputs.files(fileTree('src/main/javascript'))
-    inputs.file('package.json')
-    inputs.file('webpack.config.js')
-    inputs.file('.babelrc')
-    inputs.file('.eslintrc')
-
-    outputs.dir('build/resources/main')
+    outputs.dir(generatedStatic)
 
     args = ['run', 'build']
 }
 
-buildWeb.dependsOn yarn
-testWeb.dependsOn yarn
-processResources.dependsOn buildWeb
+task testWeb(type: NpmTask) {
+    group = 'Verification'
+    dependsOn npmInstall
+    
+    inputs.file(".prettierrc")
+    inputs.file("package-lock.json")
+    inputs.file("package.json")
+    inputs.file('.eslintrc')
+    inputs.files(fileTree("src/test/javascript"))
+    inputs.files(fileTree("webpack"))
+
+    args = ['run', 'test']
+}
+
+processResources {
+    dependsOn buildWeb
+    from(generatedStatic)
+}
+
 test.dependsOn testWeb
 
 dependencies {
@@ -82,10 +88,9 @@ task generateDemoReport(type: JavaExec) {
     ]
 }
 
-task write {
-    println("start up development server on localhost:3000 (${resultsDirectory})")
-}
-
 task dev {
-    dependsOn write, generateDemoReport, copyPlugins, yarn_start
+    dependsOn generateDemoReport, copyPlugins, npm_start
+    doLast {
+        println("start up development server on localhost:3000 (${resultsDirectory})")
+    }
 }

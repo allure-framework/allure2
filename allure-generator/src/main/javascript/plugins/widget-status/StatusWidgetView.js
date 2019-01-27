@@ -8,7 +8,7 @@ import PieChartView from '../../components/graph-pie-chart/PieChartView';
 @regions({
     chart: '.status-widget__content'
 })
-export default class StatusWidgetView extends View {
+class StatusWidgetView extends View {
     template = template;
 
     onRender() {
@@ -35,3 +35,5 @@ export default class StatusWidgetView extends View {
         return new Model({statistic});
     }
 }
+
+export default StatusWidgetView;

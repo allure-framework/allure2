@@ -8,7 +8,7 @@ import SeverityChartView from '../../components/graph-severity-chart/SeverityCha
 @regions({
     chart: '.severity-widget__content'
 })
-export default class SeverityWidgetView extends View {
+class SeverityWidgetView extends View {
     template = template;
 
     onRender() {
@@ -17,3 +17,5 @@ export default class SeverityWidgetView extends View {
         }));
     }
 }
+
+export default SeverityWidgetView;
