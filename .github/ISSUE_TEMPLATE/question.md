@@ -1,5 +1,5 @@
 ---
-name: Question
+name: "\U0001F4ACQuestion"
 about: Ask questions.
 title: ''
 labels: type:invalid
