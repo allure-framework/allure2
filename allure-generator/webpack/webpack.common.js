@@ -6,7 +6,6 @@ module.exports = options => ({
   cache: options.env !== "production",
   resolve: {
     extensions: [".js", ".json"],
-    modules: ["node_modules"],
     alias: {
       app: utils.root("src/main/javascript"),
     },
@@ -49,7 +48,6 @@ module.exports = options => ({
       "process.env": {
         NODE_ENV: `'${options.env}'`,
         DEBUG_INFO_ENABLED: options.env === "development",
-        SERVER_API_URL: `''`,
       },
     }),
   ],

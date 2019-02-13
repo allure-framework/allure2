@@ -1,9 +1,4 @@
-const webpack = require("webpack");
-const writeFilePlugin = require("write-file-webpack-plugin");
 const webpackMerge = require("webpack-merge");
-const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
-const SimpleProgressWebpackPlugin = require("simple-progress-webpack-plugin");
-const WebpackNotifierPlugin = require("webpack-notifier");
 const sass = require("sass");
 const utils = require("./utils.js");
 
@@ -53,16 +48,4 @@ module.exports = options =>
         ignored: /node_modules/
       }
     },
-    plugins: [
-      new SimpleProgressWebpackPlugin({
-        format: options.stats === "minimal" ? "compact" : "expanded"
-      }),
-      new FriendlyErrorsWebpackPlugin(),
-      new webpack.HotModuleReplacementPlugin(),
-      new writeFilePlugin(),
-      new webpack.WatchIgnorePlugin([utils.root("src/test")]),
-      new WebpackNotifierPlugin({
-        title: "Allure Report"
-      })
-    ]
   });

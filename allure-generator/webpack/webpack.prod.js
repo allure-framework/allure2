@@ -1,7 +1,5 @@
-const webpack = require("webpack");
 const webpackMerge = require("webpack-merge");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const WorkboxPlugin = require("workbox-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const sass = require("sass");
@@ -13,7 +11,7 @@ const utils = require("./utils.js");
 const postcssLoader = {
   loader: "postcss-loader",
   options: {
-    plugins: [require("autoprefixer")({ browsers: ["last 10 versions"] })],
+    plugins: [require("autoprefixer")()],
   },
 };
 
@@ -73,14 +71,6 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
   plugins: [
     new MiniCssExtractPlugin({
       filename: "styles.css",
-    }),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true,
-      debug: false,
-    }),
-    new WorkboxPlugin.GenerateSW({
-      clientsClaim: true,
-      skipWaiting: true,
     }),
   ],
 });
