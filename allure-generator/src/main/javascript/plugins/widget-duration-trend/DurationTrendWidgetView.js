@@ -13,7 +13,7 @@ import {last} from 'underscore';
     chart: '.duration-trend__chart'
 })
 @className('duration-trend')
-export default class DurationTrendWidgetView extends View {
+class DurationTrendWidgetView extends View {
     template = template;
 
     onRender() {
@@ -44,3 +44,5 @@ export default class DurationTrendWidgetView extends View {
         }));
     }
 }
+
+export default DurationTrendWidgetView;

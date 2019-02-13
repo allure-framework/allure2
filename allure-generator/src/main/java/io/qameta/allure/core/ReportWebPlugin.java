@@ -5,6 +5,7 @@ import freemarker.template.TemplateException;
 import io.qameta.allure.Aggregator;
 import io.qameta.allure.Constants;
 import io.qameta.allure.PluginConfiguration;
+import io.qameta.allure.ReportGenerationException;
 import io.qameta.allure.context.FreemarkerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -70,7 +72,10 @@ public class ReportWebPlugin implements Aggregator {
 
     protected void writeStatic(final Path outputDirectory) {
         staticFiles.forEach(resourceName -> {
-            try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourceName)) {
+            try (InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceName)) {
+                if (Objects.isNull(is)) {
+                    throw new ReportGenerationException(String.format("Resource %s not found", resourceName));
+                }
                 Files.copy(is, outputDirectory.resolve(resourceName), StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
                 LOGGER.error("Couldn't unpack report static");
