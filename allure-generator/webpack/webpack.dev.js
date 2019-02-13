@@ -1,3 +1,4 @@
+const webpack = require("webpack");
 const webpackMerge = require("webpack-merge");
 const sass = require("sass");
 const utils = require("./utils.js");
@@ -9,8 +10,8 @@ const ENV = "development";
 const postcssLoader = {
   loader: "postcss-loader",
   options: {
-    plugins: [require("autoprefixer")({ browsers: ["last 10 versions"] })]
-  }
+    plugins: [require("autoprefixer")()],
+  },
 };
 
 module.exports = options =>
@@ -21,7 +22,7 @@ module.exports = options =>
     output: {
       path: utils.root("build/www"),
       publicPath: "/",
-      filename: "app.js"
+      filename: "app.js",
     },
     module: {
       rules: [
@@ -33,11 +34,11 @@ module.exports = options =>
             postcssLoader,
             {
               loader: "sass-loader",
-              options: { implementation: sass }
-            }
-          ]
-        }
-      ]
+              options: { implementation: sass },
+            },
+          ],
+        },
+      ],
     },
     devServer: {
       stats: options.stats,
@@ -45,7 +46,8 @@ module.exports = options =>
       contentBase: "./build/demo-report",
       historyApiFallback: true,
       watchOptions: {
-        ignored: /node_modules/
-      }
+        ignored: /node_modules/,
+      },
     },
+    plugins: [new webpack.HotModuleReplacementPlugin()],
   });

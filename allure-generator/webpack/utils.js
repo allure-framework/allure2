@@ -1,10 +1,8 @@
-const fs = require('fs');
 const path = require('path');
 
 module.exports = {
   root
 };
-
 
 const _root = path.resolve(__dirname, '..');
 
