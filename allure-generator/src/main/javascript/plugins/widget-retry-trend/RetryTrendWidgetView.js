@@ -11,7 +11,7 @@ import {interpolateYlOrRd} from 'd3-scale-chromatic';
     chart: '.retry-trend__chart'
 })
 @className('retry-trend')
-export default class RetryTrendWidgetView extends View {
+class RetryTrendWidgetView extends View {
     template = template;
 
     onRender() {
@@ -27,3 +27,5 @@ export default class RetryTrendWidgetView extends View {
         }));
     }
 }
+
+export default RetryTrendWidgetView;

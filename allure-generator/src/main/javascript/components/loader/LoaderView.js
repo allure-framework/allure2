@@ -6,7 +6,7 @@ import template from './LoaderView.hbs';
 @options({
     text: 'Loading...'
 })
-export default class LoaderView extends View {
+class LoaderView extends View {
     template = template;
 
     initialize(options) {
@@ -17,3 +17,5 @@ export default class LoaderView extends View {
         return this.options;
     }
 }
+
+export default LoaderView;
