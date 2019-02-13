@@ -7,7 +7,6 @@ import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.Link;
 import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.TestResult;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +49,7 @@ public class JiraExportPlugin implements Aggregator {
         if (getProperty(ALLURE_JIRA_ENABLED).map(Boolean::parseBoolean).orElse(false)) {
             final JiraService jiraService = jiraServiceSupplier.get();
 
-            final List<String> issues = splitByComma(getProperty(ALLURE_JIRA_LAUNCH_ISSUES).orElse(StringUtils.EMPTY));
+            final List<String> issues = splitByComma(getProperty(ALLURE_JIRA_LAUNCH_ISSUES).orElse(""));
             final ExecutorInfo executor = getExecutor(launchesResults);
             final Statistic statistic = getStatistic(launchesResults);
 

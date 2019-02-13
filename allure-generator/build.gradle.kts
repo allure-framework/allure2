@@ -1,0 +1,111 @@
+import com.moowork.gradle.node.npm.NpmTask
+import com.moowork.gradle.node.NodeExtension
+
+plugins {
+    `java-library`
+    id("com.moowork.node") version "1.2.0"
+}
+
+description = "Allure Report Generator"
+
+configure<NodeExtension> {
+    version = "10.10.0"
+    npmVersion = "6.4.1"
+    download = true
+}
+
+val generatedStatic = "build/www"
+
+val sourceSets = project.the<SourceSetContainer>()
+
+val npmInstallDeps by tasks.creating(NpmTask::class) {
+    group = "Build"
+    inputs.file("package-lock.json")
+    inputs.file("package.json")
+
+    outputs.dir("node_modules")
+
+    setArgs(arrayListOf("install"))
+}
+
+val buildWeb by tasks.creating(NpmTask::class) {
+    group = "Build"
+    dependsOn(npmInstallDeps)
+    inputs.file(".prettierrc")
+    inputs.file("package-lock.json")
+    inputs.file("package.json")
+    inputs.file(".eslintrc")
+    inputs.files(fileTree("src/main/javascript"))
+    inputs.files(fileTree("webpack"))
+
+    outputs.dir(generatedStatic)
+
+    setArgs(arrayListOf("run", "build"))
+}
+
+val testWeb by tasks.creating(NpmTask::class) {
+    group = "Verification"
+    dependsOn(npmInstallDeps)
+    inputs.file(".prettierrc")
+    inputs.file("package-lock.json")
+    inputs.file("package.json")
+    inputs.file(".eslintrc")
+    inputs.files(fileTree("src/main/javascript"))
+    inputs.files(fileTree("webpack"))
+
+    setArgs(arrayListOf("run", "test"))
+}
+
+val cleanUpDemoReport by tasks.creating(Delete::class) {
+    delete(file("build/demo-report"))
+}
+
+val generateDemoReport by tasks.creating(JavaExec::class) {
+    dependsOn(cleanUpDemoReport, tasks.getByName("copyPlugins"))
+    main = "io.qameta.allure.DummyReportGenerator"
+    classpath = sourceSets.getByName("test").runtimeClasspath
+    systemProperty("allure.plugins.directory", "build/plugins")
+    setArgs(arrayListOf(file("test-data/demo"), file("build/demo-report")))
+}
+
+val dev by tasks.creating(NpmTask::class) {
+    group = "Development"
+    dependsOn(npmInstallDeps, generateDemoReport)
+    setArgs(arrayListOf("run", "start"))
+}
+
+tasks.named<ProcessResources>("processResources") {
+    dependsOn(buildWeb)
+    from(generatedStatic)
+}
+
+tasks.getByName("test") {
+    dependsOn(testWeb)
+}
+
+val allurePlugin by configurations.existing
+
+dependencies {
+    allurePlugin(project(path = ":behaviors-plugin", configuration = "allurePlugin"))
+    allurePlugin(project(path = ":packages-plugin", configuration = "allurePlugin"))
+    allurePlugin(project(path = ":screen-diff-plugin", configuration = "allurePlugin"))
+    annotationProcessor("org.projectlombok:lombok")
+    api(project(":allure-plugin-api"))
+    compileOnly("org.projectlombok:lombok")
+    implementation("org.freemarker:freemarker")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
+    implementation("commons-io:commons-io")
+    implementation("io.qameta.allure:allure2-model-api")
+    implementation("org.allurefw:allure1-model")
+    implementation("org.apache.httpcomponents:httpclient")
+    implementation("org.apache.tika:tika-core")
+    testImplementation("com.github.stefanbirkner:system-rules")
+    testImplementation("com.google.guava:guava")
+    testImplementation("io.qameta.allure:allure-java-commons")
+    testImplementation("junit:junit")
+    testImplementation("org.apache.commons:commons-text")
+    testImplementation("org.assertj:assertj-core")
+    testImplementation("org.mockito:mockito-core")
+    testImplementation("org.slf4j:slf4j-simple")
+}

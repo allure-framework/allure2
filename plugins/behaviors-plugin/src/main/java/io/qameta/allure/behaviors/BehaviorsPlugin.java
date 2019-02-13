@@ -13,7 +13,6 @@ import io.qameta.allure.tree.TestResultTreeGroup;
 import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeWidgetData;
 import io.qameta.allure.tree.TreeWidgetItem;
-import org.apache.commons.collections.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +21,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -74,6 +74,10 @@ public class BehaviorsPlugin extends CompositeAggregator {
         return behaviors;
     }
 
+    private static boolean isNotEmpty(final List<String> strings) {
+        return !Objects.isNull(strings) && !strings.isEmpty();
+    }
+
     /**
      * Generates tree data.
      */
@@ -122,7 +126,7 @@ public class BehaviorsPlugin extends CompositeAggregator {
 
         private void addTestResultWithEpic(final List<CsvExportBehavior> exportBehaviors, final TestResult result,
                                            final Map<LabelName, List<String>> epicFeatureStoryMap) {
-            if (!CollectionUtils.isEmpty(epicFeatureStoryMap.get(EPIC))) {
+            if (isNotEmpty(epicFeatureStoryMap.get(EPIC))) {
                 epicFeatureStoryMap.get(EPIC).forEach(
                         epic -> addTestResultWithFeature(exportBehaviors, result, epicFeatureStoryMap, epic)
                 );
@@ -134,7 +138,7 @@ public class BehaviorsPlugin extends CompositeAggregator {
         private void addTestResultWithFeature(final List<CsvExportBehavior> exportBehaviors, final TestResult result,
                                               final Map<LabelName, List<String>> epicFeatureStoryMap,
                                               final String epic) {
-            if (!CollectionUtils.isEmpty(epicFeatureStoryMap.get(FEATURE))) {
+            if (isNotEmpty(epicFeatureStoryMap.get(FEATURE))) {
                 epicFeatureStoryMap.get(FEATURE).forEach(
                         feature -> addTestResultWithStories(exportBehaviors, result, epicFeatureStoryMap, epic, feature)
                 );
@@ -146,7 +150,7 @@ public class BehaviorsPlugin extends CompositeAggregator {
         private void addTestResultWithStories(final List<CsvExportBehavior> exportBehaviors, final TestResult result,
                                               final Map<LabelName, List<String>> epicFeatureStoryMap,
                                               final String epic, final String feature) {
-            if (!CollectionUtils.isEmpty(epicFeatureStoryMap.get(STORY))) {
+            if (isNotEmpty(epicFeatureStoryMap.get(STORY))) {
                 epicFeatureStoryMap.get(STORY).forEach(
                         story -> addTestResultWithLabels(exportBehaviors, result, epic, feature, story)
                 );
@@ -198,4 +202,5 @@ public class BehaviorsPlugin extends CompositeAggregator {
                     .setStatistic(calculateStatisticByChildren(group));
         }
     }
+
 }

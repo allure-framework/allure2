@@ -8,7 +8,7 @@ import com.beust.jcommander.ParameterException;
  */
 public class PortValidator implements IParameterValidator {
 
-    private static final int MAX_PORT_VALUE = 65535;
+    private static final int MAX_PORT_VALUE = 65_535;
     private static final String MESSAGE = "invalid port value. Should be an integer between 0 and 65535";
 
     @Override

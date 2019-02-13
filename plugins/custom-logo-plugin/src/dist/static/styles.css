@@ -1,4 +1,4 @@
 .side-nav__brand {
-  background: url('custom-logo.svg') no-repeat left center;
+  background: url('custom-logo.svg') no-repeat left center !important;
   margin-left: 10px;
 }

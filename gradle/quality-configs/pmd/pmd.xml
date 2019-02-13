@@ -6,7 +6,7 @@
     <description>
         General Java quality rules.
     </description>
-
+    
     <!-- Best practices (https://pmd.github.io/pmd-6.0.1/pmd_rules_java_bestpractices.html) -->
     <rule ref="category/java/bestpractices.xml">
         <exclude name="AbstractClassWithoutAbstractMethod"/>
@@ -32,6 +32,8 @@
         <exclude name="CallSuperInConstructor"/>
         <exclude name="CommentDefaultAccessModifier"/>
         <exclude name="ConfusingTernary"/>
+        <exclude name="GenericsNaming"/>
+        <exclude name="LinguisticNaming"/>
         <exclude name="LocalHomeNamingConvention"/> <!-- earlier j2ee group-->
         <exclude name="LocalInterfaceSessionNamingConvention"/> <!-- earlier j2ee group-->
         <exclude name="LocalVariableCouldBeFinal"/>
@@ -44,9 +46,15 @@
         <exclude name="ShortMethodName"/>
         <exclude name="ShortVariable"/>
         <exclude name="TooManyStaticImports"/>
+        <exclude name="UnnecessaryAnnotationValueElement"/>
         <exclude name="UselessParentheses"/>
     </rule>
 
+    <rule ref="category/java/codestyle.xml/ClassNamingConventions">
+        <properties>
+            <property name="utilityClassPattern" value="[A-Z][a-zA-Z0-9]+"/>
+        </properties>
+    </rule>
 
     <!-- Design (https://pmd.github.io/pmd-6.0.1/pmd_rules_java_design.html) -->
     <rule ref="category/java/design.xml">
@@ -56,6 +64,7 @@
         <exclude name="ExcessiveImports"/>
         <exclude name="ExcessiveMethodLength"/> <!-- replaced by NcssCount -->
         <exclude name="LawOfDemeter"/>
+        <exclude name="CyclomaticComplexity"/> <!-- disabled in favour of checkstyle's CyclomaticComplexity check -->
         <exclude name="LoosePackageCoupling"/>
         <exclude name="ModifiedCyclomaticComplexity"/>
         <exclude name="SignatureDeclareThrowsException"/>
@@ -65,13 +74,6 @@
     <rule ref="category/java/design.xml/AvoidDeeplyNestedIfStmts">
         <properties>
             <property name="problemDepth" value="4"/>
-        </properties>
-    </rule>
-    <rule ref="category/java/design.xml/CyclomaticComplexity">
-        <properties>
-            <property name="cycloOptions" value="ignoreBooleanPaths"/>
-            <property name="classReportLevel" value="81"/>
-            <property name="methodReportLevel" value="11"/>
         </properties>
     </rule>
     <rule ref="category/java/design.xml/NcssCount">
@@ -113,7 +115,8 @@
         <exclude name="InvalidSlf4jMessageFormat"/>
         <exclude name="LoggerIsNotStaticFinal"/>
         <exclude name="MissingSerialVersionUID"/>
-        <exclude name="NullAssignment"/> <!-- disabled due to false positive for initialization with ternary operator -->
+        <exclude
+                name="NullAssignment"/> <!-- disabled due to false positive for initialization with ternary operator -->
         <exclude name="StaticEJBFieldShouldBeFinal"/> <!-- earlier j2ee group-->
         <exclude name="UseCorrectExceptionLogging"/>
         <exclude name="UseLocaleWithCaseConversions"/>

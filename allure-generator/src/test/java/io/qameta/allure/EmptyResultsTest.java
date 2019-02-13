@@ -1,6 +1,7 @@
 package io.qameta.allure;
 
 import io.qameta.allure.core.Configuration;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -10,6 +11,7 @@ import java.nio.file.Path;
 /**
  * @author charlie (Dmitry Baev).
  */
+@Ignore
 public class EmptyResultsTest {
 
     @Rule
