@@ -1,5 +1,5 @@
 /*
- *  Copyright 2019 Qameta Software OÜ
+ *  Copyright $YEAR Qameta Software OÜ
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -13,25 +13,3 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package io.qameta.allure.exception;
-
-import io.qameta.allure.util.PropertyUtils;
-
-/**
- * Notified about missed property.
- *
- * @see PropertyUtils
- * @since 2.0
- */
-public class PropertyNotFoundException extends RuntimeException {
-
-    /**
-     * Creates an exception by given property key.
-     *
-     * @param key the key of property.
-     */
-    public PropertyNotFoundException(final String key) {
-        super(String.format("Required property not found: %s", key));
-    }
-
-}

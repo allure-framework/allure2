@@ -1,4 +1,5 @@
 import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+import com.diffplug.gradle.spotless.SpotlessExtension
 import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
 import ru.vyarus.gradle.plugin.quality.QualityExtension
 
@@ -11,6 +12,7 @@ buildscript {
 
     dependencies {
         classpath("com.bmuschko:gradle-docker-plugin:4.0.1")
+        classpath("com.diffplug.spotless:spotless-plugin-gradle:3.17.0")
         classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4")
         classpath("gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:1.6.9")
         classpath("io.spring.gradle:dependency-management-plugin:1.0.6.RELEASE")
@@ -53,10 +55,11 @@ configure(subprojects) {
         "io.qameta.allure"
     }
     version = version
-    
+
     apply(plugin = "java")
     apply(plugin = "maven")
     apply(plugin = "ru.vyarus.quality")
+    apply(plugin = "com.diffplug.gradle.spotless")
     apply(from = "$gradleScriptDir/bintray.gradle")
     apply(from = "$gradleScriptDir/maven-publish.gradle")
 
@@ -96,7 +99,7 @@ configure(subprojects) {
             dependency("com.github.stefanbirkner:system-rules:1.18.0")
         }
     }
-    
+
     java {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -154,8 +157,36 @@ configure(subprojects) {
         includeEmptyDirs = false
     }
 
+    configure<SpotlessExtension> {
+        java {
+            target(fileTree(rootDir) {
+                include("**/src/**/*.java")
+                exclude("**/generated-sources/**/*.*")
+            })
+            removeUnusedImports()
+            @Suppress("INACCESSIBLE_TYPE")
+            licenseHeaderFile("$spotlessDtr/header.java", "(package|import|open|module|//startfile)")
+            endWithNewline()
+            replaceRegex("one blank line after package line", "(package .+;)\n+import", "$1\n\nimport")
+            replaceRegex("one blank line after import lists", "(import .+;\n\n)\n+", "$1")
+        }
+        format("misc") {
+            target(fileTree(rootDir) {
+                include("**/*.gradle",
+                        "**/*.gitignore",
+                        "README.md",
+                        "CONTRIBUTING.md",
+                        "config/**/*.xml",
+                        "src/**/*.xml")
+            })
+            trimTrailingWhitespace()
+            endWithNewline()
+        }
+        encoding("UTF-8")
+    }
+
     configure<QualityExtension> {
-        configDir = "$gradleScriptDir/quality-configs"
+        configDir = qualityConfigsDir
         excludeSources = fileTree("build/generated-sources")
         exclude("**/*.json")
         checkstyleVersion = "8.17"
