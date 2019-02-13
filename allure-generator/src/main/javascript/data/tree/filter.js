@@ -26,6 +26,16 @@ function byText(text) {
     };
 }
 
+function byMark(marks) {
+    return (child) => {
+        if (child.children) {
+            return child.children.length > 0;
+        }
+        return (!marks.newFailed || child.newFailed) &&
+               (!marks.flaky || child.flaky);
+    };
+}
+
 function mix(...filters) {
     return (child) => {
         let result = true;
@@ -37,4 +47,4 @@ function mix(...filters) {
 }
 
 
-export {byStatuses, byDuration, byText, mix};
+export {byStatuses, byDuration, byText, byMark, mix};

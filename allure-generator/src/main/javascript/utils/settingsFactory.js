@@ -13,6 +13,10 @@ const treePluginDefaults = {
         unknown: true,
         passed: true
     },
+    visibleMarks: {
+        flaky: false,
+        newFailed: false
+    },
     showGroupInfo: false,
     treeSorting: {
         ascending: true,
@@ -100,6 +104,14 @@ function getSettingsForTreePlugin(pluginName, defaults = treePluginDefaults) {
 
         setVisibleStatuses(value) {
             return this.save('visibleStatuses', value);
+        },
+
+        getVisibleMarks() {
+            return this.get('visibleMarks');
+        },
+
+        setVisibleMarks(value) {
+            return this.save('visibleMarks', value);
         },
 
         getTreeSorting() {

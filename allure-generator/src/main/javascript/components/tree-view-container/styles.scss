@@ -7,7 +7,7 @@
     border-top: 1px solid $border-color;
     background: $pane-overlay-bg-hover;
   }
-  &__filter, &__sorter {
+  &__filter, &__sorter, &__filter-marks {
     padding: 0 $gap-size 0 $gap-size;
     position: relative;
     white-space: nowrap;

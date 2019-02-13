@@ -117,10 +117,7 @@ public class PackagesPlugin implements Aggregator {
         return new TestResultTreeLeaf(
                 parent.getUid(),
                 name,
-                testResult.getUid(),
-                testResult.getStatus(), testResult.getTime(),
-                testResult.isFlaky(),
-                testResult.getParameterValues()
+                testResult
         );
     }
 }

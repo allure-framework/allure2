@@ -5,7 +5,7 @@ import template from './TreeView.hbs';
 import {behavior, className, on} from '../../decorators';
 import router from '../../router';
 import getComparator from '../../data/tree/comparator';
-import {byStatuses, byText, mix} from '../../data/tree/filter';
+import {byStatuses, byText, byMark, mix} from '../../data/tree/filter';
 import {SEARCH_QUERY_KEY} from '../node-search/NodeSearchView';
 
 @className('tree')
@@ -35,8 +35,9 @@ class TreeView extends View {
 
     applyFilters() {
         const visibleStatuses = this.settings.getVisibleStatuses();
+        const visibleMarks = this.settings.getVisibleMarks();
         const searchQuery = this.state.get(SEARCH_QUERY_KEY);
-        const filter = mix(byText(searchQuery), byStatuses(visibleStatuses));
+        const filter = mix(byText(searchQuery), byStatuses(visibleStatuses), byMark(visibleMarks));
 
         const sortSettings = this.settings.getTreeSorting();
         const sorter = getComparator(sortSettings);

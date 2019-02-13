@@ -9,6 +9,7 @@ import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.Statistic;
+import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.executor.ExecutorPlugin;
 
@@ -25,6 +26,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static io.qameta.allure.history.HistoryItem.comparingByTime;
+
+
 /**
  * Plugin that adds history to the report.
  *
@@ -38,7 +42,8 @@ public class HistoryPlugin implements Reader, Aggregator {
 
     //@formatter:off
     private static final TypeReference<Map<String, HistoryData>> HISTORY_TYPE =
-        new TypeReference<Map<String, HistoryData>>() { };
+            new TypeReference<Map<String, HistoryData>>() {
+            };
     //@formatter:on
 
     @Override
@@ -69,6 +74,29 @@ public class HistoryPlugin implements Reader, Aggregator {
         }
     }
 
+    private boolean isNewFailed(final List<HistoryItem> histories) {
+        final List<Status> statuses = histories.stream()
+                .sorted(comparingByTime())
+                .map(HistoryItem::getStatus)
+                .collect(Collectors.toList());
+        return statuses.size() > 1
+                && statuses.get(0) == Status.FAILED
+                && statuses.get(1) == Status.PASSED;
+    }
+
+    private boolean isFlaky(final List<HistoryItem> histories) {
+        if (histories.size() > 1 && histories.get(0).status == Status.FAILED) {
+            final List<Status> statuses = histories.subList(1, histories.size())
+                    .stream()
+                    .sorted(comparingByTime())
+                    .map(HistoryItem::getStatus)
+                    .collect(Collectors.toList());
+            return statuses.indexOf(Status.PASSED) < statuses.lastIndexOf(Status.FAILED)
+                    && statuses.indexOf(Status.PASSED) != -1;
+        }
+        return false;
+    }
+
     protected Map<String, HistoryData> getData(final List<LaunchResults> launches) {
         return launches.stream()
                 .map(launch -> {
@@ -93,8 +121,8 @@ public class HistoryPlugin implements Reader, Aggregator {
                                final ExecutorInfo info) {
         //@formatter:off
         final HistoryData data = history.computeIfAbsent(
-            result.getHistoryId(),
-            id -> new HistoryData().setStatistic(new Statistic())
+                result.getHistoryId(),
+                id -> new HistoryData().setStatistic(new Statistic())
         );
         //@formatter:on
 
@@ -102,7 +130,6 @@ public class HistoryPlugin implements Reader, Aggregator {
         if (!data.getItems().isEmpty()) {
             result.addExtraBlock(HISTORY_BLOCK_NAME, copy(data));
         }
-
         final HistoryItem newItem = new HistoryItem()
                 .setUid(result.getUid())
                 .setStatus(result.getStatus())
@@ -116,6 +143,8 @@ public class HistoryPlugin implements Reader, Aggregator {
         final List<HistoryItem> newItems = Stream.concat(Stream.of(newItem), data.getItems().stream())
                 .limit(5)
                 .collect(Collectors.toList());
+        result.setNewFailed(isNewFailed(newItems));
+        result.setFlaky(isFlaky(newItems));
         data.setItems(newItems);
     }
 

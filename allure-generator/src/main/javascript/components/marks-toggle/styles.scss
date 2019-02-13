@@ -1,0 +1,32 @@
+.marks-toggle {
+  &__items {
+    display: block;
+    user-select: none;
+    word-break: break-word;
+  }
+  &__item {
+    cursor: pointer;
+    padding: 5px 0 5px 0;
+    display: inline-block;
+    white-space: nowrap;
+  }
+}
+
+.y-label-mark {
+  vertical-align: baseline;
+  letter-spacing: 1px;
+  background: #97cc64;
+  color: #fff;
+  padding: 2px 4px 2px 5px;
+  border-radius: 3px;
+}
+
+.n-label-mark {
+  vertical-align: baseline;
+  letter-spacing: 1px;
+  padding: 1px 3px 1px 4px;
+  border-radius: 3px;
+  border: 1px solid;
+  font-weight: bold;
+}
+

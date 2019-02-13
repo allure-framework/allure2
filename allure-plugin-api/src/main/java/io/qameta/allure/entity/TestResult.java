@@ -41,6 +41,7 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
     protected String statusTrace;
 
     protected boolean flaky;
+    protected boolean newFailed;
 
     //    Execution
     protected List<StageResult> beforeStages = new ArrayList<>();
