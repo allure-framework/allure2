@@ -130,7 +130,7 @@ configure(subprojects) {
         }
     }
 
-    tasks.processResources {
+    tasks.processTestResources {
         filesMatching("**/allure.properties") {
             filter {
                 it.replace("#project.description#", project.description ?: project.name)
@@ -178,7 +178,6 @@ configure(subprojects) {
         java {
             target(fileTree(rootDir) {
                 include("**/src/**/*.java")
-                exclude("**/generated-sources/**/*.*")
             })
             removeUnusedImports()
             @Suppress("INACCESSIBLE_TYPE")
@@ -204,7 +203,6 @@ configure(subprojects) {
 
     configure<QualityExtension> {
         configDir = qualityConfigsDir
-        excludeSources = fileTree("build/generated-sources")
         exclude("**/*.json")
         checkstyleVersion = "8.17"
         pmdVersion = "6.11.0"

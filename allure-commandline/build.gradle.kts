@@ -37,7 +37,13 @@ val main = sourceSets.getByName("main")
 
 val startScripts by tasks.existing(CreateStartScripts::class) {
     applicationName = "allure"
-    classpath = main.runtimeClasspath + files("src/lib/config")
+    classpath = classpath?.plus(files("src/lib/config"))
+    doLast {
+        unixScript.writeText(unixScript.readText()
+                .replace(Regex("(?m)^APP_HOME="), "export APP_HOME=")
+                .replace("\$(uname)\" = \"Darwin", "")
+        )
+    }
 }
 
 tasks.build {
