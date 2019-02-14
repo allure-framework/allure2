@@ -77,6 +77,11 @@ val dev by tasks.creating(NpmTask::class) {
 tasks.processResources {
     dependsOn(buildWeb)
     from(generatedStatic)
+    filesMatching("**/allure-version.txt") {
+        filter {
+            it.replace("#project.version#", "${project.version}")
+        }
+    }
 }
 
 tasks.test {
