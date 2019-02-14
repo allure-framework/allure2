@@ -2,6 +2,8 @@ apply plugin: 'net.researchgate.release'
 
 release {
     tagTemplate = '${version}'
+    failOnCommitNeeded = false
+    failOnUnversionedFiles = false
 }
 
 afterReleaseBuild.dependsOn bintrayUpload
