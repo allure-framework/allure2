@@ -15,7 +15,7 @@
  */
 package io.qameta.allure.testdata;
 
-import org.apache.commons.text.RandomStringGenerator;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -29,9 +29,7 @@ public final class TestData {
     }
 
     public static String randomString() {
-        return new RandomStringGenerator.Builder()
-                .withinRange('a', 'z').build()
-                .generate(10);
+        return RandomStringUtils.randomAlphabetic(10);
     }
 
     public static int randomPort() {

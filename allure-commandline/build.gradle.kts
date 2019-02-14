@@ -18,14 +18,14 @@ distributions {
     }
 }
 
-val distZip by tasks.existing(Zip::class) {
+tasks.distZip {
     includeEmptyDirs = false
     eachFile {
         path = path.replaceFirst("-commandline", "")
     }
 }
 
-val distTar by tasks.existing(Tar::class) {
+tasks.distTar {
     includeEmptyDirs = false
     eachFile {
         path = path.replaceFirst("-commandline", "")
@@ -33,12 +33,15 @@ val distTar by tasks.existing(Tar::class) {
     compression = Compression.GZIP
 }
 
-val sourceSets = project.the<SourceSetContainer>()
 val main = sourceSets.getByName("main")
 
 val startScripts by tasks.existing(CreateStartScripts::class) {
     applicationName = "allure"
     classpath = main.runtimeClasspath + files("src/lib/config")
+}
+
+tasks.build {
+    dependsOn(tasks.installDist)
 }
 
 dependencies {
@@ -62,7 +65,7 @@ dependencies {
     implementation("org.slf4j:slf4j-log4j12")
     implementation(project(":allure-generator"))
     testImplementation("io.qameta.allure:allure-junit-platform")
-    testImplementation("org.apache.commons:commons-text")
+    testImplementation("org.apache.commons:commons-lang3")
     testImplementation("org.assertj:assertj-core")
     testImplementation("org.junit-pioneer:junit-pioneer")
     testImplementation("org.junit.jupiter:junit-jupiter-api")

@@ -16,8 +16,6 @@ configure<NodeExtension> {
 
 val generatedStatic = "build/www"
 
-val sourceSets = project.the<SourceSetContainer>()
-
 val npmInstallDeps by tasks.creating(NpmTask::class) {
     group = "Build"
     inputs.file("package-lock.json")
@@ -57,10 +55,12 @@ val testWeb by tasks.creating(NpmTask::class) {
 }
 
 val cleanUpDemoReport by tasks.creating(Delete::class) {
+    group = "Documentation"
     delete(file("build/demo-report"))
 }
 
 val generateDemoReport by tasks.creating(JavaExec::class) {
+    group = "Documentation"
     dependsOn(cleanUpDemoReport, tasks.getByName("copyPlugins"))
     main = "io.qameta.allure.DummyReportGenerator"
     classpath = sourceSets.getByName("test").runtimeClasspath
@@ -74,12 +74,12 @@ val dev by tasks.creating(NpmTask::class) {
     setArgs(arrayListOf("run", "start"))
 }
 
-tasks.named<ProcessResources>("processResources") {
+tasks.processResources {
     dependsOn(buildWeb)
     from(generatedStatic)
 }
 
-tasks.getByName("test") {
+tasks.test {
     dependsOn(testWeb)
 }
 
