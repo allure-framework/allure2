@@ -24,9 +24,7 @@ import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.jira.JiraService;
 import io.qameta.allure.jira.XrayTestRun;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.contrib.java.lang.system.EnvironmentVariables;
+import org.junit.jupiter.api.Test;
 
 import java.nio.file.Paths;
 import java.util.Collections;
@@ -40,20 +38,14 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class XrayTestRunExportPluginTest {
+class XrayTestRunExportPluginTest {
 
     private static final String EXECUTION_ISSUES = "ALLURE-2";
     private static final String TESTRUN_KEY = "ALLURE-1";
     private static final Integer TESTRUN_ID = 1;
 
-    @Rule
-    public final EnvironmentVariables jiraEnabled = new EnvironmentVariables()
-            .set("ALLURE_XRAY_ENABLED", "true")
-            .set("ALLURE_XRAY_EXECUTION_ISSUES", EXECUTION_ISSUES);
-
-
     @Test
-    public void shouldExportTestRunToXray() {
+    void shouldExportTestRunToXray() {
         final LaunchResults launchResults = mock(LaunchResults.class);
         final TestResult testResult = createTestResult(Status.FAILED)
                 .setLinks(Collections.singletonList(new Link().setName(TESTRUN_KEY).setType("tms")));
@@ -71,8 +63,12 @@ public class XrayTestRunExportPluginTest {
                 Collections.singletonList(new XrayTestRun().setId(TESTRUN_ID).setKey(TESTRUN_KEY).setStatus("TODO"))
         );
 
-        final XrayTestRunExportPlugin xrayTestRunExportPlugin = new XrayTestRunExportPlugin();
-        xrayTestRunExportPlugin.setJiraService(service);
+        final XrayTestRunExportPlugin xrayTestRunExportPlugin = new XrayTestRunExportPlugin(
+                true,
+                "ALLURE-2",
+                Collections.emptyMap(),
+                () -> service
+        );
 
         xrayTestRunExportPlugin.aggregate(
                 mock(Configuration.class),
@@ -84,12 +80,12 @@ public class XrayTestRunExportPluginTest {
         verify(service, times(1)).createIssueComment(
                 argThat(issue -> issue.equals(EXECUTION_ISSUES)),
                 argThat(comment -> comment.getBody().contains(reportLink)
-        ));
+                ));
         verify(service, times(1)).updateTestRunStatus(TESTRUN_ID, "FAIL");
     }
 
 
-    public static TestResult createTestResult(final Status status) {
+    static TestResult createTestResult(final Status status) {
         return new TestResult()
                 .setUid(RandomStringUtils.random(10))
                 .setName(RandomStringUtils.random(10))

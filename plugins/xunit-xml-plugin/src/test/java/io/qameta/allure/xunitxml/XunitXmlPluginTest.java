@@ -24,15 +24,13 @@ import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import org.assertj.core.groups.Tuple;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.experimental.theories.DataPoints;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
-import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junitpioneer.jupiter.TempDirectory;
 import org.mockito.ArgumentCaptor;
 
 import java.io.IOException;
@@ -41,6 +39,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -51,35 +51,23 @@ import static org.mockito.Mockito.when;
 /**
  * @author charlie (Dmitry Baev).
  */
-@RunWith(Theories.class)
-public class XunitXmlPluginTest {
-
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
+@ExtendWith(TempDirectory.class)
+class XunitXmlPluginTest {
 
     private Configuration configuration;
-
     private ResultsVisitor visitor;
+    private Path resultsDirectory;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp(@TempDirectory.TempDir final Path resultsDirectory) {
         configuration = mock(Configuration.class);
         when(configuration.requireContext(RandomUidContext.class)).thenReturn(new RandomUidContext());
         visitor = mock(ResultsVisitor.class);
-    }
-
-    @DataPoints
-    public static String[][] input() {
-        return new String[][]{
-                {"xunitdata/failed-test.xml", "failed-test.xml",
-                        String.format("%s%n", "Assert.True() Failure\\r\\nExpected: True\\r\\nActual:   False") +
-                                "test output\\n", "FAILED-TRACE"},
-                {"xunitdata/passed-test.xml", "passed-test.xml", "test output\\n", null}
-        };
+        this.resultsDirectory = resultsDirectory;
     }
 
     @Test
-    public void shouldCreateTest() throws Exception {
+    void shouldCreateTest() throws Exception {
         process(
                 "xunitdata/passed-test.xml",
                 "passed-test.xml"
@@ -97,7 +85,7 @@ public class XunitXmlPluginTest {
     }
 
     @Test
-    public void shouldSetTime() throws Exception {
+    void shouldSetTime() throws Exception {
         process(
                 "xunitdata/passed-test.xml",
                 "passed-test.xml"
@@ -113,8 +101,9 @@ public class XunitXmlPluginTest {
                 .containsExactlyInAnyOrder(44L);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
-    public void shouldSetLabels() throws Exception {
+    void shouldSetLabels() throws Exception {
         process(
                 "xunitdata/passed-test.xml",
                 "passed-test.xml"
@@ -136,7 +125,7 @@ public class XunitXmlPluginTest {
     }
 
     @Test
-    public void shouldSetFullName() throws Exception {
+    void shouldSetFullName() throws Exception {
         process(
                 "xunitdata/passed-test.xml",
                 "passed-test.xml"
@@ -154,7 +143,7 @@ public class XunitXmlPluginTest {
     }
 
     @Test
-    public void shouldSetFramework() throws Exception {
+    void shouldSetFramework() throws Exception {
         process(
                 "xunitdata/framework-test.xml",
                 "passed-test.xml"
@@ -171,13 +160,22 @@ public class XunitXmlPluginTest {
                 .containsExactly("junit");
     }
 
-    @Theory
-    public void shouldSetStatusDetails(String[] inputs) throws Exception {
-        Assume.assumeTrue(inputs.length == 4);
-        process(
-                inputs[0],
-                inputs[1]
+    static Stream<Arguments> data() {
+        return Stream.of(
+                Arguments.of("xunitdata/failed-test.xml", "failed-test.xml",
+                        String.format("%s%n", "Assert.True() Failure\\r\\nExpected: True\\r\\nActual:   False") +
+                                "test output\\n", "FAILED-TRACE"),
+                Arguments.of("xunitdata/passed-test.xml", "passed-test.xml", "test output\\n", null)
         );
+    }
+
+    @ParameterizedTest
+    @MethodSource("data")
+    void shouldSetStatusDetails(final String resource,
+                                final String fileName,
+                                final String message,
+                                final String trace) throws Exception {
+        process(resource, fileName);
 
         final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
         verify(visitor, times(1)).visitTestResult(captor.capture());
@@ -186,12 +184,11 @@ public class XunitXmlPluginTest {
                 .hasSize(1)
                 .extracting(TestResult::getStatusMessage, TestResult::getStatusTrace)
                 .containsExactlyInAnyOrder(
-                        Tuple.tuple(inputs[2], inputs[3])
+                        Tuple.tuple(message, trace)
                 );
     }
 
     private void process(String... strings) throws IOException {
-        Path resultsDirectory = folder.newFolder().toPath();
         Iterator<String> iterator = Arrays.asList(strings).iterator();
         while (iterator.hasNext()) {
             String first = iterator.next();
@@ -205,7 +202,7 @@ public class XunitXmlPluginTest {
 
     private void copyFile(Path dir, String resourceName, String fileName) throws IOException {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourceName)) {
-            Files.copy(is, dir.resolve(fileName));
+            Files.copy(Objects.requireNonNull(is), dir.resolve(fileName));
         }
     }
 

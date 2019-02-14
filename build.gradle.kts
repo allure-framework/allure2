@@ -60,25 +60,27 @@ configure(subprojects) {
     apply(plugin = "maven")
     apply(plugin = "ru.vyarus.quality")
     apply(plugin = "com.diffplug.gradle.spotless")
+    apply(plugin = "io.spring.dependency-management")
     apply(from = "$gradleScriptDir/bintray.gradle")
     apply(from = "$gradleScriptDir/maven-publish.gradle")
-
-    apply(plugin = "io.spring.dependency-management")
 
     configure<DependencyManagementExtension> {
         imports {
             mavenBom("com.fasterxml.jackson:jackson-bom:2.9.6")
+            mavenBom("org.junit:junit-bom:5.4.0")
         }
         dependencies {
             dependency("com.beust:jcommander:1.72")
+            dependency("com.github.stefanbirkner:system-rules:1.18.0")
             dependency("com.google.guava:guava:23.5-jre")
             dependency("com.opencsv:opencsv:4.2")
-            dependency("com.vladsch.flexmark:flexmark:0.34.8")
-            dependency("com.squareup.retrofit2:retrofit:2.4.0")
             dependency("com.squareup.retrofit2:converter-jackson:2.4.0")
+            dependency("com.squareup.retrofit2:retrofit:2.4.0")
+            dependency("com.vladsch.flexmark:flexmark:0.34.8")
             dependency("commons-io:commons-io:2.6")
-            dependency("io.qameta.allure:allure-java-commons:2.6.0")
-            dependency("io.qameta.allure:allure2-model-api:1.0.0")
+            dependency("io.qameta.allure:allure-java-commons:2.9.0")
+            dependency("io.qameta.allure:allure-junit-platform:2.9.0")
+            dependency("io.qameta.allure:allure-model:2.9.0")
             dependency("javax.xml.bind:jaxb-api:2.3.0")
             dependency("junit:junit:4.12")
             dependency("org.allurefw:allure1-model:1.0")
@@ -89,6 +91,7 @@ configure(subprojects) {
             dependency("org.assertj:assertj-core:3.10.0")
             dependency("org.eclipse.jetty:jetty-server:9.4.11.v20180605")
             dependency("org.freemarker:freemarker:2.3.28")
+            dependency("org.junit-pioneer:junit-pioneer:0.3.0")
             dependency("org.mockito:mockito-core:2.19.1")
             dependency("org.projectlombok:lombok:1.18.2")
             dependency("org.slf4j:slf4j-api:1.7.25")
@@ -96,7 +99,6 @@ configure(subprojects) {
             dependency("org.slf4j:slf4j-nop:1.7.25")
             dependency("org.slf4j:slf4j-simple:1.7.25")
             dependency("org.zeroturnaround:zt-zip:1.13")
-            dependency("com.github.stefanbirkner:system-rules:1.18.0")
         }
     }
 
@@ -105,10 +107,13 @@ configure(subprojects) {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-    tasks.withType(JavaCompile::class) {
+    tasks.compileJava {
+        options.encoding = "UTF-8"
+    }
+
+    tasks.compileTestJava {
         options.encoding = "UTF-8"
         options.compilerArgs.add("-parameters")
-
     }
 
     tasks.jar {
@@ -118,6 +123,21 @@ configure(subprojects) {
                     "Implementation-Version" to project.version
 
             ))
+        }
+    }
+
+    tasks.test {
+        useJUnitPlatform()
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
+    }
+
+    tasks.processResources {
+        filesMatching("**/allure.properties") {
+            filter {
+                it.replace("#project.description#", project.description ?: project.name)
+            }
         }
     }
 

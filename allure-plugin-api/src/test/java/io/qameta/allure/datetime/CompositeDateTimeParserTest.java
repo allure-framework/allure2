@@ -15,7 +15,7 @@
  */
 package io.qameta.allure.datetime;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.ZoneOffset;
 import java.util.Optional;
@@ -25,10 +25,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class CompositeDateTimeParserTest {
+class CompositeDateTimeParserTest {
 
     @Test
-    public void shouldReturnFirstParsed() {
+    void shouldReturnFirstParsed() {
         final CompositeDateTimeParser parser = new CompositeDateTimeParser(
                 new ZonedDateTimeParser(),
                 new LocalDateTimeParser(ZoneOffset.UTC)
@@ -46,7 +46,7 @@ public class CompositeDateTimeParserTest {
     }
 
     @Test
-    public void shouldReturnEmptyOptionalIfNoMatchedFormat() {
+    void shouldReturnEmptyOptionalIfNoMatchedFormat() {
         final CompositeDateTimeParser parser = new CompositeDateTimeParser(
                 new ZonedDateTimeParser(),
                 new LocalDateTimeParser(ZoneOffset.UTC)

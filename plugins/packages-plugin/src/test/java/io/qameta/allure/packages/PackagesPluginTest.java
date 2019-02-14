@@ -21,7 +21,7 @@ import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import io.qameta.allure.tree.Tree;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -37,10 +37,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class PackagesPluginTest {
+class PackagesPluginTest {
 
     @Test
-    public void shouldCreateTree() throws Exception {
+    void shouldCreateTree() {
         final Set<TestResult> testResults = new HashSet<>();
 
         final TestResult first = new TestResult()
@@ -79,7 +79,7 @@ public class PackagesPluginTest {
     }
 
     @Test
-    public void shouldCollapseNodesWithOneChild() throws Exception {
+    void shouldCollapseNodesWithOneChild() {
         final Set<TestResult> testResults = new HashSet<>();
 
         final TestResult first = new TestResult()
@@ -119,7 +119,7 @@ public class PackagesPluginTest {
 
     @Issue("531")
     @Test
-    public void shouldProcessTestsInNestedPackages() throws Exception {
+    void shouldProcessTestsInNestedPackages() {
         final Set<TestResult> testResults = new HashSet<>();
         final TestResult first = new TestResult()
                 .setName("first")
@@ -161,7 +161,7 @@ public class PackagesPluginTest {
     @Issue("587")
     @Issue("572")
     @Test
-    public void shouldSortByStartTimeAsc() throws Exception {
+    void shouldSortByStartTimeAsc() {
         final TestResult first = new TestResult()
                 .setName("first")
                 .setTime(new Time().setStart(10L));

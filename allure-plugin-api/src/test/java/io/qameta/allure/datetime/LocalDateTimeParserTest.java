@@ -15,7 +15,7 @@
  */
 package io.qameta.allure.datetime;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -27,10 +27,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class LocalDateTimeParserTest {
+class LocalDateTimeParserTest {
 
     @Test
-    public void shouldParseLocalDateTime() {
+    void shouldParseLocalDateTime() {
         final Optional<Long> parsed = new LocalDateTimeParser(ZoneOffset.UTC)
                 .getEpochMilli("2017-10-05T10:36:22");
 
@@ -39,7 +39,7 @@ public class LocalDateTimeParserTest {
     }
 
     @Test
-    public void shouldChangeZone() {
+    void shouldChangeZone() {
         final ZoneId pst = ZoneId.of(ZoneId.SHORT_IDS.get("PST"));
 
         final Optional<Long> parsed = new LocalDateTimeParser(pst)

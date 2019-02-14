@@ -40,11 +40,26 @@ public class IdeaLinksPlugin implements Aggregator {
     private static final String IDEA_LINK_NAME = "Open in Idea";
     private static final String IDEA_LINK_TYPE = "idea";
 
+    private final boolean enabled;
+    private final int port;
+
+    public IdeaLinksPlugin() {
+        this(
+                getProperty(ALLURE_IDEA_ENABLED).map(Boolean::parseBoolean).orElse(false),
+                getProperty(ALLURE_IDEA_PORT).map(Integer::parseInt).orElse(63_342)
+        );
+    }
+
+    public IdeaLinksPlugin(final boolean enabled, final int port) {
+        this.enabled = enabled;
+        this.port = port;
+    }
+
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
                           final Path outputDirectory) {
-        if (getProperty(ALLURE_IDEA_ENABLED).map(Boolean::parseBoolean).orElse(false)) {
+        if (enabled) {
             launchesResults.stream()
                     .map(LaunchResults::getAllResults)
                     .flatMap(Collection::stream)
@@ -54,7 +69,6 @@ public class IdeaLinksPlugin implements Aggregator {
 
     private void addIdeaLink(final TestResult testResult) {
         final String fileExtension = "java";
-        final String port = getProperty(ALLURE_IDEA_PORT).orElse("63342");
 
         final Optional<String> testClassName = testResult.getLabels().stream()
                 .filter(label -> "testClass".equals(label.getName()))
@@ -63,7 +77,7 @@ public class IdeaLinksPlugin implements Aggregator {
 
         testClassName.ifPresent(name -> {
             final String path = name.replace(".", "/");
-            final String url = String.format("http://localhost:%s/api/file?file=%s.%s", port, path, fileExtension);
+            final String url = String.format("http://localhost:%d/api/file?file=%s.%s", port, path, fileExtension);
             testResult.getLinks().add(new Link().setName(IDEA_LINK_NAME).setType(IDEA_LINK_TYPE).setUrl(url));
         });
     }

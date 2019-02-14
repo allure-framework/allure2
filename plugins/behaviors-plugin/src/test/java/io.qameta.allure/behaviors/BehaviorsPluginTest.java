@@ -27,11 +27,8 @@ import io.qameta.allure.tree.TreeNode;
 import io.qameta.allure.tree.TreeWidgetData;
 import io.qameta.allure.tree.TreeWidgetItem;
 import org.assertj.core.groups.Tuple;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -46,13 +43,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Egor Borisov ehborisov@gmail.com
  */
-public class BehaviorsPluginTest {
+class BehaviorsPluginTest {
 
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
-
+    @SuppressWarnings("unchecked")
     @Test
-    public void storiesPerFeatureResultsAggregation() throws IOException {
+    void storiesPerFeatureResultsAggregation() {
         final Set<TestResult> testResults = new HashSet<>();
         testResults.add(new TestResult()
                 .setStatus(Status.PASSED)
@@ -86,7 +81,7 @@ public class BehaviorsPluginTest {
     }
 
     @Test
-    public void shouldGroupByEpic() throws Exception {
+    void shouldGroupByEpic() {
         final Set<TestResult> testResults = new HashSet<>();
         testResults.add(new TestResult()
                 .setStatus(Status.PASSED)
@@ -107,7 +102,7 @@ public class BehaviorsPluginTest {
     @Issue("587")
     @Issue("572")
     @Test
-    public void shouldSortByStartTimeAsc() throws Exception {
+    void shouldSortByStartTimeAsc() {
         final TestResult first = new TestResult()
                 .setName("first")
                 .setTime(new Time().setStart(10L));

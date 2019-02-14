@@ -35,6 +35,6 @@ public final class TestData {
     }
 
     public static int randomPort() {
-        return ThreadLocalRandom.current().nextInt(65535);
+        return ThreadLocalRandom.current().nextInt(65_535);
     }
 }

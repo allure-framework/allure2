@@ -24,42 +24,39 @@ import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeNode;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junitpioneer.jupiter.TempDirectory;
+import org.junitpioneer.jupiter.TempDirectory.TempDir;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
-import static io.qameta.allure.testdata.TestData.createSingleLaunchResults;
 import static io.qameta.allure.suites.SuitesPlugin.CSV_FILE_NAME;
 import static io.qameta.allure.suites.SuitesPlugin.JSON_FILE_NAME;
+import static io.qameta.allure.testdata.TestData.createSingleLaunchResults;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author charlie (Dmitry Baev).
  */
-public class SuitesPluginTest {
-
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
+@ExtendWith(TempDirectory.class)
+class SuitesPluginTest {
 
     private Configuration configuration;
-
     private Path reportPath;
 
-    @Before
-    public void setUp() throws IOException {
-        reportPath = Paths.get(folder.newFolder("report").getAbsolutePath());
+    @BeforeEach
+    void setUp(@TempDir final Path temp) {
+        reportPath = temp.resolve("report");
         configuration = new ConfigurationBuilder().useDefault().build();
     }
 
     @Test
-    public void shouldCreateTree() throws Exception {
+    void shouldCreateTree() {
 
         final Tree<TestResult> tree = SuitesPlugin.getData(getSimpleLaunchResults());
 
@@ -72,7 +69,7 @@ public class SuitesPluginTest {
     @Issue("587")
     @Issue("572")
     @Test
-    public void shouldSortByStartTimeAsc() throws Exception {
+    void shouldSortByStartTimeAsc() {
         final TestResult first = new TestResult()
                 .setName("first")
                 .setTime(new Time().setStart(10L));
@@ -92,7 +89,7 @@ public class SuitesPluginTest {
     }
 
     @Test
-    public void shouldCreateCsvFile() throws IOException {
+    void shouldCreateCsvFile() throws IOException {
 
         final SuitesPlugin plugin = new SuitesPlugin();
 

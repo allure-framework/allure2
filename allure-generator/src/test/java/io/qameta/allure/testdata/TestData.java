@@ -15,17 +15,17 @@
  */
 package io.qameta.allure.testdata;
 
-import com.google.common.reflect.ClassPath;
 import io.qameta.allure.DefaultLaunchResults;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.history.HistoryTrendItem;
-import org.apache.commons.text.RandomStringGenerator;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.util.concurrent.ThreadLocalRandom.current;
@@ -60,28 +61,20 @@ public final class TestData {
         return new DefaultLaunchResults(Arrays.stream(input).collect(Collectors.toSet()), null, extra);
     }
 
-    public static void unpackFile(final String name, final Path output) throws IOException {
+    public static void unpackFile(final String name, final Path output) {
         try (InputStream is = TestData.class.getClassLoader().getResourceAsStream(name)) {
-            Files.copy(is, output);
+            Files.copy(Objects.requireNonNull(is), output);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not read resource " + name, e);
         }
     }
 
-    public static void unpackDummyResources(String prefix, Path output) throws IOException {
-        ClassPath classPath = ClassPath.from(TestData.class.getClassLoader());
-        Map<String, URL> files = classPath.getResources().stream()
-                .filter(info -> info.getResourceName().startsWith(prefix))
-                .collect(Collectors.toMap(
-                        info -> info.getResourceName().substring(prefix.length()),
-                        ClassPath.ResourceInfo::url)
-                );
-        files.forEach((name, url) -> {
-            Path file = output.resolve(name);
-            try (InputStream is = url.openStream()) {
-                Files.copy(is, file);
-            } catch (IOException e) {
-                throw new RuntimeException(String.format("name: %s, url: %s", name, url), e);
-            }
-        });
+    public static List<String> allure1data() {
+        try (InputStream is = TestData.class.getClassLoader().getResourceAsStream("allure1data.txt")) {
+            return IOUtils.readLines(Objects.requireNonNull(is), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not read resource allure1data.txt", e);
+        }
     }
 
     public static List<HistoryTrendItem> randomHistoryTrendItems() {
@@ -114,8 +107,6 @@ public final class TestData {
     }
 
     public static String randomString() {
-        return new RandomStringGenerator.Builder()
-                .withinRange('a', 'z').build()
-                .generate(10);
+        return RandomStringUtils.randomAlphabetic(10);
     }
 }

@@ -24,14 +24,14 @@ import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeNode;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junitpioneer.jupiter.TempDirectory;
+import org.junitpioneer.jupiter.TempDirectory.TempDir;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,8 +41,8 @@ import java.util.Set;
 import static io.qameta.allure.category.CategoriesPlugin.BROKEN_TESTS;
 import static io.qameta.allure.category.CategoriesPlugin.CATEGORIES;
 import static io.qameta.allure.category.CategoriesPlugin.CSV_FILE_NAME;
-import static io.qameta.allure.category.CategoriesPlugin.JSON_FILE_NAME;
 import static io.qameta.allure.category.CategoriesPlugin.FAILED_TESTS;
+import static io.qameta.allure.category.CategoriesPlugin.JSON_FILE_NAME;
 import static io.qameta.allure.testdata.TestData.createSingleLaunchResults;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -51,27 +51,23 @@ import static org.assertj.core.api.Assertions.assertThat;
  * eroshenkoam
  * 20.04.17
  */
-public class CategoriesPluginTest {
+@ExtendWith(TempDirectory.class)
+class CategoriesPluginTest {
 
     private static final String CATEGORY_NAME = "Category";
-
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
 
     private Configuration configuration;
 
     private Path reportPath;
 
-    @Before
-    public void setUp() throws IOException {
-        reportPath = Paths.get(folder.newFolder("report").getAbsolutePath());
+    @BeforeEach
+    void setUp(@TempDir final Path temp) {
+        reportPath = temp.resolve("report");
         configuration = new ConfigurationBuilder().useDefault().build();
     }
 
     @Test
-    public void shouldDefaultCategoriesToResults() throws Exception {
-        final CategoriesPlugin categoriesPlugin = new CategoriesPlugin();
-
+    void shouldDefaultCategoriesToResults() {
         final TestResult first = new TestResult()
                 .setName("first")
                 .setStatus(Status.FAILED)
@@ -81,7 +77,7 @@ public class CategoriesPluginTest {
                 .setStatus(Status.BROKEN)
                 .setStatusMessage("B");
 
-        categoriesPlugin.addCategoriesForResults(createSingleLaunchResults(first, second));
+        CategoriesPlugin.addCategoriesForResults(createSingleLaunchResults(first, second));
 
         assertThat(first.getExtraBlock(CATEGORIES, new ArrayList<Category>()))
                 .hasSize(1)
@@ -96,7 +92,7 @@ public class CategoriesPluginTest {
     }
 
     @Test
-    public void shouldSetCustomCategoriesToResults() throws Exception {
+    void shouldSetCustomCategoriesToResults() {
         final String categoryName = "Some category";
         Category category = new Category()
                 .setName(categoryName)
@@ -105,8 +101,6 @@ public class CategoriesPluginTest {
 
         Map<String, Object> meta = new HashMap<>();
         meta.put("categories", singletonList(category));
-
-        final CategoriesPlugin categoriesPlugin = new CategoriesPlugin();
 
         final TestResult first = new TestResult()
                 .setName("first")
@@ -117,7 +111,7 @@ public class CategoriesPluginTest {
                 .setStatus(Status.BROKEN)
                 .setStatusMessage("B");
 
-        categoriesPlugin.addCategoriesForResults(createSingleLaunchResults(meta, first, second));
+        CategoriesPlugin.addCategoriesForResults(createSingleLaunchResults(meta, first, second));
 
         assertThat(first.getExtraBlock(CATEGORIES, new ArrayList<Category>()))
                 .hasSize(1)
@@ -131,7 +125,7 @@ public class CategoriesPluginTest {
     }
 
     @Test
-    public void shouldCreateTree() throws Exception {
+    void shouldCreateTree() {
         final TestResult first = new TestResult()
                 .setName("first")
                 .setStatus(Status.BROKEN)
@@ -177,7 +171,7 @@ public class CategoriesPluginTest {
     }
 
     @Test
-    public void shouldWork() throws IOException {
+    void shouldWork() throws IOException {
 
         Category category = new Category()
                 .setName(CATEGORY_NAME)
@@ -211,7 +205,7 @@ public class CategoriesPluginTest {
     }
 
     @Test
-    public void flakyTestsCanBeAddedToCategory() throws IOException {
+    void flakyTestsCanBeAddedToCategory() throws IOException {
         Category category = new Category()
                 .setName(CATEGORY_NAME)
                 .setMatchedStatuses(singletonList(Status.FAILED))
@@ -243,7 +237,7 @@ public class CategoriesPluginTest {
     @Issue("587")
     @Issue("572")
     @Test
-    public void shouldSortByStartTimeAsc() throws Exception {
+    void shouldSortByStartTimeAsc() {
         final Category category = new Category().setName("some");
 
         final TestResult first = new TestResult()
@@ -272,11 +266,11 @@ public class CategoriesPluginTest {
                 .containsExactly("timeless", "first", "second");
     }
 
-    private TestResult createTestResult(String message, Status status) {
+    private TestResult createTestResult(final String message, final Status status) {
         return createTestResult(message, status, false);
     }
 
-    private TestResult createTestResult(String message, Status status, boolean flaky) {
+    private TestResult createTestResult(final String message, final Status status, final boolean flaky) {
         return new TestResult()
                 .setStatus(status)
                 .setStatusMessage(message)

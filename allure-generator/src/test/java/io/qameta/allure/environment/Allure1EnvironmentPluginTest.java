@@ -21,9 +21,11 @@ import io.qameta.allure.allure1.Allure1Plugin;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.EnvironmentItem;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junitpioneer.jupiter.TempDirectory;
+import org.junitpioneer.jupiter.TempDirectory.TempDir;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,6 +34,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -42,14 +45,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Egor Borisov ehborisov@gmail.com
  */
-public class Allure1EnvironmentPluginTest {
+@ExtendWith(TempDirectory.class)
+class Allure1EnvironmentPluginTest {
 
-    @ClassRule
-    public static TemporaryFolder folder = new TemporaryFolder();
+    private Path temp;
+
+    @BeforeEach
+    void setUp(@TempDir final Path temp) {
+        this.temp = temp;
+    }
 
     @Test
-    public void shouldReadEnvironmentProperties() throws Exception {
-
+    void shouldReadEnvironmentProperties() throws Exception {
         EnvironmentItem[] expected = new EnvironmentItem[]{
                 new EnvironmentItem().setName("allure.test.run.id").setValues(singletonList("some-id")),
                 new EnvironmentItem().setName("allure.test.run.name").setValues(singletonList("some-name")),
@@ -71,7 +78,7 @@ public class Allure1EnvironmentPluginTest {
     }
 
     @Test
-    public void shouldReadEnvironmentXml() throws Exception {
+    void shouldReadEnvironmentXml() throws Exception {
         EnvironmentItem[] expected = new EnvironmentItem[]{
                 new EnvironmentItem().setName("my.properties.browser").setValues(singletonList("Firefox")),
                 new EnvironmentItem().setName("my.properties.url").setValues(singletonList("http://yandex.ru")),
@@ -93,7 +100,7 @@ public class Allure1EnvironmentPluginTest {
     }
 
     @Test
-    public void shouldStackParameterValues() throws Exception {
+    void shouldStackParameterValues() throws Exception {
         EnvironmentItem[] expected = new EnvironmentItem[]{
                 new EnvironmentItem().setName("my.properties.browser").setValues(singletonList("Firefox")),
                 new EnvironmentItem().setName("my.properties.url").setValues(singletonList("http://yandex.ru")),
@@ -128,7 +135,7 @@ public class Allure1EnvironmentPluginTest {
         final Configuration configuration = new ConfigurationBuilder().useDefault().build();
         Allure1Plugin reader = new Allure1Plugin();
         for (List<String> result : results) {
-            Path resultsDirectory = folder.newFolder().toPath();
+            Path resultsDirectory = Files.createTempDirectory(temp, "results");
             Iterator<String> iterator = result.iterator();
             while (iterator.hasNext()) {
                 String first = iterator.next();
@@ -145,7 +152,7 @@ public class Allure1EnvironmentPluginTest {
 
     private void copyFile(Path dir, String resourceName, String fileName) throws IOException {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourceName)) {
-            Files.copy(is, dir.resolve(fileName));
+            Files.copy(Objects.requireNonNull(is), dir.resolve(fileName));
         }
     }
 }

@@ -14,7 +14,11 @@ dependencies {
     implementation("com.vladsch.flexmark:flexmark")
     implementation("javax.xml.bind:jaxb-api")
     implementation("org.freemarker:freemarker")
-    testImplementation("junit:junit")
+    testImplementation("io.qameta.allure:allure-junit-platform")
     testImplementation("org.assertj:assertj-core")
+    testImplementation("org.junit-pioneer:junit-pioneer")
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.junit.jupiter:junit-jupiter-params")
     testImplementation("org.slf4j:slf4j-simple")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }

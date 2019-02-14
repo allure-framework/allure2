@@ -21,9 +21,7 @@ import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.contrib.java.lang.system.EnvironmentVariables;
+import org.junit.jupiter.api.Test;
 
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -42,18 +40,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class JiraLaunchExportPluginTest {
+class JiraLaunchExportPluginTest {
 
     private static final List<String> ISSUES = Arrays.asList("ALLURE-1", "ALLURE-2");
 
-    @Rule
-    public final EnvironmentVariables jiraEnabled = new EnvironmentVariables()
-            .set("ALLURE_JIRA_ENABLED", "true")
-            .set("ALLURE_JIRA_LAUNCH_ISSUES", String.join(",", ISSUES));
-
-
     @Test
-    public void shouldExportLaunchToJira() {
+    void shouldExportLaunchToJira() {
         final LaunchResults launchResults = mock(LaunchResults.class);
         final TestResult passed = createTestResult(Status.PASSED);
         final TestResult failed = createTestResult(Status.FAILED);
@@ -70,7 +62,11 @@ public class JiraLaunchExportPluginTest {
         when(launchResults.getExtra("executor")).thenReturn(Optional.of(executorInfo));
 
         final JiraService service = mockJiraService();
-        final JiraExportPlugin jiraLaunchExportPlugin = new JiraExportPlugin(() -> service);
+        final JiraExportPlugin jiraLaunchExportPlugin = new JiraExportPlugin(
+                true,
+                "ALLURE-1,ALLURE-2",
+                () -> service
+        );
 
         jiraLaunchExportPlugin.aggregate(
                 mock(Configuration.class),

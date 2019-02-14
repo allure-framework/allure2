@@ -15,23 +15,23 @@
  */
 package io.qameta.allure.context;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class RandomUidContextTest {
+class RandomUidContextTest {
 
     @Test
-    public void shouldCreateRandomUidContext() throws Exception {
+    void shouldCreateRandomUidContext() {
         final RandomUidContext context = new RandomUidContext();
         assertThat(context.getValue())
                 .isNotNull();
     }
 
     @Test
-    public void shouldGenerateRandomValues() throws Exception {
+    void shouldGenerateRandomValues() {
         final RandomUidContext context = new RandomUidContext();
         final Supplier<String> generator = context.getValue();
 

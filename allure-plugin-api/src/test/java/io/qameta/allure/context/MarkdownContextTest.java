@@ -15,14 +15,14 @@
  */
 package io.qameta.allure.context;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MarkdownContextTest {
+class MarkdownContextTest {
 
     @Test
-    public void shouldCreateMarkdownContext() throws Exception {
+    void shouldCreateMarkdownContext() {
         final MarkdownContext context = new MarkdownContext();
         assertThat(context.getValue())
                 .isNotNull();

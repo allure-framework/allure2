@@ -15,14 +15,14 @@
  */
 package io.qameta.allure.context;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class JacksonContextTest {
+class JacksonContextTest {
 
     @Test
-    public void shouldCreateJacksonContext() throws Exception {
+    void shouldCreateJacksonContext() {
         final JacksonContext context = new JacksonContext();
         assertThat(context.getValue())
                 .isNotNull();

@@ -20,9 +20,7 @@ import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.Link;
 import io.qameta.allure.entity.TestResult;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.contrib.java.lang.system.EnvironmentVariables;
+import org.junit.jupiter.api.Test;
 
 import java.nio.file.Paths;
 import java.util.Collections;
@@ -33,16 +31,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class IdeaLinksPluginTest {
+class IdeaLinksPluginTest {
 
     private static final String TEST_CLASS = "io.qameta.allure.AllureTest";
 
-    @Rule
-    public final EnvironmentVariables jiraEnabled = new EnvironmentVariables()
-            .set("ALLURE_IDEA_ENABLED", "true");
-
     @Test
-    public void shouldExportTestResultToJira() {
+    void shouldExportTestResultToJira() {
         final LaunchResults launchResults = mock(LaunchResults.class);
         final TestResult testResult = new TestResult()
                 .setLabels(Collections.singletonList(new Label().setName("testClass").setValue(TEST_CLASS)));
@@ -50,7 +44,7 @@ public class IdeaLinksPluginTest {
         final Set<TestResult> results = new HashSet<>(Collections.singletonList(testResult));
         when(launchResults.getAllResults()).thenReturn(results);
 
-        final IdeaLinksPlugin jiraTestResultExportPlugin = new IdeaLinksPlugin();
+        final IdeaLinksPlugin jiraTestResultExportPlugin = new IdeaLinksPlugin(true, 63342);
 
         jiraTestResultExportPlugin.aggregate(
                 mock(Configuration.class),

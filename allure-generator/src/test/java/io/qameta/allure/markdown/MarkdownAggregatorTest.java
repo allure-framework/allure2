@@ -20,32 +20,29 @@ import io.qameta.allure.DefaultLaunchResults;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.MarkdownDescriptionsPlugin;
 import io.qameta.allure.entity.TestResult;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junitpioneer.jupiter.TempDirectory;
+import org.junitpioneer.jupiter.TempDirectory.TempDir;
 
 import java.nio.file.Path;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MarkdownAggregatorTest {
-
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
+@ExtendWith(TempDirectory.class)
+class MarkdownAggregatorTest {
 
     private final Configuration configuration = new ConfigurationBuilder().useDefault().build();
 
     @Test
-    public void shouldNotFailIfEmptyResults() throws Exception {
-        final Path output = folder.newFolder().toPath();
+    void shouldNotFailIfEmptyResults(@TempDir final Path output) {
         final MarkdownDescriptionsPlugin aggregator = new MarkdownDescriptionsPlugin();
         aggregator.aggregate(configuration, Collections.emptyList(), output);
     }
 
     @Test
-    public void shouldSkipResultsWithEmptyDescription() throws Exception {
-        final Path output = folder.newFolder().toPath();
+    void shouldSkipResultsWithEmptyDescription(@TempDir final Path output) {
         final MarkdownDescriptionsPlugin aggregator = new MarkdownDescriptionsPlugin();
 
         final TestResult result = new TestResult().setName("some");
@@ -61,8 +58,7 @@ public class MarkdownAggregatorTest {
     }
 
     @Test
-    public void shouldSkipResultsWithNonEmptyDescriptionHtml() throws Exception {
-        final Path output = folder.newFolder().toPath();
+    void shouldSkipResultsWithNonEmptyDescriptionHtml(@TempDir final Path output) {
         final MarkdownDescriptionsPlugin aggregator = new MarkdownDescriptionsPlugin();
 
         final TestResult result = new TestResult()
@@ -81,8 +77,7 @@ public class MarkdownAggregatorTest {
     }
 
     @Test
-    public void shouldProcessDescription() throws Exception {
-        final Path output = folder.newFolder().toPath();
+    void shouldProcessDescription(@TempDir final Path output) {
         final MarkdownDescriptionsPlugin aggregator = new MarkdownDescriptionsPlugin();
 
         final TestResult result = new TestResult()

@@ -6,13 +6,16 @@ description = "Allure TRX Plugin"
 
 dependencies {
     compileOnly(project(":allure-plugin-api"))
-    testImplementation("io.qameta.allure:allure-java-commons")
-    testImplementation("junit:junit")
-    testImplementation("org.apache.commons:commons-lang3")
+    testImplementation("io.qameta.allure:allure-junit-platform")
     testImplementation("org.assertj:assertj-core")
+    testImplementation("org.junit-pioneer:junit-pioneer")
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.junit.jupiter:junit-jupiter-params")
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.slf4j:slf4j-simple")
+    testImplementation(project(":allure-generator"))
     testImplementation(project(":allure-plugin-api"))
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
 
 artifacts.add("allurePlugin", tasks.distZip)

@@ -25,9 +25,10 @@ import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.testdata.TestData;
 import org.assertj.core.groups.Tuple;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junitpioneer.jupiter.TempDirectory;
+import org.junitpioneer.jupiter.TempDirectory.TempDir;
 import org.mockito.ArgumentCaptor;
 
 import java.io.OutputStream;
@@ -58,15 +59,12 @@ import static org.mockito.Mockito.when;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class HistoryTrendPluginTest {
-
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
+@ExtendWith(TempDirectory.class)
+class HistoryTrendPluginTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void shouldReadOldData() throws Exception {
-        final Path resultsDirectory = folder.newFolder().toPath();
+    void shouldReadOldData(@TempDir final Path resultsDirectory) throws Exception {
         final Path history = Files.createDirectories(resultsDirectory.resolve("history"));
         final Path trend = history.resolve(JSON_FILE_NAME);
         TestData.unpackFile("history-trend-old.json", trend);
@@ -93,8 +91,7 @@ public class HistoryTrendPluginTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void shouldReadNewData() throws Exception {
-        final Path resultsDirectory = folder.newFolder().toPath();
+    void shouldReadNewData(@TempDir final Path resultsDirectory) throws Exception {
         final Path history = Files.createDirectories(resultsDirectory.resolve("history"));
         final Path trend = history.resolve(JSON_FILE_NAME);
         TestData.unpackFile("history-trend.json", trend);
@@ -132,9 +129,7 @@ public class HistoryTrendPluginTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void shouldAggregateForEmptyReport() throws Exception {
-        final Path outputDirectory = folder.newFolder().toPath();
-
+    void shouldAggregateForEmptyReport(@TempDir final Path outputDirectory) throws Exception {
         final Configuration configuration = mock(Configuration.class);
         final JacksonContext context = mock(JacksonContext.class);
         final ObjectMapper mapper = mock(ObjectMapper.class);
@@ -166,12 +161,11 @@ public class HistoryTrendPluginTest {
 
     }
 
+    @SuppressWarnings("unchecked")
     @Test
-    public void shouldGetData() throws Exception {
-        final Configuration configuration = mock(Configuration.class);
-
+    void shouldGetData() {
         final List<HistoryTrendItem> history = randomHistoryTrendItems();
-        final List<HistoryTrendItem> data = new HistoryTrendPlugin().getData(createSingleLaunchResults(
+        final List<HistoryTrendItem> data = HistoryTrendPlugin.getData(createSingleLaunchResults(
                 singletonMap(HISTORY_TREND_BLOCK_NAME, history),
                 randomTestResult().setStatus(Status.PASSED),
                 randomTestResult().setStatus(Status.FAILED),
@@ -193,9 +187,7 @@ public class HistoryTrendPluginTest {
     }
 
     @Test
-    public void shouldFindLatestExecutor() throws Exception {
-        final Configuration configuration = mock(Configuration.class);
-
+    void shouldFindLatestExecutor() {
         final Map<String, Object> extra1 = new HashMap<>();
         final List<HistoryTrendItem> history1 = randomHistoryTrendItems();
         extra1.put(HISTORY_TREND_BLOCK_NAME, history1);
@@ -230,9 +222,7 @@ public class HistoryTrendPluginTest {
     }
 
     @Test
-    public void shouldProcessNullBuildOrder() throws Exception {
-        final Configuration configuration = mock(Configuration.class);
-
+    void shouldProcessNullBuildOrder() {
         final List<HistoryTrendItem> history = randomHistoryTrendItems();
         final Map<String, Object> extra = new HashMap<>();
         extra.put(HISTORY_TREND_BLOCK_NAME, history);
@@ -250,7 +240,7 @@ public class HistoryTrendPluginTest {
                         randomTestResult().setStatus(Status.FAILED)
                 )
         );
-        final List<HistoryTrendItem> data = new HistoryTrendPlugin().getData(launchResults);
+        final List<HistoryTrendItem> data = HistoryTrendPlugin.getData(launchResults);
 
         assertThat(data)
                 .hasSize(1 + 2 * history.size());

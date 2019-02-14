@@ -48,23 +48,33 @@ public class JiraExportPlugin implements Aggregator {
     private static final String ALLURE_JIRA_LAUNCH_ISSUES = "ALLURE_JIRA_LAUNCH_ISSUES";
 
     private final Supplier<JiraService> jiraServiceSupplier;
+    private final boolean enabled;
+    private final String issues;
 
     public JiraExportPlugin() {
-        this(() -> new JiraServiceBuilder().defaults().build());
+        this(
+                getProperty(ALLURE_JIRA_ENABLED).map(Boolean::parseBoolean).orElse(false),
+                getProperty(ALLURE_JIRA_LAUNCH_ISSUES).orElse(""),
+                () -> new JiraServiceBuilder().defaults().build()
+        );
     }
 
-    public JiraExportPlugin(final Supplier<JiraService> jiraServiceSupplier) {
+    public JiraExportPlugin(final boolean enabled,
+                            final String issues,
+                            final Supplier<JiraService> jiraServiceSupplier) {
         this.jiraServiceSupplier = jiraServiceSupplier;
+        this.enabled = enabled;
+        this.issues = issues;
     }
 
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
                           final Path outputDirectory) {
-        if (getProperty(ALLURE_JIRA_ENABLED).map(Boolean::parseBoolean).orElse(false)) {
+        if (enabled) {
             final JiraService jiraService = jiraServiceSupplier.get();
 
-            final List<String> issues = splitByComma(getProperty(ALLURE_JIRA_LAUNCH_ISSUES).orElse(""));
+            final List<String> issues = splitByComma(this.issues);
             final ExecutorInfo executor = getExecutor(launchesResults);
             final Statistic statistic = getStatistic(launchesResults);
 

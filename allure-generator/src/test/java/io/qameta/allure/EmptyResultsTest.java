@@ -16,26 +16,24 @@
 package io.qameta.allure;
 
 import io.qameta.allure.core.Configuration;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junitpioneer.jupiter.TempDirectory;
+import org.junitpioneer.jupiter.TempDirectory.TempDir;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
  * @author charlie (Dmitry Baev).
  */
-@Ignore
-public class EmptyResultsTest {
-
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
+@ExtendWith(TempDirectory.class)
+class EmptyResultsTest {
 
     @Test
-    public void shouldAllowEmptyResultsDirectory() throws Exception {
-        final Path resultsDirectory = folder.newFolder().toPath();
-        final Path outputDirectory = folder.newFolder().toPath();
+    void shouldAllowEmptyResultsDirectory(@TempDir final Path temp) throws Exception {
+        final Path resultsDirectory = Files.createDirectories(temp.resolve("results"));
+        final Path outputDirectory = Files.createDirectories(temp.resolve("report"));
         final Configuration configuration = new ConfigurationBuilder().useDefault().build();
         final ReportGenerator generator = new ReportGenerator(configuration);
 
@@ -43,9 +41,9 @@ public class EmptyResultsTest {
     }
 
     @Test
-    public void shouldAllowNonExistsResultsDirectory() throws Exception {
-        final Path resultsDirectory = folder.newFolder().toPath().resolve("some-dir");
-        final Path outputDirectory = folder.newFolder().toPath();
+    void shouldAllowNonExistsResultsDirectory(@TempDir final Path temp) throws Exception {
+        final Path resultsDirectory = temp.resolve("results");
+        final Path outputDirectory = Files.createDirectories(temp.resolve("report"));
         final Configuration configuration = new ConfigurationBuilder().useDefault().build();
         final ReportGenerator generator = new ReportGenerator(configuration);
 
@@ -53,9 +51,9 @@ public class EmptyResultsTest {
     }
 
     @Test
-    public void shouldAllowRegularFileAsResultsDirectory() throws Exception {
-        final Path resultsDirectory = folder.newFile().toPath();
-        final Path outputDirectory = folder.newFolder().toPath();
+    void shouldAllowRegularFileAsResultsDirectory(@TempDir final Path temp) throws Exception {
+        final Path resultsDirectory = Files.createTempFile(temp, "a", ".txt");
+        final Path outputDirectory = Files.createDirectories(temp.resolve("report"));
         final Configuration configuration = new ConfigurationBuilder().useDefault().build();
         final ReportGenerator generator = new ReportGenerator(configuration);
 
