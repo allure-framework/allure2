@@ -1,12 +1,30 @@
+/*
+ *  Copyright 2019 Qameta Software OÜ
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package io.qameta.allure;
 
 import io.qameta.allure.option.ConfigOptions;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junitpioneer.jupiter.TempDirectory;
+import org.junitpioneer.jupiter.TempDirectory.TempDir;
 import org.mockito.ArgumentCaptor;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
@@ -31,29 +49,27 @@ import static org.mockito.Mockito.when;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class CommandLineTest {
+@ExtendWith(TempDirectory.class)
+class CommandLineTest {
 
     private Commands commands;
     private CommandLine commandLine;
 
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
-
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() {
         this.commands = mock(Commands.class);
         this.commandLine = new CommandLine(commands);
     }
 
     @Test
-    public void shouldParseEmptyArguments() throws Exception {
+    void shouldParseEmptyArguments() {
         final Optional<ExitCode> parse = commandLine.parse();
         assertThat(parse)
                 .hasValue(ExitCode.ARGUMENT_PARSING_ERROR);
     }
 
     @Test
-    public void shouldParseVerboseFlag() throws Exception {
+    void shouldParseVerboseFlag() {
         final Optional<ExitCode> parse = commandLine
                 .parse("-v", "--help");
 
@@ -71,7 +87,7 @@ public class CommandLineTest {
     }
 
     @Test
-    public void shouldParseQuietFlag() throws Exception {
+    void shouldParseQuietFlag() {
         final Optional<ExitCode> parse = commandLine
                 .parse("-q", "--help");
 
@@ -89,17 +105,17 @@ public class CommandLineTest {
     }
 
     @Test
-    public void shouldAllowResultsDirectoriesThatNotExists() throws Exception {
+    void shouldAllowResultsDirectoriesThatNotExists() {
         final Optional<ExitCode> exitCode = commandLine.parse(GENERATE_COMMAND, randomString(), randomString());
         assertThat(exitCode)
                 .isEmpty();
     }
 
     @Test
-    public void shouldRunGenerate() throws Exception {
-        final Path report = folder.newFolder().toPath();
-        final Path firstResult = folder.newFolder().toPath();
-        final Path secondResult = folder.newFolder().toPath();
+    void shouldRunGenerate(@TempDir final Path temp) throws IOException {
+        final Path report = Files.createDirectories(temp.resolve("report"));
+        final Path firstResult = Files.createDirectories(temp.resolve("first"));
+        final Path secondResult = Files.createDirectories(temp.resolve("second"));
         final List<Path> results = Arrays.asList(firstResult, secondResult);
 
         when(commands.generate(eq(report), eq(results), eq(false), any(ConfigOptions.class)))
@@ -119,9 +135,8 @@ public class CommandLineTest {
     }
 
     @Test
-    public void shouldRunOpen() throws Exception {
+    void shouldRunOpen(@TempDir final Path report) {
         final int port = randomPort();
-        final Path report = folder.newFolder().toPath();
         when(commands.open(report, null, port))
                 .thenReturn(NO_ERROR);
 
@@ -138,9 +153,9 @@ public class CommandLineTest {
     }
 
     @Test
-    public void shouldNotLetToSpecifyFewReportDirectories() throws Exception {
-        final Path first = folder.newFolder().toPath();
-        final Path second = folder.newFolder().toPath();
+    void shouldNotLetToSpecifyFewReportDirectories(@TempDir final Path temp) throws IOException {
+        final Path first = Files.createDirectories(temp.resolve("first"));
+        final Path second = Files.createDirectories(temp.resolve("second"));
 
         final Optional<ExitCode> exitCode = commandLine.parse(
                 OPEN_COMMAND, first.toString(), second.toString()
@@ -151,7 +166,7 @@ public class CommandLineTest {
     }
 
     @Test
-    public void shouldRunHelpForCommand() throws Exception {
+    void shouldRunHelpForCommand() {
         final Optional<ExitCode> exitCode = commandLine.parse(
                 "--help", OPEN_COMMAND
         );
@@ -164,7 +179,7 @@ public class CommandLineTest {
     }
 
     @Test
-    public void shouldPrintVersion() throws Exception {
+    void shouldPrintVersion() {
         final Optional<ExitCode> exitCode = commandLine.parse(
                 "--version"
         );
@@ -177,12 +192,12 @@ public class CommandLineTest {
     }
 
     @Test
-    public void shouldParseServeCommand() throws Exception {
+    void shouldParseServeCommand(@TempDir final Path temp) throws IOException {
         final int port = randomPort();
         final String host = randomString();
         final String profile = randomString();
-        final Path first = folder.newFolder().toPath();
-        final Path second = folder.newFolder().toPath();
+        final Path first = Files.createDirectories(temp.resolve("first"));
+        final Path second = Files.createDirectories(temp.resolve("second"));
         final Optional<ExitCode> code = commandLine.parse(
                 SERVE_COMMAND,
                 "--port", String.valueOf(port),
@@ -208,7 +223,7 @@ public class CommandLineTest {
     }
 
     @Test
-    public void shouldValidatePortValue() throws Exception {
+    void shouldValidatePortValue() {
         final Optional<ExitCode> exitCode = commandLine.parse(SERVE_COMMAND, "--port", "213123");
 
         assertThat(exitCode)
@@ -217,7 +232,7 @@ public class CommandLineTest {
     }
 
     @Test
-    public void shouldPrintPluginList() throws Exception {
+    void shouldPrintPluginList() {
         final Optional<ExitCode> exitCode = commandLine.parse(PLUGIN_COMMAND);
         assertThat(exitCode)
                 .isEmpty();
@@ -229,7 +244,7 @@ public class CommandLineTest {
     }
 
     @Test
-    public void shouldHandleVerboseOptionsWithoutArgs() {
+    void shouldHandleVerboseOptionsWithoutArgs() {
         final String verboseOption = "-q";
         final Optional<ExitCode> exitCode = commandLine.parse(verboseOption);
         assertThat(exitCode)

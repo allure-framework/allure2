@@ -1,3 +1,18 @@
+/*
+ *  Copyright 2019 Qameta Software OÜ
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package io.qameta.allure.trx;
 
 import io.qameta.allure.Issue;
@@ -7,10 +22,11 @@ import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junitpioneer.jupiter.TempDirectory;
+import org.junitpioneer.jupiter.TempDirectory.TempDir;
 import org.mockito.ArgumentCaptor;
 
 import java.io.IOException;
@@ -19,6 +35,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,24 +48,23 @@ import static org.mockito.Mockito.when;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class TrxPluginTest {
-
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
+@ExtendWith(TempDirectory.class)
+class TrxPluginTest {
 
     private Configuration configuration;
-
     private ResultsVisitor visitor;
+    private Path resultsDirectory;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp(@TempDir final Path resultsDirectory) {
         configuration = mock(Configuration.class);
         when(configuration.requireContext(RandomUidContext.class)).thenReturn(new RandomUidContext());
         visitor = mock(ResultsVisitor.class);
+        this.resultsDirectory = resultsDirectory;
     }
 
     @Test
-    public void shouldParseResults() throws Exception {
+    void shouldParseResults() throws Exception {
         process(
                 "trxdata/sample.trx",
                 "sample.trx"
@@ -76,7 +92,7 @@ public class TrxPluginTest {
 
     @Issue("596")
     @Test
-    public void shouldParseErrorInfo() throws Exception {
+    void shouldParseErrorInfo() throws Exception {
         process(
                 "trxdata/gh-596.trx",
                 "sample.trx"
@@ -92,7 +108,7 @@ public class TrxPluginTest {
 
     @Issue("749")
     @Test
-    public void shouldParseClassNameAsSuite() throws Exception {
+    void shouldParseClassNameAsSuite() throws Exception {
         process(
                 "trxdata/gh-749.trx",
                 "sample.trx"
@@ -106,9 +122,9 @@ public class TrxPluginTest {
                 .extracting(Optional::get)
                 .containsOnly("TestClass");
     }
-	
+
     @Test
-    public void shouldParseStdOutOnFail() throws Exception {
+    void shouldParseStdOutOnFail() throws Exception {
         process(
                 "trxdata/sample.trx",
                 "sample.trx"
@@ -126,7 +142,6 @@ public class TrxPluginTest {
     }
 
     private void process(String... strings) throws IOException {
-        Path resultsDirectory = folder.newFolder().toPath();
         Iterator<String> iterator = Arrays.asList(strings).iterator();
         while (iterator.hasNext()) {
             String first = iterator.next();
@@ -139,7 +154,7 @@ public class TrxPluginTest {
 
     private void copyFile(Path dir, String resourceName, String fileName) throws IOException {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourceName)) {
-            Files.copy(is, dir.resolve(fileName));
+            Files.copy(Objects.requireNonNull(is), dir.resolve(fileName));
         }
     }
 }

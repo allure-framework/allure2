@@ -1,3 +1,18 @@
+/*
+ *  Copyright 2019 Qameta Software OÜ
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package io.qameta.allure.jira;
 
 import io.qameta.allure.Aggregator;
@@ -7,7 +22,6 @@ import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.Link;
 import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.TestResult;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,23 +48,33 @@ public class JiraExportPlugin implements Aggregator {
     private static final String ALLURE_JIRA_LAUNCH_ISSUES = "ALLURE_JIRA_LAUNCH_ISSUES";
 
     private final Supplier<JiraService> jiraServiceSupplier;
+    private final boolean enabled;
+    private final String issues;
 
     public JiraExportPlugin() {
-        this(() -> new JiraServiceBuilder().defaults().build());
+        this(
+                getProperty(ALLURE_JIRA_ENABLED).map(Boolean::parseBoolean).orElse(false),
+                getProperty(ALLURE_JIRA_LAUNCH_ISSUES).orElse(""),
+                () -> new JiraServiceBuilder().defaults().build()
+        );
     }
 
-    public JiraExportPlugin(final Supplier<JiraService> jiraServiceSupplier) {
+    public JiraExportPlugin(final boolean enabled,
+                            final String issues,
+                            final Supplier<JiraService> jiraServiceSupplier) {
         this.jiraServiceSupplier = jiraServiceSupplier;
+        this.enabled = enabled;
+        this.issues = issues;
     }
 
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
                           final Path outputDirectory) {
-        if (getProperty(ALLURE_JIRA_ENABLED).map(Boolean::parseBoolean).orElse(false)) {
+        if (enabled) {
             final JiraService jiraService = jiraServiceSupplier.get();
 
-            final List<String> issues = splitByComma(getProperty(ALLURE_JIRA_LAUNCH_ISSUES).orElse(StringUtils.EMPTY));
+            final List<String> issues = splitByComma(this.issues);
             final ExecutorInfo executor = getExecutor(launchesResults);
             final Statistic statistic = getStatistic(launchesResults);
 

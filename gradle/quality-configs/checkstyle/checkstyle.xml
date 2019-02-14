@@ -149,7 +149,7 @@
         <!-- Metrics (http://checkstyle.sourceforge.net/config_metrics.html) -->
         <module name="BooleanExpressionComplexity"/>
         <module name="ClassDataAbstractionCoupling"/>
-        <module name="ClassFanOutComplexity"/>
+        <!--<module name="ClassFanOutComplexity"/>-->
         <module name="CyclomaticComplexity"/>
         <module name="JavaNCSS"/>
         <module name="NPathComplexity"/>

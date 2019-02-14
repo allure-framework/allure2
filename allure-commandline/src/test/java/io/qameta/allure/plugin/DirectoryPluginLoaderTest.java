@@ -1,36 +1,51 @@
+/*
+ *  Copyright 2019 Qameta Software OÜ
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package io.qameta.allure.plugin;
 
 import io.qameta.allure.Aggregator;
 import io.qameta.allure.Extension;
 import io.qameta.allure.core.Plugin;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junitpioneer.jupiter.TempDirectory;
+import org.junitpioneer.jupiter.TempDirectory.TempDir;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DirectoryPluginLoaderTest {
-
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
+@ExtendWith(TempDirectory.class)
+class DirectoryPluginLoaderTest {
 
     private DefaultPluginLoader pluginLoader;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() {
         pluginLoader = new DefaultPluginLoader();
     }
 
     @Test
-    public void shouldNotFailWhenPluginDirectoryNotExists() throws Exception {
-        final Path pluginFolder = folder.newFolder().toPath().resolve("plugin");
+    void shouldNotFailWhenPluginDirectoryNotExists(@TempDir final Path temp) {
+        final Path pluginFolder = temp.resolve("plugin");
         final Optional<Plugin> plugin = pluginLoader.loadPlugin(getClass().getClassLoader(), pluginFolder);
 
         assertThat(plugin)
@@ -38,8 +53,7 @@ public class DirectoryPluginLoaderTest {
     }
 
     @Test
-    public void shouldLoadEmptyPlugin() throws Exception {
-        final Path pluginDirectory = folder.newFolder().toPath();
+    void shouldLoadEmptyPlugin(@TempDir final Path pluginDirectory) {
         final Optional<Plugin> plugin = pluginLoader.loadPlugin(getClass().getClassLoader(), pluginDirectory);
 
         assertThat(plugin)
@@ -47,8 +61,7 @@ public class DirectoryPluginLoaderTest {
     }
 
     @Test
-    public void shouldLoadPluginExtensions() throws Exception {
-        final Path pluginFolder = folder.newFolder().toPath();
+    void shouldLoadPluginExtensions(@TempDir final Path pluginFolder) throws Exception {
         add(pluginFolder, "plugin.jar", "plugin.jar");
         add(pluginFolder, "dummy-plugin.yml", "allure-plugin.yml");
 
@@ -79,8 +92,8 @@ public class DirectoryPluginLoaderTest {
     }
 
     @Test
-    public void shouldLoadStaticOnlyPlugin() throws Exception {
-        final Path pluginFolder = folder.newFolder().toPath();
+    void shouldLoadStaticOnlyPlugin(@TempDir final Path temp) throws Exception {
+        final Path pluginFolder = Files.createDirectories(temp.resolve("plugins"));
         add(pluginFolder, "static-file.txt", "static/some-file");
         add(pluginFolder, "dummy-plugin2.yml", "allure-plugin.yml");
 
@@ -98,7 +111,7 @@ public class DirectoryPluginLoaderTest {
                 .isNotNull()
                 .isEmpty();
 
-        final Path unpack = folder.newFolder().toPath();
+        final Path unpack = Files.createDirectories(temp.resolve("unpack"));
         plugin.unpackReportStatic(unpack);
 
         assertThat(unpack.resolve("some-file"))
@@ -107,8 +120,7 @@ public class DirectoryPluginLoaderTest {
     }
 
     @Test
-    public void shouldLoadJarsInLibDirectory() throws Exception {
-        final Path pluginFolder = folder.newFolder().toPath();
+    void shouldLoadJarsInLibDirectory(@TempDir final Path pluginFolder) throws Exception {
         add(pluginFolder, "plugin.jar", "lib/plugin.jar");
         add(pluginFolder, "dummy-plugin.yml", "allure-plugin.yml");
 
@@ -138,8 +150,7 @@ public class DirectoryPluginLoaderTest {
     }
 
     @Test
-    public void shouldProcessInvalidConfigFile() throws Exception {
-        final Path pluginFolder = folder.newFolder().toPath();
+    void shouldProcessInvalidConfigFile(@TempDir final Path pluginFolder) throws Exception {
         add(pluginFolder, "static-file.txt", "allure-plugin.yml");
 
         final Optional<Plugin> loaded = pluginLoader.loadPlugin(getClass().getClassLoader(), pluginFolder);
@@ -152,7 +163,7 @@ public class DirectoryPluginLoaderTest {
         final Path destFile = pluginDirectory.resolve(dest);
         Files.createDirectories(destFile.getParent());
         try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourceName)) {
-            Files.copy(is, destFile);
+            Files.copy(Objects.requireNonNull(is), destFile);
         }
     }
 }

@@ -1,42 +1,60 @@
+/*
+ *  Copyright 2019 Qameta Software OÜ
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package io.qameta.allure;
 
 import io.qameta.allure.core.Configuration;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junitpioneer.jupiter.TempDirectory;
+import org.junitpioneer.jupiter.TempDirectory.TempDir;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static io.qameta.allure.testdata.TestData.unpackDummyResources;
+import static io.qameta.allure.testdata.TestData.allure1data;
+import static io.qameta.allure.testdata.TestData.unpackFile;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ReportGeneratorTest {
-
-    @ClassRule
-    public static TemporaryFolder folder = new TemporaryFolder();
+@ExtendWith(TempDirectory.class)
+class ReportGeneratorTest {
 
     private static Path output;
 
-    @BeforeClass
-    public static void setUp() throws Exception {
+    @BeforeAll
+    static void setUp(@TempDir final Path temp) throws Exception {
         final Configuration configuration = new ConfigurationBuilder().useDefault().build();
         final ReportGenerator generator = new ReportGenerator(configuration);
-        output = folder.newFolder().toPath();
-        final Path resultsDirectory = folder.newFolder().toPath();
-        unpackDummyResources("allure1data/", resultsDirectory);
+        output = temp.resolve("report");
+        final Path resultsDirectory = Files.createDirectories(temp.resolve("results"));
+        allure1data().forEach(resource -> unpackFile(
+                "allure1data/" + resource,
+                resultsDirectory.resolve(resource)
+        ));
         generator.generate(output, resultsDirectory);
     }
 
     @Test
-    public void shouldGenerateIndexHtml() throws Exception {
+    void shouldGenerateIndexHtml() {
         assertThat(output.resolve("index.html"))
                 .isRegularFile();
     }
 
     @Test
-    public void shouldWriteReportStatic() throws Exception {
+    void shouldWriteReportStatic() {
         assertThat(output.resolve("app.js"))
                 .isRegularFile();
         assertThat(output.resolve("styles.css"))
@@ -44,103 +62,103 @@ public class ReportGeneratorTest {
     }
 
     @Test
-    public void shouldGenerateCategoriesJson() throws Exception {
+    void shouldGenerateCategoriesJson() {
         assertThat(output.resolve("data/categories.json"))
                 .isRegularFile();
     }
 
     @Test
-    public void shouldGenerateXunitJson() throws Exception {
+    void shouldGenerateXunitJson() {
         assertThat(output.resolve("data/suites.json"))
                 .isRegularFile();
     }
 
     @Test
-    public void shouldGenerateTimelineJson() throws Exception {
+    void shouldGenerateTimelineJson() {
         assertThat(output.resolve("data/timeline.json"))
                 .isRegularFile();
     }
 
     @Test
-    public void shouldGenerateWidgetCategoriesJson() throws Exception {
+    void shouldGenerateWidgetCategoriesJson() {
         assertThat(output.resolve("widgets/categories.json"))
                 .isRegularFile();
     }
 
     @Test
-    public void shouldGenerateWidgetCategoriesTrendJson() throws Exception {
+    void shouldGenerateWidgetCategoriesTrendJson() {
         assertThat(output.resolve("widgets/categories-trend.json"))
                 .isRegularFile();
     }
 
     @Test
-    public void shouldGenerateWidgetDurationJson() throws Exception {
+    void shouldGenerateWidgetDurationJson() {
         assertThat(output.resolve("widgets/duration.json"))
                 .isRegularFile();
     }
 
     @Test
-    public void shouldGenerateWidgetDurationTrendJson() throws Exception {
+    void shouldGenerateWidgetDurationTrendJson() {
         assertThat(output.resolve("widgets/duration-trend.json"))
                 .isRegularFile();
     }
 
     @Test
-    public void shouldGenerateWidgetRetryTrendJson() throws Exception {
+    void shouldGenerateWidgetRetryTrendJson() {
         assertThat(output.resolve("widgets/retry-trend.json"))
                 .isRegularFile();
     }
 
     @Test
-    public void shouldGenerateWidgetEnvironmentJson() throws Exception {
+    void shouldGenerateWidgetEnvironmentJson() {
         assertThat(output.resolve("widgets/environment.json"))
                 .isRegularFile();
     }
 
     @Test
-    public void shouldGenerateWidgetExecutorsJson() throws Exception {
+    void shouldGenerateWidgetExecutorsJson() {
         assertThat(output.resolve("widgets/executors.json"))
                 .isRegularFile();
     }
 
     @Test
-    public void shouldGenerateWidgetHistoryTrendJson() throws Exception {
+    void shouldGenerateWidgetHistoryTrendJson() {
         assertThat(output.resolve("widgets/history-trend.json"))
                 .isRegularFile();
     }
 
     @Test
-    public void shouldGenerateWidgetLaunchJson() throws Exception {
+    void shouldGenerateWidgetLaunchJson() {
         assertThat(output.resolve("widgets/launch.json"))
                 .isRegularFile();
     }
 
     @Test
-    public void shouldGenerateWidgetSeverityJson() throws Exception {
+    void shouldGenerateWidgetSeverityJson() {
         assertThat(output.resolve("widgets/severity.json"))
                 .isRegularFile();
     }
 
     @Test
-    public void shouldGenerateWidgetStatusJson() throws Exception {
+    void shouldGenerateWidgetStatusJson() {
         assertThat(output.resolve("widgets/status-chart.json"))
                 .isRegularFile();
     }
 
     @Test
-    public void shouldGenerateWidgetSuitesJson() throws Exception {
+    void shouldGenerateWidgetSuitesJson() {
         assertThat(output.resolve("widgets/suites.json"))
                 .isRegularFile();
     }
 
     @Test
-    public void shouldGenerateWidgetSummaryJson() throws Exception {
+    void shouldGenerateWidgetSummaryJson() {
         assertThat(output.resolve("widgets/summary.json"))
                 .isRegularFile();
     }
 
     @Test
-    public void shouldGenerateAttachments() throws Exception {
+    void shouldGenerateAttachments() throws Exception {
         final Path attachmentsFolder = output.resolve("data/attachments");
         assertThat(attachmentsFolder)
                 .isDirectory();
@@ -149,7 +167,7 @@ public class ReportGeneratorTest {
     }
 
     @Test
-    public void shouldGenerateTestCases() throws Exception {
+    void shouldGenerateTestCases() throws Exception {
         final Path testCasesFolder = output.resolve("data/test-cases");
         assertThat(testCasesFolder)
                 .isDirectory();
@@ -158,16 +176,14 @@ public class ReportGeneratorTest {
     }
 
     @Test
-    public void shouldGenerateHistory() throws Exception {
+    void shouldGenerateHistory() {
         assertThat(output.resolve("history/history.json"))
                 .isRegularFile();
     }
 
     @Test
-    public void shouldGenerateMail() throws Exception {
+    void shouldGenerateMail() {
         assertThat(output.resolve("export/mail.html"))
                 .isRegularFile();
     }
-
-
 }

@@ -1,3 +1,18 @@
+/*
+ *  Copyright 2019 Qameta Software OÜ
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package io.qameta.allure.packages;
 
 import io.qameta.allure.DefaultLaunchResults;
@@ -6,7 +21,7 @@ import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import io.qameta.allure.tree.Tree;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,10 +37,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class PackagesPluginTest {
+class PackagesPluginTest {
 
     @Test
-    public void shouldCreateTree() throws Exception {
+    void shouldCreateTree() {
         final Set<TestResult> testResults = new HashSet<>();
 
         final TestResult first = new TestResult()
@@ -64,7 +79,7 @@ public class PackagesPluginTest {
     }
 
     @Test
-    public void shouldCollapseNodesWithOneChild() throws Exception {
+    void shouldCollapseNodesWithOneChild() {
         final Set<TestResult> testResults = new HashSet<>();
 
         final TestResult first = new TestResult()
@@ -104,7 +119,7 @@ public class PackagesPluginTest {
 
     @Issue("531")
     @Test
-    public void shouldProcessTestsInNestedPackages() throws Exception {
+    void shouldProcessTestsInNestedPackages() {
         final Set<TestResult> testResults = new HashSet<>();
         final TestResult first = new TestResult()
                 .setName("first")
@@ -146,7 +161,7 @@ public class PackagesPluginTest {
     @Issue("587")
     @Issue("572")
     @Test
-    public void shouldSortByStartTimeAsc() throws Exception {
+    void shouldSortByStartTimeAsc() {
         final TestResult first = new TestResult()
                 .setName("first")
                 .setTime(new Time().setStart(10L));

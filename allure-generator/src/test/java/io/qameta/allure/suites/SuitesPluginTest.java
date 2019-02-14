@@ -1,3 +1,18 @@
+/*
+ *  Copyright 2019 Qameta Software OÜ
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package io.qameta.allure.suites;
 
 import io.qameta.allure.ConfigurationBuilder;
@@ -9,42 +24,39 @@ import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeNode;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junitpioneer.jupiter.TempDirectory;
+import org.junitpioneer.jupiter.TempDirectory.TempDir;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
-import static io.qameta.allure.testdata.TestData.createSingleLaunchResults;
 import static io.qameta.allure.suites.SuitesPlugin.CSV_FILE_NAME;
 import static io.qameta.allure.suites.SuitesPlugin.JSON_FILE_NAME;
+import static io.qameta.allure.testdata.TestData.createSingleLaunchResults;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author charlie (Dmitry Baev).
  */
-public class SuitesPluginTest {
-
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
+@ExtendWith(TempDirectory.class)
+class SuitesPluginTest {
 
     private Configuration configuration;
-
     private Path reportPath;
 
-    @Before
-    public void setUp() throws IOException {
-        reportPath = Paths.get(folder.newFolder("report").getAbsolutePath());
+    @BeforeEach
+    void setUp(@TempDir final Path temp) {
+        reportPath = temp.resolve("report");
         configuration = new ConfigurationBuilder().useDefault().build();
     }
 
     @Test
-    public void shouldCreateTree() throws Exception {
+    void shouldCreateTree() {
 
         final Tree<TestResult> tree = SuitesPlugin.getData(getSimpleLaunchResults());
 
@@ -57,7 +69,7 @@ public class SuitesPluginTest {
     @Issue("587")
     @Issue("572")
     @Test
-    public void shouldSortByStartTimeAsc() throws Exception {
+    void shouldSortByStartTimeAsc() {
         final TestResult first = new TestResult()
                 .setName("first")
                 .setTime(new Time().setStart(10L));
@@ -77,7 +89,7 @@ public class SuitesPluginTest {
     }
 
     @Test
-    public void shouldCreateCsvFile() throws IOException {
+    void shouldCreateCsvFile() throws IOException {
 
         final SuitesPlugin plugin = new SuitesPlugin();
 

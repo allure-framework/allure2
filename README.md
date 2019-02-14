@@ -14,21 +14,21 @@
 [CODE_OF_CONDUCT.md]: CODE_OF_CONDUCT.md
 [docs]: https://docs.qameta.io/allure/
 
-# Allure Report [![build-badge][]][build] [![release-badge][]][release] [![bintray-badge][]][bintray] [![Backers on Open Collective](https://opencollective.com/allure-report/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/allure-report/sponsors/badge.svg)](#sponsors) 
+# Allure Report [![build-badge][]][build] [![release-badge][]][release] [![bintray-badge][]][bintray] [![Backers on Open Collective](https://opencollective.com/allure-report/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/allure-report/sponsors/badge.svg)](#sponsors)
 
-Allure Framework is a flexible lightweight multi-language test report tool that not only 
-shows a very concise representation of what have been tested in a neat web report form, 
-but allows everyone participating in the development process to extract maximum of useful 
+Allure Framework is a flexible lightweight multi-language test report tool that not only
+shows a very concise representation of what have been tested in a neat web report form,
+but allows everyone participating in the development process to extract maximum of useful
 information from everyday execution of tests.
 
 ![Allure Report](.github/readme-img.png)
 
-## Download 
+## Download
 
 You can use one of the following ways to get Allure:
 
-* Grab it from [bintray][bintray]. 
-* Using Homebrew: 
+* Grab it from [bintray][bintray].
+* Using Homebrew:
 
     ```bash
     $ brew tap qameta/allure
@@ -41,16 +41,16 @@ To install Allure, download and install Scoop and then execute in the Powershell
     ```bash
     scoop install allure
     ```
-    
 
-## Documentation 
+
+## Documentation
 
 All the documentation is available [on our site][docs].
 
 ## Staying in Touch
 
 Follow [@QametaSoftware][twitter] and its [team members][twitter-team] on Twitter. In-depth articles can
-be found at [Qameta Blog][blog]. Also feel free to join our 
+be found at [Qameta Blog][blog]. Also feel free to join our
 [Gitter room][gitter] ([ru][gitter-ru]).
 
 ## Code of Conduct

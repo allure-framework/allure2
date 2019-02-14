@@ -1,3 +1,18 @@
+/*
+ *  Copyright 2019 Qameta Software OÜ
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package io.qameta.allure.allure2;
 
 import io.qameta.allure.ConfigurationBuilder;
@@ -10,9 +25,10 @@ import io.qameta.allure.entity.Parameter;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junitpioneer.jupiter.TempDirectory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +36,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -29,13 +46,18 @@ import static io.qameta.allure.entity.Status.UNKNOWN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
-public class Allure2PluginTest {
+@ExtendWith(TempDirectory.class)
+class Allure2PluginTest {
 
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
+    private Path directory;
+
+    @BeforeEach
+    void setUp(@TempDirectory.TempDir final Path directory) {
+        this.directory = directory;
+    }
 
     @Test
-    public void shouldReadBeforesFromGroups() throws Exception {
+    void shouldReadBeforesFromGroups() throws Exception {
         Set<TestResult> testResults = process(
                 "allure2/simple-testcase.json", generateTestResultName(),
                 "allure2/first-testgroup.json", generateTestResultContainerName(),
@@ -51,7 +73,7 @@ public class Allure2PluginTest {
     }
 
     @Test
-    public void shouldReadAftersFromGroups() throws Exception {
+    void shouldReadAftersFromGroups() throws Exception {
         Set<TestResult> testResults = process(
                 "allure2/simple-testcase.json", generateTestResultName(),
                 "allure2/first-testgroup.json", generateTestResultContainerName(),
@@ -66,8 +88,9 @@ public class Allure2PluginTest {
                 .containsExactlyInAnyOrder("unloadTestConfiguration", "cleanUpContext");
     }
 
+    @SuppressWarnings("unchecked")
     @Test
-    public void shouldExcludeDuplicatedParams() throws Exception {
+    void shouldExcludeDuplicatedParams() throws Exception {
         Set<TestResult> testResults = process(
                 "allure2/duplicated-params.json", generateTestResultName()
         ).getResults();
@@ -84,7 +107,7 @@ public class Allure2PluginTest {
     }
 
     @Test
-    public void shouldPickUpAttachmentsForTestCase() throws IOException {
+    void shouldPickUpAttachmentsForTestCase() throws IOException {
         Set<TestResult> testResults = process(
                 "allure2/simple-testcase.json", generateTestResultName(),
                 "allure2/first-testgroup.json", generateTestResultContainerName(),
@@ -107,7 +130,7 @@ public class Allure2PluginTest {
     }
 
     @Test
-    public void shouldPickUpAttachmentsForAfters() throws IOException {
+    void shouldPickUpAttachmentsForAfters() throws IOException {
         Set<TestResult> testResults = process(
                 "allure2/simple-testcase.json", generateTestResultName(),
                 "allure2/first-testgroup.json", generateTestResultContainerName(),
@@ -130,7 +153,7 @@ public class Allure2PluginTest {
     }
 
     @Test
-    public void shouldDoNotOverrideAttachmentsForGroups() throws IOException {
+    void shouldDoNotOverrideAttachmentsForGroups() throws IOException {
         Set<TestResult> testResults = process(
                 "allure2/other-testcase.json", generateTestResultName(),
                 "allure2/other-testcase.json", generateTestResultName(),
@@ -152,7 +175,7 @@ public class Allure2PluginTest {
     }
 
     @Test
-    public void shouldProcessEmptyStatus() throws Exception {
+    void shouldProcessEmptyStatus() throws Exception {
         Set<TestResult> testResults = process(
                 "allure2/no-status.json", generateTestResultName()
         ).getResults();
@@ -164,7 +187,7 @@ public class Allure2PluginTest {
     }
 
     @Test
-    public void shouldProcessNullStatus() throws Exception {
+    void shouldProcessNullStatus() throws Exception {
         Set<TestResult> testResults = process(
                 "allure2/null-status.json", generateTestResultName()
         ).getResults();
@@ -176,7 +199,7 @@ public class Allure2PluginTest {
     }
 
     @Test
-    public void shouldProcessInvalidStatus() throws Exception {
+    void shouldProcessInvalidStatus() throws Exception {
         Set<TestResult> testResults = process(
                 "allure2/invalid-status.json", generateTestResultName()
         ).getResults();
@@ -188,7 +211,7 @@ public class Allure2PluginTest {
     }
 
     @Test
-    public void shouldProcessNullStageTime() throws Exception {
+    void shouldProcessNullStageTime() throws Exception {
         Set<TestResult> testResults = process(
                 "allure2/other-testcase.json", generateTestResultName(),
                 "allure2/null-before-group.json", generateTestResultContainerName()
@@ -199,7 +222,7 @@ public class Allure2PluginTest {
     }
 
     @Test
-    public void shouldAddTestResultFormatLabel() throws Exception {
+    void shouldAddTestResultFormatLabel() throws Exception {
         Set<TestResult> testResults = process(
                 "allure2/simple-testcase.json", generateTestResultName(),
                 "allure2/first-testgroup.json", generateTestResultContainerName(),
@@ -213,23 +236,22 @@ public class Allure2PluginTest {
     }
 
     private LaunchResults process(String... strings) throws IOException {
-        Path resultsDirectory = folder.newFolder().toPath();
         Iterator<String> iterator = Arrays.asList(strings).iterator();
         while (iterator.hasNext()) {
             String first = iterator.next();
             String second = iterator.next();
-            copyFile(resultsDirectory, first, second);
+            copyFile(directory, first, second);
         }
         Allure2Plugin reader = new Allure2Plugin();
         final Configuration configuration = new ConfigurationBuilder().useDefault().build();
         final DefaultResultsVisitor resultsVisitor = new DefaultResultsVisitor(configuration);
-        reader.readResults(configuration, resultsVisitor, resultsDirectory);
+        reader.readResults(configuration, resultsVisitor, directory);
         return resultsVisitor.getLaunchResults();
     }
 
     private void copyFile(Path dir, String resourceName, String fileName) throws IOException {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourceName)) {
-            Files.copy(is, dir.resolve(fileName));
+            Files.copy(Objects.requireNonNull(is), dir.resolve(fileName));
         }
     }
 }

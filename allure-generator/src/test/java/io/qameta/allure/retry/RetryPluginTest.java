@@ -1,12 +1,26 @@
+/*
+ *  Copyright 2019 Qameta Software OÜ
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package io.qameta.allure.retry;
 
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -21,18 +35,16 @@ import static org.assertj.core.api.Assertions.tuple;
  * eroshenkoam
  * 19.04.17
  */
-public class RetryPluginTest {
+class RetryPluginTest {
 
     private static final String FIRST_RESULT = "first";
-
     private static final String SECOND_RESULT = "second";
-
     private static final String LAST_RESULT = "last";
 
     private RetryPlugin retryPlugin = new RetryPlugin();
 
     @Test
-    public void shouldMergeRetriesTestResults() throws IOException {
+    void shouldMergeRetriesTestResults() {
         String historyId = UUID.randomUUID().toString();
 
         List<LaunchResults> launchResultsList = createSingleLaunchResults(
@@ -69,7 +81,7 @@ public class RetryPluginTest {
     }
 
     @Test
-    public void shouldNotMergeOtherTestResults() throws IOException {
+    void shouldNotMergeOtherTestResults() {
         String firstHistoryId = UUID.randomUUID().toString();
         String secondHistoryId = UUID.randomUUID().toString();
 
@@ -92,7 +104,7 @@ public class RetryPluginTest {
     }
 
     @Test
-    public void shouldSkipHiddenResults() throws Exception {
+    void shouldSkipHiddenResults() {
         String historyId = UUID.randomUUID().toString();
         List<LaunchResults> launchResultsList = createSingleLaunchResults(
                 createTestResult(FIRST_RESULT, historyId, 1L, 9L),
@@ -114,7 +126,7 @@ public class RetryPluginTest {
     }
 
     @Test
-    public void shouldNotMarkLatestAsFlakyIfRetriesArePassed() throws Exception {
+    void shouldNotMarkLatestAsFlakyIfRetriesArePassed() {
         String historyId = UUID.randomUUID().toString();
         List<LaunchResults> launchResultsList = createSingleLaunchResults(
                 createTestResult(FIRST_RESULT, historyId, 1L, 9L).setStatus(Status.PASSED),
@@ -135,7 +147,7 @@ public class RetryPluginTest {
     }
 
     @Test
-    public void shouldNotMarkLatestAsFlakyIfRetriesSkipped() throws Exception {
+    void shouldNotMarkLatestAsFlakyIfRetriesSkipped() {
         String historyId = UUID.randomUUID().toString();
         List<LaunchResults> launchResultsList = createSingleLaunchResults(
                 createTestResult(FIRST_RESULT, historyId, 1L, 9L).setStatus(Status.SKIPPED),

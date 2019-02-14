@@ -1,3 +1,18 @@
+/*
+ *  Copyright 2019 Qameta Software OÜ
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package io.qameta.allure.allure1;
 
 import io.qameta.allure.ConfigurationBuilder;
@@ -14,9 +29,10 @@ import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
 import org.assertj.core.groups.Tuple;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junitpioneer.jupiter.TempDirectory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,14 +55,18 @@ import static org.allurefw.allure1.AllureUtils.generateTestSuiteXmlName;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
-public class Allure1PluginTest {
+@ExtendWith(TempDirectory.class)
+class Allure1PluginTest {
 
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
+    private Path directory;
+
+    @BeforeEach
+    void setUp(@TempDirectory.TempDir final Path directory) {
+        this.directory = directory;
+    }
 
     @Test
-    @SuppressWarnings("unchecked")
-    public void shouldProcessEmptyOrNullStatus() throws Exception {
+    void shouldProcessEmptyOrNullStatus() throws Exception {
         Set<TestResult> testResults = process(
                 "allure1/empty-status-testsuite.xml", generateTestSuiteXmlName()
         ).getResults();
@@ -62,7 +82,7 @@ public class Allure1PluginTest {
     }
 
     @Test
-    public void shouldReadTestSuiteXml() throws Exception {
+    void shouldReadTestSuiteXml() throws Exception {
         Set<TestResult> testResults = process(
                 "allure1/sample-testsuite.xml", generateTestSuiteXmlName()
         ).getResults();
@@ -70,8 +90,9 @@ public class Allure1PluginTest {
                 .hasSize(4);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
-    public void shouldExcludeDuplicatedParams() throws Exception {
+    void shouldExcludeDuplicatedParams() throws Exception {
         Set<TestResult> testResults = process(
                 "allure1/duplicated-params.xml", generateTestSuiteXmlName()
         ).getResults();
@@ -89,7 +110,7 @@ public class Allure1PluginTest {
     }
 
     @Test
-    public void shouldReadTestSuiteJson() throws Exception {
+    void shouldReadTestSuiteJson() throws Exception {
         Set<TestResult> testResults = process(
                 "allure1/sample-testsuite.json", generateTestSuiteJsonName()
         ).getResults();
@@ -98,7 +119,7 @@ public class Allure1PluginTest {
     }
 
     @Test
-    public void shouldReadAttachments() throws Exception {
+    void shouldReadAttachments() throws Exception {
         final LaunchResults launchResults = process(
                 "allure1/suite-with-attachments.xml", generateTestSuiteXmlName(),
                 "allure1/sample-attachment.txt", "sample-attachment.txt"
@@ -142,14 +163,14 @@ public class Allure1PluginTest {
     }
 
     @Test
-    public void shouldNotFailIfNoResultsDirectory() throws Exception {
+    void shouldNotFailIfNoResultsDirectory() throws Exception {
         Set<TestResult> testResults = process().getResults();
         assertThat(testResults)
                 .isEmpty();
     }
 
     @Test
-    public void shouldGetSuiteTitleIfExists() throws Exception {
+    void shouldGetSuiteTitleIfExists() throws Exception {
         Set<TestResult> testCases = process(
                 "allure1/sample-testsuite.json", generateTestSuiteJsonName()
         ).getResults();
@@ -161,7 +182,7 @@ public class Allure1PluginTest {
     }
 
     @Test
-    public void shouldNotFailIfSuiteTitleNotExists() throws Exception {
+    void shouldNotFailIfSuiteTitleNotExists() throws Exception {
         Set<TestResult> testCases = process(
                 "allure1/suite-with-attachments.xml", generateTestSuiteXmlName()
         ).getResults();
@@ -174,7 +195,7 @@ public class Allure1PluginTest {
     }
 
     @Test
-    public void shouldCopyLabelsFromSuite() throws Exception {
+    void shouldCopyLabelsFromSuite() throws Exception {
         Set<TestResult> testCases = process(
                 "allure1/sample-testsuite.json", generateTestSuiteJsonName()
         ).getResults();
@@ -188,7 +209,7 @@ public class Allure1PluginTest {
     }
 
     @Test
-    public void shouldSetFlakyFromLabel() throws Exception {
+    void shouldSetFlakyFromLabel() throws Exception {
         Set<TestResult> testCases = process(
                 "allure1/suite-with-attachments.xml", generateTestSuiteXmlName()
         ).getResults();
@@ -199,7 +220,7 @@ public class Allure1PluginTest {
     }
 
     @Test
-    public void shouldUseTestClassLabelForPackage() throws Exception {
+    void shouldUseTestClassLabelForPackage() throws Exception {
         Set<TestResult> testResults = process(
                 "allure1/packages-testsuite.xml", generateTestSuiteXmlName()
         ).getResults();
@@ -211,7 +232,7 @@ public class Allure1PluginTest {
     }
 
     @Test
-    public void shouldUseTestClassLabelForFullName() throws Exception {
+    void shouldUseTestClassLabelForFullName() throws Exception {
         Set<TestResult> testResults = process(
                 "allure1/packages-testsuite.xml", generateTestSuiteXmlName()
         ).getResults();
@@ -223,7 +244,7 @@ public class Allure1PluginTest {
     }
 
     @Test
-    public void shouldAddTestResultFormatLabel() throws Exception {
+    void shouldAddTestResultFormatLabel() throws Exception {
         Set<TestResult> testResults = process(
                 "allure1/sample-testsuite.xml", generateTestSuiteXmlName()
         ).getResults();
@@ -235,7 +256,7 @@ public class Allure1PluginTest {
     }
 
     @Test
-    public void shouldGenerateDifferentHistoryIdForParameterizedTests() throws Exception {
+    void shouldGenerateDifferentHistoryIdForParameterizedTests() throws Exception {
         final String historyId1 = "56f15d234f8ad63b493afb25f7c26556";
         final String historyId2 = "e374f6eb3cf497543291506c8c20353";
         Set<TestResult> testResults = process(
@@ -249,7 +270,7 @@ public class Allure1PluginTest {
     }
 
     @Test
-    public void shouldReadPropertiesFile() throws Exception {
+    void shouldReadPropertiesFile() throws Exception {
         final String testName = "testFour";
         final String link1 = "http://example.org/JIRA-1";
         final String link2 = "http://example.org/JIRA-2";
@@ -268,7 +289,7 @@ public class Allure1PluginTest {
     }
 
     @Test
-    public void shouldProcessNullParameters() throws Exception {
+    void shouldProcessNullParameters() throws Exception {
         final Set<TestResult> results = process(
                 "allure1/empty-parameter-value.xml", generateTestSuiteXmlName()
         ).getResults();
@@ -287,7 +308,7 @@ public class Allure1PluginTest {
     }
 
     @Test
-    public void shouldBeAbleToSpecifyHistoryIdViaLabel() throws Exception {
+    void shouldBeAbleToSpecifyHistoryIdViaLabel() throws Exception {
         final Set<TestResult> results = process(
                 "allure1/history-id-label.xml", generateTestSuiteXmlName()
         ).getResults();
@@ -305,7 +326,7 @@ public class Allure1PluginTest {
 
     @Issue("629")
     @Test
-    public void shouldProcessEmptyLists() throws Exception {
+    void shouldProcessEmptyLists() throws Exception {
         final Set<TestResult> results = process(
                 "allure1/empty-lists.xml", generateTestSuiteXmlName()
         ).getResults();
@@ -315,17 +336,16 @@ public class Allure1PluginTest {
     }
 
     private LaunchResults process(String... strings) throws IOException {
-        Path resultsDirectory = folder.newFolder().toPath();
         Iterator<String> iterator = Arrays.asList(strings).iterator();
         while (iterator.hasNext()) {
             String first = iterator.next();
             String second = iterator.next();
-            copyFile(resultsDirectory, first, second);
+            copyFile(directory, first, second);
         }
         Allure1Plugin reader = new Allure1Plugin();
         final Configuration configuration = new ConfigurationBuilder().useDefault().build();
         final DefaultResultsVisitor resultsVisitor = new DefaultResultsVisitor(configuration);
-        reader.readResults(configuration, resultsVisitor, resultsDirectory);
+        reader.readResults(configuration, resultsVisitor, directory);
         return resultsVisitor.getLaunchResults();
     }
 

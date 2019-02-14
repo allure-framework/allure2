@@ -1,3 +1,18 @@
+/*
+ *  Copyright 2019 Qameta Software OÜ
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package io.qameta.allure.behaviors;
 
 import io.qameta.allure.DefaultLaunchResults;
@@ -12,11 +27,8 @@ import io.qameta.allure.tree.TreeNode;
 import io.qameta.allure.tree.TreeWidgetData;
 import io.qameta.allure.tree.TreeWidgetItem;
 import org.assertj.core.groups.Tuple;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -27,18 +39,15 @@ import static io.qameta.allure.entity.LabelName.FEATURE;
 import static io.qameta.allure.entity.LabelName.STORY;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 /**
  * @author Egor Borisov ehborisov@gmail.com
  */
-public class BehaviorsPluginTest {
+class BehaviorsPluginTest {
 
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
-
+    @SuppressWarnings("unchecked")
     @Test
-    public void storiesPerFeatureResultsAggregation() throws IOException {
+    void storiesPerFeatureResultsAggregation() {
         final Set<TestResult> testResults = new HashSet<>();
         testResults.add(new TestResult()
                 .setStatus(Status.PASSED)
@@ -72,7 +81,7 @@ public class BehaviorsPluginTest {
     }
 
     @Test
-    public void shouldGroupByEpic() throws Exception {
+    void shouldGroupByEpic() {
         final Set<TestResult> testResults = new HashSet<>();
         testResults.add(new TestResult()
                 .setStatus(Status.PASSED)
@@ -93,7 +102,7 @@ public class BehaviorsPluginTest {
     @Issue("587")
     @Issue("572")
     @Test
-    public void shouldSortByStartTimeAsc() throws Exception {
+    void shouldSortByStartTimeAsc() {
         final TestResult first = new TestResult()
                 .setName("first")
                 .setTime(new Time().setStart(10L));
@@ -116,4 +125,3 @@ public class BehaviorsPluginTest {
                 .containsExactly("timeless", "first", "second");
     }
 }
-

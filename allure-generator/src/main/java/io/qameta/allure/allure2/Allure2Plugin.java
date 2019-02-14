@@ -1,6 +1,21 @@
+/*
+ *  Copyright 2019 Qameta Software OÜ
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package io.qameta.allure.allure2;
 
-import io.qameta.allure.FileSystemResultsReader;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.Reader;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
@@ -13,12 +28,17 @@ import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.Time;
-import io.qameta.allure.model.ExecutableItem;
+import io.qameta.allure.model.Allure2ModelJackson;
 import io.qameta.allure.model.FixtureResult;
 import io.qameta.allure.model.StepResult;
 import io.qameta.allure.model.TestResult;
 import io.qameta.allure.model.TestResultContainer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -34,8 +54,10 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
+import static java.nio.file.Files.newDirectoryStream;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsFirst;
@@ -53,21 +75,32 @@ import static java.util.Objects.nonNull;
 })
 public class Allure2Plugin implements Reader {
 
+    @SuppressWarnings("WeakerAccess")
     public static final String ALLURE2_RESULTS_FORMAT = "allure2";
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Allure2Plugin.class);
 
     private static final Comparator<StageResult> BY_START = comparing(
             StageResult::getTime,
             nullsFirst(comparing(Time::getStart, nullsFirst(naturalOrder())))
     );
 
+    private final ObjectMapper mapper;
+
+    public Allure2Plugin() {
+        mapper = Allure2ModelJackson.createMapper()
+                .addMixIn(TestResultContainer.class, TestContainerIgnoreConflictsMixin.class);
+    }
+
     @Override
     public void readResults(final Configuration configuration,
                             final ResultsVisitor visitor,
                             final Path resultsDirectory) {
         final RandomUidContext context = configuration.requireContext(RandomUidContext.class);
-        final FileSystemResultsReader reader = new FileSystemResultsReader(resultsDirectory);
-        final List<TestResultContainer> groups = reader.readTestResultsContainers().collect(Collectors.toList());
-        reader.readTestResults()
+        final List<TestResultContainer> groups = readTestResultsContainers(resultsDirectory)
+                .collect(Collectors.toList());
+
+        readTestResults(resultsDirectory)
                 .forEach(result -> convert(context.getValue(), resultsDirectory, visitor, groups, result));
     }
 
@@ -124,7 +157,7 @@ public class Allure2Plugin implements Reader {
                 .setAttachments(convert(result.getAttachments(), attach -> convert(source, visitor, attach)))
                 .setParameters(convert(result.getParameters(), this::convert));
         Optional.of(result)
-                .map(ExecutableItem::getStatusDetails)
+                .map(FixtureResult::getStatusDetails)
                 .ifPresent(statusDetails -> {
                     stageResult.setStatusMessage(statusDetails.getMessage());
                     stageResult.setStatusTrace(statusDetails.getTrace());
@@ -185,7 +218,7 @@ public class Allure2Plugin implements Reader {
                 .setAttachments(convert(step.getAttachments(), attachment -> convert(source, visitor, attachment)))
                 .setSteps(convert(step.getSteps(), s -> convert(source, visitor, s)));
         Optional.of(step)
-                .map(ExecutableItem::getStatusDetails)
+                .map(StepResult::getStatusDetails)
                 .ifPresent(statusDetails -> {
                     result.setStatusMessage(statusDetails.getMessage());
                     result.setStatusTrace(statusDetails.getTrace());
@@ -229,7 +262,7 @@ public class Allure2Plugin implements Reader {
         testStage.setDescription(result.getDescription());
         testStage.setDescriptionHtml(result.getDescriptionHtml());
         Optional.of(result)
-                .map(ExecutableItem::getStatusDetails)
+                .map(TestResult::getStatusDetails)
                 .ifPresent(statusDetails -> {
                     testStage.setStatusMessage(statusDetails.getMessage());
                     testStage.setStatusTrace(statusDetails.getTrace());
@@ -265,9 +298,8 @@ public class Allure2Plugin implements Reader {
     private List<TestResultContainer> findAllParents(final List<TestResultContainer> groups,
                                                      final String id,
                                                      final Set<String> seen) {
-        final List<TestResultContainer> result = new ArrayList<>();
         final List<TestResultContainer> parents = findParents(groups, id, seen);
-        result.addAll(parents);
+        final List<TestResultContainer> result = new ArrayList<>(parents);
         for (TestResultContainer container : parents) {
             result.addAll(findAllParents(groups, container.getUuid(), seen));
         }
@@ -291,5 +323,49 @@ public class Allure2Plugin implements Reader {
                 .orElseThrow(() -> new IllegalStateException(
                         "firstNonNull method should have at least one non null parameter"
                 ));
+    }
+
+    private Stream<TestResultContainer> readTestResultsContainers(final Path resultsDirectory) {
+        return listFiles(resultsDirectory, "*-container.json")
+                .map(this::readTestResultContainer)
+                .filter(Optional::isPresent)
+                .map(Optional::get);
+    }
+
+    private Stream<TestResult> readTestResults(final Path resultsDirectory) {
+        return listFiles(resultsDirectory, "*-result.json")
+                .map(this::readTestResult)
+                .filter(Optional::isPresent)
+                .map(Optional::get);
+    }
+
+    private Optional<TestResult> readTestResult(final Path file) {
+        try (InputStream is = Files.newInputStream(file)) {
+            return Optional.ofNullable(mapper.readValue(is, TestResult.class));
+        } catch (IOException e) {
+            LOGGER.error("Could not read test result file {}", file, e);
+            return Optional.empty();
+        }
+    }
+
+    private Optional<TestResultContainer> readTestResultContainer(final Path file) {
+        try (InputStream is = Files.newInputStream(file)) {
+            return Optional.ofNullable(mapper.readValue(is, TestResultContainer.class));
+        } catch (IOException e) {
+            LOGGER.error("Could not read result container file {}", file, e);
+            return Optional.empty();
+        }
+    }
+
+    private Stream<Path> listFiles(final Path directory, final String glob) {
+        try (DirectoryStream<Path> directoryStream = newDirectoryStream(directory, glob)) {
+            return StreamSupport.stream(directoryStream.spliterator(), false)
+                    .filter(Files::isRegularFile)
+                    .collect(Collectors.toList())
+                    .stream();
+        } catch (IOException e) {
+            LOGGER.error("Could not list files in directory {}", directory, e);
+            return Stream.empty();
+        }
     }
 }

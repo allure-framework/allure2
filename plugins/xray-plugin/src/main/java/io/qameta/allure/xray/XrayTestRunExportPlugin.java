@@ -1,3 +1,18 @@
+/*
+ *  Copyright 2019 Qameta Software OÜ
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package io.qameta.allure.xray;
 
 import io.qameta.allure.Aggregator;
@@ -22,10 +37,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static io.qameta.allure.util.PropertyUtils.getProperty;
-import static io.qameta.allure.util.PropertyUtils.requireProperty;
 
 /**
  * Plugin update Xray test run status from test result.
@@ -49,31 +64,42 @@ public class XrayTestRunExportPlugin implements Aggregator {
     private static final String XRAY_STATUS_FAIL = "FAIL";
     private static final String XRAY_STATUS_TODO = "TODO";
 
-    private JiraService jiraService;
+    private final boolean enabled;
+    private final String issues;
+    private final Map<Status, String> statusesMap = getDefaultStatusesMap();
+    private final Supplier<JiraService> jiraServiceSupplier;
+
+    public XrayTestRunExportPlugin() {
+        this(
+                getProperty(ALLURE_XRAY_ENABLED).map(Boolean::parseBoolean).orElse(false),
+                getProperty(ALLURE_XRAY_EXECUTION_ISSUES).orElse(""),
+                getEnvStatusesMap(),
+                () -> new JiraServiceBuilder().defaults().build()
+        );
+    }
+
+    public XrayTestRunExportPlugin(final boolean enabled,
+                                   final String issues,
+                                   final Map<Status, String> statusesMap,
+                                   final Supplier<JiraService> jiraServiceSupplier) {
+        this.enabled = enabled;
+        this.issues = issues;
+        this.statusesMap.putAll(statusesMap);
+        this.jiraServiceSupplier = jiraServiceSupplier;
+    }
 
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
                           final Path outputDirectory) {
-        if (getProperty(ALLURE_XRAY_ENABLED).map(Boolean::parseBoolean).orElse(false)) {
-            setDefaultJiraServiceIfRequired();
+        if (enabled) {
             updateTestRunStatuses(launchesResults);
         }
     }
 
-    protected void setJiraService(final JiraService jiraService) {
-        this.jiraService = jiraService;
-    }
-
-    private void setDefaultJiraServiceIfRequired() {
-        if (Objects.isNull(this.jiraService)) {
-            setJiraService(new JiraServiceBuilder().defaults().build());
-        }
-    }
-
     private void updateTestRunStatuses(final List<LaunchResults> launchesResults) {
-        final List<String> executionIssues = splitByComma(requireProperty(ALLURE_XRAY_EXECUTION_ISSUES));
-        final Map<Status, String> statusesMap = getStatusesMap();
+        final List<String> executionIssues = splitByComma(issues);
+        final JiraService jiraService = jiraServiceSupplier.get();
 
         final Map<String, XrayTestRun> testRunsMap = executionIssues.stream()
                 .map(jiraService::getTestRunsForTestExecution)
@@ -83,7 +109,7 @@ public class XrayTestRunExportPlugin implements Aggregator {
         launchesResults.stream()
                 .map(LaunchResults::getAllResults)
                 .flatMap(Collection::stream)
-                .forEach(testResult -> updateTestRunStatuses(testResult, statusesMap, testRunsMap));
+                .forEach(testResult -> updateTestRunStatuses(jiraService, testResult, statusesMap, testRunsMap));
 
         final Optional<ExecutorInfo> executorInfo = launchesResults.stream()
                 .map(launchResults -> launchResults.getExtra(EXECUTORS_BLOCK_NAME))
@@ -92,10 +118,11 @@ public class XrayTestRunExportPlugin implements Aggregator {
                 .filter(ExecutorInfo.class::isInstance)
                 .map(ExecutorInfo.class::cast)
                 .findFirst();
-        executorInfo.ifPresent(info -> executionIssues.forEach(issue -> addExecutionComment(issue, info)));
+        executorInfo.ifPresent(info -> executionIssues.forEach(issue -> addExecutionComment(jiraService, issue, info)));
     }
 
-    private void updateTestRunStatuses(final TestResult testResult,
+    private void updateTestRunStatuses(final JiraService jiraService,
+                                       final TestResult testResult,
                                        final Map<Status, String> statusesMap,
                                        final Map<String, XrayTestRun> testRunsMap) {
         final String status = statusesMap.get(testResult.getStatus());
@@ -105,10 +132,12 @@ public class XrayTestRunExportPlugin implements Aggregator {
                 .map(testRunsMap::get)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
-        testRunIssueKeys.forEach(testRun -> updateTestRunStatus(testRun, status));
+        testRunIssueKeys.forEach(testRun -> updateTestRunStatus(jiraService, testRun, status));
     }
 
-    private void addExecutionComment(final String executionIssueKey, final ExecutorInfo info) {
+    private void addExecutionComment(final JiraService jiraService,
+                                     final String executionIssueKey,
+                                     final ExecutorInfo info) {
         try {
             final String message = String.format("Execution updated from launch [%s|%s]",
                     info.getBuildName(), info.getReportUrl());
@@ -119,7 +148,9 @@ public class XrayTestRunExportPlugin implements Aggregator {
         }
     }
 
-    private void updateTestRunStatus(final XrayTestRun testRun, final String status) {
+    private void updateTestRunStatus(final JiraService jiraService,
+                                     final XrayTestRun testRun,
+                                     final String status) {
         if (!status.equals(testRun.getStatus())) {
             try {
                 jiraService.updateTestRunStatus(testRun.getId(), status);
@@ -132,13 +163,23 @@ public class XrayTestRunExportPlugin implements Aggregator {
         }
     }
 
-    private static Map<Status, String> getStatusesMap() {
+    private static Map<Status, String> getEnvStatusesMap() {
         final Map<Status, String> statues = new HashMap<>();
-        statues.put(Status.PASSED, getProperty(ALLURE_XRAY_STATUS_PASSED).orElse(XRAY_STATUS_PASS));
-        statues.put(Status.FAILED, getProperty(ALLURE_XRAY_STATUS_FAILED).orElse(XRAY_STATUS_FAIL));
-        statues.put(Status.BROKEN, getProperty(ALLURE_XRAY_STATUS_BROKEN).orElse(XRAY_STATUS_FAIL));
-        statues.put(Status.SKIPPED, getProperty(ALLURE_XRAY_STATUS_SKIPPED).orElse(XRAY_STATUS_TODO));
-        statues.put(Status.UNKNOWN, getProperty(ALLURE_XRAY_STATUS_UNKNOWN).orElse(XRAY_STATUS_TODO));
+        getProperty(ALLURE_XRAY_STATUS_PASSED).ifPresent(value -> statues.put(Status.PASSED, value));
+        getProperty(ALLURE_XRAY_STATUS_FAILED).ifPresent(value -> statues.put(Status.FAILED, value));
+        getProperty(ALLURE_XRAY_STATUS_BROKEN).ifPresent(value -> statues.put(Status.BROKEN, value));
+        getProperty(ALLURE_XRAY_STATUS_SKIPPED).ifPresent(value -> statues.put(Status.SKIPPED, value));
+        getProperty(ALLURE_XRAY_STATUS_UNKNOWN).ifPresent(value -> statues.put(Status.UNKNOWN, value));
+        return statues;
+    }
+
+    private static Map<Status, String> getDefaultStatusesMap() {
+        final Map<Status, String> statues = new HashMap<>();
+        statues.put(Status.PASSED, XRAY_STATUS_PASS);
+        statues.put(Status.FAILED, XRAY_STATUS_FAIL);
+        statues.put(Status.BROKEN, XRAY_STATUS_FAIL);
+        statues.put(Status.SKIPPED, XRAY_STATUS_TODO);
+        statues.put(Status.UNKNOWN, XRAY_STATUS_TODO);
         return statues;
     }
 

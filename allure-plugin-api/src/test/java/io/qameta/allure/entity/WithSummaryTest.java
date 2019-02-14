@@ -1,6 +1,21 @@
+/*
+ *  Copyright 2019 Qameta Software OÜ
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package io.qameta.allure.entity;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -9,10 +24,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class WithSummaryTest {
+class WithSummaryTest {
 
     @Test
-    public void shouldCountSteps() throws Exception {
+    void shouldCountSteps() {
         final Step step = new Step().setSteps(asList(
                 new Step(),
                 new Step().setSteps(singletonList(new Step()))
@@ -22,7 +37,7 @@ public class WithSummaryTest {
     }
 
     @Test
-    public void shouldCountAttachments() throws Exception {
+    void shouldCountAttachments() {
         final Step step = new Step().setSteps(asList(
                 new Step().setAttachments(asList(new Attachment(), new Attachment())),
                 new Step().setAttachments(singletonList(new Attachment())).setSteps(singletonList(new Step()))
@@ -32,42 +47,42 @@ public class WithSummaryTest {
     }
 
     @Test
-    public void shouldCalculateHasContent() throws Exception {
+    void shouldCalculateHasContent() {
         final Step step = new Step();
         assertThat(step.hasContent())
                 .isFalse();
     }
 
     @Test
-    public void shouldCountAttachmentsForHasContent() throws Exception {
+    void shouldCountAttachmentsForHasContent() {
         final Step step = new Step().setAttachments(singletonList(new Attachment()));
         assertThat(step.hasContent())
                 .isTrue();
     }
 
     @Test
-    public void shouldCountStepsForHasContent() throws Exception {
+    void shouldCountStepsForHasContent() {
         final Step step = new Step().setSteps(singletonList(new Step()));
         assertThat(step.hasContent())
                 .isTrue();
     }
 
     @Test
-    public void shouldCountParametersForHasContent() throws Exception {
+    void shouldCountParametersForHasContent() {
         final Step step = new Step().setParameters(singletonList(new Parameter()));
         assertThat(step.hasContent())
                 .isTrue();
     }
 
     @Test
-    public void shouldCountMessageForHasContent() throws Exception {
+    void shouldCountMessageForHasContent() {
         final Step step = createStep("hey");
         assertThat(step.hasContent())
                 .isTrue();
     }
 
     @Test
-    public void shouldCalculateDisplayMessageFlagIfNoChildren() throws Exception {
+    void shouldCalculateDisplayMessageFlagIfNoChildren() {
         final Step step = createStep("hey");
 
         assertThat(step.shouldDisplayMessage())
@@ -75,7 +90,7 @@ public class WithSummaryTest {
     }
 
     @Test
-    public void shouldCalculateDisplayMessageFlagIfNoMessage() throws Exception {
+    void shouldCalculateDisplayMessageFlagIfNoMessage() {
         final Step step = new Step();
 
         assertThat(step.shouldDisplayMessage())
@@ -83,7 +98,7 @@ public class WithSummaryTest {
     }
 
     @Test
-    public void shouldCalculateShouldMessageFlagIfChildHasTheSameMessage() throws Exception {
+    void shouldCalculateShouldMessageFlagIfChildHasTheSameMessage() {
         final Step step = createStep("hey")
                 .setSteps(asList(
                         createStep("hey"),
@@ -96,7 +111,7 @@ public class WithSummaryTest {
     }
 
     @Test
-    public void shouldCalculateDisplayMessageFlagIfChildrenHasDifferentMessages() throws Exception {
+    void shouldCalculateDisplayMessageFlagIfChildrenHasDifferentMessages() {
         final Step step = createStep("hey")
                 .setSteps(asList(
                         createStep("ay"),
@@ -109,7 +124,7 @@ public class WithSummaryTest {
     }
 
     @Test
-    public void shouldCalculateDisplayMessageFlagInSubChild() throws Exception {
+    void shouldCalculateDisplayMessageFlagInSubChild() {
         final Step step = createStep("hey")
                 .setSteps(asList(createStep("ay").setSteps(singletonList(createStep("hey"))),
                         createStep("oy"),
