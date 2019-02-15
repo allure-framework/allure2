@@ -47,6 +47,7 @@ apply(from = "$gradleScriptDir/bintray.gradle")
 apply(from = "$gradleScriptDir/release.gradle")
 
 description = "Allure Report"
+group = "io.qameta.allure"
 
 configure(subprojects) {
     group = if (project.name.endsWith("plugin")) {
