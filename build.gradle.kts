@@ -43,9 +43,6 @@ val gradleScriptDir by extra("$root/gradle")
 val qualityConfigsDir by extra("$gradleScriptDir/quality-configs")
 val spotlessDtr by extra("$qualityConfigsDir/spotless")
 
-apply(from = "$gradleScriptDir/bintray.gradle")
-apply(from = "$gradleScriptDir/release.gradle")
-
 description = "Allure Report"
 group = "io.qameta.allure"
 
