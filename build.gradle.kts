@@ -23,9 +23,7 @@ buildscript {
 
 plugins {
     java
-    maven
-    id("ru.vyarus.quality") version "3.3.0"
-    id("io.spring.dependency-management") version "1.0.6.RELEASE"
+    id("net.researchgate.release") version "2.7.0"
 }
 
 tasks.withType(Wrapper::class) {
@@ -43,8 +41,18 @@ val gradleScriptDir by extra("$root/gradle")
 val qualityConfigsDir by extra("$gradleScriptDir/quality-configs")
 val spotlessDtr by extra("$qualityConfigsDir/spotless")
 
-description = "Allure Report"
-group = "io.qameta.allure"
+release {
+    tagTemplate = "\${version}"
+    failOnCommitNeeded = false
+    failOnUnversionedFiles = false
+}
+
+val afterReleaseBuild by tasks.existing
+
+configure(listOf(rootProject)) {
+    description = "Allure Report"
+    group = "io.qameta.allure"
+}
 
 configure(subprojects) {
     group = if (project.name.endsWith("plugin")) {
@@ -206,6 +214,11 @@ configure(subprojects) {
         pmdVersion = "6.11.0"
         spotbugsVersion = "3.1.11"
         codenarcVersion = "1.3"
+    }
+
+    val bintrayUpload by tasks.existing
+    afterReleaseBuild {
+        dependsOn(bintrayUpload)
     }
 
     repositories {
