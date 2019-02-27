@@ -19,6 +19,10 @@
         <!-- Disabled as confusing check (very misleading description) and also not so useful -->
         <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
     </Match>
+    <Match>
+        <!-- Disabled due to bug in Java 11 with try-with-resources -->
+        <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
+    </Match>
 
 
     <!-- Do not check class -->

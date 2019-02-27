@@ -22,7 +22,6 @@ import io.qameta.allure.entity.Statistic;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import javax.xml.bind.annotation.XmlElement;
 import java.io.Serializable;
 
 /**
@@ -35,13 +34,9 @@ public class HistoryTrendItem implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @JsonProperty("data")
-    @XmlElement(required = true)
     protected Statistic data;
-    @XmlElement(required = true, type = Long.class, nillable = true)
     protected Long buildOrder;
-    @XmlElement(required = true)
     protected String reportUrl;
-    @XmlElement(required = true)
     protected String reportName;
 
     @JsonIgnore
