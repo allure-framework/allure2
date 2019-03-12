@@ -124,6 +124,27 @@ class HistoryTrendPluginTest {
                 );
     }
 
+    @Test
+    void shouldProcessCorruptedData(@TempDir final Path resultsDirectory) throws Exception {
+        final Path history = Files.createDirectories(resultsDirectory.resolve("history"));
+        Files.createFile(history.resolve("history-trend.json"));
+
+        final Configuration configuration = mock(Configuration.class);
+        when(configuration.requireContext(JacksonContext.class))
+                .thenReturn(new JacksonContext());
+
+        final ResultsVisitor visitor = mock(ResultsVisitor.class);
+
+        final HistoryTrendPlugin plugin = new HistoryTrendPlugin();
+        plugin.readResults(configuration, visitor, resultsDirectory);
+
+        final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.forClass(List.class);
+        verify(visitor, times(1))
+                .visitExtra(eq(HISTORY_TREND_BLOCK_NAME), captor.capture());
+
+        assertThat(captor.getValue()).hasSize(0);
+    }
+
     @SuppressWarnings("unchecked")
     @Test
     void shouldAggregateForEmptyReport(@TempDir final Path outputDirectory) throws Exception {

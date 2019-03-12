@@ -38,6 +38,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -84,11 +85,16 @@ public class HistoryTrendPlugin extends CompositeAggregator implements Reader {
             try (InputStream is = Files.newInputStream(historyFile)) {
                 final ObjectMapper mapper = context.getValue();
                 final JsonNode jsonNode = mapper.readTree(is);
-                final List<HistoryTrendItem> history = getStream(jsonNode)
-                        .map(child -> parseItem(historyFile, mapper, child))
-                        .filter(Optional::isPresent)
-                        .map(Optional::get)
-                        .collect(Collectors.toList());
+                final List<HistoryTrendItem> history;
+                if (jsonNode != null) {
+                    history = getStream(jsonNode)
+                            .map(child -> parseItem(historyFile, mapper, child))
+                            .filter(Optional::isPresent)
+                            .map(Optional::get)
+                            .collect(Collectors.toList());
+                } else {
+                    history = Collections.emptyList();
+                }
 
                 visitor.visitExtra(HISTORY_TREND_BLOCK_NAME, history);
             } catch (IOException e) {
