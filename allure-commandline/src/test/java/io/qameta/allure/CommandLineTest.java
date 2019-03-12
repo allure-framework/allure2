@@ -18,9 +18,7 @@ package io.qameta.allure;
 import io.qameta.allure.option.ConfigOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junitpioneer.jupiter.TempDirectory;
-import org.junitpioneer.jupiter.TempDirectory.TempDir;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
 
 import java.io.IOException;
@@ -49,7 +47,6 @@ import static org.mockito.Mockito.when;
 /**
  * @author charlie (Dmitry Baev).
  */
-@ExtendWith(TempDirectory.class)
 class CommandLineTest {
 
     private Commands commands;

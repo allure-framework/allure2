@@ -17,9 +17,7 @@ package io.qameta.allure;
 
 import io.qameta.allure.core.Configuration;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junitpioneer.jupiter.TempDirectory;
-import org.junitpioneer.jupiter.TempDirectory.TempDir;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,7 +25,6 @@ import java.nio.file.Path;
 /**
  * @author charlie (Dmitry Baev).
  */
-@ExtendWith(TempDirectory.class)
 class EmptyResultsTest {
 
     @Test

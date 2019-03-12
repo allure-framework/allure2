@@ -23,9 +23,7 @@ import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.EnvironmentItem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junitpioneer.jupiter.TempDirectory;
-import org.junitpioneer.jupiter.TempDirectory.TempDir;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,7 +43,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Egor Borisov ehborisov@gmail.com
  */
-@ExtendWith(TempDirectory.class)
 class Allure1EnvironmentPluginTest {
 
     private Path temp;

@@ -18,9 +18,7 @@ package io.qameta.allure;
 import io.qameta.allure.core.Configuration;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junitpioneer.jupiter.TempDirectory;
-import org.junitpioneer.jupiter.TempDirectory.TempDir;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -29,7 +27,6 @@ import static io.qameta.allure.testdata.TestData.allure1data;
 import static io.qameta.allure.testdata.TestData.unpackFile;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(TempDirectory.class)
 class ReportGeneratorTest {
 
     private static Path output;

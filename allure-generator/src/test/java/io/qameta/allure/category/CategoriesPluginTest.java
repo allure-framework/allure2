@@ -26,9 +26,7 @@ import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junitpioneer.jupiter.TempDirectory;
-import org.junitpioneer.jupiter.TempDirectory.TempDir;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -51,7 +49,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * eroshenkoam
  * 20.04.17
  */
-@ExtendWith(TempDirectory.class)
 class CategoriesPluginTest {
 
     private static final String CATEGORY_NAME = "Category";

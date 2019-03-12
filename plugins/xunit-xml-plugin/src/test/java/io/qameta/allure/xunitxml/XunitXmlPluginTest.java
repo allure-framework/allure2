@@ -26,11 +26,10 @@ import io.qameta.allure.entity.Time;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junitpioneer.jupiter.TempDirectory;
 import org.mockito.ArgumentCaptor;
 
 import java.io.IOException;
@@ -51,7 +50,6 @@ import static org.mockito.Mockito.when;
 /**
  * @author charlie (Dmitry Baev).
  */
-@ExtendWith(TempDirectory.class)
 class XunitXmlPluginTest {
 
     private Configuration configuration;
@@ -59,7 +57,7 @@ class XunitXmlPluginTest {
     private Path resultsDirectory;
 
     @BeforeEach
-    void setUp(@TempDirectory.TempDir final Path resultsDirectory) {
+    void setUp(@TempDir final Path resultsDirectory) {
         configuration = mock(Configuration.class);
         when(configuration.requireContext(RandomUidContext.class)).thenReturn(new RandomUidContext());
         visitor = mock(ResultsVisitor.class);

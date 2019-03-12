@@ -21,9 +21,7 @@ import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.TestResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junitpioneer.jupiter.TempDirectory;
-import org.junitpioneer.jupiter.TempDirectory.TempDir;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -39,7 +37,6 @@ import static org.mockito.Mockito.when;
 /**
  * @author charlie (Dmitry Baev).
  */
-@ExtendWith(TempDirectory.class)
 class XcTestPluginTest {
 
     private Configuration configuration;
