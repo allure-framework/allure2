@@ -20,9 +20,7 @@ import io.qameta.allure.Extension;
 import io.qameta.allure.core.Plugin;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junitpioneer.jupiter.TempDirectory;
-import org.junitpioneer.jupiter.TempDirectory.TempDir;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,7 +31,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(TempDirectory.class)
 class DirectoryPluginLoaderTest {
 
     private DefaultPluginLoader pluginLoader;

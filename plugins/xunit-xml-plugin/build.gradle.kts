@@ -8,7 +8,6 @@ dependencies {
     compileOnly(project(":allure-plugin-api"))
     testImplementation("io.qameta.allure:allure-junit-platform")
     testImplementation("org.assertj:assertj-core")
-    testImplementation("org.junit-pioneer:junit-pioneer")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     testImplementation("org.mockito:mockito-core")

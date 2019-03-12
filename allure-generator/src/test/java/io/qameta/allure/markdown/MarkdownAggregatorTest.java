@@ -21,16 +21,13 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.MarkdownDescriptionsPlugin;
 import io.qameta.allure.entity.TestResult;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junitpioneer.jupiter.TempDirectory;
-import org.junitpioneer.jupiter.TempDirectory.TempDir;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.nio.file.Path;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(TempDirectory.class)
 class MarkdownAggregatorTest {
 
     private final Configuration configuration = new ConfigurationBuilder().useDefault().build();
