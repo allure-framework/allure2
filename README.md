@@ -31,8 +31,6 @@ You can use one of the following ways to get Allure:
 * Using Homebrew:
 
     ```bash
-    $ brew tap qameta/allure
-    $ brew update
     $ brew install allure
     ```
 * For Windows, Allure is available from the [Scoop](http://scoop.sh/) commandline-installer.
