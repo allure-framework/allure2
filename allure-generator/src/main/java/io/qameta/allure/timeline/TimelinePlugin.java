@@ -49,7 +49,7 @@ public class TimelinePlugin extends CommonJsonAggregator {
         // @formatter:on
 
         launchResults.stream()
-                .map(LaunchResults::getResults)
+                .map(LaunchResults::getAllResults)
                 .flatMap(Collection::stream)
                 .forEach(timeline::add);
         return timeline;
