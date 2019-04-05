@@ -10,6 +10,11 @@
   }
 }
 
+.app__content > .test-result {
+  position: absolute;
+  width: 100%;
+}
+
 .testresult__failure_expanded > .testresult__trace {
   display: block;
 }
