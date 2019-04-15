@@ -2,6 +2,7 @@ import AppLayout from '../application/AppLayout';
 import TestResultView from '../../components/testresult/TestResultView';
 import {Model} from 'backbone';
 import TestResultModel from '../../data/testresult/TestResultModel';
+import router from '../../router';
 
 export default class TestResultLayout extends AppLayout {
 
@@ -28,6 +29,13 @@ export default class TestResultLayout extends AppLayout {
 
     onRouteUpdate(uid, tabName) {
         this.routeState.set('testResultTab', tabName);
+
+        const attachment = router.getUrlParams().attachment;
+        if (attachment) {
+            this.routeState.set('attachment', attachment);
+        } else {
+            this.routeState.unset('attachment');
+        }
     }
 
     shouldKeepState(uid) {
