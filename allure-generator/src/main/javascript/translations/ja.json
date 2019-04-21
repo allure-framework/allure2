@@ -1,0 +1,206 @@
+{
+    "status": {
+      "failed": "失敗",
+      "broken": "Broken",
+      "passed": "成功",
+      "skipped": "スキップ",
+      "unknown": "Unknown",
+      "flaky": "テストが不安定です",
+      "newFailed": "Test is new failed."
+    },
+    "marks": {
+      "flaky": "Flaky",
+      "newFailed": "New Failed"
+    },
+    "sorter": {
+      "order": "order",
+      "name": "名前",
+      "duration": "期間",
+      "status": "status"
+    },
+    "tab": {
+      "overview": {
+        "name": "Overview"
+      },
+      "categories": {
+        "name": "Categories"
+      },
+      "suites": {
+        "name": "Suites"
+      },
+      "graph": {
+        "name": "Graphs"
+      },
+      "timeline": {
+        "name": "Timeline",
+        "selected": "Selected {{count}} test ({{percent}}%) with duration above {{duration}}",
+        "selected_plural": "Selected {{count}} tests ({{percent}}%) with duration above {{duration}}"
+      }
+    },
+    "widget": {
+      "summary": {
+        "aggregatedName": "Aggregated report",
+        "launches": "launch",
+        "launches_plural": "launches",
+        "testResults": "test case",
+        "testResults_plural": "test cases"
+      },
+      "trend": {
+        "name": "Trend"
+      },
+      "categoriesTrend": {
+        "name": "Categories trend"
+      },
+      "durationTrend": {
+        "name": "Duration trend"
+      },
+      "retryTrend": {
+        "name": "Retries trend"
+      },
+      "executors": {
+        "name": "Executors",
+        "unknown": "Unknown",
+        "empty": "There is no information about tests executors"
+      },
+      "launches": {
+        "name": "Launches",
+        "empty": "There is no information about launches"
+      },
+      "environment": {
+        "name": "Environment",
+        "empty": "There are no environment variables",
+        "showAll": "Show all"
+      },
+      "suites": {
+        "name": "Suites"
+      },
+      "categories": {
+        "name": "Categories"
+      }
+    },
+    "chart": {
+      "duration": {
+        "name": "Duration",
+        "empty": "There is nothing to show"
+      },
+      "trend": {
+        "empty": "There is nothing to show"
+      },
+      "severity": {
+        "name": "Severity"
+      },
+      "status": {
+        "name": "Status"
+      }
+    },
+    "testResult": {
+      "status": {
+        "empty": "Empty status details",
+        "trace": "Show trace"
+      },
+      "overview": {
+        "name": "Overview"
+      },
+      "categories": {
+        "name": "Categories"
+      },
+      "description": {
+        "name": "Description"
+      },
+      "duration": {
+        "name": "期間"
+      },
+      "history": {
+        "name": "履歴",
+        "successRate": "Success rate"
+      },
+      "owner": {
+        "name": "Owner"
+      },
+      "retries": {
+        "name": "Retries",
+        "empty": "There is no information available about test retries"
+      },
+      "parameters": {
+        "name": "Parameters"
+      },
+      "links": {
+        "name": "Links"
+      },
+      "severity": {
+        "name": "Severity"
+      },
+      "execution": {
+        "name": "Execution",
+        "setup": "Set up",
+        "teardown": "Tear down",
+        "body": "Test body"
+      },
+      "stats": {
+        "count": {
+          "steps": "{{count}} sub-step",
+          "steps_plural": "{{count}} sub-steps",
+          "attachments": "{{count}} attachment",
+          "attachments_plural": "{{count}} attachments",
+          "parameters": "{{count}} parameter",
+          "parameters_plural": "{{count}} parameters"
+        }
+      }
+    },
+    "controls": {
+      "collapse": "Collapse",
+      "expand": "Expand",
+      "fullscreen": "フルスクリーン",
+      "language": "Change language",
+      "clipboard": "Copy to clipboard",
+      "clipboardSuccess": "コピーされました",
+      "clipboardError": "Can not copy value to clipboard. Seems like this feature is not supported for your browser",
+      "backto": "Back to"
+    },
+    "errors": {
+      "missedAttachment": "Attachment not found",
+      "notFound": "見つかりませんでした"
+    },
+    "component": {
+      "tree": {
+        "filter": "Status",
+        "filter-marks": "Marks",
+        "groups": "Toggle groups info",
+        "download": "Download CSVをダウンロード",
+        "empty": "There are no items",
+        "time": {
+          "total" : {
+            "name": "Total",
+            "tooltip": "Duration from first test started to last test finished"
+          },
+          "max": {
+            "name": "Max",
+            "tooltip": "Longest test duration"
+          },
+          "sum": {
+            "name": "Sum",
+            "tooltip": "Sum of all tests durations"
+          }
+        },
+        "filtered": {
+          "total": "{{count}} test result",
+          "total_plural": "{{count}} test results",
+          "shown": "{{count}} shown"
+        }
+      },
+      "widgetStatus": {
+        "showAll": "全て表示する",
+        "total": "{{count}} item total",
+        "total_plural": "{{count}} items total"
+      },
+      "statusToggle": {
+        "showCases": "Show test results with {{status}} status",
+        "hideCases": "Hide test results with {{status}} status"
+      },
+      "markToggle": {
+        "showCases": "{{mark}} 件のテスト結果を表示する",
+        "hideCases": "{{mark}} 件のテスト結果を隠す"
+      }
+    }
+  }
+  
