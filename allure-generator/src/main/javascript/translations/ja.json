@@ -1,204 +1,204 @@
 {
     "status": {
       "failed": "失敗",
-      "broken": "Broken",
+      "broken": "故障",
       "passed": "成功",
       "skipped": "スキップ",
-      "unknown": "Unknown",
+      "unknown": "不明",
       "flaky": "テストが不安定です",
-      "newFailed": "Test is new failed."
+      "newFailed": "新しく失敗したテストです"
     },
     "marks": {
-      "flaky": "Flaky",
-      "newFailed": "New Failed"
+      "flaky": "不安定",
+      "newFailed": "新しい失敗"
     },
     "sorter": {
-      "order": "order",
+      "order": "順序",
       "name": "名前",
       "duration": "期間",
-      "status": "status"
+      "status": "ステータス"
     },
     "tab": {
       "overview": {
-        "name": "Overview"
+        "name": "概要"
       },
       "categories": {
-        "name": "Categories"
+        "name": "カテゴリー"
       },
       "suites": {
-        "name": "Suites"
+        "name": "スイート"
       },
       "graph": {
-        "name": "Graphs"
+        "name": "グラフ"
       },
       "timeline": {
-        "name": "Timeline",
-        "selected": "Selected {{count}} test ({{percent}}%) with duration above {{duration}}",
-        "selected_plural": "Selected {{count}} tests ({{percent}}%) with duration above {{duration}}"
+        "name": "タイムライン",
+        "selected": "{{duration}} の期間で選択された {{count}} 件のテスト ({{percent}}%)",
+        "selected_plural": "{{duration}} の期間で選択された {{count}} 件のテスト ({{percent}}%)"
       }
     },
     "widget": {
       "summary": {
-        "aggregatedName": "Aggregated report",
-        "launches": "launch",
-        "launches_plural": "launches",
-        "testResults": "test case",
-        "testResults_plural": "test cases"
+        "aggregatedName": "集計レポート",
+        "launches": "開始",
+        "launches_plural": "開始",
+        "testResults": "テストケース",
+        "testResults_plural": "テストケース"
       },
       "trend": {
-        "name": "Trend"
+        "name": "傾向"
       },
       "categoriesTrend": {
-        "name": "Categories trend"
+        "name": "カテゴリーの傾向"
       },
       "durationTrend": {
-        "name": "Duration trend"
+        "name": "期間の傾向"
       },
       "retryTrend": {
-        "name": "Retries trend"
+        "name": "再実行の傾向"
       },
       "executors": {
-        "name": "Executors",
-        "unknown": "Unknown",
-        "empty": "There is no information about tests executors"
+        "name": "実行者",
+        "unknown": "不明",
+        "empty": "テスト実行者に関する情報はありません"
       },
       "launches": {
-        "name": "Launches",
-        "empty": "There is no information about launches"
+        "name": "開始",
+        "empty": "開始に関する情報はありません"
       },
       "environment": {
-        "name": "Environment",
-        "empty": "There are no environment variables",
-        "showAll": "Show all"
+        "name": "環境",
+        "empty": "環境変数がありません",
+        "showAll": "全て表示する"
       },
       "suites": {
-        "name": "Suites"
+        "name": "スイート"
       },
       "categories": {
-        "name": "Categories"
+        "name": "カテゴリー"
       }
     },
     "chart": {
       "duration": {
-        "name": "Duration",
-        "empty": "There is nothing to show"
+        "name": "期間",
+        "empty": "何も表示するものがありません"
       },
       "trend": {
-        "empty": "There is nothing to show"
+        "empty": "何も表示するものがありません"
       },
       "severity": {
-        "name": "Severity"
+        "name": "重大度"
       },
       "status": {
-        "name": "Status"
+        "name": "ステータス"
       }
     },
     "testResult": {
       "status": {
-        "empty": "Empty status details",
-        "trace": "Show trace"
+        "empty": "ステータスに関する詳細はありません",
+        "trace": "トレースを表示"
       },
       "overview": {
-        "name": "Overview"
+        "name": "概要"
       },
       "categories": {
-        "name": "Categories"
+        "name": "カテゴリー"
       },
       "description": {
-        "name": "Description"
+        "name": "説明"
       },
       "duration": {
         "name": "期間"
       },
       "history": {
         "name": "履歴",
-        "successRate": "Success rate"
+        "successRate": "成功率"
       },
       "owner": {
-        "name": "Owner"
+        "name": "オーナー"
       },
       "retries": {
-        "name": "Retries",
-        "empty": "There is no information available about test retries"
+        "name": "再実行",
+        "empty": "テストの再実行に関する情報がありません"
       },
       "parameters": {
-        "name": "Parameters"
+        "name": "パラメータ"
       },
       "links": {
-        "name": "Links"
+        "name": "リンク"
       },
       "severity": {
-        "name": "Severity"
+        "name": "重大度"
       },
       "execution": {
-        "name": "Execution",
-        "setup": "Set up",
-        "teardown": "Tear down",
-        "body": "Test body"
+        "name": "実行",
+        "setup": "セットアップ作業",
+        "teardown": "仕上げ作業",
+        "body": "テスト本体"
       },
       "stats": {
         "count": {
-          "steps": "{{count}} sub-step",
-          "steps_plural": "{{count}} sub-steps",
-          "attachments": "{{count}} attachment",
-          "attachments_plural": "{{count}} attachments",
-          "parameters": "{{count}} parameter",
-          "parameters_plural": "{{count}} parameters"
+          "steps": "{{count}} サブステップ",
+          "steps_plural": "{{count}} サブステップ",
+          "attachments": "{{count}} 添付ファイル",
+          "attachments_plural": "{{count}} 添付ファイル",
+          "parameters": "{{count}} パラメータ",
+          "parameters_plural": "{{count}} パラメータ"
         }
       }
     },
     "controls": {
-      "collapse": "Collapse",
-      "expand": "Expand",
+      "collapse": "折り畳む",
+      "expand": "拡大",
       "fullscreen": "フルスクリーン",
-      "language": "Change language",
-      "clipboard": "Copy to clipboard",
+      "language": "言語を変更",
+      "clipboard": "クリップボードにコピー",
       "clipboardSuccess": "コピーされました",
-      "clipboardError": "Can not copy value to clipboard. Seems like this feature is not supported for your browser",
-      "backto": "Back to"
+      "clipboardError": "クリップボードにコピーできませんでした。ブラウザがサポートしていないようです。",
+      "backto": "戻る"
     },
     "errors": {
-      "missedAttachment": "Attachment not found",
+      "missedAttachment": "添付ファイルは見つかりませんでした",
       "notFound": "見つかりませんでした"
     },
     "component": {
       "tree": {
-        "filter": "Status",
-        "filter-marks": "Marks",
-        "groups": "Toggle groups info",
-        "download": "Download CSVをダウンロード",
-        "empty": "There are no items",
+        "filter": "ステータス",
+        "filter-marks": "マーク",
+        "groups": "グループ情報を表示・非表示",
+        "download": "CSVをダウンロード",
+        "empty": "何もありません",
         "time": {
           "total" : {
-            "name": "Total",
-            "tooltip": "Duration from first test started to last test finished"
+            "name": "全体",
+            "tooltip": "最初のテストが始まってから最後のテストが終わるまでの期間"
           },
           "max": {
-            "name": "Max",
-            "tooltip": "Longest test duration"
+            "name": "最長",
+            "tooltip": "一番長い実行期間"
           },
           "sum": {
-            "name": "Sum",
-            "tooltip": "Sum of all tests durations"
+            "name": "合計",
+            "tooltip": "全てのテスト実行期間の合計"
           }
         },
         "filtered": {
-          "total": "{{count}} test result",
-          "total_plural": "{{count}} test results",
-          "shown": "{{count}} shown"
+          "total": "{{count}} 件のテスト結果",
+          "total_plural": "{{count}} 件のテスト結果",
+          "shown": "{{count}} 件を表示"
         }
       },
       "widgetStatus": {
-        "showAll": "全て表示する",
-        "total": "{{count}} item total",
-        "total_plural": "{{count}} items total"
+        "showAll": "全て表示",
+        "total": "計 {{count}} 件",
+        "total_plural": "計 {{count}} 件"
       },
       "statusToggle": {
-        "showCases": "Show test results with {{status}} status",
-        "hideCases": "Hide test results with {{status}} status"
+        "showCases": "ステータスが {{status}} のテスト結果を表示",
+        "hideCases": "ステータスが {{status}} のテスト結果を隠す"
       },
       "markToggle": {
-        "showCases": "{{mark}} 件のテスト結果を表示する",
+        "showCases": "{{mark}} 件のテスト結果を表示",
         "hideCases": "{{mark}} 件のテスト結果を隠す"
       }
     }
