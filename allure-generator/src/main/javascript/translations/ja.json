@@ -1,0 +1,206 @@
+{
+    "status": {
+      "failed": "失敗",
+      "broken": "故障",
+      "passed": "成功",
+      "skipped": "スキップ",
+      "unknown": "不明",
+      "flaky": "テストが不安定です",
+      "newFailed": "新しく失敗したテストです"
+    },
+    "marks": {
+      "flaky": "不安定",
+      "newFailed": "新しい失敗"
+    },
+    "sorter": {
+      "order": "順序",
+      "name": "名前",
+      "duration": "期間",
+      "status": "ステータス"
+    },
+    "tab": {
+      "overview": {
+        "name": "概要"
+      },
+      "categories": {
+        "name": "カテゴリー"
+      },
+      "suites": {
+        "name": "スイート"
+      },
+      "graph": {
+        "name": "グラフ"
+      },
+      "timeline": {
+        "name": "タイムライン",
+        "selected": "{{duration}} の期間で選択された {{count}} 件のテスト ({{percent}}%)",
+        "selected_plural": "{{duration}} の期間で選択された {{count}} 件のテスト ({{percent}}%)"
+      }
+    },
+    "widget": {
+      "summary": {
+        "aggregatedName": "集計レポート",
+        "launches": "開始",
+        "launches_plural": "開始",
+        "testResults": "テストケース",
+        "testResults_plural": "テストケース"
+      },
+      "trend": {
+        "name": "傾向"
+      },
+      "categoriesTrend": {
+        "name": "カテゴリーの傾向"
+      },
+      "durationTrend": {
+        "name": "期間の傾向"
+      },
+      "retryTrend": {
+        "name": "再実行の傾向"
+      },
+      "executors": {
+        "name": "実行者",
+        "unknown": "不明",
+        "empty": "テスト実行者に関する情報はありません"
+      },
+      "launches": {
+        "name": "開始",
+        "empty": "開始に関する情報はありません"
+      },
+      "environment": {
+        "name": "環境",
+        "empty": "環境変数がありません",
+        "showAll": "全て表示する"
+      },
+      "suites": {
+        "name": "スイート"
+      },
+      "categories": {
+        "name": "カテゴリー"
+      }
+    },
+    "chart": {
+      "duration": {
+        "name": "期間",
+        "empty": "何も表示するものがありません"
+      },
+      "trend": {
+        "empty": "何も表示するものがありません"
+      },
+      "severity": {
+        "name": "重大度"
+      },
+      "status": {
+        "name": "ステータス"
+      }
+    },
+    "testResult": {
+      "status": {
+        "empty": "ステータスに関する詳細はありません",
+        "trace": "トレースを表示"
+      },
+      "overview": {
+        "name": "概要"
+      },
+      "categories": {
+        "name": "カテゴリー"
+      },
+      "description": {
+        "name": "説明"
+      },
+      "duration": {
+        "name": "期間"
+      },
+      "history": {
+        "name": "履歴",
+        "successRate": "成功率"
+      },
+      "owner": {
+        "name": "オーナー"
+      },
+      "retries": {
+        "name": "再実行",
+        "empty": "テストの再実行に関する情報がありません"
+      },
+      "parameters": {
+        "name": "パラメータ"
+      },
+      "links": {
+        "name": "リンク"
+      },
+      "severity": {
+        "name": "重大度"
+      },
+      "execution": {
+        "name": "実行",
+        "setup": "セットアップ作業",
+        "teardown": "仕上げ作業",
+        "body": "テスト本体"
+      },
+      "stats": {
+        "count": {
+          "steps": "{{count}} サブステップ",
+          "steps_plural": "{{count}} サブステップ",
+          "attachments": "{{count}} 添付ファイル",
+          "attachments_plural": "{{count}} 添付ファイル",
+          "parameters": "{{count}} パラメータ",
+          "parameters_plural": "{{count}} パラメータ"
+        }
+      }
+    },
+    "controls": {
+      "collapse": "折り畳む",
+      "expand": "拡大",
+      "fullscreen": "フルスクリーン",
+      "language": "言語を変更",
+      "clipboard": "クリップボードにコピー",
+      "clipboardSuccess": "コピーされました",
+      "clipboardError": "クリップボードにコピーできませんでした。ブラウザがサポートしていないようです。",
+      "backto": "戻る"
+    },
+    "errors": {
+      "missedAttachment": "添付ファイルは見つかりませんでした",
+      "notFound": "見つかりませんでした"
+    },
+    "component": {
+      "tree": {
+        "filter": "ステータス",
+        "filter-marks": "マーク",
+        "groups": "グループ情報を表示・非表示",
+        "download": "CSVをダウンロード",
+        "empty": "何もありません",
+        "time": {
+          "total" : {
+            "name": "全体",
+            "tooltip": "最初のテストが始まってから最後のテストが終わるまでの期間"
+          },
+          "max": {
+            "name": "最長",
+            "tooltip": "一番長い実行期間"
+          },
+          "sum": {
+            "name": "合計",
+            "tooltip": "全てのテスト実行期間の合計"
+          }
+        },
+        "filtered": {
+          "total": "{{count}} 件のテスト結果",
+          "total_plural": "{{count}} 件のテスト結果",
+          "shown": "{{count}} 件を表示"
+        }
+      },
+      "widgetStatus": {
+        "showAll": "全て表示",
+        "total": "計 {{count}} 件",
+        "total_plural": "計 {{count}} 件"
+      },
+      "statusToggle": {
+        "showCases": "ステータスが {{status}} のテスト結果を表示",
+        "hideCases": "ステータスが {{status}} のテスト結果を隠す"
+      },
+      "markToggle": {
+        "showCases": "{{mark}} 件のテスト結果を表示",
+        "hideCases": "{{mark}} 件のテスト結果を隠す"
+      }
+    }
+  }
+  
