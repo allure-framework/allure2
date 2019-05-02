@@ -185,7 +185,7 @@
       "widgetStatus": {
         "showAll": "Mostrar todo",
         "total": "total de ítems {{count}}",
-        "total_plural": "total de ítems {{count}"
+        "total_plural": "total de ítems {{count}}"
       },
       "statusToggle": {
         "showCases": "Mostrar resultados de pruebas con estado {{status}}",
