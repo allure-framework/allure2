@@ -112,6 +112,20 @@ allure.api.addTranslation('es', {
     }
 });
 
+allure.api.addTranslation('kr', {
+    tab: {
+        behaviors: {
+            name: '동작'
+        }
+    },
+    widget: {
+        behaviors: {
+            name: '스토리별 기능',
+            showAll: '전체 보기'
+        }
+    }
+});
+
 allure.api.addTab('behaviors', {
     title: 'tab.behaviors.name', icon: 'fa fa-list',
     route: 'behaviors(/)(:testGroup)(/)(:testResult)(/)(:testResultTab)(/)',
