@@ -1,0 +1,205 @@
+{
+  "status": {
+    "failed": "실패",
+    "broken": "고장",
+    "passed": "통과",
+    "skipped": "건너뜀",
+    "unknown": "알수없음",
+    "flaky": "불안정한 테스트",
+    "newFailed": "새로 실패한 테스트"
+  },
+  "marks": {
+    "flaky": "불안정함",
+    "newFailed": "새로 실패함"
+  },
+  "sorter": {
+    "order": "순서",
+    "name": "이름",
+    "duration": "소요시간",
+    "status": "상태"
+  },
+  "tab": {
+    "overview": {
+      "name": "요약"
+    },
+    "categories": {
+      "name": "카테고리"
+    },
+    "suites": {
+      "name": "스위트"
+    },
+    "graph": {
+      "name": "그래프"
+    },
+    "timeline": {
+      "name": "타임라인",
+      "selected": "{{duration}} 이상의 시간이 소요된 {{count}} 개 테스트 ({{percent}}%)",
+      "selected_plural": "{{duration}} 이상의 시간이 소요된 {{count}} 개 테스트 ({{percent}}%)"
+    }
+  },
+  "widget": {
+    "summary": {
+      "aggregatedName": "전체 리포트",
+      "launches": "시작",
+      "launches_plural": "시작",
+      "testResults": "테스트 케이스",
+      "testResults_plural": "테스트 케이스"
+    },
+    "trend": {
+      "name": "트렌드"
+    },
+    "categoriesTrend": {
+      "name": "카테고리 트렌드"
+    },
+    "durationTrend": {
+      "name": "소요시간 트렌드"
+    },
+    "retryTrend": {
+      "name": "재시도 트렌드"
+    },
+    "executors": {
+      "name": "실행 주체",
+      "unknown": "알 수 없음",
+      "empty": "실행 정보가 없습니다."
+    },
+    "launches": {
+      "name": "시작",
+      "empty": "시작정보가 없습니다."
+    },
+    "environment": {
+      "name": "환경",
+      "empty": "환경변수가 없습니다.",
+      "showAll": "전체 보기"
+    },
+    "suites": {
+      "name": "스위트"
+    },
+    "categories": {
+      "name": "카테고리"
+    }
+  },
+  "chart": {
+    "duration": {
+      "name": "시간",
+      "empty": "정보가 없습니다."
+    },
+    "trend": {
+      "empty": "정보가 없습니다."
+    },
+    "severity": {
+      "name": "중요도"
+    },
+    "status": {
+      "name": "상태"
+    }
+  },
+  "testResult": {
+    "status": {
+      "empty": "상태 정보가 없습니다.",
+      "trace": "추적 정보 보기"
+    },
+    "overview": {
+      "name": "요약"
+    },
+    "categories": {
+      "name": "카테고리"
+    },
+    "description": {
+      "name": "설명"
+    },
+    "duration": {
+      "name": "시간"
+    },
+    "history": {
+      "name": "히스토리",
+      "successRate": "성공률"
+    },
+    "owner": {
+      "name": "소유자"
+    },
+    "retries": {
+      "name": "재시도",
+      "empty": "테스트 재시도에 대한 정보가 없습니다."
+    },
+    "parameters": {
+      "name": "패러미터"
+    },
+    "links": {
+      "name": "링크"
+    },
+    "severity": {
+      "name": "중요도"
+    },
+    "execution": {
+      "name": "실행",
+      "setup": "준비 작업",
+      "teardown": "종료 작업",
+      "body": "테스트 내용"
+    },
+    "stats": {
+      "count": {
+        "steps": "하위 스텝 {{count}} 개",
+        "steps_plural": "하위 스텝 {{count}} 개",
+        "attachments": "첨부파일 {{count}} 개",
+        "attachments_plural": "첨부파일 {{count}} 개",
+        "parameters": "패러미터 {{count}} 개",
+        "parameters_plural": "패러미터 {{count}} 개"
+      }
+    }
+  },
+  "controls": {
+    "collapse": "접기",
+    "expand": "펼치기",
+    "fullscreen": "전체화면",
+    "language": "언어 변경",
+    "clipboard": "클립보드에 복사",
+    "clipboardSuccess": "성공적으로 복사되었습니다.",
+    "clipboardError": "클립보드에 복사가 되지 않습니다. 브러우저에 지원되지 않는 기능입니다.",
+    "backto": "돌아가기"
+  },
+  "errors": {
+    "missedAttachment": "첨부파일을 찾을 수 없습니다.",
+    "notFound": "찾을 수 없음"
+  },
+  "component": {
+    "tree": {
+      "filter": "상태",
+      "filter-marks": "마크",
+      "groups": "그룹 정보 표시",
+      "download": "CSV 다운로드",
+      "empty": "내용이 없습니다.",
+      "time": {
+        "total" : {
+          "name": "전체",
+          "tooltip": "첫번째 테스트부터 마지막 테스트까지의 소요시간"
+        },
+        "max": {
+          "name": "최대",
+          "tooltip": "가장 긴 테스트 소요시간"
+        },
+        "sum": {
+          "name": "합계",
+          "tooltip": "테스트 소요시간 총 합"
+        }
+      },
+      "filtered": {
+        "total": "{{count}} 개의 테스트 결과",
+        "total_plural": "{{count}} 개의 테스트 결과",
+        "shown": "{{count}} 개 표시"
+      }
+    },
+    "widgetStatus": {
+      "showAll": "전체보기",
+      "total": "총 {{count}} 개",
+      "total_plural": "총 {{count}} 개"
+    },
+    "statusToggle": {
+      "showCases": "{{status}} 상태의 테스트 결과 보기",
+      "hideCases": "{{status}} 상태의 테스트 결과 감추기"
+    },
+    "markToggle": {
+      "showCases": "{{mark}} 보기",
+      "hideCases": "{{mark}} 감추기"
+    }
+  }
+}
