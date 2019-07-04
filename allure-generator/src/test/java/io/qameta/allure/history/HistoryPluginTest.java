@@ -20,7 +20,9 @@ import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static io.qameta.allure.entity.Status.PASSED;
@@ -28,7 +30,6 @@ import static io.qameta.allure.testdata.TestData.createLaunchResults;
 import static io.qameta.allure.testdata.TestData.randomTestResult;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-import static java.util.Collections.unmodifiableMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class HistoryPluginTest {
