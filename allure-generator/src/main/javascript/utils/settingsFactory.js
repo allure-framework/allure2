@@ -2,7 +2,8 @@ import LocalStorageModel from '../data/localstorage/LocalStorageModel';
 
 const globalSettingsDefaults = {
     language: 'en',
-    sidebarCollapsed: false
+    sidebarCollapsed: false,
+    sideBySidePosition: [50, 50]
 };
 
 const treePluginDefaults = {
@@ -48,6 +49,14 @@ function getGlobalSettings() {
 
         setSidebarCollapsed(value) {
             return this.save('sidebarCollapsed', value);
+        },
+
+        getSideBySidePosition() {
+            return this.get('sideBySidePosition');
+        },
+
+        setSideBySidePosition(size) {
+            return this.save('sideBySidePosition', size);
         }
     });
     const settings = new SettingsModel();
