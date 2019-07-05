@@ -3,17 +3,25 @@ import split from 'split.js';
 import {View} from 'backbone.marionette';
 import {className, regions} from '../../decorators';
 import template from './SideBySideView.hbs';
+import settings from '../../utils/settings';
 
 @className('side-by-side')
 @regions({
     left: '.side-by-side__left',
     right: '.side-by-side__right'
 })
+
 class SideBySideView extends View {
     template = template;
 
     onAttach() {
-        split(['.side-by-side__left', '.side-by-side__right'], {gutterSize: 7});
+        let splitter = split(['.side-by-side__left', '.side-by-side__right'], {
+            gutterSize: 7,
+            sizes: settings.getSideBySidePosition(),
+            onDragEnd: function () {
+                settings.setSideBySidePosition(splitter.getSizes());
+            }
+        });
     }
 
     onRender() {
