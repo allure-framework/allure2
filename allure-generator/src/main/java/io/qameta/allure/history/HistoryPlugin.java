@@ -113,8 +113,8 @@ public class HistoryPlugin implements Reader, Aggregator {
     }
 
     protected Map<String, HistoryData> getData(final List<LaunchResults> launches) {
-        Map<String, HistoryData> history = launches.stream()
-                .map(launch -> launch.getExtra(HISTORY_BLOCK_NAME, (Supplier<HashMap<String, HistoryData>>) HashMap::new))
+        final Map<String, HistoryData> history = launches.stream()
+                .map(launch -> launch.getExtra(HISTORY_BLOCK_NAME, (Supplier<Map<String, HistoryData>>) HashMap::new))
                 .reduce(new HashMap<>(), (a, b) -> {
                     a.putAll(b);
                     return a;
