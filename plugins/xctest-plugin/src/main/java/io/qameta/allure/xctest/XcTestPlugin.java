@@ -63,6 +63,7 @@ public class XcTestPlugin implements Reader {
     private static final String SUB_ACTIVITIES = "SubActivities";
     private static final String ACTIVITY_SUMMARIES = "ActivitySummaries";
     private static final String HAS_SCREENSHOT = "HasScreenshotData";
+    private static final String ATTACHMENTS = "Attachments";
 
 
     @Override
@@ -141,10 +142,10 @@ public class XcTestPlugin implements Reader {
             step.setStatus(Status.FAILED);
         }
 
-        if (props.containsKey(HAS_SCREENSHOT)) {
+        if (props.containsKey(HAS_SCREENSHOT) || props.containsKey(ATTACHMENTS)) {
             addAttachment(directory, visitor, props, step);
         }
-
+        
         if (parent instanceof TestResult) {
             ((TestResult) parent).getTestStage().getSteps().add(step);
         }
