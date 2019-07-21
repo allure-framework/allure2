@@ -169,7 +169,7 @@ public class XcTestPlugin implements Reader {
                                final Map<String, Object> props,
                                final Step step) {
         final String uuid = props.get("UUID").toString();
-        final Path attachments = directory.resolve("Attachments");
+        final Path attachments = directory.resolve(ATTACHMENTS);
         Stream.of("jpg", "png")
             .map(ext -> attachments.resolve(String.format("Screenshot_%s.%s", uuid, ext)))
             .filter(Files::exists)
