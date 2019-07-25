@@ -70,6 +70,8 @@ public class GaPlugin implements Aggregator {
     private static final String GA_ENDPOINT = "https://www.google-analytics.com/collect";
     private static final String GA_API_VERSION = "1";
 
+    private static final String ALLURE_VERSION_TXT_PATH = "/allure-version.txt";
+
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
@@ -152,12 +154,12 @@ public class GaPlugin implements Aggregator {
 
     private static Optional<String> getVersionFromFile() {
         try {
-            return Optional.of(IOUtils.resourceToString("allure-version.txt", StandardCharsets.UTF_8))
+            return Optional.of(IOUtils.resourceToString(ALLURE_VERSION_TXT_PATH, StandardCharsets.UTF_8))
                     .map(String::trim)
                     .filter(v -> !v.isEmpty())
                     .filter(v -> !"#project.version#".equals(v));
         } catch (IOException e) {
-            LOGGER.debug("Could not read allure-version.txt resource", e);
+            LOGGER.debug("Could not read {} resource", ALLURE_VERSION_TXT_PATH, e);
             return Optional.empty();
         }
     }
