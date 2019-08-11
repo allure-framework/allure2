@@ -268,7 +268,7 @@ public class TrxPlugin implements Reader {
             return Optional.ofNullable(time)
                     .map(ZonedDateTime::parse)
                     .map(ChronoZonedDateTime::toInstant)
-                    .map(Instant::getEpochSecond);
+                    .map(Instant::toEpochMilli);
         } catch (Exception e) {
             LOGGER.error("Could not parse time {}", time, e);
             return Optional.empty();
