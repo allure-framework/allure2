@@ -20,14 +20,16 @@ import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+import static io.qameta.allure.entity.Status.PASSED;
 import static io.qameta.allure.testdata.TestData.createLaunchResults;
 import static io.qameta.allure.testdata.TestData.randomTestResult;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class HistoryPluginTest {
@@ -40,12 +42,12 @@ class HistoryPluginTest {
         final Map<String, Object> extra = new HashMap<>();
         final Map<String, HistoryData> historyDataMap = createHistoryDataMap(
                 historyId,
-                createHistoryItem(Status.PASSED, 1, 2)
+                createHistoryItem(PASSED, 1, 2)
         );
 
         extra.put(HISTORY_BLOCK_NAME, historyDataMap);
         TestResult testResult = createTestResult(Status.FAILED, historyId, 100, 101);
-        new HistoryPlugin().getData(Collections.singletonList(
+        new HistoryPlugin().getData(singletonList(
                 createLaunchResults(extra, testResult)
         ));
         assertThat(testResult.isNewFailed()).isTrue();
@@ -58,17 +60,46 @@ class HistoryPluginTest {
         final Map<String, Object> extra = new HashMap<>();
         final Map<String, HistoryData> historyDataMap = createHistoryDataMap(
                 historyId,
-                createHistoryItem(Status.PASSED, 3, 4),
+                createHistoryItem(PASSED, 3, 4),
                 createHistoryItem(Status.FAILED, 1, 2)
         );
 
         extra.put(HISTORY_BLOCK_NAME, historyDataMap);
         TestResult testResult = createTestResult(Status.FAILED, historyId, 100, 101);
-        new HistoryPlugin().getData(Collections.singletonList(
+        new HistoryPlugin().getData(singletonList(
                 createLaunchResults(extra, testResult)
         ));
         assertThat(testResult.isNewFailed()).isTrue();
         assertThat(testResult.isFlaky()).isTrue();
+    }
+
+    @Test
+    void shouldReduceHistoryResults() {
+        String historyId1 = UUID.randomUUID().toString();
+        String historyId2 = UUID.randomUUID().toString();
+        final Map<String, Object> extra1 = new HashMap<>();
+        final Map<String, Object> extra2 = new HashMap<>();
+        final Map<String, HistoryData> historyDataMap = new HashMap<>();
+        historyDataMap.put(historyId1, new HistoryData().setItems(singletonList(createHistoryItem(PASSED, 1, 2))));
+        historyDataMap.put(historyId2, new HistoryData().setItems(singletonList(createHistoryItem(PASSED, 2, 3))));
+
+        extra1.put(HISTORY_BLOCK_NAME, historyDataMap);
+        extra2.put(HISTORY_BLOCK_NAME, copyHistoryData(historyDataMap));
+
+
+        Map<String, HistoryData> data = new HistoryPlugin().getData(asList(
+                createLaunchResults(extra1, createTestResult(PASSED, historyId1, 3, 4)),
+                createLaunchResults(extra2, createTestResult(PASSED, historyId2, 5, 6))
+        ));
+
+        assertThat(data).containsKeys(historyId1, historyId2);
+        assertThat(data.get(historyId1).getItems()).hasSize(2);
+        assertThat(data.get(historyId2).getItems()).hasSize(2);
+    }
+
+    private Map<String, HistoryData> copyHistoryData(Map<String, HistoryData> historyDataMap) {
+        return historyDataMap.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> new HistoryData().setItems(e.getValue().getItems())));
     }
 
     private TestResult createTestResult(Status status, String historyId, long start, long stop) {
@@ -80,7 +111,7 @@ class HistoryPluginTest {
 
     private Map<String, HistoryData> createHistoryDataMap(String historyId, HistoryItem... historyItems) {
         Map<String, HistoryData> historyDataMap = new HashMap<>();
-        historyDataMap.put(historyId, new HistoryData().setItems(Arrays.asList(historyItems)));
+        historyDataMap.put(historyId, new HistoryData().setItems(asList(historyItems)));
         return historyDataMap;
     }
 

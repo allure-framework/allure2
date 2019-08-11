@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -112,22 +113,22 @@ public class HistoryPlugin implements Reader, Aggregator {
     }
 
     protected Map<String, HistoryData> getData(final List<LaunchResults> launches) {
-        return launches.stream()
-                .map(launch -> {
-                    final ExecutorInfo executorInfo = launch.getExtra(
-                            ExecutorPlugin.EXECUTORS_BLOCK_NAME,
-                            ExecutorInfo::new
-                    );
-                    final Map<String, HistoryData> history = launch.getExtra(HISTORY_BLOCK_NAME, HashMap::new);
-                    launch.getResults().stream()
-                            .filter(result -> Objects.nonNull(result.getHistoryId()))
-                            .forEach(result -> updateHistory(history, result, executorInfo));
-                    return history;
-                })
+        final Map<String, HistoryData> history = launches.stream()
+                .map(launch -> launch.getExtra(HISTORY_BLOCK_NAME, (Supplier<Map<String, HistoryData>>) HashMap::new))
                 .reduce(new HashMap<>(), (a, b) -> {
                     a.putAll(b);
                     return a;
                 });
+        launches.forEach(launch -> {
+            final ExecutorInfo executorInfo = launch.getExtra(
+                    ExecutorPlugin.EXECUTORS_BLOCK_NAME,
+                    ExecutorInfo::new
+            );
+            launch.getResults().stream()
+                    .filter(result -> Objects.nonNull(result.getHistoryId()))
+                    .forEach(result -> updateHistory(history, result, executorInfo));
+        });
+        return history;
     }
 
     private void updateHistory(final Map<String, HistoryData> history,
