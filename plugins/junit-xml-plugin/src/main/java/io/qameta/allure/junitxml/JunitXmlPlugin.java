@@ -26,6 +26,7 @@ import io.qameta.allure.datetime.ZonedDateTimeParser;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
+import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import io.qameta.allure.parser.XmlElement;
@@ -44,6 +45,7 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -51,6 +53,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
@@ -89,6 +92,7 @@ public class JunitXmlPlugin implements Reader {
     private static final String TIMESTAMP_ATTRIBUTE_NAME = "timestamp";
     private static final String STATUS_ATTRIBUTE_NAME = "status";
     private static final String SKIPPED_ATTRIBUTE_VALUE = "notrun";
+    private static final String SYSTEM_OUTPUT_ELEMENT_NAME = "system-out";
 
     private static final String XML_GLOB = "*.xml";
 
@@ -157,7 +161,7 @@ public class JunitXmlPlugin implements Reader {
                 .setTimestamp(getUnix(timestamp));
         testSuiteElement.get(TEST_CASE_ELEMENT_NAME)
                 .forEach(element -> parseTestCase(info, element,
-                        resultsDirectory, parsedFile, context, visitor));
+                                                  resultsDirectory, parsedFile, context, visitor));
     }
 
     private Long getUnix(final String timestamp) {
@@ -176,15 +180,21 @@ public class JunitXmlPlugin implements Reader {
         result.setStatus(status);
         result.setFlaky(isFlaky(testCaseElement));
         setStatusDetails(result, testCaseElement);
-
+        final StageResult stageResult = new StageResult();
+        getLogMessage(testCaseElement).ifPresent(logMessage -> {
+            final List<String> lines = splitLines(logMessage);
+            final List<Step> steps = lines
+                    .stream()
+                    .map(line -> new Step().setName(line))
+                    .collect(Collectors.toList());
+            stageResult.setSteps(steps);
+        });
         getLogFile(resultsDirectory, className)
                 .filter(Files::exists)
                 .map(visitor::visitAttachmentFile)
                 .map(attachment1 -> attachment1.setName("System out"))
-                .ifPresent(attachment -> result.setTestStage(
-                        new StageResult().setAttachments(singletonList(attachment))
-                ));
-
+                .ifPresent(attachment -> stageResult.setAttachments(singletonList(attachment)));
+        result.setTestStage(stageResult);
         visitor.visitTestResult(result);
 
         RETRIES.forEach((elementName, retryStatus) -> testCaseElement.get(elementName).forEach(failure -> {
@@ -195,6 +205,14 @@ public class JunitXmlPlugin implements Reader {
             retried.setStatusTrace(failure.getValue());
             visitor.visitTestResult(retried);
         }));
+    }
+
+    private List<String> splitLines(final String str) {
+        return Arrays.asList(str.split("\\r?\\n"));
+    }
+
+    private Optional<String> getLogMessage(final XmlElement testCaseElement) {
+        return testCaseElement.getFirst(SYSTEM_OUTPUT_ELEMENT_NAME).map(XmlElement::getValue);
     }
 
     private Optional<Path> getLogFile(final Path resultsDirectory, final String className) {
