@@ -36,7 +36,7 @@ class AllurePluginsRegistry {
     }
 
     translate(name, options) {
-        translate(name, options);
+        return translate(name, options);
     }
 
     addTestResultBlock(view, {position}) {
