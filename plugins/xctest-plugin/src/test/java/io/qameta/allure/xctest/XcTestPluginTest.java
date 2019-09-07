@@ -53,13 +53,23 @@ class XcTestPluginTest {
 
     @Test
     void shouldParseResults() throws Exception {
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream("sample.plist")) {
-            Files.copy(Objects.requireNonNull(is), resultsDirectory.resolve("sample.plist"));
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("has-screenshot-data.plist")) {
+            Files.copy(Objects.requireNonNull(is), resultsDirectory.resolve("has-screenshot-data.plist"));
+        }
+        final Path attachments = resultsDirectory.resolve("Attachments");
+        Files.createDirectories(attachments);
+
+        final Path screenshot = attachments.resolve("Screenshot_92D015E5-965D-4171-849C-35CC0945FEA2.png");
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("screenshot.png")) {
+            Files.copy(Objects.requireNonNull(is), screenshot);
         }
 
         new XcTestPlugin().readResults(configuration, visitor, resultsDirectory);
 
-        verify(visitor, times(14))
+        verify(visitor, times(1))
                 .visitTestResult(any(TestResult.class));
+
+        verify(visitor, times(1))
+                .visitAttachmentFile(screenshot);
     }
 }
