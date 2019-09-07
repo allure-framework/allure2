@@ -53,8 +53,20 @@ class XcTestPluginTest {
 
     @Test
     void shouldParseResults() throws Exception {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("sample.plist")) {
+            Files.copy(Objects.requireNonNull(is), resultsDirectory.resolve("sample.plist"));
+        }
+
+        new XcTestPlugin().readResults(configuration, visitor, resultsDirectory);
+
+        verify(visitor, times(14))
+                .visitTestResult(any(TestResult.class));
+    }
+
+    @Test
+    public void shouldParseHasScreenShotData() throws Exception {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("has-screenshot-data.plist")) {
-            Files.copy(Objects.requireNonNull(is), resultsDirectory.resolve("has-screenshot-data.plist"));
+            Files.copy(Objects.requireNonNull(is), resultsDirectory.resolve("sample.plist"));
         }
         final Path attachments = resultsDirectory.resolve("Attachments");
         Files.createDirectories(attachments);
@@ -67,7 +79,23 @@ class XcTestPluginTest {
         new XcTestPlugin().readResults(configuration, visitor, resultsDirectory);
 
         verify(visitor, times(1))
-                .visitTestResult(any(TestResult.class));
+                .visitAttachmentFile(screenshot);
+    }
+
+    @Test
+    public void shouldParseAttachmentsData() throws Exception {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("attachments-data.plist")) {
+            Files.copy(Objects.requireNonNull(is), resultsDirectory.resolve("sample.plist"));
+        }
+        final Path attachments = resultsDirectory.resolve("Attachments");
+        Files.createDirectories(attachments);
+
+        final Path screenshot = attachments.resolve("Screenshot_1_1FBB627A-3D11-41E3-B4E6-5C717C75F175.jpeg");
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("screenshot.png")) {
+            Files.copy(Objects.requireNonNull(is), screenshot);
+        }
+
+        new XcTestPlugin().readResults(configuration, visitor, resultsDirectory);
 
         verify(visitor, times(1))
                 .visitAttachmentFile(screenshot);
