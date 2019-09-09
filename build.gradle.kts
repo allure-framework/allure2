@@ -11,13 +11,13 @@ buildscript {
     }
 
     dependencies {
-        classpath("com.bmuschko:gradle-docker-plugin:4.0.1")
-        classpath("com.diffplug.spotless:spotless-plugin-gradle:3.17.0")
+        classpath("com.bmuschko:gradle-docker-plugin:5.0.0")
+        classpath("com.diffplug.spotless:spotless-plugin-gradle:3.24.2")
         classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4")
-        classpath("gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:1.6.9")
-        classpath("io.spring.gradle:dependency-management-plugin:1.0.6.RELEASE")
-        classpath("net.researchgate:gradle-release:2.7.0")
-        classpath("ru.vyarus:gradle-quality-plugin:3.3.0")
+        classpath("gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:2.0.0")
+        classpath("io.spring.gradle:dependency-management-plugin:1.0.8.RELEASE")
+        classpath("net.researchgate:gradle-release:2.8.0")
+        classpath("ru.vyarus:gradle-quality-plugin:3.4.0")
     }
 }
 
@@ -27,7 +27,7 @@ plugins {
 }
 
 tasks.withType(Wrapper::class) {
-    gradleVersion = "5.2.1"
+    gradleVersion = "5.6.1"
 }
 
 val linkHomepage by extra("https://qameta.io/allure")
@@ -76,31 +76,38 @@ configure(subprojects) {
             mavenBom("org.junit:junit-bom:5.4.0")
         }
         dependencies {
-            dependency("com.beust:jcommander:1.72")
-            dependency("com.github.spotbugs:spotbugs-annotations:3.1.2")
-            dependency("com.opencsv:opencsv:4.5")
-            dependency("com.squareup.retrofit2:converter-jackson:2.5.0")
-            dependency("com.squareup.retrofit2:retrofit:2.5.0")
-            dependency("com.vladsch.flexmark:flexmark:0.40.16")
+            dependency("com.beust:jcommander:1.78")
+            dependency("com.github.spotbugs:spotbugs-annotations:3.1.12")
+            dependency("com.opencsv:opencsv:4.6")
+            dependency("com.vladsch.flexmark:flexmark:0.50.36")
             dependency("commons-io:commons-io:2.6")
-            dependency("io.qameta.allure:allure-java-commons:2.9.0")
-            dependency("io.qameta.allure:allure-junit-platform:2.9.0")
-            dependency("io.qameta.allure:allure-model:2.9.0")
             dependency("javax.xml.bind:jaxb-api:2.3.1")
             dependency("org.allurefw:allure1-model:1.0")
-            dependency("org.apache.commons:commons-lang3:3.8.1")
-            dependency("org.apache.httpcomponents:httpclient:4.5.7")
-            dependency("org.apache.tika:tika-core:1.20")
-            dependency("org.assertj:assertj-core:3.11.1")
-            dependency("org.eclipse.jetty:jetty-server:9.4.14.v20181114")
-            dependency("org.freemarker:freemarker:2.3.28")
-            dependency("org.mockito:mockito-core:2.24.0")
-            dependency("org.projectlombok:lombok:1.18.6")
-            dependency("org.slf4j:slf4j-api:1.7.25")
-            dependency("org.slf4j:slf4j-log4j12:1.7.25")
-            dependency("org.slf4j:slf4j-nop:1.7.25")
-            dependency("org.slf4j:slf4j-simple:1.7.25")
+            dependency("org.apache.commons:commons-lang3:3.9")
+            dependency("org.apache.httpcomponents:httpclient:4.5.9")
+            dependency("org.apache.tika:tika-core:1.22")
+            dependency("org.assertj:assertj-core:3.13.2")
+            dependency("org.eclipse.jetty:jetty-server:9.4.20.v20190813")
+            dependency("org.freemarker:freemarker:2.3.29")
+            dependency("org.mockito:mockito-core:3.0.0")
+            dependency("org.projectlombok:lombok:1.18.8")
             dependency("org.zeroturnaround:zt-zip:1.13")
+            dependencySet("org.slf4j:1.7.28") {
+                entry("slf4j-api")
+                entry("slf4j-nop")
+                entry("slf4j-simple")
+                entry("slf4j-log4j12")
+            }
+            dependencySet("io.qameta.allure:2.13.0") {
+                entry("allure-java-commons")
+                entry("allure-junit-platform")
+                entry("allure-model")
+                entry("allure-assertj")
+            }
+            dependencySet("com.squareup.retrofit2:2.6.1") {
+                entry("converter-jackson")
+                entry("retrofit")
+            }
         }
     }
 
@@ -182,7 +189,7 @@ configure(subprojects) {
     configure<SpotlessExtension> {
         java {
             target(fileTree(rootDir) {
-                include("**/src/**/*.java")
+                include("src/**/*.java")
             })
             removeUnusedImports()
             @Suppress("INACCESSIBLE_TYPE")
