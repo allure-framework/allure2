@@ -184,11 +184,6 @@ public class CommandLine {
     }
 
     private void printUsage(final JCommander commander) {
-        final String parsedCommand = commander.getParsedCommand();
-        if (Objects.isNull(parsedCommand)) {
-            commander.usage();
-        } else {
-            commander.usage(parsedCommand);
-        }
+        commander.usage();
     }
 }

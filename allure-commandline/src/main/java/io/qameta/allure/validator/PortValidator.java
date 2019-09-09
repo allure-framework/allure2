@@ -27,7 +27,7 @@ public class PortValidator implements IParameterValidator {
     private static final String MESSAGE = "invalid port value. Should be an integer between 0 and 65535";
 
     @Override
-    public void validate(final String name, final String value) throws ParameterException {
+    public void validate(final String name, final String value) {
         try {
             final int port = Integer.parseInt(value);
             if (port < 0 || port > MAX_PORT_VALUE) {

@@ -29,6 +29,7 @@ import java.util.Objects;
 
 /**
  * Default call adapter factory.
+ *
  * @param <T> return type.
  */
 public final class DefaultCallAdapterFactory<T> extends CallAdapter.Factory {
@@ -45,14 +46,11 @@ public final class DefaultCallAdapterFactory<T> extends CallAdapter.Factory {
     }
 
     private static String getErrorMessage(final retrofit2.Response<?> response) {
-        final ResponseBody errorBody = response.errorBody();
-        final String errorMessage;
-        try {
-            errorMessage = Objects.isNull(errorBody) ? response.message() : errorBody.string();
+        try (ResponseBody errorBody = response.errorBody()) {
+            return Objects.isNull(errorBody) ? response.message() : errorBody.string();
         } catch (IOException e) {
             throw new ServiceException("could not read error body", e);
         }
-        return errorMessage;
     }
 
     /**

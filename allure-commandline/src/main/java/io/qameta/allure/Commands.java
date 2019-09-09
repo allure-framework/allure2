@@ -15,7 +15,6 @@
  */
 package io.qameta.allure;
 
-import com.beust.jcommander.JCommander;
 import io.qameta.allure.config.ConfigLoader;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.Plugin;
@@ -52,7 +51,7 @@ import static java.lang.String.format;
 public class Commands {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Commands.class);
-    private static final String DIRECTORY_EXISTS_MESSAGE = "Allure: Target directory %s for the report is already"
+    private static final String DIRECTORY_EXISTS_MESSAGE = "Allure: Target directory {} for the report is already"
             + " in use, add a '--clean' option to overwrite";
 
     private final Path allureHome;
@@ -61,7 +60,7 @@ public class Commands {
         this.allureHome = allureHome;
     }
 
-    public CommandlineConfig getConfig(final ConfigOptions configOptions) throws IOException {
+    public CommandlineConfig getConfig(final ConfigOptions configOptions) {
         return getConfigFile(configOptions)
                 .map(ConfigLoader::new)
                 .map(ConfigLoader::load)
@@ -97,14 +96,14 @@ public class Commands {
         if (clean && directoryExists) {
             FileUtils.deleteQuietly(reportDirectory.toFile());
         } else if (directoryExists && isDirectoryNotEmpty(reportDirectory)) {
-            JCommander.getConsole().println(format(DIRECTORY_EXISTS_MESSAGE, reportDirectory.toAbsolutePath()));
+            LOGGER.error(DIRECTORY_EXISTS_MESSAGE, reportDirectory.toAbsolutePath());
             return ExitCode.GENERIC_ERROR;
         }
         try {
             final ReportGenerator generator = new ReportGenerator(createReportConfiguration(profile));
             generator.generate(reportDirectory, resultsDirectories);
         } catch (IOException e) {
-            LOGGER.error("Could not generate report: {}", e);
+            LOGGER.error("Could not generate report", e);
             return ExitCode.GENERIC_ERROR;
         }
         LOGGER.info("Report successfully generated to {}", reportDirectory);
@@ -123,7 +122,7 @@ public class Commands {
             reportDirectory = tmp.resolve("allure-report");
             tmp.toFile().deleteOnExit();
         } catch (IOException e) {
-            LOGGER.error("Could not create temp directory: {}", e);
+            LOGGER.error("Could not create temp directory", e);
             return ExitCode.GENERIC_ERROR;
         }
 
@@ -145,7 +144,7 @@ public class Commands {
         try {
             server.start();
         } catch (Exception e) {
-            LOGGER.error("Could not serve the report: {}", e);
+            LOGGER.error("Could not serve the report", e);
             return ExitCode.GENERIC_ERROR;
         }
 
@@ -162,20 +161,15 @@ public class Commands {
         try {
             server.join();
         } catch (InterruptedException e) {
-            LOGGER.error("Report serve interrupted {}", e);
+            LOGGER.error("Report serve interrupted", e);
             return ExitCode.GENERIC_ERROR;
         }
         return ExitCode.NO_ERROR;
     }
 
     public ExitCode listPlugins(final ConfigOptions configOptions) {
-        try {
-            final CommandlineConfig config = getConfig(configOptions);
-            config.getPlugins().forEach(LOGGER::info);
-        } catch (IOException e) {
-            LOGGER.error("Can't read config: {}", e);
-            return ExitCode.GENERIC_ERROR;
-        }
+        final CommandlineConfig config = getConfig(configOptions);
+        config.getPlugins().forEach(LOGGER::info);
         return ExitCode.NO_ERROR;
     }
 
@@ -184,9 +178,8 @@ public class Commands {
      *
      * @param profile selected profile.
      * @return created report configuration.
-     * @throws IOException if any occurs.
      */
-    protected Configuration createReportConfiguration(final ConfigOptions profile) throws IOException {
+    protected Configuration createReportConfiguration(final ConfigOptions profile) {
         final DefaultPluginLoader loader = new DefaultPluginLoader();
         final CommandlineConfig commandlineConfig = getConfig(profile);
         final ClassLoader classLoader = getClass().getClassLoader();

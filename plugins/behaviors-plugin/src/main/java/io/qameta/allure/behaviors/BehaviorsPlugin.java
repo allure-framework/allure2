@@ -63,7 +63,7 @@ public class BehaviorsPlugin extends CompositeAggregator {
     protected static final String CSV_FILE_NAME = "behaviors.csv";
 
     @SuppressWarnings("PMD.DefaultPackage")
-    /* default */ static final LabelName[] LABEL_NAMES = new LabelName[]{EPIC, FEATURE, STORY};
+    /* default */ static final LabelName[] LABEL_NAMES = {EPIC, FEATURE, STORY};
 
     public BehaviorsPlugin() {
         super(Arrays.asList(
