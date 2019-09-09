@@ -217,9 +217,9 @@ configure(subprojects) {
         configDir = qualityConfigsDir
         exclude("**/*.json")
         checkstyleVersion = "8.17"
-        pmdVersion = "6.11.0"
-        spotbugsVersion = "3.1.11"
-        codenarcVersion = "1.3"
+        pmdVersion = "6.17.0"
+        spotbugsVersion = "3.1.12"
+        codenarcVersion = "1.4"
     }
 
     val bintrayUpload by tasks.existing
