@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -32,9 +33,10 @@ class ZonedDateTimeParserTest {
 
     static Stream<Arguments> data() {
         return Stream.of(
-                Arguments.of("2018-05-31T14:05:25.155Z", 1527775525155L),
-                Arguments.of("2018-05-06T07:41:51Z", 1525592511000L),
-                Arguments.of("2018-05-31T14:05:25.155Z[America/Los_Angeles]", 1527775525155L + TimeUnit.HOURS.toMillis(7))
+                arguments("2018-05-31T14:05:25.155Z", 1527775525155L),
+                arguments("2018-05-06T07:41:51Z", 1525592511000L),
+                arguments("2018-05-31T14:05:25.155+03:00", 1527775525155L - TimeUnit.HOURS.toMillis(3)),
+                arguments("2018-05-31T14:05:25.155-07:00", 1527775525155L + TimeUnit.HOURS.toMillis(7))
         );
     }
 
