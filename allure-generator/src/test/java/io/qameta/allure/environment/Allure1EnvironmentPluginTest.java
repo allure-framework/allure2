@@ -71,7 +71,7 @@ class Allure1EnvironmentPluginTest {
                 .as("Unexpected environment properties have been read from properties file")
                 .hasSize(3)
                 .usingFieldByFieldElementComparator()
-                .containsExactlyInAnyOrder(expected);
+                .containsExactly(expected);
     }
 
     @Test
