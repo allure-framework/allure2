@@ -257,7 +257,7 @@ class JunitXmlPluginTest {
                 .extracting(TestResult::getTime)
                 .extracting(Time::getStart, Time::getStop, Time::getDuration)
                 .containsExactlyInAnyOrder(
-                        tuple(1507199782000L, 1507199783051L, 1051L)
+                        tuple(1507199782999L, 1507199784050L, 1051L)
                 );
     }
 

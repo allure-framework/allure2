@@ -38,6 +38,12 @@ class LocalDateTimeParserTest {
                 .hasValue(1507199782000L);
     }
 
+    @Test 
+    void shouldParseLocalDateTimeWithNanoseconds() { 
+        final Optional<Long> parsed = new LocalDateTimeParser(ZoneOffset.UTC).getEpochMilli("2019-09-24T01:19:42.578340"); 
+        assertThat(parsed).hasValue(1569287982578L); 
+    } 
+ 
     @Test
     void shouldChangeZone() {
         final ZoneId pst = ZoneId.of(ZoneId.SHORT_IDS.get("PST"));
