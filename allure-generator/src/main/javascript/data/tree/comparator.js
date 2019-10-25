@@ -32,31 +32,31 @@ function byGroupStatuses(a, b) {
     }, 0);
 }
 
-function compare(a, b, nodeCmp, groupCmp, direction) {
+function compare(a, b, nodeCmp, groupCmp, direction, groupOnly) {
     if (a.children && !b.children) {
         return -1;
     } else if (!a.children && b.children) {
         return 1;
     } else if (a.children && b.children) {
         return direction * groupCmp(a, b);
-    } else if (!a.children && !b.children) {
+    } else if (!a.children && !b.children && !groupOnly) {
         return direction * nodeCmp(a, b);
     } else {
         return 0;
     }
 }
 
-export default function getComparator({sorter, ascending}) {
+export default function getComparator({sorter, ascending, groupOnly}) {
     const direction =  ascending ? 1 : -1;
     switch (sorter) {
         case 'sorter.order':
-            return (a, b) => compare(a, b, byOrder, byName, direction);
+            return (a, b) => compare(a, b, byOrder, byName, direction, groupOnly);
         case 'sorter.name':
-            return (a, b) => compare(a, b, byName, byName, direction);
+            return (a, b) => compare(a, b, byName, byName, direction, groupOnly);
         case 'sorter.duration':
-            return (a, b) => compare(a, b, byDuration, byMaxDuration, direction);
+            return (a, b) => compare(a, b, byDuration, byMaxDuration, direction, groupOnly);
         case 'sorter.status':
-            return (a, b) => compare(a, b, byNodeStatus, byGroupStatuses, direction);
+            return (a, b) => compare(a, b, byNodeStatus, byGroupStatuses, direction, groupOnly);
         default:
             return 0;
     }

@@ -40,7 +40,7 @@ class TreeView extends View {
         const filter = mix(byText(searchQuery), byStatuses(visibleStatuses), byMark(visibleMarks));
 
         const sortSettings = this.settings.getTreeSorting();
-        const sorter = getComparator(sortSettings);
+        const sorter = getComparator({...sortSettings, groupOnly: true});
 
         this.collection.applyFilterAndSorting(filter, sorter);
     }
