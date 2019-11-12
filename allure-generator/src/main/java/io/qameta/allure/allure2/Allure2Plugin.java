@@ -22,6 +22,7 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.Label;
+import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.Link;
 import io.qameta.allure.entity.Parameter;
 import io.qameta.allure.entity.StageResult;
@@ -44,8 +45,10 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -100,14 +103,17 @@ public class Allure2Plugin implements Reader {
         final List<TestResultContainer> groups = readTestResultsContainers(resultsDirectory)
                 .collect(Collectors.toList());
 
+        final Map<String, String> suites = new HashMap<>();
         readTestResults(resultsDirectory)
-                .forEach(result -> convert(context.getValue(), resultsDirectory, visitor, groups, result));
+                .forEach(result -> convert(context.getValue(), resultsDirectory, visitor, groups, suites, result));
     }
 
     private void convert(final Supplier<String> uidGenerator,
                          final Path resultsDirectory,
                          final ResultsVisitor visitor,
-                         final List<TestResultContainer> groups, final TestResult result) {
+                         final List<TestResultContainer> groups,
+                         final Map<String, String> suites,
+                         final TestResult result) {
         final io.qameta.allure.entity.TestResult dest = new io.qameta.allure.entity.TestResult();
         dest.setUid(uidGenerator.get());
         dest.setHistoryId(result.getHistoryId());
@@ -124,6 +130,8 @@ public class Allure2Plugin implements Reader {
 
         dest.setLinks(convert(result.getLinks(), this::convert));
         dest.setLabels(convert(result.getLabels(), this::convert));
+        dest.findOneLabel(LabelName.SUITE)
+            .ifPresent(suite -> dest.setSuiteUid(suites.computeIfAbsent(suite, k -> uidGenerator.get())));
         dest.setParameters(getParameters(result));
 
         dest.addLabelIfNotExists(RESULT_FORMAT, ALLURE2_RESULTS_FORMAT);

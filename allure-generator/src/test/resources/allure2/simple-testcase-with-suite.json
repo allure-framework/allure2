@@ -1,0 +1,22 @@
+{
+  "uuid": "93542b02b4f3b5c69033c3643e0428ed",
+  "status": "passed",
+  "name": "shouldCreate",
+  "start": 1479552611395,
+  "stop": 1479552611399,
+  "steps" : [ {
+    "status" : "passed",
+    "name" : "someSimpleStep",
+    "start" : 1479552601335,
+    "stop" : 1479552601337,
+    "attachments" : [ {
+      "name" : "String attachment in test",
+      "source" : "test-sample-attachment.txt",
+      "type" : "text/plain"
+    }]
+  }],
+  "labels" : [ {
+    "name" : "suite",
+    "value": "MySuite"  
+  } ]
+}

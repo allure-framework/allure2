@@ -197,6 +197,30 @@ class Allure2PluginTest {
     }
 
     @Test
+    void shouldProcessSuite() throws Exception {
+        Set<TestResult> testResults = process(
+                "allure2/simple-testcase-with-suite.json", generateTestResultName()
+        ).getResults();
+
+        assertThat(testResults)
+                .hasSize(1);
+        assertThat(testResults.iterator().next().getSuiteUid())
+                .isNotBlank();
+    }
+
+    @Test
+    void shouldNotProcessSuite() throws Exception {
+        Set<TestResult> testResults = process(
+                "allure2/simple-testcase.json", generateTestResultName()
+        ).getResults();
+
+        assertThat(testResults)
+                .hasSize(1);
+        assertThat(testResults.iterator().next().getSuiteUid())
+                .isNull();
+    }
+
+    @Test
     void shouldProcessInvalidStatus() throws Exception {
         Set<TestResult> testResults = process(
                 "allure2/invalid-status.json", generateTestResultName()

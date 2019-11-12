@@ -28,6 +28,8 @@ public class TestResultTreeLeaf extends DefaultTreeLeaf {
 
     private final String uid;
 
+    private final String suiteUid;
+
     private final String parentUid;
 
     private final Status status;
@@ -52,6 +54,7 @@ public class TestResultTreeLeaf extends DefaultTreeLeaf {
         super(name);
         this.parentUid = parentUid;
         this.uid = testResult.getUid();
+        this.suiteUid = testResult.getSuiteUid();
         this.status = testResult.getStatus();
         this.time = testResult.getTime();
         this.flaky = testResult.isFlaky();
@@ -65,6 +68,10 @@ public class TestResultTreeLeaf extends DefaultTreeLeaf {
 
     public String getUid() {
         return uid;
+    }
+
+    public String getSuiteUid() {
+        return suiteUid;
     }
 
     public Status getStatus() {
