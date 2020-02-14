@@ -36,6 +36,7 @@ import io.qameta.allure.executor.ExecutorPlugin;
 import io.qameta.allure.ga.GaPlugin;
 import io.qameta.allure.history.HistoryPlugin;
 import io.qameta.allure.history.HistoryTrendPlugin;
+import io.qameta.allure.hotspot.HotspotPlugin;
 import io.qameta.allure.idea.IdeaLinksPlugin;
 import io.qameta.allure.influxdb.InfluxDbExportPlugin;
 import io.qameta.allure.launch.LaunchPlugin;
@@ -107,7 +108,8 @@ public class ConfigurationBuilder {
                 new Allure1Plugin(),
                 new Allure1EnvironmentPlugin(),
                 new Allure2Plugin(),
-                new GaPlugin()
+                new GaPlugin(),
+                new HotspotPlugin()
         ));
         return this;
     }
