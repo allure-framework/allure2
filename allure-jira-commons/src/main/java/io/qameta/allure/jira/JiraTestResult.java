@@ -31,7 +31,7 @@ public class JiraTestResult {
 
     private int id;
 
-    private Integer launchId;
+    private String externalId;
     private List<String> issueKeys;
 
     private String name;
