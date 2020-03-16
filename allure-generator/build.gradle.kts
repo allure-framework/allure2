@@ -101,6 +101,7 @@ dependencies {
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
     implementation("commons-io:commons-io")
     implementation("io.qameta.allure:allure-model")
+    implementation("javax.xml.bind:jaxb-api")
     implementation("org.allurefw:allure1-model")
     implementation("org.apache.httpcomponents:httpclient")
     implementation("org.apache.tika:tika-core")

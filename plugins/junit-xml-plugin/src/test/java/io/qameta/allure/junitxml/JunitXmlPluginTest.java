@@ -192,21 +192,36 @@ class JunitXmlPluginTest {
     }
 
     @Test
-    void shouldReadCdataMessage() throws Exception {
+    void shouldReadStatusMessage() throws Exception {
         process(
                 "junitdata/TEST-test.CdataMessage.xml", "TEST-test.SampleTest.xml"
         );
 
 
         final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
-        verify(visitor, times(1)).visitTestResult(captor.capture());
+        verify(visitor, times(2)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
                 .extracting(TestResult::getStatusMessage, TestResult::getStatusTrace)
                 .containsExactlyInAnyOrder(
-                        tuple("some-message", "some-trace")
+                        tuple("some-message", "some-trace"),
+                        tuple(null,null)
                 );
+    }
 
+    @Test
+    void shouldReadSystemOutMessage() throws Exception {
+        process(
+                "junitdata/TEST-test.CdataMessage.xml", "TEST-test.SampleTest.xml"
+        );
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(2)).visitTestResult(captor.capture());
+
+        assertThat(captor.getAllValues())
+                .filteredOn(result -> result.getTestStage().getSteps().size() == 2)
+                .filteredOn(result -> result.getTestStage().getSteps().get(0).getName().equals("output"))
+                .filteredOn(result -> result.getTestStage().getSteps().get(1).getName().equals("more output"));
     }
 
     @Issue("532")
