@@ -86,7 +86,7 @@ class JiraTestResultExportPluginTest {
         verify(service).createTestResult(argThat(result -> testResult.getName().equals(result.getName())));
         verify(service).createTestResult(argThat(result -> testResult.getStatus().toString().equals(result.getStatus())));
         verify(service).createTestResult(argThat(result -> result.getUrl().contains(testResult.getUid())));
-        verify(service).createTestResult(argThat(result -> Objects.nonNull(result.getLaunchId())));
+        verify(service).createTestResult(argThat(result -> Objects.nonNull(result.getExternalId())));
 
     }
 
