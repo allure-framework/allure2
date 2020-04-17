@@ -1,9 +1,9 @@
 package io.qameta.allure.hotspot;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.Aggregator;
-import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Attachment;
@@ -33,7 +33,8 @@ public class HotspotPlugin implements Aggregator {
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
                           final Path outputDirectory) throws IOException {
-        final ObjectMapper mapper = configuration.requireContext(JacksonContext.class).getValue();
+        final ObjectMapper mapper = new ObjectMapper()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         final Map<String, Element> elements = new HashMap<>();
         launchesResults.forEach(launch -> {
             final ExecutorInfo executor = launch.getExtra(
@@ -55,7 +56,7 @@ public class HotspotPlugin implements Aggregator {
                         .ifPresent(attachments::addAll);
 
                 final List<Attachment> locators = attachments.stream()
-                        .filter(attachment -> attachment.getName().endsWith("locators"))
+                        .filter(attachment -> attachment.getName().endsWith("locators2"))
                         .collect(Collectors.toList());
 
                 for (final Attachment attachment : locators) {
@@ -63,23 +64,29 @@ public class HotspotPlugin implements Aggregator {
                         final Path path = outputDirectory.resolve("data").resolve("attachments")
                                 .resolve(attachment.getSource());
                         final List<LocatorAction> actions = mapper
-                                .readValue(Files.readAllBytes(path), new TypeReference<List<LocatorAction>>() {
+                                .readValue(path.toFile(), new TypeReference<List<LocatorAction>>() {
                                 });
-                        System.out.println(actions.size());
                         actions.forEach(action -> {
                             final Element element = elements.getOrDefault(action.getFullPath(), new Element());
                             element.setFullPath(action.getFullPath());
                             element.addUrls(action.getUrls());
 
-                            final Element.Test test = new Element.Test()
-                                    .setName(result.getName())
-                                    .setDuration(result.getTime().getDuration())
-                                    .setStatus(result.getStatus().value());
-                            Optional.ofNullable(executor)
-                                    .map(ExecutorInfo::getReportUrl)
-                                    .map(url -> this.createReportUrl(url, result.getUid()))
-                                    .ifPresent(test::setUrl);
-                            element.getTests().add(test);
+                            final String uuid = result.getUid();
+                            final boolean exists = element.getTests().stream()
+                                    .map(Element.Test::getUid)
+                                    .anyMatch(uuid::equals);
+                            if (!exists) {
+                                final Element.Test test = new Element.Test()
+                                        .setUid(result.getUid())
+                                        .setName(result.getName())
+                                        .setDuration(result.getTime().getDuration())
+                                        .setStatus(result.getStatus().value());
+                                Optional.ofNullable(executor)
+                                        .map(ExecutorInfo::getReportUrl)
+                                        .map(url -> this.createReportUrl(url, result.getUid()))
+                                        .ifPresent(test::setUrl);
+                                element.getTests().add(test);
+                            }
                             elements.put(element.getFullPath(), element);
                         });
                     } catch (IOException e) {

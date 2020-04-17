@@ -1,2 +1,2 @@
-./allure-commandline/build/install/allure-commandline/bin/allure serve \
-   /Users/eroshenkoam/Developer/kurau/atlas-locator-watcher/target/allure-results
+./allure-commandline/build/install/allure-commandline/bin/allure serve --port 3333 \
+   /Users/eroshenkoam/Downloads/realty/realty-web-tests/target/allure-results

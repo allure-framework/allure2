@@ -32,6 +32,7 @@ public class Element {
     @Accessors(chain = true)
     public static class Test {
 
+        private String uid;
         private String name;
         private String url;
         private String status;
