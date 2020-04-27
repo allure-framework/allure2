@@ -68,6 +68,7 @@ public class TrxPlugin implements Reader {
     public static final String TRX_RESULTS_FORMAT = "trx";
     public static final String RESULTS_ELEMENT_NAME = "Results";
     public static final String UNIT_TEST_RESULT_ELEMENT_NAME = "UnitTestResult";
+    public static final String UNIT_TEST_INNER_RESULTS = "InnerResults";
     public static final String TEST_NAME_ATTRIBUTE = "testName";
     public static final String START_TIME_ATTRIBUTE = "startTime";
     public static final String END_TIME_ATTRIBUTE = "endTime";
@@ -213,6 +214,13 @@ public class TrxPlugin implements Reader {
 
         result.addLabelIfNotExists(RESULT_FORMAT, TRX_RESULTS_FORMAT);
         visitor.visitTestResult(result);
+        unitTestResult.getFirst(UNIT_TEST_INNER_RESULTS)
+                    .ifPresent(innerResults -> {
+                        innerResults.get(UNIT_TEST_RESULT_ELEMENT_NAME)
+                                .forEach(unitTestChildResult -> 
+                                    parseUnitTestResult(unitTestChildResult, tests, context, visitor)
+                        );
+        }); 
     }
 
     private List<String> splitLines(final String str) {

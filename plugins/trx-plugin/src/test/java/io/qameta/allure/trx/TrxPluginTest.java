@@ -138,6 +138,31 @@ class TrxPluginTest {
                 .hasSize(1);
     }
 
+    @Test
+    void shouldParseTestResultChildren() throws Exception {
+        process(
+                "trxdata/testresultsWithChildren.trx",
+                "sample.trx"
+        );
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(7)).visitTestResult(captor.capture());
+
+        assertThat(captor.getAllValues())
+                .hasSize(7)
+                .extracting(TestResult::getName, TestResult::getStatus)
+                .containsExactlyInAnyOrder(
+                        tuple("UnitTest_One", Status.PASSED),
+                        tuple("UnitTest_Two", Status.PASSED),
+                        tuple("UnitTest_Three", Status.FAILED),
+                        tuple("UnitTest_Three (Child One)", Status.FAILED),
+                        tuple("UnitTest_Three (Child Two)", Status.FAILED),
+                        tuple("UnitTest_Three (Child Two) (GrandChild One)", Status.PASSED),
+                        tuple("UnitTest_Three (Child Two) (GrandChild Two)", Status.FAILED)
+                );
+
+    }
+
     private void process(String... strings) throws IOException {
         Iterator<String> iterator = Arrays.asList(strings).iterator();
         while (iterator.hasNext()) {
