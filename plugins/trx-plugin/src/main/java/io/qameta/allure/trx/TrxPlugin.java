@@ -19,6 +19,7 @@ import io.qameta.allure.Reader;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
+import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.Step;
@@ -214,13 +215,55 @@ public class TrxPlugin implements Reader {
 
         result.addLabelIfNotExists(RESULT_FORMAT, TRX_RESULTS_FORMAT);
         visitor.visitTestResult(result);
+
         unitTestResult.getFirst(UNIT_TEST_INNER_RESULTS)
-                    .ifPresent(innerResults -> {
-                        innerResults.get(UNIT_TEST_RESULT_ELEMENT_NAME)
-                                .forEach(unitTestChildResult -> 
-                                    parseUnitTestResult(unitTestChildResult, tests, context, visitor)
-                        );
-        }); 
+            .ifPresent(innerResults -> {
+                innerResults.get(UNIT_TEST_RESULT_ELEMENT_NAME)
+                    .forEach(unitTestChildResult -> 
+                        parseUnitTestResult(unitTestChildResult, tests, context, visitor, result.getLabels())
+                    );
+            }); 
+    }
+
+    protected void parseUnitTestResult(final XmlElement unitTestResult,
+                                       final Map<String, UnitTest> tests,
+                                       final RandomUidContext context,
+                                       final ResultsVisitor visitor,
+                                       final List<Label> labels) {
+        final String executionId = unitTestResult.getAttribute(EXECUTION_ID_ATTRIBUTE);
+        final String testName = unitTestResult.getAttribute(TEST_NAME_ATTRIBUTE);
+        final String startTime = unitTestResult.getAttribute(START_TIME_ATTRIBUTE);
+        final String endTime = unitTestResult.getAttribute(END_TIME_ATTRIBUTE);
+        final String outcome = unitTestResult.getAttribute(OUTCOME_ATTRIBUTE);
+        final String uid = context.getValue().get();
+        final TestResult result = new TestResult()
+                .setUid(uid)
+                .setName(testName)
+                .setStatus(parseStatus(outcome))
+                .setTime(getTime(startTime, endTime));
+        getStatusMessage(unitTestResult).ifPresent(result::setStatusMessage);
+        getStatusTrace(unitTestResult).ifPresent(result::setStatusTrace);
+        getLogMessage(unitTestResult).ifPresent(logMessage -> {
+            final List<String> lines = splitLines(logMessage);
+            final List<Step> steps = lines
+                    .stream()
+                    .map(line -> new Step().setName(line))
+                    .collect(Collectors.toList());
+            final StageResult stageResult = new StageResult()
+                    .setSteps(steps);
+            result.setTestStage(stageResult);
+        });
+
+        labels.forEach(label -> result.addLabelIfNotExists(label.getName(), label.getValue()));
+
+        visitor.visitTestResult(result);
+        unitTestResult.getFirst(UNIT_TEST_INNER_RESULTS)
+            .ifPresent(innerResults -> {
+                innerResults.get(UNIT_TEST_RESULT_ELEMENT_NAME)
+                    .forEach(unitTestChildResult -> 
+                        parseUnitTestResult(unitTestChildResult, tests, context, visitor, result.getLabels())
+                    );
+            }); 
     }
 
     private List<String> splitLines(final String str) {
