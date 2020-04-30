@@ -230,7 +230,6 @@ public class TrxPlugin implements Reader {
                                        final RandomUidContext context,
                                        final ResultsVisitor visitor,
                                        final List<Label> labels) {
-        final String executionId = unitTestResult.getAttribute(EXECUTION_ID_ATTRIBUTE);
         final String testName = unitTestResult.getAttribute(TEST_NAME_ATTRIBUTE);
         final String startTime = unitTestResult.getAttribute(START_TIME_ATTRIBUTE);
         final String endTime = unitTestResult.getAttribute(END_TIME_ATTRIBUTE);
