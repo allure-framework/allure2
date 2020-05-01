@@ -16,25 +16,20 @@
 package io.qameta.allure.jira;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 /**
- * Jira test result export data.
+ * Jira launch result export data.
  */
 @Data
 @Accessors(chain = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JiraTestResult {
+public class JiraExportResult {
+    private String issueKey;
     private String externalId;
-    private String testCaseId;
-    private String historyKey;
-    private String name;
-    private String url;
     private String status;
-    private String color;
-    private Long date;
-    private String launchExternalId;
-    private String launchName;
-    private String launchUrl;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String message;
 }

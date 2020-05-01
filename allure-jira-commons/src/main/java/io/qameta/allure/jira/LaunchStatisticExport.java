@@ -13,6 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+
 package io.qameta.allure.jira;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -20,21 +21,15 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 /**
- * Jira test result export data.
+ * Statistics for Jira test result export data.
  */
+
 @Data
 @Accessors(chain = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JiraTestResult {
-    private String externalId;
-    private String testCaseId;
-    private String historyKey;
-    private String name;
-    private String url;
-    private String status;
-    private String color;
-    private Long date;
-    private String launchExternalId;
-    private String launchName;
-    private String launchUrl;
+public class LaunchStatisticExport {
+    private final String status;
+    private final String color;
+    private final long count;
+
 }

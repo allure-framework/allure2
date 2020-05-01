@@ -110,7 +110,7 @@ public final class DefaultCallAdapterFactory<T> extends CallAdapter.Factory {
             try {
                 response = call.execute();
             } catch (IOException e) {
-                throw new ServiceException("Could not get request body", e);
+                throw new ServiceException("Could not get request body ", e);
             }
             if (!response.isSuccessful()) {
                 if (response.code() == NOT_FOUND) {

@@ -15,26 +15,22 @@
  */
 package io.qameta.allure.jira;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.experimental.Accessors;
-
 /**
- * Jira test result export data.
+ * Color of given Status.
  */
-@Data
-@Accessors(chain = true)
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class JiraTestResult {
-    private String externalId;
-    private String testCaseId;
-    private String historyKey;
-    private String name;
-    private String url;
-    private String status;
-    private String color;
-    private Long date;
-    private String launchExternalId;
-    private String launchName;
-    private String launchUrl;
+@Getter
+@AllArgsConstructor
+@Accessors(fluent = true)
+public enum StatusColor {
+
+    RED("f90602"),
+    GREEN("78b63c"),
+    YELLOW("febe0d"),
+    GRAY("888888"),
+    PURPLE("bf34a6");
+
+    private final String value;
 }

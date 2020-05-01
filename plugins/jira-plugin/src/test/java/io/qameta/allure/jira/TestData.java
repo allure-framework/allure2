@@ -20,35 +20,57 @@ import io.qameta.allure.entity.TestResult;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-public final class TestData {
 
-    private TestData(){
+public final class TestData {
+    public static final List<String> ISSUES = Arrays.asList("ALLURE-1", "ALLURE_2");
+
+    private TestData() {
     }
 
     public static JiraService mockJiraService() {
         final JiraService service = mock(JiraService.class);
-        when(service.createJiraLaunch(any(JiraLaunch.class))).thenAnswer(i -> {
-            final JiraLaunch launch = i.getArgument(0);
-            launch.setExternalId(String.valueOf(RandomUtils.nextInt()));
-            return launch;
-        });
-        when(service.createTestResult(any(JiraTestResult.class))).thenAnswer(i -> {
-            final JiraTestResult testResult = i.getArgument(0);
-            testResult.setId(RandomUtils.nextInt());
-            return testResult;
-        });
+        when(service.createJiraLaunch(any(JiraLaunch.class), anyList())).thenAnswer(invocation ->
+                Arrays.asList(
+                        new JiraExportResult().setExternalId("ALLURE-1")
+                                .setIssueKey("ALLURE-1")
+                                .setStatus("ok"),
+                        new JiraExportResult().setExternalId("ALLURE-2")
+                                .setIssueKey("ALLURE-2")
+                                .setStatus("ok")
+                )
+        );
+        when(service.createTestResult(any(JiraTestResult.class), anyList())).thenAnswer(i ->
+            Arrays.asList(
+                    new JiraExportResult().setExternalId("ALLURE-1")
+                            .setIssueKey("ALLURE-1")
+                            .setStatus("ok"),
+                    new JiraExportResult().setExternalId("ALLURE-2")
+                            .setIssueKey("ALLURE-2")
+                            .setStatus("ok")
+            ));
         return service;
     }
+
+
 
     public static TestResult createTestResult(final Status status) {
         return new TestResult()
                 .setUid(RandomStringUtils.random(10))
                 .setName(RandomStringUtils.random(10))
+                .setHistoryId(RandomStringUtils.random(9))
                 .setStatus(status);
     }
+
 
 }
