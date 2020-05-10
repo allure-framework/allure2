@@ -45,6 +45,8 @@ public enum Status implements Serializable {
         return value;
     }
 
-    public String color() { return this.color;}
+    public String color() {
+        return this.color;
+    }
 
 }
