@@ -16,11 +16,7 @@
 package io.qameta.allure.jira;
 
 import io.qameta.allure.core.LaunchResults;
-import io.qameta.allure.entity.ExecutorInfo;
-import io.qameta.allure.entity.Link;
-import io.qameta.allure.entity.Statistic;
-import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,16 +41,6 @@ public final class JiraExportUtility {
     private JiraExportUtility() {
     }
 
-
-    public static void handleFailedExport(final List<JiraExportResult> exportResults) {
-        final Optional<JiraExportResult> failedResult = exportResults.stream()
-                .filter(exportResult -> exportResult.getStatus().equals(Status.FAILED.value()))
-                .findFirst();
-        if (failedResult.isPresent()) {
-            LOGGER.error(String.format("There was an failure in response%n %s", failedResult.get()));
-        }
-
-    }
 
     public static JiraLaunch getJiraLaunch(final ExecutorInfo executor,
                                            final List<LaunchStatisticExport> statistic) {
@@ -82,7 +68,7 @@ public final class JiraExportUtility {
                     .setName(testResult.getName())
                     .setUrl(getJiraTestResultUrl(executor.getReportUrl(), testResult.getUid()))
                     .setStatus(testResult.getStatus().toString())
-                    .setColor(findColorForStatus(testResult.getStatus()))
+                    .setColor(testResult.getStatus().color())
                     .setDate(testResult.getTime().getStop())
                     .setLaunchUrl(executor.getReportUrl())
                     .setLaunchName(executor.getBuildName())
@@ -123,25 +109,11 @@ public final class JiraExportUtility {
         return Stream.of(Status.values()).filter(status -> statistic.get(status) != 0)
                 .map(status ->
                         new LaunchStatisticExport(status.value(),
-                                findColorForStatus(status), statistic.get(status)))
+                                status.color(), statistic.get(status)))
                 .collect(Collectors.toList());
 
     }
 
-    public static String findColorForStatus(final Status status) {
-        switch (status) {
-            case FAILED:
-                return StatusColor.RED.value();
-            case PASSED:
-                return StatusColor.GREEN.value();
-            case SKIPPED:
-                return StatusColor.GRAY.value();
-            case BROKEN:
-                return StatusColor.YELLOW.value();
-            default:
-                return StatusColor.PURPLE.value();
-        }
-    }
 
     public static String getJiraTestResultUrl(final String reportUrl, final String uuid) {
         return Optional.ofNullable(reportUrl)

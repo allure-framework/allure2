@@ -6,7 +6,6 @@ import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -14,22 +13,11 @@ import java.util.Set;
 
 import static io.qameta.allure.jira.TestData.createTestResult;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 public class JiraExportUtilitiesTest {
 
-
-    @Test
-    public void statusShouldMatchCorrectColor() {
-        assertThat(JiraExportUtility.findColorForStatus(Status.FAILED)).isEqualTo(StatusColor.RED.value());
-        assertThat(JiraExportUtility.findColorForStatus(Status.PASSED)).isEqualTo(StatusColor.GREEN.value());
-        assertThat(JiraExportUtility.findColorForStatus(Status.SKIPPED)).isEqualTo(StatusColor.GRAY.value());
-        assertThat(JiraExportUtility.findColorForStatus(Status.BROKEN)).isEqualTo(StatusColor.YELLOW.value());
-        assertThat(JiraExportUtility.findColorForStatus(Status.UNKNOWN)).isEqualTo(StatusColor.PURPLE.value());
-    }
 
     @Test
     public void testResultsFromLaunchResultsShouldConvertToLaunchStatisticExport() {
@@ -57,11 +45,11 @@ public class JiraExportUtilitiesTest {
                         Status.UNKNOWN.value());
 
         assertThat(launchStatisticExports).extracting(LaunchStatisticExport::getColor)
-                .contains(StatusColor.RED.value(),
-                        StatusColor.GREEN.value(),
-                        StatusColor.GRAY.value(),
-                        StatusColor.YELLOW.value(),
-                        StatusColor.PURPLE.value());
+                .contains(Status.FAILED.color(),
+                        Status.PASSED.value(),
+                        Status.SKIPPED.value(),
+                        Status.BROKEN.value(),
+                        Status.UNKNOWN.value());
         launchStatisticExports.forEach(launchStatisticExport -> assertThat(launchStatisticExport.getCount()).isEqualTo(resultCount));
 
     }
@@ -88,10 +76,10 @@ public class JiraExportUtilitiesTest {
                 .doesNotContain(Status.SKIPPED.value(), Status.BROKEN.value());
 
         assertThat(launchStatisticExports).extracting(LaunchStatisticExport::getColor)
-                .contains(StatusColor.RED.value(),
-                        StatusColor.GREEN.value(),
-                        StatusColor.PURPLE.value())
-                .doesNotContain(StatusColor.GRAY.value(), StatusColor.YELLOW.value());
+                .contains(Status.FAILED.color(),
+                        Status.PASSED.value(),
+                        Status.UNKNOWN.value())
+                .doesNotContain(Status.SKIPPED.color(), Status.BROKEN.value());
 
         launchStatisticExports.forEach(launchStatisticExport -> assertThat(launchStatisticExport.getCount()).isEqualTo(resultCount));
     }

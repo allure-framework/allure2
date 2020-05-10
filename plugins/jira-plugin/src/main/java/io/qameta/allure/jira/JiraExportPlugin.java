@@ -18,10 +18,7 @@ package io.qameta.allure.jira;
 import io.qameta.allure.Aggregator;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
-import io.qameta.allure.entity.ExecutorInfo;
-import io.qameta.allure.entity.Link;
-import io.qameta.allure.entity.Statistic;
-import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -100,8 +97,14 @@ public class JiraExportPlugin implements Aggregator {
             final List<JiraExportResult> created = jiraService.createJiraLaunch(launch, issues);
             LOGGER.info(String.format("Allure launch '%s' synced with issues  successfully%n",
                     issues));
-            JiraExportUtility.handleFailedExport(created);
-            LOGGER.info(String.format("Results of launch export %n %s", created));
+            final List<JiraExportResult> failedExports = findFailuresInExportResult(created);
+
+            if (!failedExports.isEmpty()) {
+                LOGGER.error(String.format("There was an failure in response%n %s", failedExports));
+            } else {
+                LOGGER.info(String.format("Results of launch export %n %s", created));
+            }
+
             return created;
         } catch (Throwable e) {
             LOGGER.error(String.format("Allure launch sync with issue '%s' error", issues), e);
@@ -124,13 +127,14 @@ public class JiraExportPlugin implements Aggregator {
                     .collect(Collectors.toList());
 
             final List<JiraExportResult> created = jiraService.createTestResult(jiraTestResult, issues);
-            JiraExportUtility.handleFailedExport(created);
-            created.forEach(creation -> {
-                        LOGGER.info(String.format("Allure test result '%s' synced with issue '%s' successfully",
-                                jiraTestResult.getName(),
-                                creation.getIssueKey()));
-                    }
-            );
+            final List<JiraExportResult> failedExports = findFailuresInExportResult(created);
+
+            if (!failedExports.isEmpty()) {
+                LOGGER.error(String.format("There was an failure in response%n %s", failedExports));
+            } else {
+                LOGGER.info("All Test Results have been successfully exported to Jira");
+            }
+
         } catch (Throwable e) {
             LOGGER.error(String.format("Allure test result sync with issue '%s' failed",
                     jiraTestResult.getExternalId()), e);
@@ -138,5 +142,10 @@ public class JiraExportPlugin implements Aggregator {
         }
     }
 
+    private List<JiraExportResult> findFailuresInExportResult(final List<JiraExportResult> exportResults) {
+        return exportResults.stream()
+                .filter(exportResult -> exportResult.getStatus().equals(Status.FAILED.value()))
+                .collect(Collectors.toList());
+    }
 
 }

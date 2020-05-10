@@ -22,32 +22,14 @@ import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
-import static io.qameta.allure.jira.TestData.ISSUES;
 import static io.qameta.allure.jira.TestData.createTestResult;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.filter;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 class JiraLaunchExportPluginTest {
 

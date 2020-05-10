@@ -17,34 +17,17 @@ package io.qameta.allure.jira;
 
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
-import io.qameta.allure.entity.ExecutorInfo;
-import io.qameta.allure.entity.Link;
-import io.qameta.allure.entity.Statistic;
-import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.entity.Time;
+import io.qameta.allure.entity.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import static io.qameta.allure.jira.TestData.ISSUES;
-import static io.qameta.allure.jira.TestData.createTestResult;
-import static io.qameta.allure.jira.TestData.mockJiraService;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static io.qameta.allure.jira.TestData.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 class JiraTestResultExportPluginTest {
 
@@ -89,7 +72,7 @@ class JiraTestResultExportPluginTest {
         verify(service).createTestResult(argThat(result -> result.getUrl().contains(testResult.getUid())), eq(ISSUES));
         verify(service).createTestResult(argThat(result -> result.getName().equals(testResult.getName())), eq(ISSUES));
         verify(service).createTestResult(argThat(result -> result.getStatus().equals(testResult.getStatus().toString())), eq(ISSUES));
-        verify(service).createTestResult(argThat(result -> result.getColor().equals(StatusColor.GREEN.value())), eq(ISSUES));
+        verify(service).createTestResult(argThat(result -> result.getColor().equals(Status.PASSED.color())), eq(ISSUES));
         verify(service).createTestResult(argThat(result -> result.getDate() == testResult.getTime().getStop().longValue()), eq(ISSUES));
         verify(service).createTestResult(argThat(result -> result.getLaunchUrl().equals(executorInfo.getReportUrl())), eq(ISSUES));
         verify(service).createTestResult(argThat(result -> result.getLaunchName().equals(executorInfo.getBuildName())), eq(ISSUES));
