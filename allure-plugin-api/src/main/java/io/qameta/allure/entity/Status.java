@@ -35,7 +35,7 @@ public enum Status implements Serializable {
     private final String value;
     private final String color;
 
-    Status(final String v, String color) {
+    Status(final String v, final String color) {
         value = v;
         this.color = color;
     }

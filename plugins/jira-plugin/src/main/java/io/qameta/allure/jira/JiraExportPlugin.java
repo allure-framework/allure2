@@ -95,13 +95,14 @@ public class JiraExportPlugin implements Aggregator {
                                                       final List<String> issues) {
         try {
             final List<JiraExportResult> created = jiraService.createJiraLaunch(launch, issues);
-            LOGGER.info(String.format("Allure launch '%s' synced with issues  successfully%n",
-                    issues));
+
             final List<JiraExportResult> failedExports = findFailuresInExportResult(created);
 
             if (!failedExports.isEmpty()) {
-                LOGGER.error(String.format("There was an failure in response%n %s", failedExports));
+                logErrorResults(failedExports);
             } else {
+                LOGGER.info(String.format("Allure launch '%s' synced with issues  successfully%n",
+                        issues));
                 LOGGER.info(String.format("Results of launch export %n %s", created));
             }
 
@@ -130,7 +131,7 @@ public class JiraExportPlugin implements Aggregator {
             final List<JiraExportResult> failedExports = findFailuresInExportResult(created);
 
             if (!failedExports.isEmpty()) {
-                LOGGER.error(String.format("There was an failure in response%n %s", failedExports));
+                logErrorResults(failedExports);
             } else {
                 LOGGER.info("All Test Results have been successfully exported to Jira");
             }
@@ -141,6 +142,11 @@ public class JiraExportPlugin implements Aggregator {
             throw e;
         }
     }
+
+    private void logErrorResults(final List<JiraExportResult> failedExportResults) {
+        LOGGER.error(String.format("There was an failure in response%n %s", failedExportResults));
+    }
+
 
     private List<JiraExportResult> findFailuresInExportResult(final List<JiraExportResult> exportResults) {
         return exportResults.stream()
