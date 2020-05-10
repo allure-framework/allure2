@@ -24,29 +24,23 @@ import java.io.Serializable;
  */
 public enum Status implements Serializable {
 
-    FAILED("failed", "f90602"),
-    BROKEN("broken", "febe0d"),
-    PASSED("passed", "78b63c"),
-    SKIPPED("skipped", "888888"),
-    UNKNOWN("unknown", "bf34a6");
+    FAILED("failed"),
+    BROKEN("broken"),
+    PASSED("passed"),
+    SKIPPED("skipped"),
+    UNKNOWN("unknown");
 
     private static final long serialVersionUID = 1L;
 
     private final String value;
-    private final String color;
 
-    Status(final String v, final String color) {
+    Status(final String v) {
         value = v;
-        this.color = color;
     }
 
     @JsonValue
     public String value() {
         return value;
-    }
-
-    public String color() {
-        return this.color;
     }
 
 }

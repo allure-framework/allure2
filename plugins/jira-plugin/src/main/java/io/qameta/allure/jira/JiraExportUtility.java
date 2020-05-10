@@ -16,7 +16,10 @@
 package io.qameta.allure.jira;
 
 import io.qameta.allure.core.LaunchResults;
-import io.qameta.allure.entity.*;
+import io.qameta.allure.entity.ExecutorInfo;
+import io.qameta.allure.entity.Link;
+import io.qameta.allure.entity.Statistic;
+import io.qameta.allure.entity.TestResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,7 +71,7 @@ public final class JiraExportUtility {
                     .setName(testResult.getName())
                     .setUrl(getJiraTestResultUrl(executor.getReportUrl(), testResult.getUid()))
                     .setStatus(testResult.getStatus().toString())
-                    .setColor(testResult.getStatus().color())
+                    .setColor(findTestResultsStatusColor(testResult))
                     .setDate(testResult.getTime().getStop())
                     .setLaunchUrl(executor.getReportUrl())
                     .setLaunchName(executor.getBuildName())
@@ -106,10 +109,10 @@ public final class JiraExportUtility {
     }
 
     public static List<LaunchStatisticExport> convertStatistics(final Statistic statistic) {
-        return Stream.of(Status.values()).filter(status -> statistic.get(status) != 0)
-                .map(status ->
-                        new LaunchStatisticExport(status.value(),
-                                status.color(), statistic.get(status)))
+        return Stream.of(ResultStatus.values()).filter(resultStatus -> statistic.get(resultStatus.statusName()) != 0)
+                .map(resultStatus ->
+                        new LaunchStatisticExport(resultStatus.statusName().value(),
+                                resultStatus.color(), statistic.get(resultStatus.statusName())))
                 .collect(Collectors.toList());
 
     }
@@ -130,5 +133,13 @@ public final class JiraExportUtility {
         return Arrays.asList(value.split(","));
     }
 
-
+    private static String findTestResultsStatusColor(final TestResult testResult) {
+        return Stream.of(ResultStatus.values())
+                .filter(resultStatus -> testResult.getStatus() == resultStatus.statusName())
+                .findFirst()
+                .orElseThrow(() ->
+                        new IllegalArgumentException("There is no such status as " + testResult.getStatus()
+                                .value()))
+                .color();
+    }
 }

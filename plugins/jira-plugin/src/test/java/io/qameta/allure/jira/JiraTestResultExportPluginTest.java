@@ -72,7 +72,7 @@ class JiraTestResultExportPluginTest {
         verify(service).createTestResult(argThat(result -> result.getUrl().contains(testResult.getUid())), eq(ISSUES));
         verify(service).createTestResult(argThat(result -> result.getName().equals(testResult.getName())), eq(ISSUES));
         verify(service).createTestResult(argThat(result -> result.getStatus().equals(testResult.getStatus().toString())), eq(ISSUES));
-        verify(service).createTestResult(argThat(result -> result.getColor().equals(Status.PASSED.color())), eq(ISSUES));
+        verify(service).createTestResult(argThat(result -> result.getColor().equals(ResultStatus.PASSED.color())), eq(ISSUES));
         verify(service).createTestResult(argThat(result -> result.getDate() == testResult.getTime().getStop().longValue()), eq(ISSUES));
         verify(service).createTestResult(argThat(result -> result.getLaunchUrl().equals(executorInfo.getReportUrl())), eq(ISSUES));
         verify(service).createTestResult(argThat(result -> result.getLaunchName().equals(executorInfo.getBuildName())), eq(ISSUES));

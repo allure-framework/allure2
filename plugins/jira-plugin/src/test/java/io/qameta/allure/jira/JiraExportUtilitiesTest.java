@@ -45,11 +45,11 @@ public class JiraExportUtilitiesTest {
                         Status.UNKNOWN.value());
 
         assertThat(launchStatisticExports).extracting(LaunchStatisticExport::getColor)
-                .contains(Status.FAILED.color(),
-                        Status.PASSED.value(),
-                        Status.SKIPPED.value(),
-                        Status.BROKEN.value(),
-                        Status.UNKNOWN.value());
+                .contains(ResultStatus.FAILED.color(),
+                        ResultStatus.PASSED.color(),
+                        ResultStatus.SKIPPED.color(),
+                        ResultStatus.BROKEN.color(),
+                        ResultStatus.UNKNOWN.color());
         launchStatisticExports.forEach(launchStatisticExport -> assertThat(launchStatisticExport.getCount()).isEqualTo(resultCount));
 
     }
@@ -76,15 +76,13 @@ public class JiraExportUtilitiesTest {
                 .doesNotContain(Status.SKIPPED.value(), Status.BROKEN.value());
 
         assertThat(launchStatisticExports).extracting(LaunchStatisticExport::getColor)
-                .contains(Status.FAILED.color(),
-                        Status.PASSED.value(),
-                        Status.UNKNOWN.value())
-                .doesNotContain(Status.SKIPPED.color(), Status.BROKEN.value());
+                .contains(ResultStatus.FAILED.color(),
+                        ResultStatus.PASSED.color(),
+                        ResultStatus.UNKNOWN.color())
+                .doesNotContain(ResultStatus.SKIPPED.color(), ResultStatus.BROKEN.color());
 
         launchStatisticExports.forEach(launchStatisticExport -> assertThat(launchStatisticExport.getCount()).isEqualTo(resultCount));
     }
-
-
 
 
 }
