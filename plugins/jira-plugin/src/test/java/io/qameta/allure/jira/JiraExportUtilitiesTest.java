@@ -32,8 +32,8 @@ public class JiraExportUtilitiesTest {
         final Set<TestResult> results = new HashSet<>(Arrays.asList(passed, failed, broken, skipped, unknown));
         when(launchResults.getAllResults()).thenReturn(results);
 
-        final Statistic statistic = JiraExportUtility.getStatistic(Arrays.asList(launchResults));
-        List<LaunchStatisticExport> launchStatisticExports = JiraExportUtility.convertStatistics(statistic);
+        final Statistic statistic = JiraExportUtils.getStatistic(Arrays.asList(launchResults));
+        List<LaunchStatisticExport> launchStatisticExports = JiraExportUtils.convertStatistics(statistic);
 
         assertThat(launchStatisticExports).isNotEmpty().hasSize(5);
 
@@ -65,8 +65,8 @@ public class JiraExportUtilitiesTest {
         final Set<TestResult> results = new HashSet<>(Arrays.asList(passed, failed, unknown));
         when(launchResults.getAllResults()).thenReturn(results);
 
-        final Statistic statistic = JiraExportUtility.getStatistic(Arrays.asList(launchResults));
-        final List<LaunchStatisticExport> launchStatisticExports = JiraExportUtility.convertStatistics(statistic);
+        final Statistic statistic = JiraExportUtils.getStatistic(Arrays.asList(launchResults));
+        final List<LaunchStatisticExport> launchStatisticExports = JiraExportUtils.convertStatistics(statistic);
 
         assertThat(launchStatisticExports).isNotEmpty().hasSize(3);
         assertThat(launchStatisticExports).extracting(LaunchStatisticExport::getStatus)

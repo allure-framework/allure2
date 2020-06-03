@@ -18,7 +18,12 @@ package io.qameta.allure.jira;
 import io.qameta.allure.Aggregator;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
-import io.qameta.allure.entity.*;
+
+import io.qameta.allure.entity.ExecutorInfo;
+import io.qameta.allure.entity.Link;
+import io.qameta.allure.entity.Statistic;
+import io.qameta.allure.entity.Status;
+import io.qameta.allure.entity.TestResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,19 +74,19 @@ public class JiraExportPlugin implements Aggregator {
         if (enabled) {
             final JiraService jiraService = jiraServiceSupplier.get();
 
-            final List<String> issues = JiraExportUtility.splitByComma(this.issues);
-            final ExecutorInfo executor = JiraExportUtility.getExecutor(launchesResults);
-            final Statistic statisticToConvert = JiraExportUtility.getStatistic(launchesResults);
-            final List<LaunchStatisticExport> statistic = JiraExportUtility.convertStatistics(statisticToConvert);
-            final JiraLaunch launch = JiraExportUtility.getJiraLaunch(executor, statistic);
+            final List<String> issues = JiraExportUtils.splitByComma(this.issues);
+            final ExecutorInfo executor = JiraExportUtils.getExecutor(launchesResults);
+            final Statistic statisticToConvert = JiraExportUtils.getStatistic(launchesResults);
+            final List<LaunchStatisticExport> statistic = JiraExportUtils.convertStatistics(statisticToConvert);
+            final JiraLaunch launch = JiraExportUtils.getJiraLaunch(executor, statistic);
             exportLaunchToJira(jiraService, launch, issues);
 
-            JiraExportUtility.getTestResults(launchesResults).stream()
-                    .map(testResult -> JiraExportUtility.getJiraTestResult(executor, testResult))
+            JiraExportUtils.getTestResults(launchesResults).stream()
+                    .map(testResult -> JiraExportUtils.getJiraTestResult(executor, testResult))
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .forEach(jiraTestResult -> {
-                        JiraExportUtility.getTestResults(launchesResults)
+                        JiraExportUtils.getTestResults(launchesResults)
                                 .stream()
                                 .forEach(testResult ->
                                         exportTestResultToJira(jiraService, jiraTestResult, testResult));
@@ -123,7 +128,7 @@ public class JiraExportPlugin implements Aggregator {
 
         try {
             final List<String> issues = testResult.getLinks().stream()
-                    .filter(JiraExportUtility::isIssueLink)
+                    .filter(JiraExportUtils::isIssueLink)
                     .map(Link::getName)
                     .collect(Collectors.toList());
 

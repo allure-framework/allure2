@@ -25,11 +25,23 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 
 import static io.qameta.allure.jira.TestData.createTestResult;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 
 class JiraLaunchExportPluginTest {
 
@@ -45,8 +57,8 @@ class JiraLaunchExportPluginTest {
 
         final Set<TestResult> results = new HashSet<>(Arrays.asList(passed, failed, broken, skipped, unknown));
         when(launchResults.getAllResults()).thenReturn(results);
-        final Statistic statistic = JiraExportUtility.getStatistic(Arrays.asList(launchResults));
-        final List<LaunchStatisticExport> launchStatisticExports = JiraExportUtility.convertStatistics(statistic);
+        final Statistic statistic = JiraExportUtils.getStatistic(Arrays.asList(launchResults));
+        final List<LaunchStatisticExport> launchStatisticExports = JiraExportUtils.convertStatistics(statistic);
 
         final ExecutorInfo executorInfo = new ExecutorInfo()
                 .setBuildName(RandomStringUtils.random(10))

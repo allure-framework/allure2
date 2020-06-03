@@ -28,17 +28,19 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static io.qameta.allure.executor.ExecutorPlugin.EXECUTORS_BLOCK_NAME;
+
 /**
  * @author SeleniumTestAB.
  * <p>
  * Utility Class for Jira Export Plugin
  */
 
-public final class JiraExportUtility {
+public final class JiraExportUtils {
 
-    private static final String EXECUTORS_BLOCK_NAME = "executor";
 
-    private JiraExportUtility() {
+
+    private JiraExportUtils() {
     }
 
 
@@ -55,7 +57,7 @@ public final class JiraExportUtility {
     public static Optional<JiraTestResult> getJiraTestResult(final ExecutorInfo executor,
                                                              final TestResult testResult) {
         final List<String> issues = testResult.getLinks().stream()
-                .filter(JiraExportUtility::isIssueLink)
+                .filter(JiraExportUtils::isIssueLink)
                 .map(Link::getName)
                 .collect(Collectors.toList());
         if (issues.isEmpty()) {

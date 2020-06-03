@@ -17,17 +17,35 @@ package io.qameta.allure.jira;
 
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
-import io.qameta.allure.entity.*;
+
+import io.qameta.allure.entity.ExecutorInfo;
+import io.qameta.allure.entity.Link;
+import io.qameta.allure.entity.Status;
+import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.entity.Time;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Paths;
-import java.util.*;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.qameta.allure.jira.TestData.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static io.qameta.allure.jira.TestData.ISSUES;
+import static io.qameta.allure.jira.TestData.createTestResult;
+import static io.qameta.allure.jira.TestData.mockJiraService;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 
 class JiraTestResultExportPluginTest {
 
