@@ -18,7 +18,6 @@ package io.qameta.allure.jira;
 import io.qameta.allure.Aggregator;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
-
 import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.Link;
 import io.qameta.allure.entity.Statistic;
@@ -29,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -122,7 +122,7 @@ public class JiraExportPlugin implements Aggregator {
                                         final JiraTestResult jiraTestResult,
                                         final TestResult testResult) {
 
-        if (!jiraTestResult.getTestCaseId().equals(testResult.getUid())) {
+        if (!Objects.equals(jiraTestResult.getTestCaseId(), testResult.getUid())) {
             return;
         }
 
