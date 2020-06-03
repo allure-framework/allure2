@@ -17,35 +17,38 @@ package io.qameta.allure.jira;
 
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
+
 import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.Link;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.entity.Time;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Paths;
-import java.util.Arrays;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static io.qameta.allure.jira.TestData.ISSUES;
 import static io.qameta.allure.jira.TestData.createTestResult;
 import static io.qameta.allure.jira.TestData.mockJiraService;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+
 class JiraTestResultExportPluginTest {
 
-    private static final List<String> ISSUES = Arrays.asList("ALLURE-1", "ALLURE_2");
 
     @Test
     void shouldExportTestResultToJira() {
@@ -55,7 +58,8 @@ class JiraTestResultExportPluginTest {
                 .collect(Collectors.toList());
 
         final TestResult testResult = createTestResult(Status.PASSED)
-                .setLinks(links);
+                .setLinks(links)
+                .setTime(new Time().setStop(90L));
 
         final Set<TestResult> results = new HashSet<>(Collections.singletonList(testResult));
         when(launchResults.getAllResults()).thenReturn(results);
@@ -77,16 +81,20 @@ class JiraTestResultExportPluginTest {
                 Collections.singletonList(launchResults),
                 Paths.get("/")
         );
-        verify(service, times(1)).createJiraLaunch(any(JiraLaunch.class));
-        verify(service).createJiraLaunch(argThat(launch -> executorInfo.getBuildName().equals(launch.getName())));
-        verify(service).createJiraLaunch(argThat(launch -> executorInfo.getReportUrl().equals(launch.getUrl())));
 
-        verify(service, times(1)).createTestResult(any(JiraTestResult.class));
-        verify(service).createTestResult(argThat(result -> result.getIssueKeys().size() == 2));
-        verify(service).createTestResult(argThat(result -> testResult.getName().equals(result.getName())));
-        verify(service).createTestResult(argThat(result -> testResult.getStatus().toString().equals(result.getStatus())));
-        verify(service).createTestResult(argThat(result -> result.getUrl().contains(testResult.getUid())));
-        verify(service).createTestResult(argThat(result -> Objects.nonNull(result.getExternalId())));
+
+        verify(service, times(1)).createTestResult(any(JiraTestResult.class), eq(ISSUES));
+        verify(service).createTestResult(argThat(result -> result.getExternalId().equals(testResult.getUid())), eq(ISSUES));
+        verify(service).createTestResult(argThat(result -> result.getTestCaseId().equals(testResult.getUid())), eq(ISSUES));
+        verify(service).createTestResult(argThat(result -> result.getHistoryKey().equals(testResult.getHistoryId())), eq(ISSUES));
+        verify(service).createTestResult(argThat(result -> result.getUrl().contains(testResult.getUid())), eq(ISSUES));
+        verify(service).createTestResult(argThat(result -> result.getName().equals(testResult.getName())), eq(ISSUES));
+        verify(service).createTestResult(argThat(result -> result.getStatus().equals(testResult.getStatus().toString())), eq(ISSUES));
+        verify(service).createTestResult(argThat(result -> result.getColor().equals(ResultStatus.PASSED.color())), eq(ISSUES));
+        verify(service).createTestResult(argThat(result -> result.getDate() == testResult.getTime().getStop().longValue()), eq(ISSUES));
+        verify(service).createTestResult(argThat(result -> result.getLaunchUrl().equals(executorInfo.getReportUrl())), eq(ISSUES));
+        verify(service).createTestResult(argThat(result -> result.getLaunchName().equals(executorInfo.getBuildName())), eq(ISSUES));
+        verify(service).createTestResult(argThat(result -> result.getLaunchExternalId().equals(executorInfo.getBuildName())), eq(ISSUES));
 
     }
 

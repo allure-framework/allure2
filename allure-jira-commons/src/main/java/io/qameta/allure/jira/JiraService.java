@@ -35,13 +35,13 @@ public interface JiraService {
     Response<ResponseBody> createIssueComment(@Path("issueKey") String issueKey, @Body JiraIssueComment comment);
 
     @POST("allure/1.0/launch")
-    JiraLaunch createJiraLaunch(@Body JiraLaunch launch);
+    List<JiraExportResult> createJiraLaunch(@Body JiraLaunch launch, @Query("issueKey") List<String> issueKey);
 
     @GET("allure/1.0/launch")
     List<JiraLaunch> getJiraLaunches(@Query("issueKey") String issueKey);
 
     @POST("allure/1.0/testresult")
-    JiraTestResult createTestResult(@Body JiraTestResult launch);
+    List<JiraExportResult> createTestResult(@Body JiraTestResult launch, @Query("issueKey") List<String> issueKey);
 
     @GET("allure/1.0/testresult")
     List<JiraTestResult> getTestResults(@Query("issueKey") String issueKey);
@@ -49,7 +49,7 @@ public interface JiraService {
     @GET("raven/1.0/api/testexec/{issueKey}/test")
     List<XrayTestRun> getTestRunsForTestExecution(@Path("issueKey") String issueKey);
 
-    @PUT("raven/1.0/api/testrun/{id}/status")
-    Response<ResponseBody> updateTestRunStatus(@Path("id") Integer id, @Query("status") String status);
+    @PUT("raven/1.0/api/testrun/{externalId}/status")
+    Response<ResponseBody> updateTestRunStatus(@Path("externalId") Integer externalId, @Query("status") String status);
 
 }

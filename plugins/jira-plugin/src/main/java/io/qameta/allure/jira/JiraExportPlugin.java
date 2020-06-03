@@ -21,14 +21,14 @@ import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.Link;
 import io.qameta.allure.entity.Statistic;
+import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -38,11 +38,11 @@ import static io.qameta.allure.util.PropertyUtils.getProperty;
 /**
  * @author eroshenkoam (Artem Eroshenko).
  */
+
+
 public class JiraExportPlugin implements Aggregator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JiraExportPlugin.class);
-
-    private static final String EXECUTORS_BLOCK_NAME = "executor";
 
     private static final String ALLURE_JIRA_ENABLED = "ALLURE_JIRA_ENABLED";
     private static final String ALLURE_JIRA_LAUNCH_ISSUES = "ALLURE_JIRA_LAUNCH_ISSUES";
@@ -74,124 +74,89 @@ public class JiraExportPlugin implements Aggregator {
         if (enabled) {
             final JiraService jiraService = jiraServiceSupplier.get();
 
-            final List<String> issues = splitByComma(this.issues);
-            final ExecutorInfo executor = getExecutor(launchesResults);
-            final Statistic statistic = getStatistic(launchesResults);
+            final List<String> issues = JiraExportUtils.splitByComma(this.issues);
+            final ExecutorInfo executor = JiraExportUtils.getExecutor(launchesResults);
+            final Statistic statisticToConvert = JiraExportUtils.getStatistic(launchesResults);
+            final List<LaunchStatisticExport> statistic = JiraExportUtils.convertStatistics(statisticToConvert);
+            final JiraLaunch launch = JiraExportUtils.getJiraLaunch(executor, statistic);
+            exportLaunchToJira(jiraService, launch, issues);
 
-            final JiraLaunch launch = getJiraLaunch(issues, executor, statistic);
-            final JiraLaunch created = exportLaunchToJira(jiraService, launch);
-
-            getTestResults(launchesResults).stream()
-                    .map(testResult -> getJiraTestResult(created, executor, testResult))
+            JiraExportUtils.getTestResults(launchesResults).stream()
+                    .map(testResult -> JiraExportUtils.getJiraTestResult(executor, testResult))
                     .filter(Optional::isPresent)
                     .map(Optional::get)
-                    .forEach(testResult -> exportTestResultToJira(jiraService, testResult));
-        }
-    }
-
-    private JiraLaunch getJiraLaunch(final List<String> issueKeys,
-                                     final ExecutorInfo executor,
-                                     final Statistic statistic) {
-        return new JiraLaunch()
-                .setIssueKeys(issueKeys)
-                .setName(executor.getBuildName())
-                .setUrl(executor.getReportUrl())
-                .setPassed(statistic.getPassed())
-                .setFailed(statistic.getFailed())
-                .setBroken(statistic.getBroken())
-                .setSkipped(statistic.getSkipped())
-                .setUnknown(statistic.getUnknown())
-                .setDate(System.currentTimeMillis());
-    }
-
-    private Optional<JiraTestResult> getJiraTestResult(final JiraLaunch launch,
-                                                       final ExecutorInfo executor,
-                                                       final TestResult testResult) {
-        final List<String> issues = testResult.getLinks().stream()
-                .filter(this::isIssueLink)
-                .map(Link::getName)
-                .collect(Collectors.toList());
-
-        if (issues.isEmpty()) {
-            return Optional.empty();
-        } else {
-            final JiraTestResult jiraTestResult = new JiraTestResult()
-                    .setIssueKeys(issues)
-                    .setName(testResult.getName())
-                    .setUrl(getJiraTestResultUrl(executor.getReportUrl(), testResult.getUid()))
-                    .setStatus(testResult.getStatus().toString())
-                    .setDate(testResult.getTime().getStop())
-                    .setExternalId(launch.getExternalId());
-            return Optional.of(jiraTestResult);
+                    .forEach(jiraTestResult -> {
+                        JiraExportUtils.getTestResults(launchesResults)
+                                .stream()
+                                .forEach(testResult ->
+                                        exportTestResultToJira(jiraService, jiraTestResult, testResult));
+                    });
         }
     }
 
 
-    private List<TestResult> getTestResults(final List<LaunchResults> launchesResults) {
-        return launchesResults.stream()
-                .map(LaunchResults::getAllResults)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
-    }
-
-    private ExecutorInfo getExecutor(final List<LaunchResults> launchesResults) {
-        return launchesResults.stream()
-                .map(launchResults -> launchResults.getExtra(EXECUTORS_BLOCK_NAME))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .filter(ExecutorInfo.class::isInstance)
-                .map(ExecutorInfo.class::cast)
-                .findFirst()
-                .orElse(new ExecutorInfo());
-    }
-
-    private Statistic getStatistic(final List<LaunchResults> launchesResults) {
-        final Statistic statistic = new Statistic();
-        launchesResults.stream()
-                .map(LaunchResults::getAllResults)
-                .flatMap(Collection::stream)
-                .forEach(statistic::update);
-        return statistic;
-    }
-
-    private JiraLaunch exportLaunchToJira(final JiraService jiraService, final JiraLaunch launch) {
+    private List<JiraExportResult> exportLaunchToJira(final JiraService jiraService,
+                                                      final JiraLaunch launch,
+                                                      final List<String> issues) {
         try {
-            final JiraLaunch created = jiraService.createJiraLaunch(launch);
-            LOGGER.info(String.format("Allure launch '%s' synced with issues '%s' successfully",
-                    created.getExternalId(), created.getIssueKeys()));
+            final List<JiraExportResult> created = jiraService.createJiraLaunch(launch, issues);
+
+            final List<JiraExportResult> failedExports = findFailuresInExportResult(created);
+
+            if (!failedExports.isEmpty()) {
+                logErrorResults(failedExports);
+            } else {
+                LOGGER.info(String.format("Allure launch '%s' synced with issues  successfully%n",
+                        issues));
+                LOGGER.info(String.format("Results of launch export %n %s", created));
+            }
+
             return created;
         } catch (Throwable e) {
-            LOGGER.error(String.format("Allure launch sync with issue '%s' error", launch.getIssueKeys()), e);
+            LOGGER.error(String.format("Allure launch sync with issue '%s' error", issues), e);
             throw e;
         }
     }
 
-    private void exportTestResultToJira(final JiraService jiraService, final JiraTestResult testResult) {
+    private void exportTestResultToJira(final JiraService jiraService,
+                                        final JiraTestResult jiraTestResult,
+                                        final TestResult testResult) {
+
+        if (!Objects.equals(jiraTestResult.getTestCaseId(), testResult.getUid())) {
+            return;
+        }
+
         try {
-            final JiraTestResult created = jiraService.createTestResult(testResult);
-            LOGGER.info(String.format("Allure test result '%s' synced with issue '%s' successfully",
-                    created.getId(),
-                    created.getIssueKeys()));
+            final List<String> issues = testResult.getLinks().stream()
+                    .filter(JiraExportUtils::isIssueLink)
+                    .map(Link::getName)
+                    .collect(Collectors.toList());
+
+            final List<JiraExportResult> created = jiraService.createTestResult(jiraTestResult, issues);
+            final List<JiraExportResult> failedExports = findFailuresInExportResult(created);
+
+            if (!failedExports.isEmpty()) {
+                logErrorResults(failedExports);
+            } else {
+                LOGGER.info("All Test Results have been successfully exported to Jira");
+            }
+
         } catch (Throwable e) {
-            LOGGER.error(String.format("Allure test result sync with issue '%s' failed", testResult.getIssueKeys()), e);
+            LOGGER.error(String.format("Allure test result sync with issue '%s' failed",
+                    jiraTestResult.getExternalId()), e);
             throw e;
         }
     }
 
-
-    private String getJiraTestResultUrl(final String reportUrl, final String uuid) {
-        return Optional.ofNullable(reportUrl)
-                .map(url -> url.endsWith("index.html") ? "%s#testresult/%s" : "%s/#testresult/%s")
-                .map(pattern -> String.format(pattern, reportUrl, uuid))
-                .orElse(null);
+    private void logErrorResults(final List<JiraExportResult> failedExportResults) {
+        LOGGER.error(String.format("There was an failure in response%n %s", failedExportResults));
     }
 
-    private boolean isIssueLink(final Link link) {
-        return "issue".equals(link.getType());
-    }
 
-    private static List<String> splitByComma(final String value) {
-        return Arrays.asList(value.split(","));
+    private List<JiraExportResult> findFailuresInExportResult(final List<JiraExportResult> exportResults) {
+        return exportResults.stream()
+                .filter(exportResult -> exportResult.getStatus().equals(Status.FAILED.value()))
+                .collect(Collectors.toList());
     }
 
 }

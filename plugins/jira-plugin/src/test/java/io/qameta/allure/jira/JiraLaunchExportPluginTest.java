@@ -18,6 +18,7 @@ package io.qameta.allure.jira;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.ExecutorInfo;
+import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -31,18 +32,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+
 import static io.qameta.allure.jira.TestData.createTestResult;
-import static io.qameta.allure.jira.TestData.mockJiraService;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+
 class JiraLaunchExportPluginTest {
 
-    private static final List<String> ISSUES = Arrays.asList("ALLURE-1", "ALLURE-2");
 
     @Test
     void shouldExportLaunchToJira() {
@@ -55,13 +57,14 @@ class JiraLaunchExportPluginTest {
 
         final Set<TestResult> results = new HashSet<>(Arrays.asList(passed, failed, broken, skipped, unknown));
         when(launchResults.getAllResults()).thenReturn(results);
+        final Statistic statistic = JiraExportUtils.getStatistic(Arrays.asList(launchResults));
+        final List<LaunchStatisticExport> launchStatisticExports = JiraExportUtils.convertStatistics(statistic);
 
         final ExecutorInfo executorInfo = new ExecutorInfo()
                 .setBuildName(RandomStringUtils.random(10))
                 .setReportUrl(RandomStringUtils.random(10));
         when(launchResults.getExtra("executor")).thenReturn(Optional.of(executorInfo));
-
-        final JiraService service = mockJiraService();
+        final JiraService service = TestData.mockJiraService();
         final JiraExportPlugin jiraLaunchExportPlugin = new JiraExportPlugin(
                 true,
                 "ALLURE-1,ALLURE-2",
@@ -74,18 +77,14 @@ class JiraLaunchExportPluginTest {
                 Paths.get("/")
         );
 
-        verify(service, times(1)).createJiraLaunch(any(JiraLaunch.class));
-        verify(service).createJiraLaunch(argThat(launch -> launch.getIssueKeys().size() == 2));
-        verify(service).createJiraLaunch(argThat(launch -> ISSUES.equals(launch.getIssueKeys())));
+        verify(service, times(1)).createJiraLaunch(any(JiraLaunch.class), anyList());
 
-        verify(service).createJiraLaunch(argThat(launch -> executorInfo.getBuildName().equals(launch.getName())));
-        verify(service).createJiraLaunch(argThat(launch -> executorInfo.getReportUrl().equals(launch.getUrl())));
+        verify(service).createJiraLaunch(argThat(launch -> executorInfo.getBuildName().equals(launch.getExternalId())), anyList());
+        verify(service).createJiraLaunch(argThat(launch -> executorInfo.getReportUrl().equals(launch.getUrl())), anyList());
+        verify(service).createJiraLaunch(argThat(launch -> launchStatisticExports.equals(launch.getStatistic())), anyList());
+        verify(service).createJiraLaunch(argThat(launch -> executorInfo.getBuildName().equals(launch.getName())), anyList());
+        verify(service).createJiraLaunch(any(JiraLaunch.class), argThat(issues -> !issues.isEmpty()));
 
-        verify(service).createJiraLaunch(argThat(launch -> launch.getPassed() == 1));
-        verify(service).createJiraLaunch(argThat(launch -> launch.getFailed() == 1));
-        verify(service).createJiraLaunch(argThat(launch -> launch.getBroken() == 1));
-        verify(service).createJiraLaunch(argThat(launch -> launch.getSkipped() == 1));
-        verify(service).createJiraLaunch(argThat(launch -> launch.getUnknown() == 1));
     }
 
 

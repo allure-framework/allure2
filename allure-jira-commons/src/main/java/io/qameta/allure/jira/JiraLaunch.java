@@ -28,19 +28,12 @@ import java.util.List;
 @Accessors(chain = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JiraLaunch {
-
     private String externalId;
-
-    private List<String> issueKeys;
-
+    private List<LaunchStatisticExport> statistic;
     private String name;
     private String url;
     private Long date;
 
-    private Long failed;
-    private Long broken;
-    private Long passed;
-    private Long skipped;
-    private Long unknown;
+
 
 }
