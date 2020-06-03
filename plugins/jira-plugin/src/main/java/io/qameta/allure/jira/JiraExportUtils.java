@@ -28,8 +28,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.qameta.allure.executor.ExecutorPlugin.EXECUTORS_BLOCK_NAME;
-
 /**
  * @author SeleniumTestAB.
  * <p>
@@ -38,7 +36,7 @@ import static io.qameta.allure.executor.ExecutorPlugin.EXECUTORS_BLOCK_NAME;
 
 public final class JiraExportUtils {
 
-
+    private static final String EXECUTORS_BLOCK_NAME = "executor";
 
     private JiraExportUtils() {
     }

@@ -6,7 +6,6 @@ description = "Allure Jira Plugin"
 
 dependencies {
     compileOnly(project(":allure-plugin-api"))
-    implementation(project(":allure-generator"))
     implementation(project(":allure-jira-commons"))
     testImplementation("io.qameta.allure:allure-junit-platform")
     testImplementation("org.apache.commons:commons-lang3")
