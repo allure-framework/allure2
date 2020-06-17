@@ -3,6 +3,7 @@ package io.qameta.allure.hotspot;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import freemarker.template.utility.StringUtil;
 import io.qameta.allure.Aggregator;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
@@ -26,7 +27,12 @@ import java.util.stream.Collectors;
 /**
  * @author eroshenkoam (Artem Eroshenko).
  */
-@SuppressWarnings({"PMD.SystemPrintln", "PMD.AvoidInstantiatingObjectsInLoops", "PMD.AvoidThrowingRawExceptionTypes"})
+@SuppressWarnings({
+        "PMD.SystemPrintln",
+        "PMD.AvoidInstantiatingObjectsInLoops",
+        "PMD.AvoidThrowingRawExceptionTypes",
+        "ExecutableStatementCount"
+})
 public class HotspotPlugin implements Aggregator {
 
     @Override
@@ -67,6 +73,9 @@ public class HotspotPlugin implements Aggregator {
                                 .readValue(path.toFile(), new TypeReference<List<LocatorAction>>() {
                                 });
                         actions.forEach(action -> {
+                            if (StringUtil.isTrimmableToEmpty(action.getFullPath().toCharArray())) {
+                                return;
+                            }
                             final Element element = elements.getOrDefault(action.getFullPath(), new Element());
                             element.setFullPath(action.getFullPath());
                             element.addUrls(action.getUrls());
@@ -87,6 +96,7 @@ public class HotspotPlugin implements Aggregator {
                                         .ifPresent(test::setUrl);
                                 element.getTests().add(test);
                             }
+                            element.setCount(element.getTests().size());
                             elements.put(element.getFullPath(), element);
                         });
                     } catch (IOException e) {

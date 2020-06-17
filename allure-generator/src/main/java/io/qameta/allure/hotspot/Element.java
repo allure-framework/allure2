@@ -16,6 +16,7 @@ import java.util.Set;
 public class Element {
 
     private String fullPath;
+    private int count;
     private Set<String> urls = new HashSet<>();
     private List<Test> tests = new ArrayList<>();
 
