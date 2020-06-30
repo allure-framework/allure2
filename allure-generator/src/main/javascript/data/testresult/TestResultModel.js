@@ -25,7 +25,7 @@ export default class TestResultModel extends Model {
 
 
     getAttachment(uid) {
-        return findWhere(this.allAttachments, {uid});
+        return findWhere(this.allAttachments, {uid: uid.toString()});
     }
 
     url() {
