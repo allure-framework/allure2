@@ -110,7 +110,7 @@ Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com
 
 This project exists thanks to all the people who contribute. [[Contribute]](.github/CONTRIBUTING.md).
 
-<a href="graphs/contributors"><img src="https://opencollective.com/allure-report/contributors.svg?avatarHeight=24&width=890&showBtn=false" /></a>
+<a href="https://github.com/allure-framework/allure2/graphs/contributors"><img src="https://opencollective.com/allure-report/contributors.svg?avatarHeight=24&width=890&showBtn=false" /></a>
 
 ## License
 
