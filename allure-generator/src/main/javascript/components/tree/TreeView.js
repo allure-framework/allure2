@@ -113,7 +113,11 @@ class TreeView extends View {
             el.toggleClass('node__expanded', this.state.has(uid));
         });
         this.$('.node__title_active').parents('.node').toggleClass('node__expanded', true);
-        this.$('.node__expanded').parents('.node').toggleClass('node__expanded', true);
+        if (this.$('.node').parents('.node__expanded').length > 0) {
+            this.$('.node__expanded').parents('div.node.node__expanded').toggleClass('node__expanded', true);
+        } else {
+            this.$('.node__expanded').parents('.node').toggleClass('node__expanded', true);
+        }
     }
 
     findElement(treeNode) {
