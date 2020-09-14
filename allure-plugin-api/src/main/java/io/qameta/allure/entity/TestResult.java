@@ -71,6 +71,27 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
     protected boolean retry;
     protected final Map<String, Object> extra = new HashMap<>();
 
+
+    public TestResult resetFlaky() {
+        this.flaky = false;
+        return this;
+    }
+
+    /**
+     * Sets the TestResult's flaky status
+     * 
+     * Performs logical OR on existing flakiness so that other plugins that
+     * have previously set flakiness don't get their value overwritten 'falsely'
+     *
+     * Trying to deliberatey set flakiness to false? use {@link #resetFlaky()}
+     * 
+     * @param flakeStatus Flaky status
+     */
+    public TestResult setFlaky(final boolean flakeStatus) {
+        this.flaky = flakeStatus || this.flaky;
+        return this;
+    }
+
     @JsonProperty
     public String getSource() {
         return getUid() + ".json";
