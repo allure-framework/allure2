@@ -56,6 +56,20 @@ allure.api.addTranslation('de', {
     }
 });
 
+allure.api.addTranslation('nl', {
+    tab: {
+        behaviors: {
+            name: 'Functionaliteit'
+        }
+    },
+    widget: {
+        behaviors: {
+            name: 'Features en story’s',
+            showAll: 'Toon alle'
+        }
+    }
+});
+
 allure.api.addTranslation('he', {
     tab: {
         behaviors: {
