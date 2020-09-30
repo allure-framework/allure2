@@ -32,6 +32,14 @@ allure.api.addTranslation('de', {
     }
 });
 
+allure.api.addTranslation('nl', {
+    tab: {
+        packages: {
+            name: 'Packages'
+        }
+    }
+});
+
 allure.api.addTranslation('he', {
     tab: {
         packages: {
