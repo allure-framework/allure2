@@ -202,7 +202,7 @@
     },
     "statusToggle": {
       "showCases": "Toon testresultaten met status ‘{{status}}’",
-      "hideCases": "Verberg testresultaten met status ’{{status}}’"
+      "hideCases": "Verberg testresultaten met status ‘{{status}}’"
     },
     "markToggle": {
       "showCases": "Toon testresultaten gemarkeerd als ‘{{mark}}’",
