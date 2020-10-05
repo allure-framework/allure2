@@ -72,7 +72,7 @@ public class ReportGenerator {
 
     private boolean isValidResultsDirectory(final Path resultsDirectory) {
         if (Files.notExists(resultsDirectory)) {
-            LOGGER.warn("{} does not exists", resultsDirectory);
+            LOGGER.warn("{} does not exist", resultsDirectory);
             return false;
         }
         if (!Files.isDirectory(resultsDirectory)) {
