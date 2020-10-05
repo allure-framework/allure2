@@ -111,15 +111,19 @@
       "name": "Duur"
     },
     "history": {
-      "name": "Historie",
-      "successRate": "Slagingsratio"
+      "name": "Geschiedenis",
+      "successRate": "Slagingsratio",
+      "statistic": "{{passed}} van {{total}}",
+      "time": "{{date}} om {{time}}",
+      "empty": "Geen historische gegevens beschikbaar."
     },
     "owner": {
       "name": "Eigenaar"
     },
     "retries": {
-      "name": "Nieuwe pogingen",
-      "empty": "Er is geen informatie over nieuwe testpogingen."
+      "name": "Pogingen",
+      "time": "{{date}} om {{time}}",
+      "empty": "Geen informatie beschikbaar."
     },
     "parameters": {
       "name": "Parameters"
@@ -134,7 +138,10 @@
       "name": "Uitvoering",
       "setup": "Set up",
       "teardown": "Tear down",
-      "body": "Test body"
+      "body": "Test body",
+      "downloadAttachment": {
+        "tooltip": "Bijlage in een nieuw tabblad openen"
+      }
     },
     "stats": {
       "count": {

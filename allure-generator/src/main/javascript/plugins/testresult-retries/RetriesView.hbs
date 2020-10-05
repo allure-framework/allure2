@@ -3,7 +3,7 @@
         {{#each retries}}
             <a class="link" href="#/testresult/{{uid}}">
                 <span class="label label_status_{{status}}">{{status}}</span>
-                <span>{{date time.start}} at {{time time.start}}</span>
+                <span>{{t 'testResult.retries.time' time=(date time.start) date=(time time.start)}}</span>
                 <pre class="preformated-text"><code>{{statusDetails}}</code></pre>
             </a>
         {{/each}}
