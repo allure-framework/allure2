@@ -1,8 +1,8 @@
 {
   "status": {
     "failed": "Gefaald",
-    "broken": "Kapot",
-    "passed": "Geslaagd",
+    "broken": "Defect",
+    "passed": "Succes",
     "skipped": "Overgeslagen",
     "unknown": "Onbekend",
     "flaky": "Test is instabiel",
@@ -69,7 +69,7 @@
     "environment": {
       "name": "Omgeving",
       "empty": "Er zijn geen omgevingsvariabelen",
-      "showAll": "Toon alle"
+      "showAll": "Toon alles"
     },
     "suites": {
       "name": "Suites"
@@ -111,15 +111,19 @@
       "name": "Duur"
     },
     "history": {
-      "name": "Historie",
-      "successRate": "Slagingsratio"
+      "name": "Geschiedenis",
+      "successRate": "Slagingsratio",
+      "statistic": "{{passed}} van {{total}}",
+      "time": "{{date}} om {{time}}",
+      "empty": "Geen historische gegevens beschikbaar."
     },
     "owner": {
       "name": "Eigenaar"
     },
     "retries": {
-      "name": "Nieuwe pogingen",
-      "empty": "Er is geen informatie over nieuwe testpogingen."
+      "name": "Pogingen",
+      "time": "{{date}} om {{time}}",
+      "empty": "Geen informatie beschikbaar."
     },
     "parameters": {
       "name": "Parameters"
@@ -134,7 +138,10 @@
       "name": "Uitvoering",
       "setup": "Set up",
       "teardown": "Tear down",
-      "body": "Test body"
+      "body": "Test body",
+      "downloadAttachment": {
+        "tooltip": "Bijlage in een nieuw tabblad openen"
+      }
     },
     "stats": {
       "count": {
@@ -171,15 +178,15 @@
       "time": {
         "total" : {
           "name": "Totaal",
-          "tooltip": "Duur van eerste test gestart tot laatste test beëindigd"
+          "tooltip": "Doorloop van eerste test gestart tot laatste test beëindigd"
         },
         "max": {
-          "name": "Langstdurend",
+          "name": "Langste",
           "tooltip": "Duur van de langste test"
         },
         "sum": {
           "name": "Som",
-          "tooltip": "Duur van alle tests opgeteld"
+          "tooltip": "Opgetelde duur van alle tests"
         }
       },
       "filtered": {
@@ -189,13 +196,13 @@
       }
     },
     "widgetStatus": {
-      "showAll": "Toon alles",
+      "showAll": "Toon alle",
       "total": "{{count}} item in totaal",
       "total_plural": "{{count}} items in totaal"
     },
     "statusToggle": {
       "showCases": "Toon testresultaten met status ‘{{status}}’",
-      "hideCases": "Verberg testresultaten met status ’{{status}}’"
+      "hideCases": "Verberg testresultaten met status ‘{{status}}’"
     },
     "markToggle": {
       "showCases": "Toon testresultaten gemarkeerd als ‘{{mark}}’",
