@@ -47,7 +47,7 @@ public class HotspotPlugin implements Aggregator {
                     ExecutorPlugin.EXECUTORS_BLOCK_NAME,
                     ExecutorInfo::new
             );
-            launch.getAllResults().forEach(result -> {
+            launch.getAllResults().stream().filter(s -> !s.isHidden()).forEach(result -> {
                 final List<Attachment> attachments = new ArrayList<>();
                 result.getBeforeStages().stream()
                         .filter(Objects::nonNull)
