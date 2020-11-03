@@ -49,7 +49,7 @@
       "name": "Tendance"
     },
     "categoriesTrend": {
-      "name": "Tendance des Categories"
+      "name": "Tendance des categories"
     },
     "durationTrend": {
       "name": "Tendance de la durée"
@@ -158,7 +158,7 @@
     "collapse": "Plier",
     "expand": "Déplier",
     "fullscreen": "Plein écran",
-    "language": "Changeer de langue",
+    "language": "Changer de langue",
     "clipboard": "Copier dans le presse-papier",
     "clipboardSuccess": "Copié avec succès",
     "clipboardError": "Impossible de copier vers le presse-papier. Cette fonction ne semble pas être supportée par votre navigateur",
@@ -172,7 +172,7 @@
     "tree": {
       "filter": "Statut",
       "filter-marks": "Marques",
-      "groups": "Basculer les information des groupes",
+      "groups": "Basculer les informations des groupes",
       "download": "Télécharger le fichier CSV",
       "empty": "Il n'y a aucun article",
       "time": {
