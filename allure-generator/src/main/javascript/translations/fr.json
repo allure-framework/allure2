@@ -1,0 +1,212 @@
+{
+  "status": {
+    "failed": "Échoué",
+    "broken": "Cassé",
+    "passed": "Passé",
+    "skipped": "Ignoré",
+    "unknown": "Inconnu",
+    "flaky": "Le test est instable",
+    "newFailed": "Le test a échoué (nouveau)."
+  },
+  "marks": {
+    "flaky": "Instable",
+    "newFailed": "Échoué (nouveau)"
+  },
+  "sorter": {
+    "order": "ordre",
+    "name": "nom",
+    "duration": "durée",
+    "status": "statut"
+  },
+  "tab": {
+    "overview": {
+      "name": "Aperçu"
+    },
+    "categories": {
+      "name": "Catégories"
+    },
+    "suites": {
+      "name": "Suites"
+    },
+    "graph": {
+      "name": "Graphiques"
+    },
+    "timeline": {
+      "name": "Chronologie",
+      "selected": "{{count}} test sélectionné ({{percent}}%) avec une durée supérieure à {{duration}}",
+      "selected_plural": "{{count}} tests sélectionnés ({{percent}}%) avec une durée supérieure à {{duration}}"
+    }
+  },
+  "widget": {
+    "summary": {
+      "aggregatedName": "Rapport agrégé",
+      "launches": "lancement",
+      "launches_plural": "lancements",
+      "testResults": "cas de test",
+      "testResults_plural": "cas de test"
+    },
+    "trend": {
+      "name": "Tendance"
+    },
+    "categoriesTrend": {
+      "name": "Tendance des catégories"
+    },
+    "durationTrend": {
+      "name": "Tendance de la durée"
+    },
+    "retryTrend": {
+      "name": "Tendance des tentatives"
+    },
+    "executors": {
+      "name": "Exécuteurs",
+      "unknown": "Inconnu",
+      "empty": "Aucune information à propos des exécuteurs des tests"
+    },
+    "launches": {
+      "name": "Lancements",
+      "empty": "Aucune information à propos des lancements"
+    },
+    "environment": {
+      "name": "Environnement",
+      "empty": "Aucune variable d'environnement",
+      "showAll": "Afficher tout"
+    },
+    "suites": {
+      "name": "Suites"
+    },
+    "categories": {
+      "name": "Catégories"
+    }
+  },
+  "chart": {
+    "duration": {
+      "name": "Durée",
+      "empty": "Il n'y a rien à montrer"
+    },
+    "trend": {
+      "empty": "Il n'y a rien à montrer"
+    },
+    "severity": {
+      "name": "Sévérité"
+    },
+    "status": {
+      "name": "Statut"
+    }
+  },
+  "testResult": {
+    "status": {
+      "empty": "Détails du statut vide",
+      "trace": "Afficher la trace"
+    },
+    "overview": {
+      "name": "Aperçu"
+    },
+    "categories": {
+      "name": "Catégories"
+    },
+    "description": {
+      "name": "Description"
+    },
+    "duration": {
+      "name": "Durée"
+    },
+    "history": {
+      "name": "Historique",
+      "successRate": "Taux de succès",
+      "statistic": "{{passed}} sur {{total}}",
+      "time": "{{date}} à {{time}}",
+      "empty": "Aucune information à propos de l'historique."
+    },
+    "owner": {
+      "name": "Propriétaire"
+    },
+    "retries": {
+      "name": "Tentatives",
+      "time": "{{date}} à {{time}}",
+      "empty": "Aucune information à propos des tentatives"
+    },
+    "parameters": {
+      "name": "Paramètres"
+    },
+    "links": {
+      "name": "Liens"
+    },
+    "severity": {
+      "name": "Sévérité"
+    },
+    "execution": {
+      "name": "Exécution",
+      "setup": "Pré exécution",
+      "teardown": "Post exécution",
+      "body": "Contenu du test",
+      "downloadAttachment": {
+        "tooltip": "Ouvrir la pièce jointe dans un nouvel onglet"
+      }
+    },
+    "stats": {
+      "count": {
+        "steps": "{{count}} sous-étape",
+        "steps_plural": "{{count}} sous-étapes",
+        "attachments": "{{count}} pièce jointe",
+        "attachments_plural": "{{count}} pièces jointes",
+        "parameters": "{{count}} paramètre",
+        "parameters_plural": "{{count}} paramètres"
+      }
+    }
+  },
+  "controls": {
+    "collapse": "Plier",
+    "expand": "Déplier",
+    "fullscreen": "Plein écran",
+    "language": "Changer de langue",
+    "clipboard": "Copier dans le presse-papier",
+    "clipboardSuccess": "Copié avec succès",
+    "clipboardError": "Impossible de copier vers le presse-papier. Cette fonction ne semble pas être supportée par votre navigateur",
+    "backto": "Retour vers"
+  },
+  "errors": {
+    "missedAttachment": "Pièce jointe non trouvée",
+    "notFound": "Non trouvé"
+  },
+  "component": {
+    "tree": {
+      "filter": "Statut",
+      "filter-marks": "Marques",
+      "groups": "Basculer les informations des groupes",
+      "download": "Télécharger le fichier CSV",
+      "empty": "Il n'y a aucun article",
+      "time": {
+        "total" : {
+          "name": "Total",
+          "tooltip": "Durée depuis le premier test démarré jusqu'au dernier test terminé"
+        },
+        "max": {
+          "name": "Maximum",
+          "tooltip": "Durée la plus longue"
+        },
+        "sum": {
+          "name": "Somme",
+          "tooltip": "Somme de toutes les durées"
+        }
+      },
+      "filtered": {
+        "total": "{{count}} résultat de test",
+        "total_plural": "{{count}} résultats de test",
+        "shown": "{{count}} montré"
+      }
+    },
+    "widgetStatus": {
+      "showAll": "Montrer tout",
+      "total": "{{count}} article au total",
+      "total_plural": "{{count}} articles au total"
+    },
+    "statusToggle": {
+      "showCases": "Montrer les résultats de test avec le statut {{status}}",
+      "hideCases": "Cacher les résultats de test avec le statut {{status}}"
+    },
+    "markToggle": {
+      "showCases": "Montrer les résultats de test marqués {{mark}}",
+      "hideCases": "Cacher les résultats de test marqués {{mark}}"
+    }
+  }
+}

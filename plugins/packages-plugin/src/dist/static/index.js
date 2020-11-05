@@ -80,6 +80,14 @@ allure.api.addTranslation('kr', {
     }
 });
 
+allure.api.addTranslation('fr', {
+    tab: {
+        packages: {
+            name: 'Paquets'
+        }
+    }
+});
+
 allure.api.addTab('packages', {
     title: 'tab.packages.name', icon: 'fa fa-align-left',
     route: 'packages(/)(:testGroup)(/)(:testResult)(/)(:testResultTab)(/)',
