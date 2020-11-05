@@ -13,6 +13,7 @@ export const LANGUAGES = [
     {id: 'ja', title: '日本語'},
     {id: 'es', title: 'Español'},
     {id: 'kr', title: '한국어'},
+    {id: 'fr', title: 'Français'},
 ];
 
 LANGUAGES
