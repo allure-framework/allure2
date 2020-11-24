@@ -1,0 +1,20 @@
+name-template: '$NEXT_MINOR_VERSION'
+tag-template: '$NEXT_MINOR_VERSION'
+categories:
+  - title: '🚀 New Features'
+    labels:
+      - 'type:new feature'
+  - title: '🔬 Improvements'
+    labels:
+      - 'type:enhancement'
+  - title: '🐞 Bug Fixes'
+    labels:
+      - 'type:bug'
+
+change-template: '* $TITLE (via #$NUMBER) - @$AUTHOR'
+template: |
+  $CHANGES
+
+  ## 👀 Links
+
+  [Commits since $PREVIOUS_TAG](https://github.com/allure-framework/allure2/compare/$PREVIOUS_TAG...master)
