@@ -1,5 +1,10 @@
+import com.netflix.gradle.plugins.deb.Deb
+import com.netflix.gradle.plugins.rpm.Rpm
+import org.gradle.kotlin.dsl.support.unzipTo
+
 plugins {
     application
+    id("nebula.ospackage") version "8.4.1"
 }
 
 description = "Allure Commandline"
@@ -48,6 +53,55 @@ val startScripts by tasks.existing(CreateStartScripts::class) {
 
 tasks.build {
     dependsOn(tasks.installDist)
+}
+
+val preparePackageOutput by tasks.creating {
+    group = "Build"
+    dependsOn(tasks.assemble)
+
+    doLast {
+        unzipTo(file("build/package"), tasks.distZip.get().archiveFile.get().asFile)
+    }
+}
+
+ospackage {
+    val pack = "build/package/allure-${project.version}"
+    val dest = "/usr/share/allure"
+
+    packageName = "allure"
+    addParentDirs = false
+
+    os = org.redline_rpm.header.Os.LINUX
+    release = "1"
+
+    requires("java8-runtime | java8-runtime-headless | " +
+            "openjdk8-jre-headless | openjdk-8-jre | openjdk-8-jdk | " +
+            "oracle-java8-installer | oracle-java8-installer")
+
+    from("${pack}/bin", closureOf<CopySpec> {
+        into("${dest}/bin")
+        fileMode = 0x168
+    })
+    from("${pack}/config", closureOf<CopySpec> {
+        into("${dest}/config")
+        fileType = org.redline_rpm.payload.Directive.NOREPLACE
+    })
+    from("${pack}/lib", closureOf<CopySpec> {
+        into("${dest}/lib")
+    })
+    from("${pack}/plugins", closureOf<CopySpec> {
+        into("${dest}/plugins")
+    })
+    link("/usr/bin/allure", "${dest}/bin/allure")
+
+}
+
+val buildDeb by tasks.existing(Deb::class) {
+    dependsOn(preparePackageOutput)
+}
+
+val buildRpm by tasks.existing(Rpm::class) {
+    dependsOn(preparePackageOutput)
 }
 
 dependencies {
