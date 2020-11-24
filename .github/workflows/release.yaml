@@ -21,7 +21,7 @@ jobs:
         env:
           BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
           BINTRAY_API_KEY: ${{ secrets.BINTRAY_API_KEY }}
-        run: ./gradlew bintrayUpload -Pversion=${GITHUB_REF:10}
+        run: ./gradlew bintrayUpload -Pversion=${{ steps.release.outputs.version }}
       - name: "Publish Deb to GitHub"
         uses: actions/upload-release-asset@v1
         env:
