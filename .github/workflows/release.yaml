@@ -17,6 +17,11 @@ jobs:
         id: release
       - name: "Gradle Build"
         run: ./gradlew build buildRpm buildDeb -Pversion=${{ steps.release.outputs.version }}
+      - name: "Gradle Publish to Bintray"
+        env:
+          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
+          BINTRAY_API_KEY: ${{ secrets.BINTRAY_API_KEY }}
+        run: ./gradlew bintrayUpload -Pversion=${GITHUB_REF:10}
       - name: "Publish Deb to GitHub"
         uses: actions/upload-release-asset@v1
         env:
@@ -53,8 +58,3 @@ jobs:
           asset_path: ./allure-commandline/build/distributions/allure-commandline-${{ steps.release.outputs.version }}.tgz
           asset_name: allure-${{ steps.release.outputs.version }}.tgz
           asset_content_type: application/octet-stream
-      - name: "Gradle Publish to Bintray"
-        env:
-          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
-          BINTRAY_API_KEY: ${{ secrets.BINTRAY_API_KEY }}
-        run: ./gradlew bintrayUpload -Pversion=${GITHUB_REF:10}
