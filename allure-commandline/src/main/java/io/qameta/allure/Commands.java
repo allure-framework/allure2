@@ -218,10 +218,12 @@ public class Commands {
      */
     protected void openBrowser(final URI url) throws IOException {
         if (Desktop.isDesktopSupported()) {
-            Desktop.getDesktop().browse(url);
-        } else {
-            LOGGER.error("Can not open browser because this capability is not supported on "
+            try {
+                Desktop.getDesktop().browse(url);
+            } catch (UnsupportedOperationException e) {
+                LOGGER.error("Can not open browser because this capability is not supported on "
                     + "your platform. You can use the link below to open the report manually.");
+            }
         }
     }
 
