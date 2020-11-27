@@ -222,7 +222,7 @@ public class Commands {
                 Desktop.getDesktop().browse(url);
             } catch (UnsupportedOperationException e) {
                 LOGGER.error("Can not open browser because this capability is not supported on "
-                    + "your platform. You can use the link below to open the report manually.");
+                    + "your platform. You can use the link below to open the report manually.", e);
             }
         }
     }
