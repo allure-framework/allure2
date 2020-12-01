@@ -221,9 +221,12 @@ public class Commands {
             try {
                 Desktop.getDesktop().browse(url);
             } catch (UnsupportedOperationException e) {
-                LOGGER.error("Can not open browser because this capability is not supported on "
-                    + "your platform. You can use the link below to open the report manually.", e);
+                LOGGER.error("Browse operation is not supported on your platform."
+                    + "You can use the link below to open the report manually.", e);
             }
+        } else {
+            LOGGER.error("Can not open browser because this capability is not supported on "
+                + "your platform. You can use the link below to open the report manually."); 
         }
     }
 
