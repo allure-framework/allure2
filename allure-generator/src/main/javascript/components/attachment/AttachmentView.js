@@ -1,15 +1,17 @@
 import './styles.scss';
 import highlight from '../../utils/highlight';
-import {View} from 'backbone.marionette';
+import { View } from 'backbone.marionette';
 import $ from 'jquery';
 import router from '../../router';
-import {className, on, behavior} from '../../decorators';
+import { className, on, behavior, regions } from '../../decorators';
 import attachmentType from '../../utils/attachmentType';
 import template from './AttachmentView.hbs';
 
-
 @className('attachment')
-@behavior('TooltipBehavior', {position: 'bottom'})
+@behavior('TooltipBehavior', { position: 'bottom' })
+@regions({
+    customView: '.attachment__custom-view',
+})
 class AttachmentView extends View {
     template = template;
 
@@ -21,9 +23,14 @@ class AttachmentView extends View {
     }
 
     onRender() {
-        if(this.needsFetch() && !this.content) {
+        if (this.attachmentInfo.type === 'custom') {
+            this.showChildView('customView', new this.attachmentInfo.View({
+                sourceUrl: this.sourceUrl,
+                attachment: this.attachment
+            }));
+        } else if (this.needsFetch() && !this.content) {
             this.loadContent().then(this.render);
-        } else if(this.attachmentInfo.type === 'code') {
+        } else if (this.attachmentInfo.type === 'code') {
             const codeBlock = this.$('.attachment__code');
             codeBlock.addClass('language-' + this.attachment.type.split('/').pop());
             highlight.highlightBlock(codeBlock[0]);
@@ -31,7 +38,7 @@ class AttachmentView extends View {
     }
 
     onDestroy() {
-        router.setSearch({attachment: null});
+        router.setSearch({ attachment: null });
     }
 
     @on('click .attachment__media-container')
@@ -40,12 +47,12 @@ class AttachmentView extends View {
         if (el.hasClass('attachment__media-container_fullscreen')) {
             this.onDestroy();
         } else {
-            router.setSearch({attachment: this.attachment.uid});
+            router.setSearch({ attachment: this.attachment.uid });
         }
     }
 
     loadContent() {
-        return $.ajax(this.sourceUrl, {dataType: 'text'}).then((responseText) => {
+        return $.ajax(this.sourceUrl, { dataType: 'text' }).then(responseText => {
             const parser = this.attachmentInfo.parser;
             this.content = parser(responseText);
         });
@@ -61,7 +68,7 @@ class AttachmentView extends View {
             content: this.content,
             sourceUrl: this.sourceUrl,
             attachment: this.attachment,
-            fullScreen: this.fullScreen
+            fullScreen: this.fullScreen,
         };
     }
 }
