@@ -56,6 +56,20 @@ allure.api.addTranslation('de', {
     }
 });
 
+allure.api.addTranslation('nl', {
+    tab: {
+        behaviors: {
+            name: 'Functionaliteit'
+        }
+    },
+    widget: {
+        behaviors: {
+            name: 'Features en story’s',
+            showAll: 'Toon alle'
+        }
+    }
+});
+
 allure.api.addTranslation('he', {
     tab: {
         behaviors: {
@@ -75,10 +89,10 @@ allure.api.addTranslation('br', {
         behaviors: {
             name: 'Comportamentos'
         }
-    }, 
+    },
     widget: {
         behaviors: {
-            name: 'Funcionalidades por história', 
+            name: 'Funcionalidades por história',
             showAll: 'Mostrar tudo'
         }
     }
@@ -122,6 +136,20 @@ allure.api.addTranslation('kr', {
         behaviors: {
             name: '스토리별 기능',
             showAll: '전체 보기'
+        }
+    }
+});
+
+allure.api.addTranslation('fr', {
+    tab: {
+        behaviors: {
+            name: 'Comportements'
+        }
+    },
+    widget: {
+        behaviors: {
+            name: 'Thèmes par histoires',
+            showAll: 'Montrer tout'
         }
     }
 });

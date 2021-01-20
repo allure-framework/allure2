@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns2:test-suite
+    xmlns:ns2="urn:model.allure.qatools.yandex.ru" start="1443622429471" stop="1443622429475">
+    <name>multistep</name>
+    <title>Multi-step</title>
+    <test-cases>
+        <test-case start="1443622429471" stop="1443622429472" status="failed">
+            <name>test</name>
+            <title>test case</title>
+            <description></description>
+            <steps>
+                <step start="1412949045143" stop="1412949047173" status="failed">
+                    <name>buttons</name>
+                    <title>Buttons</title>
+                    <attachments>
+                        <attachment title="screen diff" source="3-1-combined-attachment.json" type="application/vnd.allure.image.diff"/>
+                    </attachments>
+                    <steps/>
+                </step>
+                <step start="1412949047173" stop="1412949048754" status="passed">
+                    <name>language</name>
+                    <title>language</title>
+                    <steps></steps>
+                    <attachments>
+                        <attachment title="screen diff" source="3-2-combined-attachment.json" type="application/vnd.allure.image.diff"/>
+                    </attachments>
+                </step>
+                <step start="1443622429474" stop="1443622429474" status="passed">
+                    <name>payment 1</name>
+                    <title>payment 1</title>
+                    <attachments>
+                        <attachment title="screen diff" source="3-3-combined-attachment.json" type="application/vnd.allure.image.diff"/>
+                    </attachments>
+                </step>
+                <step start="1443622429475" stop="1443622429475" status="failed">
+                    <name>payment 2</name>
+                    <title>payment 2</title>
+                    <attachments>
+                        <attachment title="screen diff" source="3-4-combined-attachment.json" type="application/vnd.allure.image.diff"/>
+                    </attachments>
+                </step>
+            </steps>
+            <failure>
+                <message>Some comparison failed, check steps for more details</message>
+                <stack-trace>AssertionError: Screenshots do not match
+    at Context.&lt;anonymous&gt; (test/test.spec.js:47:15)</stack-trace>
+            </failure>
+        </test-case>
+    </test-cases>
+</ns2:test-suite>

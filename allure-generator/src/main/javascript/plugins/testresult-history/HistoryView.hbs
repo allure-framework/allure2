@@ -3,7 +3,7 @@
         <div class="{{b cls 'success-rate'}}">
             {{t 'testResult.history.successRate'}} {{successRate}}
             {{#if history.statistic.total}}
-                ({{history.statistic.passed}} of {{history.statistic.total}})
+                ({{t 'testResult.history.statistic' passed=history.statistic.passed total=history.statistic.total}})
             {{/if}}
         </div>
         {{#each history.items}}
@@ -11,17 +11,17 @@
                 <div class="{{b ../cls 'row'}}">
                     <a class="link" href="{{reportUrl}}" target="_blank">
                         <span class="label label_status_{{status}}">{{status}}</span>
-                        <span>{{date time.start}} at {{time time.start}}</span>
+                        <span>{{t 'testResult.history.time' date=(date time.start) time=(time time.start)}}</span>
                     </a>
                 </div>
             {{else}}
                 <div>
                     <span class="label label_status_{{status}}">{{status}}</span>
-                    <span>{{date time.start}} at {{time time.start}}</span>
+                    <span>{{t 'testResult.history.time' date=(date time.start) time=(time time.start)}}</span>
                 </div>
             {{/if}}
         {{/each}}
     {{else}}
-        No history information are available.
+        {{t 'testResult.history.empty'}}
     {{/if}}
 </div>

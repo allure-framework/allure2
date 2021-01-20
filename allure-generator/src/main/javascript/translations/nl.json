@@ -1,0 +1,212 @@
+{
+  "status": {
+    "failed": "Gefaald",
+    "broken": "Defect",
+    "passed": "Succes",
+    "skipped": "Overgeslagen",
+    "unknown": "Onbekend",
+    "flaky": "Test is instabiel",
+    "newFailed": "Test is nieuw gefaald"
+  },
+  "marks": {
+    "flaky": "Instabiel",
+    "newFailed": "Nieuw gefaald"
+  },
+  "sorter": {
+    "order": "volgorde",
+    "name": "naam",
+    "duration": "duur",
+    "status": "status"
+  },
+  "tab": {
+    "overview": {
+      "name": "Overzicht"
+    },
+    "categories": {
+      "name": "Categorieën"
+    },
+    "suites": {
+      "name": "Suites"
+    },
+    "graph": {
+      "name": "Grafieken"
+    },
+    "timeline": {
+      "name": "Tijdlijn",
+      "selected": "{{count}} test ({{percent}}%) geselecteerd met een duur van meer dan {{duration}}",
+      "selected_plural": "{{count}} tests ({{percent}}%) geselecteerd met een duur van meer dan {{duration}}"
+    }
+  },
+  "widget": {
+    "summary": {
+      "aggregatedName": "Geaggregeerd rapport",
+      "launches": "start",
+      "launches_plural": "starts",
+      "testResults": "testgeval",
+      "testResults_plural": "testgevallen"
+    },
+    "trend": {
+      "name": "Trend"
+    },
+    "categoriesTrend": {
+      "name": "Trend categorieën"
+    },
+    "durationTrend": {
+      "name": "Trend duur"
+    },
+    "retryTrend": {
+      "name": "Trend nieuwe pogingen"
+    },
+    "executors": {
+      "name": "Uitvoerders",
+      "unknown": "Onbekend",
+      "empty": "Er is geen informatie over testuitvoerders"
+    },
+    "launches": {
+      "name": "Start",
+      "empty": "Er is geen informatie over starts"
+    },
+    "environment": {
+      "name": "Omgeving",
+      "empty": "Er zijn geen omgevingsvariabelen",
+      "showAll": "Toon alles"
+    },
+    "suites": {
+      "name": "Suites"
+    },
+    "categories": {
+      "name": "Categorieën"
+    }
+  },
+  "chart": {
+    "duration": {
+      "name": "Duur",
+      "empty": "Er is niets te tonen"
+    },
+    "trend": {
+      "empty": "Er is niets te tonen"
+    },
+    "severity": {
+      "name": "Ernst"
+    },
+    "status": {
+      "name": "Status"
+    }
+  },
+  "testResult": {
+    "status": {
+      "empty": "Lege statusdetails",
+      "trace": "Toon trace"
+    },
+    "overview": {
+      "name": "Overzicht"
+    },
+    "categories": {
+      "name": "Categorieën"
+    },
+    "description": {
+      "name": "Omschrijving"
+    },
+    "duration": {
+      "name": "Duur"
+    },
+    "history": {
+      "name": "Geschiedenis",
+      "successRate": "Slagingsratio",
+      "statistic": "{{passed}} van {{total}}",
+      "time": "{{date}} om {{time}}",
+      "empty": "Geen historische gegevens beschikbaar."
+    },
+    "owner": {
+      "name": "Eigenaar"
+    },
+    "retries": {
+      "name": "Pogingen",
+      "time": "{{date}} om {{time}}",
+      "empty": "Geen informatie beschikbaar."
+    },
+    "parameters": {
+      "name": "Parameters"
+    },
+    "links": {
+      "name": "Links"
+    },
+    "severity": {
+      "name": "Ernst"
+    },
+    "execution": {
+      "name": "Uitvoering",
+      "setup": "Set up",
+      "teardown": "Tear down",
+      "body": "Test body",
+      "downloadAttachment": {
+        "tooltip": "Bijlage in een nieuw tabblad openen"
+      }
+    },
+    "stats": {
+      "count": {
+        "steps": "{{count}} substap",
+        "steps_plural": "{{count}} substappen",
+        "attachments": "{{count}} bijlage",
+        "attachments_plural": "{{count}} bijlagen",
+        "parameters": "{{count}} parameter",
+        "parameters_plural": "{{count}} parameters"
+      }
+    }
+  },
+  "controls": {
+    "collapse": "Inklappen",
+    "expand": "Uitklappen",
+    "fullscreen": "Volledig scherm",
+    "language": "Taal wijzigen",
+    "clipboard": "Kopieer naar klembord",
+    "clipboardSuccess": "Gekopieerd naar klembord",
+    "clipboardError": "Kan niet kopiëren naar klembord. De browser lijkt deze functionaliteit niet te ondersteunen.",
+    "backto": "Terug naar"
+  },
+  "errors": {
+    "missedAttachment": "Bijlage niet gevonden",
+    "notFound": "Niet gevonden"
+  },
+  "component": {
+    "tree": {
+      "filter": "Status",
+      "filter-marks": "Markeringen",
+      "groups": "Groepsinformatie tonen/verbergen",
+      "download": "Download CSV",
+      "empty": "Er zijn geen items",
+      "time": {
+        "total" : {
+          "name": "Totaal",
+          "tooltip": "Doorloop van eerste test gestart tot laatste test beëindigd"
+        },
+        "max": {
+          "name": "Langste",
+          "tooltip": "Duur van de langste test"
+        },
+        "sum": {
+          "name": "Som",
+          "tooltip": "Opgetelde duur van alle tests"
+        }
+      },
+      "filtered": {
+        "total": "{{count}} testresultaat",
+        "total_plural": "{{count}} testresultaten",
+        "shown": "{{count}} getoond"
+      }
+    },
+    "widgetStatus": {
+      "showAll": "Toon alle",
+      "total": "{{count}} item in totaal",
+      "total_plural": "{{count}} items in totaal"
+    },
+    "statusToggle": {
+      "showCases": "Toon testresultaten met status ‘{{status}}’",
+      "hideCases": "Verberg testresultaten met status ‘{{status}}’"
+    },
+    "markToggle": {
+      "showCases": "Toon testresultaten gemarkeerd als ‘{{mark}}’",
+      "hideCases": "Verberg testresultaten gemarkeerd als ‘{{mark}}’"
+    }
+  }
+}

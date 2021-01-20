@@ -112,13 +112,17 @@
     },
     "history": {
       "name": "History",
-      "successRate": "Success rate"
+      "successRate": "Success rate",
+      "statistic": "{{passed}} of {{total}}",
+      "time": "{{date}} at {{time}}",
+      "empty": "No history information available."
     },
     "owner": {
       "name": "Owner"
     },
     "retries": {
       "name": "Retries",
+      "time": "{{date}} at {{time}}",
       "empty": "There is no information available about test retries"
     },
     "parameters": {
@@ -134,7 +138,10 @@
       "name": "Execution",
       "setup": "Set up",
       "teardown": "Tear down",
-      "body": "Test body"
+      "body": "Test body",
+      "downloadAttachment": {
+        "tooltip": "Open attachment in new tab"
+      }
     },
     "stats": {
       "count": {

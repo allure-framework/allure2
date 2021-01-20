@@ -20,7 +20,7 @@ import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.EnvironmentItem;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,11 +45,11 @@ public class Allure1EnvironmentPlugin extends CommonJsonAggregator {
     protected List<EnvironmentItem> getData(final List<LaunchResults> launches) {
         final List<Map.Entry<String, String>> launchEnvironments = launches.stream()
                 .flatMap(launch -> launch.getExtra(ENVIRONMENT_BLOCK_NAME,
-                        (Supplier<Map<String, String>>) HashMap::new).entrySet().stream())
+                        (Supplier<Map<String, String>>) LinkedHashMap::new).entrySet().stream())
                 .collect(toList());
 
         return launchEnvironments.stream()
-                .collect(groupingBy(Map.Entry::getKey, mapping(Map.Entry::getValue, toSet())))
+                .collect(groupingBy(Map.Entry::getKey, LinkedHashMap::new, mapping(Map.Entry::getValue, toSet())))
                 .entrySet().stream()
                 .map(Allure1EnvironmentPlugin::aggregateItem)
                 .collect(toList());

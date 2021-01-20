@@ -1,6 +1,13 @@
-import {csvParseRows, tsvParseRows} from 'd3-dsv';
+import { csvParseRows, tsvParseRows } from 'd3-dsv';
+import pluginsRegistry from './pluginsRegistry';
 
 export default function typeByMime(type) {
+    if (pluginsRegistry.attachmentViews[type]) {
+        return {
+            type: 'custom',
+            ...pluginsRegistry.attachmentViews[type]
+        };
+    }
     switch (type) {
         case 'image/bmp':
         case 'image/gif':
@@ -67,12 +74,12 @@ export default function typeByMime(type) {
                 type: 'uri',
                 icon: 'fa fa-list-alt',
                 parser: d => d.split('\n')
-                                .map(line => line.trim())
-                                .filter(line => line.length > 0)
-                                .map(line => ({
-                                    comment: line.indexOf('#') === 0,
-                                    text: line
-                                }))
+                        .map(line => line.trim())
+                        .filter(line => line.length > 0)
+                        .map(line => ({
+                            comment: line.indexOf('#') === 0,
+                            text: line
+                        }))
             };
         case 'application/x-tar':
         case 'application/x-gtar':

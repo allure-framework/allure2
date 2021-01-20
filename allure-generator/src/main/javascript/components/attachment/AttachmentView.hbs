@@ -1,4 +1,6 @@
-{{#if (eq type "code")}}
+{{#if (eq type "custom")}}
+    <div class="attachment__custom-view"></div>
+{{else if (eq type "code")}}
     <div class="{{b 'attachment__text-container' fullscreen=fullScreen}}">
         <pre class="attachment__code">{{content}}</pre>
     </div>
