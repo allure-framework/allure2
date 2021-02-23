@@ -131,6 +131,48 @@ class JunitXmlPluginTest {
                 .containsExactly(Tuple.tuple("System out", "some-uid"));
     }
 
+
+    /**
+     * Will test that adding any file extension that matches prefix of <classname>.<name>
+     *   classname and name come from the testcase arguments
+     * @throws Exception
+     */
+    @Test
+    void shouldAddFilesAsAttachment() throws Exception {
+        final Attachment hey = new Attachment().setUid("some-uid");
+        when(visitor.visitAttachmentFile(any())).thenReturn(hey);
+        process(
+            "junitdata/TEST-test.SampleTest.xml",
+            "TEST-test.SampleTest.xml",
+            "junitdata/test.SampleTest.shouldGenerate-1.jpg",
+            "test.SampleTest.shouldGenerate-1.jpg",
+            "junitdata/test.SampleTest.shouldGenerate-2.png",
+            "test.SampleTest.shouldGenerate-2.png",
+            "junitdata/test.SampleTest.shouldGenerate.txt",
+            "test.SampleTest.shouldGenerate.txt"
+        );
+
+        final ArgumentCaptor<Path> attachmentCaptor = ArgumentCaptor.forClass(Path.class);
+        verify(visitor, times(3)).visitAttachmentFile(attachmentCaptor.capture());
+
+        assertThat(attachmentCaptor.getValue())
+            .isRegularFile();
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(1)).visitTestResult(captor.capture());
+
+        final StageResult testStage = captor.getValue().getTestStage();
+        assertThat(testStage)
+            .describedAs("Should create a test stage")
+            .isNotNull();
+
+        assertThat(testStage.getAttachments())
+            .describedAs("Should add files as attachments to testcase")
+            .hasSize(3)
+            .describedAs("Attachment should has right uid and name")
+            .extracting(Attachment::getName, Attachment::getUid);
+    }
+
     @SuppressWarnings("unchecked")
     @Test
     void shouldAddLabels() throws Exception {

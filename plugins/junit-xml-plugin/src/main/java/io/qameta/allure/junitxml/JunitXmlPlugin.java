@@ -58,7 +58,6 @@ import java.util.stream.Stream;
 
 import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
 import static java.nio.file.Files.newDirectoryStream;
-import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -175,6 +174,7 @@ public class JunitXmlPlugin implements Reader {
     private void parseTestCase(final TestSuiteInfo info, final XmlElement testCaseElement, final Path resultsDirectory,
                                final Path parsedFile, final RandomUidContext context, final ResultsVisitor visitor) {
         final String className = testCaseElement.getAttribute(CLASS_NAME_ATTRIBUTE_NAME);
+        final String testName = testCaseElement.getAttribute(NAME_ATTRIBUTE_NAME);
         final Status status = getStatus(testCaseElement);
         final TestResult result = createStatuslessTestResult(info, testCaseElement, parsedFile, context);
         result.setStatus(status);
@@ -189,11 +189,24 @@ public class JunitXmlPlugin implements Reader {
                     .collect(Collectors.toList());
             stageResult.setSteps(steps);
         });
+
+        final List<io.qameta.allure.entity.Attachment> attachments = new ArrayList<>();
         getLogFile(resultsDirectory, className)
+            .filter(Files::exists)
+            .map(visitor::visitAttachmentFile)
+            .map(attachment1 -> attachment1.setName("System out"))
+            .ifPresent(attachment -> attachments.add(attachment));
+
+        for (java.io.File screenshot : getTestAttachments(resultsDirectory, className, testName)) {
+            final Path path = java.nio.file.Paths.get(screenshot.getPath());
+            final String screenshotName = screenshot.getName();
+            Optional.ofNullable(path)
                 .filter(Files::exists)
                 .map(visitor::visitAttachmentFile)
-                .map(attachment1 -> attachment1.setName("System out"))
-                .ifPresent(attachment -> stageResult.setAttachments(singletonList(attachment)));
+                .map(attachment1 -> attachment1.setName(screenshotName))
+                .ifPresent(attachment -> attachments.add(attachment));
+        }
+        stageResult.setAttachments(attachments);
         result.setTestStage(stageResult);
         visitor.visitTestResult(result);
 
@@ -224,6 +237,21 @@ public class JunitXmlPlugin implements Reader {
             LOGGER.debug("Can not find log file: invalid className {}", className, e);
             return Optional.empty();
         }
+    }
+
+    /**
+     * Will get all testcase attachments found that match prefix of classname.name .
+     * @param resultsDirectory where to look under
+     * @param className the classname to match
+     * @param testName the testname to match
+     * @return
+     */
+    private List<java.io.File> getTestAttachments(final Path resultsDirectory, final String className,
+                                                  final String testName) {
+        final String attachmentNamePrefix = className + "." + testName;
+        final java.io.File dir = new java.io.File(resultsDirectory.toString());
+        final java.io.File[] files = dir.listFiles((d, name) -> name.startsWith(attachmentNamePrefix));
+        return Arrays.asList(files);
     }
 
     private TestResult createStatuslessTestResult(final TestSuiteInfo info, final XmlElement testCaseElement,
