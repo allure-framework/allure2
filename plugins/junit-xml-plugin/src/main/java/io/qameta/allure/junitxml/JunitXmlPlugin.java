@@ -197,13 +197,13 @@ public class JunitXmlPlugin implements Reader {
             .map(attachment1 -> attachment1.setName("System out"))
             .ifPresent(attachment -> attachments.add(attachment));
 
-        for (java.io.File screenshot : getTestAttachments(resultsDirectory, className, testName)) {
-            final Path path = java.nio.file.Paths.get(screenshot.getPath());
-            final String screenshotName = screenshot.getName();
+        for (java.io.File attachmentFile : getTestAttachments(resultsDirectory, className, testName)) {
+            final Path path = java.nio.file.Paths.get(attachmentFile.getPath());
+            final String attachmentName = attachmentFile.getName();
             Optional.ofNullable(path)
                 .filter(Files::exists)
                 .map(visitor::visitAttachmentFile)
-                .map(attachment1 -> attachment1.setName(screenshotName))
+                .map(attachment1 -> attachment1.setName(attachmentName))
                 .ifPresent(attachment -> attachments.add(attachment));
         }
         stageResult.setAttachments(attachments);
