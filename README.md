@@ -4,8 +4,8 @@
 [gitter-ru]: https://gitter.im/allure-framework/allure-ru
 [twitter]: https://twitter.com/QametaSoftware "Qameta Software"
 [twitter-team]: https://twitter.com/QametaSoftware/lists/team/members "Team"
-[build]: https://ci.qameta.io/job/allure2/job/master "Build"
-[build-badge]: https://ci.qameta.io/buildStatus/icon?job=allure2/master
+[build]: https://github.com/allure-framework/allure2/actions/workflows/build.yaml
+[build-badge]: https://github.com/allure-framework/allure2/actions/workflows/build.yaml/badge.svg
 [maven]: https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/ "Maven Central"
 [maven-badge]: https://img.shields.io/maven-central/v/io.qameta.allure/allure-commandline.svg?style=flat
 [release]: https://github.com/allure-framework/allure2/releases/latest "Latest release"
@@ -14,7 +14,10 @@
 [CODE_OF_CONDUCT.md]: CODE_OF_CONDUCT.md
 [docs]: https://docs.qameta.io/allure/
 
-# Allure Report [![build-badge][]][build] [![release-badge][]][release] [![maven-badge][]][maven] [![Backers on Open Collective](https://opencollective.com/allure-report/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/allure-report/sponsors/badge.svg)](#sponsors)
+# Allure Report 
+
+[![build-badge][]][build] [![release-badge][]][release] [![maven-badge][]][maven] [![Backers on Open Collective](https://opencollective.com/allure-report/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/allure-report/sponsors/badge.svg)](#sponsors)
+
 
 Allure Framework is a flexible lightweight multi-language test report tool that not only
 shows a very concise representation of what have been tested in a neat web report form,
