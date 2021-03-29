@@ -14,7 +14,7 @@
 [CODE_OF_CONDUCT.md]: CODE_OF_CONDUCT.md
 [docs]: https://docs.qameta.io/allure/
 
-# Allure Report 
+# Allure Report
 
 [![build-badge][]][build] [![release-badge][]][release] [![maven-badge][]][maven] [![Backers on Open Collective](https://opencollective.com/allure-report/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/allure-report/sponsors/badge.svg)](#sponsors)
 
