@@ -72,7 +72,7 @@ configure(subprojects) {
 
     configure<DependencyManagementExtension> {
         imports {
-            mavenBom("com.fasterxml.jackson:jackson-bom:2.9.8")
+            mavenBom("com.fasterxml.jackson:jackson-bom:2.10.5.20201202")
             mavenBom("org.junit:junit-bom:5.4.0")
         }
         dependencies {
