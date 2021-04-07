@@ -88,7 +88,7 @@ configure(subprojects) {
             dependency("org.apache.tika:tika-core:1.22")
             dependency("org.assertj:assertj-core:3.13.2")
             dependency("org.eclipse.jetty:jetty-server:9.4.20.v20190813")
-            dependency("org.freemarker:freemarker:2.3.29")
+            dependency("org.freemarker:freemarker:2.3.30")
             dependency("org.mockito:mockito-core:3.0.0")
             dependency("org.projectlombok:lombok:1.18.8")
             dependency("org.zeroturnaround:zt-zip:1.13")
