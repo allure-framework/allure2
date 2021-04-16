@@ -32,7 +32,7 @@
     "handlebars-jest": "^0.5.0",
     "handlebars-loader": "^1.7.1",
     "jest": "^24.9.0",
-    "jsdom": "^13.2.0",
+    "jsdom": "^16.5.3",
     "json-loader": "^0.5.7",
     "memory-fs": "^0.4.1",
     "mini-css-extract-plugin": "^0.5.0",
