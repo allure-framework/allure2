@@ -1,56 +1,56 @@
-import { addTranslation } from './translation';
-import router from '../router';
-import { showView, notFound } from '../app';
-import translate from '../helpers/t.js';
-import WidgetsModel from '../data/widgets/WidgetsModel';
+import { notFound, showView } from "../app";
+import WidgetsModel from "../data/widgets/WidgetsModel";
+import translate from "../helpers/t.js";
+import router from "../router";
+import { addTranslation } from "./translation";
 
 class AllurePluginsRegistry {
-    tabs = [];
-    testResultTabs = [];
+  tabs = [];
+  testResultTabs = [];
 
-    attachmentViews = {};
+  attachmentViews = {};
 
-    testResultBlocks = {
-        tag: [],
-        before: [],
-        after: [],
-    };
+  testResultBlocks = {
+    tag: [],
+    before: [],
+    after: [],
+  };
 
-    widgets = {};
+  widgets = {};
 
-    addTab(tabName, { title, icon, route, onEnter = notFound } = {}) {
-        title = title || tabName;
-        this.tabs.push({ tabName, title, icon });
-        router.route(route, tabName);
-        router.on('route:' + tabName, showView(onEnter));
+  addTab(tabName, { title, icon, route, onEnter = notFound } = {}) {
+    title = title || tabName;
+    this.tabs.push({ tabName, title, icon });
+    router.route(route, tabName);
+    router.on(`route:${tabName}`, showView(onEnter));
+  }
+
+  addWidget(tabName, widgetName, widget, model = WidgetsModel) {
+    if (!this.widgets[tabName]) {
+      this.widgets[tabName] = {};
     }
+    this.widgets[tabName][widgetName] = { widget, model };
+  }
 
-    addWidget(tabName, widgetName, widget, model = WidgetsModel) {
-        if (!this.widgets[tabName]) {
-            this.widgets[tabName] = {};
-        }
-        this.widgets[tabName][widgetName] = { widget, model };
-    }
+  addTranslation(lang, json) {
+    addTranslation(lang, json);
+  }
 
-    addTranslation(lang, json) {
-        addTranslation(lang, json);
-    }
+  translate(name, options) {
+    return translate(name, options);
+  }
 
-    translate(name, options) {
-        return translate(name, options);
-    }
+  addTestResultBlock(view, { position }) {
+    this.testResultBlocks[position].push(view);
+  }
 
-    addTestResultBlock(view, { position }) {
-        this.testResultBlocks[position].push(view);
-    }
+  addAttachmentViewer(mimeType, { View, icon = "fa fa-file-o" }) {
+    this.attachmentViews[mimeType] = { View, icon };
+  }
 
-    addAttachmentViewer(mimeType, { View, icon = 'fa fa-file-o' }) {
-        this.attachmentViews[mimeType] = { View, icon };
-    }
-
-    addTestResultTab(id, name, View) {
-        this.testResultTabs.push({ id, name, View });
-    }
+  addTestResultTab(id, name, View) {
+    this.testResultTabs.push({ id, name, View });
+  }
 }
 
 export default new AllurePluginsRegistry();

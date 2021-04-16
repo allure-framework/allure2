@@ -1,3 +1,3 @@
-import ParametersView from './ParametersView';
+import ParametersView from "./ParametersView";
 
-allure.api.addTestResultBlock(ParametersView, {position: 'before'});
+allure.api.addTestResultBlock(ParametersView, { position: "before" });

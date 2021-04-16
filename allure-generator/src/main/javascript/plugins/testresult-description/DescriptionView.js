@@ -1,16 +1,16 @@
-import {View} from 'backbone.marionette';
-import {className} from '../../decorators';
-import template from './DescriptionView.hbs';
+import { View } from "backbone.marionette";
+import { className } from "../../decorators";
+import template from "./DescriptionView.hbs";
 
-@className('pane__section')
+@className("pane__section")
 class DescriptionView extends View {
-    template = template;
+  template = template;
 
-    serializeData() {
-        return {
-            descriptionHtml: this.model.get('descriptionHtml')
-        };
-    }
+  serializeData() {
+    return {
+      descriptionHtml: this.model.get("descriptionHtml"),
+    };
+  }
 }
 
 export default DescriptionView;

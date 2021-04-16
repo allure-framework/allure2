@@ -1,5 +1,5 @@
-import LoadBehavior from './LoadBehavior';
-import TooltipBehavior from './TooltipBehavior';
-import ClipboardBehavior from './ClipboardBehavior';
+import ClipboardBehavior from "./ClipboardBehavior";
+import LoadBehavior from "./LoadBehavior";
+import TooltipBehavior from "./TooltipBehavior";
 
-export {LoadBehavior, TooltipBehavior, ClipboardBehavior};
+export { LoadBehavior, TooltipBehavior, ClipboardBehavior };

@@ -7,7 +7,9 @@
     border-top: 1px solid $border-color;
     background: $pane-overlay-bg-hover;
   }
-  &__filter, &__sorter, &__filter-marks {
+  &__filter,
+  &__sorter,
+  &__filter-marks {
     padding: 0 $gap-size 0 $gap-size;
     position: relative;
     white-space: nowrap;
@@ -16,13 +18,14 @@
     flex: 1;
   }
   &__empty {
-    border-top: 1px solid #ECEFF1;
+    border-top: 1px solid #eceff1;
     padding: 8px 0 0 15px;
   }
   .pane__controls {
     display: flex;
   }
-  &__info, &__download {
+  &__info,
+  &__download {
     color: $text-muted-color;
     padding: 7px;
   }

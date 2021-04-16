@@ -53,14 +53,14 @@
     flex: 1;
     display: flex;
     cursor: pointer;
-    border-top: 1px solid #ECEFF1;
+    border-top: 1px solid #eceff1;
     position: relative;
     .node__leaf & {
       padding: 7px $gap-size 7px 35px;
     }
     &_active {
       background-color: $selected-color;
-        &::before {
+      &::before {
         background-color: $selected-color;
       }
     }
@@ -92,18 +92,18 @@
   }
 }
 
-[dir=rtl] .attachment-row.attachment-row_selected > .attachment-row__arrow > .fa-angle-right {
+[dir="rtl"] .attachment-row.attachment-row_selected > .attachment-row__arrow > .fa-angle-right {
   transform: rotate(180deg);
 }
 
-[dir=rtl] .step_expanded > .step__title > .step__arrow {
+[dir="rtl"] .step_expanded > .step__title > .step__arrow {
   transform: rotate(90deg);
 }
 
-[dir=rtl] .node__expanded > .node__title > .node__arrow {
+[dir="rtl"] .node__expanded > .node__title > .node__arrow {
   transform: rotate(90deg);
 }
 
-[dir=ltr] .node__expanded > .node__title > .node__arrow {
+[dir="ltr"] .node__expanded > .node__title > .node__arrow {
   transform: rotate(90deg);
 }

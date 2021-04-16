@@ -1,152 +1,152 @@
-import LocalStorageModel from '../data/localstorage/LocalStorageModel';
+import LocalStorageModel from "../data/localstorage/LocalStorageModel";
 
 const globalSettingsDefaults = {
-    language: 'en',
-    sidebarCollapsed: false,
-    sideBySidePosition: [50, 50]
+  language: "en",
+  sidebarCollapsed: false,
+  sideBySidePosition: [50, 50],
 };
 
 const treePluginDefaults = {
-    visibleStatuses: {
-        failed: true,
-        broken: true,
-        skipped: true,
-        unknown: true,
-        passed: true
-    },
-    visibleMarks: {
-        flaky: false,
-        newFailed: false
-    },
-    showGroupInfo: false,
-    treeSorting: {
-        ascending: true,
-        sorter: 'sorter.name'
-    }
+  visibleStatuses: {
+    failed: true,
+    broken: true,
+    skipped: true,
+    unknown: true,
+    passed: true,
+  },
+  visibleMarks: {
+    flaky: false,
+    newFailed: false,
+  },
+  showGroupInfo: false,
+  treeSorting: {
+    ascending: true,
+    sorter: "sorter.name",
+  },
 };
 
 const widgetGridPluginDefaults = {
-    widgets: [[], []]
+  widgets: [[], []],
 };
 
 function getGlobalSettings() {
-    const SettingsModel = LocalStorageModel.extend({
-        defaults() {
-            return globalSettingsDefaults;
-        },
+  const SettingsModel = LocalStorageModel.extend({
+    defaults() {
+      return globalSettingsDefaults;
+    },
 
-        getLanguage() {
-            return this.get('language');
-        },
+    getLanguage() {
+      return this.get("language");
+    },
 
-        setLanguage(value) {
-            return this.save('language', value);
-        },
+    setLanguage(value) {
+      return this.save("language", value);
+    },
 
-        isSidebarCollapsed() {
-            return this.get('sidebarCollapsed');
-        },
+    isSidebarCollapsed() {
+      return this.get("sidebarCollapsed");
+    },
 
-        setSidebarCollapsed(value) {
-            return this.save('sidebarCollapsed', value);
-        },
+    setSidebarCollapsed(value) {
+      return this.save("sidebarCollapsed", value);
+    },
 
-        getSideBySidePosition() {
-            return this.get('sideBySidePosition');
-        },
+    getSideBySidePosition() {
+      return this.get("sideBySidePosition");
+    },
 
-        setSideBySidePosition(size) {
-            return this.save('sideBySidePosition', size);
-        }
-    });
-    const settings = new SettingsModel();
-    settings.fetch();
-    return settings;
+    setSideBySidePosition(size) {
+      return this.save("sideBySidePosition", size);
+    },
+  });
+  const settings = new SettingsModel();
+  settings.fetch();
+  return settings;
 }
 
 function getSettingsForPlugin(pluginName, defaults = {}) {
-    const SettingsModel = LocalStorageModel.extend({
-        storageKey() {
-            return `ALLURE_REPORT_SETTINGS_${pluginName.toUpperCase()}`;
-        },
-        defaults() {
-            return defaults;
-        },
-    });
-    const settings = new SettingsModel();
-    settings.fetch();
-    return settings;
+  const SettingsModel = LocalStorageModel.extend({
+    storageKey() {
+      return `ALLURE_REPORT_SETTINGS_${pluginName.toUpperCase()}`;
+    },
+    defaults() {
+      return defaults;
+    },
+  });
+  const settings = new SettingsModel();
+  settings.fetch();
+  return settings;
 }
 
 function getSettingsForWidgetGridPlugin(pluginName, defaults = widgetGridPluginDefaults) {
-    const SettingsModel = LocalStorageModel.extend({
-        storageKey() {
-            return `ALLURE_REPORT_SETTINGS_${pluginName.toUpperCase()}`;
-        },
-        defaults() {
-            return defaults;
-        },
-        getWidgetsArrangement() {
-            return this.get('widgets');
-        },
-        setWidgetsArrangement(value) {
-            this.save('widgets', value);
-        }
-    });
-    const settings = new SettingsModel();
-    settings.fetch();
-    return settings;
+  const SettingsModel = LocalStorageModel.extend({
+    storageKey() {
+      return `ALLURE_REPORT_SETTINGS_${pluginName.toUpperCase()}`;
+    },
+    defaults() {
+      return defaults;
+    },
+    getWidgetsArrangement() {
+      return this.get("widgets");
+    },
+    setWidgetsArrangement(value) {
+      this.save("widgets", value);
+    },
+  });
+  const settings = new SettingsModel();
+  settings.fetch();
+  return settings;
 }
 
 function getSettingsForTreePlugin(pluginName, defaults = treePluginDefaults) {
-    const SettingsModel = LocalStorageModel.extend({
-        storageKey() {
-            return `ALLURE_REPORT_SETTINGS_${pluginName.toUpperCase()}`;
-        },
-        defaults() {
-            return defaults;
-        },
+  const SettingsModel = LocalStorageModel.extend({
+    storageKey() {
+      return `ALLURE_REPORT_SETTINGS_${pluginName.toUpperCase()}`;
+    },
+    defaults() {
+      return defaults;
+    },
 
-        getVisibleStatuses() {
-            return this.get('visibleStatuses');
-        },
+    getVisibleStatuses() {
+      return this.get("visibleStatuses");
+    },
 
-        setVisibleStatuses(value) {
-            return this.save('visibleStatuses', value);
-        },
+    setVisibleStatuses(value) {
+      return this.save("visibleStatuses", value);
+    },
 
-        getVisibleMarks() {
-            return this.get('visibleMarks');
-        },
+    getVisibleMarks() {
+      return this.get("visibleMarks");
+    },
 
-        setVisibleMarks(value) {
-            return this.save('visibleMarks', value);
-        },
+    setVisibleMarks(value) {
+      return this.save("visibleMarks", value);
+    },
 
-        getTreeSorting() {
-            return this.get('treeSorting');
-        },
+    getTreeSorting() {
+      return this.get("treeSorting");
+    },
 
-        setTreeSorting(value) {
-            this.save('treeSorting', value);
-        },
+    setTreeSorting(value) {
+      this.save("treeSorting", value);
+    },
 
-        isShowGroupInfo() {
-            return this.get('showGroupInfo');
-        },
+    isShowGroupInfo() {
+      return this.get("showGroupInfo");
+    },
 
-        setShowGroupInfo(value) {
-            this.save('showGroupInfo', value);
-        }
-    });
-    const settings = new SettingsModel();
-    settings.fetch();
-    return settings;
+    setShowGroupInfo(value) {
+      this.save("showGroupInfo", value);
+    },
+  });
+  const settings = new SettingsModel();
+  settings.fetch();
+  return settings;
 }
 
 export {
-    getGlobalSettings,
-    getSettingsForPlugin,
-    getSettingsForTreePlugin,
-    getSettingsForWidgetGridPlugin
+  getGlobalSettings,
+  getSettingsForPlugin,
+  getSettingsForTreePlugin,
+  getSettingsForWidgetGridPlugin
 };

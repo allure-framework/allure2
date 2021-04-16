@@ -1,17 +1,17 @@
-import {View} from 'backbone.marionette';
-import template from './CategoryView.hbs';
-import {className} from '../../decorators/index';
+import { View } from "backbone.marionette";
+import { className } from "../../decorators/index";
+import template from "./CategoryView.hbs";
 
-@className('pane__section')
+@className("pane__section")
 class SeverityView extends View {
-    template = template;
+  template = template;
 
-    serializeData() {
-        const extra = this.model.get('extra');
-        return {
-            categories: extra ? extra.categories : null
-        };
-    }
+  serializeData() {
+    const extra = this.model.get("extra");
+    return {
+      categories: extra ? extra.categories : null,
+    };
+  }
 }
 
 export default SeverityView;

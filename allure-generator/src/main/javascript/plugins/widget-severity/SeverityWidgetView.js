@@ -1,21 +1,23 @@
-import template from './SeverityWidgetView.hbs';
-import {View} from 'backbone.marionette';
-import {className, regions} from '../../decorators';
-import SeverityChartView from '../../components/graph-severity-chart/SeverityChartView';
+import { View } from "backbone.marionette";
+import SeverityChartView from "../../components/graph-severity-chart/SeverityChartView";
+import { className, regions } from "../../decorators";
+import template from "./SeverityWidgetView.hbs";
 
-
-@className('severity-widget')
+@className("severity-widget")
 @regions({
-    chart: '.severity-widget__content'
+  chart: ".severity-widget__content",
 })
 class SeverityWidgetView extends View {
-    template = template;
+  template = template;
 
-    onRender() {
-        this.showChildView('chart', new SeverityChartView({
-            model: this.model.get('items'),
-        }));
-    }
+  onRender() {
+    this.showChildView(
+      "chart",
+      new SeverityChartView({
+        model: this.model.get("items"),
+      }),
+    );
+  }
 }
 
 export default SeverityWidgetView;

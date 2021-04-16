@@ -1,21 +1,21 @@
-import './styles.scss';
-import {View} from 'backbone.marionette';
-import {options} from '../../decorators';
-import template from './LoaderView.hbs';
+import "./styles.scss";
+import { View } from "backbone.marionette";
+import { options } from "../../decorators";
+import template from "./LoaderView.hbs";
 
 @options({
-    text: 'Loading...'
+  text: "Loading...",
 })
 class LoaderView extends View {
-    template = template;
+  template = template;
 
-    initialize(options) {
-        this.options = options;
-    }
+  initialize(opts) {
+    this.options = opts;
+  }
 
-    serializeData() {
-        return this.options;
-    }
+  serializeData() {
+    return this.options;
+  }
 }
 
 export default LoaderView;

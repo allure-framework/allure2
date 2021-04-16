@@ -13,7 +13,8 @@
     background: $hover-color;
   }
   &_selected {
-    &, &:hover {
+    &,
+    &:hover {
       background: $pane-bg-color;
     }
     &:hover {
@@ -21,7 +22,7 @@
     }
   }
   &_selected > &__arrow {
-      transform: rotate(90deg);
+    transform: rotate(90deg);
   }
   &__arrow {
     left: 7px;
@@ -43,7 +44,7 @@
   &__content {
     background-color: $attachment-bg;
   }
-  &__content > div{
+  &__content > div {
     padding: 5px;
   }
 }

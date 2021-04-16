@@ -1,17 +1,17 @@
-import {View} from 'backbone.marionette';
-import template from './OwnerView.hbs';
-import {className} from '../../decorators/index';
+import { View } from "backbone.marionette";
+import { className } from "../../decorators/index";
+import template from "./OwnerView.hbs";
 
-@className('pane__section')
+@className("pane__section")
 class OwnerView extends View {
-    template = template;
+  template = template;
 
-    serializeData() {
-        var extra = this.model.get('extra');
-        return {
-            owner: extra ? extra.owner : null
-        };
-    }
+  serializeData() {
+    const extra = this.model.get("extra");
+    return {
+      owner: extra ? extra.owner : null,
+    };
+  }
 }
 
 export default OwnerView;

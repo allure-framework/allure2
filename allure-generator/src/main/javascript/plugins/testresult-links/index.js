@@ -1,3 +1,3 @@
-import LinksView from './LinksView';
+import LinksView from "./LinksView";
 
-allure.api.addTestResultBlock(LinksView, {position: 'before'});
+allure.api.addTestResultBlock(LinksView, { position: "before" });

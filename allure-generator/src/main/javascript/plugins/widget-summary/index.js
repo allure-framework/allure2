@@ -1,3 +1,3 @@
-import SummaryWidgetView from './SummaryWidgetView';
+import SummaryWidgetView from "./SummaryWidgetView";
 
-allure.api.addWidget('widgets', 'summary', SummaryWidgetView);
+allure.api.addWidget("widgets", "summary", SummaryWidgetView);

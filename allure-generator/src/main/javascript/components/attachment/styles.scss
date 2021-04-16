@@ -37,7 +37,8 @@
   &__table-container {
     overflow: auto;
   }
-  &__text-container, &__table-container {
+  &__text-container,
+  &__table-container {
     &_fullscreen {
       padding: $gap-size;
       background-color: $pane-bg-color;
@@ -53,14 +54,14 @@
   &__iframe-container {
     height: 100%;
   }
-  &__embed, &__media {
+  &__embed,
+  &__media {
     max-width: 100%;
     display: block;
     &_fullscreen {
       margin: auto;
     }
     margin: auto;
-
   }
   &__iframe {
     width: 100%;

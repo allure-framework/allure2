@@ -12,7 +12,7 @@
     font-size: 18px;
   }
   &__caption {
-      text-anchor: middle;
+    text-anchor: middle;
   }
   &__body > div {
     padding-top: 50%;
@@ -49,14 +49,15 @@
     fill: steelblue;
   }
   &__arc {
-    stroke: #FFF;
+    stroke: #fff;
     stop-opacity: 0;
   }
   &__fill {
     @include status-fill();
   }
   &__axis {
-    path, line {
+    path,
+    line {
       shape-rendering: crispEdges;
       stroke: #000;
       fill: none;

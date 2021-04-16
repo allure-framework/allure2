@@ -1,18 +1,17 @@
 @import "../../variables.scss";
 
 .pane {
-
   &__subtitle {
     color: $text-muted-color;
     padding-left: 5px;
     margin: 10px 0;
-    font-weight:initial;
+    font-weight: initial;
     font-size: 18px;
   }
 
   &__title {
     padding: 0 15px 10px;
-    width:100%;
+    width: 100%;
     display: flex;
     position: relative;
     margin: 7px 0 0;
@@ -29,7 +28,7 @@
     width: 100%;
   }
   &__title-text {
-      text-align: left;
+    text-align: left;
   }
   &__controls {
     & > a {

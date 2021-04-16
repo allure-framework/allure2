@@ -1,3 +1,3 @@
-import TagsView from './TagsView';
+import TagsView from "./TagsView";
 
-allure.api.addTestResultBlock(TagsView, {position: 'tag'});
+allure.api.addTestResultBlock(TagsView, { position: "tag" });

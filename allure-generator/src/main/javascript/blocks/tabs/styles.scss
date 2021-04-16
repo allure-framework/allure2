@@ -3,7 +3,7 @@
 .tabs {
   list-style-type: none;
   position: relative;
-//  top: -1px;
+  //  top: -1px;
   background: #fff;
   border-bottom: 1px solid $border-accent-color;
   padding: 0;
@@ -21,7 +21,8 @@
     }
   }
   &_active > a {
-    &, &:hover {
+    &,
+    &:hover {
       border-bottom-color: $text-color;
     }
   }

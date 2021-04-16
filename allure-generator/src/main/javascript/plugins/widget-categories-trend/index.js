@@ -1,9 +1,4 @@
-import CategoriesTrendWidgetView from './CategoriesTrendWidgetView';
-import TrendCollection from '../../data/trend/TrendCollection';
+import TrendCollection from "../../data/trend/TrendCollection";
+import CategoriesTrendWidgetView from "./CategoriesTrendWidgetView";
 
-allure.api.addWidget(
-    'graph',
-    'categories-trend',
-    CategoriesTrendWidgetView,
-    TrendCollection
-);
+allure.api.addWidget("graph", "categories-trend", CategoriesTrendWidgetView, TrendCollection);

@@ -1,19 +1,19 @@
-[dir=rtl] .chart__axis_y g text {
+[dir="rtl"] .chart__axis_y g text {
   text-anchor: start;
 }
 
-[dir=rtl] .timeline__group text {
+[dir="rtl"] .timeline__group text {
   text-anchor: end;
 }
 
-[dir=rtl] .chart__legend{
+[dir="rtl"] .chart__legend {
   right: 10%;
 }
 
-[dir=rtl] .fa-angle-left:before {
+[dir="rtl"] .fa-angle-left:before {
   content: "\F105";
 }
 
-[dir=rtl] .tooltip_position_bottom {
+[dir="rtl"] .tooltip_position_bottom {
   width: 100px;
 }
