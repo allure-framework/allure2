@@ -25,7 +25,8 @@ body {
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   font-size: 14px;
 }
@@ -43,7 +44,7 @@ html, body {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%)
+    transform: translate(-50%, -50%);
   }
 }
 
@@ -86,4 +87,3 @@ html, body {
   text-overflow: ellipsis;
   overflow: hidden;
 }
-

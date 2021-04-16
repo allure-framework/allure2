@@ -1,3 +1,3 @@
-import DurationView from './DurationView';
+import DurationView from "./DurationView";
 
-allure.api.addTestResultBlock(DurationView, {position: 'tag'});
+allure.api.addTestResultBlock(DurationView, { position: "tag" });

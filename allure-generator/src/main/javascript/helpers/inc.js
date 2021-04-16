@@ -1,3 +1,3 @@
 export default function(index) {
-    return index + 1;
+  return index + 1;
 }

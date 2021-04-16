@@ -1,4 +1,4 @@
-import {getGlobalSettings} from './settingsFactory';
+import { getGlobalSettings } from "./settingsFactory";
 
 const globalSettings = getGlobalSettings();
 export default globalSettings;

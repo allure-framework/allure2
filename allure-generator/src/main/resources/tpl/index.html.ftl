@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <title>Allure Report</title>
     <link rel="favicon" href="favicon.ico?v=2">
-    <link rel="stylesheet" href="styles.css">
+    <link type="text/css" href="styles.css">
     <#list plugins as plugin>
         <#list plugin.cssFiles as cssFile>
-            <link rel="stylesheet" href="plugins/${plugin.id}/${cssFile}">
+    <link rel="stylesheet" href="plugins/${plugin.id}/${cssFile}">
         </#list>
     </#list>
 </head>

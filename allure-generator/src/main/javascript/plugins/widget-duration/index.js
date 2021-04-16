@@ -1,3 +1,3 @@
-import DurationWidgetView from './DurationWidgetView';
+import DurationWidgetView from "./DurationWidgetView";
 
-allure.api.addWidget('graph', 'duration', DurationWidgetView);
+allure.api.addWidget("graph", "duration", DurationWidgetView);

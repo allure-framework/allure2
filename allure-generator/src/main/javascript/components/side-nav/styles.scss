@@ -27,7 +27,7 @@
     transition: all 0.3s;
     background-size: auto auto;
   }
-  
+
   &__brand-text {
     padding-left: $gap-size;
   }
@@ -50,9 +50,10 @@
   &__item {
     display: block;
     font-size: 14px;
-   }
+  }
 
-  &__link, &__collapse {
+  &__link,
+  &__collapse {
     display: block;
     line-height: 24px;
     color: $text-muted-color;
@@ -77,13 +78,13 @@
   &__text {
     padding-left: 55px;
     padding-right: 7px;
-   }
+  }
 
   &__language-small {
     display: block;
     text-transform: capitalize;
     padding: 0 5px;
-    text-overflow: '.';
+    text-overflow: ".";
     max-width: 30px;
     margin: 0 auto;
   }
@@ -100,22 +101,24 @@
     .side-nav__collapse .side-nav__icon {
       transform: rotate(180deg);
     }
-    
-    .side-nav__text, .side-nav__brand-text {
+
+    .side-nav__text,
+    .side-nav__brand-text {
       visibility: hidden;
       opacity: 0;
     }
 
-    .side-nav__collapse, .side-nav__link {
+    .side-nav__collapse,
+    .side-nav__link {
       white-space: nowrap;
     }
   }
 }
 
-[dir=rtl] .side-nav__brand{
-  background: url('allure_logo_rtl.svg') no-repeat right center;
+[dir="rtl"] .side-nav__brand {
+  background: url("allure_logo_rtl.svg") no-repeat right center;
 }
 
-[dir=ltr] .side-nav__brand{
-  background: url('allure_logo.svg') no-repeat left center;
+[dir="ltr"] .side-nav__brand {
+  background: url("allure_logo.svg") no-repeat left center;
 }

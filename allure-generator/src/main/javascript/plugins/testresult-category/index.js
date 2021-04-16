@@ -1,3 +1,3 @@
-import CategoryView from './CategoryView';
+import CategoryView from "./CategoryView";
 
-allure.api.addTestResultBlock(CategoryView, {position: 'tag'});
+allure.api.addTestResultBlock(CategoryView, { position: "tag" });

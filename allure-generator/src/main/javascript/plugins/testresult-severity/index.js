@@ -1,3 +1,3 @@
-import SeverityView from './SeverityView';
+import SeverityView from "./SeverityView";
 
-allure.api.addTestResultBlock(SeverityView, {position: 'tag'});
+allure.api.addTestResultBlock(SeverityView, { position: "tag" });

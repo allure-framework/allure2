@@ -15,7 +15,7 @@
     border-bottom: 1px solid $border-color;
     cursor: pointer;
     &::before {
-      content: ' ';
+      content: " ";
       display: inline-block;
       background: url(checkmark.svg) center no-repeat;
       background-size: contain;

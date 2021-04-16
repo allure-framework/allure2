@@ -13,7 +13,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'zulu'
-          java-version: 1.8
+          java-version: 8.0.x
       - run: echo "::set-output name=version::${GITHUB_REF:10}"
         id: release
       - name: "Gradle Build"

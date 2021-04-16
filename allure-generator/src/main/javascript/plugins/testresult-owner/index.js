@@ -1,3 +1,3 @@
-import OwnerView from './OwnerView';
+import OwnerView from "./OwnerView";
 
-allure.api.addTestResultBlock(OwnerView, {position: 'before'});
+allure.api.addTestResultBlock(OwnerView, { position: "before" });

@@ -1,7 +1,8 @@
 @import "../../variables.scss";
 
 .table {
-  &__row, &__head {
+  &__row,
+  &__head {
     display: flex;
   }
   &__row {
@@ -34,7 +35,7 @@
       &:after {
         flex-shrink: 0;
         vertical-align: middle;
-        content: ' ';
+        content: " ";
         display: inline-block;
         width: 12px;
         height: 18px;

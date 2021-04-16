@@ -1,9 +1,11 @@
-import AppLayout from '../application/AppLayout';
-import ErrorSplashView from '../../components/error-splash/ErrorSplashView';
+import ErrorSplashView from "../../components/error-splash/ErrorSplashView";
+import AppLayout from "../application/AppLayout";
 
-export default class ErrorLayout extends AppLayout {
-    getContentView() {
-        const {code, message} = this.options;
-        return new ErrorSplashView({code, message});
-    }
+class ErrorLayout extends AppLayout {
+  getContentView() {
+    const { code, message } = this.options;
+    return new ErrorSplashView({ code, message });
+  }
 }
+
+export { ErrorLayout };

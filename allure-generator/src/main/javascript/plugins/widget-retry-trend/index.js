@@ -1,9 +1,4 @@
-import RetryTrendWidgetView from './RetryTrendWidgetView';
-import TrendCollection from '../../data/trend/TrendCollection';
+import TrendCollection from "../../data/trend/TrendCollection";
+import RetryTrendWidgetView from "./RetryTrendWidgetView";
 
-allure.api.addWidget(
-    'graph',
-    'retry-trend',
-    RetryTrendWidgetView,
-    TrendCollection
-);
+allure.api.addWidget("graph", "retry-trend", RetryTrendWidgetView, TrendCollection);

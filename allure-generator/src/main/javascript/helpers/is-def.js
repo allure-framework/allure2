@@ -1,3 +1,3 @@
 export default function isDef(variable) {
-    return (variable || typeof variable === 'number');
+  return variable || typeof variable === "number";
 }

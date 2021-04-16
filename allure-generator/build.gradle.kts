@@ -34,7 +34,9 @@ val buildWeb by tasks.creating(NpmTask::class) {
     inputs.file(".prettierrc")
     inputs.file("package-lock.json")
     inputs.file("package.json")
-    inputs.file(".eslintrc")
+    inputs.file(".eslintignore")
+    inputs.file(".eslintrc.js")
+    inputs.file("babel.config.js")
     inputs.files(fileTree("src/main/javascript"))
     inputs.files(fileTree("webpack"))
 
@@ -49,7 +51,9 @@ val testWeb by tasks.creating(NpmTask::class) {
     inputs.file(".prettierrc")
     inputs.file("package-lock.json")
     inputs.file("package.json")
-    inputs.file(".eslintrc")
+    inputs.file(".eslintignore")
+    inputs.file(".eslintrc.js")
+    inputs.file("babel.config.js")
     inputs.files(fileTree("src/main/javascript"))
     inputs.files(fileTree("webpack"))
 

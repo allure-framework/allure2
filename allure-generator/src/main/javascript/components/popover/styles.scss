@@ -7,8 +7,9 @@
   border: 1px solid $border-accent-color;
   padding: 8px;
   font-size: 14px;
-  &::before, &::after {
-    content: ' ';
+  &::before,
+  &::after {
+    content: " ";
     position: absolute;
     border: 8px solid transparent;
     top: 50%;

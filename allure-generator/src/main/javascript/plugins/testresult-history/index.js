@@ -1,3 +1,3 @@
-import HistoryView from './HistoryView';
+import HistoryView from "./HistoryView";
 
-allure.api.addTestResultTab('history', 'testResult.history.name', HistoryView);
+allure.api.addTestResultTab("history", "testResult.history.name", HistoryView);

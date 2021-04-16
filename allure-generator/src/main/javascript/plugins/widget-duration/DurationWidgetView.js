@@ -1,20 +1,23 @@
-import template from './DurationWidgetView.hbs';
-import {View} from 'backbone.marionette';
-import {className, regions} from '../../decorators';
-import DurationChartView from '../../components/graph-duration-chart/DurationChartView';
+import { View } from "backbone.marionette";
+import DurationChartView from "../../components/graph-duration-chart/DurationChartView";
+import { className, regions } from "../../decorators";
+import template from "./DurationWidgetView.hbs";
 
-@className('duration-widget')
+@className("duration-widget")
 @regions({
-    chart: '.duration-widget__content'
+  chart: ".duration-widget__content",
 })
 class DurationWidgetView extends View {
-    template = template;
+  template = template;
 
-    onRender() {
-        this.showChildView('chart', new DurationChartView({
-            model: this.model.get('items'),
-        }));
-    }
+  onRender() {
+    this.showChildView(
+      "chart",
+      new DurationChartView({
+        model: this.model.get("items"),
+      }),
+    );
+  }
 }
 
 export default DurationWidgetView;

@@ -1,3 +1,3 @@
 export default function concat(...args) {
-    return args.slice(0, -1).join('');
+  return args.slice(0, -1).join("");
 }

@@ -10,7 +10,7 @@
   position: absolute;
 }
 
-[dir=ltr] .side-by-side {
+[dir="ltr"] .side-by-side {
   direction: ltr;
   flex-direction: row;
 
@@ -25,11 +25,11 @@
   }
 }
 
-[dir=rtl] .side-by-side {
+[dir="rtl"] .side-by-side {
   direction: ltr;
   box-orient: horizontal;
   flex-direction: row-reverse;
-  
+
   &__left {
     direction: rtl;
     overflow: auto;
@@ -43,7 +43,7 @@
   }
 }
 
-[dir=rtl] .tree__ctrl {
+[dir="rtl"] .tree__ctrl {
   overflow: hidden;
 }
 
@@ -55,5 +55,5 @@
 }
 
 .gutter-horizontal {
-  background-image: url('vertical.png')
+  background-image: url("vertical.png");
 }

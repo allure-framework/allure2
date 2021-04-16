@@ -1,3 +1,3 @@
-import SeverityChartView from './SeverityWidgetView';
+import SeverityChartView from "./SeverityWidgetView";
 
-allure.api.addWidget('graph', 'severity', SeverityChartView);
+allure.api.addWidget("graph", "severity", SeverityChartView);

@@ -11,7 +11,7 @@
   }
 }
 
-[dir=rtl] .block__arrow {
+[dir="rtl"] .block__arrow {
   transform: scaleX(-1);
   filter: FlipH;
 }

@@ -11,7 +11,7 @@
   pointer-events: none;
   z-index: 5;
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     border: 8px solid transparent;
   }

@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'zulu'
-          java-version: 1.8
+          java-version: 8.0.x
       - name: Build with Gradle
         run: ./gradlew build buildDeb buildRpm
   build_11:

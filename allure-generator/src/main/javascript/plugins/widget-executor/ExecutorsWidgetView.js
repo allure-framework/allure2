@@ -1,8 +1,8 @@
-import {View} from 'backbone.marionette';
-import template from './ExecutorsWidgetView.hbs';
+import { View } from "backbone.marionette";
+import template from "./ExecutorsWidgetView.hbs";
 
 class ExecutorsWidgetView extends View {
-    template = template;
+  template = template;
 }
 
 export default ExecutorsWidgetView;
