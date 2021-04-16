@@ -26,7 +26,7 @@ shows a very concise representation of what have been tested in a neat web repor
 but allows everyone participating in the development process to extract maximum of useful
 information from everyday execution of tests.
 
-![Allure Report](.github/readme-img.png)
+![Allure Report](.github/preview_report.png)
 
 ## Download
 
@@ -55,7 +55,7 @@ All the documentation is available [on our website][docs].
 Next-gen Software Quality Management Platform brings together automated and manual testing.
 Level up your product quality control and boost your QA and development team productivity by setting your TestOps. Try it on our [website][site].
 
-![Allure TestOps](.github/TestOps_for_GitHub.png)
+![Allure TestOps](.github/preview_testops.png)
 
 ## Staying in Touch
 
