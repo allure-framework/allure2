@@ -1,7 +1,9 @@
 [license]: http://www.apache.org/licenses/LICENSE-2.0 "Apache License 2.0"
+[site]: https://qameta.io/?source=Report_GitHub
 [blog]: https://qameta.io/blog
 [gitter]: https://gitter.im/allure-framework/allure-core
 [gitter-ru]: https://gitter.im/allure-framework/allure-ru
+[tg-ru]: https://t.me/allure_ru
 [twitter]: https://twitter.com/QametaSoftware "Qameta Software"
 [twitter-team]: https://twitter.com/QametaSoftware/lists/team/members "Team"
 [build]: https://github.com/allure-framework/allure2/actions/workflows/build.yaml
@@ -46,68 +48,24 @@ To install Allure, download and install Scoop and then execute in the Powershell
 
 ## Documentation
 
-All the documentation is available [on our site][docs].
+All the documentation is available [on our website][docs].
+
+## Allure TestOps
+
+Next-gen Software Quality Management Platform brings together automated and manual testing.
+Level up your product quality control and boost your QA and development team productivity by setting your TestOps. Try it on our [website][site].
+
+![Allure TestOps](.github/TestOps_for_GitHub.png)
 
 ## Staying in Touch
 
 Follow [@QametaSoftware][twitter] and its [team members][twitter-team] on Twitter. In-depth articles can
 be found at [Qameta Blog][blog]. Also feel free to join our
-[Gitter room][gitter] ([ru][gitter-ru]).
+[Gitter room][gitter] ([ru][tg-ru]).
 
 ## Code of Conduct
 
 Please note that this project is released with a [Contributor Code of Conduct][CODE_OF_CONDUCT.md]. By participating in this project you agree to abide by its terms.
-
-## Gold sponsors
-
-[Become a gold sponsor](https://opencollective.com/allure-report#sponsor) and get your logo on our README on Github with a link to your site.
-
-<a href="https://opencollective.com/allure-report/tiers/gold-sponsors/0/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/gold-sponsors/0/avatar.svg?requireActive=false&avatarHeight=400"></a>
-<a href="https://opencollective.com/allure-report/tiers/gold-sponsors/1/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/gold-sponsors/1/avatar.svg?requireActive=false&avatarHeight=400"></a>
-<a href="https://opencollective.com/allure-report/tiers/gold-sponsors/2/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/gold-sponsors/2/avatar.svg?requireActive=false&avatarHeight=400"></a>
-<a href="https://opencollective.com/allure-report/tiers/gold-sponsors/3/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/gold-sponsors/3/avatar.svg?requireActive=false&avatarHeight=400"></a>
-<a href="https://opencollective.com/allure-report/tiers/gold-sponsors/4/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/gold-sponsors/4/avatar.svg?requireActive=false&avatarHeight=400"></a>
-<a href="https://opencollective.com/allure-report/tiers/gold-sponsors/5/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/gold-sponsors/5/avatar.svg?requireActive=false&avatarHeight=400"></a>
-<a href="https://opencollective.com/allure-report/tiers/gold-sponsors/6/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/gold-sponsors/6/avatar.svg?requireActive=false&avatarHeight=400"></a>
-<a href="https://opencollective.com/allure-report/tiers/gold-sponsors/7/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/gold-sponsors/7/avatar.svg?requireActive=false&avatarHeight=400"></a>
-<a href="https://opencollective.com/allure-report/tiers/gold-sponsors/8/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/gold-sponsors/8/avatar.svg?requireActive=false&avatarHeight=400"></a>
-<a href="https://opencollective.com/allure-report/tiers/gold-sponsors/9/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/gold-sponsors/9/avatar.svg?requireActive=false&avatarHeight=400"></a>
-
-## Silver sponsors
-
-[Become a silver sponsor](https://opencollective.com/allure-report#sponsor) and get your logo on our README on Github with a link to your site.
-
-<a href="https://opencollective.com/allure-report/tiers/silver-sponsors/0/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/silver-sponsors/0/avatar.svg?requireActive=false&avatarHeight=300"></a>
-<a href="https://opencollective.com/allure-report/tiers/silver-sponsors/1/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/silver-sponsors/1/avatar.svg?requireActive=false&avatarHeight=300"></a>
-<a href="https://opencollective.com/allure-report/tiers/silver-sponsors/2/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/silver-sponsors/2/avatar.svg?requireActive=false&avatarHeight=300"></a>
-<a href="https://opencollective.com/allure-report/tiers/silver-sponsors/3/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/silver-sponsors/3/avatar.svg?requireActive=false&avatarHeight=300"></a>
-<a href="https://opencollective.com/allure-report/tiers/silver-sponsors/4/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/silver-sponsors/4/avatar.svg?requireActive=false&avatarHeight=300"></a>
-<a href="https://opencollective.com/allure-report/tiers/silver-sponsors/5/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/silver-sponsors/5/avatar.svg?requireActive=false&avatarHeight=300"></a>
-<a href="https://opencollective.com/allure-report/tiers/silver-sponsors/6/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/silver-sponsors/6/avatar.svg?requireActive=false&avatarHeight=300"></a>
-<a href="https://opencollective.com/allure-report/tiers/silver-sponsors/7/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/silver-sponsors/7/avatar.svg?requireActive=false&avatarHeight=300"></a>
-<a href="https://opencollective.com/allure-report/tiers/silver-sponsors/8/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/silver-sponsors/8/avatar.svg?requireActive=false&avatarHeight=300"></a>
-<a href="https://opencollective.com/allure-report/tiers/silver-sponsors/9/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/silver-sponsors/9/avatar.svg?requireActive=false&avatarHeight=300"></a>
-
-## Bronze sponsors
-
-[Become a bronze sponsor](https://opencollective.com/allure-report#sponsor) and get your logo on our README on Github with a link to your site.
-
-<a href="https://opencollective.com/allure-report/tiers/bronze-sponsors/0/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/bronze-sponsors/0/avatar.svg?requireActive=false&avatarHeight=200"></a>
-<a href="https://opencollective.com/allure-report/tiers/bronze-sponsors/1/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/bronze-sponsors/1/avatar.svg?requireActive=false&avatarHeight=200"></a>
-<a href="https://opencollective.com/allure-report/tiers/bronze-sponsors/2/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/bronze-sponsors/2/avatar.svg?requireActive=false&avatarHeight=200"></a>
-<a href="https://opencollective.com/allure-report/tiers/bronze-sponsors/3/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/bronze-sponsors/3/avatar.svg?requireActive=false&avatarHeight=200"></a>
-<a href="https://opencollective.com/allure-report/tiers/bronze-sponsors/4/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/bronze-sponsors/4/avatar.svg?requireActive=false&avatarHeight=200"></a>
-<a href="https://opencollective.com/allure-report/tiers/bronze-sponsors/5/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/bronze-sponsors/5/avatar.svg?requireActive=false&avatarHeight=200"></a>
-<a href="https://opencollective.com/allure-report/tiers/bronze-sponsors/6/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/bronze-sponsors/6/avatar.svg?requireActive=false&avatarHeight=200"></a>
-<a href="https://opencollective.com/allure-report/tiers/bronze-sponsors/7/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/bronze-sponsors/7/avatar.svg?requireActive=false&avatarHeight=200"></a>
-<a href="https://opencollective.com/allure-report/tiers/bronze-sponsors/8/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/bronze-sponsors/8/avatar.svg?requireActive=false&avatarHeight=200"></a>
-<a href="https://opencollective.com/allure-report/tiers/bronze-sponsors/9/website?requireActive=false" target="_blank"><img src="https://opencollective.com/allure-report/tiers/bronze-sponsors/9/avatar.svg?requireActive=false&avatarHeight=200"></a>
-
-## Backers
-
-Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/allure-report#backer)]
-
-<a href="https://opencollective.com/allure-report#backers" target="_blank"><img src="https://opencollective.com/allure-report/tiers/backers.svg?avatarHeight=36&width=890&showBtn=false"></a>
 
 ## Contributors
 

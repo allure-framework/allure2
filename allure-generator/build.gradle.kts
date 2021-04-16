@@ -1,16 +1,15 @@
 import com.moowork.gradle.node.npm.NpmTask
-import com.moowork.gradle.node.NodeExtension
 
 plugins {
     `java-library`
-    id("com.moowork.node") version "1.2.0"
+    id("com.github.node-gradle.node") version "2.2.4"
 }
 
 description = "Allure Report Generator"
 
-configure<NodeExtension> {
-    version = "10.10.0"
-    npmVersion = "6.4.1"
+node {
+    version = "12.13.0"
+    npmVersion = "6.9.0"
     download = true
 }
 
@@ -24,6 +23,9 @@ val npmInstallDeps by tasks.creating(NpmTask::class) {
     outputs.dir("node_modules")
 
     setArgs(arrayListOf("install"))
+
+    setArgs(arrayListOf("install", "--silent"))
+    setEnvironment(mapOf("ADBLOCK" to "true"))
 }
 
 val buildWeb by tasks.creating(NpmTask::class) {
@@ -38,7 +40,7 @@ val buildWeb by tasks.creating(NpmTask::class) {
 
     outputs.dir(generatedStatic)
 
-    setArgs(arrayListOf("run", "build"))
+    setArgs(arrayListOf("run", "build", "--silent"))
 }
 
 val testWeb by tasks.creating(NpmTask::class) {
@@ -51,7 +53,7 @@ val testWeb by tasks.creating(NpmTask::class) {
     inputs.files(fileTree("src/main/javascript"))
     inputs.files(fileTree("webpack"))
 
-    setArgs(arrayListOf("run", "test"))
+    setArgs(arrayListOf("run", "test", "--silent"))
 }
 
 val cleanUpDemoReport by tasks.creating(Delete::class) {

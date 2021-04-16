@@ -20,6 +20,10 @@
     <module name="Translation"/>
     <module name="UniqueProperties"/>
 
+    <module name="LineLength">
+        <property name="max" value="120"/>
+    </module>
+
     <module name="TreeWalker">
         <!-- http://checkstyle.sourceforge.net/config_filters.html#SuppressionCommentFilter -->
         <module name="SuppressionCommentFilter"/>
@@ -121,11 +125,20 @@
 
 
         <!-- Imports (http://checkstyle.sourceforge.net/config_imports.html) -->
-        <!--<module name="AvoidStarImport"/>-->
+        <module name="AvoidStarImport"/>
         <!--<module name="AvoidStaticImport"/>-->
         <!--<module name="CustomImportOrder"/>-->
-        <module name="IllegalImport"/>
-        <!--<module name="ImportControl"/>-->
+        <!--        <module name="IllegalImport">-->
+        <!--            <property name="illegalPkgs"-->
+        <!--                      value="org.codehaus.jackson,-->
+        <!--                             org.apache.commons.collections,-->
+        <!--                             org.springframework.util,-->
+        <!--                             org.springframework.data.util"-->
+        <!--            />-->
+        <!--        </module>-->
+        <module name="ImportControl">
+            <property name="file" value="${config_loc}/import-control.xml"/>
+        </module>
         <!--<module name="ImportOrder"/>-->
         <module name="RedundantImport"/>
         <module name="UnusedImports"/>
@@ -151,7 +164,7 @@
         <module name="ClassDataAbstractionCoupling"/>
         <!--<module name="ClassFanOutComplexity"/>-->
         <module name="CyclomaticComplexity"/>
-        <module name="JavaNCSS"/>
+        <!--        <module name="JavaNCSS"/>-->
         <module name="NPathComplexity"/>
 
 
@@ -208,9 +221,6 @@
         <!-- Size Violations (http://checkstyle.sourceforge.net/config_sizes.html) -->
         <module name="AnonInnerLength"/>
         <module name="ExecutableStatementCount"/>
-        <module name="LineLength">
-            <property name="max" value="120"/>
-        </module>
         <module name="MethodCount"/>
         <module name="MethodLength"/>
         <module name="OuterTypeNumber"/>

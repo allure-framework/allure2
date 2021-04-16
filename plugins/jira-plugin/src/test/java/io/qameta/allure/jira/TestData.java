@@ -27,7 +27,6 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-
 public final class TestData {
     public static final List<String> ISSUES = Arrays.asList("ALLURE-1", "ALLURE_2");
 

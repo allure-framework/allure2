@@ -15,6 +15,21 @@
  */
 package io.qameta.allure.trend;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.qameta.allure.Aggregator;
+import io.qameta.allure.CompositeAggregator;
+import io.qameta.allure.Constants;
+import io.qameta.allure.Reader;
+import io.qameta.allure.context.JacksonContext;
+import io.qameta.allure.core.Configuration;
+import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.core.ResultsVisitor;
+import io.qameta.allure.entity.ExecutorInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -26,23 +41,6 @@ import java.util.Optional;
 import java.util.Spliterator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import io.qameta.allure.Aggregator;
-import io.qameta.allure.CompositeAggregator;
-import io.qameta.allure.Constants;
-import io.qameta.allure.Reader;
-import io.qameta.allure.context.JacksonContext;
-import io.qameta.allure.core.Configuration;
-import io.qameta.allure.core.LaunchResults;
-import io.qameta.allure.core.ResultsVisitor;
-import io.qameta.allure.entity.ExecutorInfo;
 
 import static io.qameta.allure.executor.ExecutorPlugin.EXECUTORS_BLOCK_NAME;
 import static java.util.Comparator.comparing;

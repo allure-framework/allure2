@@ -112,7 +112,6 @@
         <exclude name="FinalizeDoesNotCallSuperFinalize"/>
         <exclude name="JUnitSpelling"/>
         <exclude name="JUnitStaticSuite"/>
-        <exclude name="InvalidSlf4jMessageFormat"/>
         <exclude name="LoggerIsNotStaticFinal"/>
         <exclude name="MissingSerialVersionUID"/>
         <exclude

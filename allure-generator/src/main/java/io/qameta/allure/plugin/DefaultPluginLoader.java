@@ -69,9 +69,8 @@ public class DefaultPluginLoader {
 
     private Optional<Extension> load(final ClassLoader classLoader, final String name) {
         try {
-            final Extension loaded = Extension.class.cast(
-                    classLoader.loadClass(name).newInstance()
-            );
+            final Extension loaded = (Extension) classLoader.loadClass(name)
+                    .getDeclaredConstructor().newInstance();
             return Optional.of(loaded);
         } catch (Exception e) {
             LOGGER.error("Could not load extension class {}: {}", name, e);
@@ -90,7 +89,7 @@ public class DefaultPluginLoader {
         try (InputStream is = Files.newInputStream(configuration)) {
             return Optional.of(mapper.readValue(is, PluginConfiguration.class));
         } catch (IOException e) {
-            LOGGER.error("Could not read plugin configuration: {}", e);
+            LOGGER.error("Could not read plugin configuration", e);
             return Optional.empty();
         }
     }
@@ -115,7 +114,7 @@ public class DefaultPluginLoader {
                     .map(Optional::get)
                     .collect(Collectors.toList());
         } catch (IOException e) {
-            LOGGER.error("Could not load plugin: {}", e);
+            LOGGER.error("Could not load plugin", e);
             return Collections.emptyList();
         }
     }

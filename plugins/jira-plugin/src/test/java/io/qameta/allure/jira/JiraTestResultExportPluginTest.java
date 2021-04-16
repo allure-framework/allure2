@@ -17,7 +17,6 @@ package io.qameta.allure.jira;
 
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
-
 import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.Link;
 import io.qameta.allure.entity.Status;
@@ -27,7 +26,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Paths;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -45,7 +43,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 
 class JiraTestResultExportPluginTest {
 

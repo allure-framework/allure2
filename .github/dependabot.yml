@@ -1,0 +1,22 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "type:dependencies"
+
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "type:dependencies"
+
+  - package-ecosystem: "npm"
+    directory: "/allure-generator/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "type:dependencies"

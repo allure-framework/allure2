@@ -15,6 +15,16 @@
  */
 package io.qameta.allure.history;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.Constants;
+import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.entity.Statistic;
+import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.trend.AbstractTrendPlugin;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,17 +32,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import io.qameta.allure.CommonJsonAggregator;
-import io.qameta.allure.Constants;
-import io.qameta.allure.core.LaunchResults;
-import io.qameta.allure.entity.Statistic;
-import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.trend.AbstractTrendPlugin;
 
 /**
  * Plugin that adds history trend widget.

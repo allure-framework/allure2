@@ -1,0 +1,30 @@
+theme:workflow:
+  - ".github/**"
+
+theme:build:
+  - "gradle/**"
+  - "build.gradle.kts"
+  - "**/build.gradle.kts"
+  - "gradle.properties"
+  - ".gitignore"
+  - "allure-generator/webpack/*"
+  - "allure-generator/tsconfig.json"
+  - "allure-generator/tslint.json"
+  - "allure-generator/.prettierrc"
+
+theme:ui:
+  - "allure-generator/src/main/javascript/**"
+
+theme:generator:
+  - "allure-generator/src/main/java/**"
+  - "allure-generator/src/test/java/**"
+
+theme:plugins:
+  - "plugins/**"
+  - "allure-jira-commons/**"
+
+theme:plugin api:
+  - "allure-plugin-api/**"
+
+theme:commandline:
+  - "allure-commandline/**"

@@ -9,10 +9,10 @@ many lines in description</description>
             <name>longAssertionTest</name>
             <title>Test with long assertion text</title>
             <failure>
-                <message>AssertionError: 
+                <message>AssertionError:
 Expected: "{\n\"name\": \"test\",\n\"value\": \"ok value\"\n}"
      but: was "{\n\"name\": \"test\",\n\"value\": \"bad value\"\n}"</message>
-                <stack-trace>java.lang.AssertionError: 
+                <stack-trace>java.lang.AssertionError:
 Expected: "{\n\"name\": \"test\",\n\"value\": \"ok value\"\n}"
      but: was "{\n\"name\": \"test\",\n\"value\": \"bad value\"\n}"
 	at org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)
@@ -118,10 +118,10 @@ Expected: "{\n\"name\": \"test\",\n\"value\": \"ok value\"\n}"
         </test-case>
         <test-case start="1412949539801" stop="1412949539862" status="broken">
             <name>lotOfStepsTest</name>
-            <description type="text">I have many steps 
+            <description type="text">I have many steps
 
-    Parent Step 
-    Last 
+    Parent Step
+    Last
     MakeThisTestBroken</description>
             <failure>
                 <message>FileNotFoundException: No file found.</message>
