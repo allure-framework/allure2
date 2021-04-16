@@ -66,7 +66,7 @@ configure(subprojects) {
             dependency("com.github.spotbugs:spotbugs-annotations:3.1.12")
             dependency("com.opencsv:opencsv:4.6")
             dependency("com.vladsch.flexmark:flexmark:0.50.36")
-            dependency("commons-io:commons-io:2.6")
+            dependency("commons-io:commons-io:2.8.0")
             dependency("javax.xml.bind:jaxb-api:2.3.1")
             dependency("org.allurefw:allure1-model:1.0")
             dependency("org.apache.commons:commons-lang3:3.9")
