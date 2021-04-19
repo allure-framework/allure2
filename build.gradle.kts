@@ -69,7 +69,7 @@ configure(subprojects) {
             dependency("commons-io:commons-io:2.8.0")
             dependency("javax.xml.bind:jaxb-api:2.3.1")
             dependency("org.allurefw:allure1-model:1.0")
-            dependency("org.apache.commons:commons-lang3:3.9")
+            dependency("org.apache.commons:commons-lang3:3.12.0")
             dependency("org.apache.httpcomponents:httpclient:4.5.9")
             dependency("org.apache.tika:tika-core:1.22")
             dependency("org.assertj:assertj-core:3.13.2")
