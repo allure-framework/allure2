@@ -62,7 +62,7 @@ configure(subprojects) {
             mavenBom("org.junit:junit-bom:5.7.1")
         }
         dependencies {
-            dependency("com.beust:jcommander:1.78")
+            dependency("com.beust:jcommander:1.80")
             dependency("com.github.spotbugs:spotbugs-annotations:3.1.12")
             dependency("com.opencsv:opencsv:4.6")
             dependency("com.vladsch.flexmark:flexmark:0.50.36")
