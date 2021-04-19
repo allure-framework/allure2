@@ -42,7 +42,7 @@
     "postcss-rtl": "^1.7.3",
     "prettier": "^1.19.1",
     "rimraf": "^2.7.1",
-    "sass": "^1.32.8",
+    "sass": "^1.32.10",
     "sass-loader": "^7.3.1",
     "source-map-loader": "^0.2.4",
     "style-loader": "^0.23.1",
