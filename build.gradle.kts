@@ -71,7 +71,7 @@ configure(subprojects) {
             dependency("org.allurefw:allure1-model:1.0")
             dependency("org.apache.commons:commons-lang3:3.12.0")
             dependency("org.apache.httpcomponents:httpclient:4.5.13")
-            dependency("org.apache.tika:tika-core:1.22")
+            dependency("org.apache.tika:tika-core:1.26")
             dependency("org.assertj:assertj-core:3.19.0")
             dependency("org.eclipse.jetty:jetty-server:9.4.20.v20190813")
             dependency("org.freemarker:freemarker:2.3.31")
