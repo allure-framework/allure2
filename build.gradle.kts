@@ -73,7 +73,7 @@ configure(subprojects) {
             dependency("com.beust:jcommander:1.81")
             dependency("com.github.spotbugs:spotbugs-annotations:3.1.12")
             dependency("com.opencsv:opencsv:4.6")
-            dependency("com.vladsch.flexmark:flexmark:0.50.36")
+            dependency("com.vladsch.flexmark:flexmark:0.62.2")
             dependency("commons-io:commons-io:2.8.0")
             dependency("javax.xml.bind:jaxb-api:2.3.1")
             dependency("org.allurefw:allure1-model:1.0")
