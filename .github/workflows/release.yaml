@@ -1,61 +1,62 @@
 name: Release
 
 on:
-  release:
-    types: [published]
+  workflow_dispatch:
+    inputs:
+      releaseVersion:
+        description: "The release version in <MAJOR>.<MINOR>.<PATCH> format"
+        required: true
+      nextVersion:
+        description: "The next version in <MAJOR>.<MINOR> format WITHOUT SNAPSHOT SUFFIX"
+        required: true
 
 jobs:
-  build:
+  triage:
     runs-on: ubuntu-latest
     steps:
+      - name: "Check release version"
+        run: |
+          expr "${{ github.event.inputs.releaseVersion }}" : '[[:digit:]][[:digit:]]*\.[[:digit:]][[:digit:]]*\.[[:digit:]][[:digit:]]*$'
+
+      - name: "Check next version"
+        run: |
+          expr "${{ github.event.inputs.nextVersion }}" : '[[:digit:]][[:digit:]]*\.[[:digit:]][[:digit:]]*$'
+
       - uses: actions/checkout@v2.3.4
-      - name: Set up JDK
-        uses: actions/setup-java@v2
         with:
-          distribution: 'zulu'
-          java-version: 8.0.x
-      - run: echo "::set-output name=version::${GITHUB_REF:10}"
-        id: release
-      - name: "Gradle Build"
-        run: ./gradlew build buildRpm buildDeb -Pversion=${{ steps.release.outputs.version }}
-      - name: "Gradle Publish to Bintray"
-        env:
-          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
-          BINTRAY_API_KEY: ${{ secrets.BINTRAY_API_KEY }}
-        run: ./gradlew bintrayUpload -Pversion=${{ steps.release.outputs.version }}
-      - name: "Publish Deb to GitHub"
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.QAMETA_CI }}
+
+      - name: "Configure CI Git User"
+        run: |
+          git config --global user.name qameta-ci
+          git config --global user.email qameta-ci@qameta.io
+
+      - name: "Set release version in gradle.properties file"
+        run: |
+          sed -i -e '/version=/s/.*/version=${{ github.event.inputs.releaseVersion }}/g' gradle.properties
+          cat gradle.properties
+
+      - name: "Commit release version and create tag"
+        run: |
+          git commit -am "release ${{ github.event.inputs.releaseVersion }}"
+          git tag ${{ github.event.inputs.releaseVersion }}
+          git push origin ${{ github.event.inputs.releaseVersion }}
+
+      - name: "Set next development version in gradle.properties file"
+        run: |
+          sed -i -e '/version=/s/.*/version=${{ github.event.inputs.nextVersion }}-SNAPSHOT/g' gradle.properties
+          cat gradle.properties
+
+      - name: "Commit next development version and push it"
+        run: |
+          git commit -am "set next development version ${{ github.event.inputs.nextVersion }}"
+          git push origin ${GITHUB_REF}
+
+      - name: "Publish Github Release"
+        uses: toolmantim/release-drafter@v5.15.0
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./allure-commandline/build/distributions/allure_${{ steps.release.outputs.version }}-1_all.deb
-          asset_name: allure_${{ steps.release.outputs.version }}-1_all.deb
-          asset_content_type: application/octet-stream
-      - name: "Publish Rpm to GitHub"
-        uses: actions/upload-release-asset@v1
+          tag: ${{ github.event.inputs.releaseVersion }}
+          publish: "true"
+          version: ${{ github.event.inputs.releaseVersion }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./allure-commandline/build/distributions/allure-${{ steps.release.outputs.version }}-1.noarch.rpm
-          asset_name: allure_${{ steps.release.outputs.version }}-1.noarch.rpm
-          asset_content_type: application/octet-stream
-      - name: "Publish Zip to GitHub"
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./allure-commandline/build/distributions/allure-commandline-${{ steps.release.outputs.version }}.zip
-          asset_name: allure-${{ steps.release.outputs.version }}.zip
-          asset_content_type: application/octet-stream
-      - name: "Publish Tgz to GitHub"
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./allure-commandline/build/distributions/allure-commandline-${{ steps.release.outputs.version }}.tgz
-          asset_name: allure-${{ steps.release.outputs.version }}.tgz
-          asset_content_type: application/octet-stream
+          GITHUB_TOKEN: ${{ secrets.QAMETA_CI }}
