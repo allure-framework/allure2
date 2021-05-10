@@ -41,14 +41,14 @@ jobs:
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
       - name: "Publish Deb to GitHub"
-          uses: actions/upload-release-asset@v1
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          with:
-            upload_url: ${{ github.event.release.upload_url }}
-            asset_path: ./allure-commandline/build/distributions/allure_${{ steps.release.outputs.version }}-1_all.deb
-            asset_name: allure_${{ steps.release.outputs.version }}-1_all.deb
-            asset_content_type: application/octet-stream
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./allure-commandline/build/distributions/allure_${{ steps.release.outputs.version }}-1_all.deb
+          asset_name: allure_${{ steps.release.outputs.version }}-1_all.deb
+          asset_content_type: application/octet-stream
 
       - name: "Publish Rpm to GitHub"
         uses: actions/upload-release-asset@v1

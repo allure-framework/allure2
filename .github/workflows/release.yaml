@@ -55,8 +55,9 @@ jobs:
       - name: "Publish Github Release"
         uses: toolmantim/release-drafter@v5.15.0
         with:
+          version: ${{ github.event.inputs.releaseVersion }}
+          name: ${{ github.event.inputs.releaseVersion }}
           tag: ${{ github.event.inputs.releaseVersion }}
           publish: "true"
-          version: ${{ github.event.inputs.releaseVersion }}
         env:
           GITHUB_TOKEN: ${{ secrets.QAMETA_CI }}
