@@ -255,6 +255,10 @@ configure(subprojects) {
         }
     }
 
+    signing {
+        sign(publishing.publications["maven"])
+    }
+
     val allurePlugin by configurations.creating
 
     val pluginsDir = "$buildDir/plugins/"
