@@ -242,6 +242,14 @@ configure(subprojects) {
                         system.set("GitHub Issues")
                         url.set("https://github.com/allure-framework/allure2/issues")
                     }
+                    versionMapping {
+                        usage("java-api") {
+                            fromResolutionOf("runtimeClasspath")
+                        }
+                        usage("java-runtime") {
+                            fromResolutionResult()
+                        }
+                    }
                 }
             }
         }
