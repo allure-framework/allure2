@@ -1,0 +1,81 @@
+name: Publish
+
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Set release version"
+        id: release
+        run: echo "::set-output name=version::${GITHUB_REF:10}"
+      - uses: actions/checkout@v2
+
+      - name: "Set up JDK 1.8"
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: 8.0.x
+
+      - name: "Set up GPG"
+        run: echo -n "${GPG_PRIVATE_KEY}" | base64 --decode > ${GITHUB_WORKSPACE}/${GPG_KEY_ID}.gpg
+        env:
+          GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+
+      - name: "Gradle Build"
+        run: ./gradlew build buildRpm buildDeb -Pversion=${{ steps.release.outputs.version }}
+
+      - name: "Gradle Publish"
+        run: |
+          ./gradlew publishToSonatype -Pversion=${{ steps.release.outputs.version }} \
+                    -Psigning.keyId=${GPG_KEY_ID} \
+                    -Psigning.password=${GPG_PASSPHRASE} \
+                    -Psigning.secretKeyRingFile=${GITHUB_WORKSPACE}/${GPG_KEY_ID}.gpg
+        env:
+          ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.OSSRH_USERNAME }}
+          ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.OSSRH_PASSWORD }}
+          GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: "Publish Deb to GitHub"
+          uses: actions/upload-release-asset@v1
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            upload_url: ${{ github.event.release.upload_url }}
+            asset_path: ./allure-commandline/build/distributions/allure_${{ steps.release.outputs.version }}-1_all.deb
+            asset_name: allure_${{ steps.release.outputs.version }}-1_all.deb
+            asset_content_type: application/octet-stream
+
+      - name: "Publish Rpm to GitHub"
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./allure-commandline/build/distributions/allure-${{ steps.release.outputs.version }}-1.noarch.rpm
+          asset_name: allure_${{ steps.release.outputs.version }}-1.noarch.rpm
+          asset_content_type: application/octet-stream
+
+      - name: "Publish Zip to GitHub"
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./allure-commandline/build/distributions/allure-commandline-${{ steps.release.outputs.version }}.zip
+          asset_name: allure-${{ steps.release.outputs.version }}.zip
+          asset_content_type: application/octet-stream
+
+      - name: "Publish Tgz to GitHub"
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./allure-commandline/build/distributions/allure-commandline-${{ steps.release.outputs.version }}.tgz
+          asset_name: allure-${{ steps.release.outputs.version }}.tgz
+          asset_content_type: application/octet-stream

@@ -10,7 +10,7 @@ plugins {
 description = "Allure Commandline"
 
 application {
-    mainClassName = "io.qameta.allure.CommandLine"
+    mainClass.set("io.qameta.allure.CommandLine")
 }
 
 distributions {
