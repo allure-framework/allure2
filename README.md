@@ -32,7 +32,7 @@ information from everyday execution of tests.
 
 You can use one of the following ways to get Allure:
 
-* Grab it from [bintray](https://bintray.com/qameta/maven/allure2) (see Downloads section).
+* Grab it from [releases](https://github.com/allure-framework/allure2/releases) (see Assets section).
 * Using Homebrew:
 
     ```bash
