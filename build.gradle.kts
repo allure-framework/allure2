@@ -206,6 +206,10 @@ configure(subprojects) {
         (options as StandardJavadocDocletOptions).addStringOption("Xdoclint:none", "-quiet")
     }
 
+    tasks.withType<GenerateModuleMetadata> {
+        enabled = false
+    }
+    
     publishing {
         publications {
             create<MavenPublication>("maven") {
