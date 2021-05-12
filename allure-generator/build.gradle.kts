@@ -2,7 +2,7 @@ import com.moowork.gradle.node.npm.NpmTask
 
 plugins {
     `java-library`
-    id("com.github.node-gradle.node") version "2.2.4"
+    id("com.github.node-gradle.node") version "3.1.0"
 }
 
 description = "Allure Report Generator"
