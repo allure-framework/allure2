@@ -41,7 +41,7 @@ jobs:
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
       - name: "Publish Deb to GitHub"
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -51,7 +51,7 @@ jobs:
           asset_content_type: application/octet-stream
 
       - name: "Publish Rpm to GitHub"
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -61,7 +61,7 @@ jobs:
           asset_content_type: application/octet-stream
 
       - name: "Publish Zip to GitHub"
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -71,7 +71,7 @@ jobs:
           asset_content_type: application/octet-stream
 
       - name: "Publish Tgz to GitHub"
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
