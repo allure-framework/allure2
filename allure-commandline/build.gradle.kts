@@ -16,7 +16,7 @@ application {
 distributions {
     main {
         contents {
-            from(tasks.getByName("copyPlugins")) {
+            from(tasks.named("copyPlugins")) {
                 into("plugins")
             }
         }
@@ -78,6 +78,7 @@ ospackage {
             "openjdk8-jre-headless | openjdk-8-jre | openjdk-8-jdk | " +
             "oracle-java8-installer | oracle-java8-installer")
 
+    // Remove closureOf when https://github.com/nebula-plugins/gradle-ospackage-plugin/issues/399 is fixed
     from("${pack}/bin", closureOf<CopySpec> {
         into("${dest}/bin")
         fileMode = 0x168

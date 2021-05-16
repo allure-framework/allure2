@@ -67,7 +67,7 @@ val cleanUpDemoReport by tasks.creating(Delete::class) {
 
 val generateDemoReport by tasks.creating(JavaExec::class) {
     group = "Documentation"
-    dependsOn(cleanUpDemoReport, tasks.getByName("copyPlugins"))
+    dependsOn(cleanUpDemoReport, tasks.named("copyPlugins"))
     main = "io.qameta.allure.DummyReportGenerator"
     classpath = sourceSets.getByName("test").runtimeClasspath
     systemProperty("allure.plugins.directory", "build/plugins")
