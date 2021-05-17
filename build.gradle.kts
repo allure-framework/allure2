@@ -26,7 +26,7 @@ plugins {
     id("com.diffplug.spotless") version "5.12.4"
     id("com.gorylenko.gradle-git-properties") version "2.3.1"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    id("ru.vyarus.quality") version "4.5.0"
+    id("ru.vyarus.quality") version "4.6.0"
 }
 
 java {
