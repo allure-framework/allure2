@@ -67,7 +67,7 @@ subprojects {
     dependencyManagement {
         imports {
             mavenBom("com.fasterxml.jackson:jackson-bom:2.12.3")
-            mavenBom("org.junit:junit-bom:5.7.1")
+            mavenBom("org.junit:junit-bom:5.7.2")
         }
         dependencies {
             dependency("com.beust:jcommander:1.81")
@@ -85,7 +85,7 @@ subprojects {
             dependency("org.freemarker:freemarker:2.3.31")
             dependency("org.mockito:mockito-core:3.9.0")
             dependency("org.projectlombok:lombok:1.18.20")
-            dependency("org.zeroturnaround:zt-zip:1.13")
+            dependency("org.zeroturnaround:zt-zip:1.14")
             dependencySet("org.slf4j:1.7.28") {
                 entry("slf4j-api")
                 entry("slf4j-nop")
