@@ -23,7 +23,7 @@ plugins {
     signing
     id("com.bmuschko.docker-remote-api") version "6.7.0"
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
-    id("com.diffplug.spotless") version "5.12.4"
+    id("com.diffplug.spotless") version "5.12.5"
     id("com.gorylenko.gradle-git-properties") version "2.3.1"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("ru.vyarus.quality") version "4.6.0"
@@ -67,7 +67,7 @@ subprojects {
     dependencyManagement {
         imports {
             mavenBom("com.fasterxml.jackson:jackson-bom:2.12.3")
-            mavenBom("org.junit:junit-bom:5.7.1")
+            mavenBom("org.junit:junit-bom:5.7.2")
         }
         dependencies {
             dependency("com.beust:jcommander:1.81")
