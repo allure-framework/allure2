@@ -34,8 +34,10 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-tasks.withType<JavaCompile>().configureEach {
-    options.encoding = "UTF-8"
+allprojects {
+    tasks.withType<JavaCompile>().configureEach {
+        options.encoding = "UTF-8"
+    }
 }
 
 description = "Allure Report"
@@ -103,12 +105,7 @@ subprojects {
         }
     }
 
-    tasks.compileJava {
-        options.encoding = "UTF-8"
-    }
-
     tasks.compileTestJava {
-        options.encoding = "UTF-8"
         options.compilerArgs.add("-parameters")
     }
 
