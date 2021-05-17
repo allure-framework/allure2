@@ -1,4 +1,4 @@
-import com.moowork.gradle.node.npm.NpmTask
+import com.github.gradle.node.npm.task.NpmTask
 
 plugins {
     `java-library`
@@ -8,29 +8,29 @@ plugins {
 description = "Allure Report Generator"
 
 node {
-    version = "12.13.0"
-    npmVersion = "6.9.0"
-    download = true
+    // enforce https
+    distBaseUrl.set("https://nodejs.org/dist")
+    version.set("14.16.1")
+    npmVersion.set("6.14.12")
+    download.set(true)
 }
 
 val generatedStatic = "build/www"
 
-val npmInstallDeps by tasks.creating(NpmTask::class) {
+tasks.npmInstall {
     group = "Build"
+    args.set(listOf("--silent"))
+    npmCommand.set(if (project.hasProperty("prod")) listOf("ci") else listOf("install"))
+    environment.set(mapOf("ADBLOCK" to "true"))
     inputs.file("package-lock.json")
     inputs.file("package.json")
 
     outputs.dir("node_modules")
-
-    setArgs(arrayListOf("install"))
-
-    setArgs(arrayListOf("install", "--silent"))
-    setEnvironment(mapOf("ADBLOCK" to "true"))
 }
 
 val buildWeb by tasks.creating(NpmTask::class) {
     group = "Build"
-    dependsOn(npmInstallDeps)
+    dependsOn(tasks.npmInstall)
     inputs.file(".prettierrc")
     inputs.file("package-lock.json")
     inputs.file("package.json")
@@ -42,12 +42,12 @@ val buildWeb by tasks.creating(NpmTask::class) {
 
     outputs.dir(generatedStatic)
 
-    setArgs(arrayListOf("run", "build", "--silent"))
+    args.set(listOf("run", "build", "--silent"))
 }
 
 val testWeb by tasks.creating(NpmTask::class) {
     group = "Verification"
-    dependsOn(npmInstallDeps)
+    dependsOn(tasks.npmInstall)
     inputs.file(".prettierrc")
     inputs.file("package-lock.json")
     inputs.file("package.json")
@@ -57,7 +57,7 @@ val testWeb by tasks.creating(NpmTask::class) {
     inputs.files(fileTree("src/main/javascript"))
     inputs.files(fileTree("webpack"))
 
-    setArgs(arrayListOf("run", "test", "--silent"))
+    args.set(listOf("run", "test", "--silent"))
 }
 
 val cleanUpDemoReport by tasks.creating(Delete::class) {
@@ -76,8 +76,8 @@ val generateDemoReport by tasks.creating(JavaExec::class) {
 
 val dev by tasks.creating(NpmTask::class) {
     group = "Development"
-    dependsOn(npmInstallDeps, generateDemoReport)
-    setArgs(arrayListOf("run", "start"))
+    dependsOn(tasks.npmInstall, generateDemoReport)
+    args.set(listOf("run", "start"))
 }
 
 tasks.processResources {
