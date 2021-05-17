@@ -18,7 +18,7 @@ val plugins = listOf(
         "xunit-xml-plugin"
 )
 
-plugins.forEach({
+plugins.forEach {
     include("plugins/$it")
     project(":plugins/$it").name = it
-})
+}

@@ -67,7 +67,7 @@ val cleanUpDemoReport by tasks.creating(Delete::class) {
 
 val generateDemoReport by tasks.creating(JavaExec::class) {
     group = "Documentation"
-    dependsOn(cleanUpDemoReport, tasks.getByName("copyPlugins"))
+    dependsOn(cleanUpDemoReport, tasks.named("copyPlugins"))
     main = "io.qameta.allure.DummyReportGenerator"
     classpath = sourceSets.getByName("test").runtimeClasspath
     systemProperty("allure.plugins.directory", "build/plugins")
@@ -116,9 +116,7 @@ dependencies {
     testImplementation("io.qameta.allure:allure-junit-platform")
     testImplementation("org.apache.commons:commons-lang3")
     testImplementation("org.assertj:assertj-core")
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("org.junit.jupiter:junit-jupiter-params")
+    testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.slf4j:slf4j-simple")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }

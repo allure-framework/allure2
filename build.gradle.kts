@@ -12,7 +12,7 @@ val gradleScriptDir by extra("$root/gradle")
 val qualityConfigsDir by extra("$gradleScriptDir/quality-configs")
 val spotlessDtr by extra("$qualityConfigsDir/spotless")
 
-tasks.withType(Wrapper::class) {
+tasks.wrapper {
     gradleVersion = "6.8.3"
 }
 
@@ -34,14 +34,14 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-tasks.withType(JavaCompile::class) {
-    options.encoding = "UTF-8"
+allprojects {
+    tasks.withType<JavaCompile>().configureEach {
+        options.encoding = "UTF-8"
+    }
 }
 
-configure(listOf(rootProject)) {
-    description = "Allure Report"
-    group = "io.qameta.allure"
-}
+description = "Allure Report"
+group = "io.qameta.allure"
 
 nexusPublishing {
     repositories {
@@ -49,7 +49,7 @@ nexusPublishing {
     }
 }
 
-configure(subprojects) {
+subprojects {
     group = if (project.name.endsWith("plugin")) {
         "io.qameta.allure.plugins"
     } else {
@@ -105,12 +105,7 @@ configure(subprojects) {
         }
     }
 
-    tasks.compileJava {
-        options.encoding = "UTF-8"
-    }
-
     tasks.compileTestJava {
-        options.encoding = "UTF-8"
         options.compilerArgs.add("-parameters")
     }
 
@@ -202,11 +197,11 @@ configure(subprojects) {
         withSourcesJar()
     }
 
-    tasks.withType(Javadoc::class) {
+    tasks.withType<Javadoc>().configureEach {
         (options as StandardJavadocDocletOptions).addStringOption("Xdoclint:none", "-quiet")
     }
 
-    tasks.withType<GenerateModuleMetadata> {
+    tasks.withType<GenerateModuleMetadata>().configureEach {
         enabled = false
     }
     
@@ -259,26 +254,33 @@ configure(subprojects) {
         }
     }
 
-    signing {
-        sign(publishing.publications["maven"])
+    // Developers do not always have PGP configured,
+    // so activate signing for release versions only
+    // Just in case Maven Central rejects signed snapshots for some reason
+    if (!version.toString().endsWith("-SNAPSHOT")) {
+        signing {
+            sign(publishing.publications["maven"])
+        }
     }
 
-    val allurePlugin by configurations.creating
+    val allurePlugin by configurations.creating {
+        isCanBeResolved = true
+        isCanBeConsumed = true
+        attributes {
+            attribute(Category.CATEGORY_ATTRIBUTE, objects.named("allure-plugin"))
+        }
+    }
 
     val pluginsDir = "$buildDir/plugins/"
-    val cleanPlugins by tasks.creating(Delete::class) {
-        group = "Build"
-        delete(pluginsDir)
-    }
     val copyPlugins by tasks.creating(Sync::class) {
         group = "Build"
-        dependsOn(allurePlugin, cleanPlugins)
-        from(Callable { allurePlugin.map { if (it.isDirectory) it else zipTree(it) } })
+        dependsOn(allurePlugin)
+        into(pluginsDir)
+        from(provider { allurePlugin.map { if (it.isDirectory) it else zipTree(it) } })
         eachFile {
             val segments = relativePath.segments
             segments[0] = segments[0].replace("-${project.version}", "")
         }
-        into(pluginsDir)
         includeEmptyDirs = false
     }
 
