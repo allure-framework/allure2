@@ -104,6 +104,16 @@ val buildRpm by tasks.existing(Rpm::class) {
     dependsOn(preparePackageOutput)
 }
 
+publishing {
+    publications {
+        named<MavenPublication>("maven") {
+            artifact(tasks.distZip)
+            artifact(tasks.distTar)
+        }
+    }
+}
+
+
 dependencies {
     allurePlugin(project(path = ":behaviors-plugin", configuration = "allurePlugin"))
     allurePlugin(project(path = ":custom-logo-plugin", configuration = "allurePlugin"))
