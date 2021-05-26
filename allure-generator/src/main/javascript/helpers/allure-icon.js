@@ -10,6 +10,10 @@ const icons = {
     className: "fa fa-warning",
     tooltip: "status.newFailed",
   },
+  newBroken: {
+    className: "fa fa-warning",
+    tooltip: "status.newBroken",
+  },
   failed: {
     className: "fa fa-times-circle fa-fw text_status_failed",
     tooltip: "status.failed",

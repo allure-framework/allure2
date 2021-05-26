@@ -18,6 +18,11 @@
             {{allure-icon 'newFailed'}}
         </div>
         {{/if}}
+        {{#if newBroken}}
+        <div class="{{b 'node' 'newBroken' shown=newBroken}}">
+            {{allure-icon 'newBroken'}}
+        </div>
+        {{/if}}
         {{#if parameters}}
 
         <div class="node__parameters long-line line-ellipsis">

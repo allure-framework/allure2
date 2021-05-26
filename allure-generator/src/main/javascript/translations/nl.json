@@ -6,11 +6,13 @@
     "skipped": "Overgeslagen",
     "unknown": "Onbekend",
     "flaky": "Test is instabiel",
-    "newFailed": "Test is nieuw gefaald"
+    "newFailed": "Test is nieuw gefaald",
+    "newBroken": "Test is nieuw defect"
   },
   "marks": {
     "flaky": "Instabiel",
-    "newFailed": "Nieuw gefaald"
+    "newFailed": "Nieuw gefaald",
+    "newBroken": "Nieuw defect"
   },
   "sorter": {
     "order": "volgorde",

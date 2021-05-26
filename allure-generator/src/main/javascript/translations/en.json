@@ -6,11 +6,13 @@
     "skipped": "Skipped",
     "unknown": "Unknown",
     "flaky": "Test is flaky",
-    "newFailed": "Test is new failed."
+    "newFailed": "Test is new failed.",
+    "newBroken": "Test is new broken."
   },
   "marks": {
     "flaky": "Flaky",
-    "newFailed": "New Failed"
+    "newFailed": "New Failed",
+    "newBroken": "New Broken"
   },
   "sorter": {
     "order": "order",

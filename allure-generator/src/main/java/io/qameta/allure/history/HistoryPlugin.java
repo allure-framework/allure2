@@ -99,6 +99,16 @@ public class HistoryPlugin implements Reader, Aggregator {
                 && statuses.get(1) == Status.PASSED;
     }
 
+    private boolean isNewBroken(final List<HistoryItem> histories) {
+        final List<Status> statuses = histories.stream()
+                .sorted(comparingByTime())
+                .map(HistoryItem::getStatus)
+                .collect(Collectors.toList());
+        return statuses.size() > 1
+                && statuses.get(0) == Status.BROKEN
+                && statuses.get(1) == Status.PASSED;
+    }
+
     private boolean isFlaky(final List<HistoryItem> histories) {
         if (histories.size() > 1 && histories.get(0).status == Status.FAILED) {
             final List<Status> statuses = histories.subList(1, histories.size())
@@ -159,6 +169,7 @@ public class HistoryPlugin implements Reader, Aggregator {
                 .limit(20)
                 .collect(Collectors.toList());
         result.setNewFailed(isNewFailed(newItems));
+        result.setNewBroken(isNewBroken(newItems));
         result.setFlaky(isFlaky(newItems));
         data.setItems(newItems);
     }

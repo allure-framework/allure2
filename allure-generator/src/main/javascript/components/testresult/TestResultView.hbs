@@ -11,6 +11,9 @@
     {{#if newFailed}}
         {{allure-icon 'newFailed'}}
     {{/if}}
+    {{#if newBroken}}
+        {{allure-icon 'newBroken'}}
+    {{/if}}
     <div class="{{b cls 'status'}}">
         <span class="label label_status_{{status}}">{{t statusName}}</span>
     </div>
