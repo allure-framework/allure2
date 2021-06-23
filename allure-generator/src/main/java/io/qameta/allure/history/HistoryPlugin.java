@@ -189,7 +189,7 @@ public class HistoryPlugin implements Reader, Aggregator {
         result.setNewPassed(isNewPassed(current, prevItems));
 
         final List<HistoryItem> newItems = Stream.concat(Stream.of(current), prevItems.stream())
-                .limit(20)
+                .limit(Aggregator.resultsLimit())
                 .collect(Collectors.toList());
         data.setItems(newItems);
     }

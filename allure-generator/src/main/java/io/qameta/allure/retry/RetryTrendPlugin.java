@@ -18,6 +18,7 @@ package io.qameta.allure.retry;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.qameta.allure.Aggregator;
 import io.qameta.allure.CommonJsonAggregator;
 import io.qameta.allure.Constants;
 import io.qameta.allure.core.LaunchResults;
@@ -55,7 +56,7 @@ public class RetryTrendPlugin extends AbstractTrendPlugin<RetryTrendItem> {
         final List<RetryTrendItem> data = getHistoryItems(launchesResults);
 
         return Stream.concat(Stream.of(item), data.stream())
-                .limit(20)
+                .limit(Aggregator.resultsLimit())
                 .collect(Collectors.toList());
     }
 
