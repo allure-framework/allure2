@@ -1,0 +1,17 @@
+name: Build
+
+on:
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    name: "Build"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - name: Qodana - Code Inspection
+        uses: JetBrains/qodana-action@v2.0-eap
+
+
