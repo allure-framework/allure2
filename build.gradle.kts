@@ -71,7 +71,7 @@ subprojects {
         }
         dependencies {
             dependency("com.beust:jcommander:1.81")
-            dependency("com.github.spotbugs:spotbugs-annotations:4.3.0")
+            dependency("com.github.spotbugs:spotbugs-annotations:4.4.0")
             dependency("com.opencsv:opencsv:4.6")
             dependency("com.vladsch.flexmark:flexmark:0.62.2")
             dependency("commons-io:commons-io:2.11.0")
