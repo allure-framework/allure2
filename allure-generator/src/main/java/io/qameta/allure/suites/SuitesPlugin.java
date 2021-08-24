@@ -22,6 +22,8 @@ import io.qameta.allure.Constants;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.csv.CsvExportSuite;
 import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.tree.SuitesTestResultGroupFactory;
+import io.qameta.allure.tree.TestResultLeafFactory;
 import io.qameta.allure.tree.TestResultTree;
 import io.qameta.allure.tree.TestResultTreeGroup;
 import io.qameta.allure.tree.Tree;
@@ -74,7 +76,9 @@ public class SuitesPlugin extends CompositeAggregator {
         // @formatter:off
         final Tree<TestResult> xunit = new TestResultTree(
                 SUITES,
-            testResult -> groupByLabels(testResult, PARENT_SUITE, SUITE, SUB_SUITE)
+            testResult -> groupByLabels(testResult, PARENT_SUITE, SUITE, SUB_SUITE),
+            new SuitesTestResultGroupFactory(),
+            new TestResultLeafFactory()
         );
         // @formatter:on
 

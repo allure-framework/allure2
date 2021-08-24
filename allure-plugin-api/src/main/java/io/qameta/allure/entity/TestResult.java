@@ -44,6 +44,7 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
     private static final long serialVersionUID = 1L;
 
     protected String uid;
+    protected String suiteUid;
     protected String name;
     protected String fullName;
     protected String historyId;

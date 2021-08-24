@@ -223,7 +223,10 @@ class TimelineView extends BaseChartView {
         .data(items)
         .enter()
         .append("a")
-        .attr("xlink:href", (d) => `#testresult/${d.uid}`)
+        .attr('xlink:href', (d) => {
+          const href = d.suiteUid ? `#suites/${d.suiteUid}/` : '#testresult/';
+          return href + d.uid;
+        })
         .append("rect")
         .attrs({
           class: (d) => `timeline__item chart__fill_status_${d.status}`,
