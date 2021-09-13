@@ -38,9 +38,8 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
-import static io.qameta.allure.AllureUtils.generateTestResultContainerName;
-import static io.qameta.allure.AllureUtils.generateTestResultName;
 import static io.qameta.allure.entity.Status.UNKNOWN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
@@ -233,6 +232,46 @@ class Allure2PluginTest {
                 .containsOnly(Allure2Plugin.ALLURE2_RESULTS_FORMAT);
     }
 
+    @Test
+    void shouldProcessParameters() throws Exception {
+        Set<TestResult> testResults = process(
+                "allure2/parameters.json", generateTestResultName()
+        ).getResults();
+
+        assertThat(testResults)
+                .flatExtracting(TestResult::getParameters)
+                .extracting(
+                        Parameter::getName, Parameter::getValue
+                )
+                .containsExactlyInAnyOrder(
+                        tuple("param 3", "value 3"),
+                        tuple("param 5", "value 5"),
+                        tuple("param 6", "value 6"),
+                        tuple("param 7", "******")
+                );
+    }
+
+    @Test
+    void shouldProcessStepParameters() throws Exception {
+        Set<TestResult> testResults = process(
+                "allure2/step-parameters.json", generateTestResultName()
+        ).getResults();
+
+        assertThat(testResults)
+                .extracting(TestResult::getTestStage)
+                .flatExtracting(StageResult::getSteps)
+                .flatExtracting(Step::getParameters)
+                .extracting(
+                        Parameter::getName, Parameter::getValue
+                )
+                .containsExactlyInAnyOrder(
+                        tuple("param 3", "value 3"),
+                        tuple("param 5", "value 5"),
+                        tuple("param 6", "value 6"),
+                        tuple("param 7", "******")
+                );
+    }
+
     private LaunchResults process(String... strings) throws IOException {
         Iterator<String> iterator = Arrays.asList(strings).iterator();
         while (iterator.hasNext()) {
@@ -251,5 +290,13 @@ class Allure2PluginTest {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourceName)) {
             Files.copy(Objects.requireNonNull(is), dir.resolve(fileName));
         }
+    }
+
+    private static String generateTestResultName() {
+        return UUID.randomUUID() + "-result.json";
+    }
+
+    private static String generateTestResultContainerName() {
+        return UUID.randomUUID() + "-container.json";
     }
 }

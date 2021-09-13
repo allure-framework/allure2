@@ -68,6 +68,7 @@ subprojects {
         imports {
             mavenBom("com.fasterxml.jackson:jackson-bom:2.12.4")
             mavenBom("org.junit:junit-bom:5.7.2")
+            mavenBom("io.qameta.allure:allure-bom:2.15.0")
         }
         dependencies {
             dependency("com.beust:jcommander:1.81")
@@ -91,12 +92,6 @@ subprojects {
                 entry("slf4j-nop")
                 entry("slf4j-simple")
                 entry("slf4j-log4j12")
-            }
-            dependencySet("io.qameta.allure:2.13.0") {
-                entry("allure-java-commons")
-                entry("allure-junit-platform")
-                entry("allure-model")
-                entry("allure-assertj")
             }
             dependencySet("com.squareup.retrofit2:2.6.1") {
                 entry("converter-jackson")
@@ -204,7 +199,7 @@ subprojects {
     tasks.withType<GenerateModuleMetadata>().configureEach {
         enabled = false
     }
-    
+
     publishing {
         publications {
             create<MavenPublication>("maven") {
