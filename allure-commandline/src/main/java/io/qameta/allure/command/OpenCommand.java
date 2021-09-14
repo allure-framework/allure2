@@ -46,7 +46,7 @@ public class OpenCommand {
     private HostPortOptions hostPortOptions = new HostPortOptions();
 
     public List<Path> getReportDirectories() {
-        return reportDirectories;
+        return Collections.unmodifiableList(reportDirectories);
     }
 
     public HostPortOptions getHostPortOptions() {
