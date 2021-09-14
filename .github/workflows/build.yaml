@@ -14,6 +14,7 @@ jobs:
     name: "Build"
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         java-version: [ '8.0.x', '11.0.x' ]
     steps:
