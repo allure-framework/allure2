@@ -1,0 +1,38 @@
+{
+  "uuid": "yyy",
+  "children": [
+    "123"
+  ],
+  "befores": [
+    {
+      "name": "second",
+      "start": 1500002000000,
+      "stop":  1500002200000
+    },
+    {
+      "name": "third",
+      "start": 1500003000000,
+      "stop":  1500003200000
+    },
+    {
+      "name": "first",
+      "start": 1500001000000,
+      "stop":  1500001200000
+    },
+    {
+      "name": "last"
+    }
+  ],
+  "afters": [
+    {
+      "name": "second",
+      "start": 1500002000000,
+      "stop":  1500002200000
+    },
+    {
+      "name": "third",
+      "start": 1500003000000,
+      "stop":  1500003200000
+    }
+  ]
+}

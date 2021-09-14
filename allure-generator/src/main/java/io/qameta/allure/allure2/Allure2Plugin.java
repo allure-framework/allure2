@@ -64,6 +64,7 @@ import static java.nio.file.Files.newDirectoryStream;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsFirst;
+import static java.util.Comparator.nullsLast;
 import static java.util.Objects.nonNull;
 
 /**
@@ -85,7 +86,7 @@ public class Allure2Plugin implements Reader {
 
     private static final Comparator<StageResult> BY_START = comparing(
             StageResult::getTime,
-            nullsFirst(comparing(Time::getStart, nullsFirst(naturalOrder())))
+            nullsLast(comparing(Time::getStart, nullsLast(naturalOrder())))
     );
 
     private final ObjectMapper mapper = new ObjectMapper()
@@ -285,21 +286,20 @@ public class Allure2Plugin implements Reader {
                                         final Function<TestResultContainer, Stream<StageResult>> getter) {
         return parents.stream()
                 .flatMap(getter)
+                .sorted(BY_START)
                 .collect(Collectors.toList());
     }
 
     private Stream<StageResult> getBefore(final Path source,
                                           final ResultsVisitor visitor,
                                           final TestResultContainer container) {
-        return convertList(container.getBefores(), fixture -> convert(source, visitor, fixture)).stream()
-                .sorted(BY_START);
+        return convertList(container.getBefores(), fixture -> convert(source, visitor, fixture)).stream();
     }
 
     private Stream<StageResult> getAfter(final Path source,
                                          final ResultsVisitor visitor,
                                          final TestResultContainer container) {
-        return convertList(container.getAfters(), fixture -> convert(source, visitor, fixture)).stream()
-                .sorted(BY_START);
+        return convertList(container.getAfters(), fixture -> convert(source, visitor, fixture)).stream();
     }
 
     private List<TestResultContainer> findAllParents(final List<TestResultContainer> groups,
