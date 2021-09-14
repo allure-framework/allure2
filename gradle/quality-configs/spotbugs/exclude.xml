@@ -23,7 +23,12 @@
         <!-- Disabled because of bug in JDK11 with try-with-resources code -->
         <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
     </Match>
-
+    <Match>
+        <Bug pattern="EI_EXPOSE_REP"/>
+    </Match>
+    <Match>
+        <Bug pattern="EI_EXPOSE_REP2"/>
+    </Match>
 
     <!-- Do not check class -->
     <!--<Match>-->

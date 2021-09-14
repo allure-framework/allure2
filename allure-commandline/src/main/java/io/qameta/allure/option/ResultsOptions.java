@@ -21,6 +21,7 @@ import io.qameta.allure.convert.PathConverter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.Collections.singletonList;
@@ -40,6 +41,6 @@ public class ResultsOptions {
     private List<Path> resultsDirectories = new ArrayList<>(singletonList(Paths.get("allure-results")));
 
     public List<Path> getResultsDirectories() {
-        return resultsDirectories;
+        return Collections.unmodifiableList(resultsDirectories);
     }
 }
