@@ -2,7 +2,7 @@ import com.github.gradle.node.npm.task.NpmTask
 
 plugins {
     `java-library`
-    id("com.github.node-gradle.node") version "3.1.0"
+    id("com.github.node-gradle.node") version "3.1.1"
 }
 
 description = "Allure Report Generator"
