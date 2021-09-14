@@ -21,11 +21,9 @@ import io.qameta.allure.core.Plugin;
 import io.qameta.allure.option.ConfigOptions;
 import io.qameta.allure.plugin.DefaultPluginLoader;
 import org.apache.commons.io.FileUtils;
-import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.DefaultHandler;
-import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.util.resource.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -140,8 +138,9 @@ public class Commands {
 
     public ExitCode open(final Path reportDirectory, final String host, final int port) {
         LOGGER.info("Starting web server...");
-        final Server server = setUpServer(host, port, reportDirectory);
+        final Server server;
         try {
+            server = setUpServer(host, port, reportDirectory);
             server.start();
         } catch (Exception e) {
             LOGGER.error("Could not serve the report", e);
@@ -198,18 +197,17 @@ public class Commands {
     /**
      * Set up Jetty server to serve Allure Report.
      */
-    protected Server setUpServer(final String host, final int port, final Path reportDirectory) {
+    protected Server setUpServer(final String host, final int port, final Path reportDirectory) throws IOException {
         final Server server = Objects.isNull(host)
                 ? new Server(port)
                 : new Server(new InetSocketAddress(host, port));
         final ResourceHandler handler = new ResourceHandler();
         handler.setRedirectWelcome(true);
         handler.setDirectoriesListed(true);
-        handler.setResourceBase(reportDirectory.toAbsolutePath().toString());
-        final HandlerList handlers = new HandlerList();
-        handlers.setHandlers(new Handler[]{handler, new DefaultHandler()});
+        handler.setPathInfoOnly(true);
+        handler.setBaseResource(Resource.newResource(reportDirectory.toRealPath()));
         server.setStopAtShutdown(true);
-        server.setHandler(handlers);
+        server.setHandler(handler);
         return server;
     }
 
@@ -222,11 +220,11 @@ public class Commands {
                 Desktop.getDesktop().browse(url);
             } catch (UnsupportedOperationException e) {
                 LOGGER.error("Browse operation is not supported on your platform."
-                    + "You can use the link below to open the report manually.", e);
+                        + "You can use the link below to open the report manually.", e);
             }
         } else {
             LOGGER.error("Can not open browser because this capability is not supported on "
-                + "your platform. You can use the link below to open the report manually."); 
+                    + "your platform. You can use the link below to open the report manually.");
         }
     }
 
