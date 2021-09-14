@@ -75,6 +75,7 @@ subprojects {
             dependency("com.github.spotbugs:spotbugs-annotations:4.4.1")
             dependency("com.opencsv:opencsv:4.6")
             dependency("com.vladsch.flexmark:flexmark:0.62.2")
+            dependency("commons-beanutils:commons-beanutils:1.9.4")
             dependency("commons-io:commons-io:2.11.0")
             dependency("javax.xml.bind:jaxb-api:2.3.1")
             dependency("org.allurefw:allure1-model:1.0")
@@ -87,7 +88,7 @@ subprojects {
             dependency("org.mockito:mockito-core:3.12.4")
             dependency("org.projectlombok:lombok:1.18.20")
             dependency("org.zeroturnaround:zt-zip:1.14")
-            dependencySet("org.slf4j:1.7.28") {
+            dependencySet("org.slf4j:1.7.32") {
                 entry("slf4j-api")
                 entry("slf4j-nop")
                 entry("slf4j-simple")
