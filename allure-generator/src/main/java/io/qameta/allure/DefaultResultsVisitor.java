@@ -22,6 +22,7 @@ import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.TestResult;
 import org.apache.tika.metadata.Metadata;
+import org.apache.tika.metadata.TikaCoreProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -137,7 +138,7 @@ public class DefaultResultsVisitor implements ResultsVisitor {
     public static String probeContentType(final InputStream is, final String name) {
         try (InputStream stream = new BufferedInputStream(is)) {
             final Metadata metadata = new Metadata();
-            metadata.set(Metadata.RESOURCE_NAME_KEY, name);
+            metadata.set(TikaCoreProperties.RESOURCE_NAME_KEY, name);
             return getDefaultMimeTypes().detect(stream, metadata).toString();
         } catch (IOException e) {
             LOGGER.warn("Couldn't detect the media type of attachment {} {}", name, e);
