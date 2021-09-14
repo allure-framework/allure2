@@ -4,7 +4,7 @@ import org.gradle.kotlin.dsl.support.unzipTo
 
 plugins {
     application
-    id("nebula.ospackage") version "8.6.1"
+    id("nebula.ospackage") version "9.0.0"
 }
 
 description = "Allure Commandline"
