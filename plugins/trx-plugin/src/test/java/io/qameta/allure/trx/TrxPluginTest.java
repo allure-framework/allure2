@@ -23,12 +23,6 @@ import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
-
-import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
-import static io.qameta.allure.entity.LabelName.PACKAGE;
-import static io.qameta.allure.entity.LabelName.SUITE;
-import static io.qameta.allure.entity.LabelName.TEST_CLASS;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -45,6 +39,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static io.qameta.allure.entity.LabelName.PACKAGE;
+import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
+import static io.qameta.allure.entity.LabelName.SUITE;
+import static io.qameta.allure.entity.LabelName.TEST_CLASS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.mockito.Mockito.mock;
