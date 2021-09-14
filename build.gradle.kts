@@ -84,7 +84,7 @@ subprojects {
             dependency("org.assertj:assertj-core:3.20.2")
             dependency("org.eclipse.jetty:jetty-server:9.4.43.v20210629")
             dependency("org.freemarker:freemarker:2.3.31")
-            dependency("org.mockito:mockito-core:3.12.1")
+            dependency("org.mockito:mockito-core:3.12.4")
             dependency("org.projectlombok:lombok:1.18.20")
             dependency("org.zeroturnaround:zt-zip:1.14")
             dependencySet("org.slf4j:1.7.28") {
