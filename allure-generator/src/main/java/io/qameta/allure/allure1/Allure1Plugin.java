@@ -51,7 +51,6 @@ import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -61,7 +60,6 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -80,6 +78,7 @@ import static io.qameta.allure.entity.Status.BROKEN;
 import static io.qameta.allure.entity.Status.FAILED;
 import static io.qameta.allure.entity.Status.PASSED;
 import static io.qameta.allure.entity.Status.SKIPPED;
+import static io.qameta.allure.util.ConvertUtils.convertList;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.naturalOrder;
@@ -216,14 +215,17 @@ public class Allure1Plugin implements Reader {
             final StageResult testStage = new StageResult();
             if (!source.getSteps().isEmpty()) {
                 //@formatter:off
-                testStage.setSteps(convert(
+                testStage.setSteps(convertList(
                     source.getSteps(),
                     step -> convert(directory, visitor, step, status, dest.getStatusMessage(), dest.getStatusTrace()))
                 );
                 //@formatter:on
             }
             if (!source.getAttachments().isEmpty()) {
-                testStage.setAttachments(convert(source.getAttachments(), at -> convert(directory, visitor, at)));
+                testStage.setAttachments(convertList(
+                        source.getAttachments(),
+                        at -> convert(directory, visitor, at)
+                ));
             }
             testStage.setStatus(status);
             testStage.setStatusMessage(dest.getStatusMessage());
@@ -235,8 +237,8 @@ public class Allure1Plugin implements Reader {
                 comparing(Label::getName, nullsFirst(naturalOrder()))
                         .thenComparing(Label::getValue, nullsFirst(naturalOrder()))
         );
-        set.addAll(convert(testSuite.getLabels(), this::convert));
-        set.addAll(convert(source.getLabels(), this::convert));
+        set.addAll(convertList(testSuite.getLabels(), this::convert));
+        set.addAll(convertList(source.getLabels(), this::convert));
         dest.setLabels(new ArrayList<>(set));
         dest.findAllLabels(ISSUE).forEach(issue ->
                 dest.getLinks().add(getLink(ISSUE, issue, getIssueUrl(issue, properties)))
@@ -269,19 +271,6 @@ public class Allure1Plugin implements Reader {
         visitor.visitTestResult(dest);
     }
 
-    private <T, R> List<R> convert(final Collection<T> source, final Function<T, R> converter) {
-        return convert(source, t -> true, converter);
-    }
-
-    private <T, R> List<R> convert(final Collection<T> source,
-                                   final Predicate<T> predicate,
-                                   final Function<T, R> converter) {
-        return Objects.isNull(source) ? null : source.stream()
-                .filter(predicate)
-                .map(converter)
-                .collect(toList());
-    }
-
     private Step convert(final Path source,
                          final ResultsVisitor visitor,
                          final ru.yandex.qatools.allure.model.Step s,
@@ -296,8 +285,14 @@ public class Allure1Plugin implements Reader {
                         .setStop(s.getStop())
                         .setDuration(s.getStop() - s.getStart()))
                 .setStatus(status)
-                .setSteps(convert(s.getSteps(), step -> convert(source, visitor, step, testStatus, message, trace)))
-                .setAttachments(convert(s.getAttachments(), attach -> convert(source, visitor, attach)));
+                .setSteps(convertList(
+                        s.getSteps(),
+                        step -> convert(source, visitor, step, testStatus, message, trace)
+                ))
+                .setAttachments(convertList(
+                        s.getAttachments(),
+                        attach -> convert(source, visitor, attach))
+                );
         //Copy test status details to each step set the same status
         if (Objects.equals(status, testStatus)) {
             current.setStatusMessage(message);
@@ -366,7 +361,7 @@ public class Allure1Plugin implements Reader {
                 comparing(Parameter::getName, nullsFirst(naturalOrder()))
                         .thenComparing(Parameter::getValue, nullsFirst(naturalOrder()))
         );
-        parametersSet.addAll(convert(source.getParameters(), this::hasArgumentType, this::convert));
+        parametersSet.addAll(convertList(source.getParameters(), this::hasArgumentType, this::convert));
         return new ArrayList<>(parametersSet);
     }
 

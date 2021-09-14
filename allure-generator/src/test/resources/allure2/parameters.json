@@ -1,0 +1,42 @@
+{
+  "name": "Status is passed",
+  "status": "Passed",
+  "parameters": [
+    {
+      "name": "param 1",
+      "value": "value 1",
+      "excluded": true,
+      "mode": "hidden"
+    },
+    {
+      "name": "param 2",
+      "value": "value 2",
+      "excluded": false,
+      "mode": "hidden"
+    },
+    {
+      "name": "param 3",
+      "value": "value 3",
+      "mode": "default"
+    },
+    {
+      "name": "param 4",
+      "value": "value 4",
+      "mode": "hidden"
+    },
+    {
+      "name": "param 5",
+      "value": "value 5",
+      "excluded": true
+    },
+    {
+      "name": "param 6",
+      "value": "value 6"
+    },
+    {
+      "name": "param 7",
+      "value": "value 7",
+      "mode": "masked"
+    }
+  ]
+}

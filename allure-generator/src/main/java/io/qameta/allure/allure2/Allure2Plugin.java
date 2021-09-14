@@ -15,6 +15,8 @@
  */
 package io.qameta.allure.allure2;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.Reader;
 import io.qameta.allure.context.RandomUidContext;
@@ -28,7 +30,6 @@ import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.Time;
-import io.qameta.allure.model.Allure2ModelJackson;
 import io.qameta.allure.model.FixtureResult;
 import io.qameta.allure.model.StepResult;
 import io.qameta.allure.model.TestResult;
@@ -42,7 +43,6 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -57,6 +57,9 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
+import static io.qameta.allure.model.Parameter.Mode.HIDDEN;
+import static io.qameta.allure.model.Parameter.Mode.MASKED;
+import static io.qameta.allure.util.ConvertUtils.convertList;
 import static java.nio.file.Files.newDirectoryStream;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.naturalOrder;
@@ -85,12 +88,15 @@ public class Allure2Plugin implements Reader {
             nullsFirst(comparing(Time::getStart, nullsFirst(naturalOrder())))
     );
 
-    private final ObjectMapper mapper;
-
-    public Allure2Plugin() {
-        mapper = Allure2ModelJackson.createMapper()
-                .addMixIn(TestResultContainer.class, TestContainerIgnoreConflictsMixin.class);
-    }
+    private final ObjectMapper mapper = new ObjectMapper()
+            .enable(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME)
+            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
+            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
+            .enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .disable(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES)
+            .disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
+            .disable(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS);
 
     @Override
     public void readResults(final Configuration configuration,
@@ -122,8 +128,8 @@ public class Allure2Plugin implements Reader {
             dest.setStatusTrace(details.getTrace());
         });
 
-        dest.setLinks(convert(result.getLinks(), this::convert));
-        dest.setLabels(convert(result.getLabels(), this::convert));
+        dest.setLinks(convertList(result.getLinks(), this::convert));
+        dest.setLabels(convertList(result.getLabels(), this::convert));
         dest.setParameters(getParameters(result));
 
         dest.addLabelIfNotExists(RESULT_FORMAT, ALLURE2_RESULTS_FORMAT);
@@ -138,12 +144,6 @@ public class Allure2Plugin implements Reader {
         visitor.visitTestResult(dest);
     }
 
-    private <T, R> List<R> convert(final List<T> source, final Function<T, R> converter) {
-        return Objects.isNull(source) ? Collections.emptyList() : source.stream()
-                .map(converter)
-                .collect(Collectors.toList());
-    }
-
     private StageResult convert(final Path source,
                                 final ResultsVisitor visitor,
                                 final FixtureResult result) {
@@ -151,11 +151,11 @@ public class Allure2Plugin implements Reader {
                 .setName(result.getName())
                 .setTime(convert(result.getStart(), result.getStop()))
                 .setStatus(convert(result.getStatus()))
-                .setSteps(convert(result.getSteps(), step -> convert(source, visitor, step)))
+                .setSteps(convertList(result.getSteps(), step -> convert(source, visitor, step)))
                 .setDescription(result.getDescription())
                 .setDescriptionHtml(result.getDescriptionHtml())
-                .setAttachments(convert(result.getAttachments(), attach -> convert(source, visitor, attach)))
-                .setParameters(convert(result.getParameters(), this::convert));
+                .setAttachments(convertList(result.getAttachments(), attach -> convert(source, visitor, attach)))
+                .setParameters(convertList(result.getParameters(), p -> !HIDDEN.equals(p.getMode()), this::convert));
         Optional.of(result)
                 .map(FixtureResult::getStatusDetails)
                 .ifPresent(statusDetails -> {
@@ -180,9 +180,10 @@ public class Allure2Plugin implements Reader {
     }
 
     private Parameter convert(final io.qameta.allure.model.Parameter parameter) {
+        final boolean masked = MASKED.equals(parameter.getMode());
         return new Parameter()
                 .setName(parameter.getName())
-                .setValue(parameter.getValue());
+                .setValue(masked ? "******" : parameter.getValue());
     }
 
     private Attachment convert(final Path source,
@@ -214,9 +215,9 @@ public class Allure2Plugin implements Reader {
                 .setName(step.getName())
                 .setStatus(convert(step.getStatus()))
                 .setTime(convert(step.getStart(), step.getStop()))
-                .setParameters(convert(step.getParameters(), this::convert))
-                .setAttachments(convert(step.getAttachments(), attachment -> convert(source, visitor, attachment)))
-                .setSteps(convert(step.getSteps(), s -> convert(source, visitor, s)));
+                .setParameters(convertList(step.getParameters(), p -> !HIDDEN.equals(p.getMode()), this::convert))
+                .setAttachments(convertList(step.getAttachments(), attachment -> convert(source, visitor, attachment)))
+                .setSteps(convertList(step.getSteps(), s -> convert(source, visitor, s)));
         Optional.of(step)
                 .map(StepResult::getStatusDetails)
                 .ifPresent(statusDetails -> {
@@ -248,7 +249,7 @@ public class Allure2Plugin implements Reader {
                 comparing(Parameter::getName, nullsFirst(naturalOrder()))
                         .thenComparing(Parameter::getValue, nullsFirst(naturalOrder()))
         );
-        parametersSet.addAll(convert(result.getParameters(), this::convert));
+        parametersSet.addAll(convertList(result.getParameters(), p -> !HIDDEN.equals(p.getMode()), this::convert));
         return new ArrayList<>(parametersSet);
     }
 
@@ -256,8 +257,14 @@ public class Allure2Plugin implements Reader {
                                      final ResultsVisitor visitor,
                                      final TestResult result) {
         final StageResult testStage = new StageResult();
-        testStage.setSteps(convert(result.getSteps(), step -> convert(source, visitor, step)));
-        testStage.setAttachments(convert(result.getAttachments(), attachment -> convert(source, visitor, attachment)));
+        testStage.setSteps(convertList(
+                result.getSteps(),
+                step -> convert(source, visitor, step)
+        ));
+        testStage.setAttachments(convertList(
+                result.getAttachments(),
+                attachment -> convert(source, visitor, attachment)
+        ));
         testStage.setStatus(convert(result.getStatus()));
         testStage.setDescription(result.getDescription());
         testStage.setDescriptionHtml(result.getDescriptionHtml());
@@ -284,14 +291,14 @@ public class Allure2Plugin implements Reader {
     private Stream<StageResult> getBefore(final Path source,
                                           final ResultsVisitor visitor,
                                           final TestResultContainer container) {
-        return convert(container.getBefores(), fixture -> convert(source, visitor, fixture)).stream()
+        return convertList(container.getBefores(), fixture -> convert(source, visitor, fixture)).stream()
                 .sorted(BY_START);
     }
 
     private Stream<StageResult> getAfter(final Path source,
                                          final ResultsVisitor visitor,
                                          final TestResultContainer container) {
-        return convert(container.getAfters(), fixture -> convert(source, visitor, fixture)).stream()
+        return convertList(container.getAfters(), fixture -> convert(source, visitor, fixture)).stream()
                 .sorted(BY_START);
     }
 
