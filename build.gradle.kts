@@ -13,7 +13,7 @@ val qualityConfigsDir by extra("$gradleScriptDir/quality-configs")
 val spotlessDtr by extra("$qualityConfigsDir/spotless")
 
 tasks.wrapper {
-    gradleVersion = "6.8.3"
+    gradleVersion = "7.2"
 }
 
 plugins {
@@ -72,7 +72,7 @@ subprojects {
         }
         dependencies {
             dependency("com.beust:jcommander:1.81")
-            dependency("com.github.spotbugs:spotbugs-annotations:4.4.0")
+            dependency("com.github.spotbugs:spotbugs-annotations:4.4.1")
             dependency("com.opencsv:opencsv:4.6")
             dependency("com.vladsch.flexmark:flexmark:0.62.2")
             dependency("commons-io:commons-io:2.11.0")
