@@ -85,7 +85,6 @@ class Allure2PluginTest {
                 .containsExactlyInAnyOrder("unloadTestConfiguration", "cleanUpContext");
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     void shouldExcludeDuplicatedParams() throws Exception {
         Set<TestResult> testResults = process(
@@ -269,6 +268,37 @@ class Allure2PluginTest {
                         tuple("param 5", "value 5"),
                         tuple("param 6", "value 6"),
                         tuple("param 7", "******")
+                );
+    }
+
+    @Test
+    void shouldOrderFixturesByStartDate() throws Exception {
+        Set<TestResult> testResults = process(
+                "allure2/fixtures-sort-result.json", generateTestResultName(),
+                "allure2/fixtures-sort.json", generateTestResultContainerName(),
+                "allure2/fixtures-sort2.json", generateTestResultContainerName()
+        ).getResults();
+
+        assertThat(testResults)
+                .flatExtracting(TestResult::getBeforeStages)
+                .extracting(StageResult::getName)
+                .containsExactly(
+                        "first",
+                        "second",
+                        "third",
+                        "fourth",
+                        "last"
+                );
+
+        assertThat(testResults)
+                .flatExtracting(TestResult::getAfterStages)
+                .extracting(StageResult::getName)
+                .containsExactly(
+                        "first",
+                        "second",
+                        "third",
+                        "fourth",
+                        "last"
                 );
     }
 
