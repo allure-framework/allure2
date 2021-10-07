@@ -86,7 +86,7 @@ subprojects {
             dependency("org.eclipse.jetty:jetty-server:9.4.43.v20210629")
             dependency("org.freemarker:freemarker:2.3.31")
             dependency("org.mockito:mockito-core:3.12.4")
-            dependency("org.projectlombok:lombok:1.18.20")
+            dependency("org.projectlombok:lombok:1.18.22")
             dependency("org.zeroturnaround:zt-zip:1.14")
             dependencySet("org.slf4j:1.7.32") {
                 entry("slf4j-api")
