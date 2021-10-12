@@ -72,7 +72,7 @@ subprojects {
         }
         dependencies {
             dependency("com.beust:jcommander:1.81")
-            dependency("com.github.spotbugs:spotbugs-annotations:4.4.1")
+            dependency("com.github.spotbugs:spotbugs-annotations:4.4.2")
             dependency("com.opencsv:opencsv:4.6")
             dependency("commons-beanutils:commons-beanutils:1.9.4")
             dependency("commons-io:commons-io:2.11.0")
@@ -84,7 +84,7 @@ subprojects {
             dependency("org.assertj:assertj-core:3.21.0")
             dependency("org.eclipse.jetty:jetty-server:9.4.43.v20210629")
             dependency("org.freemarker:freemarker:2.3.31")
-            dependency("org.mockito:mockito-core:3.12.4")
+            dependency("org.mockito:mockito-core:4.0.0")
             dependency("org.projectlombok:lombok:1.18.22")
             dependency("org.zeroturnaround:zt-zip:1.14")
             dependencySet("org.slf4j:1.7.32") {
