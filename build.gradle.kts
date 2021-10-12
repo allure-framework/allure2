@@ -74,7 +74,6 @@ subprojects {
             dependency("com.beust:jcommander:1.81")
             dependency("com.github.spotbugs:spotbugs-annotations:4.4.1")
             dependency("com.opencsv:opencsv:4.6")
-            dependency("com.vladsch.flexmark:flexmark:0.62.2")
             dependency("commons-beanutils:commons-beanutils:1.9.4")
             dependency("commons-io:commons-io:2.11.0")
             dependency("javax.xml.bind:jaxb-api:2.3.1")
@@ -97,6 +96,10 @@ subprojects {
             dependencySet("com.squareup.retrofit2:2.6.1") {
                 entry("converter-jackson")
                 entry("retrofit")
+            }
+            dependencySet("com.vladsch.flexmark:0.62.2") {
+                entry("flexmark")
+                entry("flexmark-ext-tables")
             }
         }
     }

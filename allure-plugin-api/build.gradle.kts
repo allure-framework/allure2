@@ -12,6 +12,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-jaxb-annotations")
     implementation("com.opencsv:opencsv")
     implementation("com.vladsch.flexmark:flexmark")
+    implementation("com.vladsch.flexmark:flexmark-ext-tables")
     implementation("javax.xml.bind:jaxb-api")
     implementation("org.freemarker:freemarker")
     testImplementation("io.qameta.allure:allure-junit-platform")
