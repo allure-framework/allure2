@@ -5,7 +5,12 @@
     "passed": "Pomyślny",
     "skipped": "Pominięty",
     "unknown": "Nieznany",
-    "flaky": "Niestabilny"
+    "flaky": "Niestabilny",
+    "newFailed": "Nowy nieudany test"
+  },
+  "marks": {
+    "flaky": "Niestabilny",
+    "newFailed": "Nowy nieudany test"
   },
   "sorter": {
     "order": "kolejność",
@@ -164,6 +169,7 @@
   "component": {
     "tree": {
       "filter": "Filtrowanie według statusu",
+      "filter-marks": "Filtrowanie według oznaczenia",
       "groups": "Przełącz informacje o grupach",
       "download": "Pobierz CSV",
       "empty": "Brak elementów",
