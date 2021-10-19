@@ -5,7 +5,9 @@
     "passed": "Passou",
     "skipped": "Ignorado",
     "unknown": "Desconhecido",
-    "flaky": "Teste é inconsistente"
+    "flaky": "Teste é inconsistente",
+    "newFailed": "Teste é falhou",
+    "newPassed": "Teste é novo aprovado"
   },
   "sorter": {
     "order": "ordem",

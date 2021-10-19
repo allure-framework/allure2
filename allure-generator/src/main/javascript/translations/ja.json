@@ -6,11 +6,13 @@
       "skipped": "スキップ",
       "unknown": "不明",
       "flaky": "テストが不安定です",
-      "newFailed": "新しく失敗したテストです"
+      "newFailed": "新しく失敗したテストです",
+      "newPassed": "新しく合格したテスト"
     },
     "marks": {
       "flaky": "不安定",
-      "newFailed": "新しい失敗"
+      "newFailed": "新しい失敗",
+      "newPassed": "新しい成功"
     },
     "sorter": {
       "order": "順序",
@@ -203,4 +205,3 @@
       }
     }
   }
-  

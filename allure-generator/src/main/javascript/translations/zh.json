@@ -5,7 +5,9 @@
     "passed": "通过",
     "skipped": "跳过",
     "unknown": "未知",
-    "flaky": "不稳定"
+    "flaky": "不稳定",
+    "newFailed": "新的失败",
+    "newPassed": "新通过"
   },
   "sorter": {
     "name": "名称",
