@@ -6,11 +6,13 @@
     "skipped": "Ignoré",
     "unknown": "Inconnu",
     "flaky": "Le test est instable",
-    "newFailed": "Le test a échoué (nouveau)."
+    "newFailed": "Le test a échoué (nouveau).",
+    "newPassed": "Le test réussi (nouveau)."
   },
   "marks": {
     "flaky": "Instable",
-    "newFailed": "Échoué (nouveau)"
+    "newFailed": "Échoué (nouveau)",
+    "newPassed": "Réussi (nouveau)"
   },
   "sorter": {
     "order": "ordre",

@@ -6,11 +6,13 @@
     "skipped": "Pominięty",
     "unknown": "Nieznany",
     "flaky": "Niestabilny",
-    "newFailed": "Nowy nieudany test"
+    "newFailed": "Nowy nieudany test",
+    "newPassed": "Nowy udany test"
   },
   "marks": {
     "flaky": "Niestabilny",
-    "newFailed": "Nowy nieudany test"
+    "newFailed": "Nowy nieudany",
+    "newPassed": "Nowy udany"
   },
   "sorter": {
     "order": "kolejność",
