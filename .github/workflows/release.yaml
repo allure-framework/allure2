@@ -22,7 +22,7 @@ jobs:
         run: |
           expr "${{ github.event.inputs.nextVersion }}" : '[[:digit:]][[:digit:]]*\.[[:digit:]][[:digit:]]*$'
 
-      - uses: actions/checkout@v2.3.4
+      - uses: actions/checkout@v2.3.5
         with:
           token: ${{ secrets.QAMETA_CI }}
 
