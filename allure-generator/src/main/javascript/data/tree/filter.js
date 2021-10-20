@@ -34,7 +34,8 @@ function byMark(marks) {
     }
     return (!marks.newFailed || child.newFailed) &&
         (!marks.flaky || child.flaky) &&
-        (!marks.newPassed || child.newPassed);
+        (!marks.newPassed || child.newPassed) &&
+        (!marks.newBroken || child.newBroken);
   };
 }
 

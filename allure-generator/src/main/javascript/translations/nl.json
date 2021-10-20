@@ -7,12 +7,14 @@
     "unknown": "Onbekend",
     "flaky": "Test is instabiel",
     "newFailed": "Test is nieuw gefaald",
-    "newPassed": "Test is nieuw geslaagd"
+    "newPassed": "Test is nieuw geslaagd",
+    "newBroken": "Test is nieuw gebroken"
   },
   "marks": {
     "flaky": "Instabiel",
     "newFailed": "Nieuw gefaald",
-    "newPassed": "Nieuw geslaagd"
+    "newPassed": "Nieuw geslaagd",
+    "newBroken": "Nieuw gebroken"
   },
   "sorter": {
     "order": "volgorde",

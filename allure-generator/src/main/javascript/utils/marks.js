@@ -1,1 +1,1 @@
-export const values = ["flaky", "newFailed", "newPassed"];
+export const values = ["flaky", "newFailed", "newPassed", "newBroken"];

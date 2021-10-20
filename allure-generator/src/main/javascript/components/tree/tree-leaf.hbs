@@ -21,6 +21,9 @@
         {{#if newPassed}}
         <div class="{{b 'node' 'newPassed' shown=newPassed}}">
             {{allure-icon 'newPassed'}}
+        {{#if newBroken}}
+        <div class="{{b 'node' 'newBroken' shown=newBroken}}">
+            {{allure-icon 'newBroken'}}
         </div>
         {{/if}}
         {{#if parameters}}

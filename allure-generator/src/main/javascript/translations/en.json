@@ -7,12 +7,14 @@
     "unknown": "Unknown",
     "flaky": "Test is flaky",
     "newFailed": "Test is new failed.",
-    "newPassed": "Test is new passed."
+    "newPassed": "Test is new passed.",
+    "newBroken": "Test is new broken."
   },
   "marks": {
     "flaky": "Flaky",
     "newFailed": "New Failed",
-    "newPassed": "New Passed"
+    "newPassed": "New Passed",
+    "newBroken": "New broken"
   },
   "sorter": {
     "order": "order",

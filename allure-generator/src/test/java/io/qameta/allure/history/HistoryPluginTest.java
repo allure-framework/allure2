@@ -54,6 +54,27 @@ class HistoryPluginTest {
         assertThat(testResult.isNewFailed()).isTrue();
         assertThat(testResult.isFlaky()).isFalse();
         assertThat(testResult.isNewPassed()).isFalse();
+        assertThat(testResult.isNewBroken()).isFalse();
+    }
+
+    @Test
+    void shouldHasNewBrokenMark() {
+        String historyId = UUID.randomUUID().toString();
+        final Map<String, Object> extra = new HashMap<>();
+        final Map<String, HistoryData> historyDataMap = createHistoryDataMap(
+                historyId,
+                createHistoryItem(PASSED, 1, 2)
+        );
+
+        extra.put(HISTORY_BLOCK_NAME, historyDataMap);
+        TestResult testResult = createTestResult(Status.BROKEN, historyId, 100, 101);
+        new HistoryPlugin().getData(singletonList(
+                createLaunchResults(extra, testResult)
+        ));
+        assertThat(testResult.isNewFailed()).isFalse();
+        assertThat(testResult.isFlaky()).isFalse();
+        assertThat(testResult.isNewPassed()).isFalse();
+        assertThat(testResult.isNewBroken()).isTrue();
     }
 
     @Test
@@ -74,6 +95,7 @@ class HistoryPluginTest {
         assertThat(testResult.isNewFailed()).isTrue();
         assertThat(testResult.isFlaky()).isTrue();
         assertThat(testResult.isNewPassed()).isFalse();
+        assertThat(testResult.isNewBroken()).isFalse();
     }
 
     @Test
@@ -93,6 +115,7 @@ class HistoryPluginTest {
         assertThat(testResult.isNewFailed()).isFalse();
         assertThat(testResult.isFlaky()).isFalse();
         assertThat(testResult.isNewPassed()).isTrue();
+        assertThat(testResult.isNewBroken()).isFalse();
     }
 
     @Test

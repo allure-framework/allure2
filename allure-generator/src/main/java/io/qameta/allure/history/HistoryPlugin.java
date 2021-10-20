@@ -122,6 +122,16 @@ public class HistoryPlugin implements Reader, Aggregator {
             && statuses.get(1) == Status.FAILED;
     }
 
+    private boolean isNewBroken(final List<HistoryItem> histories) {
+        final List<Status> statuses = histories.stream()
+            .sorted(comparingByTime())
+            .map(HistoryItem::getStatus)
+            .collect(Collectors.toList());
+        return statuses.size() > 1
+            && statuses.get(0) == Status.BROKEN
+            && statuses.get(1) == Status.PASSED;
+    }
+
     protected Map<String, HistoryData> getData(final List<LaunchResults> launches) {
         final Map<String, HistoryData> history = launches.stream()
                 .map(launch -> launch.getExtra(HISTORY_BLOCK_NAME, (Supplier<Map<String, HistoryData>>) HashMap::new))
@@ -169,6 +179,7 @@ public class HistoryPlugin implements Reader, Aggregator {
                 .limit(20)
                 .collect(Collectors.toList());
         result.setNewFailed(isNewFailed(newItems));
+        result.setNewBroken(isNewBroken(newItems));
         result.setFlaky(isFlaky(newItems));
         result.setNewPassed(isNewPassed(newItems));
         data.setItems(newItems);
