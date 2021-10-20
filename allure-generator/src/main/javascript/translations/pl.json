@@ -5,7 +5,9 @@
     "passed": "Pomyślny",
     "skipped": "Pominięty",
     "unknown": "Nieznany",
-    "flaky": "Niestabilny"
+    "flaky": "Niestabilny",
+    "newFailed": "Nowy nieudany",
+    "newPassed": "Nowy udany"
   },
   "sorter": {
     "order": "kolejność",

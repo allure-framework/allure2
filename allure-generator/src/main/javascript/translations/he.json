@@ -5,7 +5,9 @@
     "passed": "עבר",
     "skipped": "דולג",
     "unknown": "לא ידוע",
-    "flaky": "לא יציב"
+    "flaky": "לא יציב",
+    "newFailed": "חדש נכשל",
+    "newPassed": "חדש עבר"
   },
   "sorter": {
     "order": "סדר",

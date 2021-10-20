@@ -32,7 +32,9 @@ function byMark(marks) {
     if (child.children) {
       return child.children.length > 0;
     }
-    return (!marks.newFailed || child.newFailed) && (!marks.flaky || child.flaky);
+    return (!marks.newFailed || child.newFailed) &&
+        (!marks.flaky || child.flaky) &&
+        (!marks.newPassed || child.newPassed);
   };
 }
 

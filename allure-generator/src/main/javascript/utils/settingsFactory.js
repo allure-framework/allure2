@@ -17,6 +17,7 @@ const treePluginDefaults = {
   visibleMarks: {
     flaky: false,
     newFailed: false,
+    newPassed: false,
   },
   showGroupInfo: false,
   treeSorting: {

@@ -6,11 +6,13 @@
     "skipped": "건너뜀",
     "unknown": "알수없음",
     "flaky": "불안정한 테스트",
-    "newFailed": "새로 실패한 테스트"
+    "newFailed": "새로 실패한 테스트",
+    "newPassed": "새로 합격한 시험"
   },
   "marks": {
     "flaky": "불안정함",
-    "newFailed": "새로 실패함"
+    "newFailed": "새로 실패함",
+    "newPassed": "새로운 통과"
   },
   "sorter": {
     "order": "순서",

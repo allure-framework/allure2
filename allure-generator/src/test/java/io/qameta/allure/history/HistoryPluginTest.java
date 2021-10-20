@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static io.qameta.allure.entity.Status.FAILED;
 import static io.qameta.allure.entity.Status.PASSED;
 import static io.qameta.allure.testdata.TestData.createLaunchResults;
 import static io.qameta.allure.testdata.TestData.randomTestResult;
@@ -46,12 +47,13 @@ class HistoryPluginTest {
         );
 
         extra.put(HISTORY_BLOCK_NAME, historyDataMap);
-        TestResult testResult = createTestResult(Status.FAILED, historyId, 100, 101);
+        TestResult testResult = createTestResult(FAILED, historyId, 100, 101);
         new HistoryPlugin().getData(singletonList(
                 createLaunchResults(extra, testResult)
         ));
         assertThat(testResult.isNewFailed()).isTrue();
         assertThat(testResult.isFlaky()).isFalse();
+        assertThat(testResult.isNewPassed()).isFalse();
     }
 
     @Test
@@ -61,16 +63,36 @@ class HistoryPluginTest {
         final Map<String, HistoryData> historyDataMap = createHistoryDataMap(
                 historyId,
                 createHistoryItem(PASSED, 3, 4),
-                createHistoryItem(Status.FAILED, 1, 2)
+                createHistoryItem(FAILED, 1, 2)
         );
 
         extra.put(HISTORY_BLOCK_NAME, historyDataMap);
-        TestResult testResult = createTestResult(Status.FAILED, historyId, 100, 101);
+        TestResult testResult = createTestResult(FAILED, historyId, 100, 101);
         new HistoryPlugin().getData(singletonList(
                 createLaunchResults(extra, testResult)
         ));
         assertThat(testResult.isNewFailed()).isTrue();
         assertThat(testResult.isFlaky()).isTrue();
+        assertThat(testResult.isNewPassed()).isFalse();
+    }
+
+    @Test
+    void shouldHasNewPassedMark() {
+        String historyId = UUID.randomUUID().toString();
+        final Map<String, Object> extra = new HashMap<>();
+        final Map<String, HistoryData> historyDataMap = createHistoryDataMap(
+            historyId,
+            createHistoryItem(FAILED, 1, 2)
+        );
+
+        extra.put(HISTORY_BLOCK_NAME, historyDataMap);
+        TestResult testResult = createTestResult(Status.PASSED, historyId, 100, 101);
+        new HistoryPlugin().getData(singletonList(
+            createLaunchResults(extra, testResult)
+        ));
+        assertThat(testResult.isNewFailed()).isFalse();
+        assertThat(testResult.isFlaky()).isFalse();
+        assertThat(testResult.isNewPassed()).isTrue();
     }
 
     @Test
