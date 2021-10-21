@@ -14,6 +14,10 @@ const icons = {
     className: "fa fa-check-circle-o",
     tooltip: "status.newPassed",
   },
+  newBroken: {
+    className: "fa fa-exclamation-circle",
+    tooltip: "status.newBroken",
+  },
   failed: {
     className: "fa fa-times-circle fa-fw text_status_failed",
     tooltip: "status.failed",

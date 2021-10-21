@@ -7,12 +7,14 @@
     "unknown": "알수없음",
     "flaky": "불안정한 테스트",
     "newFailed": "새로 실패한 테스트",
-    "newPassed": "새로 합격한 시험"
+    "newPassed": "새로 합격한 시험",
+    "newBroken": "새로 깨진 테스트"
   },
   "marks": {
     "flaky": "불안정함",
     "newFailed": "새로 실패함",
-    "newPassed": "새로운 통과"
+    "newPassed": "새로운 통과",
+    "newBroken": "새로운 깨진"
   },
   "sorter": {
     "order": "순서",

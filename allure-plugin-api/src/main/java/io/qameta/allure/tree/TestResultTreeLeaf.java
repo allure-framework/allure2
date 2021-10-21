@@ -40,6 +40,8 @@ public class TestResultTreeLeaf extends DefaultTreeLeaf {
 
     private final boolean newPassed;
 
+    private final boolean newBroken;
+
     private final List<String> parameters;
 
     public TestResultTreeLeaf(final String parentUid, final TestResult testResult) {
@@ -59,8 +61,8 @@ public class TestResultTreeLeaf extends DefaultTreeLeaf {
         this.flaky = testResult.isFlaky();
         this.newFailed = testResult.isNewFailed();
         this.newPassed = testResult.isNewPassed();
+        this.newBroken = testResult.isNewBroken();
         this.parameters = testResult.getParameterValues();
-
     }
     public String getParentUid() {
         return parentUid;
@@ -88,6 +90,10 @@ public class TestResultTreeLeaf extends DefaultTreeLeaf {
 
     public boolean isNewPassed() {
         return newPassed;
+    }
+
+    public boolean isNewBroken() {
+        return newBroken;
     }
 
     public List<String> getParameters() {
