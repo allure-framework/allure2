@@ -6,6 +6,11 @@
     "skipped": "Pominięty",
     "unknown": "Nieznany",
     "flaky": "Niestabilny",
+    "newFailed": "Nowy nieudany test",
+    "newPassed": "Nowy udany test"
+  },
+  "marks": {
+    "flaky": "Niestabilny",
     "newFailed": "Nowy nieudany",
     "newPassed": "Nowy udany"
   },
@@ -30,7 +35,7 @@
     },
     "timeline": {
       "name": "Oś czasowa",
-      "selected_0": "{{count}} wybrany test({{percent}}%) z czasem trwania powyżej {{duration}}",
+      "selected_0": "{{count}} wybrany test ({{percent}}%) z czasem trwania powyżej {{duration}}",
       "selected_1": "{{count}} wybrane testy ({{percent}}%) z czasem trwania powyżej {{duration}}",
       "selected_2": "{{count}} wybranych testów ({{percent}}%) z czasem trwania powyżej {{duration}}"
     }
@@ -55,7 +60,7 @@
       "name": "Trend czasu trwania"
     },
     "retryTrend": {
-      "name": "Tend powtórzeń"
+      "name": "Trend powtórzeń"
     },
     "executors": {
       "name": "Wykonawcy",
@@ -138,8 +143,8 @@
     },
     "stats": {
       "count": {
-        "steps": "{{count}} sub-step",
-        "steps_plural": "{{count}} sub-steps",
+        "steps": "{{count}} podetap",
+        "steps_plural": "{{count}} podetapy",
         "attachments_0": "{{count}} załącznik",
         "attachments_1": "{{count}} załączniki",
         "attachments_2": "{{count}} załączników",
@@ -166,6 +171,7 @@
   "component": {
     "tree": {
       "filter": "Filtrowanie według statusu",
+      "filter-marks": "Filtrowanie według oznaczenia",
       "groups": "Przełącz informacje o grupach",
       "download": "Pobierz CSV",
       "empty": "Brak elementów",

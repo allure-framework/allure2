@@ -154,6 +154,20 @@ allure.api.addTranslation('fr', {
     }
 });
 
+allure.api.addTranslation('pl', {
+    tab: {
+        behaviors: {
+            name: 'Zachowania'
+        }
+    },
+    widget: {
+        behaviors: {
+            name: 'Funkcje według historii',
+            showAll: 'pokaż wszystko'
+        }
+    }
+});
+
 allure.api.addTab('behaviors', {
     title: 'tab.behaviors.name', icon: 'fa fa-list',
     route: 'behaviors(/)(:testGroup)(/)(:testResult)(/)(:testResultTab)(/)',
