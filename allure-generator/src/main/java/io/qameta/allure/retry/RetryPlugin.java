@@ -68,13 +68,11 @@ public class RetryPlugin implements Aggregator {
             latest.addExtraBlock(RETRY_BLOCK_NAME, retries);
             final Set<Status> statuses = retries.stream()
                     .map(RetryItem::getStatus)
-                    .distinct()
+                    .filter(status -> !status.equals(latest.getStatus()))
                     .collect(Collectors.toSet());
 
-            statuses.remove(Status.PASSED);
-            statuses.remove(Status.SKIPPED);
-
-            latest.setFlaky(!statuses.isEmpty());
+            latest.setRetriesStatusChange(!statuses.isEmpty());
+            latest.setRetriesCount(retries.size());
         };
     }
 

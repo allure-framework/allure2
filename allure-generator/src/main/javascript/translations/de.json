@@ -4,10 +4,14 @@
     "broken": "Defekt",
     "passed": "Erfolgreich",
     "skipped": "Übersprungen",
-    "unknown": "Unbekannt",
+    "unknown": "Unbekannt"
+  },
+  "marks": {
     "flaky": "Instabil",
     "newFailed": "Neu fehlgeschlagen",
-    "newPassed": "Neu bestanden"
+    "newBroken": "Neu defekt",
+    "newPassed": "Neu erfolgreich",
+    "retriesStatusChange": "Status nach erneutem Versuch geändert"
   },
   "sorter": {
     "order": "Reihenfolge",

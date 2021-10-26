@@ -4,17 +4,14 @@
     "broken": "Cassé",
     "passed": "Passé",
     "skipped": "Ignoré",
-    "unknown": "Inconnu",
-    "flaky": "Le test est instable",
-    "newFailed": "Le test a échoué (nouveau).",
-    "newPassed": "Le test réussi (nouveau).",
-    "newBroken": "Le test cassé (nouveau)."
+    "unknown": "Inconnu"
   },
   "marks": {
     "flaky": "Instable",
     "newFailed": "Échoué (nouveau)",
     "newPassed": "Réussi (nouveau)",
-    "newBroken": "Cassé (nouveau)"
+    "newBroken": "Cassé (nouveau)",
+    "retriesStatusChange": "L'état a changé après une nouvelle tentative"
   },
   "sorter": {
     "order": "ordre",

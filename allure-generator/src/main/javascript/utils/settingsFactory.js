@@ -19,6 +19,7 @@ const treePluginDefaults = {
     newFailed: false,
     newPassed: false,
     newBroken: false,
+    retriesStatusChange : false,
   },
   showGroupInfo: false,
   treeSorting: {

@@ -4,10 +4,14 @@
     "broken": "Quebrado",
     "passed": "Passou",
     "skipped": "Ignorado",
-    "unknown": "Desconhecido",
-    "flaky": "Teste é inconsistente",
-    "newFailed": "Teste é falhou",
-    "newPassed": "Teste é novo aprovado"
+    "unknown": "Desconhecido"
+  },
+  "marks": {
+    "flaky": "Inconsistente",
+    "newFailed": "Novo falhou",
+    "newBroken": "Novo quebrado",
+    "newPassed": "Novo passou",
+    "retriesStatusChange": "Status alterado após nova tentativa"
   },
   "sorter": {
     "order": "ordem",

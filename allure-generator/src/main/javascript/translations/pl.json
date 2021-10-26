@@ -4,15 +4,14 @@
     "broken": "Uszkodzony",
     "passed": "Pomyślny",
     "skipped": "Pominięty",
-    "unknown": "Nieznany",
-    "flaky": "Niestabilny",
-    "newFailed": "Nowy nieudany test",
-    "newPassed": "Nowy udany test"
+    "unknown": "Nieznany"
   },
   "marks": {
     "flaky": "Niestabilny",
     "newFailed": "Nowy nieudany",
-    "newPassed": "Nowy udany"
+    "newBroken": "Nowy uszkodzony",
+    "newPassed": "Nowy udany",
+    "retriesStatusChange": "Status zmieniony po ponownej próbie"
   },
   "sorter": {
     "order": "kolejność",

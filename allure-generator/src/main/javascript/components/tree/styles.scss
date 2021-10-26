@@ -17,33 +17,17 @@
     left: 7px;
     position: absolute;
   }
-  &__flaky {
-    padding-left: 10px;
-    padding-right: 5px;
-    opacity: 0;
-    &_shown {
-      opacity: 1;
-    }
+  &__name {
+    //flex: 0 0 30%;
   }
-  &__newFailed {
-    padding-left: 10px;
-    padding-right: 5px;
-    opacity: 0;
-    &_shown {
-      opacity: 1;
-    }
+  &__marks {
+    display: block;
+    float: right;
+    white-space: nowrap;
   }
-  &__newBroken {
-    padding-left: 10px;
-    padding-right: 5px;
-    opacity: 0;
-    &_shown {
-      opacity: 1;
-    }
-  }
-  &__newPassed {
-    padding-left: 10px;
-    padding-right: 5px;
+  &__mark {
+    padding-left: 4px;
+    padding-right: 4px;
     opacity: 0;
     &_shown {
       opacity: 1;
@@ -91,8 +75,10 @@
     padding: 5px;
   }
   &__parameters {
+    padding: 0 2px;
     color: $text-muted-color;
     min-width: 2ch;
+    font-size: smaller;
     &_separator:last-child {
       display: none;
     }

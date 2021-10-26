@@ -302,6 +302,23 @@ class Allure2PluginTest {
                 );
     }
 
+    @Test
+    void shouldSetFlakyFromResults() throws IOException {
+        final LaunchResults results = process(
+                "allure2/flaky.json", generateTestResultName(),
+                "allure2/flaky-false.json", generateTestResultName(),
+                "allure2/flaky-not-set.json", generateTestResultName()
+        );
+
+        assertThat(results.getResults())
+                .extracting(TestResult::getName, TestResult::isFlaky)
+                .containsExactlyInAnyOrder(
+                        tuple("flaky test", true),
+                        tuple("not flaky test", false),
+                        tuple("default not flaky test", false)
+                );
+    }
+
     private LaunchResults process(String... strings) throws IOException {
         Iterator<String> iterator = Arrays.asList(strings).iterator();
         while (iterator.hasNext()) {

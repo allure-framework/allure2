@@ -57,8 +57,10 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
 
     protected boolean flaky;
     protected boolean newFailed;
-    protected boolean newPassed;
     protected boolean newBroken;
+    protected boolean newPassed;
+    protected int retriesCount;
+    protected boolean retriesStatusChange;
 
     //    Execution
     protected List<StageResult> beforeStages = new ArrayList<>();

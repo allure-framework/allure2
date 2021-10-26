@@ -71,7 +71,7 @@ val generateDemoReport by tasks.creating(JavaExec::class) {
     main = "io.qameta.allure.DummyReportGenerator"
     classpath = sourceSets.getByName("test").runtimeClasspath
     systemProperty("allure.plugins.directory", "build/plugins")
-    setArgs(arrayListOf(file("test-data/demo"), file("build/demo-report")))
+    setArgs(arrayListOf(file("test-data/new-demo"), file("build/demo-report")))
 }
 
 val dev by tasks.creating(NpmTask::class) {

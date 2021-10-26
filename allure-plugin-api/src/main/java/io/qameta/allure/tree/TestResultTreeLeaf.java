@@ -27,20 +27,15 @@ import java.util.List;
 public class TestResultTreeLeaf extends DefaultTreeLeaf {
 
     private final String uid;
-
     private final String parentUid;
-
     private final Status status;
-
     private final Time time;
-
     private final boolean flaky;
-
     private final boolean newFailed;
-
     private final boolean newPassed;
-
     private final boolean newBroken;
+    private final int retriesCount;
+    private final boolean retriesStatusChange;
 
     private final List<String> parameters;
 
@@ -62,6 +57,8 @@ public class TestResultTreeLeaf extends DefaultTreeLeaf {
         this.newFailed = testResult.isNewFailed();
         this.newPassed = testResult.isNewPassed();
         this.newBroken = testResult.isNewBroken();
+        this.retriesStatusChange = testResult.isRetriesStatusChange();
+        this.retriesCount = testResult.getRetriesCount();
         this.parameters = testResult.getParameterValues();
     }
     public String getParentUid() {
@@ -94,6 +91,14 @@ public class TestResultTreeLeaf extends DefaultTreeLeaf {
 
     public boolean isNewBroken() {
         return newBroken;
+    }
+
+    public int getRetriesCount() {
+        return retriesCount;
+    }
+
+    public boolean isRetriesStatusChange() {
+        return retriesStatusChange;
     }
 
     public List<String> getParameters() {
