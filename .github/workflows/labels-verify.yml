@@ -12,8 +12,9 @@ jobs:
         with:
           allowed: |
             type:bug
+            type:dependencies
             type:improvement
             type:internal
             type:invalid
             type:new feature
-            type:dependencies
+            type:security
