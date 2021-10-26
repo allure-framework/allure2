@@ -62,7 +62,7 @@ public class HistoryPlugin implements Reader, Aggregator {
 
     //@formatter:off
     private static final TypeReference<Map<String, HistoryData>> HISTORY_TYPE =
-            new TypeReference<>() {
+            new TypeReference<Map<String, HistoryData>>() {
             };
     //@formatter:on
 
