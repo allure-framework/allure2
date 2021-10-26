@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "name": "not flaky test",
+  "statusDetails": {
+    "flaky": false
+  }
+}

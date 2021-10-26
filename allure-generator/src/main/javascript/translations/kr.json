@@ -4,17 +4,14 @@
     "broken": "고장",
     "passed": "통과",
     "skipped": "건너뜀",
-    "unknown": "알수없음",
-    "flaky": "불안정한 테스트",
-    "newFailed": "새로 실패한 테스트",
-    "newPassed": "새로 합격한 시험",
-    "newBroken": "새로 깨진 테스트"
+    "unknown": "알수없음"
   },
   "marks": {
     "flaky": "불안정함",
     "newFailed": "새로 실패함",
+    "newBroken": "새로운 깨진",
     "newPassed": "새로운 통과",
-    "newBroken": "새로운 깨진"
+    "retriesStatusChange": "새재시도 후 상태가 변경됨"
   },
   "sorter": {
     "order": "순서",

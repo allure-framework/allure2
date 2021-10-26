@@ -34,15 +34,17 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static io.qameta.allure.history.HistoryItem.comparingByTime;
 
 /**
  * Plugin that adds history to the report.
@@ -51,13 +53,16 @@ import static io.qameta.allure.history.HistoryItem.comparingByTime;
  */
 public class HistoryPlugin implements Reader, Aggregator {
 
-    private static final String HISTORY_BLOCK_NAME = "history";
+    private static final Set<Status> MARK_STATUSES = new HashSet<>(Arrays.asList(
+            Status.FAILED, Status.BROKEN, Status.PASSED
+    ));
 
+    private static final String HISTORY_BLOCK_NAME = "history";
     private static final String HISTORY_FILE_NAME = "history.json";
 
     //@formatter:off
     private static final TypeReference<Map<String, HistoryData>> HISTORY_TYPE =
-            new TypeReference<Map<String, HistoryData>>() {
+            new TypeReference<>() {
             };
     //@formatter:on
 
@@ -89,47 +94,49 @@ public class HistoryPlugin implements Reader, Aggregator {
         }
     }
 
-    private boolean isNewFailed(final List<HistoryItem> histories) {
-        final List<Status> statuses = histories.stream()
-                .sorted(comparingByTime())
-                .map(HistoryItem::getStatus)
-                .collect(Collectors.toList());
-        return statuses.size() > 1
-                && statuses.get(0) == Status.FAILED
-                && statuses.get(1) == Status.PASSED;
+    private boolean isNewFailed(final HistoryItem current,
+                                final List<HistoryItem> prev) {
+        return statusChangeTo(Status.FAILED, current, prev);
     }
 
-    private boolean isFlaky(final List<HistoryItem> histories) {
-        if (histories.size() > 1 && histories.get(0).status == Status.FAILED) {
-            final List<Status> statuses = histories.subList(1, histories.size())
-                    .stream()
-                    .sorted(comparingByTime())
-                    .map(HistoryItem::getStatus)
-                    .collect(Collectors.toList());
-            return statuses.indexOf(Status.PASSED) < statuses.lastIndexOf(Status.FAILED)
-                    && statuses.indexOf(Status.PASSED) != -1;
+    private boolean isNewBroken(final HistoryItem current,
+                                final List<HistoryItem> prev) {
+        return statusChangeTo(Status.BROKEN, current, prev);
+    }
+
+    private boolean isNewPassed(final HistoryItem current,
+                                final List<HistoryItem> prev) {
+        return statusChangeTo(Status.PASSED, current, prev);
+    }
+
+    private boolean statusChangeTo(final Status target,
+                                   final HistoryItem current,
+                                   final List<HistoryItem> prev) {
+        final Optional<HistoryItem> prevItem = prev.stream()
+                .filter(hi -> MARK_STATUSES.contains(hi.getStatus()))
+                .findFirst();
+
+        return prevItem.isPresent()
+                && target.equals(current.getStatus())
+                && !target.equals(prevItem.get().getStatus());
+    }
+
+    private boolean isFlaky(final HistoryItem current,
+                            final List<HistoryItem> prev) {
+        if (prev.isEmpty()) {
+            return false;
         }
-        return false;
-    }
+        if (current.getStatus() != Status.FAILED && current.getStatus() != Status.BROKEN) {
+            return false;
+        }
+        final List<Status> statuses = prev
+                .stream()
+                .map(HistoryItem::getStatus)
+                .limit(5)
+                .collect(Collectors.toList());
 
-    private boolean isNewPassed(final List<HistoryItem> histories) {
-        final List<Status> statuses = histories.stream()
-            .sorted(comparingByTime())
-            .map(HistoryItem::getStatus)
-            .collect(Collectors.toList());
-        return statuses.size() > 1
-            && statuses.get(0) == Status.PASSED
-            && statuses.get(1) == Status.FAILED;
-    }
-
-    private boolean isNewBroken(final List<HistoryItem> histories) {
-        final List<Status> statuses = histories.stream()
-            .sorted(comparingByTime())
-            .map(HistoryItem::getStatus)
-            .collect(Collectors.toList());
-        return statuses.size() > 1
-            && statuses.get(0) == Status.BROKEN
-            && statuses.get(1) == Status.PASSED;
+        return statuses.contains(Status.PASSED)
+                && statuses.indexOf(Status.PASSED) < statuses.lastIndexOf(Status.FAILED);
     }
 
     protected Map<String, HistoryData> getData(final List<LaunchResults> launches) {
@@ -165,23 +172,25 @@ public class HistoryPlugin implements Reader, Aggregator {
         if (!data.getItems().isEmpty()) {
             result.addExtraBlock(HISTORY_BLOCK_NAME, copy(data));
         }
-        final HistoryItem newItem = new HistoryItem()
+        final HistoryItem current = new HistoryItem()
                 .setUid(result.getUid())
                 .setStatus(result.getStatus())
                 .setStatusDetails(result.getStatusMessage())
                 .setTime(result.getTime());
 
         if (Objects.nonNull(info.getReportUrl())) {
-            newItem.setReportUrl(createReportUrl(info.getReportUrl(), result.getUid()));
+            current.setReportUrl(createReportUrl(info.getReportUrl(), result.getUid()));
         }
 
-        final List<HistoryItem> newItems = Stream.concat(Stream.of(newItem), data.getItems().stream())
+        final List<HistoryItem> prevItems = data.getItems();
+        result.setFlaky(result.isFlaky() || isFlaky(current, prevItems));
+        result.setNewFailed(isNewFailed(current, prevItems));
+        result.setNewBroken(isNewBroken(current, prevItems));
+        result.setNewPassed(isNewPassed(current, prevItems));
+
+        final List<HistoryItem> newItems = Stream.concat(Stream.of(current), prevItems.stream())
                 .limit(20)
                 .collect(Collectors.toList());
-        result.setNewFailed(isNewFailed(newItems));
-        result.setNewBroken(isNewBroken(newItems));
-        result.setFlaky(isFlaky(newItems));
-        result.setNewPassed(isNewPassed(newItems));
         data.setItems(newItems);
     }
 

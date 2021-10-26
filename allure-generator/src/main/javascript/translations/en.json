@@ -4,17 +4,14 @@
     "broken": "Broken",
     "passed": "Passed",
     "skipped": "Skipped",
-    "unknown": "Unknown",
-    "flaky": "Test is flaky",
-    "newFailed": "Test is new failed.",
-    "newPassed": "Test is new passed.",
-    "newBroken": "Test is new broken."
+    "unknown": "Unknown"
   },
   "marks": {
     "flaky": "Flaky",
-    "newFailed": "New Failed",
-    "newPassed": "New Passed",
-    "newBroken": "New broken"
+    "newFailed": "New failed",
+    "newBroken": "New broken",
+    "newPassed": "New passed",
+    "retriesStatusChange": "Status changed after retry"
   },
   "sorter": {
     "order": "order",

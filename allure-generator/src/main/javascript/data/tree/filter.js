@@ -1,3 +1,5 @@
+import {values as marksValues} from "../../utils/marks";
+
 function byStatuses(statuses) {
   return (child) => {
     if (child.children) {
@@ -32,11 +34,9 @@ function byMark(marks) {
     if (child.children) {
       return child.children.length > 0;
     }
-    return (!marks.newFailed || child.newFailed) &&
-        (!marks.flaky || child.flaky) &&
-        (!marks.newPassed || child.newPassed) &&
-        (!marks.newBroken || child.newBroken) &&
-        (!marks.newPassed || child.newPassed);
+    return marksValues
+        .map(k => !marks[k] || child[k])
+        .reduce((a, b) => a && b, true);
   };
 }
 

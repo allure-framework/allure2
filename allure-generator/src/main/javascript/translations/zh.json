@@ -4,10 +4,14 @@
     "broken": "故障",
     "passed": "通过",
     "skipped": "跳过",
-    "unknown": "未知",
+    "unknown": "未知"
+  },
+  "marks": {
     "flaky": "不稳定",
     "newFailed": "新的失败",
-    "newPassed": "新通过"
+    "newBroken": "新的故障",
+    "newPassed": "新的通过",
+    "retriesStatusChange": "重试后状态改变"
   },
   "sorter": {
     "name": "名称",

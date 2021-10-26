@@ -1,0 +1,1583 @@
+{
+  "47f06418ec1316161eaaec5641b37969" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 28,
+      "unknown" : 0,
+      "total" : 28
+    },
+    "items" : [ {
+      "uid" : "28461b542170b63",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635177196265,
+        "stop" : 1635177196280,
+        "duration" : 15
+      }
+    }, {
+      "uid" : "316fa527357117a9",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176965035,
+        "stop" : 1635176965051,
+        "duration" : 16
+      }
+    }, {
+      "uid" : "b5e189c620c0bc0b",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176947208,
+        "stop" : 1635176947221,
+        "duration" : 13
+      }
+    }, {
+      "uid" : "b2a325a4f07ed62b",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176928592,
+        "stop" : 1635176928607,
+        "duration" : 15
+      }
+    }, {
+      "uid" : "ed2b4ffa84b7296b",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176912665,
+        "stop" : 1635176912679,
+        "duration" : 14
+      }
+    }, {
+      "uid" : "285e3755d65a839b",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176897123,
+        "stop" : 1635176897138,
+        "duration" : 15
+      }
+    }, {
+      "uid" : "833763d60d32c969",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175858884,
+        "stop" : 1635175858899,
+        "duration" : 15
+      }
+    }, {
+      "uid" : "c2d23c8aed1b7b8",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175840732,
+        "stop" : 1635175840745,
+        "duration" : 13
+      }
+    }, {
+      "uid" : "1aa106003dde4f9c",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175824795,
+        "stop" : 1635175824810,
+        "duration" : 15
+      }
+    }, {
+      "uid" : "40fdaaa2693c1100",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175806701,
+        "stop" : 1635175806716,
+        "duration" : 15
+      }
+    }, {
+      "uid" : "a9affc521d51be41",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175788332,
+        "stop" : 1635175788346,
+        "duration" : 14
+      }
+    }, {
+      "uid" : "44c0fa4403f9916b",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175770386,
+        "stop" : 1635175770401,
+        "duration" : 15
+      }
+    }, {
+      "uid" : "b6f623437ac2d627",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175754274,
+        "stop" : 1635175754289,
+        "duration" : 15
+      }
+    }, {
+      "uid" : "4da2b8ebe53989bd",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175738456,
+        "stop" : 1635175738471,
+        "duration" : 15
+      }
+    }, {
+      "uid" : "26dbc0b2c5e925f0",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175720945,
+        "stop" : 1635175720962,
+        "duration" : 17
+      }
+    }, {
+      "uid" : "360100502f8f14ac",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175703905,
+        "stop" : 1635175703918,
+        "duration" : 13
+      }
+    }, {
+      "uid" : "ead1da089c6342f9",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175688597,
+        "stop" : 1635175688613,
+        "duration" : 16
+      }
+    }, {
+      "uid" : "59d4c9e4232c98e2",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175672158,
+        "stop" : 1635175672172,
+        "duration" : 14
+      }
+    }, {
+      "uid" : "aa7a3397f59f3da9",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175652569,
+        "stop" : 1635175652585,
+        "duration" : 16
+      }
+    }, {
+      "uid" : "b4771286fffd6f5c",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175633976,
+        "stop" : 1635175633993,
+        "duration" : 17
+      }
+    } ]
+  },
+  "b4f6403523fb41de7d369843de9745d8" : {
+    "statistic" : {
+      "failed" : 14,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 14,
+      "unknown" : 0,
+      "total" : 28
+    },
+    "items" : [ {
+      "uid" : "97d36b67a038d3fc",
+      "status" : "failed",
+      "statusDetails" : "Element should text 'new-feature' {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nElement: '<a class=\"v-align-middle\">another text</a>'\nScreenshot: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973703632.0.png\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973703632.0.html\nTimeout: 4 s.\n",
+      "time" : {
+        "start" : 1635177194223,
+        "stop" : 1635177196231,
+        "duration" : 2008
+      }
+    }, {
+      "uid" : "745d30b135e9e920",
+      "status" : "failed",
+      "statusDetails" : "WebDriverException: chrome not reachable\nElement not found {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nExpected: text 'Allure'\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973861960.0.html\nTimeout: 4 s.",
+      "time" : {
+        "start" : 1635176962987,
+        "stop" : 1635176964997,
+        "duration" : 2010
+      }
+    }, {
+      "uid" : "a3da328f38d91054",
+      "status" : "failed",
+      "statusDetails" : "Element should text 'new-feature' {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nElement: '<a class=\"v-align-middle\">another text</a>'\nScreenshot: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973703632.0.png\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973703632.0.html\nTimeout: 4 s.\n",
+      "time" : {
+        "start" : 1635176945129,
+        "stop" : 1635176947140,
+        "duration" : 2011
+      }
+    }, {
+      "uid" : "7e802b7c859371af",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176926529,
+        "stop" : 1635176928558,
+        "duration" : 2029
+      }
+    }, {
+      "uid" : "d6a81900d32c9678",
+      "status" : "failed",
+      "statusDetails" : "WebDriverException: chrome not reachable\nElement not found {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nExpected: text 'Allure'\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973861960.0.html\nTimeout: 4 s.",
+      "time" : {
+        "start" : 1635176912624,
+        "stop" : 1635176912632,
+        "duration" : 8
+      }
+    }, {
+      "uid" : "ef51bcaf6e7a7e68",
+      "status" : "failed",
+      "statusDetails" : "Element not found {By.xpath: [//div[@class='something']]}\nExpected: visible or transparent: visible or have css value opacity=0\nScreenshot: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.png\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.html\nTimeout: 4 s.\n",
+      "time" : {
+        "start" : 1635176896067,
+        "stop" : 1635176897082,
+        "duration" : 1015
+      }
+    }, {
+      "uid" : "e510b065ab79bbfd",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175856810,
+        "stop" : 1635175858820,
+        "duration" : 2010
+      }
+    }, {
+      "uid" : "640d9862da564d02",
+      "status" : "failed",
+      "statusDetails" : "Element not found {By.xpath: [//div[@class='something']]}\nExpected: visible or transparent: visible or have css value opacity=0\nScreenshot: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.png\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.html\nTimeout: 4 s.\n",
+      "time" : {
+        "start" : 1635175838664,
+        "stop" : 1635175840695,
+        "duration" : 2031
+      }
+    }, {
+      "uid" : "79c5185b0f768683",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175822709,
+        "stop" : 1635175824719,
+        "duration" : 2010
+      }
+    }, {
+      "uid" : "ea9a82fc46a5447b",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175804623,
+        "stop" : 1635175806632,
+        "duration" : 2009
+      }
+    }, {
+      "uid" : "16d88a365ae3cf52",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175786256,
+        "stop" : 1635175788266,
+        "duration" : 2010
+      }
+    }, {
+      "uid" : "fafd75a0e4395a2e",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175768342,
+        "stop" : 1635175770353,
+        "duration" : 2011
+      }
+    }, {
+      "uid" : "2214886c30da8b20",
+      "status" : "failed",
+      "statusDetails" : "WebDriverException: chrome not reachable\nElement not found {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nExpected: text 'Allure'\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973861960.0.html\nTimeout: 4 s.",
+      "time" : {
+        "start" : 1635175754219,
+        "stop" : 1635175754231,
+        "duration" : 12
+      }
+    }, {
+      "uid" : "c595634f1ef0039c",
+      "status" : "failed",
+      "statusDetails" : "WebDriverException: chrome not reachable\nElement not found {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nExpected: text 'Allure'\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973861960.0.html\nTimeout: 4 s.",
+      "time" : {
+        "start" : 1635175736362,
+        "stop" : 1635175738385,
+        "duration" : 2023
+      }
+    }, {
+      "uid" : "125ae7bafacce7c5",
+      "status" : "failed",
+      "statusDetails" : "Element not found {By.xpath: [//div[@class='something']]}\nExpected: visible or transparent: visible or have css value opacity=0\nScreenshot: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.png\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.html\nTimeout: 4 s.\n",
+      "time" : {
+        "start" : 1635175719896,
+        "stop" : 1635175720911,
+        "duration" : 1015
+      }
+    }, {
+      "uid" : "a1421d8af5e44238",
+      "status" : "failed",
+      "statusDetails" : "WebDriverException: chrome not reachable\nElement not found {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nExpected: text 'Allure'\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973861960.0.html\nTimeout: 4 s.",
+      "time" : {
+        "start" : 1635175703853,
+        "stop" : 1635175703864,
+        "duration" : 11
+      }
+    }, {
+      "uid" : "59e7fb58339292bc",
+      "status" : "failed",
+      "statusDetails" : "Element not found {By.xpath: [//div[@class='something']]}\nExpected: visible or transparent: visible or have css value opacity=0\nScreenshot: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.png\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.html\nTimeout: 4 s.\n",
+      "time" : {
+        "start" : 1635175687543,
+        "stop" : 1635175688558,
+        "duration" : 1015
+      }
+    }, {
+      "uid" : "326de7b17951940a",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175670077,
+        "stop" : 1635175672085,
+        "duration" : 2008
+      }
+    }, {
+      "uid" : "aa348d9b35a184b5",
+      "status" : "failed",
+      "statusDetails" : "WebDriverException: chrome not reachable\nElement not found {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nExpected: text 'Allure'\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973861960.0.html\nTimeout: 4 s.",
+      "time" : {
+        "start" : 1635175652524,
+        "stop" : 1635175652528,
+        "duration" : 4
+      }
+    }, {
+      "uid" : "c40ff47b23d29bbb",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175631935,
+        "stop" : 1635175633943,
+        "duration" : 2008
+      }
+    } ]
+  },
+  "7198bc0580bb992f6b50cb70de038e06" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 28,
+      "unknown" : 0,
+      "total" : 28
+    },
+    "items" : [ {
+      "uid" : "59916d7a48d573e5",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635177196324,
+        "stop" : 1635177196325,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "92694d1efde99742",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176965116,
+        "stop" : 1635176965118,
+        "duration" : 2
+      }
+    }, {
+      "uid" : "1812fffb73a8c594",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176947231,
+        "stop" : 1635176947232,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "ab6e28dc8d82c6a2",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176928652,
+        "stop" : 1635176928653,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "9a908c114fd1cf1a",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176912722,
+        "stop" : 1635176912723,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "dd9e8ee60d0057e3",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176897187,
+        "stop" : 1635176897189,
+        "duration" : 2
+      }
+    }, {
+      "uid" : "356a76c7e1651313",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175858909,
+        "stop" : 1635175858910,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "30ecce6c64c969b3",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175840783,
+        "stop" : 1635175840785,
+        "duration" : 2
+      }
+    }, {
+      "uid" : "97551daee21a0355",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175824821,
+        "stop" : 1635175824822,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "301c30361712ce0d",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175806727,
+        "stop" : 1635175806728,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "215434821261e0a3",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175788356,
+        "stop" : 1635175788357,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "a7b6bd9f961e0c41",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175770443,
+        "stop" : 1635175770444,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "239990c2465c60cc",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175754335,
+        "stop" : 1635175754336,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "a67d4388ce0933b2",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175738481,
+        "stop" : 1635175738482,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "face0c2ec6828d34",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175721008,
+        "stop" : 1635175721009,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "87ac15a553b2bce6",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175703963,
+        "stop" : 1635175703964,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "8081754a6405c7ef",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175688664,
+        "stop" : 1635175688665,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "62bdba5606b7a33a",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175672184,
+        "stop" : 1635175672185,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "12d5ac162cd38c",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175652640,
+        "stop" : 1635175652642,
+        "duration" : 2
+      }
+    }, {
+      "uid" : "acbc063cdf84c32e",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175634040,
+        "stop" : 1635175634041,
+        "duration" : 1
+      }
+    } ]
+  },
+  "368e9c3c3ecbb85d214069481a6d0b9c" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 28,
+      "unknown" : 0,
+      "total" : 28
+    },
+    "items" : [ {
+      "uid" : "bbf4827d02ae5422",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635177196339,
+        "stop" : 1635177196340,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "69ec40ba3f8d54c4",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176965151,
+        "stop" : 1635176965153,
+        "duration" : 2
+      }
+    }, {
+      "uid" : "17b5e84ca124534",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176947244,
+        "stop" : 1635176947245,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "7297b5f300d0fd08",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176928673,
+        "stop" : 1635176928674,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "49746c2adf23931f",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176912744,
+        "stop" : 1635176912745,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "13636bb4b6f2b961",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176897203,
+        "stop" : 1635176897205,
+        "duration" : 2
+      }
+    }, {
+      "uid" : "24179efe77edf3c6",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175858922,
+        "stop" : 1635175858923,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "9a2bbada11ee3d53",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175840802,
+        "stop" : 1635175840803,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "69e729115c390c9c",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175824835,
+        "stop" : 1635175824837,
+        "duration" : 2
+      }
+    }, {
+      "uid" : "356a559449edd683",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175806742,
+        "stop" : 1635175806743,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "4e4d7307b0ce8243",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175788369,
+        "stop" : 1635175788370,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "d4e0960f3edc4481",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175770464,
+        "stop" : 1635175770466,
+        "duration" : 2
+      }
+    }, {
+      "uid" : "70c9a60c0023a199",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175754361,
+        "stop" : 1635175754363,
+        "duration" : 2
+      }
+    }, {
+      "uid" : "d0ad38617379c011",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175738495,
+        "stop" : 1635175738496,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "98fdeddd7f882c2f",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175721022,
+        "stop" : 1635175721023,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "5eea271ed789ca51",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175703984,
+        "stop" : 1635175703985,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "78cca7671bfdc637",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175688679,
+        "stop" : 1635175688680,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "a88322a11968957b",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175672198,
+        "stop" : 1635175672200,
+        "duration" : 2
+      }
+    }, {
+      "uid" : "69a8df39e012b635",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175652666,
+        "stop" : 1635175652667,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "d46b755e7e974f9c",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175634054,
+        "stop" : 1635175634055,
+        "duration" : 1
+      }
+    } ]
+  },
+  "a344e7f235b2e4cb44a0a8853f6e2daa" : {
+    "statistic" : {
+      "failed" : 9,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 19,
+      "unknown" : 0,
+      "total" : 28
+    },
+    "items" : [ {
+      "uid" : "e801bde288fae9d",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635177198367,
+        "stop" : 1635177199373,
+        "duration" : 1006
+      }
+    }, {
+      "uid" : "c0a239f32a5e8e4",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176967186,
+        "stop" : 1635176968191,
+        "duration" : 1005
+      }
+    }, {
+      "uid" : "9423c04beae1ce0b",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176949270,
+        "stop" : 1635176950274,
+        "duration" : 1004
+      }
+    }, {
+      "uid" : "6b00c9b198cacd94",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176930702,
+        "stop" : 1635176931707,
+        "duration" : 1005
+      }
+    }, {
+      "uid" : "4ff4672a34e3538f",
+      "status" : "failed",
+      "statusDetails" : "Element not found {By.xpath: [//div[@class='something']]}\nExpected: visible or transparent: visible or have css value opacity=0\nScreenshot: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.png\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.html\nTimeout: 4 s.\n",
+      "time" : {
+        "start" : 1635176914771,
+        "stop" : 1635176915776,
+        "duration" : 1005
+      }
+    }, {
+      "uid" : "7d6f30ce732c0f14",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176899243,
+        "stop" : 1635176900249,
+        "duration" : 1006
+      }
+    }, {
+      "uid" : "3d2adcc4dcb2f2c2",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175860965,
+        "stop" : 1635175861969,
+        "duration" : 1004
+      }
+    }, {
+      "uid" : "e798ea3f2f5fc6fe",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175842833,
+        "stop" : 1635175843839,
+        "duration" : 1006
+      }
+    }, {
+      "uid" : "ce08f73e31ce131",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175826870,
+        "stop" : 1635175827877,
+        "duration" : 1007
+      }
+    }, {
+      "uid" : "ac38c4a1d2cbce9",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175808768,
+        "stop" : 1635175809771,
+        "duration" : 1003
+      }
+    }, {
+      "uid" : "e2b01323b3fb670d",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175790450,
+        "stop" : 1635175791454,
+        "duration" : 1004
+      }
+    }, {
+      "uid" : "6ad110d726607c0f",
+      "status" : "failed",
+      "statusDetails" : "WebDriverException: chrome not reachable\nElement not found {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nExpected: text 'Allure'\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973861960.0.html\nTimeout: 4 s.",
+      "time" : {
+        "start" : 1635175772491,
+        "stop" : 1635175773500,
+        "duration" : 1009
+      }
+    }, {
+      "uid" : "f6f7352874599e43",
+      "status" : "failed",
+      "statusDetails" : "WebDriverException: chrome not reachable\nElement not found {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nExpected: text 'Allure'\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973861960.0.html\nTimeout: 4 s.",
+      "time" : {
+        "start" : 1635175756388,
+        "stop" : 1635175756391,
+        "duration" : 3
+      }
+    }, {
+      "uid" : "25566a2da9918e74",
+      "status" : "failed",
+      "statusDetails" : "WebDriverException: chrome not reachable\nElement not found {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nExpected: text 'Allure'\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973861960.0.html\nTimeout: 4 s.",
+      "time" : {
+        "start" : 1635175740524,
+        "stop" : 1635175740526,
+        "duration" : 2
+      }
+    }, {
+      "uid" : "6e7b6e162803432c",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175722075,
+        "stop" : 1635175723083,
+        "duration" : 1008
+      }
+    }, {
+      "uid" : "6dcaabcd0d6fbb51",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175706012,
+        "stop" : 1635175707020,
+        "duration" : 1008
+      }
+    }, {
+      "uid" : "3ce848fdabdf7168",
+      "status" : "failed",
+      "statusDetails" : "WebDriverException: chrome not reachable\nElement not found {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nExpected: text 'Allure'\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973861960.0.html\nTimeout: 4 s.",
+      "time" : {
+        "start" : 1635175690705,
+        "stop" : 1635175690710,
+        "duration" : 5
+      }
+    }, {
+      "uid" : "a99ecf9da6f5ef08",
+      "status" : "failed",
+      "statusDetails" : "WebDriverException: chrome not reachable\nElement not found {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nExpected: text 'Allure'\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973861960.0.html\nTimeout: 4 s.",
+      "time" : {
+        "start" : 1635175674221,
+        "stop" : 1635175674227,
+        "duration" : 6
+      }
+    }, {
+      "uid" : "648010ff2843d047",
+      "status" : "failed",
+      "statusDetails" : "Element should text 'Some issue title here' {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nElement: '<a class=\"v-align-middle\">another text</a>'\nScreenshot: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973703632.0.png\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973703632.0.html\nTimeout: 4 s.\n",
+      "time" : {
+        "start" : 1635175654698,
+        "stop" : 1635175655702,
+        "duration" : 1004
+      }
+    }, {
+      "uid" : "27afab8929b03404",
+      "status" : "failed",
+      "statusDetails" : "Element should text 'Some issue title here' {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nElement: '<a class=\"v-align-middle\">another text</a>'\nScreenshot: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973703632.0.png\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973703632.0.html\nTimeout: 4 s.\n",
+      "time" : {
+        "start" : 1635175636084,
+        "stop" : 1635175637091,
+        "duration" : 1007
+      }
+    } ]
+  },
+  "4313f5ccf5d254c3940e26924ce28935" : {
+    "statistic" : {
+      "failed" : 14,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 14,
+      "unknown" : 0,
+      "total" : 28
+    },
+    "items" : [ {
+      "uid" : "7d78bb4bfdd837ec",
+      "status" : "failed",
+      "statusDetails" : "Element not found {By.xpath: [//div[@class='something']]}\nExpected: visible or transparent: visible or have css value opacity=0\nScreenshot: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.png\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.html\nTimeout: 4 s.\n",
+      "time" : {
+        "start" : 1635177192055,
+        "stop" : 1635177194131,
+        "duration" : 2076
+      }
+    }, {
+      "uid" : "4d61e34ab987bf67",
+      "status" : "failed",
+      "statusDetails" : "Element not found {By.xpath: [//div[@class='something']]}\nExpected: visible or transparent: visible or have css value opacity=0\nScreenshot: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.png\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.html\nTimeout: 4 s.\n",
+      "time" : {
+        "start" : 1635176960811,
+        "stop" : 1635176962890,
+        "duration" : 2079
+      }
+    }, {
+      "uid" : "a6c63823e23212e",
+      "status" : "failed",
+      "statusDetails" : "WebDriverException: chrome not reachable\nElement not found {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nExpected: text 'Allure'\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973861960.0.html\nTimeout: 4 s.",
+      "time" : {
+        "start" : 1635176942966,
+        "stop" : 1635176945039,
+        "duration" : 2073
+      }
+    }, {
+      "uid" : "52a1142badb408f8",
+      "status" : "failed",
+      "statusDetails" : "WebDriverException: chrome not reachable\nElement not found {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nExpected: text 'Allure'\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973861960.0.html\nTimeout: 4 s.",
+      "time" : {
+        "start" : 1635176926375,
+        "stop" : 1635176926429,
+        "duration" : 54
+      }
+    }, {
+      "uid" : "51ed0fbe66a20d0",
+      "status" : "failed",
+      "statusDetails" : "Element not found {By.xpath: [//div[@class='something']]}\nExpected: visible or transparent: visible or have css value opacity=0\nScreenshot: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.png\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.html\nTimeout: 4 s.\n",
+      "time" : {
+        "start" : 1635176911459,
+        "stop" : 1635176912533,
+        "duration" : 1074
+      }
+    }, {
+      "uid" : "e0319a1d17e40bb1",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176893899,
+        "stop" : 1635176895974,
+        "duration" : 2075
+      }
+    }, {
+      "uid" : "8e0c4aa331978fb7",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175854648,
+        "stop" : 1635175856722,
+        "duration" : 2074
+      }
+    }, {
+      "uid" : "7dfdca4b8f8daedb",
+      "status" : "failed",
+      "statusDetails" : "WebDriverException: chrome not reachable\nElement not found {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nExpected: text 'Allure'\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973861960.0.html\nTimeout: 4 s.",
+      "time" : {
+        "start" : 1635175838511,
+        "stop" : 1635175838566,
+        "duration" : 55
+      }
+    }, {
+      "uid" : "2e2d3a234c763bdb",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175820545,
+        "stop" : 1635175822616,
+        "duration" : 2071
+      }
+    }, {
+      "uid" : "3a21361e15a929c1",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175802453,
+        "stop" : 1635175804530,
+        "duration" : 2077
+      }
+    }, {
+      "uid" : "1d094bd0a1acb6f0",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175784084,
+        "stop" : 1635175786167,
+        "duration" : 2083
+      }
+    }, {
+      "uid" : "5a687d732f81c07b",
+      "status" : "failed",
+      "statusDetails" : "Element not found {By.xpath: [//div[@class='something']]}\nExpected: visible or transparent: visible or have css value opacity=0\nScreenshot: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.png\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.html\nTimeout: 4 s.\n",
+      "time" : {
+        "start" : 1635175767166,
+        "stop" : 1635175768249,
+        "duration" : 1083
+      }
+    }, {
+      "uid" : "ecf34e4148ec9260",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175752051,
+        "stop" : 1635175754127,
+        "duration" : 2076
+      }
+    }, {
+      "uid" : "ee2fd381ffb8b78b",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175734192,
+        "stop" : 1635175736279,
+        "duration" : 2087
+      }
+    }, {
+      "uid" : "263d2e04b5f17b7c",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175717730,
+        "stop" : 1635175719805,
+        "duration" : 2075
+      }
+    }, {
+      "uid" : "206b97ea0622f171",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175701683,
+        "stop" : 1635175703756,
+        "duration" : 2073
+      }
+    }, {
+      "uid" : "36a26487af265974",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175685375,
+        "stop" : 1635175687457,
+        "duration" : 2082
+      }
+    }, {
+      "uid" : "87dd09616ead95c5",
+      "status" : "failed",
+      "statusDetails" : "Element should text 'new-feature' {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nElement: '<a class=\"v-align-middle\">another text</a>'\nScreenshot: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973703632.0.png\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973703632.0.html\nTimeout: 4 s.\n",
+      "time" : {
+        "start" : 1635175667896,
+        "stop" : 1635175669980,
+        "duration" : 2084
+      }
+    }, {
+      "uid" : "3bb8dbcd1c0ea446",
+      "status" : "failed",
+      "statusDetails" : "WebDriverException: chrome not reachable\nElement not found {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nExpected: text 'Allure'\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973861960.0.html\nTimeout: 4 s.",
+      "time" : {
+        "start" : 1635175650323,
+        "stop" : 1635175652427,
+        "duration" : 2104
+      }
+    }, {
+      "uid" : "b104c8f6d81c001d",
+      "status" : "failed",
+      "statusDetails" : "Element not found {By.xpath: [//div[@class='something']]}\nExpected: visible or transparent: visible or have css value opacity=0\nScreenshot: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.png\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.html\nTimeout: 4 s.\n",
+      "time" : {
+        "start" : 1635175629759,
+        "stop" : 1635175631839,
+        "duration" : 2080
+      }
+    } ]
+  },
+  "2c40535cdd4bec17c6992c5cdfa254aa" : {
+    "statistic" : {
+      "failed" : 7,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 21,
+      "unknown" : 0,
+      "total" : 28
+    },
+    "items" : [ {
+      "uid" : "65bdaf2705fbb7b0",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635177196345,
+        "stop" : 1635177197352,
+        "duration" : 1007
+      }
+    }, {
+      "uid" : "a6fa3e114b6bcc70",
+      "status" : "failed",
+      "statusDetails" : "Element not found {By.xpath: [//div[@class='something']]}\nExpected: visible or transparent: visible or have css value opacity=0\nScreenshot: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.png\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.html\nTimeout: 4 s.\n",
+      "time" : {
+        "start" : 1635176965162,
+        "stop" : 1635176966168,
+        "duration" : 1006
+      }
+    }, {
+      "uid" : "9ef0bb02a5589e09",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176947250,
+        "stop" : 1635176948256,
+        "duration" : 1006
+      }
+    }, {
+      "uid" : "31c17204ca41a4b1",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176928679,
+        "stop" : 1635176929684,
+        "duration" : 1005
+      }
+    }, {
+      "uid" : "3131dfdb2f7fa259",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176912750,
+        "stop" : 1635176913757,
+        "duration" : 1007
+      }
+    }, {
+      "uid" : "dcd0c590dc851a5b",
+      "status" : "failed",
+      "statusDetails" : "Element should text 'Some issue title here' {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nElement: '<a class=\"v-align-middle\">another text</a>'\nScreenshot: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973703632.0.png\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973703632.0.html\nTimeout: 4 s.\n",
+      "time" : {
+        "start" : 1635176897214,
+        "stop" : 1635176898223,
+        "duration" : 1009
+      }
+    }, {
+      "uid" : "2856d249c4caed1",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175858927,
+        "stop" : 1635175859935,
+        "duration" : 1008
+      }
+    }, {
+      "uid" : "c37e28cc3190870d",
+      "status" : "failed",
+      "statusDetails" : "WebDriverException: chrome not reachable\nElement not found {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nExpected: text 'Allure'\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973861960.0.html\nTimeout: 4 s.",
+      "time" : {
+        "start" : 1635175840808,
+        "stop" : 1635175841816,
+        "duration" : 1008
+      }
+    }, {
+      "uid" : "5ee1f65bd555c1f8",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175824842,
+        "stop" : 1635175825846,
+        "duration" : 1004
+      }
+    }, {
+      "uid" : "74f7995db10e773b",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175806748,
+        "stop" : 1635175807752,
+        "duration" : 1004
+      }
+    }, {
+      "uid" : "76ff3bf8542ac62e",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175788374,
+        "stop" : 1635175789378,
+        "duration" : 1004
+      }
+    }, {
+      "uid" : "b31e9c51d0b31f9e",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175770471,
+        "stop" : 1635175771475,
+        "duration" : 1004
+      }
+    }, {
+      "uid" : "4aad7dbb37fb3d7b",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175754368,
+        "stop" : 1635175755373,
+        "duration" : 1005
+      }
+    }, {
+      "uid" : "5b4002a00baba6d3",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175738500,
+        "stop" : 1635175739504,
+        "duration" : 1004
+      }
+    }, {
+      "uid" : "e840b180f37664b0",
+      "status" : "failed",
+      "statusDetails" : "Element not found {By.xpath: [//div[@class='something']]}\nExpected: visible or transparent: visible or have css value opacity=0\nScreenshot: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.png\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.html\nTimeout: 4 s.\n",
+      "time" : {
+        "start" : 1635175721028,
+        "stop" : 1635175722032,
+        "duration" : 1004
+      }
+    }, {
+      "uid" : "e6dc9e6b945d1226",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175703990,
+        "stop" : 1635175704997,
+        "duration" : 1007
+      }
+    }, {
+      "uid" : "6834b1f166c0ee00",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175688685,
+        "stop" : 1635175689689,
+        "duration" : 1004
+      }
+    }, {
+      "uid" : "e8e3ad79890a0d89",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175672205,
+        "stop" : 1635175673209,
+        "duration" : 1004
+      }
+    }, {
+      "uid" : "25f0de21eab827bd",
+      "status" : "failed",
+      "statusDetails" : "Element should text 'Some issue title here' {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nElement: '<a class=\"v-align-middle\">another text</a>'\nScreenshot: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973703632.0.png\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973703632.0.html\nTimeout: 4 s.\n",
+      "time" : {
+        "start" : 1635175652673,
+        "stop" : 1635175653682,
+        "duration" : 1009
+      }
+    }, {
+      "uid" : "b1cafe8247e3e68e",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175634059,
+        "stop" : 1635175635064,
+        "duration" : 1005
+      }
+    } ]
+  },
+  "9b448b5eff623519556020f329494163" : {
+    "statistic" : {
+      "failed" : 11,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 17,
+      "unknown" : 0,
+      "total" : 28
+    },
+    "items" : [ {
+      "uid" : "70d74e06d78a2953",
+      "status" : "failed",
+      "statusDetails" : "Element should text 'Some issue title here' {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nElement: '<a class=\"v-align-middle\">another text</a>'\nScreenshot: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973703632.0.png\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973703632.0.html\nTimeout: 4 s.\n",
+      "time" : {
+        "start" : 1635177197357,
+        "stop" : 1635177198362,
+        "duration" : 1005
+      }
+    }, {
+      "uid" : "16f6e97749128c9f",
+      "status" : "failed",
+      "statusDetails" : "Element not found {By.xpath: [//div[@class='something']]}\nExpected: visible or transparent: visible or have css value opacity=0\nScreenshot: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.png\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.html\nTimeout: 4 s.\n",
+      "time" : {
+        "start" : 1635176966174,
+        "stop" : 1635176967181,
+        "duration" : 1007
+      }
+    }, {
+      "uid" : "2233ebc3bd9c7158",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176948261,
+        "stop" : 1635176949265,
+        "duration" : 1004
+      }
+    }, {
+      "uid" : "ac2971dbea93daa4",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176929689,
+        "stop" : 1635176930698,
+        "duration" : 1009
+      }
+    }, {
+      "uid" : "85755fb2f3a0d60a",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176913761,
+        "stop" : 1635176914767,
+        "duration" : 1006
+      }
+    }, {
+      "uid" : "7fb2cb7dc192798c",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176898230,
+        "stop" : 1635176899238,
+        "duration" : 1008
+      }
+    }, {
+      "uid" : "4ca031b2de7835fc",
+      "status" : "failed",
+      "statusDetails" : "Element not found {By.xpath: [//div[@class='something']]}\nExpected: visible or transparent: visible or have css value opacity=0\nScreenshot: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.png\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.html\nTimeout: 4 s.\n",
+      "time" : {
+        "start" : 1635175859940,
+        "stop" : 1635175860960,
+        "duration" : 1020
+      }
+    }, {
+      "uid" : "1db62e14c13230e9",
+      "status" : "failed",
+      "statusDetails" : "Element not found {By.xpath: [//div[@class='something']]}\nExpected: visible or transparent: visible or have css value opacity=0\nScreenshot: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.png\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.html\nTimeout: 4 s.\n",
+      "time" : {
+        "start" : 1635175841821,
+        "stop" : 1635175842828,
+        "duration" : 1007
+      }
+    }, {
+      "uid" : "865c1d4359a26d57",
+      "status" : "failed",
+      "statusDetails" : "Element should text 'Some issue title here' {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nElement: '<a class=\"v-align-middle\">another text</a>'\nScreenshot: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973703632.0.png\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973703632.0.html\nTimeout: 4 s.\n",
+      "time" : {
+        "start" : 1635175825851,
+        "stop" : 1635175826864,
+        "duration" : 1013
+      }
+    }, {
+      "uid" : "93990eb6a99c58a6",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175807758,
+        "stop" : 1635175808763,
+        "duration" : 1005
+      }
+    }, {
+      "uid" : "fb8f9970f5320d37",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175789437,
+        "stop" : 1635175790446,
+        "duration" : 1009
+      }
+    }, {
+      "uid" : "6c5c48d3b67af1b7",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175771479,
+        "stop" : 1635175772486,
+        "duration" : 1007
+      }
+    }, {
+      "uid" : "6c1c97bdc578acf9",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175755377,
+        "stop" : 1635175756384,
+        "duration" : 1007
+      }
+    }, {
+      "uid" : "373616314d8b6bda",
+      "status" : "failed",
+      "statusDetails" : "Element not found {By.xpath: [//div[@class='something']]}\nExpected: visible or transparent: visible or have css value opacity=0\nScreenshot: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.png\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973516437.0.html\nTimeout: 4 s.\n",
+      "time" : {
+        "start" : 1635175739508,
+        "stop" : 1635175740518,
+        "duration" : 1010
+      }
+    }, {
+      "uid" : "751429f053a24b9e",
+      "status" : "failed",
+      "statusDetails" : "WebDriverException: chrome not reachable\nElement not found {By.xpath: //a[@href='/eroshenkoam/allure-example']}\nExpected: text 'Allure'\nPage source: file:/Users/eroshenkoam/Developer/eroshenkoam/webdriver-coverage-example/build/reports/tests/1603973861960.0.html\nTimeout: 4 s.",
+      "time" : {
+        "start" : 1635175722067,
+        "stop" : 1635175722071,
+        "duration" : 4
+      }
+    }, {
+      "uid" : "d8890de3de6ebe38",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175705001,
+        "stop" : 1635175706008,
+        "duration" : 1007
+      }
+    }, {
+      "uid" : "86d442ed768b9703",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175689692,
+        "stop" : 1635175690700,
+        "duration" : 1008
+      }
+    }, {
+      "uid" : "3f2f750e16987677",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175673214,
+        "stop" : 1635175674218,
+        "duration" : 1004
+      }
+    }, {
+      "uid" : "c26a8947dcc62fac",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175653690,
+        "stop" : 1635175654694,
+        "duration" : 1004
+      }
+    }, {
+      "uid" : "1f86dfec49458fa0",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175635071,
+        "stop" : 1635175636080,
+        "duration" : 1009
+      }
+    } ]
+  },
+  "b198d36a585bdff2dc4ac9210b80da6" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 28,
+      "unknown" : 0,
+      "total" : 28
+    },
+    "items" : [ {
+      "uid" : "3e5e3419a3ddcd0e",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635177196334,
+        "stop" : 1635177196335,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "657b4eb888839f8d",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176965141,
+        "stop" : 1635176965143,
+        "duration" : 2
+      }
+    }, {
+      "uid" : "f99d15c69560ddf8",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176947239,
+        "stop" : 1635176947240,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "b7b9cc40c07b47dc",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176928668,
+        "stop" : 1635176928670,
+        "duration" : 2
+      }
+    }, {
+      "uid" : "cd8d74490e71ddf0",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176912739,
+        "stop" : 1635176912741,
+        "duration" : 2
+      }
+    }, {
+      "uid" : "14d5e3cff2cce2d5",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635176897197,
+        "stop" : 1635176897199,
+        "duration" : 2
+      }
+    }, {
+      "uid" : "977c143587648d65",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175858918,
+        "stop" : 1635175858919,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "b85a1a4fde18d257",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175840797,
+        "stop" : 1635175840799,
+        "duration" : 2
+      }
+    }, {
+      "uid" : "b5ff94b557484173",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175824830,
+        "stop" : 1635175824831,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "6f746db1c07992a5",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175806737,
+        "stop" : 1635175806738,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "36a8595709b0c463",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175788365,
+        "stop" : 1635175788366,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "ac6b4cf8b574f784",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175770459,
+        "stop" : 1635175770461,
+        "duration" : 2
+      }
+    }, {
+      "uid" : "97c979d080b6169a",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175754353,
+        "stop" : 1635175754355,
+        "duration" : 2
+      }
+    }, {
+      "uid" : "781dde14360e575",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175738490,
+        "stop" : 1635175738492,
+        "duration" : 2
+      }
+    }, {
+      "uid" : "aa5d0a817f5fd0fc",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175721017,
+        "stop" : 1635175721019,
+        "duration" : 2
+      }
+    }, {
+      "uid" : "6fff1ed4ad3803c3",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175703979,
+        "stop" : 1635175703980,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "5926da2d653b4e1c",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175688674,
+        "stop" : 1635175688675,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "e8f9d1787782ae01",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175672193,
+        "stop" : 1635175672195,
+        "duration" : 2
+      }
+    }, {
+      "uid" : "a38a280faf2acae3",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175652659,
+        "stop" : 1635175652661,
+        "duration" : 2
+      }
+    }, {
+      "uid" : "c24a7af832365cf1",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635175634050,
+        "stop" : 1635175634051,
+        "duration" : 1
+      }
+    } ]
+  }
+}

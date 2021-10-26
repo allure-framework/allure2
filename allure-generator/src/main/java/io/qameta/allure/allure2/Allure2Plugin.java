@@ -127,6 +127,7 @@ public class Allure2Plugin implements Reader {
         Optional.ofNullable(result.getStatusDetails()).ifPresent(details -> {
             dest.setStatusMessage(details.getMessage());
             dest.setStatusTrace(details.getTrace());
+            dest.setFlaky(details.isFlaky());
         });
 
         dest.setLinks(convertList(result.getLinks(), this::convert));

@@ -4,17 +4,14 @@
     "broken": "Defect",
     "passed": "Succes",
     "skipped": "Overgeslagen",
-    "unknown": "Onbekend",
-    "flaky": "Test is instabiel",
-    "newFailed": "Test is nieuw gefaald",
-    "newPassed": "Test is nieuw geslaagd",
-    "newBroken": "Test is nieuw gebroken"
+    "unknown": "Onbekend"
   },
   "marks": {
     "flaky": "Instabiel",
     "newFailed": "Nieuw gefaald",
+    "newBroken": "Nieuw gebroken",
     "newPassed": "Nieuw geslaagd",
-    "newBroken": "Nieuw gebroken"
+    "retriesStatusChange": "Status gewijzigd na opnieuw proberen"
   },
   "sorter": {
     "order": "volgorde",

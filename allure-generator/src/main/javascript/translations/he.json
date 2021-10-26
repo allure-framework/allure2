@@ -4,10 +4,14 @@
     "broken": "שבור",
     "passed": "עבר",
     "skipped": "דולג",
-    "unknown": "לא ידוע",
+    "unknown": "לא ידוע"
+  },
+  "marks": {
     "flaky": "לא יציב",
     "newFailed": "חדש נכשל",
-    "newPassed": "חדש עבר"
+    "newPassed": "חדש עבר",
+    "newBroken": "חדש שבור",
+    "retriesStatusChange": "הסטטוס השתנה לאחר ניסיון חוזר"
   },
   "sorter": {
     "order": "סדר",
@@ -71,7 +75,7 @@
     "suites": {
       "name": "קבוצות מקרי בדיקה"
     },
-	"categories": {
+    "categories": {
       "name": "קטגוריות"
     }
   },
@@ -95,7 +99,7 @@
       "empty": "לא קיימים פרטים על מצב מקרה הבדיקה",
       "trace": "הצג מידע נוסף"
     },
-	"overview": {
+    "overview": {
       "name": "סקירה כללית"
     },
     "categories": {
@@ -116,7 +120,7 @@
     },
     "retries": {
       "name": "ניסיונות ריצה חוזרים",
-	  "empty": "אין מידע זמין על ניסיונות ריצה חוזרים"
+      "empty": "אין מידע זמין על ניסיונות ריצה חוזרים"
     },
     "parameters": {
       "name": "פרמטרים"
@@ -147,16 +151,16 @@
   "controls": {
     "collapse": "כווץ",
     "expand": "הרחב",
-	"fullscreen": "מסך מלא",
+    "fullscreen": "מסך מלא",
     "language": "שנה שפה",
     "clipboard": "העתק אל מגש המערכת",
-	"clipboardSuccess": "הועתק בהצלחה",
+    "clipboardSuccess": "הועתק בהצלחה",
     "clipboardError": "לא ניתן להעתיק את הערך אל מגש המערכת. נראה שהתכונה הזאת לא נתמכת על ידי הדפדפן שלך",
     "backto": "חזור ל"
   },
   "errors": {
     "missedAttachment": "התוכן המצורף לא נמצא",
-	"notFound": "לא נמצא"
+    "notFound": "לא נמצא"
   },
   "component": {
     "tree": {
@@ -165,7 +169,7 @@
       "download": "הורד קובץ CSV",
       "empty": "לא קיימים פריטים",
       "time": {
-        "total" : {
+        "total": {
           "name": "סך הכול",
           "tooltip": "משך זמן הריצה מתחילת ריצת מקרה הבדיקה הראשון עד סיום ריצת מקרה הבדיקה האחרון"
         },
@@ -185,7 +189,7 @@
       }
     },
     "widgetStatus": {
-	  "showAll": "הצג את כל הפריטים",
+      "showAll": "הצג את כל הפריטים",
       "total": "סך הכול פריט {{count}}",
       "total_plural": "סך הכול {{count}} פריטים"
     },
