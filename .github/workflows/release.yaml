@@ -17,11 +17,9 @@ jobs:
       - name: "Check release version"
         run: |
           expr "${{ github.event.inputs.releaseVersion }}" : '[[:digit:]][[:digit:]]*\.[[:digit:]][[:digit:]]*\.[[:digit:]][[:digit:]]*$'
-
       - name: "Check next version"
         run: |
           expr "${{ github.event.inputs.nextVersion }}" : '[[:digit:]][[:digit:]]*\.[[:digit:]][[:digit:]]*$'
-
       - uses: actions/checkout@v2.3.5
         with:
           token: ${{ secrets.QAMETA_CI }}
@@ -30,19 +28,16 @@ jobs:
         run: |
           git config --global user.name qameta-ci
           git config --global user.email qameta-ci@qameta.io
-
-      - name: "Set release version in gradle.properties file"
+      - name: "Set release version"
         run: |
           sed -i -e '/version=/s/.*/version=${{ github.event.inputs.releaseVersion }}/g' gradle.properties
           cat gradle.properties
-
       - name: "Commit release version and create tag"
         run: |
           git commit -am "release ${{ github.event.inputs.releaseVersion }}"
           git tag ${{ github.event.inputs.releaseVersion }}
           git push origin ${{ github.event.inputs.releaseVersion }}
-
-      - name: "Set next development version in gradle.properties file"
+      - name: "Set next development version"
         run: |
           sed -i -e '/version=/s/.*/version=${{ github.event.inputs.nextVersion }}-SNAPSHOT/g' gradle.properties
           cat gradle.properties
@@ -50,14 +45,13 @@ jobs:
       - name: "Commit next development version and push it"
         run: |
           git commit -am "set next development version ${{ github.event.inputs.nextVersion }}"
-          git push origin ${GITHUB_REF}
-
+          git push origin ${{ github.ref }}
       - name: "Publish Github Release"
-        uses: toolmantim/release-drafter@v5.15.0
+        uses: octokit/request-action@v2.x
         with:
-          version: ${{ github.event.inputs.releaseVersion }}
-          name: ${{ github.event.inputs.releaseVersion }}
-          tag: ${{ github.event.inputs.releaseVersion }}
-          publish: "true"
+          route: POST /repos/${{ github.repository }}/releases
+          tag_name: ${{ github.event.inputs.releaseVersion }}
+          generate_release_notes: true
+          target_commitish: ${{ github.ref }}
         env:
           GITHUB_TOKEN: ${{ secrets.QAMETA_CI }}
