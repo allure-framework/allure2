@@ -20,7 +20,7 @@ The Allure Report Community is also active on Stack Overflow, you can post your 
 
 ## User Documentation
 
-* [User Documentation](https://docs.qameta.io/allure/)
+* [User Documentation](https://docs.qameta.io/allure-report/)
 
 ## Contributing
 
