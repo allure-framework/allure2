@@ -14,7 +14,7 @@
 [release-badge]: https://img.shields.io/github/release/allure-framework/allure2.svg?style=flat
 [CONTRIBUTING.md]: .github/CONTRIBUTING.md
 [CODE_OF_CONDUCT.md]: CODE_OF_CONDUCT.md
-[docs]: https://docs.qameta.io/allure/
+[docs]: https://docs.qameta.io/allure-report/
 
 # Allure Report
 
