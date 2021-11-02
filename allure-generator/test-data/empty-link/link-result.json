@@ -1,6 +1,48 @@
 {
   "name": "Test with links",
   "status": "passed",
+  "steps": [
+    {
+      "name": "Open issues page https://example.org",
+      "status": "passed",
+      "stage": "finished",
+      "steps": [],
+      "attachments": [
+        {
+          "name": "Page",
+          "source": "1ca23583-1e2f-4cac-b8c3-2e03b1a947b6-attachment.html",
+          "type": "text/html"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "owner",
+          "value": "allure-framework"
+        },
+        {
+          "name": "repo",
+          "value": "allure2"
+        }
+      ],
+      "start": 1635177313449,
+      "stop": 1635177314451
+    },
+    {
+      "name": "Search for issues at https://example.org/other inside",
+      "status": "passed",
+      "stage": "finished",
+      "steps": [],
+      "attachments": [],
+      "parameters": [
+        {
+          "name": "title",
+          "value": "Some issue title here"
+        }
+      ],
+      "start": 1635177314452,
+      "stop": 1635177314452
+    }
+  ],
   "links": [
     {
       "name": "only name"
