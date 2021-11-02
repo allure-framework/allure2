@@ -1,0 +1,39 @@
+{
+  "name": "Test with links",
+  "status": "passed",
+  "links": [
+    {
+      "name": "only name"
+    },
+    {
+      "url": "https://example.org/only-url"
+    },
+    {
+      "name": "name & url",
+      "url": "https://example.org/name-url"
+    },
+    {
+      "name": "name & url & issue type",
+      "url": "https://example.org/name-url-issue",
+      "type": "issue"
+    },
+    {
+      "name": "name & url & tms type",
+      "url": "https://example.org/name-url-tms",
+      "type": "tms"
+    },
+    {
+      "name": "name & url & custom type",
+      "url": "https://example.org/name-url-custom",
+      "type": "custom"
+    },
+    {
+      "url": "https://example.org/url-issue",
+      "type": "issue"
+    },
+    {},
+    {
+      "unknown": true
+    }
+  ]
+}
