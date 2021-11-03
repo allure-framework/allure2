@@ -55,7 +55,7 @@ All the documentation is available [on our website][docs].
 Next-gen Software Quality Management Platform brings together automated and manual testing.
 Level up your product quality control and boost your QA and development team productivity by setting your TestOps. Try it on our [website][site].
 
-![Allure TestOps](.github/preview_testops.png)
+[![Allure TestOps](.github/preview_testops.png)][site]
 
 ## Staying in Touch
 
