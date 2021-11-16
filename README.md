@@ -14,7 +14,7 @@
 [release-badge]: https://img.shields.io/github/release/allure-framework/allure2.svg?style=flat
 [CONTRIBUTING.md]: .github/CONTRIBUTING.md
 [CODE_OF_CONDUCT.md]: CODE_OF_CONDUCT.md
-[docs]: https://docs.qameta.io/allure/
+[docs]: https://docs.qameta.io/allure-report/
 
 # Allure Report
 
@@ -49,7 +49,7 @@ All the documentation is available [on our website][docs].
 
 ## Allure TestOps
 
-Next-gen Software Quality Management Platform brings together automated and manual testing.
+DevOps-ready Testing Platform that brings together automated and manual testing.
 Level up your product quality control and boost your QA and development team productivity by setting your TestOps. Try it on our [website][site].
 
 [![Allure TestOps](.github/preview_testops.png)][site]
@@ -57,8 +57,8 @@ Level up your product quality control and boost your QA and development team pro
 ## Staying in Touch
 
 Follow [@QametaSoftware][twitter] and its [team members][twitter-team] on Twitter. In-depth articles can
-be found at [Qameta Blog][blog]. Also feel free to join our
-[Gitter room][gitter] ([ru][tg-ru]).
+be found at [Qameta Blog][blog]. Also feel free to join our GitHub discussions or
+[Telegram chat][tg-ru] (ru).
 
 ## Code of Conduct
 
