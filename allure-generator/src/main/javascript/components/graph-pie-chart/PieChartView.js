@@ -33,12 +33,7 @@ class PieChartView extends BaseChartView {
       name: key.toUpperCase(),
       value: stats[key],
       part: stats[key] / total,
-    }));
-    for (let i = 0; i < this.data.length; i++) {
-      if (this.data[i].part === 0) {
-        this.data.splice(i, 1);
-      }
-    }
+    })).filter(item => item.part !== 0);
   }
 
   setupViewport() {
