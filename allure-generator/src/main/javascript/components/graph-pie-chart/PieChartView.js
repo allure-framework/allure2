@@ -33,7 +33,7 @@ class PieChartView extends BaseChartView {
       name: key.toUpperCase(),
       value: stats[key],
       part: stats[key] / total,
-    }));
+    })).filter(item => item.value);
   }
 
   setupViewport() {
