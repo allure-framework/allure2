@@ -21,7 +21,6 @@ import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.Link;
 import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.jira.JiraIssueComment;
 import io.qameta.allure.jira.JiraService;
 import io.qameta.allure.jira.JiraServiceBuilder;
@@ -35,7 +34,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -106,10 +104,45 @@ public class XrayTestRunExportPlugin implements Aggregator {
                 .flatMap(Collection::stream)
                 .collect(Collectors.toMap(XrayTestRun::getKey, r -> r));
 
+        final Map<String, String> linkNamePerStatus = new HashMap<>();
         launchesResults.stream()
                 .map(LaunchResults::getAllResults)
                 .flatMap(Collection::stream)
-                .forEach(testResult -> updateTestRunStatuses(jiraService, testResult, statusesMap, testRunsMap));
+                .forEach(testResult -> {
+                    for (Link link : testResult.getLinks()) {
+                        if (this.isTmsLink(link)) {
+                            final String status = statusesMap.get(testResult.getStatus());
+                            LOGGER.debug(link.getName() + " with status " + status);
+                            switch (status) {
+                                case XRAY_STATUS_FAIL:
+                                    linkNamePerStatus.put(link.getName(), status);
+                                    break;
+                                case XRAY_STATUS_TODO:
+                                    if (!linkNamePerStatus.containsKey(link.getName())) {
+                                        linkNamePerStatus.put(link.getName(), status);
+                                    }
+                                    break;
+
+                                case XRAY_STATUS_PASS:
+                                    if (!linkNamePerStatus.containsKey(link.getName())
+                                            || linkNamePerStatus.get(link.getName()).equals(XRAY_STATUS_TODO)) {
+                                        linkNamePerStatus.put(link.getName(), status);
+                                    }
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                });
+
+        linkNamePerStatus.forEach((linkName, status) -> {
+            final XrayTestRun xrayTestRun = testRunsMap.get(linkName);
+            if (xrayTestRun != null) {
+                updateTestRunStatus(jiraService, xrayTestRun, status);
+            }
+        });
 
         final Optional<ExecutorInfo> executorInfo = launchesResults.stream()
                 .map(launchResults -> launchResults.getExtra(EXECUTORS_BLOCK_NAME))
@@ -119,20 +152,6 @@ public class XrayTestRunExportPlugin implements Aggregator {
                 .map(ExecutorInfo.class::cast)
                 .findFirst();
         executorInfo.ifPresent(info -> executionIssues.forEach(issue -> addExecutionComment(jiraService, issue, info)));
-    }
-
-    private void updateTestRunStatuses(final JiraService jiraService,
-                                       final TestResult testResult,
-                                       final Map<Status, String> statusesMap,
-                                       final Map<String, XrayTestRun> testRunsMap) {
-        final String status = statusesMap.get(testResult.getStatus());
-        final List<XrayTestRun> testRunIssueKeys = testResult.getLinks().stream()
-                .filter(this::isTmsLink)
-                .map(Link::getName)
-                .map(testRunsMap::get)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-        testRunIssueKeys.forEach(testRun -> updateTestRunStatus(jiraService, testRun, status));
     }
 
     private void addExecutionComment(final JiraService jiraService,

@@ -84,6 +84,75 @@ class XrayTestRunExportPluginTest {
         verify(service, times(1)).updateTestRunStatus(TESTRUN_ID, "FAIL");
     }
 
+    @Test
+    void shouldExportTestRunToXrayWithAllTypesOfStatues() {
+        final LaunchResults launchResults = mock(LaunchResults.class);
+        final TestResult testResultFail = createTestResult(Status.FAILED)
+                .setLinks(Collections.singletonList(new Link().setName(TESTRUN_KEY).setType("tms")));
+
+        final Set<TestResult> results = new HashSet<>(Collections.singletonList(testResultFail));
+
+        final TestResult testResultPass = createTestResult(Status.PASSED)
+                .setLinks(Collections.singletonList(new Link().setName(TESTRUN_KEY).setType("tms")));
+
+        results.add(testResultPass);
+
+        final TestResult testResultBroken = createTestResult(Status.BROKEN)
+                .setLinks(Collections.singletonList(new Link().setName(TESTRUN_KEY).setType("tms")));
+
+        results.add(testResultBroken);
+
+        final TestResult testResultSkipped = createTestResult(Status.SKIPPED)
+                .setLinks(Collections.singletonList(new Link().setName(TESTRUN_KEY).setType("tms")));
+
+        results.add(testResultSkipped);
+
+        final TestResult testResultUnknown = createTestResult(Status.UNKNOWN)
+                .setLinks(Collections.singletonList(new Link().setName(TESTRUN_KEY).setType("tms")));
+
+        results.add(testResultUnknown);
+
+        final TestResult testResultPass2 = createTestResult(Status.PASSED)
+                .setLinks(Collections.singletonList(new Link().setName(TESTRUN_KEY).setType("tms")));
+
+        results.add(testResultPass2);
+
+
+        when(launchResults.getAllResults()).thenReturn(results);
+
+        final ExecutorInfo executorInfo = new ExecutorInfo()
+                .setBuildName(RandomStringUtils.random(10))
+                .setReportUrl(RandomStringUtils.random(10));
+        when(launchResults.getExtra("executor")).thenReturn(Optional.of(executorInfo));
+
+        final JiraService service = mock(JiraService.class);
+        when(service.getTestRunsForTestExecution(EXECUTION_ISSUES)).thenReturn(
+                Collections.singletonList(new XrayTestRun().setId(TESTRUN_ID).setKey(TESTRUN_KEY).setStatus("TODO"))
+        );
+
+        final XrayTestRunExportPlugin xrayTestRunExportPlugin = new XrayTestRunExportPlugin(
+                true,
+                "ALLURE-2",
+                Collections.emptyMap(),
+                () -> service
+        );
+
+        xrayTestRunExportPlugin.aggregate(
+                mock(Configuration.class),
+                Collections.singletonList(launchResults),
+                Paths.get("/")
+        );
+
+        final String reportLink = String.format("[%s|%s]", executorInfo.getBuildName(), executorInfo.getReportUrl());
+        verify(service, times(1)).createIssueComment(
+                argThat(issue -> issue.equals(EXECUTION_ISSUES)),
+                argThat(comment -> comment.getBody().contains(reportLink)
+                ));
+        verify(service, times(1)).updateTestRunStatus(TESTRUN_ID, "FAIL");
+        verify(service, times(0)).updateTestRunStatus(TESTRUN_ID, "PASS");
+        verify(service, times(0)).updateTestRunStatus(TESTRUN_ID, "TODO");
+    }
+
 
     static TestResult createTestResult(final Status status) {
         return new TestResult()
