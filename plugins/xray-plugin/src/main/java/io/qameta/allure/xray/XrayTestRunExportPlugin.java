@@ -103,7 +103,11 @@ public class XrayTestRunExportPlugin implements Aggregator {
         final Map<String, List<XrayTestRun>> testRunsMap = executionIssues.stream()
                 .map(jiraService::getTestRunsForTestExecution)
                 .flatMap(Collection::stream)
-                .collect(Collectors.groupingBy(XrayTestRun::getKey, HashMap::new, Collectors.toCollection(ArrayList::new)));
+                .collect(Collectors.groupingBy(
+                        XrayTestRun::getKey,
+                        HashMap::new,
+                        Collectors.toCollection(ArrayList::new)
+                ));
 
         final Map<String, String> linkNamePerStatus = new HashMap<>();
         launchesResults.stream()
