@@ -81,7 +81,7 @@ ospackage {
     // Remove closureOf when https://github.com/nebula-plugins/gradle-ospackage-plugin/issues/399 is fixed
     from("${pack}/bin", closureOf<CopySpec> {
         into("${dest}/bin")
-        fileMode = 0x168
+        fileMode = 0x1ED
     })
     from("${pack}/config", closureOf<CopySpec> {
         into("${dest}/config")
