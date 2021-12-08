@@ -27,8 +27,10 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -151,6 +153,59 @@ class XrayTestRunExportPluginTest {
         verify(service, times(1)).updateTestRunStatus(TESTRUN_ID, "FAIL");
         verify(service, times(0)).updateTestRunStatus(TESTRUN_ID, "PASS");
         verify(service, times(0)).updateTestRunStatus(TESTRUN_ID, "TODO");
+    }
+
+    @Test
+    void shouldUpdateSimilarTestRunsInDifferentExecutions() {
+        final String xrayExecutions = "   ALLURE-2,  ALLURE-4,ALLURE-6 ";
+        final List<XrayTestRun> testRuns = Arrays.asList(
+                new XrayTestRun().setId(0).setKey(TESTRUN_KEY).setStatus("TODO"),
+                new XrayTestRun().setId(1).setKey(TESTRUN_KEY).setStatus("TODO"),
+                new XrayTestRun().setId(2).setKey(TESTRUN_KEY).setStatus("TODO")
+        );
+
+        final LaunchResults launchResults = mock(LaunchResults.class);
+        final TestResult testResult = createTestResult(Status.PASSED)
+                .setLinks(Collections.singletonList(new Link().setName(TESTRUN_KEY).setType("tms")));
+
+        final Set<TestResult> results = new HashSet<>(Collections.singletonList(testResult));
+        when(launchResults.getAllResults()).thenReturn(results);
+
+        final ExecutorInfo executorInfo = new ExecutorInfo()
+                .setBuildName(RandomStringUtils.random(10))
+                .setReportUrl(RandomStringUtils.random(10));
+        when(launchResults.getExtra("executor")).thenReturn(Optional.of(executorInfo));
+
+        final JiraService service = mock(JiraService.class);
+        when(service.getTestRunsForTestExecution("ALLURE-2")).thenReturn(
+                Collections.singletonList(testRuns.get(0))
+        );
+        when(service.getTestRunsForTestExecution("ALLURE-4")).thenReturn(
+                Collections.singletonList(testRuns.get(1))
+        );
+        when(service.getTestRunsForTestExecution("ALLURE-6")).thenReturn(
+                Collections.singletonList(testRuns.get(2))
+        );
+
+        final XrayTestRunExportPlugin xrayTestRunExportPlugin = new XrayTestRunExportPlugin(
+                true,
+                xrayExecutions,
+                Collections.emptyMap(),
+                () -> service
+        );
+
+        xrayTestRunExportPlugin.aggregate(
+                mock(Configuration.class),
+                Collections.singletonList(launchResults),
+                Paths.get("/")
+        );
+
+        final String reportLink = String.format("[%s|%s]", executorInfo.getBuildName(), executorInfo.getReportUrl());
+        testRuns.forEach(testRun -> verify(service, times(1)).createIssueComment(
+                argThat(issue -> issue.equals(EXECUTION_ISSUES)),
+                argThat(comment -> comment.getBody().contains(reportLink)
+                )));
+        testRuns.forEach(r -> verify(service, times(1)).updateTestRunStatus(r.getId(), "PASS"));
     }
 
 

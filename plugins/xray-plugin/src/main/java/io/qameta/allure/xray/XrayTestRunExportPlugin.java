@@ -29,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -99,10 +100,14 @@ public class XrayTestRunExportPlugin implements Aggregator {
         final List<String> executionIssues = splitByComma(issues);
         final JiraService jiraService = jiraServiceSupplier.get();
 
-        final Map<String, XrayTestRun> testRunsMap = executionIssues.stream()
+        final Map<String, List<XrayTestRun>> testRunsMap = executionIssues.stream()
                 .map(jiraService::getTestRunsForTestExecution)
                 .flatMap(Collection::stream)
-                .collect(Collectors.toMap(XrayTestRun::getKey, r -> r));
+                .collect(Collectors.groupingBy(
+                        XrayTestRun::getKey,
+                        HashMap::new,
+                        Collectors.toCollection(ArrayList::new)
+                ));
 
         final Map<String, String> linkNamePerStatus = new HashMap<>();
         launchesResults.stream()
@@ -138,9 +143,9 @@ public class XrayTestRunExportPlugin implements Aggregator {
                 });
 
         linkNamePerStatus.forEach((linkName, status) -> {
-            final XrayTestRun xrayTestRun = testRunsMap.get(linkName);
-            if (xrayTestRun != null) {
-                updateTestRunStatus(jiraService, xrayTestRun, status);
+            final List<XrayTestRun> xrayTestRuns = testRunsMap.get(linkName);
+            if (xrayTestRuns != null) {
+                xrayTestRuns.forEach(testRun -> updateTestRunStatus(jiraService, testRun, status));
             }
         });
 
@@ -173,11 +178,11 @@ public class XrayTestRunExportPlugin implements Aggregator {
         if (!status.equals(testRun.getStatus())) {
             try {
                 jiraService.updateTestRunStatus(testRun.getId(), status);
-                LOGGER.debug(String.format("Xray testrun '%s' status updated to '%s' successfully",
-                        testRun.getKey(), status));
+                LOGGER.debug(String.format("Xray testrun '%s' (id: '%s') status updated to '%s' successfully",
+                        testRun.getKey(), testRun.getId(), status));
             } catch (Exception e) {
-                LOGGER.error(String.format("Xray testrun '%s' status update failed",
-                        testRun.getKey()));
+                LOGGER.error(String.format("Xray testrun '%s' (id: '%s') status update failed",
+                        testRun.getKey(), testRun.getId()));
             }
         }
     }
@@ -207,6 +212,6 @@ public class XrayTestRunExportPlugin implements Aggregator {
     }
 
     private static List<String> splitByComma(final String value) {
-        return Arrays.asList(value.split(","));
+        return Arrays.stream(value.split(",")).map(String::trim).collect(Collectors.toList());
     }
 }
