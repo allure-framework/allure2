@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender"/>
+    <root level="INFO">
+        <appender-ref ref="stdout"/>
+    </root>
+    <logger name="org.mortbay.log" level="INFO"/>
+</configuration>

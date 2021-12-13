@@ -71,6 +71,7 @@ subprojects {
             mavenBom("io.qameta.allure:allure-bom:2.17.1")
         }
         dependencies {
+            dependency("ch.qos.logback:logback-classic:1.2.7")
             dependency("com.beust:jcommander:1.81")
             dependency("com.github.spotbugs:spotbugs-annotations:4.5.1")
             dependency("com.opencsv:opencsv:4.6")
@@ -91,7 +92,6 @@ subprojects {
                 entry("slf4j-api")
                 entry("slf4j-nop")
                 entry("slf4j-simple")
-                entry("slf4j-log4j12")
             }
             dependencySet("com.squareup.retrofit2:2.6.1") {
                 entry("converter-jackson")
