@@ -15,6 +15,7 @@
  */
 package io.qameta.allure;
 
+import ch.qos.logback.classic.Level;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import io.qameta.allure.command.GenerateCommand;
@@ -22,8 +23,6 @@ import io.qameta.allure.command.MainCommand;
 import io.qameta.allure.command.OpenCommand;
 import io.qameta.allure.command.PluginCommand;
 import io.qameta.allure.command.ServeCommand;
-import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,10 +32,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static org.slf4j.Logger.ROOT_LOGGER_NAME;
+
 /**
  * @author eroshenkoam Artem Eroshenko
  */
-@SuppressWarnings("DeclarationOrder")
+@SuppressWarnings({
+        "DeclarationOrder",
+        "PMD.MoreThanOneLogger",
+})
 public class CommandLine {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommandLine.class);
@@ -98,7 +102,7 @@ public class CommandLine {
         try {
             commander.parse(args);
         } catch (ParameterException e) {
-            LOGGER.debug("Error during arguments parsing: {}", e);
+            LOGGER.debug("Error during arguments parsing", e);
             LOGGER.info("Could not parse arguments: {}", e.getMessage());
             printUsage(commander);
             return Optional.of(ExitCode.ARGUMENT_PARSING_ERROR);
@@ -120,20 +124,23 @@ public class CommandLine {
             "ReturnCount",
             "PMD.NPathComplexity",
             "PMD.CyclomaticComplexity",
-            "PMD.ExcessiveMethodLength"
+            "PMD.ExcessiveMethodLength",
     })
     public ExitCode run() {
+        final ch.qos.logback.classic.Logger rootLogger = (ch.qos.logback.classic.Logger)
+                LoggerFactory.getLogger(ROOT_LOGGER_NAME);
+
         if (mainCommand.getVerboseOptions().isQuiet()) {
-            LogManager.getRootLogger().setLevel(Level.OFF);
+            rootLogger.setLevel(Level.OFF);
         }
 
         if (mainCommand.getVerboseOptions().isVerbose()) {
-            LogManager.getRootLogger().setLevel(Level.DEBUG);
+            rootLogger.setLevel(Level.DEBUG);
         }
 
         if (mainCommand.isVersion()) {
             final String toolVersion = CommandLine.class.getPackage().getImplementationVersion();
-            LOGGER.info(Objects.isNull(toolVersion) ? "unknown" : toolVersion);
+            System.out.println(Objects.isNull(toolVersion) ? "unknown" : toolVersion);
             return ExitCode.NO_ERROR;
         }
 
