@@ -125,6 +125,7 @@ public class CommandLine {
             "PMD.NPathComplexity",
             "PMD.CyclomaticComplexity",
             "PMD.ExcessiveMethodLength",
+            "PMD.SystemPrintln",
     })
     public ExitCode run() {
         final ch.qos.logback.classic.Logger rootLogger = (ch.qos.logback.classic.Logger)
