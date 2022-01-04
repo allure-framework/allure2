@@ -28,6 +28,7 @@ import xmlwise.Plist;
 import xmlwise.XmlParseException;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -77,9 +78,11 @@ public class XcTestPlugin implements Reader {
     }
 
     private void readSummaries(final Path directory, final Path testSummariesPath, final ResultsVisitor visitor) {
-        try {
+        try (InputStream is = Files.newInputStream(testSummariesPath)) {
+            final Path plist = Files.createTempFile("plist-from-stream", "plist");
+            Files.copy(is, plist);
             LOGGER.info("Parse file {}", testSummariesPath);
-            final Map<String, Object> loaded = Plist.load(testSummariesPath.toFile());
+            final Map<String, Object> loaded = Plist.load(plist.toFile());
             final List<?> summaries = asList(loaded.getOrDefault(TESTABLE_SUMMARIES, emptyList()));
             summaries.forEach(summary -> parseSummary(directory, summary, visitor));
         } catch (XmlParseException | IOException e) {

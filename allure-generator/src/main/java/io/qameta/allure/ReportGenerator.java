@@ -17,6 +17,7 @@ package io.qameta.allure;
 
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.zip.ZipResultsSourcePlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,6 +68,7 @@ public class ReportGenerator {
                 .filter(this::isValidResultsDirectory)
                 .map(this::readResults)
                 .collect(Collectors.toList());
+
         aggregate(results, outputDirectory);
     }
 
@@ -75,10 +77,14 @@ public class ReportGenerator {
             LOGGER.warn("{} does not exist", resultsDirectory);
             return false;
         }
-        if (!Files.isDirectory(resultsDirectory)) {
-            LOGGER.warn("{} is not a directory", resultsDirectory);
+
+        final boolean isDirectory = Files.isDirectory(resultsDirectory);
+        final boolean isZip = ZipResultsSourcePlugin.isZip(resultsDirectory);
+        if (!isDirectory && !isZip) {
+            LOGGER.warn("{} is neither a directory nor a zip file", resultsDirectory);
             return false;
         }
+
         return true;
     }
 }

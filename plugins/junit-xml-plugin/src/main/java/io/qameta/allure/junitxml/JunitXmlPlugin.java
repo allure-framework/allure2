@@ -38,6 +38,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -126,12 +127,12 @@ public class JunitXmlPlugin implements Reader {
 
     private void parseRootElement(final Path resultsDirectory, final Path parsedFile,
                                   final RandomUidContext context, final ResultsVisitor visitor) {
-        try {
+        try (InputStream is = Files.newInputStream(parsedFile)) {
             LOGGER.debug("Parsing file {}", parsedFile);
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             final DocumentBuilder builder = factory.newDocumentBuilder();
 
-            final XmlElement rootElement = new XmlElement(builder.parse(parsedFile.toFile()).getDocumentElement());
+            final XmlElement rootElement = new XmlElement(builder.parse(is).getDocumentElement());
             final String elementName = rootElement.getName();
 
             if (TEST_SUITE_ELEMENT_NAME.equals(elementName)) {
