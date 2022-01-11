@@ -72,7 +72,7 @@ subprojects {
         }
         dependencies {
             dependency("ch.qos.logback:logback-classic:1.2.10")
-            dependency("com.beust:jcommander:1.81")
+            dependency("com.beust:jcommander:1.82")
             dependency("com.github.spotbugs:spotbugs-annotations:4.5.3")
             dependency("com.opencsv:opencsv:4.6")
             dependency("commons-beanutils:commons-beanutils:1.9.4")
