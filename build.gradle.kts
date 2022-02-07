@@ -23,7 +23,7 @@ plugins {
     signing
     id("com.bmuschko.docker-remote-api") version "6.7.0"
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
-    id("com.diffplug.spotless") version "6.0.2"
+    id("com.diffplug.spotless") version "6.1.2"
     id("com.gorylenko.gradle-git-properties") version "2.3.2"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("ru.vyarus.quality") version "4.7.0"
@@ -68,11 +68,12 @@ subprojects {
         imports {
             mavenBom("com.fasterxml.jackson:jackson-bom:2.12.5")
             mavenBom("org.junit:junit-bom:5.8.2")
-            mavenBom("io.qameta.allure:allure-bom:2.17.0")
+            mavenBom("io.qameta.allure:allure-bom:2.17.2")
         }
         dependencies {
-            dependency("com.beust:jcommander:1.81")
-            dependency("com.github.spotbugs:spotbugs-annotations:4.5.0")
+            dependency("ch.qos.logback:logback-classic:1.2.10")
+            dependency("com.beust:jcommander:1.82")
+            dependency("com.github.spotbugs:spotbugs-annotations:4.5.3")
             dependency("com.opencsv:opencsv:4.6")
             dependency("commons-beanutils:commons-beanutils:1.9.4")
             dependency("commons-io:commons-io:2.11.0")
@@ -80,18 +81,17 @@ subprojects {
             dependency("org.allurefw:allure1-model:1.0")
             dependency("org.apache.commons:commons-lang3:3.12.0")
             dependency("org.apache.httpcomponents:httpclient:4.5.13")
-            dependency("org.apache.tika:tika-core:2.1.0")
-            dependency("org.assertj:assertj-core:3.21.0")
+            dependency("org.apache.tika:tika-core:2.2.1")
+            dependency("org.assertj:assertj-core:3.22.0")
             dependency("org.eclipse.jetty:jetty-server:9.4.43.v20210629")
             dependency("org.freemarker:freemarker:2.3.31")
-            dependency("org.mockito:mockito-core:4.1.0")
+            dependency("org.mockito:mockito-core:4.2.0")
             dependency("org.projectlombok:lombok:1.18.22")
             dependency("org.zeroturnaround:zt-zip:1.14")
             dependencySet("org.slf4j:1.7.32") {
                 entry("slf4j-api")
                 entry("slf4j-nop")
                 entry("slf4j-simple")
-                entry("slf4j-log4j12")
             }
             dependencySet("com.squareup.retrofit2:2.6.1") {
                 entry("converter-jackson")
@@ -156,7 +156,7 @@ subprojects {
             if (spotbugs != null) {
                 dependencies {
                     spotbugs("org.slf4j:slf4j-simple")
-                    spotbugs("com.github.spotbugs:spotbugs:4.5.0")
+                    spotbugs("com.github.spotbugs:spotbugs:4.5.1")
                 }
             }
         }

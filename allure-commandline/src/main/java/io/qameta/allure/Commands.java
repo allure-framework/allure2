@@ -168,7 +168,7 @@ public class Commands {
 
     public ExitCode listPlugins(final ConfigOptions configOptions) {
         final CommandlineConfig config = getConfig(configOptions);
-        config.getPlugins().forEach(LOGGER::info);
+        config.getPlugins().forEach(System.out::println);
         return ExitCode.NO_ERROR;
     }
 

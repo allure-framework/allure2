@@ -81,7 +81,7 @@ ospackage {
     // Remove closureOf when https://github.com/nebula-plugins/gradle-ospackage-plugin/issues/399 is fixed
     from("${pack}/bin", closureOf<CopySpec> {
         into("${dest}/bin")
-        fileMode = 0x168
+        fileMode = 0x1ED
     })
     from("${pack}/config", closureOf<CopySpec> {
         into("${dest}/config")
@@ -128,12 +128,12 @@ dependencies {
     allurePlugin(project(path = ":xunit-xml-plugin", configuration = "allurePlugin"))
     annotationProcessor("org.projectlombok:lombok")
     compileOnly("org.projectlombok:lombok")
+    implementation("ch.qos.logback:logback-classic")
     implementation("com.beust:jcommander")
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
     implementation("commons-io:commons-io")
     implementation("org.eclipse.jetty:jetty-server")
-    implementation("org.slf4j:slf4j-log4j12")
     implementation(project(":allure-generator"))
     testImplementation("io.qameta.allure:allure-junit-platform")
     testImplementation("org.apache.commons:commons-lang3")
