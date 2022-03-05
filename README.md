@@ -21,7 +21,7 @@
 [![build-badge][]][build] [![release-badge][]][release] [![maven-badge][]][maven] [![Backers on Open Collective](https://opencollective.com/allure-report/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/allure-report/sponsors/badge.svg)](#sponsors)
 
 
-Allure Framework is a flexible, lightweight multi-language test report tool that not only shows a very concise representation of what has been tested in a neat web report form but allows everyone participating in the development process to extract the maximum of useful information from the everyday execution of tests.
+Allure Framework is a flexible, lightweight multi-language test report tool that not only shows a very concise representation of what has been tested in a neat web report form but allows everyone participating in the development process to extract the maximum of useful information from the everyday execution of tests. Allure Framework is a set of adaptors and examples for Allure Report, a flexible, lightweight multi-language test reporting tool. Read more at the [official website](https://qameta.io/allure-report) of the project.
 
 ![Allure Report](.github/preview_report.png)
 
