@@ -20,8 +20,10 @@
 
 [![build-badge][]][build] [![release-badge][]][release] [![maven-badge][]][maven] [![Backers on Open Collective](https://opencollective.com/allure-report/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/allure-report/sponsors/badge.svg)](#sponsors)
 
+Allure Report is a flexible multi-language test report tool to show you a detailed representation of what has been tested end extract max from the everyday execution of tests. <p>
+Allure Framework is a set of adaptors and examples for the Allure Report.
 
-Allure Framework is a flexible, lightweight multi-language test report tool that not only shows a very concise representation of what has been tested in a neat web report form but allows everyone participating in the development process to extract the maximum of useful information from the everyday execution of tests. Allure Framework is a set of adaptors and examples for Allure Report, a flexible, lightweight multi-language test reporting tool. Read more at the [official website](https://qameta.io/allure-report) of the project.
+Read more at the [official website](https://qameta.io/allure-report) of the project.
 
 ![Allure Report](.github/preview_report.png)
 
@@ -56,10 +58,16 @@ Level up your product quality control and boost your QA and development team pro
 
 ## Staying in Touch
 
-Follow [@QametaSoftware][twitter] and its [team members][twitter-team] on Twitter. In-depth articles can
-be found at [Qameta Blog][blog]. Also feel free to join our GitHub discussions or
-[Telegram chat][tg-ru] (ru).
+Follow [@QametaSoftware][twitter] and its [team members][twitter-team] on Twitter. 
+In-depth articles can be found at [Qameta Blog][blog]. 
+Also feel free to join our GitHub discussions.
 
+## Community
+There are thousands of Allure users all over the world. 
+    
+If you are looking for a wholesome company of Allure folks, take a look at [gitter] for English speaking users and [Telegram chat][tg-ru] for Russian speaking users.
+
+    
 ## Code of Conduct
 
 Please note that this project is released with a [Contributor Code of Conduct][CODE_OF_CONDUCT.md]. By participating in this project you agree to abide by its terms.
