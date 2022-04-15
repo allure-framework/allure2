@@ -18,6 +18,14 @@ function byDuration(min, max) {
   };
 }
 
+function byCriteria(searchQuery) {
+  if (searchQuery && searchQuery.startsWith("tag:")) {
+    return byTags(searchQuery.substring(4));
+  } else {
+    return byText(searchQuery);
+  }
+}
+
 function byText(text) {
   text = (text && text.toLowerCase()) || "";
   return (child) => {
@@ -25,6 +33,18 @@ function byText(text) {
       !text ||
       child.name.toLowerCase().indexOf(text) > -1 ||
       (child.children && child.children.some(byText(text)))
+    );
+  };
+}
+
+function byTags(tag) {
+  tag = (tag && tag.toLowerCase()) || "";
+  let tags = tag.split(/\s*,\s*/).filter((t) => t).map((t) => t.trim());
+  return (child) => {
+    return (
+      !tag ||
+      (Array.isArray(child.tags) && tags.every((t) => child.tags.indexOf(t) > -1)) ||
+      (child.children && child.children.some(byTags(tag)))
     );
   };
 }
@@ -50,4 +70,4 @@ function mix(...filters) {
   };
 }
 
-export { byStatuses, byDuration, byText, byMark, mix };
+export { byStatuses, byDuration, byCriteria, byText, byTags, byMark, mix };
