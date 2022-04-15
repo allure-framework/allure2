@@ -38,8 +38,8 @@ function byText(text) {
 }
 
 function byTags(tag) {
-  tag = (tag && tag.toLowerCase()) || "";
-  let tags = tag.split(/\s*,\s*/).filter((t) => t).map((t) => t.trim());
+  tag = (tag && tag.toLowerCase().trim()) || "";
+  let tags = tag.split(/\s*,\s*/).filter((t) => t);
   return (child) => {
     return (
       !tag ||
