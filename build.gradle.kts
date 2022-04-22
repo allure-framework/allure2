@@ -73,7 +73,7 @@ subprojects {
         dependencies {
             dependency("ch.qos.logback:logback-classic:1.2.10")
             dependency("com.beust:jcommander:1.82")
-            dependency("com.github.spotbugs:spotbugs-annotations:4.5.3")
+            dependency("com.github.spotbugs:spotbugs-annotations:4.6.0")
             dependency("com.opencsv:opencsv:4.6")
             dependency("commons-beanutils:commons-beanutils:1.9.4")
             dependency("commons-io:commons-io:2.11.0")
@@ -156,7 +156,7 @@ subprojects {
             if (spotbugs != null) {
                 dependencies {
                     spotbugs("org.slf4j:slf4j-simple")
-                    spotbugs("com.github.spotbugs:spotbugs:4.5.1")
+                    spotbugs("com.github.spotbugs:spotbugs:4.6.0")
                 }
             }
         }
