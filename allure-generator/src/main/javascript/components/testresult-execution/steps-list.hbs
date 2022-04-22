@@ -6,9 +6,7 @@
             {{else}}
                 <span class="step__status">{{allure-icon status}}</span>
             {{/if}}
-            <div class="step__name">
-            {{text-with-links name}}
-            </div>
+            <div class="step__name">{{text-with-links name}}</div>
             {{> ../../blocks/step-stats/step-stats . baseUrl=../../baseUrl}}
         </div>
         <div class="step__content">
