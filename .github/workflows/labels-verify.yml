@@ -10,6 +10,7 @@ jobs:
     steps:
       - uses: baev/action-label-verify@main
         with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
           allowed: |
             type:bug
             type:dependencies
