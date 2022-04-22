@@ -156,7 +156,7 @@ subprojects {
             if (spotbugs != null) {
                 dependencies {
                     spotbugs("org.slf4j:slf4j-simple")
-                    spotbugs("com.github.spotbugs:spotbugs:4.5.1")
+                    spotbugs("com.github.spotbugs:spotbugs:4.6.0")
                 }
             }
         }
