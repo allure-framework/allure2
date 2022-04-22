@@ -1,7 +1,7 @@
 import "./styles.scss";
 import { View } from "backbone.marionette";
 import getComparator from "../../data/tree/comparator";
-import { byMark, byStatuses, byCriteria, mix } from "../../data/tree/filter";
+import { byCriteria, byMark, byStatuses, mix } from "../../data/tree/filter";
 import { behavior, className, on } from "../../decorators";
 import router from "../../router";
 import hotkeys from "../../utils/hotkeys";
