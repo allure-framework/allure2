@@ -50,7 +50,6 @@ import io.qameta.allure.suites.SuitesPlugin;
 import io.qameta.allure.summary.SummaryPlugin;
 import io.qameta.allure.tags.TagsPlugin;
 import io.qameta.allure.timeline.TimelinePlugin;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
