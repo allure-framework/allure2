@@ -18,6 +18,10 @@ const icons = {
     className: "fa fa-check-circle",
     tooltip: "marks.newPassed",
   },
+  newInfo: {
+      className: "fa fa-info-circle",
+      tooltip: "marks.newInfo",
+  },
   retriesStatusChange: {
     className: "fa fa-refresh",
     tooltip: "marks.retriesStatusChange",
@@ -41,6 +45,10 @@ const icons = {
   unknown: {
     className: "fa fa-question-circle fa-fw text_status_unknown",
     tooltip: "status.unknown",
+  },
+  info: {
+      className: "fa fa-info-circle fa-fw text_status_info",
+      tooltip: "status.info",
   },
 };
 

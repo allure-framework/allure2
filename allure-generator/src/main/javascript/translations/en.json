@@ -4,13 +4,15 @@
     "broken": "Broken",
     "passed": "Passed",
     "skipped": "Skipped",
-    "unknown": "Unknown"
+    "unknown": "Unknown",
+    "info": "Info"
   },
   "marks": {
     "flaky": "Flaky",
     "newFailed": "New failed",
     "newBroken": "New broken",
     "newPassed": "New passed",
+    "newInfo": "New Info",
     "retriesStatusChange": "Status changed after retry"
   },
   "sorter": {

@@ -41,6 +41,11 @@
                 {{allure-icon 'newPassed'}}
             </div>
         {{/if}}
+        {{#if newInfo}}
+            <div class="{{b 'node' 'mark' shown=newInfo}}">
+                 {{allure-icon 'newInfo'}}
+            </div>
+        {{/if}}
         {{#if retriesStatusChange}}
             <div class="{{b 'node' 'mark' shown=retriesStatusChange}}">
                 {{allure-icon 'retriesStatusChange'}}

@@ -28,7 +28,8 @@ public enum Status implements Serializable {
     BROKEN("broken"),
     PASSED("passed"),
     SKIPPED("skipped"),
-    UNKNOWN("unknown");
+    UNKNOWN("unknown"),
+    INFO("info");
 
     private static final long serialVersionUID = 1L;
 
@@ -44,3 +45,4 @@ public enum Status implements Serializable {
     }
 
 }
+
