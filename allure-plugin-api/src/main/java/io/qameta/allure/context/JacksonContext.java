@@ -18,7 +18,6 @@ package io.qameta.allure.context;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import io.qameta.allure.Context;
 
 /**
@@ -32,7 +31,6 @@ public class JacksonContext implements Context<ObjectMapper> {
 
     public JacksonContext() {
         this.mapper = new ObjectMapper()
-                .enable(SerializationFeature.INDENT_OUTPUT)
                 .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                 .setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
