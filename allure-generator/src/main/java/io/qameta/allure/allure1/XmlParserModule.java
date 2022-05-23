@@ -24,7 +24,10 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.CollectionType;
 
 /**
+ * This module adds custom list deserializer that allows to deserialize empty lists in xml.
+ *
  * @author charlie (Dmitry Baev).
+ * @see ListDeserializer
  */
 public class XmlParserModule extends SimpleModule {
 

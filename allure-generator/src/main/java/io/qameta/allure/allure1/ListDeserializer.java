@@ -32,6 +32,8 @@ import java.io.IOException;
 import java.util.Collection;
 
 /**
+ * Custom list deserializer that allows to deserialize empty wrapped lists.
+ *
  * @author charlie (Dmitry Baev).
  */
 @SuppressWarnings("all")

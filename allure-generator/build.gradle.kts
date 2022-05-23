@@ -105,6 +105,7 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
+    implementation("com.fasterxml.jackson.module:jackson-module-jaxb-annotations")
     implementation("commons-io:commons-io")
     implementation("io.qameta.allure:allure-model")
     implementation("javax.xml.bind:jaxb-api")
