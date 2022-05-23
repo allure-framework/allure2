@@ -24,7 +24,7 @@ plugins {
     id("com.bmuschko.docker-remote-api") version "6.7.0"
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
     id("com.diffplug.spotless") version "6.6.1"
-    id("com.gorylenko.gradle-git-properties") version "2.3.2"
+    id("com.gorylenko.gradle-git-properties") version "2.4.1"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("ru.vyarus.quality") version "4.7.0"
 }
@@ -85,7 +85,7 @@ subprojects {
             dependency("org.assertj:assertj-core:3.22.0")
             dependency("org.eclipse.jetty:jetty-server:9.4.43.v20210629")
             dependency("org.freemarker:freemarker:2.3.31")
-            dependency("org.mockito:mockito-core:4.3.1")
+            dependency("org.mockito:mockito-core:4.5.1")
             dependency("org.projectlombok:lombok:1.18.22")
             dependency("org.zeroturnaround:zt-zip:1.14")
             dependencySet("org.slf4j:1.7.32") {
