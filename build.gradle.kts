@@ -87,7 +87,7 @@ subprojects {
             dependency("org.freemarker:freemarker:2.3.31")
             dependency("org.mockito:mockito-core:4.3.1")
             dependency("org.projectlombok:lombok:1.18.22")
-            dependency("org.zeroturnaround:zt-zip:1.14")
+            dependency("org.zeroturnaround:zt-zip:1.15")
             dependencySet("org.slf4j:1.7.32") {
                 entry("slf4j-api")
                 entry("slf4j-nop")
@@ -156,7 +156,7 @@ subprojects {
             if (spotbugs != null) {
                 dependencies {
                     spotbugs("org.slf4j:slf4j-simple")
-                    spotbugs("com.github.spotbugs:spotbugs:4.6.0")
+                    spotbugs("com.github.spotbugs:spotbugs:4.7.0")
                 }
             }
         }
