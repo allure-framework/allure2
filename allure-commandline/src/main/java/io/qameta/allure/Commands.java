@@ -20,6 +20,7 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.Plugin;
 import io.qameta.allure.option.ConfigOptions;
 import io.qameta.allure.plugin.DefaultPluginLoader;
+import java.awt.AWTError;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ResourceHandler;
@@ -149,7 +150,7 @@ public class Commands {
 
         try {
             openBrowser(server.getURI());
-        } catch (IOException e) {
+        } catch (IOException | AWTError e) {
             LOGGER.error(
                     "Could not open the report in browser, try to open it manually {}: {}",
                     server.getURI(),
