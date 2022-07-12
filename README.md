@@ -25,7 +25,7 @@ Allure Framework is a set of adaptors and examples for the Allure Report.
 
 Read more at the [official website](https://qameta.io/allure-report) of the project.
 
-![Allure Report](.github/preview_report.png)
+![Allure Report](.github/allure-report-gif.gif)
 
 ## Download
 
@@ -50,12 +50,13 @@ To install Allure, download and install Scoop and then execute in the Powershell
 All the documentation is available [on our website][docs].
 
 ## Allure TestOps
-
-DevOps-ready Testing Platform that brings together automated and manual testing.
-Level up your product quality control and boost your QA and development team productivity by setting your TestOps. Try it on our [website][site].
-
-[![Allure TestOps](.github/preview_testops.png)][site]
-
+    
+DevOps-ready Testing Platform built to reduce code time-to-market without quality loss. Level up your product quality control and boost your QA and development team productivity by setting up your TestOps. 
+    
+Now, Allure TestOps Cloud is generally available to all development teams! Try it on our [website][site].
+    
+[![Allure TestOps](.github/allure-testops-cloud-now.jpg)][site]
+    
 ## Staying in Touch
 
 Follow [@QametaSoftware][twitter] and its [team members][twitter-team] on Twitter. In-depth articles can be found at [Qameta Software Blog][blog]. 
@@ -65,7 +66,7 @@ GitHub discussions is open for questions, ideas and proposals.
 ## Community
 There are thousands of Allure users all over the world. 
     
-If you are looking for a wholesome company of Allure folks, take a look at [Gitter chat][gitter] for English speaking users and [Telegram chat][tg-ru] for Russian speaking users.
+If you are looking for a wholesome company of Allure folks, take a look at [Gitter chat][gitter] for English-speaking users and [Telegram chat][tg-ru].
     
 ## Code of Conduct
 
