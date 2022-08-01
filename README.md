@@ -27,7 +27,7 @@ Allure Report is a flexible multi-language test report tool to show you a detail
 Allure Report is capable to build unified reports for dozens of testing tools across eleven programming languages on several CI/CD systems. 
 Read more at the [official website](https://qameta.io/allure-report) of the project.
 
-![How Allure Report works](.github/How%20Allure%20Report%20works.jpg)
+![How Allure Report works](.github/how_allure_works.jpg)
 
 ## Download
 
