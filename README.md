@@ -20,12 +20,14 @@
 
 [![build-badge][]][build] [![release-badge][]][release] [![maven-badge][]][maven] [![Backers on Open Collective](https://opencollective.com/allure-report/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/allure-report/sponsors/badge.svg)](#sponsors)
 
-Allure Report is a flexible multi-language test report tool to show you a detailed representation of what has been tested end extract max from the everyday execution of tests. <p>
-Allure Framework is a set of adaptors and examples for the Allure Report.
-
-Read more at the [official website](https://qameta.io/allure-report) of the project.
+Allure Report is a flexible multi-language test report tool to show you a detailed representation of what has been tested end extract max from the everyday execution of tests. 
 
 ![Allure Report](.github/allure-report-gif.gif)
+
+Allure Report is capable to build unified reports for dozens of testing tools across eleven programming languages on several CI/CD systems. 
+Read more at the [official website](https://qameta.io/allure-report) of the project.
+
+![How Allure Report works](.github/How%20Allure%20Report%20works.jpg)
 
 ## Download
 
