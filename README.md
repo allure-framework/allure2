@@ -15,6 +15,7 @@
 [CONTRIBUTING.md]: .github/CONTRIBUTING.md
 [CODE_OF_CONDUCT.md]: CODE_OF_CONDUCT.md
 [docs]: https://docs.qameta.io/allure-report/
+[discussions]: https://github.com/allure-framework/allure2/discussions
 
 # Allure Report
 
@@ -59,16 +60,13 @@ Now, Allure TestOps Cloud is generally available to all development teams! Try i
     
 [![Allure TestOps](.github/allure-testops-cloud-now.jpg)][site]
     
-## Staying in Touch
+## Join Allure community
 
 Follow [@QametaSoftware][twitter] and its [team members][twitter-team] on Twitter. In-depth articles can be found at [Qameta Software Blog][blog]. 
 
-GitHub discussions is open for questions, ideas and proposals.
+There are thousands of Allure users all over the world. Feel free to join [GitHub Discussions][discussions] to ask questions, share ideas, or help others with a piece of advice.
 
-## Community
-There are thousands of Allure users all over the world. 
-    
-If you are looking for a wholesome company of Allure folks, take a look at [Gitter chat][gitter] for English-speaking users and [Telegram chat][tg-ru].
+If you are looking for a wholesome company of Allure folks, take a look at [Gitter chat][gitter].
     
 ## Code of Conduct
 
@@ -76,7 +74,7 @@ Please note that this project is released with a [Contributor Code of Conduct][C
 
 ## Contributors
 
-This project exists thanks to all the people who contribute. [[Contribute]](.github/CONTRIBUTING.md).
+This project exists thanks to all the people who contributed. [[Contribute]](.github/CONTRIBUTING.md).
 
 <a href="https://github.com/allure-framework/allure2/graphs/contributors"><img src="https://opencollective.com/allure-report/contributors.svg?avatarHeight=24&width=890&showBtn=false" /></a>
 
