@@ -20,7 +20,6 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.Plugin;
 import io.qameta.allure.option.ConfigOptions;
 import io.qameta.allure.plugin.DefaultPluginLoader;
-import java.awt.AWTError;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ResourceHandler;
@@ -28,6 +27,7 @@ import org.eclipse.jetty.util.resource.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.AWTError;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.InetSocketAddress;
