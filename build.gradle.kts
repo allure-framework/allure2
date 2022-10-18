@@ -81,7 +81,7 @@ subprojects {
             dependency("org.allurefw:allure1-model:1.0")
             dependency("org.apache.commons:commons-lang3:3.12.0")
             dependency("org.apache.httpcomponents:httpclient:4.5.13")
-            dependency("org.apache.tika:tika-core:2.4.1")
+            dependency("org.apache.tika:tika-core:2.5.0")
             dependency("org.assertj:assertj-core:3.23.1")
             dependency("org.eclipse.jetty:jetty-server:9.4.43.v20210629")
             dependency("org.freemarker:freemarker:2.3.31")
