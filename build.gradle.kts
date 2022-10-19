@@ -25,7 +25,7 @@ plugins {
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
     id("com.diffplug.spotless") version "6.11.0"
     id("com.gorylenko.gradle-git-properties") version "2.4.1"
-    id("io.spring.dependency-management") version "1.0.13.RELEASE"
+    id("io.spring.dependency-management") version "1.1.0"
     id("ru.vyarus.quality") version "4.7.0"
 }
 
