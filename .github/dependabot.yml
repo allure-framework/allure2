@@ -13,10 +13,3 @@ updates:
       interval: "daily"
     labels:
       - "type:dependencies"
-
-  - package-ecosystem: "npm"
-    directory: "/allure-generator/"
-    schedule:
-      interval: "daily"
-    labels:
-      - "type:dependencies"
