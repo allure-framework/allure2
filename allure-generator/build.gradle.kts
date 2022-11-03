@@ -10,8 +10,7 @@ description = "Allure Report Generator"
 node {
     // enforce https
     distBaseUrl.set("https://nodejs.org/dist")
-    version.set("14.16.1")
-    npmVersion.set("6.14.12")
+    version.set("16.18.0")
     download.set(true)
 }
 
