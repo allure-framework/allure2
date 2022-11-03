@@ -27,6 +27,7 @@ plugins {
     id("com.gorylenko.gradle-git-properties") version "2.4.1"
     id("io.spring.dependency-management") version "1.1.0"
     id("ru.vyarus.quality") version "4.7.0"
+    id("org.owasp.dependencycheck") version "7.3.0"
 }
 
 java {
@@ -83,7 +84,7 @@ subprojects {
             dependency("org.apache.httpcomponents:httpclient:4.5.13")
             dependency("org.apache.tika:tika-core:2.5.0")
             dependency("org.assertj:assertj-core:3.23.1")
-            dependency("org.eclipse.jetty:jetty-server:9.4.43.v20210629")
+            dependency("org.eclipse.jetty:jetty-server:9.4.49.v20220914")
             dependency("org.freemarker:freemarker:2.3.31")
             dependency("org.mockito:mockito-core:4.8.1")
             dependency("org.projectlombok:lombok:1.18.24")

@@ -18,6 +18,7 @@ package io.qameta.allure.allure2;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.qameta.allure.Reader;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
@@ -89,7 +90,7 @@ public class Allure2Plugin implements Reader {
             nullsLast(comparing(Time::getStart, nullsLast(naturalOrder())))
     );
 
-    private final ObjectMapper mapper = new ObjectMapper()
+    private final ObjectMapper mapper = JsonMapper.builder()
             .enable(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME)
             .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
             .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
@@ -97,7 +98,8 @@ public class Allure2Plugin implements Reader {
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
             .disable(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES)
             .disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
-            .disable(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS);
+            .disable(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS)
+            .build();
 
     @Override
     public void readResults(final Configuration configuration,
