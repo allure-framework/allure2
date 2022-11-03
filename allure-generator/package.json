@@ -81,7 +81,7 @@
     "normalize-css": "^2.3.1",
     "sortablejs": "^1.13.0",
     "split.js": "^1.6.4",
-    "underscore": "^1.8.3"
+    "underscore": "^1.12.1"
   },
   "engines": {
     "node": ">=10.10.0"
