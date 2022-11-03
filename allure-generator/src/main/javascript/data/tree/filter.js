@@ -41,9 +41,10 @@ function byTags(tag) {
   tag = (tag && tag.toLowerCase().trim()) || "";
   const tags = tag.split(/\s*,\s*/).filter((t) => t);
   return (child) => {
+    const childTags = Array.isArray(child.tags) ? child.tags.filter(t => t).map(t => t.toLowerCase().trim()) : [];
     return (
       !tag ||
-      (Array.isArray(child.tags) && tags.every((t) => child.tags.indexOf(t) > -1)) ||
+      tags.every((t) => childTags.indexOf(t) > -1) ||
       (child.children && child.children.some(byTags(tag)))
     );
   };
