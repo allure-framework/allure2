@@ -5,7 +5,7 @@ function byOrder(a, b) {
 }
 
 function byName(a, b) {
-  return a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1;
+  return String(a.name).toLowerCase() < String(b.name).toLowerCase() ? -1 : 1;
 }
 
 function byDuration(a, b) {
