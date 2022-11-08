@@ -19,3 +19,4 @@ jobs:
             type:invalid
             type:new feature
             type:security
+            type:documentation
