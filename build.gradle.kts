@@ -72,7 +72,7 @@ subprojects {
             mavenBom("io.qameta.allure:allure-bom:2.20.0")
         }
         dependencies {
-            dependency("ch.qos.logback:logback-classic:1.2.11")
+            dependency("ch.qos.logback:logback-classic:1.3.4")
             dependency("com.beust:jcommander:1.82")
             dependency("com.github.spotbugs:spotbugs-annotations:4.7.3")
             dependency("com.opencsv:opencsv:4.6")
@@ -89,7 +89,7 @@ subprojects {
             dependency("org.mockito:mockito-core:4.8.1")
             dependency("org.projectlombok:lombok:1.18.24")
             dependency("org.zeroturnaround:zt-zip:1.15")
-            dependencySet("org.slf4j:1.7.32") {
+            dependencySet("org.slf4j:2.0.3") {
                 entry("slf4j-api")
                 entry("slf4j-nop")
                 entry("slf4j-simple")
