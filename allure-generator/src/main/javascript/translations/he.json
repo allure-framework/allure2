@@ -1,36 +1,102 @@
 {
+  "chart": {
+    "duration": {
+      "empty": "אין דבר להציג",
+      "name": "זמן ריצה"
+    },
+    "severity": {
+      "name": "חומרה"
+    },
+    "status": {
+      "name": "סטטוס"
+    },
+    "trend": {
+      "empty": "אין דבר להציג"
+    }
+  },
+  "component": {
+    "statusToggle": {
+      "hideCases": "הסתר תוצאות ריצה עם הסטטוס {{status}}",
+      "showCases": "הצג תוצאות ריצה עם הסטטוס {{status}}"
+    },
+    "tree": {
+      "download": "הורד קובץ CSV",
+      "empty": "לא קיימים פריטים",
+      "filter": "מיין מקרי בדיקה על ידי סטטוס",
+      "filtered": {
+        "shown": "מופיעים {{count}}",
+        "total": "תוצאת ריצה {{count}}",
+        "total_plural": "{{count}} תוצאות ריצה"
+      },
+      "groups": "הצג/הסתר את המידע על הקבוצות",
+      "time": {
+        "max": {
+          "name": "מקסימלי",
+          "tooltip": "זמן הריצה הכי ארוך"
+        },
+        "sum": {
+          "name": "סכום",
+          "tooltip": "סכום כל זמני תוצאות הריצה"
+        },
+        "total": {
+          "name": "סך הכול",
+          "tooltip": "משך זמן הריצה מתחילת ריצת מקרה הבדיקה הראשון עד סיום ריצת מקרה הבדיקה האחרון"
+        }
+      },
+      "unknown": "רֵיק"
+    },
+    "widgetStatus": {
+      "showAll": "הצג את כל הפריטים",
+      "total": "סך הכול פריט {{count}}",
+      "total_plural": "סך הכול {{count}} פריטים"
+    }
+  },
+  "controls": {
+    "backto": "חזור ל",
+    "clipboard": "העתק אל מגש המערכת",
+    "clipboardError": "לא ניתן להעתיק את הערך אל מגש המערכת. נראה שהתכונה הזאת לא נתמכת על ידי הדפדפן שלך",
+    "clipboardSuccess": "הועתק בהצלחה",
+    "collapse": "כווץ",
+    "expand": "הרחב",
+    "fullscreen": "מסך מלא",
+    "language": "שנה שפה"
+  },
+  "errors": {
+    "missedAttachment": "התוכן המצורף לא נמצא",
+    "notFound": "לא נמצא"
+  },
+  "marks": {
+    "flaky": "לא יציב",
+    "newBroken": "חדש שבור",
+    "newFailed": "חדש נכשל",
+    "newPassed": "חדש עבר",
+    "retriesStatusChange": "הסטטוס השתנה לאחר ניסיון חוזר"
+  },
+  "sorter": {
+    "duration": "זמן ריצה",
+    "name": "שם מקרה הבדיקה",
+    "order": "סדר",
+    "status": "סטטוס"
+  },
   "status": {
-    "failed": "נכשל",
     "broken": "שבור",
+    "failed": "נכשל",
     "passed": "עבר",
     "skipped": "דולג",
     "unknown": "לא ידוע"
   },
-  "marks": {
-    "flaky": "לא יציב",
-    "newFailed": "חדש נכשל",
-    "newPassed": "חדש עבר",
-    "newBroken": "חדש שבור",
-    "retriesStatusChange": "הסטטוס השתנה לאחר ניסיון חוזר"
-  },
-  "sorter": {
-    "order": "סדר",
-    "name": "שם מקרה הבדיקה",
-    "duration": "זמן ריצה",
-    "status": "סטטוס"
-  },
   "tab": {
-    "overview": {
-      "name": "סקירה כללית"
-    },
     "categories": {
       "name": "קטגוריות"
     },
-    "suites": {
-      "name": "קבוצות מקרי בדיקה"
-    },
     "graph": {
       "name": "גרפים"
+    },
+    "overview": {
+      "name": "סקירה כללית"
+    },
+    "suites": {
+      "name": "קבוצות מקרי בדיקה"
     },
     "timeline": {
       "name": "ציר זמן",
@@ -38,70 +104,7 @@
       "selected_plural": "נבחרו {{count}} מקרי בדיקה ({{percent}}%) עם זמן ריצה מעל {{duration}}"
     }
   },
-  "widget": {
-    "summary": {
-      "aggregatedName": "דוח",
-      "launches": "חבילת הרצה",
-      "launches_plural": "חבילות הרצה",
-      "testResults": "תוצאת בדיקה",
-      "testResults_plural": "תוצאות בדיקה"
-    },
-    "trend": {
-      "name": "מגמת ריצות"
-    },
-    "categoriesTrend": {
-      "name": "מגמת ריצה על קטגוריות"
-    },
-    "durationTrend": {
-      "name": "מגמת זמן ריצה"
-    },
-    "retryTrend": {
-      "name": "מגמת חזרות על ריצה"
-    },
-    "executors": {
-      "name": "כלי הרצה",
-      "unknown": "לא ידוע",
-      "empty": "לא קיים מידע על כלי הרצת מקרי הבדיקה"
-    },
-    "launches": {
-      "name": "חבילות הרצה",
-      "empty": "לא קיים מידע על חבילות הרצה"
-    },
-    "environment": {
-      "name": "משתני סביבה",
-      "empty": "לא קיימים משתני סביבה",
-      "showAll": "הצג את כל משתני הסביבה"
-    },
-    "suites": {
-      "name": "קבוצות מקרי בדיקה"
-    },
-    "categories": {
-      "name": "קטגוריות"
-    }
-  },
-  "chart": {
-    "duration": {
-      "name": "זמן ריצה",
-      "empty": "אין דבר להציג"
-    },
-    "trend": {
-      "empty": "אין דבר להציג"
-    },
-    "severity": {
-      "name": "חומרה"
-    },
-    "status": {
-      "name": "סטטוס"
-    }
-  },
   "testResult": {
-    "status": {
-      "empty": "לא קיימים פרטים על מצב מקרה הבדיקה",
-      "trace": "הצג מידע נוסף"
-    },
-    "overview": {
-      "name": "סקירה כללית"
-    },
     "categories": {
       "name": "קטגוריות"
     },
@@ -111,91 +114,89 @@
     "duration": {
       "name": "זמן ריצה"
     },
+    "execution": {
+      "body": "תוכן מקרה הבדיקה",
+      "name": "הרצה",
+      "setup": "הכנת הריצה",
+      "teardown": "סיום הריצה"
+    },
     "history": {
       "name": "היסטוריה",
       "successRate": "שיעור הצלחה"
     },
+    "links": {
+      "name": "קישורים"
+    },
+    "overview": {
+      "name": "סקירה כללית"
+    },
     "owner": {
       "name": "האחראי למקרה הבדיקה"
-    },
-    "retries": {
-      "name": "ניסיונות ריצה חוזרים",
-      "empty": "אין מידע זמין על ניסיונות ריצה חוזרים"
     },
     "parameters": {
       "name": "פרמטרים"
     },
-    "links": {
-      "name": "קישורים"
+    "retries": {
+      "empty": "אין מידע זמין על ניסיונות ריצה חוזרים",
+      "name": "ניסיונות ריצה חוזרים"
     },
     "severity": {
       "name": "חומרה"
     },
-    "execution": {
-      "name": "הרצה",
-      "setup": "הכנת הריצה",
-      "teardown": "סיום הריצה",
-      "body": "תוכן מקרה הבדיקה"
-    },
     "stats": {
       "count": {
-        "steps": "צעד משנה {{count}}",
-        "steps_plural": "{{count}} צעדי משנה",
         "attachments": "תוכן מצורף {{count}}",
         "attachments_plural": "{{count}} תכנים מצורפים",
         "parameters": "פרמטר {{count}}",
-        "parameters_plural": "{{count}} פרמטרים"
+        "parameters_plural": "{{count}} פרמטרים",
+        "steps": "צעד משנה {{count}}",
+        "steps_plural": "{{count}} צעדי משנה"
       }
+    },
+    "status": {
+      "empty": "לא קיימים פרטים על מצב מקרה הבדיקה",
+      "trace": "הצג מידע נוסף"
     }
   },
-  "controls": {
-    "collapse": "כווץ",
-    "expand": "הרחב",
-    "fullscreen": "מסך מלא",
-    "language": "שנה שפה",
-    "clipboard": "העתק אל מגש המערכת",
-    "clipboardSuccess": "הועתק בהצלחה",
-    "clipboardError": "לא ניתן להעתיק את הערך אל מגש המערכת. נראה שהתכונה הזאת לא נתמכת על ידי הדפדפן שלך",
-    "backto": "חזור ל"
-  },
-  "errors": {
-    "missedAttachment": "התוכן המצורף לא נמצא",
-    "notFound": "לא נמצא"
-  },
-  "component": {
-    "tree": {
-      "filter": "מיין מקרי בדיקה על ידי סטטוס",
-      "groups": "הצג/הסתר את המידע על הקבוצות",
-      "download": "הורד קובץ CSV",
-      "empty": "לא קיימים פריטים",
-      "time": {
-        "total": {
-          "name": "סך הכול",
-          "tooltip": "משך זמן הריצה מתחילת ריצת מקרה הבדיקה הראשון עד סיום ריצת מקרה הבדיקה האחרון"
-        },
-        "max": {
-          "name": "מקסימלי",
-          "tooltip": "זמן הריצה הכי ארוך"
-        },
-        "sum": {
-          "name": "סכום",
-          "tooltip": "סכום כל זמני תוצאות הריצה"
-        }
-      },
-      "filtered": {
-        "total": "תוצאת ריצה {{count}}",
-        "total_plural": "{{count}} תוצאות ריצה",
-        "shown": "מופיעים {{count}}"
-      }
+  "widget": {
+    "categories": {
+      "name": "קטגוריות"
     },
-    "widgetStatus": {
-      "showAll": "הצג את כל הפריטים",
-      "total": "סך הכול פריט {{count}}",
-      "total_plural": "סך הכול {{count}} פריטים"
+    "categoriesTrend": {
+      "name": "מגמת ריצה על קטגוריות"
     },
-    "statusToggle": {
-      "showCases": "הצג תוצאות ריצה עם הסטטוס {{status}}",
-      "hideCases": "הסתר תוצאות ריצה עם הסטטוס {{status}}"
+    "durationTrend": {
+      "name": "מגמת זמן ריצה"
+    },
+    "environment": {
+      "empty": "לא קיימים משתני סביבה",
+      "name": "משתני סביבה",
+      "showAll": "הצג את כל משתני הסביבה"
+    },
+    "executors": {
+      "empty": "לא קיים מידע על כלי הרצת מקרי הבדיקה",
+      "name": "כלי הרצה",
+      "unknown": "לא ידוע"
+    },
+    "launches": {
+      "empty": "לא קיים מידע על חבילות הרצה",
+      "name": "חבילות הרצה"
+    },
+    "retryTrend": {
+      "name": "מגמת חזרות על ריצה"
+    },
+    "suites": {
+      "name": "קבוצות מקרי בדיקה"
+    },
+    "summary": {
+      "aggregatedName": "דוח",
+      "launches": "חבילת הרצה",
+      "launches_plural": "חבילות הרצה",
+      "testResults": "תוצאת בדיקה",
+      "testResults_plural": "תוצאות בדיקה"
+    },
+    "trend": {
+      "name": "מגמת ריצות"
     }
   }
 }

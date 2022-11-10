@@ -1,36 +1,102 @@
 {
-  "status": {
-    "failed": "Falhou",
-    "broken": "Quebrado",
-    "passed": "Passou",
-    "skipped": "Ignorado",
-    "unknown": "Desconhecido"
+  "chart": {
+    "duration": {
+      "empty": "Não há nada para mostrar",
+      "name": "Duração"
+    },
+    "severity": {
+      "name": "Severidade"
+    },
+    "status": {
+      "name": "Situação"
+    },
+    "trend": {
+      "empty": "Não há nada para mostrar"
+    }
+  },
+  "component": {
+    "statusToggle": {
+      "hideCases": "Ocultar resultados dos testes com situação {{status}}",
+      "showCases": "Mostrar resultados dos testes com situação {{status}}"
+    },
+    "tree": {
+      "download": "Download CSV",
+      "empty": "Não há itens",
+      "filter": "Filtrar por situação",
+      "filtered": {
+        "shown": "mostrar {{count}}",
+        "total": "resultado do teste {{count}}",
+        "total_plural": "resultados dos testes {{count}}"
+      },
+      "groups": "Alternar informações do grupo",
+      "time": {
+        "max": {
+          "name": "Max",
+          "tooltip": "Teste mais demorado"
+        },
+        "sum": {
+          "name": "Soma",
+          "tooltip": "Soma da duração de todos os testes"
+        },
+        "total": {
+          "name": "Total",
+          "tooltip": "Duração de inicio do primeiro teste até o ultimo teste finalizar"
+        }
+      },
+      "unknown": "Grupo vazio"
+    },
+    "widgetStatus": {
+      "showAll": "Mostrar tudo",
+      "total": "total de item {{count}}",
+      "total_plural": "total de itens {{count}}"
+    }
+  },
+  "controls": {
+    "backto": "Voltar para",
+    "clipboard": "Copiar para área de transferência",
+    "clipboardError": "Não é possível copiar o valor para área de transferência. Parece que está funcionalidade não é suportada pelo seu browser",
+    "clipboardSuccess": "Copiado com sucesso",
+    "collapse": "Reduzir",
+    "expand": "Expandir",
+    "fullscreen": "Tela cheia",
+    "language": "Mudar a linguagem"
+  },
+  "errors": {
+    "missedAttachment": "Anexo não encontrado",
+    "notFound": "Não encontrado"
   },
   "marks": {
     "flaky": "Inconsistente",
-    "newFailed": "Novo falhou",
     "newBroken": "Novo quebrado",
+    "newFailed": "Novo falhou",
     "newPassed": "Novo passou",
     "retriesStatusChange": "Status alterado após nova tentativa"
   },
   "sorter": {
-    "order": "ordem",
-    "name": "nome",
     "duration": "duração",
+    "name": "nome",
+    "order": "ordem",
     "status": "situação"
   },
+  "status": {
+    "broken": "Quebrado",
+    "failed": "Falhou",
+    "passed": "Passou",
+    "skipped": "Ignorado",
+    "unknown": "Desconhecido"
+  },
   "tab": {
-    "overview": {
-      "name": "Visão geral"
-    },
     "categories": {
       "name": "Categorias"
     },
-    "suites": {
-      "name": "Suítes"
-    },
     "graph": {
       "name": "Gráficos"
+    },
+    "overview": {
+      "name": "Visão geral"
+    },
+    "suites": {
+      "name": "Suítes"
     },
     "timeline": {
       "name": "Linha do tempo",
@@ -38,70 +104,7 @@
       "selected_plural": "Selecionados {{count}} testes ({{percent}}%) com duração acima de {{duration}}"
     }
   },
-  "widget": {
-    "summary": {
-      "aggregatedName": "Relatório agregado",
-      "launches": "execução",
-      "launches_plural": "execuções",
-      "testResults": "caso de teste",
-      "testResults_plural": "casos de teste"
-    },
-    "trend": {
-      "name": "Tendência"
-    },
-    "categoriesTrend": {
-      "name": "Tendência das categorias"
-    },
-    "durationTrend": {
-      "name": "Tendência das durações"
-    },
-    "retryTrend": {
-      "name": "Tendência das tentativas"
-    },
-    "executors": {
-      "name": "Executores",
-      "unknown": "Desconhecido",
-      "empty": "Não há informação sobre os executores dos testes."
-    },
-    "launches": {
-      "name": "Execuções",
-      "empty": "Não há informações sobre execuções"
-    },
-    "environment": {
-      "name": "Ambiente",
-      "empty": "Não há variáveis de ambiente.",
-      "showAll": "Mostrar tudo"
-    },
-    "suites": {
-      "name": "Suítes"
-    },
-    "categories": {
-      "name": "Categorias"
-    }
-  },
-  "chart": {
-    "duration": {
-      "name": "Duração",
-      "empty": "Não há nada para mostrar"
-    },
-    "trend": {
-      "empty": "Não há nada para mostrar"
-    },
-    "severity": {
-      "name": "Severidade"
-    },
-    "status": {
-      "name": "Situação"
-    }
-  },
   "testResult": {
-    "status": {
-      "empty": "Detalhes da situação vazio.",
-      "trace": "Mostrar trace"
-    },
-    "overview": {
-      "name": "Visão geral"
-    },
     "categories": {
       "name": "Categorias"
     },
@@ -111,91 +114,89 @@
     "duration": {
       "name": "Duração"
     },
+    "execution": {
+      "body": "Corpo do teste",
+      "name": "Execução",
+      "setup": "Pré-execução",
+      "teardown": "Pós-execução"
+    },
     "history": {
       "name": "Histórico",
       "successRate": "Taxa de sucesso"
     },
+    "links": {
+      "name": "Links"
+    },
+    "overview": {
+      "name": "Visão geral"
+    },
     "owner": {
       "name": "Proprietário"
-    },
-    "retries": {
-      "name": "Tentativas",
-      "empty": "Não há informação disponível sobre as tentativas de testes."
     },
     "parameters": {
       "name": "Parâmetros"
     },
-    "links": {
-      "name": "Links"
+    "retries": {
+      "empty": "Não há informação disponível sobre as tentativas de testes.",
+      "name": "Tentativas"
     },
     "severity": {
       "name": "Severidade"
     },
-    "execution": {
-      "name": "Execução",
-      "setup": "Pré-execução",
-      "teardown": "Pós-execução",
-      "body": "Corpo do teste"
-    },
     "stats": {
       "count": {
-        "steps": "{{count}} sub-passo",
-        "steps_plural": "{{count}} sub-passos",
         "attachments": "{{count}} anexo",
         "attachments_plural": "{{count}} anexos",
         "parameters": "{{count}} parâmetro",
-        "parameters_plural": "{{count}} parâmetros"
+        "parameters_plural": "{{count}} parâmetros",
+        "steps": "{{count}} sub-passo",
+        "steps_plural": "{{count}} sub-passos"
       }
+    },
+    "status": {
+      "empty": "Detalhes da situação vazio.",
+      "trace": "Mostrar trace"
     }
   },
-  "controls": {
-    "collapse": "Reduzir",
-    "expand": "Expandir",
-    "fullscreen": "Tela cheia",
-    "language": "Mudar a linguagem",
-    "clipboard": "Copiar para área de transferência",
-    "clipboardSuccess": "Copiado com sucesso",
-    "clipboardError": "Não é possível copiar o valor para área de transferência. Parece que está funcionalidade não é suportada pelo seu browser",
-    "backto": "Voltar para"
-  },
-  "errors": {
-    "missedAttachment": "Anexo não encontrado",
-    "notFound": "Não encontrado"
-  },
-  "component": {
-    "tree": {
-      "filter": "Filtrar por situação",
-      "groups": "Alternar informações do grupo",
-      "download": "Download CSV",
-      "empty": "Não há itens",
-      "time": {
-        "total": {
-          "name": "Total",
-          "tooltip": "Duração de inicio do primeiro teste até o ultimo teste finalizar"
-        },
-        "max": {
-          "name": "Max",
-          "tooltip": "Teste mais demorado"
-        },
-        "sum": {
-          "name": "Soma",
-          "tooltip": "Soma da duração de todos os testes"
-        }
-      },
-      "filtered": {
-        "total": "resultado do teste {{count}}",
-        "total_plural": "resultados dos testes {{count}}",
-        "shown": "mostrar {{count}}"
-      }
+  "widget": {
+    "categories": {
+      "name": "Categorias"
     },
-    "widgetStatus": {
-      "showAll": "Mostrar tudo",
-      "total": "total de item {{count}}",
-      "total_plural": "total de itens {{count}}"
+    "categoriesTrend": {
+      "name": "Tendência das categorias"
     },
-    "statusToggle": {
-      "showCases": "Mostrar resultados dos testes com situação {{status}}",
-      "hideCases": "Ocultar resultados dos testes com situação {{status}}"
+    "durationTrend": {
+      "name": "Tendência das durações"
+    },
+    "environment": {
+      "empty": "Não há variáveis de ambiente.",
+      "name": "Ambiente",
+      "showAll": "Mostrar tudo"
+    },
+    "executors": {
+      "empty": "Não há informação sobre os executores dos testes.",
+      "name": "Executores",
+      "unknown": "Desconhecido"
+    },
+    "launches": {
+      "empty": "Não há informações sobre execuções",
+      "name": "Execuções"
+    },
+    "retryTrend": {
+      "name": "Tendência das tentativas"
+    },
+    "suites": {
+      "name": "Suítes"
+    },
+    "summary": {
+      "aggregatedName": "Relatório agregado",
+      "launches": "execução",
+      "launches_plural": "execuções",
+      "testResults": "caso de teste",
+      "testResults_plural": "casos de teste"
+    },
+    "trend": {
+      "name": "Tendência"
     }
   }
 }

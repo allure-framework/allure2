@@ -1,36 +1,107 @@
 {
-  "status": {
-    "failed": "Failed",
-    "broken": "Broken",
-    "passed": "Passed",
-    "skipped": "Skipped",
-    "unknown": "Unknown"
+  "chart": {
+    "duration": {
+      "empty": "There is nothing to show",
+      "name": "Duration"
+    },
+    "severity": {
+      "name": "Severity"
+    },
+    "status": {
+      "name": "Status"
+    },
+    "trend": {
+      "empty": "There is nothing to show"
+    }
+  },
+  "component": {
+    "markToggle": {
+      "hideCases": "Hide {{mark}} test results",
+      "showCases": "Show {{mark}} test results"
+    },
+    "statusToggle": {
+      "hideCases": "Hide test results with {{status}} status",
+      "showCases": "Show test results with {{status}} status"
+    },
+    "tree": {
+      "download": "Download CSV",
+      "empty": "There are no items",
+      "filter": "Status",
+      "filter-marks": "Marks",
+      "filtered": {
+        "shown": "{{count}} shown",
+        "total": "{{count}} test result",
+        "total_plural": "{{count}} test results"
+      },
+      "groups": "Toggle groups info",
+      "time": {
+        "max": {
+          "name": "Max",
+          "tooltip": "Longest test duration"
+        },
+        "sum": {
+          "name": "Sum",
+          "tooltip": "Sum of all tests durations"
+        },
+        "total": {
+          "name": "Total",
+          "tooltip": "Duration from first test started to last test finished"
+        }
+      },
+      "unknown": "<Empty>"
+    },
+    "widgetStatus": {
+      "showAll": "Show all",
+      "total": "{{count}} item total",
+      "total_plural": "{{count}} items total"
+    }
+  },
+  "controls": {
+    "backto": "Back to",
+    "clipboard": "Copy to clipboard",
+    "clipboardError": "Can not copy value to clipboard. Seems like this feature is not supported for your browser",
+    "clipboardSuccess": "Successfully copied",
+    "collapse": "Collapse",
+    "expand": "Expand",
+    "fullscreen": "Full screen",
+    "language": "Change language"
+  },
+  "errors": {
+    "missedAttachment": "Attachment not found",
+    "notFound": "Not found"
   },
   "marks": {
     "flaky": "Flaky",
-    "newFailed": "New failed",
     "newBroken": "New broken",
+    "newFailed": "New failed",
     "newPassed": "New passed",
     "retriesStatusChange": "Status changed after retry"
   },
   "sorter": {
-    "order": "order",
-    "name": "name",
     "duration": "duration",
+    "name": "name",
+    "order": "order",
     "status": "status"
   },
+  "status": {
+    "broken": "Broken",
+    "failed": "Failed",
+    "passed": "Passed",
+    "skipped": "Skipped",
+    "unknown": "Unknown"
+  },
   "tab": {
-    "overview": {
-      "name": "Overview"
-    },
     "categories": {
       "name": "Categories"
     },
-    "suites": {
-      "name": "Suites"
-    },
     "graph": {
       "name": "Graphs"
+    },
+    "overview": {
+      "name": "Overview"
+    },
+    "suites": {
+      "name": "Suites"
     },
     "timeline": {
       "name": "Timeline",
@@ -38,70 +109,7 @@
       "selected_plural": "Selected {{count}} tests ({{percent}}%) with duration above {{duration}}"
     }
   },
-  "widget": {
-    "summary": {
-      "aggregatedName": "Aggregated report",
-      "launches": "launch",
-      "launches_plural": "launches",
-      "testResults": "test case",
-      "testResults_plural": "test cases"
-    },
-    "trend": {
-      "name": "Trend"
-    },
-    "categoriesTrend": {
-      "name": "Categories trend"
-    },
-    "durationTrend": {
-      "name": "Duration trend"
-    },
-    "retryTrend": {
-      "name": "Retries trend"
-    },
-    "executors": {
-      "name": "Executors",
-      "unknown": "Unknown",
-      "empty": "There is no information about tests executors"
-    },
-    "launches": {
-      "name": "Launches",
-      "empty": "There is no information about launches"
-    },
-    "environment": {
-      "name": "Environment",
-      "empty": "There are no environment variables",
-      "showAll": "Show all"
-    },
-    "suites": {
-      "name": "Suites"
-    },
-    "categories": {
-      "name": "Categories"
-    }
-  },
-  "chart": {
-    "duration": {
-      "name": "Duration",
-      "empty": "There is nothing to show"
-    },
-    "trend": {
-      "empty": "There is nothing to show"
-    },
-    "severity": {
-      "name": "Severity"
-    },
-    "status": {
-      "name": "Status"
-    }
-  },
   "testResult": {
-    "status": {
-      "empty": "Empty status details",
-      "trace": "Show trace"
-    },
-    "overview": {
-      "name": "Overview"
-    },
     "categories": {
       "name": "Categories"
     },
@@ -111,103 +119,96 @@
     "duration": {
       "name": "Duration"
     },
+    "execution": {
+      "body": "Test body",
+      "downloadAttachment": {
+        "tooltip": "Open attachment in new tab"
+      },
+      "name": "Execution",
+      "setup": "Set up",
+      "teardown": "Tear down"
+    },
     "history": {
+      "empty": "No history information available.",
       "name": "History",
-      "successRate": "Success rate",
       "statistic": "{{passed}} of {{total}}",
-      "time": "{{date}} at {{time}}",
-      "empty": "No history information available."
-    },
-    "owner": {
-      "name": "Owner"
-    },
-    "retries": {
-      "name": "Retries",
-      "time": "{{date}} at {{time}}",
-      "empty": "There is no information available about test retries"
-    },
-    "parameters": {
-      "name": "Parameters"
+      "successRate": "Success rate",
+      "time": "{{date}} at {{time}}"
     },
     "links": {
       "name": "Links"
     },
+    "overview": {
+      "name": "Overview"
+    },
+    "owner": {
+      "name": "Owner"
+    },
+    "parameters": {
+      "name": "Parameters"
+    },
+    "retries": {
+      "empty": "There is no information available about test retries",
+      "name": "Retries",
+      "time": "{{date}} at {{time}}"
+    },
     "severity": {
       "name": "Severity"
     },
-    "execution": {
-      "name": "Execution",
-      "setup": "Set up",
-      "teardown": "Tear down",
-      "body": "Test body",
-      "downloadAttachment": {
-        "tooltip": "Open attachment in new tab"
-      }
-    },
     "stats": {
       "count": {
-        "steps": "{{count}} sub-step",
-        "steps_plural": "{{count}} sub-steps",
         "attachments": "{{count}} attachment",
         "attachments_plural": "{{count}} attachments",
         "parameters": "{{count}} parameter",
-        "parameters_plural": "{{count}} parameters"
+        "parameters_plural": "{{count}} parameters",
+        "steps": "{{count}} sub-step",
+        "steps_plural": "{{count}} sub-steps"
       }
+    },
+    "status": {
+      "empty": "Empty status details",
+      "trace": "Show trace"
     }
   },
-  "controls": {
-    "collapse": "Collapse",
-    "expand": "Expand",
-    "fullscreen": "Full screen",
-    "language": "Change language",
-    "clipboard": "Copy to clipboard",
-    "clipboardSuccess": "Successfully copied",
-    "clipboardError": "Can not copy value to clipboard. Seems like this feature is not supported for your browser",
-    "backto": "Back to"
-  },
-  "errors": {
-    "missedAttachment": "Attachment not found",
-    "notFound": "Not found"
-  },
-  "component": {
-    "tree": {
-      "filter": "Status",
-      "filter-marks": "Marks",
-      "groups": "Toggle groups info",
-      "download": "Download CSV",
-      "empty": "There are no items",
-      "time": {
-        "total" : {
-          "name": "Total",
-          "tooltip": "Duration from first test started to last test finished"
-        },
-        "max": {
-          "name": "Max",
-          "tooltip": "Longest test duration"
-        },
-        "sum": {
-          "name": "Sum",
-          "tooltip": "Sum of all tests durations"
-        }
-      },
-      "filtered": {
-        "total": "{{count}} test result",
-        "total_plural": "{{count}} test results",
-        "shown": "{{count}} shown"
-      }
+  "widget": {
+    "categories": {
+      "name": "Categories"
     },
-    "widgetStatus": {
-      "showAll": "Show all",
-      "total": "{{count}} item total",
-      "total_plural": "{{count}} items total"
+    "categoriesTrend": {
+      "name": "Categories trend"
     },
-    "statusToggle": {
-      "showCases": "Show test results with {{status}} status",
-      "hideCases": "Hide test results with {{status}} status"
+    "durationTrend": {
+      "name": "Duration trend"
     },
-    "markToggle": {
-      "showCases": "Show {{mark}} test results",
-      "hideCases": "Hide {{mark}} test results"
+    "environment": {
+      "empty": "There are no environment variables",
+      "name": "Environment",
+      "showAll": "Show all"
+    },
+    "executors": {
+      "empty": "There is no information about tests executors",
+      "name": "Executors",
+      "unknown": "Unknown"
+    },
+    "launches": {
+      "empty": "There is no information about launches",
+      "name": "Launches"
+    },
+    "retryTrend": {
+      "name": "Retries trend"
+    },
+    "suites": {
+      "name": "Suites"
+    },
+    "summary": {
+      "aggregatedName": "Aggregated report",
+      "launches": "launch",
+      "launches_plural": "launches",
+      "testResults": "test case",
+      "testResults_plural": "test cases"
+    },
+    "trend": {
+      "name": "Trend"
     }
   }
 }

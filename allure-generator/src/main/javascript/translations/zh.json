@@ -1,35 +1,98 @@
 {
-  "status": {
-    "failed": "失败",
-    "broken": "故障",
-    "passed": "通过",
-    "skipped": "跳过",
-    "unknown": "未知"
+  "chart": {
+    "duration": {
+      "empty": "没有信息",
+      "name": "耗时"
+    },
+    "severity": {
+      "name": "优先级"
+    },
+    "status": {
+      "name": "状态"
+    },
+    "trend": {
+      "empty": "没有信息"
+    }
+  },
+  "component": {
+    "statusToggle": {
+      "hideCases": "隐藏{{status}}状态的用例",
+      "showCases": "显示{{status}}状态的用例"
+    },
+    "tree": {
+      "empty": "没有记录",
+      "filter": "通过用例状态过滤",
+      "filtered": {
+        "shown": "显示{{count}}个",
+        "total": "共{{count}}个用例",
+        "total_plural": "共{{count}}个用例"
+      },
+      "groups": "开关测试套信息",
+      "time": {
+        "max": {
+          "name": "最长",
+          "tooltip": "好使最长的用例"
+        },
+        "sum": {
+          "name": "合并",
+          "tooltip": "所有用例耗时之和"
+        },
+        "total": {
+          "name": "整体",
+          "tooltip": "从首个用例的开始时间到最后一个用例的结束时间"
+        }
+      },
+      "unknown": "空小组"
+    },
+    "widgetStatus": {
+      "showAll": "显示所有",
+      "total": "总共{{count}}项",
+      "total_plural": "总共{{count}}项"
+    }
+  },
+  "controls": {
+    "backto": "返回",
+    "clipboard": "复制到剪贴板",
+    "collapse": "折叠",
+    "expand": "展开",
+    "fullscreen": "全屏",
+    "language": "切换地区语言"
+  },
+  "errors": {
+    "missedAttachment": "没有找到附件",
+    "notFound": "没有找到"
   },
   "marks": {
     "flaky": "不稳定",
-    "newFailed": "新的失败",
     "newBroken": "新的故障",
+    "newFailed": "新的失败",
     "newPassed": "新的通过",
     "retriesStatusChange": "重试后状态改变"
   },
   "sorter": {
-    "name": "名称",
     "duration": "用时",
+    "name": "名称",
     "status": "状态"
   },
+  "status": {
+    "broken": "故障",
+    "failed": "失败",
+    "passed": "通过",
+    "skipped": "跳过",
+    "unknown": "未知"
+  },
   "tab": {
-    "overview": {
-      "name": "总览"
-    },
     "categories": {
       "name": "类别"
     },
-    "suites": {
-      "name": "测试套"
-    },
     "graph": {
       "name": "图表"
+    },
+    "overview": {
+      "name": "总览"
+    },
+    "suites": {
+      "name": "测试套"
     },
     "timeline": {
       "name": "时间刻度",
@@ -37,61 +100,7 @@
       "selected_plural": "{{count}}个测试用例({{percent}}%)执行时间超过{{duration}}"
     }
   },
-  "widget": {
-    "summary": {
-      "aggregatedName": "汇总报告",
-      "launches": "启动",
-      "launches_plural": "启动",
-      "testResults": "测试用例",
-      "testResults_plural": "测试用例"
-    },
-    "trend": {
-      "name": "趋势"
-    },
-    "executors": {
-      "name": "运行器",
-      "unknown": "未知",
-      "empty": "没有运行器的信息"
-    },
-    "launches": {
-      "name": "启动",
-      "empty": "没有用例启动执行的信息"
-    },
-    "environment": {
-      "name": "环境",
-      "empty": "没有环境变量",
-      "showAll": "显示所有"
-    },
-    "suites": {
-      "name": "测试套"
-    },
-    "categories": {
-      "name": "类别"
-    }
-  },
-  "chart": {
-    "duration": {
-      "name": "耗时",
-      "empty": "没有信息"
-    },
-    "trend": {
-      "empty": "没有信息"
-    },
-    "severity": {
-      "name": "优先级"
-    },
-    "status": {
-      "name": "状态"
-    }
-  },
   "testResult": {
-    "status": {
-      "empty": "状态详情为空",
-      "trace": "展示堆栈"
-    },
-    "overview": {
-      "name": "总览"
-    },
     "categories": {
       "name": "类别"
     },
@@ -101,87 +110,79 @@
     "duration": {
       "name": "耗时"
     },
+    "execution": {
+      "body": "测试步骤",
+      "name": "执行",
+      "setup": "前置",
+      "teardown": "后置"
+    },
     "history": {
       "name": "历史",
       "successRate": "成功率"
     },
+    "links": {
+      "name": "链接"
+    },
+    "overview": {
+      "name": "总览"
+    },
     "owner": {
       "name": "作者"
-    },
-    "retries": {
-      "name": "重试次数"
     },
     "parameters": {
       "name": "参数"
     },
-    "links": {
-      "name": "链接"
+    "retries": {
+      "name": "重试次数"
     },
     "severity": {
       "name": "优先级"
     },
-    "execution": {
-      "name": "执行",
-      "setup": "前置",
-      "teardown": "后置",
-      "body": "测试步骤"
-    },
     "stats": {
       "count": {
-        "steps": "{{count}}个步骤",
-        "steps_plural": "{{count}}个步骤",
         "attachments": "{{count}}个附件",
         "attachments_plural": "{{count}}个附件",
         "parameters": "{{count}}个参数",
-        "parameters_plural": "{{count}}个参数"
+        "parameters_plural": "{{count}}个参数",
+        "steps": "{{count}}个步骤",
+        "steps_plural": "{{count}}个步骤"
       }
+    },
+    "status": {
+      "empty": "状态详情为空",
+      "trace": "展示堆栈"
     }
   },
-  "controls": {
-    "collapse": "折叠",
-    "expand": "展开",
-    "fullscreen": "全屏",
-    "language": "切换地区语言",
-    "clipboard": "复制到剪贴板",
-    "backto": "返回"
-  },
-  "errors": {
-    "missedAttachment": "没有找到附件",
-    "notFound": "没有找到"
-  },
-  "component": {
-    "tree": {
-      "filter": "通过用例状态过滤",
-      "groups": "开关测试套信息",
-      "empty": "没有记录",
-      "time": {
-        "total" : {
-          "name": "整体",
-          "tooltip": "从首个用例的开始时间到最后一个用例的结束时间"
-        },
-        "max": {
-          "name": "最长",
-          "tooltip": "好使最长的用例"
-        },
-        "sum": {
-          "name": "合并",
-          "tooltip": "所有用例耗时之和"
-        }
-      },
-      "filtered": {
-        "total": "共{{count}}个用例",
-        "total_plural": "共{{count}}个用例",
-        "shown": "显示{{count}}个"
-      }
+  "widget": {
+    "categories": {
+      "name": "类别"
     },
-    "widgetStatus": {
-      "showAll": "显示所有",
-      "total": "总共{{count}}项",
-      "total_plural": "总共{{count}}项"
+    "environment": {
+      "empty": "没有环境变量",
+      "name": "环境",
+      "showAll": "显示所有"
     },
-    "statusToggle": {
-      "showCases": "显示{{status}}状态的用例",
-      "hideCases": "隐藏{{status}}状态的用例"
+    "executors": {
+      "empty": "没有运行器的信息",
+      "name": "运行器",
+      "unknown": "未知"
+    },
+    "launches": {
+      "empty": "没有用例启动执行的信息",
+      "name": "启动"
+    },
+    "suites": {
+      "name": "测试套"
+    },
+    "summary": {
+      "aggregatedName": "汇总报告",
+      "launches": "启动",
+      "launches_plural": "启动",
+      "testResults": "测试用例",
+      "testResults_plural": "测试用例"
+    },
+    "trend": {
+      "name": "趋势"
     }
   }
 }
