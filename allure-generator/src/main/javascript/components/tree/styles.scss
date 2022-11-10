@@ -20,6 +20,9 @@
   &__name {
     //flex: 0 0 30%;
   }
+  &__unknown {
+    color: $text-muted-color;
+  }
   &__marks {
     display: block;
     float: right;

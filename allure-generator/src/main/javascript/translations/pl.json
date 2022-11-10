@@ -1,36 +1,107 @@
 {
-  "status": {
-    "failed": "Nieudany",
-    "broken": "Uszkodzony",
-    "passed": "Pomyślny",
-    "skipped": "Pominięty",
-    "unknown": "Nieznany"
+  "chart": {
+    "duration": {
+      "empty": "Brak czegokolwiek do pokazania",
+      "name": "Czas trwania"
+    },
+    "severity": {
+      "name": "Ważność"
+    },
+    "status": {
+      "name": "Status"
+    },
+    "trend": {
+      "empty": "Brak czegokolwiek do pokazania"
+    }
+  },
+  "component": {
+    "statusToggle": {
+      "hideCases": "Ukryj rezultaty testów ze statusem {{status}}",
+      "showCases": "Pokaż rezultaty testów ze statusem {{status}}"
+    },
+    "tree": {
+      "download": "Pobierz CSV",
+      "empty": "Brak elementów",
+      "filter": "Filtrowanie według statusu",
+      "filter-marks": "Filtrowanie według oznaczenia",
+      "filtered": {
+        "shown_0": "{{count}} pokazany",
+        "shown_1": "{{count}} pokazane",
+        "shown_2": "{{count}} pokazanych",
+        "total_0": "{{count}} rezultat testu",
+        "total_1": "{{count}} rezultaty testów",
+        "total_2": "{{count}} rezultatów testów"
+      },
+      "groups": "Przełącz informacje o grupach",
+      "time": {
+        "max": {
+          "name": "Najdłuższy",
+          "tooltip": "Najdłuższy czas trwania"
+        },
+        "sum": {
+          "name": "Suma",
+          "tooltip": "Suma czasów trwania wszystkich testów"
+        },
+        "total": {
+          "name": "Całkowity",
+          "tooltip": "Czas od uruchomienia pierwszego testu do zakończenia ostatniego testu"
+        }
+      },
+      "unknown": "<Pusty>"
+    },
+    "widgetStatus": {
+      "showAll": "Pokaż wszystko",
+      "total_0": "Razem {{count}} pozycja",
+      "total_1": "Razem {{count}} pozycje",
+      "total_2": "Razem {{count}} pozycji"
+    }
+  },
+  "controls": {
+    "backto": "Powrót do",
+    "clipboard": "Zapisz do schowka",
+    "clipboardError": "Nie można skopiować do schowka. Najprawdopodobniej twoja przeglądarka nie obsługuje tej funkcji",
+    "clipboardSuccess": "Skopiowano pomyślnie",
+    "collapse": "Zwiń",
+    "expand": "Rozwiń",
+    "fullscreen": "Pełny ekran",
+    "language": "Zmień język"
+  },
+  "errors": {
+    "missedAttachment": "Nie znaleziono załącznika",
+    "notFound": "Nie znaleziono"
   },
   "marks": {
     "flaky": "Niestabilny",
-    "newFailed": "Nowy nieudany",
     "newBroken": "Nowy uszkodzony",
+    "newFailed": "Nowy nieudany",
     "newPassed": "Nowy udany",
     "retriesStatusChange": "Status zmieniony po ponownej próbie"
   },
   "sorter": {
-    "order": "kolejność",
-    "name": "nazwa",
     "duration": "czas trwania",
+    "name": "nazwa",
+    "order": "kolejność",
     "status": "status"
   },
+  "status": {
+    "broken": "Uszkodzony",
+    "failed": "Nieudany",
+    "passed": "Pomyślny",
+    "skipped": "Pominięty",
+    "unknown": "Nieznany"
+  },
   "tab": {
-    "overview": {
-      "name": "Podsumowanie"
-    },
     "categories": {
       "name": "Kategorie"
     },
-    "suites": {
-      "name": "Zestawy"
-    },
     "graph": {
       "name": "Wykresy"
+    },
+    "overview": {
+      "name": "Podsumowanie"
+    },
+    "suites": {
+      "name": "Zestawy"
     },
     "timeline": {
       "name": "Oś czasowa",
@@ -39,7 +110,92 @@
       "selected_2": "{{count}} wybranych testów ({{percent}}%) z czasem trwania powyżej {{duration}}"
     }
   },
+  "testResult": {
+    "categories": {
+      "name": "Kategorie"
+    },
+    "description": {
+      "name": "Opis"
+    },
+    "duration": {
+      "name": "Czas trwania"
+    },
+    "execution": {
+      "body": "Ciało testu",
+      "name": "Wykonanie",
+      "setup": "Przygotowanie",
+      "teardown": "Zakończenie"
+    },
+    "history": {
+      "name": "Historia",
+      "successRate": "Współczynnik powodzenia"
+    },
+    "links": {
+      "name": "Odnośniki"
+    },
+    "overview": {
+      "name": "Podsumowanie"
+    },
+    "owner": {
+      "name": "Właściciel"
+    },
+    "parameters": {
+      "name": "Parametery"
+    },
+    "retries": {
+      "empty": "Brak dostępnych informacji o powtórzeniach testów",
+      "name": "Powtórzenia"
+    },
+    "severity": {
+      "name": "Ważność"
+    },
+    "stats": {
+      "count": {
+        "attachments_0": "{{count}} załącznik",
+        "attachments_1": "{{count}} załączniki",
+        "attachments_2": "{{count}} załączników",
+        "parameters_0": "{{count}} parametr",
+        "parameters_1": "{{count}} parametry",
+        "parameters_2": "{{count}} parametrów",
+        "steps": "{{count}} podetap",
+        "steps_plural": "{{count}} podetapy"
+      }
+    },
+    "status": {
+      "empty": "Puste szczegóły statusu",
+      "trace": "Pokaż ślady"
+    }
+  },
   "widget": {
+    "categories": {
+      "name": "Kategorie"
+    },
+    "categoriesTrend": {
+      "name": "Trend kategorii"
+    },
+    "durationTrend": {
+      "name": "Trend czasu trwania"
+    },
+    "environment": {
+      "empty": "Brak zmiennych środowiskowych",
+      "name": "Środowisko",
+      "showAll": "Pokaż wszystkie"
+    },
+    "executors": {
+      "empty": "Brak informacji o wykonawcach testów",
+      "name": "Wykonawcy",
+      "unknown": "Nieznany"
+    },
+    "launches": {
+      "empty": "Brak informacji o uruchomieniach",
+      "name": "Uruchomienia"
+    },
+    "retryTrend": {
+      "name": "Trend powtórzeń"
+    },
+    "suites": {
+      "name": "Zestawy"
+    },
     "summary": {
       "aggregatedName": "Raport zbiorczy",
       "launches_0": "uruchomienie",
@@ -51,161 +207,6 @@
     },
     "trend": {
       "name": "Trend"
-    },
-    "categoriesTrend": {
-      "name": "Trend kategorii"
-    },
-    "durationTrend": {
-      "name": "Trend czasu trwania"
-    },
-    "retryTrend": {
-      "name": "Trend powtórzeń"
-    },
-    "executors": {
-      "name": "Wykonawcy",
-      "unknown": "Nieznany",
-      "empty": "Brak informacji o wykonawcach testów"
-    },
-    "launches": {
-      "name": "Uruchomienia",
-      "empty": "Brak informacji o uruchomieniach"
-    },
-    "environment": {
-      "name": "Środowisko",
-      "empty": "Brak zmiennych środowiskowych",
-      "showAll": "Pokaż wszystkie"
-    },
-    "suites": {
-      "name": "Zestawy"
-    },
-    "categories": {
-      "name": "Kategorie"
-    }
-  },
-  "chart": {
-    "duration": {
-      "name": "Czas trwania",
-      "empty": "Brak czegokolwiek do pokazania"
-    },
-    "trend": {
-      "empty": "Brak czegokolwiek do pokazania"
-    },
-    "severity": {
-      "name": "Ważność"
-    },
-    "status": {
-      "name": "Status"
-    }
-  },
-  "testResult": {
-    "status": {
-      "empty": "Puste szczegóły statusu",
-      "trace": "Pokaż ślady"
-    },
-    "overview": {
-      "name": "Podsumowanie"
-    },
-    "categories": {
-      "name": "Kategorie"
-    },
-    "description": {
-      "name": "Opis"
-    },
-    "duration": {
-      "name": "Czas trwania"
-    },
-    "history": {
-      "name": "Historia",
-      "successRate": "Współczynnik powodzenia"
-    },
-    "owner": {
-      "name": "Właściciel"
-    },
-    "retries": {
-      "name": "Powtórzenia",
-      "empty": "Brak dostępnych informacji o powtórzeniach testów"
-    },
-    "parameters": {
-      "name": "Parametery"
-    },
-    "links": {
-      "name": "Odnośniki"
-    },
-    "severity": {
-      "name": "Ważność"
-    },
-    "execution": {
-      "name": "Wykonanie",
-      "setup": "Przygotowanie",
-      "teardown": "Zakończenie",
-      "body": "Ciało testu"
-    },
-    "stats": {
-      "count": {
-        "steps": "{{count}} podetap",
-        "steps_plural": "{{count}} podetapy",
-        "attachments_0": "{{count}} załącznik",
-        "attachments_1": "{{count}} załączniki",
-        "attachments_2": "{{count}} załączników",
-        "parameters_0": "{{count}} parametr",
-        "parameters_1": "{{count}} parametry",
-        "parameters_2": "{{count}} parametrów"
-      }
-    }
-  },
-  "controls": {
-    "collapse": "Zwiń",
-    "expand": "Rozwiń",
-    "fullscreen": "Pełny ekran",
-    "language": "Zmień język",
-    "clipboard": "Zapisz do schowka",
-    "clipboardSuccess": "Skopiowano pomyślnie",
-    "clipboardError": "Nie można skopiować do schowka. Najprawdopodobniej twoja przeglądarka nie obsługuje tej funkcji",
-    "backto": "Powrót do"
-  },
-  "errors": {
-    "missedAttachment": "Nie znaleziono załącznika",
-    "notFound": "Nie znaleziono"
-  },
-  "component": {
-    "tree": {
-      "filter": "Filtrowanie według statusu",
-      "filter-marks": "Filtrowanie według oznaczenia",
-      "groups": "Przełącz informacje o grupach",
-      "download": "Pobierz CSV",
-      "empty": "Brak elementów",
-      "time": {
-        "total" : {
-          "name": "Całkowity",
-          "tooltip": "Czas od uruchomienia pierwszego testu do zakończenia ostatniego testu"
-        },
-        "max": {
-          "name": "Najdłuższy",
-          "tooltip": "Najdłuższy czas trwania"
-        },
-        "sum": {
-          "name": "Suma",
-          "tooltip": "Suma czasów trwania wszystkich testów"
-        }
-      },
-      "filtered": {
-        "total_0": "{{count}} rezultat testu",
-        "total_1": "{{count}} rezultaty testów",
-        "total_2": "{{count}} rezultatów testów",
-        "shown_0": "{{count}} pokazany",
-        "shown_1": "{{count}} pokazane",
-        "shown_2": "{{count}} pokazanych"
-      }
-    },
-    "widgetStatus": {
-      "showAll": "Pokaż wszystko",
-      "total_0": "Razem {{count}} pozycja",
-      "total_1": "Razem {{count}} pozycje",
-      "total_2": "Razem {{count}} pozycji"
-    },
-    "statusToggle": {
-      "showCases": "Pokaż rezultaty testów ze statusem {{status}}",
-      "hideCases": "Ukryj rezultaty testów ze statusem {{status}}"
     }
   }
 }
