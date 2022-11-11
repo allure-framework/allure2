@@ -27,6 +27,7 @@ import org.eclipse.jetty.util.resource.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.AWTError;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -149,7 +150,7 @@ public class Commands {
 
         try {
             openBrowser(server.getURI());
-        } catch (IOException e) {
+        } catch (IOException | AWTError e) {
             LOGGER.error(
                     "Could not open the report in browser, try to open it manually {}: {}",
                     server.getURI(),

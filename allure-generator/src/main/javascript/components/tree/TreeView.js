@@ -1,7 +1,7 @@
 import "./styles.scss";
 import { View } from "backbone.marionette";
 import getComparator from "../../data/tree/comparator";
-import { byMark, byStatuses, byText, mix } from "../../data/tree/filter";
+import { byCriteria, byMark, byStatuses, mix } from "../../data/tree/filter";
 import { behavior, className, on } from "../../decorators";
 import router from "../../router";
 import hotkeys from "../../utils/hotkeys";
@@ -37,7 +37,7 @@ class TreeView extends View {
     const visibleStatuses = this.settings.getVisibleStatuses();
     const visibleMarks = this.settings.getVisibleMarks();
     const searchQuery = this.state.get(SEARCH_QUERY_KEY);
-    const filter = mix(byText(searchQuery), byStatuses(visibleStatuses), byMark(visibleMarks));
+    const filter = mix(byCriteria(searchQuery), byStatuses(visibleStatuses), byMark(visibleMarks));
 
     const sortSettings = this.settings.getTreeSorting();
     const sorter = getComparator(sortSettings);

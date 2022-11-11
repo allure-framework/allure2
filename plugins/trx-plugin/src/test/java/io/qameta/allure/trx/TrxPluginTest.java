@@ -84,7 +84,8 @@ class TrxPluginTest {
                         tuple("AddingSeveralNumbers_40", Status.PASSED, "Adding several numbers"),
                         tuple("AddingSeveralNumbers_60", Status.PASSED, "Adding several numbers"),
                         tuple("AddTwoNumbers", Status.PASSED, "Add two numbers"),
-                        tuple("FailToAddTwoNumbers", Status.FAILED, "Fail to add two numbers")
+                        tuple("FailToAddTwoNumbers", Status.FAILED, "Fail to add two numbers"),
+                        tuple("SkippedTest", Status.SKIPPED, "Should Skip this test")
                 );
 
         assertThat(captor.getAllValues())

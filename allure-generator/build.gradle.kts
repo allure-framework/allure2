@@ -2,7 +2,7 @@ import com.github.gradle.node.npm.task.NpmTask
 
 plugins {
     `java-library`
-    id("com.github.node-gradle.node") version "3.1.1"
+    id("com.github.node-gradle.node") version "3.5.0"
 }
 
 description = "Allure Report Generator"
@@ -10,8 +10,7 @@ description = "Allure Report Generator"
 node {
     // enforce https
     distBaseUrl.set("https://nodejs.org/dist")
-    version.set("14.16.1")
-    npmVersion.set("6.14.12")
+    version.set("16.18.0")
     download.set(true)
 }
 
@@ -20,7 +19,7 @@ val generatedStatic = "build/www"
 tasks.npmInstall {
     group = "Build"
     args.set(listOf("--silent"))
-    npmCommand.set(if (project.hasProperty("prod")) listOf("ci") else listOf("install"))
+    npmCommand.set(listOf("ci"))
     environment.set(mapOf("ADBLOCK" to "true"))
     inputs.file("package-lock.json")
     inputs.file("package.json")
@@ -105,6 +104,7 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
+    implementation("com.fasterxml.jackson.module:jackson-module-jaxb-annotations")
     implementation("commons-io:commons-io")
     implementation("io.qameta.allure:allure-model")
     implementation("javax.xml.bind:jaxb-api")

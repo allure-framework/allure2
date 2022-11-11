@@ -1,36 +1,102 @@
 {
-  "status": {
-    "failed": "Fehlgeschlagen",
-    "broken": "Defekt",
-    "passed": "Erfolgreich",
-    "skipped": "Übersprungen",
-    "unknown": "Unbekannt"
+  "chart": {
+    "duration": {
+      "empty": "Hier gibt es nichts zu zeigen",
+      "name": "Dauer"
+    },
+    "severity": {
+      "name": "Ausmaß"
+    },
+    "status": {
+      "name": "Status"
+    },
+    "trend": {
+      "empty": "Hier gibt es nichts zu zeigen"
+    }
+  },
+  "component": {
+    "statusToggle": {
+      "hideCases": "Verstecke Testergebnisse mit Status {{status}}",
+      "showCases": "Zeige Testergebnisse mit Status {{status}}"
+    },
+    "tree": {
+      "download": "CSV herunterladen",
+      "empty": "Keine Einträge verfügbar",
+      "filter": "Filtere Testfälle nach Status",
+      "filtered": {
+        "shown": "{{count}} angezeigt",
+        "total": "{{count}} Testergebnis",
+        "total_plural": "{{count}} Testergebnisse"
+      },
+      "groups": "Gruppeninformationen an- / ausschalten",
+      "time": {
+        "max": {
+          "name": "Max",
+          "tooltip": "Längste Testdauer"
+        },
+        "sum": {
+          "name": "Summe",
+          "tooltip": "Summe aller Testdauern"
+        },
+        "total": {
+          "name": "Gesamt",
+          "tooltip": "Dauer vom Start des ersten bis zum Ende des letzten Tests"
+        }
+      },
+      "unknown": "<Leer>"
+    },
+    "widgetStatus": {
+      "showAll": "Zeige alle",
+      "total": "{{count}} Eintrag insgesamt",
+      "total_plural": "{{count}} Einträge insgesamt"
+    }
+  },
+  "controls": {
+    "backto": "Zurück zu",
+    "clipboard": "In Zwischenablage kopieren",
+    "clipboardError": "Wert konnte nicht in Zwischenablage kopiert werden. Ihr Browser scheint dieses Feature nicht zu unterstützen",
+    "clipboardSuccess": "Erfolgreich in Zwischenablage kopiert",
+    "collapse": "Verkleinern",
+    "expand": "Vergrößern",
+    "fullscreen": "Vollbild",
+    "language": "Sprache ändern"
+  },
+  "errors": {
+    "missedAttachment": "Anhang nicht gefunden",
+    "notFound": "Nicht gefunden"
   },
   "marks": {
     "flaky": "Instabil",
-    "newFailed": "Neu fehlgeschlagen",
     "newBroken": "Neu defekt",
+    "newFailed": "Neu fehlgeschlagen",
     "newPassed": "Neu erfolgreich",
     "retriesStatusChange": "Status nach erneutem Versuch geändert"
   },
   "sorter": {
-    "order": "Reihenfolge",
-    "name": "Name",
     "duration": "Dauer",
+    "name": "Name",
+    "order": "Reihenfolge",
     "status": "Status"
   },
+  "status": {
+    "broken": "Defekt",
+    "failed": "Fehlgeschlagen",
+    "passed": "Erfolgreich",
+    "skipped": "Übersprungen",
+    "unknown": "Unbekannt"
+  },
   "tab": {
-    "overview": {
-      "name": "Übersicht"
-    },
     "categories": {
       "name": "Kategorien"
     },
-    "suites": {
-      "name": "Suiten"
-    },
     "graph": {
       "name": "Grafiken"
+    },
+    "overview": {
+      "name": "Übersicht"
+    },
+    "suites": {
+      "name": "Suiten"
     },
     "timeline": {
       "name": "Zeitstrahl",
@@ -38,70 +104,7 @@
       "selected_plural": "{{count}} Tests ausgewählt ({{percent}}%) mit einer Dauer von über {{duration}}"
     }
   },
-  "widget": {
-    "summary": {
-      "aggregatedName": "Aggregierter Report",
-      "launches": "Durchlauf",
-      "launches_plural": "Durchläufe",
-      "testResults": "Testfall",
-      "testResults_plural": "Testfälle"
-    },
-    "trend": {
-      "name": "Trend"
-    },
-    "categoriesTrend": {
-      "name": "Kategorien Trend"
-    },
-    "durationTrend": {
-      "name": "Dauer Trend"
-    },
-    "retryTrend": {
-      "name": "Wiederholungen Trend"
-    },
-    "executors": {
-      "name": "Durchführer",
-      "unknown": "Unbekannt",
-      "empty": "Keine Informationen zu Testdurchführern verfügbar"
-    },
-    "launches": {
-      "name": "Durchläufe",
-      "empty": "Keine Informationen zu Durchläufen verfügbar"
-    },
-    "environment": {
-      "name": "Umgebung",
-      "empty": "Keine Umgebungsvariablen verfügbar",
-      "showAll": "Zeige alle"
-    },
-    "suites": {
-      "name": "Suiten"
-    },
-    "categories": {
-      "name": "Kategorien"
-    }
-  },
-  "chart": {
-    "duration": {
-      "name": "Dauer",
-      "empty": "Hier gibt es nichts zu zeigen"
-    },
-    "trend": {
-      "empty": "Hier gibt es nichts zu zeigen"
-    },
-    "severity": {
-      "name": "Ausmaß"
-    },
-    "status": {
-      "name": "Status"
-    }
-  },
   "testResult": {
-    "status": {
-      "empty": "Keine Status Details",
-      "trace": "Zeige Stracktrace"
-    },
-    "overview": {
-      "name": "Übersicht"
-    },
     "categories": {
       "name": "Kategorien"
     },
@@ -111,91 +114,89 @@
     "duration": {
       "name": "Dauer"
     },
+    "execution": {
+      "body": "Test",
+      "name": "Durchführung",
+      "setup": "Vorbereitung",
+      "teardown": "Aufräumung"
+    },
     "history": {
       "name": "Historie",
       "successRate": "Erfolgsrate"
     },
+    "links": {
+      "name": "Links"
+    },
+    "overview": {
+      "name": "Übersicht"
+    },
     "owner": {
       "name": "Besitzer"
-    },
-    "retries": {
-      "name": "Wiederholungen",
-      "empty": "Keine Informationen zu Wiederholungen verfügbar"
     },
     "parameters": {
       "name": "Parameter"
     },
-    "links": {
-      "name": "Links"
+    "retries": {
+      "empty": "Keine Informationen zu Wiederholungen verfügbar",
+      "name": "Wiederholungen"
     },
     "severity": {
       "name": "Ausmaß"
     },
-    "execution": {
-      "name": "Durchführung",
-      "setup": "Vorbereitung",
-      "teardown": "Aufräumung",
-      "body": "Test"
-    },
     "stats": {
       "count": {
-        "steps": "{{count}} Unterschritt",
-        "steps_plural": "{{count}} Unterschritte",
         "attachments": "{{count}} Anhang",
         "attachments_plural": "{{count}} Anhänge",
         "parameters": "{{count}} Parameter",
-        "parameters_plural": "{{count}} Parameter"
+        "parameters_plural": "{{count}} Parameter",
+        "steps": "{{count}} Unterschritt",
+        "steps_plural": "{{count}} Unterschritte"
       }
+    },
+    "status": {
+      "empty": "Keine Status Details",
+      "trace": "Zeige Stracktrace"
     }
   },
-  "controls": {
-    "collapse": "Verkleinern",
-    "expand": "Vergrößern",
-    "fullscreen": "Vollbild",
-    "language": "Sprache ändern",
-    "clipboard": "In Zwischenablage kopieren",
-    "clipboardSuccess": "Erfolgreich in Zwischenablage kopiert",
-    "clipboardError": "Wert konnte nicht in Zwischenablage kopiert werden. Ihr Browser scheint dieses Feature nicht zu unterstützen",
-    "backto": "Zurück zu"
-  },
-  "errors": {
-    "missedAttachment": "Anhang nicht gefunden",
-    "notFound": "Nicht gefunden"
-  },
-  "component": {
-    "tree": {
-      "filter": "Filtere Testfälle nach Status",
-      "groups": "Gruppeninformationen an- / ausschalten",
-      "download": "CSV herunterladen",
-      "empty": "Keine Einträge verfügbar",
-      "time": {
-        "total" : {
-          "name": "Gesamt",
-          "tooltip": "Dauer vom Start des ersten bis zum Ende des letzten Tests"
-        },
-        "max": {
-          "name": "Max",
-          "tooltip": "Längste Testdauer"
-        },
-        "sum": {
-          "name": "Summe",
-          "tooltip": "Summe aller Testdauern"
-        }
-      },
-      "filtered": {
-        "total": "{{count}} Testergebnis",
-        "total_plural": "{{count}} Testergebnisse",
-        "shown": "{{count}} angezeigt"
-      }
+  "widget": {
+    "categories": {
+      "name": "Kategorien"
     },
-    "widgetStatus": {
-      "showAll": "Zeige alle",
-      "total": "{{count}} Eintrag insgesamt",
-      "total_plural": "{{count}} Einträge insgesamt"
+    "categoriesTrend": {
+      "name": "Kategorien Trend"
     },
-    "statusToggle": {
-      "showCases": "Zeige Testergebnisse mit Status {{status}}",
-      "hideCases": "Verstecke Testergebnisse mit Status {{status}}"
+    "durationTrend": {
+      "name": "Dauer Trend"
+    },
+    "environment": {
+      "empty": "Keine Umgebungsvariablen verfügbar",
+      "name": "Umgebung",
+      "showAll": "Zeige alle"
+    },
+    "executors": {
+      "empty": "Keine Informationen zu Testdurchführern verfügbar",
+      "name": "Durchführer",
+      "unknown": "Unbekannt"
+    },
+    "launches": {
+      "empty": "Keine Informationen zu Durchläufen verfügbar",
+      "name": "Durchläufe"
+    },
+    "retryTrend": {
+      "name": "Wiederholungen Trend"
+    },
+    "suites": {
+      "name": "Suiten"
+    },
+    "summary": {
+      "aggregatedName": "Aggregierter Report",
+      "launches": "Durchlauf",
+      "launches_plural": "Durchläufe",
+      "testResults": "Testfall",
+      "testResults_plural": "Testfälle"
+    },
+    "trend": {
+      "name": "Trend"
     }
   }
 }

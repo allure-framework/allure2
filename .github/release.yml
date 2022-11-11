@@ -14,6 +14,9 @@ changelog:
     - title: '⬆️ Dependency Updates'
       labels:
         - 'type:dependencies'
+    - title: '📖 Documentation improvements'
+      labels:
+        - 'type:documentation'
     - title: '⛔️ Security'
       labels:
         - 'type:security'

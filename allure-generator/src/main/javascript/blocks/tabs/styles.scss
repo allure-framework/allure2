@@ -14,7 +14,7 @@
   font-size: 16px;
   & > a {
     display: inline-block;
-    padding: $gap-size / 2 $gap-size;
+    padding: calc($gap-size / 2) $gap-size;
     border-bottom: 3px solid transparent;
     &:hover {
       border-bottom-color: $border-color;

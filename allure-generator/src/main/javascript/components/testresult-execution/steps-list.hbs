@@ -6,9 +6,7 @@
             {{else}}
                 <span class="step__status">{{allure-icon status}}</span>
             {{/if}}
-            <div class="step__name">
-            {{text-with-links name}}
-            </div>
+            <div class="step__name">{{text-with-links name}}</div>
             {{> ../../blocks/step-stats/step-stats . baseUrl=../../baseUrl}}
         </div>
         <div class="step__content">
@@ -18,9 +16,7 @@
                 {{> ../../blocks/attachment-row/attachment-row . baseUrl=../../baseUrl}}
             {{/each}}
             {{#if shouldDisplayMessage}}
-                {{#with statusDetails}}
-                    {{~> ../../blocks/status-details/status-details . status=../status}}
-                {{/with}}
+                {{~> ../../blocks/status-details/status-details .}}
             {{/if}}
         </div>
     </div>

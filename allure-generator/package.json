@@ -36,7 +36,7 @@
     "json-loader": "^0.5.7",
     "memory-fs": "^0.4.1",
     "mini-css-extract-plugin": "^0.5.0",
-    "node-sass": "^5.0.0",
+    "node-sass": "^7.0.3",
     "optimize-css-assets-webpack-plugin": "^5.0.4",
     "postcss-loader": "^3.0.0",
     "postcss-rtl": "^1.7.3",
@@ -81,7 +81,7 @@
     "normalize-css": "^2.3.1",
     "sortablejs": "^1.13.0",
     "split.js": "^1.6.4",
-    "underscore": "^1.13.1"
+    "underscore": "^1.8.3"
   },
   "engines": {
     "node": ">=10.10.0"

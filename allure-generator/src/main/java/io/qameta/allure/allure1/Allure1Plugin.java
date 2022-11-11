@@ -15,8 +15,10 @@
  */
 package io.qameta.allure.allure1;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
@@ -65,7 +67,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.fasterxml.jackson.databind.MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME;
 import static io.qameta.allure.entity.LabelName.ISSUE;
 import static io.qameta.allure.entity.LabelName.PACKAGE;
 import static io.qameta.allure.entity.LabelName.PARENT_SUITE;
@@ -112,17 +113,29 @@ public class Allure1Plugin implements Reader {
     public static final String ENVIRONMENT_BLOCK_NAME = "environment";
     public static final String ALLURE1_RESULTS_FORMAT = "allure1";
 
-    private final ObjectMapper jsonMapper = new ObjectMapper();
-    private final ObjectMapper xmlMapper;
+    private final ObjectMapper jsonMapper = JsonMapper.builder()
+            .enable(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME)
+            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
+            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
+            .enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .disable(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES)
+            .disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
+            .disable(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS)
+            .build();
 
-    public Allure1Plugin() {
-        final SimpleModule module = new XmlParserModule()
-                .addDeserializer(ru.yandex.qatools.allure.model.Status.class, new StatusDeserializer());
-        xmlMapper = new XmlMapper()
-                .configure(USE_WRAPPER_NAME_AS_PROPERTY_NAME, true)
-                .setAnnotationIntrospector(new JaxbAnnotationIntrospector(TypeFactory.defaultInstance()))
-                .registerModule(module);
-    }
+    private final ObjectMapper xmlMapper = XmlMapper.builder()
+            .enable(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME)
+            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
+            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
+            .enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .disable(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES)
+            .disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
+            .disable(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS)
+            .annotationIntrospector(new JaxbAnnotationIntrospector(TypeFactory.defaultInstance()))
+            .addModule(new XmlParserModule())
+            .build();
 
     @Override
     public void readResults(final Configuration configuration,
@@ -155,7 +168,7 @@ public class Allure1Plugin implements Reader {
             try (InputStream propFile = Files.newInputStream(propertiesFile)) {
                 properties.load(propFile);
             } catch (IOException e) {
-                LOGGER.error("Error while reading allure.properties file: %s", e.getMessage());
+                LOGGER.error("Error while reading allure.properties file: {}", e.getMessage());
             }
         }
         properties.putAll(System.getProperties());

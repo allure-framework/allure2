@@ -15,6 +15,8 @@
  */
 package io.qameta.allure.context;
 
+import com.fasterxml.jackson.databind.SerializationConfig;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,5 +28,13 @@ class JacksonContextTest {
         final JacksonContext context = new JacksonContext();
         assertThat(context.getValue())
                 .isNotNull();
+    }
+
+    @Test
+    void shouldUseMinified() {
+        final JacksonContext context = new JacksonContext();
+        final SerializationConfig config = context.getValue().getSerializationConfig();
+        assertThat(config.isEnabled(SerializationFeature.INDENT_OUTPUT))
+                .isFalse();
     }
 }

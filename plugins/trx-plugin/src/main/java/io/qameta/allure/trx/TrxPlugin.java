@@ -308,6 +308,8 @@ public class TrxPlugin implements Reader {
                 return Status.PASSED;
             case "failed":
                 return Status.FAILED;
+            case "notexecuted":
+                return Status.SKIPPED;
             default:
                 return Status.UNKNOWN;
         }
