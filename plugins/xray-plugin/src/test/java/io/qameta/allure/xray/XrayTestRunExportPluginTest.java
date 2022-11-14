@@ -45,6 +45,7 @@ class XrayTestRunExportPluginTest {
     private static final String EXECUTION_ISSUES = "ALLURE-2";
     private static final String TESTRUN_KEY = "ALLURE-1";
     private static final Integer TESTRUN_ID = 1;
+    private static final int PAGE_NUMBER = 1;
 
     @Test
     void shouldExportTestRunToXray() {
@@ -61,7 +62,7 @@ class XrayTestRunExportPluginTest {
         when(launchResults.getExtra("executor")).thenReturn(Optional.of(executorInfo));
 
         final JiraService service = mock(JiraService.class);
-        when(service.getTestRunsForTestExecution(EXECUTION_ISSUES)).thenReturn(
+        when(service.getTestRunsForTestExecution(EXECUTION_ISSUES, PAGE_NUMBER)).thenReturn(
                 Collections.singletonList(new XrayTestRun().setId(TESTRUN_ID).setKey(TESTRUN_KEY).setStatus("TODO"))
         );
 
@@ -128,7 +129,7 @@ class XrayTestRunExportPluginTest {
         when(launchResults.getExtra("executor")).thenReturn(Optional.of(executorInfo));
 
         final JiraService service = mock(JiraService.class);
-        when(service.getTestRunsForTestExecution(EXECUTION_ISSUES)).thenReturn(
+        when(service.getTestRunsForTestExecution(EXECUTION_ISSUES, PAGE_NUMBER)).thenReturn(
                 Collections.singletonList(new XrayTestRun().setId(TESTRUN_ID).setKey(TESTRUN_KEY).setStatus("TODO"))
         );
 
@@ -177,13 +178,13 @@ class XrayTestRunExportPluginTest {
         when(launchResults.getExtra("executor")).thenReturn(Optional.of(executorInfo));
 
         final JiraService service = mock(JiraService.class);
-        when(service.getTestRunsForTestExecution("ALLURE-2")).thenReturn(
+        when(service.getTestRunsForTestExecution("ALLURE-2", PAGE_NUMBER)).thenReturn(
                 Collections.singletonList(testRuns.get(0))
         );
-        when(service.getTestRunsForTestExecution("ALLURE-4")).thenReturn(
+        when(service.getTestRunsForTestExecution("ALLURE-4", PAGE_NUMBER)).thenReturn(
                 Collections.singletonList(testRuns.get(1))
         );
-        when(service.getTestRunsForTestExecution("ALLURE-6")).thenReturn(
+        when(service.getTestRunsForTestExecution("ALLURE-6", PAGE_NUMBER)).thenReturn(
                 Collections.singletonList(testRuns.get(2))
         );
 
