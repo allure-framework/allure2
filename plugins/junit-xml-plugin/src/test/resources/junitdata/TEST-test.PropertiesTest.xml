@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite tests="1" failures="0" name="test.SampleTest" time="1.051" errors="0" skipped="0">
+  <testcase classname="test.PropertiesTest" name="shouldGenerate" time="1.051">
+    <properties>
+      <property name="foo" value="bar" />
+      <property name="baz" value="some value" />
+    </properties>
+  </testcase>
+</testsuite>
