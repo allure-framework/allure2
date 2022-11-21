@@ -63,6 +63,8 @@ public class XrayTestRunExportPlugin implements Aggregator {
     private static final String XRAY_STATUS_FAIL = "FAIL";
     private static final String XRAY_STATUS_TODO = "TODO";
 
+    private static final int JIRA_MAX_RESULTS = 1000;
+
     private final boolean enabled;
     private final String issues;
     private final Map<Status, String> statusesMap = getDefaultStatusesMap();
@@ -101,7 +103,7 @@ public class XrayTestRunExportPlugin implements Aggregator {
         final JiraService jiraService = jiraServiceSupplier.get();
 
         final Map<String, List<XrayTestRun>> testRunsMap = executionIssues.stream()
-                .map(jiraService::getTestRunsForTestExecution)
+                .map(issue -> getTestRunsInTestExecution(jiraService, issue))
                 .flatMap(Collection::stream)
                 .collect(Collectors.groupingBy(
                         XrayTestRun::getKey,
@@ -213,5 +215,16 @@ public class XrayTestRunExportPlugin implements Aggregator {
 
     private static List<String> splitByComma(final String value) {
         return Arrays.stream(value.split(",")).map(String::trim).collect(Collectors.toList());
+    }
+
+    private List<XrayTestRun> getTestRunsInTestExecution(final JiraService jiraService, final String executionKey) {
+        final List<XrayTestRun> results = new ArrayList<>();
+        List<XrayTestRun> pageTestRuns;
+        int page = 1;
+        do {
+            pageTestRuns = jiraService.getTestRunsForTestExecution(executionKey, page++);
+            results.addAll(pageTestRuns);
+        } while (pageTestRuns.size() == JIRA_MAX_RESULTS);
+        return results;
     }
 }
