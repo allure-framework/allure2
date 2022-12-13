@@ -39,7 +39,7 @@
     "node-sass": "^7.0.3",
     "optimize-css-assets-webpack-plugin": "^5.0.4",
     "postcss-loader": "^3.0.0",
-    "postcss-rtl": "^1.7.3",
+    "postcss-rtl": "^2.0.0",
     "prettier": "^1.19.1",
     "rimraf": "^3.0.2",
     "sass": "^1.32.10",
