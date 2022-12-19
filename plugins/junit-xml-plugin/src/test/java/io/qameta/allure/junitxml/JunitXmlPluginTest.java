@@ -22,6 +22,7 @@ import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.LabelName;
+import io.qameta.allure.entity.Parameter;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
@@ -310,6 +311,25 @@ class JunitXmlPluginTest {
                 .describedAs("Should parse skipped elements and status attribute")
                 .hasSize(2);
 
+    }
+
+    @Test
+    void shouldUsePropertiesIfPresent() throws Exception {
+        process(
+                "junitdata/TEST-test.PropertiesTest.xml", "TEST-test.SampleTest.xml"
+        );
+
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(2)).visitTestResult(captor.capture());
+
+        assertThat(captor.getAllValues())
+                .flatExtracting(TestResult::getParameters)
+                .extracting(Parameter::getName, Parameter::getValue)
+                .containsExactlyInAnyOrder(
+                        tuple("foo", "bar"),
+                        tuple("baz", "some value")
+                );
     }
 
     @SuppressWarnings("unchecked")

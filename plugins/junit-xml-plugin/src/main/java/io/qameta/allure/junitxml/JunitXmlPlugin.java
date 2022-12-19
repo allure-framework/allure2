@@ -24,6 +24,7 @@ import io.qameta.allure.datetime.DateTimeParser;
 import io.qameta.allure.datetime.LocalDateTimeParser;
 import io.qameta.allure.datetime.ZonedDateTimeParser;
 import io.qameta.allure.entity.LabelName;
+import io.qameta.allure.entity.Parameter;
 import io.qameta.allure.entity.StageResult;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.Step;
@@ -81,6 +82,7 @@ public class JunitXmlPlugin implements Reader {
     private static final String TEST_CASE_ELEMENT_NAME = "testcase";
     private static final String CLASS_NAME_ATTRIBUTE_NAME = "classname";
     private static final String NAME_ATTRIBUTE_NAME = "name";
+    private static final String VALUE_ATTRIBUTE_NAME = "value";
     private static final String TIME_ATTRIBUTE_NAME = "time";
     private static final String FAILURE_ELEMENT_NAME = "failure";
     private static final String ERROR_ELEMENT_NAME = "error";
@@ -93,6 +95,8 @@ public class JunitXmlPlugin implements Reader {
     private static final String STATUS_ATTRIBUTE_NAME = "status";
     private static final String SKIPPED_ATTRIBUTE_VALUE = "notrun";
     private static final String SYSTEM_OUTPUT_ELEMENT_NAME = "system-out";
+    private static final String PROPERTIES_ELEMENT_NAME = "properties";
+    private static final String PROPERTY_ELEMENT_NAME = "property";
 
     private static final String XML_GLOB = "*.xml";
 
@@ -240,6 +244,7 @@ public class JunitXmlPlugin implements Reader {
         result.setName(isNull(name) ? "Unknown test case" : name);
         result.setTime(getTime(info.getTimestamp(), testCaseElement, parsedFile));
         result.addLabelIfNotExists(RESULT_FORMAT, JUNIT_RESULTS_FORMAT);
+        setParameters(result, testCaseElement);
 
         suiteName.ifPresent(s -> result.addLabelIfNotExists(LabelName.SUITE, s));
         if (nonNull(info.getHostname())) {
@@ -284,6 +289,22 @@ public class JunitXmlPlugin implements Reader {
                     result.setStatusTrace(element.getValue());
                     //@formatter:on
                 });
+    }
+
+    private void setParameters(final TestResult result, final XmlElement testCaseElement) {
+        testCaseElement
+                .getFirst(PROPERTIES_ELEMENT_NAME)
+                .map(properties -> properties.get(PROPERTY_ELEMENT_NAME))
+                .map(Collection::stream)
+                .map(stream -> stream.map(this::getParameter))
+                .map(stream -> stream.collect(Collectors.toList()))
+                .ifPresent(result::setParameters);
+    }
+
+    private Parameter getParameter(final XmlElement propertyElement) {
+        final String name = propertyElement.getAttribute(NAME_ATTRIBUTE_NAME);
+        final String value = propertyElement.getAttribute(VALUE_ATTRIBUTE_NAME);
+        return new Parameter().setName(name).setValue(value);
     }
 
     private Time getTime(final Long suiteStart, final XmlElement testCaseElement, final Path parsedFile) {
