@@ -12,8 +12,37 @@
     }
 
     function findImage(data, name) {
-        if (data.testStage && data.testStage.attachments) {
-            var matchedImage = data.testStage.attachments.filter(function (attachment) {
+        // Gather all attachments across stages
+        allAttachments = [];
+
+        // Go through attachments from the test stage
+        if (data.testStage) {
+            if (data.testStage.attachments) {
+                allAttachments.push(...data.testStage.attachments);
+            }
+
+            if (data.testStage.steps) {
+                for (const step of data.testStage.steps) {
+                    if (step.attachments) {
+                        allAttachments.push(...step.attachments)
+                    }
+                }
+            }
+        }
+
+        // Go through attachments from the before- and after-test stages
+        for (const stages of [data.beforeStages, data.afterStages]) {
+            if (stages) {
+                for (const stage of data.afterStages) {
+                    if (stage.attachments) {
+                        allAttachments.push(...stage.attachments)
+                    }
+                }
+            }
+        }
+        
+        if (allAttachments.length > 0) {
+            var matchedImage = allAttachments.filter(function (attachment) {
                 return attachment.name === name;
             })[0];
             if (matchedImage) {
