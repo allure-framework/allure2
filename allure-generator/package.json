@@ -30,7 +30,7 @@
     "eslint-plugin-prefer-arrow": "^1.2.2",
     "file-loader": "^6.2.0",
     "handlebars-jest": "^0.5.0",
-    "handlebars-loader": "^1.7.1",
+    "handlebars-loader": "^1.7.3",
     "jest": "^24.9.0",
     "jsdom": "^16.5.3",
     "json-loader": "^0.5.7",
