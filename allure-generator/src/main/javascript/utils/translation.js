@@ -14,6 +14,7 @@ export const LANGUAGES = [
   { id: "es", title: "Español" },
   { id: "kr", title: "한국어" },
   { id: "fr", title: "Français" },
+  { id: "az", title: "Azərbaycanca" },
 ];
 
 LANGUAGES.map((lang) => lang.id).forEach((lang) =>
