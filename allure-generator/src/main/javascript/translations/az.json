@@ -1,0 +1,214 @@
+{
+  "chart": {
+    "duration": {
+      "empty": "Göstəriləcək heç nə yoxdur",
+      "name": "Test müddəti"
+    },
+    "severity": {
+      "name": "Testlərin əhəmiyyəti"
+    },
+    "status": {
+      "name": "Testlərin statusu"
+    },
+    "trend": {
+      "empty": "Göstəriləcək heç nə yoxdur"
+    }
+  },
+  "component": {
+    "markToggle": {
+      "hideCases": "{{mark}} nəticəni gizlədin",
+      "showCases": "{{mark}} nəticəni göstərin"
+    },
+    "statusToggle": {
+      "hideCases": "{{status}} statuslu test nəticələrini gizlədin",
+      "showCases": "{{status}} statuslu test nəticələrini gizlədin"
+    },
+    "tree": {
+      "download": "CSV endirin",
+      "empty": "Məlumat yoxdur",
+      "filter": "Status",
+      "filter-marks": "Teqlər",
+      "filtered": {
+        "shown": "{{count}} göstərilir",
+        "total": "{{count}} test nəticəsi",
+        "total_plural": "{{count}} test nəticəsi"
+      },
+      "groups": "Qruplar haqqında məlumatları göstərin",
+      "time": {
+        "max": {
+          "name": "Maks",
+          "tooltip": "Qrupdakı ən uzun testin müddəti"
+        },
+        "sum": {
+          "name": "Cəm",
+          "tooltip": "Qrupdakı test müddətlərinin cəmi"
+        },
+        "total": {
+          "name": "Toplam",
+          "tooltip": "İlk test başlayandan sonuncu bitənə qədər olan vaxt"
+        }
+      },
+      "unknown": "<Boş>"
+    },
+    "widgetStatus": {
+      "showAll": "Hamısını göstər",
+      "total": "Toplam {{count}} element",
+      "total_plural": "Toplam {{count}} element"
+    }
+  },
+  "controls": {
+    "backto": "Geri",
+    "clipboard": "Mübadilə buferinə kopyala",
+    "clipboardError": "Mübadilə buferinə kopyalamaq mümkün olmadı. Bu özəllik browseriniz tərəfindən dəstəklənmir",
+    "clipboardSuccess": "Uğurla kopyalandı",
+    "collapse": "Aç",
+    "expand": "Genişlət",
+    "fullscreen": "Tam ekran",
+    "language": "Dili dəyişin"
+  },
+  "errors": {
+    "missedAttachment": "Qoşma tapılmadı",
+    "notFound": "Tapılmadı"
+  },
+  "marks": {
+    "flaky": "Qeyri-sabit",
+    "newBroken": "Yeni qırılmış",
+    "newFailed": "Yeni uğursuz",
+    "newPassed": "Yeni keçmiş",
+    "retriesStatusChange": "Yenidən cəhd etdikdən sonra status dəyişib"
+  },
+  "sorter": {
+    "duration": "müddət",
+    "name": "ad",
+    "order": "sıra",
+    "status": "status"
+  },
+  "status": {
+    "broken": "Qırılmış",
+    "failed": "Uğursuz",
+    "passed": "Keçmiş",
+    "skipped": "Buraxılmış",
+    "unknown": "Qeyri müəyyən"
+  },
+  "tab": {
+    "categories": {
+      "name": "Kateqoriyalar"
+    },
+    "graph": {
+      "name": "Qraflar"
+    },
+    "overview": {
+      "name": "Ümumibaxış"
+    },
+    "suites": {
+      "name": "Test dəsti"
+    },
+    "timeline": {
+      "name": "Zaman şkalası",
+      "selected": "Müddəti {{duration}} çox olan {{count}} test ({{percent}}%) seçildi",
+      "selected_plural": "Müddəti {{duration}} çox olan {{count}} test ({{percent}}%) seçildi"
+    }
+  },
+  "testResult": {
+    "categories": {
+      "name": "Kateqoriyalar"
+    },
+    "description": {
+      "name": "Açıqlama"
+    },
+    "duration": {
+      "name": "Müddət"
+    },
+    "execution": {
+      "body": "Test gövdəsi",
+      "downloadAttachment": {
+        "tooltip": "Qoşmanı yeni tabda açın"
+      },
+      "name": "İcra",
+      "setup": "Hazırlanma",
+      "teardown": "Sonlandırma"
+    },
+    "history": {
+      "empty": "Tarix məlumatı tapılmadı.",
+      "name": "Tarix",
+      "statistic": "Toplam:{{total}}, Keçmiş:{{passed}} ",
+      "successRate": "Uğur faizi",
+      "time": "{{date}} at {{time}}"
+    },
+    "links": {
+      "name": "Linklər"
+    },
+    "overview": {
+      "name": "Ümumibaxış"
+    },
+    "owner": {
+      "name": "Sahibi"
+    },
+    "parameters": {
+      "name": "Parameterlər"
+    },
+    "retries": {
+      "empty": "Testlərin yenidən çalışdırılması ilə bağlı məlumat yoxdur",
+      "name": "Yenidən Cəhdlər",
+      "time": "{{date}} at {{time}}"
+    },
+    "severity": {
+      "name": "Əhəmiyyəti"
+    },
+    "stats": {
+      "count": {
+        "attachments": "{{count}} qoşma",
+        "attachments_plural": "{{count}} qoşma",
+        "parameters": "{{count}} parameter",
+        "parameters_plural": "{{count}} parameter",
+        "steps": "{{count}} alt addım",
+        "steps_plural": "{{count}} alt addım"
+      }
+    },
+    "status": {
+      "empty": "Boş status detalları",
+      "trace": "Trace-i göstər"
+    }
+  },
+  "widget": {
+    "categories": {
+      "name": "Kateqoriyalar"
+    },
+    "categoriesTrend": {
+      "name": "Kateqoriyalar trendi"
+    },
+    "durationTrend": {
+      "name": "Müddət trendi"
+    },
+    "environment": {
+      "empty": "Mühit dəyişənləri haqqında məlumat yoxdur",
+      "name": "Mühit",
+      "showAll": "Hamısını göstər"
+    },
+    "executors": {
+      "empty": "Testin icrası sistemi haqqında məlumat yoxdur",
+      "name": "Test icraçıları",
+      "unknown": "Bilinməyən"
+    },
+    "launches": {
+      "empty": "Başlamalar haqqında məlumat yoxdur",
+      "name": "Başlamalar"
+    },
+    "retryTrend": {
+      "name": "Yenidən cəhdlər trendi"
+    },
+    "suites": {
+      "name": "Dəstlər"
+    },
+    "summary": {
+      "aggregatedName": "Ümumi hesabat",
+      "launches": "Başlama",
+      "launches_plural": "Başlamalar",
+      "testResults": "test nəticəsi",
+      "testResults_plural": "test nəticələri"
+    },
+    "trend": {
+      "name": "Trend"
+    }
+  }
+}
