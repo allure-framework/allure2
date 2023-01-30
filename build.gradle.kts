@@ -23,7 +23,7 @@ plugins {
     signing
     id("com.bmuschko.docker-remote-api") version "6.7.0"
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
-    id("com.diffplug.spotless") version "6.13.0"
+    id("com.diffplug.spotless") version "6.14.0"
     id("com.gorylenko.gradle-git-properties") version "2.4.1"
     id("io.spring.dependency-management") version "1.1.0"
     id("ru.vyarus.quality") version "4.7.0"
