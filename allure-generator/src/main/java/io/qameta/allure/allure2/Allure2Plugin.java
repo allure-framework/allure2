@@ -44,9 +44,14 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -108,15 +113,50 @@ public class Allure2Plugin implements Reader {
         final RandomUidContext context = configuration.requireContext(RandomUidContext.class);
         final List<TestResultContainer> groups = readTestResultsContainers(resultsDirectory)
                 .collect(Collectors.toList());
-
+        final Map<String, Collection<TestResultContainer>> idToParentsMap = buildIdToParentsMap(groups);
         readTestResults(resultsDirectory)
-                .forEach(result -> convert(context.getValue(), resultsDirectory, visitor, groups, result));
+                .forEach(
+                        result -> convert(
+                                context.getValue(),
+                                resultsDirectory,
+                                visitor,
+                                idToParentsMap,
+                                result
+                        )
+                );
+    }
+
+    protected static Map<String, Collection<TestResultContainer>> buildIdToParentsMap(
+            final List<TestResultContainer> groups
+    ) {
+        if (groups == null) {
+            return Collections.emptyMap();
+        }
+        final HashMap<String, Collection<TestResultContainer>> idToParentsMap = new HashMap<>(groups.size());
+        for (TestResultContainer testResultContainer:groups) {
+            if (testResultContainer == null) {
+                continue;
+            }
+            if (testResultContainer.getChildren() == null) {
+                continue;
+            }
+            for (String childrenUuid : testResultContainer.getChildren()) {
+                @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+                final Collection<TestResultContainer> parents = idToParentsMap.computeIfAbsent(
+                        childrenUuid,
+                        k -> new LinkedHashSet<>()
+                );
+                parents.add(testResultContainer);
+            }
+        }
+        return idToParentsMap;
     }
 
     private void convert(final Supplier<String> uidGenerator,
                          final Path resultsDirectory,
                          final ResultsVisitor visitor,
-                         final List<TestResultContainer> groups, final TestResult result) {
+                         final Map<String, Collection<TestResultContainer>> idToParentsMap,
+                         final TestResult result) {
         final io.qameta.allure.entity.TestResult dest = new io.qameta.allure.entity.TestResult();
         dest.setUid(uidGenerator.get());
         dest.setHistoryId(result.getHistoryId());
@@ -142,8 +182,21 @@ public class Allure2Plugin implements Reader {
             dest.setTestStage(getTestStage(resultsDirectory, visitor, result));
         }
 
-        final List<TestResultContainer> parents = findAllParents(groups, result.getUuid(), new HashSet<>());
-        dest.getBeforeStages().addAll(getStages(parents, fixture -> getBefore(resultsDirectory, visitor, fixture)));
+        final List<TestResultContainer> parents = findAllParents(
+                idToParentsMap,
+                result.getUuid(),
+                new HashSet<>()
+        );
+        dest.getBeforeStages().addAll(
+                getStages(
+                        parents,
+                        fixture -> getBefore(
+                                resultsDirectory,
+                                visitor,
+                                fixture
+                        )
+                )
+        );
         dest.getAfterStages().addAll(getStages(parents, fixture -> getAfter(resultsDirectory, visitor, fixture)));
         visitor.visitTestResult(dest);
     }
@@ -305,22 +358,25 @@ public class Allure2Plugin implements Reader {
         return convertList(container.getAfters(), fixture -> convert(source, visitor, fixture)).stream();
     }
 
-    private List<TestResultContainer> findAllParents(final List<TestResultContainer> groups,
+    private List<TestResultContainer> findAllParents(final Map<String, Collection<TestResultContainer>> idToParentsMap,
                                                      final String id,
                                                      final Set<String> seen) {
-        final List<TestResultContainer> parents = findParents(groups, id, seen);
+        final List<TestResultContainer> parents = findParents(idToParentsMap, id, seen);
         final List<TestResultContainer> result = new ArrayList<>(parents);
         for (TestResultContainer container : parents) {
-            result.addAll(findAllParents(groups, container.getUuid(), seen));
+            result.addAll(findAllParents(idToParentsMap, container.getUuid(), seen));
         }
         return result;
     }
 
-    private List<TestResultContainer> findParents(final List<TestResultContainer> groups,
+    private List<TestResultContainer> findParents(final Map<String, Collection<TestResultContainer>> idToParentsMap,
                                                   final String id,
                                                   final Set<String> seen) {
-        return groups.stream()
-                .filter(container -> container.getChildren().contains(id))
+        final Collection<TestResultContainer> parents = idToParentsMap.get(id);
+        if (parents == null) {
+            return Collections.emptyList();
+        }
+        return parents.stream()
                 .filter(container -> !seen.contains(container.getUuid()))
                 .collect(Collectors.toList());
     }
