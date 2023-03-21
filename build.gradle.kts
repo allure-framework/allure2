@@ -21,7 +21,7 @@ plugins {
     `java-library`
     `maven-publish`
     signing
-    id("com.bmuschko.docker-remote-api") version "6.7.0"
+    id("com.bmuschko.docker-remote-api") version "9.3.0"
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
     id("com.diffplug.spotless") version "6.13.0"
     id("com.gorylenko.gradle-git-properties") version "2.4.1"
