@@ -18,7 +18,7 @@ jobs:
       matrix:
         java-version: [ '8.0.x', '11.0.x' ]
     steps:
-      - uses: actions/checkout@v3.3.0
+      - uses: actions/checkout@v3.4.0
 
       - name: Set up JDK ${{ matrix.java-version }}
         uses: actions/setup-java@v3
