@@ -287,7 +287,7 @@ public class Allure2Plugin implements Reader {
 
     private List<StageResult> getStages(final List<TestResultContainer> parents,
                                         final Function<TestResultContainer, Stream<StageResult>> getter) {
-        return parents.stream()
+        return parents.parallelStream()
                 .flatMap(getter)
                 .sorted(BY_START)
                 .collect(Collectors.toList());
@@ -310,16 +310,18 @@ public class Allure2Plugin implements Reader {
                                                      final Set<String> seen) {
         final List<TestResultContainer> parents = findParents(groups, id, seen);
         final List<TestResultContainer> result = new ArrayList<>(parents);
-        for (TestResultContainer container : parents) {
-            result.addAll(findAllParents(groups, container.getUuid(), seen));
-        }
+        parents
+                .parallelStream()
+                .forEach(parent -> result.addAll(findAllParents(groups, parent.getUuid(), seen)));
+
         return result;
     }
 
     private List<TestResultContainer> findParents(final List<TestResultContainer> groups,
                                                   final String id,
                                                   final Set<String> seen) {
-        return groups.stream()
+        return groups
+                .parallelStream()
                 .filter(container -> container.getChildren().contains(id))
                 .filter(container -> !seen.contains(container.getUuid()))
                 .collect(Collectors.toList());
@@ -337,6 +339,7 @@ public class Allure2Plugin implements Reader {
 
     private Stream<TestResultContainer> readTestResultsContainers(final Path resultsDirectory) {
         return listFiles(resultsDirectory, "*-container.json")
+                .parallel()
                 .map(this::readTestResultContainer)
                 .filter(Optional::isPresent)
                 .map(Optional::get);
@@ -344,6 +347,7 @@ public class Allure2Plugin implements Reader {
 
     private Stream<TestResult> readTestResults(final Path resultsDirectory) {
         return listFiles(resultsDirectory, "*-result.json")
+                .parallel()
                 .map(this::readTestResult)
                 .filter(Optional::isPresent)
                 .map(Optional::get);
@@ -369,7 +373,7 @@ public class Allure2Plugin implements Reader {
 
     private Stream<Path> listFiles(final Path directory, final String glob) {
         try (DirectoryStream<Path> directoryStream = newDirectoryStream(directory, glob)) {
-            return StreamSupport.stream(directoryStream.spliterator(), false)
+            return StreamSupport.stream(directoryStream.spliterator(), true)
                     .filter(Files::isRegularFile)
                     .collect(Collectors.toList())
                     .stream();

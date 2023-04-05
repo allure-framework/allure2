@@ -17,14 +17,12 @@ package io.qameta.allure.core;
 
 import io.qameta.allure.Aggregator;
 import io.qameta.allure.Constants;
-import io.qameta.allure.entity.Attachment;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Plugin that stores attachments to report data folder.
@@ -40,11 +38,16 @@ public class AttachmentsPlugin implements Aggregator {
         final Path attachmentsFolder = Files.createDirectories(
                 outputDirectory.resolve(Constants.DATA_DIR).resolve("attachments")
         );
-        for (LaunchResults launch : launchesResults) {
-            for (Map.Entry<Path, Attachment> entry : launch.getAttachments().entrySet()) {
-                final Path file = attachmentsFolder.resolve(entry.getValue().getSource());
-                Files.copy(entry.getKey(), file, StandardCopyOption.REPLACE_EXISTING);
-            }
-        }
+        launchesResults.forEach(launch -> launch.getAttachments().entrySet()
+                .parallelStream()
+                .forEach(
+                        entry -> {
+                            final Path file = attachmentsFolder.resolve(entry.getValue().getSource());
+                            try {
+                                Files.copy(entry.getKey(), file, StandardCopyOption.REPLACE_EXISTING);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }));
     }
 }
