@@ -21,9 +21,7 @@ jobs:
         uses: mikepenz/gradle-dependency-submission@v0.8.6
         with:
           gradle-build-module: |-
-            :allure-report-service
-            :allure-uaa-service
-            :allure-gateway-service
+            :allure-commandline
           gradle-build-configuration: |-
             implementation
             api
