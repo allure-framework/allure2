@@ -1,0 +1,24 @@
+name: Dependency Submission
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Dependencies
+    runs-on: ubuntu-latest
+    permissions: # The Dependency Submission API requires write permission
+      contents: write
+    steps:
+      - uses: actions/checkout@v3.5.2
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+      - name: Submit Gradle dependencies to Github
+        uses: mikepenz/gradle-dependency-submission@v0.8.6
+        with:
+          gradle-build-module: |-
+            :allure-commandline
