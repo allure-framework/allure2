@@ -45,8 +45,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -156,7 +154,7 @@ public class Allure2Plugin implements Reader {
                 .map(fixtureResult -> convert(resultsDirectory, visitor, fixtureResult))
                 .collect(Collectors.toList());
 
-        final Set<String> visited = new HashSet<>();
+        final Set<String> visited = ConcurrentHashMap.newKeySet();
 
         group.getChildren()
                 .parallelStream()
