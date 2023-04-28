@@ -201,14 +201,14 @@ public class Allure2Plugin implements Reader {
             dest.setTestStage(getTestStage(resultsDirectory, visitor, result));
         }
 
-        if (Objects.nonNull(result.getUuid())) {
+        if (nonNull(result.getUuid())) {
             final List<StageResult> resultBefores = befores.get(result.getUuid());
-            if (Objects.nonNull(resultBefores)) {
+            if (nonNull(resultBefores)) {
                 dest.getBeforeStages().addAll(resultBefores);
             }
 
             final List<StageResult> resultAfters = afters.get(result.getUuid());
-            if (Objects.nonNull(resultAfters)) {
+            if (nonNull(resultAfters)) {
                 dest.getAfterStages().addAll(resultAfters);
             }
         }
