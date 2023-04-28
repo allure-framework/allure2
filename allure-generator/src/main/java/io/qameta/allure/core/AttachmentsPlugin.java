@@ -32,6 +32,7 @@ import java.util.List;
 public class AttachmentsPlugin implements Aggregator {
 
     @Override
+    @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
                           final Path outputDirectory) throws IOException {
