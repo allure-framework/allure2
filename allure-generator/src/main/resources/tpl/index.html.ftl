@@ -25,5 +25,12 @@
     <script src="plugins/${plugin.id}/${jsFile}"></script>
     </#list>
 </#list>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FVWC4GKEYS"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-FVWC4GKEYS');
+</script>
 </body>
 </html>
