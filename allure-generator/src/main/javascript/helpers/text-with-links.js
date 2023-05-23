@@ -12,7 +12,7 @@ export default function(text) {
         encodeHTMLEntities(text).replace(
           URL_REGEXP,
           (_, urlFullText, urlProtocol, terminalSymbol) => {
-            return ` <a class="link" target="_blank" href="${
+            return `&nbsp;<a class="link" target="_blank" href="${
               urlProtocol ? urlFullText : `https://${urlFullText}`
             }">${urlFullText}</a>${terminalSymbol} `;
           },
