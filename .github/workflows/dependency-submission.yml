@@ -22,3 +22,5 @@ jobs:
         with:
           gradle-build-module: |-
             :allure-commandline
+          gradle-build-configuration: |-
+            runtimeClasspath
