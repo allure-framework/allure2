@@ -22,3 +22,17 @@ plugins.forEach {
     include("plugins/$it")
     project(":plugins/$it").name = it
 }
+
+pluginManagement {
+    plugins {
+        id("com.bmuschko.docker-remote-api") version "9.3.1"
+        id("com.diffplug.spotless") version "6.19.0"
+        id("com.github.node-gradle.node") version "4.0.0"
+        id("com.gorylenko.gradle-git-properties") version "2.4.1"
+        id("com.netflix.nebula.ospackage") version "11.3.0"
+        id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
+        id("io.spring.dependency-management") version "1.1.0"
+        id("org.owasp.dependencycheck") version "8.2.1"
+        id("ru.vyarus.quality") version "4.9.0"
+    }
+}
