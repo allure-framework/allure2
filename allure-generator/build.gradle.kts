@@ -2,7 +2,7 @@ import com.github.gradle.node.npm.task.NpmTask
 
 plugins {
     `java-library`
-    id("com.github.node-gradle.node") version "3.5.1"
+    id("com.github.node-gradle.node")
 }
 
 description = "Allure Report Generator"
@@ -18,7 +18,7 @@ val generatedStatic = "build/www"
 
 tasks.npmInstall {
     group = "Build"
-    args.set(listOf("--silent"))
+    args.set(listOf("--silent", "--no-audit"))
     npmCommand.set(listOf("ci"))
     environment.set(mapOf("ADBLOCK" to "true"))
     inputs.file("package-lock.json")

@@ -21,13 +21,13 @@ plugins {
     `java-library`
     `maven-publish`
     signing
-    id("com.bmuschko.docker-remote-api") version "6.7.0"
-    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
-    id("com.diffplug.spotless") version "6.13.0"
-    id("com.gorylenko.gradle-git-properties") version "2.4.1"
-    id("io.spring.dependency-management") version "1.1.0"
-    id("ru.vyarus.quality") version "4.7.0"
-    id("org.owasp.dependencycheck") version "7.4.4"
+    id("com.bmuschko.docker-remote-api")
+    id("io.github.gradle-nexus.publish-plugin")
+    id("com.diffplug.spotless")
+    id("com.gorylenko.gradle-git-properties")
+    id("io.spring.dependency-management")
+    id("ru.vyarus.quality")
+    id("org.owasp.dependencycheck")
 }
 
 java {
@@ -67,38 +67,38 @@ subprojects {
 
     dependencyManagement {
         imports {
-            mavenBom("com.fasterxml.jackson:jackson-bom:2.14.1")
-            mavenBom("org.junit:junit-bom:5.9.2")
-            mavenBom("io.qameta.allure:allure-bom:2.20.1")
+            mavenBom("com.fasterxml.jackson:jackson-bom:2.15.2")
+            mavenBom("org.junit:junit-bom:5.9.3")
+            mavenBom("io.qameta.allure:allure-bom:2.22.1")
         }
         dependencies {
-            dependency("ch.qos.logback:logback-classic:1.3.5")
+            dependency("ch.qos.logback:logback-classic:1.4.7")
             dependency("com.beust:jcommander:1.82")
             dependency("com.github.spotbugs:spotbugs-annotations:4.7.3")
             dependency("com.opencsv:opencsv:4.6")
             dependency("commons-beanutils:commons-beanutils:1.9.4")
-            dependency("commons-io:commons-io:2.11.0")
+            dependency("commons-io:commons-io:2.12.0")
             dependency("javax.xml.bind:jaxb-api:2.3.1")
             dependency("org.allurefw:allure1-model:1.0")
             dependency("org.apache.commons:commons-lang3:3.12.0")
             dependency("org.apache.httpcomponents:httpclient:4.5.14")
-            dependency("org.apache.tika:tika-core:2.6.0")
-            dependency("org.assertj:assertj-core:3.23.1")
-            dependency("org.eclipse.jetty:jetty-server:9.4.49.v20220914")
+            dependency("org.apache.tika:tika-core:2.8.0")
+            dependency("org.assertj:assertj-core:3.24.2")
+            dependency("org.eclipse.jetty:jetty-server:9.4.51.v20230217")
             dependency("org.freemarker:freemarker:2.3.32")
-            dependency("org.mockito:mockito-core:4.11.0")
-            dependency("org.projectlombok:lombok:1.18.24")
+            dependency("org.mockito:mockito-core:5.3.1")
+            dependency("org.projectlombok:lombok:1.18.28")
             dependency("org.zeroturnaround:zt-zip:1.15")
-            dependencySet("org.slf4j:2.0.3") {
+            dependencySet("org.slf4j:2.0.7") {
                 entry("slf4j-api")
                 entry("slf4j-nop")
                 entry("slf4j-simple")
             }
-            dependencySet("com.squareup.retrofit2:2.6.1") {
+            dependencySet("com.squareup.retrofit2:2.9.0") {
                 entry("converter-jackson")
                 entry("retrofit")
             }
-            dependencySet("com.vladsch.flexmark:0.62.2") {
+            dependencySet("com.vladsch.flexmark:0.64.8") {
                 entry("flexmark")
                 entry("flexmark-ext-tables")
             }

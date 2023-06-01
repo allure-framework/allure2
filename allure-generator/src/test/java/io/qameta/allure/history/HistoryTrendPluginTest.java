@@ -124,6 +124,7 @@ class HistoryTrendPluginTest {
                 );
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void shouldProcessCorruptedData(@TempDir final Path resultsDirectory) throws Exception {
         final Path history = Files.createDirectories(resultsDirectory.resolve("history"));
@@ -179,7 +180,6 @@ class HistoryTrendPluginTest {
 
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     void shouldGetData() {
         final List<HistoryTrendItem> history = randomHistoryTrendItems();
@@ -228,7 +228,7 @@ class HistoryTrendPluginTest {
                 )
         );
 
-        final List<HistoryTrendItem> data = new HistoryTrendPlugin().getData(launchResults);
+        final List<HistoryTrendItem> data = HistoryTrendPlugin.getData(launchResults);
 
         assertThat(data)
                 .hasSize(1 + history1.size() + history2.size());

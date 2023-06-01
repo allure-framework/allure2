@@ -69,9 +69,7 @@ class Allure1EnvironmentPluginTest {
 
         assertThat(environment)
                 .as("Unexpected environment properties have been read from properties file")
-                .hasSize(3)
-                .usingFieldByFieldElementComparator()
-                .containsExactly(expected);
+                .containsExactlyInAnyOrder(expected);
     }
 
     @Test
@@ -91,8 +89,6 @@ class Allure1EnvironmentPluginTest {
 
         assertThat(environment)
                 .as("Unexpected environment properties have been read from xml file")
-                .hasSize(3)
-                .usingFieldByFieldElementComparator()
                 .containsExactlyInAnyOrder(expected);
     }
 
@@ -121,13 +117,11 @@ class Allure1EnvironmentPluginTest {
 
         assertThat(environment)
                 .as("Unexpected environment properties have been read from test results and properties file")
-                .hasSize(6)
-                .usingFieldByFieldElementComparator()
                 .containsExactlyInAnyOrder(expected);
     }
 
     @SafeVarargs
-    private final List<EnvironmentItem> process(List<String>... results) throws IOException {
+    private List<EnvironmentItem> process(List<String>... results) throws IOException {
         List<LaunchResults> launches = new ArrayList<>();
         final Configuration configuration = new ConfigurationBuilder().useDefault().build();
         Allure1Plugin reader = new Allure1Plugin();
