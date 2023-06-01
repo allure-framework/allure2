@@ -1,5 +1,5 @@
 <ul class="tabs">
     {{#each links}}
-        <li class="{{b 'tab' active=active}}"><a class="link link__no-decoration" href="{{href}}">{{t name}}</a></li>
+        <li class="{{b 'tab' active=active}}"><a class="link link__no-decoration" href="{{href}}" data-ga4-event="tab_change_click" data-ga4-param-tab="{{name}}">{{t name}}</a></li>
     {{/each}}
 </ul>

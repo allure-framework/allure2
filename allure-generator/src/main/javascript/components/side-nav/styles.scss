@@ -29,7 +29,7 @@
   }
 
   &__brand-text {
-    padding-left: $gap-size;
+    padding: 0 $gap-size;
   }
 
   &__menu {
@@ -59,6 +59,7 @@
     color: $text-muted-color;
     text-decoration: none;
     padding: 0.8em 0;
+    position: relative;
 
     &_active {
       color: $sidebar-active-text-color;
@@ -68,6 +69,7 @@
       color: $sidebar-hover-text-color;
     }
   }
+
   &__icon {
     position: absolute;
     left: $gap-size;
@@ -115,10 +117,7 @@
   }
 }
 
-[dir="rtl"] .side-nav__brand {
-  background: url("allure_logo_rtl.svg") no-repeat right center;
-}
-
-[dir="ltr"] .side-nav__brand {
+.side-nav__brand {
   background: url("allure_logo.svg") no-repeat left center;
+  background-size: 40px;
 }

@@ -23,9 +23,10 @@ LANGUAGES.map((lang) => lang.id).forEach((lang) =>
 
 export function initTranslations() {
   return new Promise((resolve, reject) => {
+    const language = settings.get("language");
     i18next.init(
       {
-        lng: settings.get("language"),
+        lng: language,
         interpolation: {
           escapeValue: false,
         },
@@ -33,6 +34,7 @@ export function initTranslations() {
       },
       (err) => (err ? reject(err) : resolve()),
     );
+    window.dataLayer.push({ event: "init_language", language: language || "en" });
   });
 }
 
