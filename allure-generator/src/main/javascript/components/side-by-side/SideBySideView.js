@@ -18,7 +18,9 @@ class SideBySideView extends View {
       gutterSize: 7,
       sizes: settings.getSideBySidePosition(),
       onDragEnd: function() {
-        settings.setSideBySidePosition(splitter.getSizes());
+          const sizes = splitter.getSizes();
+          settings.setSideBySidePosition(sizes);
+        window.dataLayer.push({ event: "side-by-side-resize", sizes });
       },
     });
   }

@@ -1,6 +1,10 @@
 <div class="sorter">
 {{#each sorters}}
-    <div class="{{b 'sorter' 'item'}}" data-name="{{name}}" data-asc={{asc}}>
+    <div class="{{b 'sorter' 'item'}}"
+         data-name="{{name}}"
+         data-asc="{{asc}}"
+         data-ga4-event="sort_click"
+         data-ga4-param-name="{{name}}">
         <span class="{{b 'sorter' enabled=(or asc desc)}} {{b 'sorter' 'name'}}">{{t name}}</span>
         <span class="fa-stack {{b 'sorter' 'icon'}}">
             <i class="fa fa-sort-asc fa-stack-1x {{b 'sorter' enabled=asc}}"></i>

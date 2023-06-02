@@ -34,6 +34,7 @@ class LanguageSelectView extends PopoverView {
     const langId = this.$(e.currentTarget).data("id");
     settings.setLanguage(langId);
     i18next.changeLanguage(langId);
+    window.dataLayer.push({ event: "language_change", language: langId });
   }
 }
 

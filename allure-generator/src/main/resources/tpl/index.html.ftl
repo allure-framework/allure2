@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Allure Report</title>
-    <link rel="favicon" href="favicon.ico?v=2">
+    <link rel="favicon" href="favicon.ico?v=3">
     <link rel="stylesheet" type="text/css" href="styles.css">
     <#list plugins as plugin>
         <#list plugin.cssFiles as cssFile>

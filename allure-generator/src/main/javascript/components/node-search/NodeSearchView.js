@@ -20,6 +20,7 @@ class NodeSearchView extends View {
   @on("input input")
   onChangeSorting(e) {
     this.state.set(SEARCH_QUERY_KEY, e.target.value);
+    window.dataLayer.push({event: "search"});
   }
 
   close() {
