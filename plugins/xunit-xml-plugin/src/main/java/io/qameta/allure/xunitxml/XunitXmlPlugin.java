@@ -33,6 +33,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -91,11 +92,11 @@ public class XunitXmlPlugin implements Reader {
     }
 
     private void parseAssemblies(final Path parsedFile, final RandomUidContext context, final ResultsVisitor visitor) {
-        try {
+        try (InputStream is = Files.newInputStream(parsedFile)) {
             LOGGER.debug("Parsing file {}", parsedFile);
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             final DocumentBuilder builder = factory.newDocumentBuilder();
-            final Document document = builder.parse(parsedFile.toFile());
+            final Document document = builder.parse(is);
             final XmlElement assembliesElement = new XmlElement(document.getDocumentElement());
             final String elementName = assembliesElement.getName();
             if (!ASSEMBLIES_ELEMENT_NAME.equals(elementName)) {

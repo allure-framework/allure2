@@ -50,6 +50,7 @@ import io.qameta.allure.suites.SuitesPlugin;
 import io.qameta.allure.summary.SummaryPlugin;
 import io.qameta.allure.tags.TagsPlugin;
 import io.qameta.allure.timeline.TimelinePlugin;
+import io.qameta.allure.zip.ZipResultsSourcePlugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -107,7 +108,8 @@ public class ConfigurationBuilder {
                 new Allure1Plugin(),
                 new Allure1EnvironmentPlugin(),
                 new Allure2Plugin(),
-                new GaPlugin()
+                new GaPlugin(),
+                new ZipResultsSourcePlugin()
         ));
         return this;
     }

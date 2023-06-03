@@ -35,6 +35,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -102,12 +103,12 @@ public class TrxPlugin implements Reader {
     }
 
     protected void parseTestRun(final Path parsedFile, final RandomUidContext context, final ResultsVisitor visitor) {
-        try {
-            LOGGER.debug("Parsing file {}", parsedFile);
-
+        try (InputStream is = Files.newInputStream(parsedFile)) {
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             final DocumentBuilder builder = factory.newDocumentBuilder();
-            final Document document = builder.parse(parsedFile.toFile());
+            LOGGER.debug("Parsing file {}", parsedFile);
+
+            final Document document = builder.parse(is);
             final XmlElement testRunElement = new XmlElement(document.getDocumentElement());
             final String elementName = testRunElement.getName();
             if (!TEST_RUN_ELEMENT_NAME.equals(elementName)) {

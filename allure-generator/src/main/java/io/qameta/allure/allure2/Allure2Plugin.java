@@ -107,6 +107,10 @@ public class Allure2Plugin implements Reader {
     public void readResults(final Configuration configuration,
                             final ResultsVisitor visitor,
                             final Path resultsDirectory) {
+        if (!Files.isDirectory(resultsDirectory)) {
+            return;
+        }
+
         final RandomUidContext context = configuration.requireContext(RandomUidContext.class);
 
         final Map<String, List<StageResult>> befores = new HashMap<>();
