@@ -29,11 +29,25 @@ public class FreemarkerContext implements Context<Configuration> {
 
     private final Configuration configuration;
 
+    /**
+     * Creates a default context that stores Freemarker configuration.
+     */
     public FreemarkerContext() {
+        this(BASE_PACKAGE_PATH);
+    }
+
+    /**
+     * Creates a new context that stores Freemarker configuration.
+     *
+     * @param basePackagePath The package that contains the templates, in path ({@code /}-separated) format. Note that
+     *                        path components should be separated by forward slashes independently of the separator
+     *                        character used by the underlying operating system. This parameter can't be {@code null}.
+     */
+    public FreemarkerContext(final String basePackagePath) {
         this.configuration = new Configuration(Configuration.VERSION_2_3_23);
         this.configuration.setLocalizedLookup(false);
         this.configuration.setTemplateUpdateDelayMilliseconds(0);
-        this.configuration.setClassLoaderForTemplateLoading(getClass().getClassLoader(), BASE_PACKAGE_PATH);
+        this.configuration.setClassLoaderForTemplateLoading(getClass().getClassLoader(), basePackagePath);
     }
 
     @Override
