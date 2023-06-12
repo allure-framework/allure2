@@ -78,7 +78,7 @@ subprojects {
             dependency("com.github.spotbugs:spotbugs-annotations:4.7.3")
             dependency("com.opencsv:opencsv:4.6")
             dependency("commons-beanutils:commons-beanutils:1.9.4")
-            dependency("commons-io:commons-io:2.12.0")
+            dependency("commons-io:commons-io:2.13.0")
             dependency("javax.xml.bind:jaxb-api:2.3.1")
             dependency("org.allurefw:allure1-model:1.0")
             dependency("org.apache.commons:commons-lang3:3.12.0")
