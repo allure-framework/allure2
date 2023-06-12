@@ -19,6 +19,7 @@ import io.qameta.allure.Aggregator;
 import io.qameta.allure.Constants;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -47,7 +48,7 @@ public class AttachmentsPlugin implements Aggregator {
                             try {
                                 Files.copy(entry.getKey(), file, StandardCopyOption.REPLACE_EXISTING);
                             } catch (IOException e) {
-                                throw new RuntimeException(e);
+                                throw new UncheckedIOException(e);
                             }
                         }));
     }
