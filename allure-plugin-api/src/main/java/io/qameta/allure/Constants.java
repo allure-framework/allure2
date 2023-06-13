@@ -47,6 +47,11 @@ public final class Constants {
      */
     public static final String HISTORY_DIR = "history";
 
+    /**
+     * The name of environment variable that disables analytics.
+     */
+    public static final String NO_ANALYTICS = "ALLURE_NO_ANALYTICS";
+
     private Constants() {
         throw new IllegalStateException("Do not instance");
     }

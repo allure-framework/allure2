@@ -13,32 +13,23 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package io.qameta.allure.ga;
+package io.qameta.allure;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 /**
- * Parameters for {@link GaPlugin}.
- *
- * @author eroshnkoam
+ * @author charlie (Dmitry Baev).
  */
 @Data
 @Accessors(chain = true)
-public class GaParameters {
+public class ReportInfo implements Serializable {
 
-    private String reportUuid;
+    private static final long serialVersionUID = 1L;
 
     private String allureVersion;
-
-    private String executorType;
-
-    private String language;
-
-    private String framework;
-
-    private long resultsCount;
-
-    private String resultsFormat;
+    private String reportUuid;
 
 }

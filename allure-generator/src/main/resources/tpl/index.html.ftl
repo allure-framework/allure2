@@ -25,12 +25,16 @@
     <script src="plugins/${plugin.id}/${jsFile}"></script>
     </#list>
 </#list>
+<#if ALLURE_NO_ANALYTICS == false>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-FVWC4GKEYS"></script>
+</#if>
 <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-FVWC4GKEYS');
+    gtag('allureVersion', '${allureVersion}')
+    gtag('reportUuid', '${reportUuid}')
 </script>
 </body>
 </html>
