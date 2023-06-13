@@ -21,7 +21,9 @@ import io.qameta.allure.Aggregator;
 import io.qameta.allure.Constants;
 import io.qameta.allure.PluginConfiguration;
 import io.qameta.allure.ReportGenerationException;
+import io.qameta.allure.ReportInfo;
 import io.qameta.allure.context.FreemarkerContext;
+import io.qameta.allure.context.ReportInfoContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -70,6 +73,7 @@ public class ReportWebPlugin implements Aggregator {
     protected void writeIndexHtml(final Configuration configuration,
                                   final Path outputDirectory) throws IOException {
         final FreemarkerContext context = configuration.requireContext(FreemarkerContext.class);
+        final ReportInfo reportInfo = configuration.requireContext(ReportInfoContext.class).getValue();
         final Path indexHtml = outputDirectory.resolve("index.html");
         final List<PluginConfiguration> pluginConfigurations = configuration.getPlugins().stream()
                 .map(Plugin::getConfig)
@@ -79,9 +83,15 @@ public class ReportWebPlugin implements Aggregator {
             final Template template = context.getValue().getTemplate("index.html.ftl");
             final Map<String, Object> dataModel = new HashMap<>();
             dataModel.put(Constants.PLUGINS_DIR, pluginConfigurations);
+            final Boolean noAnalytics = Optional.ofNullable(System.getenv(Constants.NO_ANALYTICS))
+                    .map(Boolean::parseBoolean)
+                    .orElse(false);
+            dataModel.put(Constants.NO_ANALYTICS, noAnalytics);
+            dataModel.put("reportUuid", reportInfo.getReportUuid());
+            dataModel.put("allureVersion", reportInfo.getAllureVersion());
             template.process(dataModel, writer);
         } catch (TemplateException e) {
-            LOGGER.error("Could't write index file", e);
+            LOGGER.error("Couldn't write index file", e);
         }
     }
 

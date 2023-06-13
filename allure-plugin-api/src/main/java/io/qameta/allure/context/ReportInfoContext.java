@@ -13,32 +13,28 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package io.qameta.allure.ga;
+package io.qameta.allure.context;
 
-import lombok.Data;
-import lombok.experimental.Accessors;
+import io.qameta.allure.Context;
+import io.qameta.allure.ReportInfo;
+
+import java.util.UUID;
 
 /**
- * Parameters for {@link GaPlugin}.
- *
- * @author eroshnkoam
+ * @author charlie (Dmitry Baev).
  */
-@Data
-@Accessors(chain = true)
-public class GaParameters {
+public class ReportInfoContext implements Context<ReportInfo> {
 
-    private String reportUuid;
+    private final ReportInfo reportInfo;
 
-    private String allureVersion;
+    public ReportInfoContext(final String allureVersion) {
+        this.reportInfo = new ReportInfo()
+                .setAllureVersion(allureVersion)
+                .setReportUuid(UUID.randomUUID().toString());
+    }
 
-    private String executorType;
-
-    private String language;
-
-    private String framework;
-
-    private long resultsCount;
-
-    private String resultsFormat;
-
+    @Override
+    public ReportInfo getValue() {
+        return reportInfo;
+    }
 }

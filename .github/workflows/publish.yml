@@ -13,7 +13,7 @@ jobs:
         run: echo "::set-output name=version::${GITHUB_REF:10}"
       - uses: actions/checkout@v3.5.3
 
-      - name: "Set up JDK 1.8"
+      - name: "Set up JDK"
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'

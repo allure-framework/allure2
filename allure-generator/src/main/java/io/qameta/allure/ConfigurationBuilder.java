@@ -23,6 +23,7 @@ import io.qameta.allure.context.FreemarkerContext;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.context.MarkdownContext;
 import io.qameta.allure.context.RandomUidContext;
+import io.qameta.allure.context.ReportInfoContext;
 import io.qameta.allure.core.AttachmentsPlugin;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.MarkdownDescriptionsPlugin;
@@ -50,11 +51,17 @@ import io.qameta.allure.suites.SuitesPlugin;
 import io.qameta.allure.summary.SummaryPlugin;
 import io.qameta.allure.tags.TagsPlugin;
 import io.qameta.allure.timeline.TimelinePlugin;
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Builder for {@link Configuration}.
@@ -69,12 +76,20 @@ import java.util.List;
 })
 public class ConfigurationBuilder {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationBuilder.class);
+
+    private static final String ALLURE_VERSION_TXT_PATH = "/allure-version.txt";
+
     private final List<Extension> extensions = new ArrayList<>();
 
     private final List<Plugin> plugins = new ArrayList<>();
 
     public ConfigurationBuilder useDefault() {
+        final String allureVersion = getVersionFromFile()
+                .orElse(getVersionFromManifest().orElse("Undefined"));
+
         fromExtensions(Arrays.asList(
+                new ReportInfoContext(allureVersion),
                 new JacksonContext(),
                 new MarkdownContext(),
                 new FreemarkerContext(),
@@ -130,5 +145,23 @@ public class ConfigurationBuilder {
                 Collections.unmodifiableList(extensions),
                 Collections.unmodifiableList(plugins)
         );
+    }
+
+    private static Optional<String> getVersionFromFile() {
+        try {
+            return Optional.of(IOUtils.resourceToString(ALLURE_VERSION_TXT_PATH, StandardCharsets.UTF_8))
+                    .map(String::trim)
+                    .filter(v -> !v.isEmpty())
+                    .filter(v -> !"#project.version#".equals(v));
+        } catch (IOException e) {
+            LOGGER.debug("Could not read {} resource", ALLURE_VERSION_TXT_PATH, e);
+            return Optional.empty();
+        }
+    }
+
+    private static Optional<String> getVersionFromManifest() {
+        return Optional.of(ConfigurationBuilder.class)
+                .map(Class::getPackage)
+                .map(Package::getImplementationVersion);
     }
 }
