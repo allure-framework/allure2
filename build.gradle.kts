@@ -99,7 +99,7 @@ subprojects {
                 entry("converter-jackson")
                 entry("retrofit")
             }
-            dependencySet("com.vladsch.flexmark:0.64.8") {
+            dependencySet("com.vladsch.flexmark:0.62.2") {
                 entry("flexmark")
                 entry("flexmark-ext-tables")
             }
