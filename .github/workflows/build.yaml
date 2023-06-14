@@ -27,10 +27,16 @@ jobs:
           cache: 'gradle'
       - name: Build with Gradle
         run: ./gradlew build buildDeb buildRpm
-      - uses: actions/upload-artifact@v3
+      - name: Upload allure-commandline artifact
+        uses: actions/upload-artifact@v3
         with:
           name: allure-commandline
           path: allure-commandline/build/install/allure-commandline
+      - name: Upload allure-results artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: allure-results
+          path: allure-generator/test-data/demo2
   testcmd:
     name: "Test Allure Commandline"
     runs-on: ubuntu-latest
@@ -40,16 +46,24 @@ jobs:
       matrix:
         java-version: [ '8', '11', '17', '20' ]
     steps:
-      - name: Set up JDK ${{ matrix.java-version }}
+      - name: Set up JRE ${{ matrix.java-version }}
         uses: actions/setup-java@v3
         with:
           java-package: 'jre'
           distribution: 'zulu'
           java-version: ${{ matrix.java-version }}
-      - uses: actions/download-artifact@v3
+      - name: Download allure-commandline artifact
+        uses: actions/download-artifact@v3
         with:
           name: allure-commandline
+      - name: Download allure-results artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: allure-results
+          path: allure-results
       - name: Add execute permissions to script
         run: chmod +x ./bin/allure
       - name: Run version command
         run: ./bin/allure --version
+      - name: Generate demo report
+        run: ./bin/allure generate allure-results
