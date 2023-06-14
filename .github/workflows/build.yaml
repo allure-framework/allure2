@@ -49,5 +49,4 @@ jobs:
           name: allure-commandline
       - name: Run version command
         run: |
-          ls
-          allure-commandline/bin/allure --version
+          ./bin/allure --version
