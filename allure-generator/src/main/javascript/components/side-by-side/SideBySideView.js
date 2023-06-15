@@ -2,6 +2,7 @@ import "./styles.scss";
 import { View } from "backbone.marionette";
 import split from "split.js";
 import { className, regions } from "../../decorators";
+import gtag from "../../utils/gtag";
 import settings from "../../utils/settings";
 import template from "./SideBySideView.hbs";
 
@@ -18,9 +19,9 @@ class SideBySideView extends View {
       gutterSize: 7,
       sizes: settings.getSideBySidePosition(),
       onDragEnd: function() {
-          const sizes = splitter.getSizes();
-          settings.setSideBySidePosition(sizes);
-        window.dataLayer.push({ event: "side-by-side-resize", sizes });
+        const sizes = splitter.getSizes();
+        settings.setSideBySidePosition(sizes);
+        gtag({ event: "side-by-side-resize", sizes });
       },
     });
   }

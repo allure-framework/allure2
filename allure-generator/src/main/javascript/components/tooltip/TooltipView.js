@@ -6,32 +6,32 @@ import $ from "jquery";
 import { defaults } from "underscore";
 
 export const POSITION = {
-  "top": function({ top, left, width }, { offset }, tipSize) {
+  top: function({ top, left, width }, { offset }, tipSize) {
     return {
       top: top - tipSize.height - offset,
       left: left + width / 2 - tipSize.width / 2,
     };
   },
 
-  "center": function({ top, left, height, width }, offsets, tipSize) {
+  center: function({ top, left, height, width }, offsets, tipSize) {
     return {
       top: top + height / 2,
       left: left + width / 2 - tipSize.width / 2,
     };
   },
-  "right": function({ top, left, height, width }, { offset }, tipSize) {
+  right: function({ top, left, height, width }, { offset }, tipSize) {
     return {
       top: top + height / 2 - tipSize.height / 2,
       left: left + width + offset,
     };
   },
-  "left": function({ top, left, height }, { offset }, tipSize) {
+  left: function({ top, left, height }, { offset }, tipSize) {
     return {
       top: top + height / 2 - tipSize.height / 2,
       left: left - offset - tipSize.width,
     };
   },
-  "bottom": function({ top, left, height, width }, { offset }, tipSize) {
+  bottom: function({ top, left, height, width }, { offset }, tipSize) {
     return {
       top: top + height + offset,
       left: left + width / 2 - tipSize.width / 2,

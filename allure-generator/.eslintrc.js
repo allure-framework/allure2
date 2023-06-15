@@ -2,12 +2,9 @@ module.exports = {
   env: {
     browser: true,
     node: true,
-    es6: true
+    es6: true,
   },
-  extends: [
-    "eslint:recommended",
-    "prettier",
-  ],
+  extends: ["eslint:recommended", "prettier"],
   parser: "babel-eslint",
   parserOptions: {
     ecmaVersion: 2017,
@@ -23,15 +20,6 @@ module.exports = {
     "arrow-body-style": "off",
     "arrow-parens": ["off", "always"],
     "brace-style": ["error", "1tbs"],
-    "comma-dangle": [
-      "error",
-      {
-        objects: "always-multiline",
-        arrays: "always-multiline",
-        functions: "always-multiline",
-        imports: "always-multiline",
-      },
-    ],
     complexity: "off",
     "constructor-super": "error",
     curly: "error",
@@ -106,7 +94,7 @@ module.exports = {
     ],
     "prefer-const": "error",
     "prefer-template": "error",
-    "quote-props": ["error", "consistent-as-needed"],
+    quotes: ["error", "double", { avoidEscape: true }],
     radix: "error",
     "sort-imports": ["error", { ignoreDeclarationSort: true, ignoreCase: true }],
     "space-before-function-paren": [

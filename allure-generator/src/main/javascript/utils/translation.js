@@ -1,4 +1,5 @@
 import i18next from "i18next";
+import gtag from "./gtag";
 import settings from "./settings";
 
 export const LANGUAGES = [
@@ -34,7 +35,7 @@ export function initTranslations() {
       },
       (err) => (err ? reject(err) : resolve()),
     );
-    window.dataLayer.push({ event: "init_language", language: language || "en" });
+    gtag({ event: "init_language", language: language || "en" });
   });
 }
 
