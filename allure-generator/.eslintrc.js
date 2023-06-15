@@ -23,15 +23,6 @@ module.exports = {
     "arrow-body-style": "off",
     "arrow-parens": ["off", "always"],
     "brace-style": ["error", "1tbs"],
-    "comma-dangle": [
-      "error",
-      {
-        objects: "always-multiline",
-        arrays: "always-multiline",
-        functions: "always-multiline",
-        imports: "always-multiline",
-      },
-    ],
     complexity: "off",
     "constructor-super": "error",
     curly: "error",
