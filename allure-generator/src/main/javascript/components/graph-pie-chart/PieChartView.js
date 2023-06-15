@@ -29,11 +29,13 @@ class PieChartView extends BaseChartView {
     this.statistic = this.model.get("statistic");
     const { total } = this.statistic;
     const stats = omit(this.statistic, "total");
-    this.data = Object.keys(stats).map((key) => ({
-      name: key.toUpperCase(),
-      value: stats[key],
-      part: stats[key] / total,
-    })).filter(item => item.value);
+    this.data = Object.keys(stats)
+      .map((key) => ({
+        name: key.toUpperCase(),
+        value: stats[key],
+        part: stats[key] / total,
+      }))
+      .filter((item) => item.value);
   }
 
   setupViewport() {

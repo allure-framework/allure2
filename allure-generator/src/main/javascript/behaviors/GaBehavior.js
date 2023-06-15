@@ -1,5 +1,6 @@
 import { Behavior } from "backbone.marionette";
 import { on } from "../decorators";
+import gtag from "../utils/gtag";
 
 export default class GaBehavior extends Behavior {
   initialize() {}
@@ -21,6 +22,6 @@ export default class GaBehavior extends Behavior {
         return { [gaKey]: value };
       })
       .reduce((a, b) => Object.assign(a, b), {});
-    window.dataLayer.push({ ...eventParams, event });
+    gtag({ ...eventParams, event });
   }
 }

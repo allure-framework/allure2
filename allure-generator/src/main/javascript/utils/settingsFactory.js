@@ -19,7 +19,7 @@ const treePluginDefaults = {
     newFailed: false,
     newPassed: false,
     newBroken: false,
-    retriesStatusChange : false,
+    retriesStatusChange: false,
   },
   showGroupInfo: false,
   treeSorting: {
@@ -151,5 +151,5 @@ export {
   getGlobalSettings,
   getSettingsForPlugin,
   getSettingsForTreePlugin,
-  getSettingsForWidgetGridPlugin
+  getSettingsForWidgetGridPlugin,
 };
