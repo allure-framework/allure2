@@ -17,7 +17,7 @@ body:
         🤔 If you have any questions or need further assistance, you can ask in our [GitHub Discussions](https://github.com/orgs/allure-framework/discussions). While English is the primary language of our community, you can use tools like Google Translate to communicate if needed. We value inclusivity and aim to create a welcoming environment for everyone.\
         \
         Once again, welcome to **Allure Report**! We're excited to have you on board. Let's work together to make software testing and reporting a breeze! 💪\
-        ![How to raise bugs](.github/bug.png)
+        ![How to raise bugs](https://github.com/allure-framework/allure2/blob/master/.github/bug.png?raw=true)
   - type: textarea
     id: description
     attributes:
