@@ -35,7 +35,7 @@ export function initTranslations() {
       },
       (err) => (err ? reject(err) : resolve()),
     );
-    gtag({ event: "init_language", language: language || "en" });
+    gtag("init_language", { language: language || "en" });
   });
 }
 

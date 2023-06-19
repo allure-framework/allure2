@@ -22,6 +22,6 @@ export default class GaBehavior extends Behavior {
         return { [gaKey]: value };
       })
       .reduce((a, b) => Object.assign(a, b), {});
-    gtag({ ...eventParams, event });
+    gtag(event, eventParams);
   }
 }

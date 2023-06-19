@@ -21,7 +21,7 @@ class NodeSearchView extends View {
   @on("input input")
   onChangeSorting(e) {
     this.state.set(SEARCH_QUERY_KEY, e.target.value);
-    gtag({ event: "search" });
+    gtag("search");
   }
 
   close() {

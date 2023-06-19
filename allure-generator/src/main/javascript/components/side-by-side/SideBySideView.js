@@ -21,7 +21,7 @@ class SideBySideView extends View {
       onDragEnd: function() {
         const sizes = splitter.getSizes();
         settings.setSideBySidePosition(sizes);
-        gtag({ event: "side-by-side-resize", sizes });
+        gtag("side-by-side-resize", { sizes });
       },
     });
   }

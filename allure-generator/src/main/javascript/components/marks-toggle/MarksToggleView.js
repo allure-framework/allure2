@@ -34,7 +34,7 @@ class MarksToggleView extends View {
     const checked = el.hasClass("n-label-mark");
     const marks = this.settings.getVisibleMarks();
     this.settings.setVisibleMarks(Object.assign({}, marks, { [name]: checked }));
-    gtag({ event: "marks_toggle_click", status: name, checked });
+    gtag("marks_toggle_click", { status: name, checked });
   }
 }
 
