@@ -35,7 +35,7 @@ class StatusToggleView extends View {
     const checked = el.hasClass("n-label");
     const statuses = this.settings.getVisibleStatuses();
     this.settings.setVisibleStatuses(Object.assign({}, statuses, { [name]: checked }));
-    gtag({ event: "status_toggle_click", status: name, checked });
+    gtag("status_toggle_click", { status: name, checked });
   }
 }
 

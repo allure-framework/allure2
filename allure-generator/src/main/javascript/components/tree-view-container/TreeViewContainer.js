@@ -44,7 +44,7 @@ class TreeViewContainer extends View {
   onInfoClick() {
     const show = this.settings.isShowGroupInfo();
     this.settings.setShowGroupInfo(!show);
-    gtag({ event: "tree_info_click", enable: !show });
+    gtag("tree_info_click", { enable: !show });
   }
 
   onRender() {

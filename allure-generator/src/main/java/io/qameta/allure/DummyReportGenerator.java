@@ -23,6 +23,7 @@ import io.qameta.allure.context.FreemarkerContext;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.context.MarkdownContext;
 import io.qameta.allure.context.RandomUidContext;
+import io.qameta.allure.context.ReportInfoContext;
 import io.qameta.allure.core.AttachmentsPlugin;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
@@ -81,6 +82,7 @@ public final class DummyReportGenerator {
     private static final List<Extension> EXTENSIONS = Arrays.asList(
             new JacksonContext(),
             new MarkdownContext(),
+            new ReportInfoContext("dev"),
             new FreemarkerContext(),
             new RandomUidContext(),
             new MarkdownDescriptionsPlugin(),
