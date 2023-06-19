@@ -45,8 +45,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +52,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -109,8 +108,8 @@ public class Allure2Plugin implements Reader {
                             final Path resultsDirectory) {
         final RandomUidContext context = configuration.requireContext(RandomUidContext.class);
 
-        final Map<String, List<StageResult>> befores = new HashMap<>();
-        final Map<String, List<StageResult>> afters = new HashMap<>();
+        final Map<String, List<StageResult>> befores = new ConcurrentHashMap<>();
+        final Map<String, List<StageResult>> afters = new ConcurrentHashMap<>();
 
         readTestResultsContainers(resultsDirectory)
                 .filter(group -> !Objects.isNull(group.getChildren()))
@@ -155,10 +154,10 @@ public class Allure2Plugin implements Reader {
                 .map(fixtureResult -> convert(resultsDirectory, visitor, fixtureResult))
                 .collect(Collectors.toList());
 
-        final Set<String> visited = new HashSet<>();
+        final Set<String> visited = ConcurrentHashMap.newKeySet();
 
         group.getChildren()
-                .stream()
+                .parallelStream()
                 .filter(Objects::nonNull)
                 .filter(visited::add)
                 .forEach(child -> befores.compute(child, (s, stageResults) -> {
@@ -364,6 +363,7 @@ public class Allure2Plugin implements Reader {
 
     private Stream<TestResultContainer> readTestResultsContainers(final Path resultsDirectory) {
         return listFiles(resultsDirectory, "*-container.json")
+                .parallel()
                 .map(this::readTestResultContainer)
                 .filter(Optional::isPresent)
                 .map(Optional::get);
@@ -371,6 +371,7 @@ public class Allure2Plugin implements Reader {
 
     private Stream<TestResult> readTestResults(final Path resultsDirectory) {
         return listFiles(resultsDirectory, "*-result.json")
+                .parallel()
                 .map(this::readTestResult)
                 .filter(Optional::isPresent)
                 .map(Optional::get);
@@ -396,7 +397,7 @@ public class Allure2Plugin implements Reader {
 
     private Stream<Path> listFiles(final Path directory, final String glob) {
         try (DirectoryStream<Path> directoryStream = newDirectoryStream(directory, glob)) {
-            return StreamSupport.stream(directoryStream.spliterator(), false)
+            return StreamSupport.stream(directoryStream.spliterator(), true)
                     .filter(Files::isRegularFile)
                     .collect(Collectors.toList())
                     .stream();
