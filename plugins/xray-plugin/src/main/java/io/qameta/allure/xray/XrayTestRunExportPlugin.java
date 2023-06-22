@@ -15,7 +15,8 @@
  */
 package io.qameta.allure.xray;
 
-import io.qameta.allure.Aggregator;
+import io.qameta.allure.Aggregator2;
+import io.qameta.allure.ReportStorage;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.ExecutorInfo;
@@ -28,7 +29,6 @@ import io.qameta.allure.jira.XrayTestRun;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -44,7 +44,7 @@ import static io.qameta.allure.util.PropertyUtils.getProperty;
 /**
  * Plugin update Xray test run status from test result.
  */
-public class XrayTestRunExportPlugin implements Aggregator {
+public class XrayTestRunExportPlugin implements Aggregator2 {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XrayTestRunExportPlugin.class);
 
@@ -92,7 +92,7 @@ public class XrayTestRunExportPlugin implements Aggregator {
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
-                          final Path outputDirectory) {
+                          final ReportStorage storage) {
         if (enabled) {
             updateTestRunStatuses(launchesResults);
         }
@@ -132,7 +132,7 @@ public class XrayTestRunExportPlugin implements Aggregator {
 
                                 case XRAY_STATUS_PASS:
                                     if (!linkNamePerStatus.containsKey(link.getName())
-                                            || linkNamePerStatus.get(link.getName()).equals(XRAY_STATUS_TODO)) {
+                                        || linkNamePerStatus.get(link.getName()).equals(XRAY_STATUS_TODO)) {
                                         linkNamePerStatus.put(link.getName(), status);
                                     }
                                     break;

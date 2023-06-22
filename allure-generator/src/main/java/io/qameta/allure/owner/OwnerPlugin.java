@@ -15,13 +15,13 @@
  */
 package io.qameta.allure.owner;
 
-import io.qameta.allure.Aggregator;
+import io.qameta.allure.Aggregator2;
+import io.qameta.allure.ReportStorage;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.TestResult;
 
-import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -29,14 +29,14 @@ import java.util.List;
  *
  * @since 2.0
  */
-public class OwnerPlugin implements Aggregator {
+public class OwnerPlugin implements Aggregator2 {
 
     public static final String OWNER_BLOCK_NAME = "owner";
 
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
-                          final Path outputDirectory) {
+                          final ReportStorage storage) {
         launchesResults.stream()
                 .flatMap(results -> results.getResults().stream())
                 .forEach(this::setOwner);

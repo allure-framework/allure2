@@ -45,7 +45,9 @@ import java.util.stream.Collectors;
  * Plugins that stores report static files to data directory.
  *
  * @since 2.0
+ * @deprecated for removal. Use {@link ReportWebGenerator instead}.
  */
+@Deprecated
 public class ReportWebPlugin implements Aggregator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReportWebPlugin.class);

@@ -161,6 +161,7 @@ public class CommandLine {
                         generateCommand.getReportDirectory(),
                         generateCommand.getResultsOptions().getResultsDirectories(),
                         generateCommand.isCleanReportDirectory(),
+                        generateCommand.isSingleFileMode(),
                         generateCommand.getConfigOptions()
                 );
             case SERVE_COMMAND:

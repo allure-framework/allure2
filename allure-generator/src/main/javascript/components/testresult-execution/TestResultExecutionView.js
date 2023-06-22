@@ -80,11 +80,6 @@ class TestResultExecutionView extends View {
     e.stopPropagation();
   }
 
-  @on("click .attachment-row__link")
-  onAttachmentFileClick(e) {
-    e.stopPropagation();
-  }
-
   @on("click .parameters-table__cell")
   onParameterClick(e) {
     this.$(e.target)

@@ -21,10 +21,16 @@ import io.qameta.allure.core.Plugin;
 import io.qameta.allure.util.CopyVisitor;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Default plugin implementation that unpack files from directory.
@@ -54,14 +60,41 @@ public class DefaultPlugin implements Plugin {
 
     @Override
     public void unpackReportStatic(final Path outputDirectory) throws IOException {
-        final Path pluginStatic = pluginDirectory.resolve("static");
+        final Path pluginStatic = getPluginStatic();
         if (Files.exists(pluginStatic)) {
             Files.walkFileTree(pluginStatic, new CopyVisitor(pluginStatic, outputDirectory));
         }
     }
 
     @Override
+    public Map<String, Path> getPluginFiles() {
+        final Path pluginStatic = getPluginStatic();
+        final Map<String, Path> result = new HashMap<>();
+        if (Files.exists(pluginStatic)) {
+            try {
+                final SimpleFileVisitor<Path> visitor = new SimpleFileVisitor<Path>() {
+                    @Override
+                    public FileVisitResult visitFile(final Path file,
+                                                     final BasicFileAttributes attrs) {
+                        final String fileId = pluginStatic.relativize(file).toString();
+                        result.put(fileId, file);
+                        return FileVisitResult.CONTINUE;
+                    }
+                };
+                Files.walkFileTree(pluginStatic, visitor);
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        }
+        return Collections.unmodifiableMap(result);
+    }
+
+    @Override
     public List<Extension> getExtensions() {
         return Collections.unmodifiableList(extensions);
+    }
+
+    private Path getPluginStatic() {
+        return pluginDirectory.resolve("static");
     }
 }

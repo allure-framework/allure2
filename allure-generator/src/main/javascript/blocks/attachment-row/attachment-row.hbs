@@ -12,10 +12,13 @@
             {{/if}}
         </div>
         <div class="attachment-row__control attachment-row__link">
-            <a class="link" href="data/attachments/{{source}}" target="_blank"
-               data-tooltip="Open attachment in new tab">
+            <div class="link"
+                  data-download="data/attachments/{{source}}"
+                  data-download-target="_blank"
+                  data-download-type="{{type}}"
+                  data-tooltip="Open attachment in new tab">
                 <span class="fa fa-save"></span> {{filesize size}}
-            </a>
+            </div>
         </div>
         <div class="attachment-row__control attachment-row__fullscreen">
             <a class="link">

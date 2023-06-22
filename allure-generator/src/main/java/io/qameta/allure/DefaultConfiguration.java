@@ -21,7 +21,6 @@ import io.qameta.allure.core.Plugin;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Default implementation of {@link Configuration}.
@@ -46,26 +45,13 @@ public class DefaultConfiguration implements Configuration {
     }
 
     @Override
-    public List<Aggregator> getAggregators() {
-        return extensions.stream()
-                .filter(Aggregator.class::isInstance)
-                .map(Aggregator.class::cast)
-                .collect(Collectors.toList());
+    public List<Extension> getExtensions() {
+        return Collections.unmodifiableList(extensions);
     }
 
     @Override
-    public List<Reader> getReaders() {
-        return extensions.stream()
-                .filter(Reader.class::isInstance)
-                .map(Reader.class::cast)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public <T> Optional<T> getContext(final Class<T> contextType) {
-        return extensions.stream()
-                .filter(contextType::isInstance)
-                .map(contextType::cast)
+    public <S, T extends Context<S>> Optional<T> getContext(final Class<T> contextType) {
+        return getExtensions(contextType).stream()
                 .findFirst();
     }
 }

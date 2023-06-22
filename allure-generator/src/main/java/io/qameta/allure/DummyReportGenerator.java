@@ -26,10 +26,8 @@ import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.context.ReportInfoContext;
 import io.qameta.allure.core.AttachmentsPlugin;
 import io.qameta.allure.core.Configuration;
-import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.MarkdownDescriptionsPlugin;
 import io.qameta.allure.core.Plugin;
-import io.qameta.allure.core.ReportWebPlugin;
 import io.qameta.allure.core.TestsResultsPlugin;
 import io.qameta.allure.duration.DurationPlugin;
 import io.qameta.allure.duration.DurationTrendPlugin;
@@ -80,9 +78,9 @@ public final class DummyReportGenerator {
     private static final Logger LOGGER = LoggerFactory.getLogger(DummyReportGenerator.class);
     private static final int MIN_ARGUMENTS_COUNT = 2;
     private static final List<Extension> EXTENSIONS = Arrays.asList(
+            new ReportInfoContext("dev"),
             new JacksonContext(),
             new MarkdownContext(),
-            new ReportInfoContext("dev"),
             new FreemarkerContext(),
             new RandomUidContext(),
             new MarkdownDescriptionsPlugin(),
@@ -111,16 +109,7 @@ public final class DummyReportGenerator {
             new LaunchPlugin(),
             new Allure1Plugin(),
             new Allure1EnvironmentPlugin(),
-            new Allure2Plugin(),
-            new ReportWebPlugin() {
-                @Override
-                public void aggregate(final Configuration configuration,
-                                      final List<LaunchResults> launchesResults,
-                                      final Path outputDirectory) throws IOException {
-                    writePluginsStatic(configuration, outputDirectory);
-                    writeIndexHtml(configuration, outputDirectory);
-                }
-            }
+            new Allure2Plugin()
     );
 
     private DummyReportGenerator() {
@@ -148,7 +137,7 @@ public final class DummyReportGenerator {
                 .fromPlugins(plugins)
                 .build();
         final ReportGenerator generator = new ReportGenerator(configuration);
-        generator.generate(files[lastIndex], Arrays.copyOf(files, lastIndex));
+        generator.generateSingleFile(files[lastIndex], Arrays.asList(Arrays.copyOf(files, lastIndex)));
     }
 
     public static Path[] getFiles(final String... paths) {

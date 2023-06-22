@@ -1,6 +1,7 @@
 import { Collection } from "backbone";
 import { findWhere, flatten } from "underscore";
 import { values } from "../../utils/statuses";
+import { reportDataUrl } from "../loader";
 
 function updateTime(timeA, timeB, field, operation) {
   if (timeB && timeB[field]) {
@@ -11,6 +12,12 @@ function updateTime(timeA, timeB, field, operation) {
 export default class TreeCollection extends Collection {
   initialize(models, { url }) {
     this.url = url;
+  }
+
+  fetch(options) {
+    return reportDataUrl(this.url, "application/json").then((value) =>
+      super.fetch({ ...options, url: value }),
+    );
   }
 
   findLeaf(parentUid, uid) {
@@ -89,15 +96,18 @@ export default class TreeCollection extends Collection {
   }
 
   calculateOrder(items) {
-    let index = 0;
-    items.forEach((item) => {
-      if (item.children) {
-        this.calculateOrder(item.children);
-      } else {
-        item.order = ++index;
-      }
-    });
-    return items;
+    if (items) {
+      let index = 0;
+      items.forEach((item) => {
+        if (item.children) {
+          this.calculateOrder(item.children);
+        } else {
+          item.order = ++index;
+        }
+      });
+      return items;
+    }
+    return [];
   }
 
   calculateStatistic(items) {

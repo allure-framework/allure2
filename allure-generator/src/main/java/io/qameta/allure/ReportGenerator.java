@@ -16,16 +16,25 @@
 package io.qameta.allure;
 
 import io.qameta.allure.core.Configuration;
+import io.qameta.allure.core.FileSystemReportStorage;
+import io.qameta.allure.core.InMemoryReportStorage;
 import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.core.ReportWebGenerator;
+import io.qameta.allure.util.DeleteVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -40,34 +49,82 @@ public class ReportGenerator {
         this.configuration = configuration;
     }
 
-    public LaunchResults readResults(final Path resultsDirectory) {
+    private LaunchResults readResults(final Path resultsDirectory) {
         final DefaultResultsVisitor visitor = new DefaultResultsVisitor(configuration);
-        configuration
-                .getReaders()
+        configuration.getExtensions(Reader.class)
                 .forEach(reader -> reader.readResults(configuration, visitor, resultsDirectory));
         return visitor.getLaunchResults();
     }
 
-    public void aggregate(final List<LaunchResults> results, final Path outputDirectory) throws IOException {
-        for (Aggregator aggregator : configuration.getAggregators()) {
-            aggregator.aggregate(configuration, results, outputDirectory);
+    private void aggregate(final List<LaunchResults> results, final ReportStorage storage) {
+        processOldAggregators(results, storage);
+
+        for (final Aggregator2 aggregator : configuration.getExtensions(Aggregator2.class)) {
+            aggregator.aggregate(configuration, results, storage);
         }
     }
 
-    public void generate(final Path outputDirectory, final List<Path> resultsDirectories) throws IOException {
-        generate(outputDirectory, resultsDirectories.stream());
+    @SuppressWarnings("deprecation")
+    private void processOldAggregators(final List<LaunchResults> results,
+                                       final ReportStorage storage) {
+        Path tempDir = null;
+        try {
+            tempDir = Files.createTempDirectory("allure-");
+
+            for (Aggregator aggregator : configuration.getExtensions(Aggregator.class)) {
+                aggregator.aggregate(configuration, results, tempDir);
+            }
+
+            final Path finalTempDir = tempDir;
+            Files.walkFileTree(tempDir, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(final Path file,
+                                                 final BasicFileAttributes attrs) {
+                    final String fileId = file.relativize(finalTempDir).toString();
+                    storage.addDataFile(fileId, file);
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        } finally {
+            if (Objects.nonNull(tempDir)) {
+                try {
+                    Files.walkFileTree(tempDir, new DeleteVisitor());
+                } catch (IOException ignored) {
+                    // do nothing
+                }
+            }
+        }
+
     }
 
-    public void generate(final Path outputDirectory, final Path... resultsDirectories) throws IOException {
-        generate(outputDirectory, Stream.of(resultsDirectories));
+    public void generate(final Path outputDirectory, final List<Path> resultsDirectories) {
+        generate(
+                new FileSystemReportStorage(outputDirectory),
+                outputDirectory,
+                resultsDirectories
+        );
     }
 
-    private void generate(final Path outputDirectory, final Stream<Path> resultsDirectories) throws IOException {
-        final List<LaunchResults> results = resultsDirectories
+    public void generate(final Path outputDirectory, final Path... resultsDirectories) {
+        generate(outputDirectory, Arrays.asList(resultsDirectories));
+    }
+
+    private void generate(final ReportStorage storage,
+                          final Path outputDirectory,
+                          final List<Path> resultsDirectories) {
+        final List<LaunchResults> results = resultsDirectories.stream()
                 .filter(this::isValidResultsDirectory)
                 .map(this::readResults)
                 .collect(Collectors.toList());
-        aggregate(results, outputDirectory);
+        aggregate(results, storage);
+        new ReportWebGenerator().generate(configuration, storage, outputDirectory);
+    }
+
+    public void generateSingleFile(final Path outputDirectory, final List<Path> resultsDirectories) {
+        final InMemoryReportStorage storage = new InMemoryReportStorage();
+        generate(storage, outputDirectory, resultsDirectories);
     }
 
     private boolean isValidResultsDirectory(final Path resultsDirectory) {

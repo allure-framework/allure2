@@ -15,9 +15,9 @@
  */
 package io.qameta.allure.suites;
 
-import io.qameta.allure.CommonCsvExportAggregator;
-import io.qameta.allure.CommonJsonAggregator;
-import io.qameta.allure.CompositeAggregator;
+import io.qameta.allure.CommonCsvExportAggregator2;
+import io.qameta.allure.CommonJsonAggregator2;
+import io.qameta.allure.CompositeAggregator2;
 import io.qameta.allure.Constants;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.csv.CsvExportSuite;
@@ -48,7 +48,7 @@ import static io.qameta.allure.tree.TreeUtils.groupByLabels;
  * @since 2.0
  */
 @SuppressWarnings("PMD.UseUtilityClass")
-public class SuitesPlugin extends CompositeAggregator {
+public class SuitesPlugin extends CompositeAggregator2 {
 
     private static final String SUITES = "suites";
 
@@ -89,7 +89,7 @@ public class SuitesPlugin extends CompositeAggregator {
     /**
      * Generates tree data.
      */
-    private static class JsonAggregator extends CommonJsonAggregator {
+    private static class JsonAggregator extends CommonJsonAggregator2 {
 
         JsonAggregator() {
             super(JSON_FILE_NAME);
@@ -104,7 +104,7 @@ public class SuitesPlugin extends CompositeAggregator {
     /**
      * Generates export data.
      */
-    private static class CsvExportAggregator extends CommonCsvExportAggregator<CsvExportSuite> {
+    private static class CsvExportAggregator extends CommonCsvExportAggregator2<CsvExportSuite> {
 
         CsvExportAggregator() {
             super(CSV_FILE_NAME, CsvExportSuite.class);
@@ -121,7 +121,7 @@ public class SuitesPlugin extends CompositeAggregator {
     /**
      * Generates widget data.
      */
-    private static class WidgetAggregator extends CommonJsonAggregator {
+    private static class WidgetAggregator extends CommonJsonAggregator2 {
 
         WidgetAggregator() {
             super(Constants.WIDGETS_DIR, JSON_FILE_NAME);

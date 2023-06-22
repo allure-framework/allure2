@@ -1,13 +1,17 @@
 import { Collection } from "backbone";
 import { flatten, keys, omit, uniq, values } from "underscore";
+import { reportDataUrl } from "../loader";
 
 export default class TrendCollection extends Collection {
   initialize(models, options) {
     this.options = options;
+    this.url = `widgets/${this.options.name}.json`;
   }
 
-  url() {
-    return `widgets/${this.options.name}.json`;
+  fetch(options) {
+    return reportDataUrl(this.url, "application/json").then((value) =>
+      super.fetch({ ...options, url: value }),
+    );
   }
 
   parse(response) {

@@ -16,13 +16,13 @@
 package io.qameta.allure.idea;
 
 import io.qameta.allure.core.Configuration;
+import io.qameta.allure.core.InMemoryReportStorage;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.Link;
 import io.qameta.allure.entity.TestResult;
 import org.junit.jupiter.api.Test;
 
-import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -49,7 +49,7 @@ class IdeaLinksPluginTest {
         jiraTestResultExportPlugin.aggregate(
                 mock(Configuration.class),
                 Collections.singletonList(launchResults),
-                Paths.get("/")
+                new InMemoryReportStorage()
         );
 
         assertThat(testResult.getLinks()).hasSize(1);

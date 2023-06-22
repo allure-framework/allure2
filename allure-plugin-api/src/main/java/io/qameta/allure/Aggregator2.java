@@ -15,27 +15,29 @@
  */
 package io.qameta.allure;
 
-import lombok.Data;
-import lombok.experimental.Accessors;
+import io.qameta.allure.core.Configuration;
+import io.qameta.allure.core.LaunchResults;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author charlie (Dmitry Baev).
+ * Aggregator extension. Can be used to process results and/or generate
+ * some data to report directory.
+ *
+ * @since 2.0
  */
-@Data
-@Accessors(chain = true)
-public class PluginConfiguration implements Serializable {
+@FunctionalInterface
+public interface Aggregator2 extends Extension {
 
-    private static final long serialVersionUID = 1L;
-
-    private String id;
-    private String name;
-    private String description;
-    private List<String> extensions = new ArrayList<>();
-    private List<String> jsFiles = new ArrayList<>();
-    private List<String> cssFiles = new ArrayList<>();
+    /**
+     * Process report data.
+     *
+     * @param configuration   the report configuration.
+     * @param launchesResults all the parsed test results.
+     * @param storage         the report storage.
+     */
+    void aggregate(Configuration configuration,
+                   List<LaunchResults> launchesResults,
+                   ReportStorage storage);
 
 }

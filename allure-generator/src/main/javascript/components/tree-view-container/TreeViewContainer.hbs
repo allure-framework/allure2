@@ -8,12 +8,14 @@
     {{/if}}
     <div class="{{b 'pane' 'search'}}"></div>
     <span class="pane__controls">
-        <a class="fa fa-info-circle {{b cls 'control'}} {{b cls 'info'}}" data-tooltip="{{t 'component.tree.groups'}}"></a>
+        <span class="fa fa-info-circle {{b cls 'control'}} {{b cls 'info'}}"
+              data-tooltip="{{t 'component.tree.groups'}}"></span>
         {{#if csvUrl}}
-            <a class="fa fa-download {{b cls 'control'}} {{b cls 'download'}}"
+            <span class="fa fa-download {{b cls 'control'}} {{b cls 'download'}}"
                data-tooltip="{{t 'component.tree.download'}}"
                data-ga4-event="csv_download_click"
-               href="{{csvUrl}}" download></a>
+               data-download="{{csvUrl}}"
+               data-download-type="text/csv"></span>
         {{/if}}
     </span>
 </div>

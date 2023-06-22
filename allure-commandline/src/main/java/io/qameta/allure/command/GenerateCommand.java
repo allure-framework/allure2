@@ -47,6 +47,12 @@ public class GenerateCommand {
     )
     private Path reportDirectory = Paths.get("allure-report");
 
+    @Parameter(
+            names = {"--single-file"},
+            description = "Generate Allure report in single file mode."
+    )
+    private boolean singleFileMode;
+
     @ParametersDelegate
     private ResultsOptions resultsOptions = new ResultsOptions();
 
@@ -67,5 +73,9 @@ public class GenerateCommand {
 
     public ConfigOptions getConfigOptions() {
         return configOptions;
+    }
+
+    public boolean isSingleFileMode() {
+        return singleFileMode;
     }
 }

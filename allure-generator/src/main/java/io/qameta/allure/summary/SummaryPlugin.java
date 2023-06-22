@@ -15,7 +15,7 @@
  */
 package io.qameta.allure.summary;
 
-import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.CommonJsonAggregator2;
 import io.qameta.allure.Constants;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.GroupTime;
@@ -28,7 +28,7 @@ import java.util.List;
  *
  * @since 2.0
  */
-public class SummaryPlugin extends CommonJsonAggregator {
+public class SummaryPlugin extends CommonJsonAggregator2 {
 
     /**
      * Name of the json file.

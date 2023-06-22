@@ -16,7 +16,7 @@
 package io.qameta.allure.history;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import io.qameta.allure.Aggregator;
+import io.qameta.allure.CommonJsonAggregator2;
 import io.qameta.allure.Reader;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
@@ -30,7 +30,6 @@ import io.qameta.allure.executor.ExecutorPlugin;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ import java.util.stream.Stream;
  *
  * @since 2.0
  */
-public class HistoryPlugin implements Reader, Aggregator {
+public class HistoryPlugin extends CommonJsonAggregator2 implements Reader {
 
     private static final Set<Status> MARK_STATUSES = new HashSet<>(Arrays.asList(
             Status.FAILED, Status.BROKEN, Status.PASSED
@@ -66,6 +65,11 @@ public class HistoryPlugin implements Reader, Aggregator {
             };
     //@formatter:on
 
+
+    public HistoryPlugin() {
+        super(HISTORY_BLOCK_NAME, HISTORY_FILE_NAME);
+    }
+
     @Override
     public void readResults(final Configuration configuration,
                             final ResultsVisitor visitor,
@@ -79,18 +83,6 @@ public class HistoryPlugin implements Reader, Aggregator {
             } catch (IOException e) {
                 visitor.error("Could not read history file " + historyFile, e);
             }
-        }
-    }
-
-    @Override
-    public void aggregate(final Configuration configuration,
-                          final List<LaunchResults> launchesResults,
-                          final Path outputDirectory) throws IOException {
-        final JacksonContext context = configuration.requireContext(JacksonContext.class);
-        final Path historyFolder = Files.createDirectories(outputDirectory.resolve(HISTORY_BLOCK_NAME));
-        final Path historyFile = historyFolder.resolve(HISTORY_FILE_NAME);
-        try (OutputStream os = Files.newOutputStream(historyFile)) {
-            context.getValue().writeValue(os, getData(launchesResults));
         }
     }
 
@@ -117,8 +109,8 @@ public class HistoryPlugin implements Reader, Aggregator {
                 .findFirst();
 
         return prevItem.isPresent()
-                && target.equals(current.getStatus())
-                && !target.equals(prevItem.get().getStatus());
+               && target.equals(current.getStatus())
+               && !target.equals(prevItem.get().getStatus());
     }
 
     private boolean isFlaky(final HistoryItem current,
@@ -136,9 +128,10 @@ public class HistoryPlugin implements Reader, Aggregator {
                 .collect(Collectors.toList());
 
         return statuses.contains(Status.PASSED)
-                && statuses.indexOf(Status.PASSED) < statuses.lastIndexOf(Status.FAILED);
+               && statuses.indexOf(Status.PASSED) < statuses.lastIndexOf(Status.FAILED);
     }
 
+    @Override
     protected Map<String, HistoryData> getData(final List<LaunchResults> launches) {
         final Map<String, HistoryData> history = launches.stream()
                 .map(launch -> launch.getExtra(HISTORY_BLOCK_NAME, (Supplier<Map<String, HistoryData>>) HashMap::new))

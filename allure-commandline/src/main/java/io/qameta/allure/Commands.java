@@ -51,7 +51,7 @@ public class Commands {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Commands.class);
     private static final String DIRECTORY_EXISTS_MESSAGE = "Allure: Target directory {} for the report is already"
-            + " in use, add a '--clean' option to overwrite";
+                                                           + " in use, add a '--clean' option to overwrite";
 
     private final Path allureHome;
 
@@ -91,6 +91,14 @@ public class Commands {
                              final List<Path> resultsDirectories,
                              final boolean clean,
                              final ConfigOptions profile) {
+        return generate(reportDirectory, resultsDirectories, clean, false, profile);
+    }
+
+    public ExitCode generate(final Path reportDirectory,
+                             final List<Path> resultsDirectories,
+                             final boolean clean,
+                             final boolean singleFileMode,
+                             final ConfigOptions profile) {
         final boolean directoryExists = Files.exists(reportDirectory);
         if (clean && directoryExists) {
             FileUtils.deleteQuietly(reportDirectory.toFile());
@@ -98,12 +106,11 @@ public class Commands {
             LOGGER.error(DIRECTORY_EXISTS_MESSAGE, reportDirectory.toAbsolutePath());
             return ExitCode.GENERIC_ERROR;
         }
-        try {
-            final ReportGenerator generator = new ReportGenerator(createReportConfiguration(profile));
+        final ReportGenerator generator = new ReportGenerator(createReportConfiguration(profile));
+        if (singleFileMode) {
+            generator.generateSingleFile(reportDirectory, resultsDirectories);
+        } else {
             generator.generate(reportDirectory, resultsDirectories);
-        } catch (IOException e) {
-            LOGGER.error("Could not generate report", e);
-            return ExitCode.GENERIC_ERROR;
         }
         LOGGER.info("Report successfully generated to {}", reportDirectory);
         return ExitCode.NO_ERROR;
@@ -152,7 +159,7 @@ public class Commands {
             openBrowser(server.getURI());
         } catch (IOException | AWTError e) {
             LOGGER.error(
-                    "Could not open the report in browser, try to open it manually {}: {}",
+                    "Could not open the report in browser, try to open it manually {}",
                     server.getURI(),
                     e
             );
@@ -221,11 +228,11 @@ public class Commands {
                 Desktop.getDesktop().browse(url);
             } catch (UnsupportedOperationException e) {
                 LOGGER.error("Browse operation is not supported on your platform."
-                        + "You can use the link below to open the report manually.", e);
+                             + "You can use the link below to open the report manually.", e);
             }
         } else {
             LOGGER.error("Can not open browser because this capability is not supported on "
-                    + "your platform. You can use the link below to open the report manually.");
+                         + "your platform. You can use the link below to open the report manually.");
         }
     }
 

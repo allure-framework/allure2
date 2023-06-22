@@ -18,6 +18,7 @@ package io.qameta.allure.category;
 import io.qameta.allure.ConfigurationBuilder;
 import io.qameta.allure.Issue;
 import io.qameta.allure.core.Configuration;
+import io.qameta.allure.core.InMemoryReportStorage;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
@@ -26,10 +27,8 @@ import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,11 +54,8 @@ class CategoriesPluginTest {
 
     private Configuration configuration;
 
-    private Path reportPath;
-
     @BeforeEach
-    void setUp(@TempDir final Path temp) {
-        reportPath = temp.resolve("report");
+    void setUp() {
         configuration = new ConfigurationBuilder().useDefault().build();
     }
 
@@ -184,7 +180,8 @@ class CategoriesPluginTest {
 
         CategoriesPlugin plugin = new CategoriesPlugin();
 
-        plugin.aggregate(configuration, launchResultsList, reportPath);
+        final InMemoryReportStorage storage = new InMemoryReportStorage();
+        plugin.aggregate(configuration, launchResultsList, storage);
 
         Set<TestResult> results = launchResultsList.get(0).getAllResults();
         List<Category> categories = results.toArray(new TestResult[]{})[0]
@@ -194,11 +191,11 @@ class CategoriesPluginTest {
                 .extracting(Category::getName)
                 .containsExactly(category.getName());
 
-        assertThat(reportPath.resolve("data").resolve(JSON_FILE_NAME))
-                .exists();
+        assertThat(storage.getReportDataFiles())
+                .containsKey("data/" + JSON_FILE_NAME);
 
-        assertThat(reportPath.resolve("data").resolve(CSV_FILE_NAME))
-                .exists();
+        assertThat(storage.getReportDataFiles())
+                .containsKey("data/" + CSV_FILE_NAME);
     }
 
     @Test
@@ -217,7 +214,8 @@ class CategoriesPluginTest {
 
         CategoriesPlugin plugin = new CategoriesPlugin();
 
-        plugin.aggregate(configuration, launchResultsList, reportPath);
+        final InMemoryReportStorage storage = new InMemoryReportStorage();
+        plugin.aggregate(configuration, launchResultsList, storage);
 
         Set<TestResult> results = launchResultsList.get(0).getAllResults();
         List<Category> categories = results.toArray(new TestResult[]{})[0]
@@ -227,8 +225,8 @@ class CategoriesPluginTest {
                 .extracting(Category::getName)
                 .containsExactly(category.getName());
 
-        assertThat(reportPath.resolve("data").resolve(JSON_FILE_NAME))
-                .exists();
+        assertThat(storage.getReportDataFiles())
+                .containsKey("data/" + JSON_FILE_NAME);
     }
 
     @Issue("587")

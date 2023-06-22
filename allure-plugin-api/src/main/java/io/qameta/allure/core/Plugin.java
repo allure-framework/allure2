@@ -21,6 +21,7 @@ import io.qameta.allure.PluginConfiguration;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Base plugin interface.
@@ -31,8 +32,24 @@ public interface Plugin {
 
     PluginConfiguration getConfig();
 
+    /**
+     * Unpack plugins files to specified output directory.
+     *
+     * @param outputDirectory the directory to unpack files to.
+     * @deprecated deprecated, use {@link #getPluginFiles()} instead.
+     */
+    @Deprecated
     void unpackReportStatic(Path outputDirectory) throws IOException;
 
+    /**
+     * Returns the map of all plugin files. Keys are normalized file names relative to
+     * plugins directory.
+     *
+     * @return the plugin files.
+     */
+    Map<String, Path> getPluginFiles();
+
     List<Extension> getExtensions();
+
 
 }

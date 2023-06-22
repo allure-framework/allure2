@@ -15,7 +15,7 @@
  */
 package io.qameta.allure.duration;
 
-import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.CommonJsonAggregator2;
 import io.qameta.allure.Constants;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.TestResult;
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  *
  * @since 2.0
  */
-public class DurationPlugin extends CommonJsonAggregator {
+public class DurationPlugin extends CommonJsonAggregator2 {
 
     public DurationPlugin() {
         super(Constants.WIDGETS_DIR, "duration.json");

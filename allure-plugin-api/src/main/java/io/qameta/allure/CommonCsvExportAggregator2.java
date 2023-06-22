@@ -20,16 +20,19 @@ import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UncheckedIOException;
 import java.io.Writer;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -37,38 +40,41 @@ import java.util.List;
  *
  * @param <T> type of result bean.
  * @since 2.0
- * @deprecated for removal. Use {@link CommonCsvExportAggregator2} instead.
  */
-@Deprecated
-public abstract class CommonCsvExportAggregator<T> implements Aggregator {
+public abstract class CommonCsvExportAggregator2<T> implements Aggregator2 {
 
     private final String fileName;
 
     private final Class<T> type;
 
-    public CommonCsvExportAggregator(final String fileName, final Class<T> type) {
+    public CommonCsvExportAggregator2(final String fileName, final Class<T> type) {
         this.fileName = fileName;
         this.type = type;
     }
 
+    @SuppressWarnings("PMD.ExceptionAsFlowControl")
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
-                          final Path outputDirectory) throws IOException {
-        final Path dataFolder = Files.createDirectories(outputDirectory.resolve(Constants.DATA_DIR));
-        final Path csv = dataFolder.resolve(fileName);
-
-        try (Writer writer = Files.newBufferedWriter(csv)) {
+                          final ReportStorage storage) {
+        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        try (Writer writer = new OutputStreamWriter(bos, StandardCharsets.UTF_8)) {
             final StatefulBeanToCsvBuilder<T> builder = new StatefulBeanToCsvBuilder<>(writer);
             final CustomMappingStrategy<T> mappingStrategy = new CustomMappingStrategy<>();
             mappingStrategy.setType(type);
             final StatefulBeanToCsv<T> beanWriter = builder.withMappingStrategy(mappingStrategy).build();
             try {
                 beanWriter.write(getData(launchesResults));
-            } catch (Exception e) {
+            } catch (CsvRequiredFieldEmptyException | CsvDataTypeMismatchException e) {
                 throw new IOException(e);
             }
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
+        storage.addDataBinary(
+                Constants.dataPath(fileName),
+                bos.toByteArray()
+        );
     }
 
     protected abstract List<T> getData(List<LaunchResults> launchesResults);

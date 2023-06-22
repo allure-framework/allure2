@@ -15,9 +15,8 @@
  */
 package io.qameta.allure.packages;
 
-import io.qameta.allure.Aggregator;
-import io.qameta.allure.context.JacksonContext;
-import io.qameta.allure.core.Configuration;
+import io.qameta.allure.CommonJsonAggregator2;
+import io.qameta.allure.Constants;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.TestResult;
@@ -29,10 +28,6 @@ import io.qameta.allure.tree.TestResultTreeLeaf;
 import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeLayer;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -46,22 +41,14 @@ import static io.qameta.allure.entity.TestResult.comparingByTimeAsc;
  *
  * @since 2.0
  */
-public class PackagesPlugin implements Aggregator {
+public class PackagesPlugin extends CommonJsonAggregator2 {
 
-    @Override
-    public void aggregate(final Configuration configuration,
-                          final List<LaunchResults> launchesResults,
-                          final Path outputDirectory) throws IOException {
-        final JacksonContext jacksonContext = configuration.requireContext(JacksonContext.class);
-        final Path dataFolder = Files.createDirectories(outputDirectory.resolve("data"));
-        final Path dataFile = dataFolder.resolve("packages.json");
-        try (OutputStream os = Files.newOutputStream(dataFile)) {
-            jacksonContext.getValue().writeValue(os, getData(launchesResults));
-        }
+    public PackagesPlugin() {
+        super(Constants.DATA_DIR, "packages.json");
     }
 
-    @SuppressWarnings("PMD.DefaultPackage")
-    /* default */ Tree<TestResult> getData(final List<LaunchResults> launchResults) {
+    @Override
+    public Tree<TestResult> getData(final List<LaunchResults> launchResults) {
 
         final Tree<TestResult> packages = new TestResultTree(
                 "packages",

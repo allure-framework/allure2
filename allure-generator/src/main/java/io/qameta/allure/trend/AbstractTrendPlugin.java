@@ -18,8 +18,8 @@ package io.qameta.allure.trend;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.qameta.allure.Aggregator;
-import io.qameta.allure.CompositeAggregator;
+import io.qameta.allure.Aggregator2;
+import io.qameta.allure.CompositeAggregator2;
 import io.qameta.allure.Constants;
 import io.qameta.allure.Reader;
 import io.qameta.allure.context.JacksonContext;
@@ -54,15 +54,15 @@ import static java.util.stream.StreamSupport.stream;
  *
  * @param <T> Trend item type
  */
-public abstract class AbstractTrendPlugin<T> extends CompositeAggregator implements Reader {
+public abstract class AbstractTrendPlugin<T> extends CompositeAggregator2 implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTrendPlugin.class);
 
     private final String jsonFileName;
     private final String trendBlockName;
 
-    protected AbstractTrendPlugin(final List<Aggregator> aggregators, final String jsonFileName,
-            final String trendBlockName) {
+    protected AbstractTrendPlugin(final List<Aggregator2> aggregators, final String jsonFileName,
+                                  final String trendBlockName) {
         super(aggregators);
         this.jsonFileName = jsonFileName;
         this.trendBlockName = trendBlockName;

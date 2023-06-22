@@ -18,6 +18,7 @@ package io.qameta.allure.history;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
+import io.qameta.allure.core.InMemoryReportStorage;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.ExecutorInfo;
@@ -148,7 +149,7 @@ class HistoryTrendPluginTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    void shouldAggregateForEmptyReport(@TempDir final Path outputDirectory) throws Exception {
+    void shouldAggregateForEmptyReport() throws Exception {
         final Configuration configuration = mock(Configuration.class);
         final JacksonContext context = mock(JacksonContext.class);
         final ObjectMapper mapper = mock(ObjectMapper.class);
@@ -160,7 +161,7 @@ class HistoryTrendPluginTest {
                 .thenReturn(mapper);
 
         final HistoryTrendPlugin.JsonAggregator aggregator = new HistoryTrendPlugin.JsonAggregator();
-        aggregator.aggregate(configuration, Collections.emptyList(), outputDirectory);
+        aggregator.aggregate(configuration, Collections.emptyList(), new InMemoryReportStorage());
 
         final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.forClass(List.class);
         verify(mapper, times(1))

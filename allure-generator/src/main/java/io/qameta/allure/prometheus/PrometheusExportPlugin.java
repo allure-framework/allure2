@@ -15,7 +15,7 @@
  */
 package io.qameta.allure.prometheus;
 
-import io.qameta.allure.CommonMetricAggregator;
+import io.qameta.allure.CommonMetricAggregator2;
 import io.qameta.allure.category.CategoriesMetric;
 import io.qameta.allure.metric.Metric;
 import io.qameta.allure.metric.StatusMetric;
@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class PrometheusExportPlugin extends CommonMetricAggregator {
+public class PrometheusExportPlugin extends CommonMetricAggregator2 {
 
     private static final String ALLURE_PROMETHEUS_LABELS = "allure.prometheus.labels";
 

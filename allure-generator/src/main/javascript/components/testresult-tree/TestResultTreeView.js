@@ -21,6 +21,7 @@ class TestResultTreeView extends SideBySideView {
       const baseUrl = `#${this.options.baseUrl}/${treeNode.testGroup}/${treeNode.testResult}`;
       const model = new TestResultModel({ uid: treeNode.testResult });
       model.fetch({
+        url: model.url(),
         success: () =>
           this.showChildView(
             "right",

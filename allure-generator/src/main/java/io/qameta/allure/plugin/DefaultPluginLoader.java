@@ -73,7 +73,7 @@ public class DefaultPluginLoader {
                     .getDeclaredConstructor().newInstance();
             return Optional.of(loaded);
         } catch (Exception e) {
-            LOGGER.error("Could not load extension class {}: {}", name, e);
+            LOGGER.error("Could not load extension class {}", name, e);
             return Optional.empty();
         }
     }

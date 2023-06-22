@@ -15,6 +15,9 @@
  */
 package io.qameta.allure;
 
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  * @author charlie (Dmitry Baev).
  * @since 2.7
@@ -54,5 +57,71 @@ public final class Constants {
 
     private Constants() {
         throw new IllegalStateException("Do not instance");
+    }
+
+    /**
+     * Build path within plugins directory.
+     *
+     * @param pathItems the path items.
+     * @return the path within plugins directory.
+     */
+    public static String pluginPath(final String... pathItems) {
+        return path(PLUGINS_DIR, pathItems);
+    }
+
+    /**
+     * Build path within export directory.
+     *
+     * @param pathItems the path items.
+     * @return the path within export directory.
+     */
+    public static String exportPath(final String... pathItems) {
+        return path(EXPORT_DIR, pathItems);
+    }
+
+    /**
+     * Build path within data directory.
+     *
+     * @param pathItems the path items.
+     * @return the path within data directory.
+     */
+    public static String dataPath(final String... pathItems) {
+        return path(DATA_DIR, pathItems);
+    }
+
+    /**
+     * Build path within widgets directory.
+     *
+     * @param pathItems the path items.
+     * @return the path within widgets directory.
+     */
+    public static String widgetsPath(final String... pathItems) {
+        return path(WIDGETS_DIR, pathItems);
+    }
+
+    /**
+     * Build path within history directory.
+     *
+     * @param pathItems the path items.
+     * @return the path within history directory.
+     */
+    public static String historyPath(final String... pathItems) {
+        return path(HISTORY_DIR, pathItems);
+    }
+
+    /**
+     * Build path from specified path items.
+     *
+     * @param first  the first path item.
+     * @param others other path items.
+     * @return the path.
+     */
+    public static String path(final String first, final String... others) {
+        return Stream
+                .concat(
+                        Stream.of(first),
+                        Stream.of(others)
+                )
+                .collect(Collectors.joining("/"));
     }
 }

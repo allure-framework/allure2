@@ -12,6 +12,7 @@ import template from "./AppLayout.hbs";
   nav: ".app__nav",
 })
 @behavior("GaBehavior")
+@behavior("DownloadBehavior")
 class AppLayout extends View {
   template = template;
 

@@ -27,7 +27,10 @@ import java.util.List;
 
 /**
  * Common json aggregator.
+ *
+ * @deprecated for removal. Use {@link CommonJsonAggregator2} instead.
  */
+@Deprecated
 public abstract class CommonJsonAggregator implements Aggregator {
 
     private final String location;

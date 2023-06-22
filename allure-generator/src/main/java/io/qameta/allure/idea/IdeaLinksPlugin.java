@@ -15,14 +15,14 @@
  */
 package io.qameta.allure.idea;
 
-import io.qameta.allure.Aggregator;
+import io.qameta.allure.Aggregator2;
+import io.qameta.allure.ReportStorage;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.Link;
 import io.qameta.allure.entity.TestResult;
 
-import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +32,7 @@ import static io.qameta.allure.util.PropertyUtils.getProperty;
 /**
  * Plugins adds link in test result to open in Idea Project.
  */
-public class IdeaLinksPlugin implements Aggregator {
+public class IdeaLinksPlugin implements Aggregator2 {
 
     private static final String ALLURE_IDEA_ENABLED = "ALLURE_IDEA_ENABLED";
     private static final String ALLURE_IDEA_PORT = "ALLURE_IDEA_PORT";
@@ -58,7 +58,7 @@ public class IdeaLinksPlugin implements Aggregator {
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
-                          final Path outputDirectory) {
+                          final ReportStorage storage) {
         if (enabled) {
             launchesResults.stream()
                     .map(LaunchResults::getAllResults)
