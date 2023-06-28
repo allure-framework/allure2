@@ -32,7 +32,7 @@ pluginManagement {
         id("com.netflix.nebula.ospackage") version "11.3.0"
         id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
         id("io.spring.dependency-management") version "1.1.0"
-        id("org.owasp.dependencycheck") version "8.2.1"
+        id("org.owasp.dependencycheck") version "8.3.1"
         id("ru.vyarus.quality") version "4.9.0"
     }
 }
