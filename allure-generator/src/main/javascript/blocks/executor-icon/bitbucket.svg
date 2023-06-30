@@ -1,0 +1,10 @@
+<svg width="24px" height="24px" viewBox="0 0 0.48 0.48" xmlns="http://www.w3.org/2000/svg" fill="none">
+    <path fill="#2684FF" fill-rule="evenodd" d="M0.042 0.065A0.013 0.013 0 0 1 0.052 0.06l0.376 0a0.013 0.013 0 0 1 0.013 0.015l-0.054 0.334a0.013 0.013 0 0 1 -0.013 0.011H0.111a0.018 0.018 0 0 1 -0.017 -0.014l-0.055 -0.331a0.013 0.013 0 0 1 0.003 -0.01zm0.156 0.234H0.282l0.02 -0.118H0.176l0.022 0.118z" clip-rule="evenodd"/>
+    <path fill="url(#bitbucket-color-16__paint0_linear_707_135)" d="M0.424 0.181H0.303l-0.02 0.118H0.198L0.1 0.416c0.003 0.003 0.007 0.004 0.011 0.004h0.263a0.013 0.013 0 0 0 0.013 -0.011l0.037 -0.228z"/>
+    <defs>
+    <path id="bitbucket-color-16__paint0_linear_707_135" x1="11.544" x2="6.918" y1="4.676" y2="11.282" gradientUnits="userSpaceOnUse" d="">
+        <stop offset=".18" stop-color="#0052CC"/>
+        <stop offset="1" stop-color="#2684FF"/>
+    </path>
+    </defs>
+</svg>
