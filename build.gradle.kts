@@ -69,7 +69,7 @@ subprojects {
     dependencyManagement {
         imports {
             mavenBom("com.fasterxml.jackson:jackson-bom:2.15.2")
-            mavenBom("org.junit:junit-bom:5.9.3")
+            mavenBom("org.junit:junit-bom:5.10.0")
             mavenBom("io.qameta.allure:allure-bom:2.23.0")
         }
         dependencies {
