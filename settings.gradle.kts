@@ -25,7 +25,7 @@ plugins.forEach {
 
 pluginManagement {
     plugins {
-        id("com.bmuschko.docker-remote-api") version "9.3.1"
+        id("com.bmuschko.docker-remote-api") version "9.3.2"
         id("com.diffplug.spotless") version "6.20.0"
         id("com.github.node-gradle.node") version "5.0.0"
         id("com.gorylenko.gradle-git-properties") version "2.4.1"
