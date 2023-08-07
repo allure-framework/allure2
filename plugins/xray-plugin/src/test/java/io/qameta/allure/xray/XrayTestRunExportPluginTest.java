@@ -16,6 +16,7 @@
 package io.qameta.allure.xray;
 
 import io.qameta.allure.core.Configuration;
+import io.qameta.allure.core.InMemoryReportStorage;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.Link;
@@ -26,7 +27,6 @@ import io.qameta.allure.jira.XrayTestRun;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -76,7 +76,7 @@ class XrayTestRunExportPluginTest {
         xrayTestRunExportPlugin.aggregate(
                 mock(Configuration.class),
                 Collections.singletonList(launchResults),
-                Paths.get("/")
+                new InMemoryReportStorage()
         );
 
         final String reportLink = String.format("[%s|%s]", executorInfo.getBuildName(), executorInfo.getReportUrl());
@@ -143,7 +143,7 @@ class XrayTestRunExportPluginTest {
         xrayTestRunExportPlugin.aggregate(
                 mock(Configuration.class),
                 Collections.singletonList(launchResults),
-                Paths.get("/")
+                new InMemoryReportStorage()
         );
 
         final String reportLink = String.format("[%s|%s]", executorInfo.getBuildName(), executorInfo.getReportUrl());
@@ -198,7 +198,7 @@ class XrayTestRunExportPluginTest {
         xrayTestRunExportPlugin.aggregate(
                 mock(Configuration.class),
                 Collections.singletonList(launchResults),
-                Paths.get("/")
+                new InMemoryReportStorage()
         );
 
         final String reportLink = String.format("[%s|%s]", executorInfo.getBuildName(), executorInfo.getReportUrl());

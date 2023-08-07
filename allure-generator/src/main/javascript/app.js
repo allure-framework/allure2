@@ -1,6 +1,6 @@
 import "font-awesome/css/font-awesome.css";
 import "./styles.scss";
-import { Collection, history, Model } from "backbone";
+import { history } from "backbone";
 import { Application, Behaviors } from "backbone.marionette";
 import * as behaviors from "./behaviors";
 import translate from "./helpers/t";

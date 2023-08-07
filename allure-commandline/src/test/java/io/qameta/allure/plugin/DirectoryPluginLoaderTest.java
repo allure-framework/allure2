@@ -58,6 +58,7 @@ class DirectoryPluginLoaderTest {
                 .isEmpty();
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     void shouldLoadPluginExtensions(@TempDir final Path pluginFolder) throws Exception {
         add(pluginFolder, "plugin.jar", "plugin.jar");
@@ -118,6 +119,7 @@ class DirectoryPluginLoaderTest {
                 .hasContent("ho-ho-ho");
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     void shouldLoadJarsInLibDirectory(@TempDir final Path pluginFolder) throws Exception {
         add(pluginFolder, "plugin.jar", "lib/plugin.jar");

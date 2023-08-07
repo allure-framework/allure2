@@ -16,6 +16,7 @@
 package io.qameta.allure.jira;
 
 import io.qameta.allure.core.Configuration;
+import io.qameta.allure.core.InMemoryReportStorage;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.Statistic;
@@ -24,7 +25,6 @@ import io.qameta.allure.entity.TestResult;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -72,7 +72,7 @@ class JiraLaunchExportPluginTest {
         jiraLaunchExportPlugin.aggregate(
                 mock(Configuration.class),
                 Collections.singletonList(launchResults),
-                Paths.get("/")
+                new InMemoryReportStorage()
         );
 
         verify(service, times(1)).createJiraLaunch(any(JiraLaunch.class), anyList());
