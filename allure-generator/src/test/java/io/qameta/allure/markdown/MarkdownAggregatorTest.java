@@ -18,12 +18,11 @@ package io.qameta.allure.markdown;
 import io.qameta.allure.ConfigurationBuilder;
 import io.qameta.allure.DefaultLaunchResults;
 import io.qameta.allure.core.Configuration;
+import io.qameta.allure.core.InMemoryReportStorage;
 import io.qameta.allure.core.MarkdownDescriptionsPlugin;
 import io.qameta.allure.entity.TestResult;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
-import java.nio.file.Path;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,13 +32,13 @@ class MarkdownAggregatorTest {
     private final Configuration configuration = new ConfigurationBuilder().useDefault().build();
 
     @Test
-    void shouldNotFailIfEmptyResults(@TempDir final Path output) {
+    void shouldNotFailIfEmptyResults() {
         final MarkdownDescriptionsPlugin aggregator = new MarkdownDescriptionsPlugin();
-        aggregator.aggregate(configuration, Collections.emptyList(), output);
+        aggregator.aggregate(configuration, Collections.emptyList(), new InMemoryReportStorage());
     }
 
     @Test
-    void shouldSkipResultsWithEmptyDescription(@TempDir final Path output) {
+    void shouldSkipResultsWithEmptyDescription() {
         final MarkdownDescriptionsPlugin aggregator = new MarkdownDescriptionsPlugin();
 
         final TestResult result = new TestResult().setName("some");
@@ -48,14 +47,14 @@ class MarkdownAggregatorTest {
                 Collections.emptyMap(),
                 Collections.emptyMap()
         );
-        aggregator.aggregate(configuration, Collections.singletonList(launchResults), output);
+        aggregator.aggregate(configuration, Collections.singletonList(launchResults), new InMemoryReportStorage());
         assertThat(result)
                 .extracting(TestResult::getDescription, TestResult::getDescriptionHtml)
                 .containsExactly(null, null);
     }
 
     @Test
-    void shouldSkipResultsWithNonEmptyDescriptionHtml(@TempDir final Path output) {
+    void shouldSkipResultsWithNonEmptyDescriptionHtml() {
         final MarkdownDescriptionsPlugin aggregator = new MarkdownDescriptionsPlugin();
 
         final TestResult result = new TestResult()
@@ -67,14 +66,14 @@ class MarkdownAggregatorTest {
                 Collections.emptyMap(),
                 Collections.emptyMap()
         );
-        aggregator.aggregate(configuration, Collections.singletonList(launchResults), output);
+        aggregator.aggregate(configuration, Collections.singletonList(launchResults), new InMemoryReportStorage());
         assertThat(result)
                 .extracting(TestResult::getDescription, TestResult::getDescriptionHtml)
                 .containsExactly("desc", "descHtml");
     }
 
     @Test
-    void shouldProcessDescription(@TempDir final Path output) {
+    void shouldProcessDescription() {
         final MarkdownDescriptionsPlugin aggregator = new MarkdownDescriptionsPlugin();
 
         final TestResult result = new TestResult()
@@ -85,7 +84,7 @@ class MarkdownAggregatorTest {
                 Collections.emptyMap(),
                 Collections.emptyMap()
         );
-        aggregator.aggregate(configuration, Collections.singletonList(launchResults), output);
+        aggregator.aggregate(configuration, Collections.singletonList(launchResults), new InMemoryReportStorage());
         assertThat(result)
                 .extracting(TestResult::getDescription, TestResult::getDescriptionHtml)
                 .containsExactly("desc", "<p>desc</p>\n");

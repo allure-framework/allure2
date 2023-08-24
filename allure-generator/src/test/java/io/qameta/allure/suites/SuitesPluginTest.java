@@ -17,7 +17,9 @@ package io.qameta.allure.suites;
 
 import io.qameta.allure.ConfigurationBuilder;
 import io.qameta.allure.Issue;
+import io.qameta.allure.category.CategoriesPlugin;
 import io.qameta.allure.core.Configuration;
+import io.qameta.allure.core.InMemoryReportStorage;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.TestResult;
@@ -26,14 +28,10 @@ import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.List;
 
-import static io.qameta.allure.suites.SuitesPlugin.CSV_FILE_NAME;
-import static io.qameta.allure.suites.SuitesPlugin.JSON_FILE_NAME;
 import static io.qameta.allure.testdata.TestData.createSingleLaunchResults;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,11 +42,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SuitesPluginTest {
 
     private Configuration configuration;
-    private Path reportPath;
 
     @BeforeEach
-    void setUp(@TempDir final Path temp) {
-        reportPath = temp.resolve("report");
+    void setUp() {
         configuration = new ConfigurationBuilder().useDefault().build();
     }
 
@@ -90,13 +86,14 @@ class SuitesPluginTest {
 
         final SuitesPlugin plugin = new SuitesPlugin();
 
-        plugin.aggregate(configuration, getSimpleLaunchResults(), reportPath);
+        final InMemoryReportStorage storage = new InMemoryReportStorage();
+        plugin.aggregate(configuration, getSimpleLaunchResults(), storage);
 
-        assertThat(reportPath.resolve("data").resolve(JSON_FILE_NAME))
-                .exists();
+        assertThat(storage.getReportDataFiles())
+                .containsKey("data/" + CategoriesPlugin.JSON_FILE_NAME);
 
-        assertThat(reportPath.resolve("data").resolve(CSV_FILE_NAME))
-                .exists();
+        assertThat(storage.getReportDataFiles())
+                .containsKey("data/" + CategoriesPlugin.CSV_FILE_NAME);
     }
 
     private List<LaunchResults> getSimpleLaunchResults() {

@@ -26,7 +26,9 @@ import java.util.List;
  * Composite aggregator extension. Can be used to process the list of aggregator.
  *
  * @since 2.0
+ * @deprecated for removal. Use {@link CompositeAggregator2} instead.
  */
+@Deprecated
 public class CompositeAggregator implements Aggregator {
 
     private final List<Aggregator> aggregators;

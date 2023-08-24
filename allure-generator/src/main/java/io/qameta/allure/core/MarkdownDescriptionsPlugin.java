@@ -15,10 +15,10 @@
  */
 package io.qameta.allure.core;
 
-import io.qameta.allure.Aggregator;
+import io.qameta.allure.Aggregator2;
+import io.qameta.allure.ReportStorage;
 import io.qameta.allure.context.MarkdownContext;
 
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,12 +27,12 @@ import java.util.Objects;
  *
  * @since 2.0
  */
-public class MarkdownDescriptionsPlugin implements Aggregator {
+public class MarkdownDescriptionsPlugin implements Aggregator2 {
 
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
-                          final Path outputDirectory) {
+                          final ReportStorage storage) {
         configuration.getContext(MarkdownContext.class)
                 .ifPresent(markdownContext -> processDescriptions(launchesResults, markdownContext));
     }

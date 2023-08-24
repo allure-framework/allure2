@@ -1,6 +1,7 @@
 import { Model } from "backbone";
 import { findWhere } from "underscore";
 import { makeArray } from "../../utils/arrays";
+import { reportDataUrl } from "../loader";
 
 function collectAttachments({ steps, attachments }) {
   return makeArray(steps)
@@ -11,6 +12,12 @@ function collectAttachments({ steps, attachments }) {
 export default class TestResultModel extends Model {
   get idAttribute() {
     return "uid";
+  }
+
+  fetch(options) {
+    return reportDataUrl(this.url(), "application/json").then((value) =>
+      super.fetch({ ...options, url: value }),
+    );
   }
 
   parse(testResult) {

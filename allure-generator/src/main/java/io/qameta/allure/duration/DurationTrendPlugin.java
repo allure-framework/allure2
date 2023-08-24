@@ -18,7 +18,7 @@ package io.qameta.allure.duration;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.CommonJsonAggregator2;
 import io.qameta.allure.Constants;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.trend.AbstractTrendPlugin;
@@ -88,7 +88,7 @@ public class DurationTrendPlugin extends AbstractTrendPlugin<DurationTrendItem> 
     /**
      * Generates tree data.
      */
-    private static class JsonAggregator extends CommonJsonAggregator {
+    private static class JsonAggregator extends CommonJsonAggregator2 {
 
         JsonAggregator() {
             super(Constants.HISTORY_DIR, JSON_FILE_NAME);
@@ -103,7 +103,7 @@ public class DurationTrendPlugin extends AbstractTrendPlugin<DurationTrendItem> 
     /**
      * Generates widget data.
      */
-    private static class WidgetAggregator extends CommonJsonAggregator {
+    private static class WidgetAggregator extends CommonJsonAggregator2 {
 
         WidgetAggregator() {
             super(Constants.WIDGETS_DIR, JSON_FILE_NAME);

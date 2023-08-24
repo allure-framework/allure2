@@ -15,27 +15,17 @@
  */
 package io.qameta.allure;
 
-import lombok.Data;
-import lombok.experimental.Accessors;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.Path;
 
 /**
  * @author charlie (Dmitry Baev).
  */
-@Data
-@Accessors(chain = true)
-public class PluginConfiguration implements Serializable {
+public interface ReportStorage {
 
-    private static final long serialVersionUID = 1L;
+    void addDataJson(String name, Object data);
 
-    private String id;
-    private String name;
-    private String description;
-    private List<String> extensions = new ArrayList<>();
-    private List<String> jsFiles = new ArrayList<>();
-    private List<String> cssFiles = new ArrayList<>();
+    void addDataBinary(String name, byte[] data);
+
+    void addDataFile(String name, Path file);
 
 }

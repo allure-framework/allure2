@@ -16,11 +16,13 @@
 package io.qameta.allure.category;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import io.qameta.allure.CommonCsvExportAggregator;
-import io.qameta.allure.CommonJsonAggregator;
-import io.qameta.allure.CompositeAggregator;
+import io.qameta.allure.Aggregator2;
+import io.qameta.allure.CommonCsvExportAggregator2;
+import io.qameta.allure.CommonJsonAggregator2;
+import io.qameta.allure.CompositeAggregator2;
 import io.qameta.allure.Constants;
 import io.qameta.allure.Reader;
+import io.qameta.allure.ReportStorage;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
@@ -62,7 +64,7 @@ import static java.util.Objects.nonNull;
  * @since 2.0
  */
 @SuppressWarnings({"PMD.ExcessiveImports", "ClassDataAbstractionCoupling"})
-public class CategoriesPlugin extends CompositeAggregator implements Reader {
+public class CategoriesPlugin extends CompositeAggregator2 implements Reader {
 
     public static final String CATEGORIES = "categories";
 
@@ -81,7 +83,8 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
 
     public CategoriesPlugin() {
         super(Arrays.asList(
-                new JsonAggregator(), new CsvExportAggregator(), new WidgetAggregator()
+                new EnrichDataAggregator(), new JsonAggregator(),
+                new CsvExportAggregator(), new WidgetAggregator()
         ));
     }
 
@@ -150,14 +153,14 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
 
     public static boolean matches(final TestResult result, final Category category) {
         final boolean matchesStatus = category.getMatchedStatuses().isEmpty()
-                || nonNull(result.getStatus())
-                && category.getMatchedStatuses().contains(result.getStatus());
+                                      || nonNull(result.getStatus())
+                                         && category.getMatchedStatuses().contains(result.getStatus());
         final boolean matchesMessage = isNull(category.getMessageRegex())
-                || nonNull(result.getStatusMessage())
-                && matches(result.getStatusMessage(), category.getMessageRegex());
+                                       || nonNull(result.getStatusMessage())
+                                          && matches(result.getStatusMessage(), category.getMessageRegex());
         final boolean matchesTrace = isNull(category.getTraceRegex())
-                || nonNull(result.getStatusTrace())
-                && matches(result.getStatusTrace(), category.getTraceRegex());
+                                     || nonNull(result.getStatusTrace())
+                                        && matches(result.getStatusTrace(), category.getTraceRegex());
         final boolean matchesFlaky = result.isFlaky() == category.isFlaky();
         return matchesStatus && matchesMessage && matchesTrace && matchesFlaky;
     }
@@ -173,18 +176,23 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
                 .setStatistic(calculateStatisticByLeafs(group));
     }
 
-    @Override
-    public void aggregate(final Configuration configuration,
-                          final List<LaunchResults> launchesResults,
-                          final Path outputDirectory) throws IOException {
-        addCategoriesForResults(launchesResults);
-        super.aggregate(configuration, launchesResults, outputDirectory);
+    /**
+     * Adds categories info to test results.
+     */
+    private static class EnrichDataAggregator implements Aggregator2 {
+
+        @Override
+        public void aggregate(final Configuration configuration,
+                              final List<LaunchResults> launchesResults,
+                              final ReportStorage storage) {
+            addCategoriesForResults(launchesResults);
+        }
     }
 
     /**
      * Generates tree data.
      */
-    private static class JsonAggregator extends CommonJsonAggregator {
+    private static class JsonAggregator extends CommonJsonAggregator2 {
 
         JsonAggregator() {
             super(JSON_FILE_NAME);
@@ -199,7 +207,7 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
     /**
      * Generates export data.
      */
-    private static class CsvExportAggregator extends CommonCsvExportAggregator<CsvExportCategory> {
+    private static class CsvExportAggregator extends CommonCsvExportAggregator2<CsvExportCategory> {
 
         CsvExportAggregator() {
             super(CSV_FILE_NAME, CsvExportCategory.class);
@@ -223,7 +231,7 @@ public class CategoriesPlugin extends CompositeAggregator implements Reader {
     /**
      * Generates widget data.
      */
-    private static class WidgetAggregator extends CommonJsonAggregator {
+    private static class WidgetAggregator extends CommonJsonAggregator2 {
 
         WidgetAggregator() {
             super(Constants.WIDGETS_DIR, JSON_FILE_NAME);

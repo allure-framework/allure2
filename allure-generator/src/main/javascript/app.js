@@ -27,7 +27,13 @@ const noTabChange = () => {
 export const showView = (factory) => {
   return (...args) => {
     const current = App.getView();
-    if (current && noTabChange() && current.shouldKeepState(...args)) {
+    if (
+      current &&
+      current.onRouteUpdate &&
+      current.shouldKeepState &&
+      noTabChange() &&
+      current.shouldKeepState(...args)
+    ) {
       current.onRouteUpdate(...args);
     } else {
       App.showView(factory(...args));
@@ -36,7 +42,7 @@ export const showView = (factory) => {
 };
 
 export const notFound = () => {
-  return new ErrorLayout({ code: 404, message: translate("errors.notFound") });
+  return new ErrorLayout({ code: 401, message: translate("errors.notFound") });
 };
 
 const App = new Application({

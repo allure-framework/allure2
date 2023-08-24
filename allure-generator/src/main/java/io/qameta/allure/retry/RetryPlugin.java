@@ -15,13 +15,13 @@
  */
 package io.qameta.allure.retry;
 
-import io.qameta.allure.Aggregator;
+import io.qameta.allure.Aggregator2;
+import io.qameta.allure.ReportStorage;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -39,7 +39,7 @@ import static io.qameta.allure.entity.TestResult.comparingByTime;
  *
  * @since 2.0
  */
-public class RetryPlugin implements Aggregator {
+public class RetryPlugin implements Aggregator2 {
 
     public static final String RETRY_BLOCK_NAME = "retries";
 
@@ -47,7 +47,7 @@ public class RetryPlugin implements Aggregator {
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
-                          final Path outputDirectory) {
+                          final ReportStorage storage) {
 
         final Map<String, List<TestResult>> byHistory = launchesResults.stream()
                 .flatMap(results -> results.getAllResults().stream())

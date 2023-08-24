@@ -5,7 +5,7 @@ import TimelineView from "./TimelineView";
 export default class TimelineLayout extends AppLayout {
   initialize({ url }) {
     super.initialize();
-    this.items = new TreeCollection([], { url });
+    this.items = new TreeCollection([], { url, parse: true });
   }
 
   loadData() {

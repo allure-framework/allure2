@@ -16,8 +16,9 @@
 package io.qameta.allure.ga;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import io.qameta.allure.Aggregator;
+import io.qameta.allure.Aggregator2;
 import io.qameta.allure.ReportInfo;
+import io.qameta.allure.ReportStorage;
 import io.qameta.allure.context.ReportInfoContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
@@ -38,7 +39,6 @@ import java.net.InetAddress;
 import java.net.URI;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -58,7 +58,7 @@ import static io.qameta.allure.executor.ExecutorPlugin.EXECUTORS_BLOCK_NAME;
  * @author charlie (Dmitry Baev).
  */
 @SuppressWarnings({"PMD.ExcessiveImports"})
-public class GaPlugin implements Aggregator {
+public class GaPlugin implements Aggregator2 {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GaPlugin.class);
 
@@ -75,7 +75,7 @@ public class GaPlugin implements Aggregator {
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
-                          final Path outputDirectory) {
+                          final ReportStorage storage) {
         if (Objects.nonNull(System.getenv(NO_ANALYTICS))) {
             LOGGER.debug("analytics is disabled");
             return;

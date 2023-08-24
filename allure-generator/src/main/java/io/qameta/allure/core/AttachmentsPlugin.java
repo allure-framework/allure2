@@ -15,14 +15,10 @@
  */
 package io.qameta.allure.core;
 
-import io.qameta.allure.Aggregator;
+import io.qameta.allure.Aggregator2;
 import io.qameta.allure.Constants;
+import io.qameta.allure.ReportStorage;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 /**
@@ -30,26 +26,17 @@ import java.util.List;
  *
  * @since 2.0
  */
-public class AttachmentsPlugin implements Aggregator {
+public class AttachmentsPlugin implements Aggregator2 {
 
     @Override
-    @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
-                          final Path outputDirectory) throws IOException {
-        final Path attachmentsFolder = Files.createDirectories(
-                outputDirectory.resolve(Constants.DATA_DIR).resolve("attachments")
-        );
+                          final ReportStorage storage) {
         launchesResults.forEach(launch -> launch.getAttachments().entrySet()
                 .parallelStream()
-                .forEach(
-                        entry -> {
-                            final Path file = attachmentsFolder.resolve(entry.getValue().getSource());
-                            try {
-                                Files.copy(entry.getKey(), file, StandardCopyOption.REPLACE_EXISTING);
-                            } catch (IOException e) {
-                                throw new UncheckedIOException(e);
-                            }
-                        }));
+                .forEach(entry -> storage.addDataFile(
+                        Constants.dataPath("attachments", entry.getValue().getSource()),
+                        entry.getKey()
+                )));
     }
 }

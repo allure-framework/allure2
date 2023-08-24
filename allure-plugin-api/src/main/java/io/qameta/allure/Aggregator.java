@@ -27,8 +27,10 @@ import java.util.List;
  * some data to report directory.
  *
  * @since 2.0
+ * @deprecated for removal. Use {@link Aggregator2} instead.
  */
 @FunctionalInterface
+@Deprecated
 public interface Aggregator extends Extension {
 
     /**

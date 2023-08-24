@@ -21,29 +21,24 @@ import io.qameta.allure.core.LaunchResults;
 import java.util.List;
 
 /**
- * Widget extension.
+ * Composite aggregator extension. Can be used to process the list of aggregator.
  *
- * @since 2.0,
- * @deprecated use {@link Aggregator} instead.
+ * @since 2.0
  */
-@Deprecated
-public interface Widget extends Extension {
+public class CompositeAggregator2 implements Aggregator2 {
 
-    /**
-     * Returns widget data. The data will be marshaled to JSON and
-     * available in frontend widget plugin. To disable the widget return null.
-     *
-     * @param configuration the report configuration.
-     * @param launches      the parsed tests results.
-     * @return widget data. Null if widget is disabled.
-     */
-    Object getData(Configuration configuration, List<LaunchResults> launches);
+    private final List<Aggregator2> aggregators;
 
-    /**
-     * Returns unique widget name. Should not be a null.
-     *
-     * @return widget name.
-     */
-    String getName();
+    public CompositeAggregator2(final List<Aggregator2> aggregators) {
+        this.aggregators = aggregators;
+    }
 
+    @Override
+    public void aggregate(final Configuration configuration,
+                          final List<LaunchResults> launchesResults,
+                          final ReportStorage storage) {
+        for (Aggregator2 aggregator : aggregators) {
+            aggregator.aggregate(configuration, launchesResults, storage);
+        }
+    }
 }

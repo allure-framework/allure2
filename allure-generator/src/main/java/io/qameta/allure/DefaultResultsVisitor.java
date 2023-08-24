@@ -120,7 +120,7 @@ public class DefaultResultsVisitor implements ResultsVisitor {
         try {
             return getDefaultMimeTypes().forName(type).getExtension();
         } catch (Exception e) {
-            LOGGER.warn("Can't detect extension for MIME-type {} {}", type, e);
+            LOGGER.warn("Can't detect extension for MIME-type {}", type, e);
             return "";
         }
     }
@@ -129,7 +129,7 @@ public class DefaultResultsVisitor implements ResultsVisitor {
         try (InputStream stream = newInputStream(path)) {
             return probeContentType(stream, Objects.toString(path.getFileName()));
         } catch (IOException e) {
-            LOGGER.warn("Couldn't detect the media type of attachment {} {}", path, e);
+            LOGGER.warn("Couldn't detect the media type of attachment {}", path, e);
             return WILDCARD;
         }
     }
@@ -140,7 +140,7 @@ public class DefaultResultsVisitor implements ResultsVisitor {
             metadata.set(TikaCoreProperties.RESOURCE_NAME_KEY, name);
             return getDefaultMimeTypes().detect(stream, metadata).toString();
         } catch (IOException e) {
-            LOGGER.warn("Couldn't detect the media type of attachment {} {}", name, e);
+            LOGGER.warn("Couldn't detect the media type of attachment {}", name, e);
             return WILDCARD;
         }
     }
@@ -149,7 +149,7 @@ public class DefaultResultsVisitor implements ResultsVisitor {
         try {
             return size(path);
         } catch (IOException e) {
-            LOGGER.warn("Could not get the size of file {} {}", path, e);
+            LOGGER.warn("Could not get the size of file {}", path, e);
             return null;
         }
     }

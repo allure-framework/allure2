@@ -1,40 +1,57 @@
+<#-- @ftlvariable name="faviconUrl" type="java.lang.String" -->
+<#-- @ftlvariable name="stylesUrls" type="java.lang.String[]" -->
+<#-- @ftlvariable name="jsUrls" type="java.lang.String[]" -->
+<#-- @ftlvariable name="reportDataFiles" type="java.util.Map<java.lang.String,java.lang.String>" -->
+<#-- @ftlvariable name="analyticsDisable" type="boolean" -->
+<#-- @ftlvariable name="allureVersion" type="java.lang.String" -->
+<#-- @ftlvariable name="reportUuid" type="java.lang.String" -->
 <!DOCTYPE html>
-<html dir="ltr">
+<html dir="ltr" lang="en">
 <head>
     <meta charset="utf-8">
     <title>Allure Report</title>
-    <link rel="favicon" href="favicon.ico?v=3">
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    <#list plugins as plugin>
-        <#list plugin.cssFiles as cssFile>
-    <link rel="stylesheet" href="plugins/${plugin.id}/${cssFile}">
-        </#list>
+    <link rel="favicon" href="${faviconUrl}">
+    <#list stylesUrls as styleUrl>
+    <link rel="stylesheet" type="text/css" href="${styleUrl}">
     </#list>
 </head>
 <body>
-<div id="alert"></div>
-<div id="content">
-    <span class="spinner">
-        <span class="spinner__circle"></span>
-    </span>
-</div>
-<div id="popup"></div>
-<script src="app.js"></script>
-<#list plugins as plugin>
-    <#list plugin.jsFiles as jsFile>
-    <script src="plugins/${plugin.id}/${jsFile}"></script>
+    <div id="alert"></div>
+    <div id="content">
+        <span class="spinner">
+            <span class="spinner__circle"></span>
+        </span>
+    </div>
+    <div id="popup"></div>
+    <#list jsUrls as jsUrl>
+    <script src="${jsUrl}"></script>
     </#list>
-</#list>
-<#if ALLURE_NO_ANALYTICS == false>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FVWC4GKEYS"></script>
-</#if>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-FVWC4GKEYS');
-    gtag('allureVersion', '${allureVersion}')
-    gtag('reportUuid', '${reportUuid}')
-</script>
+    <#if analyticsDisable == false>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FVWC4GKEYS"></script>
+    </#if>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FVWC4GKEYS');
+        gtag('allureVersion', '${allureVersion}')
+        gtag('reportUuid', '${reportUuid}')
+    </script>
+    <#if reportDataFiles?has_content>
+    <script async>
+        window.reportDataReady = false;
+        window.reportData = window.reportData || {};
+        function d(name, value){
+            return new Promise(function (resolve) {console.log(name);window.reportData[name] = value;resolve(true)});
+        }
+    </script>
+    <script defer>
+      Promise.allSettled([
+        <#list reportDataFiles as name, value>
+        d('${name}','${value}'),
+        </#list>
+      ]).then(function(){window.reportDataReady = true;})
+    </script>
+    </#if>
 </body>
 </html>

@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -57,6 +58,7 @@ class DirectoryPluginLoaderTest {
                 .isEmpty();
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     void shouldLoadPluginExtensions(@TempDir final Path pluginFolder) throws Exception {
         add(pluginFolder, "plugin.jar", "plugin.jar");
@@ -108,14 +110,16 @@ class DirectoryPluginLoaderTest {
                 .isNotNull()
                 .isEmpty();
 
-        final Path unpack = Files.createDirectories(temp.resolve("unpack"));
-        plugin.unpackReportStatic(unpack);
 
-        assertThat(unpack.resolve("some-file"))
+        final Map<String, Path> pluginFiles = plugin.getPluginFiles();
+
+        assertThat(pluginFiles).containsKey("some-file");
+        assertThat(pluginFiles.get("some-file"))
                 .isRegularFile()
                 .hasContent("ho-ho-ho");
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     void shouldLoadJarsInLibDirectory(@TempDir final Path pluginFolder) throws Exception {
         add(pluginFolder, "plugin.jar", "lib/plugin.jar");

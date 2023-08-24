@@ -15,14 +15,14 @@
  */
 package io.qameta.allure.severity;
 
-import io.qameta.allure.Aggregator;
-import io.qameta.allure.CommonJsonAggregator;
-import io.qameta.allure.CompositeAggregator;
+import io.qameta.allure.Aggregator2;
+import io.qameta.allure.CommonJsonAggregator2;
+import io.qameta.allure.CompositeAggregator2;
+import io.qameta.allure.ReportStorage;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.TestResult;
 
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,7 +34,7 @@ import static io.qameta.allure.entity.LabelName.SEVERITY;
  *
  * @since 2.0
  */
-public class SeverityPlugin extends CompositeAggregator {
+public class SeverityPlugin extends CompositeAggregator2 {
 
     public static final String SEVERITY_BLOCK_NAME = "severity";
 
@@ -52,12 +52,12 @@ public class SeverityPlugin extends CompositeAggregator {
     /**
      * Adds severity to test results.
      */
-    private static class SeverityAggregator implements Aggregator {
+    private static class SeverityAggregator implements Aggregator2 {
 
         @Override
         public void aggregate(final Configuration configuration,
                               final List<LaunchResults> launchesResults,
-                              final Path outputDirectory) {
+                              final ReportStorage storage) {
             launchesResults.stream()
                     .flatMap(results -> results.getResults().stream())
                     .forEach(this::setSeverityLevel);
@@ -75,7 +75,7 @@ public class SeverityPlugin extends CompositeAggregator {
     /**
      * Generates widget data.
      */
-    private static class WidgetAggregator extends CommonJsonAggregator {
+    private static class WidgetAggregator extends CommonJsonAggregator2 {
 
         WidgetAggregator() {
             super("widgets", JSON_FILE_NAME);

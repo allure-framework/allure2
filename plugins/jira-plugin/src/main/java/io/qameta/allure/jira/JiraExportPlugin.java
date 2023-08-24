@@ -15,7 +15,8 @@
  */
 package io.qameta.allure.jira;
 
-import io.qameta.allure.Aggregator;
+import io.qameta.allure.Aggregator2;
+import io.qameta.allure.ReportStorage;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.ExecutorInfo;
@@ -26,7 +27,6 @@ import io.qameta.allure.entity.TestResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -38,9 +38,7 @@ import static io.qameta.allure.util.PropertyUtils.getProperty;
 /**
  * @author eroshenkoam (Artem Eroshenko).
  */
-
-
-public class JiraExportPlugin implements Aggregator {
+public class JiraExportPlugin implements Aggregator2 {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JiraExportPlugin.class);
 
@@ -70,7 +68,7 @@ public class JiraExportPlugin implements Aggregator {
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
-                          final Path outputDirectory) {
+                          final ReportStorage reportStorage) {
         if (enabled) {
             final JiraService jiraService = jiraServiceSupplier.get();
 
@@ -87,7 +85,6 @@ public class JiraExportPlugin implements Aggregator {
                     .map(Optional::get)
                     .forEach(jiraTestResult -> {
                         JiraExportUtils.getTestResults(launchesResults)
-                                .stream()
                                 .forEach(testResult ->
                                         exportTestResultToJira(jiraService, jiraTestResult, testResult));
                     });
