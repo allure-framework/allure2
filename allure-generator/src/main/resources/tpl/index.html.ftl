@@ -33,9 +33,11 @@
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-FVWC4GKEYS');
-        gtag('allureVersion', '${allureVersion}')
-        gtag('reportUuid', '${reportUuid}')
+        gtag('config', 'G-FVWC4GKEYS', {
+          'allureVersion': '${allureVersion}',
+          'reportUuid': '${reportUuid}',
+          'single_file': ${reportDataFiles?has_content?string}
+        });
     </script>
     <#if reportDataFiles?has_content>
     <script async>
