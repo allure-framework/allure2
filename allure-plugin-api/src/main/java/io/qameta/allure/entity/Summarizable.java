@@ -29,6 +29,8 @@ import static java.util.Objects.isNull;
  */
 public interface Summarizable {
 
+    String getName();
+
     String getStatusMessage();
 
     List<Step> getSteps();
@@ -76,5 +78,12 @@ public interface Summarizable {
         final List<Step> steps = isNull(getSteps()) ? emptyList() : getSteps();
         final List<Parameter> parameters = isNull(getParameters()) ? emptyList() : getParameters();
         return steps.size() + attachments.size() + parameters.size() > 0 || shouldDisplayMessage();
+    }
+
+    @JsonProperty
+    default boolean isAttachmentStep() {
+        return getStepsCount() == 0
+               && getAttachmentsCount() == 1
+               && Objects.equals(getName(), getAttachments().get(0).getName());
     }
 }
