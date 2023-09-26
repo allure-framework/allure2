@@ -24,7 +24,7 @@ class AttachmentView extends View {
 
   onRender() {
     if (!this.sourceUrl) {
-      reportDataUrl(`data/attachments/${this.attachment.source}`)
+      reportDataUrl(`data/attachments/${this.attachment.source}`, this.getContentType())
         .then((sourceUrl) => {
           this.sourceUrl = sourceUrl;
         })
@@ -49,6 +49,10 @@ class AttachmentView extends View {
       codeBlock.addClass(`language-${this.attachment.type.split("/").pop()}`);
       highlight.highlightElement(codeBlock[0]);
     }
+  }
+
+  getContentType(){
+    return this.attachment.type === "text/html" ? this.attachment.type : "application/octet-stream";
   }
 
   onDestroy() {
