@@ -91,6 +91,11 @@ tasks.processResources {
 
 tasks.test {
     dependsOn(testWeb)
+    jvmArgs = listOf(
+        "--add-opens",
+        "java.base/java.lang=ALL-UNNAMED",
+        "java.base/java.util=ALL-UNNAMED",
+    )
 }
 
 val allurePlugin by configurations.existing
@@ -116,6 +121,7 @@ dependencies {
     testImplementation("io.qameta.allure:allure-junit-platform")
     testImplementation("org.apache.commons:commons-lang3")
     testImplementation("org.assertj:assertj-core")
+    testImplementation("org.junit-pioneer:junit-pioneer")
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.slf4j:slf4j-simple")
