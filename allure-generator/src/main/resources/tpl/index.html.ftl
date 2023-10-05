@@ -44,7 +44,7 @@
         window.reportDataReady = false;
         window.reportData = window.reportData || {};
         function d(name, value){
-            return new Promise(function (resolve) {console.log(name);window.reportData[name] = value;resolve(true)});
+            return new Promise(function (resolve) {window.reportData[name] = value;resolve(true)});
         }
     </script>
     <script defer>

@@ -24,7 +24,7 @@ class AttachmentView extends View {
 
   onRender() {
     if (!this.sourceUrl) {
-      reportDataUrl(`data/attachments/${this.attachment.source}`)
+      reportDataUrl(`data/attachments/${this.attachment.source}`, this.attachment.type)
         .then((sourceUrl) => {
           this.sourceUrl = sourceUrl;
         })
