@@ -16,6 +16,7 @@
 package io.qameta.allure.core;
 
 import freemarker.template.Template;
+import io.qameta.allure.Constants;
 import io.qameta.allure.PluginConfiguration;
 import io.qameta.allure.ReportGenerationException;
 import io.qameta.allure.ReportStorage;
@@ -35,6 +36,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -141,7 +143,10 @@ public class ReportWebGenerator {
                 dataModel.put("reportDataFiles", reportDataFiles);
             }
 
-            dataModel.put("analyticsDisable", false);
+            final boolean analyticsDisable = Optional.ofNullable(System.getenv(Constants.NO_ANALYTICS))
+                    .map(Boolean::parseBoolean)
+                    .orElse(false);
+            dataModel.put("analyticsDisable", analyticsDisable);
             dataModel.put("reportUuid", UUID.randomUUID().toString());
             dataModel.put("allureVersion", "dev");
 
