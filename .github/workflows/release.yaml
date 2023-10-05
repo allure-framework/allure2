@@ -20,7 +20,7 @@ jobs:
       - name: "Check next version"
         run: |
           expr "${{ github.event.inputs.nextVersion }}" : '[[:digit:]][[:digit:]]*\.[[:digit:]][[:digit:]]*$'
-      - uses: actions/checkout@v4.0.0
+      - uses: actions/checkout@v4.1.0
         with:
           token: ${{ secrets.QAMETA_CI }}
 
