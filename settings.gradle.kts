@@ -26,7 +26,7 @@ plugins.forEach {
 pluginManagement {
     plugins {
         id("com.bmuschko.docker-remote-api") version "9.3.3"
-        id("com.diffplug.spotless") version "6.21.0"
+        id("com.diffplug.spotless") version "6.22.0"
         id("com.github.node-gradle.node") version "7.0.1"
         id("com.gorylenko.gradle-git-properties") version "2.4.1"
         id("com.netflix.nebula.ospackage") version "11.4.0"
