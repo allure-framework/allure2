@@ -34,6 +34,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -59,7 +60,7 @@ public class ReportWebGenerator {
 
         final boolean inline = reportStorage instanceof InMemoryReportStorage;
 
-        final Set<String> jsFiles = new HashSet<>();
+        final LinkedHashSet<String> jsFiles = new LinkedHashSet<>();
         if (inline) {
             jsFiles.add(dataBase64(TEXT_JAVASCRIPT, APP_JS));
         } else {
