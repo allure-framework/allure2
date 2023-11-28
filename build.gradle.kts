@@ -32,7 +32,7 @@ plugins {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(8))
     }
 }
 
@@ -47,7 +47,7 @@ group = "io.qameta.allure"
 
 nexusPublishing {
     repositories {
-        sonatype()
+//        sonatype()
     }
 }
 
