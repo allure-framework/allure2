@@ -224,7 +224,7 @@ public class Allure2Plugin implements Reader {
                 .setSteps(convertList(result.getSteps(), step -> convert(source, visitor, step)))
                 .setDescription(result.getDescription())
                 .setDescriptionHtml(result.getDescriptionHtml())
-                .setAttachments(convertList(result.getAttachments(), attach -> convert(source, visitor, attach)))
+//                .setAttachments(convertList(result.getAttachments(), attach -> convert(source, visitor, attach)))
                 .setParameters(convertList(result.getParameters(), p -> !HIDDEN.equals(p.getMode()), this::convert));
         Optional.of(result)
                 .map(FixtureResult::getStatusDetails)
@@ -259,23 +259,27 @@ public class Allure2Plugin implements Reader {
     private Attachment convert(final Path source,
                                final ResultsVisitor visitor,
                                final io.qameta.allure.model.Attachment attachment) {
-        final Path attachmentFile = source.resolve(attachment.getSource());
-        if (Files.isRegularFile(attachmentFile)) {
-            final Attachment found = visitor.visitAttachmentFile(attachmentFile);
-            if (nonNull(attachment.getType())) {
-                found.setType(attachment.getType());
-            }
-            if (nonNull(attachment.getName())) {
-                found.setName(attachment.getName());
-            }
-            return found;
-        } else {
-            visitor.error("Could not find attachment " + attachment.getSource() + " in directory " + source);
-            return new Attachment()
-                    .setType(attachment.getType())
-                    .setName(attachment.getName())
-                    .setSize(0L);
-        }
+//        final Path attachmentFile = source.resolve(attachment.getSource());
+//        if (Files.isRegularFile(attachmentFile)) {
+//            final Attachment found = visitor.visitAttachmentFile(attachmentFile);
+//            if (nonNull(attachment.getType())) {
+//                found.setType(attachment.getType());
+//            }
+//            if (nonNull(attachment.getName())) {
+//                found.setName(attachment.getName());
+//            }
+//            return found;
+//        } else {
+//            visitor.error("Could not find attachment " + attachment.getSource() + " in directory " + source);
+//            return new Attachment()
+//                    .setType(attachment.getType())
+//                    .setName(attachment.getName())
+//                    .setSize(0L);
+//        }
+        return new Attachment()
+                .setType(attachment.getType())
+                .setName(attachment.getName())
+                .setSize(0L);
     }
 
     private Step convert(final Path source,
@@ -286,7 +290,7 @@ public class Allure2Plugin implements Reader {
                 .setStatus(convert(step.getStatus()))
                 .setTime(convert(step.getStart(), step.getStop()))
                 .setParameters(convertList(step.getParameters(), p -> !HIDDEN.equals(p.getMode()), this::convert))
-                .setAttachments(convertList(step.getAttachments(), attachment -> convert(source, visitor, attachment)))
+//                .setAttachments(convertList(step.getAttachments(), attachment -> convert(source, visitor, attachment)))
                 .setSteps(convertList(step.getSteps(), s -> convert(source, visitor, s)));
         Optional.of(step)
                 .map(StepResult::getStatusDetails)
@@ -331,10 +335,10 @@ public class Allure2Plugin implements Reader {
                 result.getSteps(),
                 step -> convert(source, visitor, step)
         ));
-        testStage.setAttachments(convertList(
-                result.getAttachments(),
-                attachment -> convert(source, visitor, attachment)
-        ));
+//        testStage.setAttachments(convertList(
+//                result.getAttachments(),
+//                attachment -> convert(source, visitor, attachment)
+//        ));
         testStage.setStatus(convert(result.getStatus()));
         testStage.setDescription(result.getDescription());
         testStage.setDescriptionHtml(result.getDescriptionHtml());
