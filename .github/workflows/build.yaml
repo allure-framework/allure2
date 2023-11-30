@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4.1.1
       - name: Set up JDK ${{ matrix.java-version }}
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: ${{ matrix.java-version }}
@@ -47,7 +47,7 @@ jobs:
         java-version: [ '8', '11', '17', '20' ]
     steps:
       - name: Set up JRE ${{ matrix.java-version }}
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-package: 'jre'
           distribution: 'zulu'
