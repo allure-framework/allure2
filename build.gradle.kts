@@ -223,7 +223,11 @@ subprojects {
                 pom {
                     name.set(project.name)
                     description.set("Module ${project.name} of Allure Framework.")
-                    url.set("https://github.com/allure-framework/allure2")
+                    url.set("https://allurereport.org/")
+                    organization {
+                        name.set("Qameta Software")
+                        url.set("https://qameta.io/")
+                    }
                     licenses {
                         license {
                             name.set("The Apache License, Version 2.0")
@@ -235,11 +239,13 @@ subprojects {
                             id.set("baev")
                             name.set("Dmitry Baev")
                             email.set("dmitry.baev@qameta.io")
+                            url.set("https://github.com/baev")
                         }
                         developer {
                             id.set("eroshenkoam")
                             name.set("Artem Eroshenko")
                             email.set("artem.eroshenko@qameta.io")
+                            url.set("https://github.com/eroshenkoam")
                         }
                     }
                     scm {
@@ -250,6 +256,10 @@ subprojects {
                     issueManagement {
                         system.set("GitHub Issues")
                         url.set("https://github.com/allure-framework/allure2/issues")
+                    }
+                    ciManagement {
+                        system.set("Github Actions")
+                        url.set("https://github.com/allure-framework/allure-java/actions")
                     }
                     versionMapping {
                         usage("java-api") {
