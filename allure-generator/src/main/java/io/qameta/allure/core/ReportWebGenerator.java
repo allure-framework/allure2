@@ -31,13 +31,13 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -59,7 +59,7 @@ public class ReportWebGenerator {
 
         final boolean inline = reportStorage instanceof InMemoryReportStorage;
 
-        final Set<String> jsFiles = new HashSet<>();
+        final List<String> jsFiles = new ArrayList<>();
         if (inline) {
             jsFiles.add(dataBase64(TEXT_JAVASCRIPT, APP_JS));
         } else {
@@ -67,7 +67,7 @@ public class ReportWebGenerator {
             write(outputDirectory, APP_JS, readResource(APP_JS));
         }
 
-        final Set<String> cssFiles = new HashSet<>();
+        final List<String> cssFiles = new ArrayList<>();
         if (inline) {
             cssFiles.add(dataBase64(TEXT_CSS, STYLES_CSS));
         } else {
