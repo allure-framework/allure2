@@ -26,6 +26,11 @@ import java.util.stream.Stream;
 public final class Constants {
 
     /**
+     * The default report name.
+     */
+    public static final String DEFAULT_REPORT_NAME = "Allure Reprot";
+
+    /**
      * The name of directory that contains widgets data.
      */
     public static final String WIDGETS_DIR = "widgets";

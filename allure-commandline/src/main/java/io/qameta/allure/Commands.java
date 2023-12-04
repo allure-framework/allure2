@@ -19,6 +19,7 @@ import io.qameta.allure.config.ConfigLoader;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.Plugin;
 import io.qameta.allure.option.ConfigOptions;
+import io.qameta.allure.option.ReportNameOptions;
 import io.qameta.allure.plugin.DefaultPluginLoader;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.server.Server;
@@ -90,15 +91,17 @@ public class Commands {
     public ExitCode generate(final Path reportDirectory,
                              final List<Path> resultsDirectories,
                              final boolean clean,
-                             final ConfigOptions profile) {
-        return generate(reportDirectory, resultsDirectories, clean, false, profile);
+                             final ConfigOptions profile,
+                             final ReportNameOptions reportNameOptions) {
+        return generate(reportDirectory, resultsDirectories, clean, false, profile, reportNameOptions);
     }
 
     public ExitCode generate(final Path reportDirectory,
                              final List<Path> resultsDirectories,
                              final boolean clean,
                              final boolean singleFileMode,
-                             final ConfigOptions profile) {
+                             final ConfigOptions profile,
+                             final ReportNameOptions reportNameOptions) {
         final boolean directoryExists = Files.exists(reportDirectory);
         if (clean && directoryExists) {
             FileUtils.deleteQuietly(reportDirectory.toFile());
@@ -106,7 +109,7 @@ public class Commands {
             LOGGER.error(DIRECTORY_EXISTS_MESSAGE, reportDirectory.toAbsolutePath());
             return ExitCode.GENERIC_ERROR;
         }
-        final ReportGenerator generator = new ReportGenerator(createReportConfiguration(profile));
+        final ReportGenerator generator = new ReportGenerator(createReportConfiguration(profile, reportNameOptions));
         if (singleFileMode) {
             generator.generateSingleFile(reportDirectory, resultsDirectories);
         } else {
@@ -119,7 +122,8 @@ public class Commands {
     public ExitCode serve(final List<Path> resultsDirectories,
                           final String host,
                           final int port,
-                          final ConfigOptions configOptions) {
+                          final ConfigOptions configOptions,
+                          final ReportNameOptions reportNameOptions) {
         LOGGER.info("Generating report to temp directory...");
 
         final Path reportDirectory;
@@ -136,7 +140,8 @@ public class Commands {
                 reportDirectory,
                 resultsDirectories,
                 false,
-                configOptions
+                configOptions,
+                reportNameOptions
         );
         if (exitCode.isSuccess()) {
             return open(reportDirectory, host, port);
@@ -186,7 +191,8 @@ public class Commands {
      * @param profile selected profile.
      * @return created report configuration.
      */
-    protected Configuration createReportConfiguration(final ConfigOptions profile) {
+    protected Configuration createReportConfiguration(final ConfigOptions profile,
+                                                      final ReportNameOptions reportNameOptions) {
         final DefaultPluginLoader loader = new DefaultPluginLoader();
         final CommandlineConfig commandlineConfig = getConfig(profile);
         final ClassLoader classLoader = getClass().getClassLoader();
@@ -199,6 +205,7 @@ public class Commands {
         return new ConfigurationBuilder()
                 .useDefault()
                 .fromPlugins(plugins)
+                .withReportName(reportNameOptions.getReportName())
                 .build();
     }
 

@@ -33,6 +33,15 @@ import java.util.stream.Collectors;
 public interface Configuration {
 
     /**
+     * Returns the report name.
+     *
+     * @return the report name.
+     */
+    default String getReportName() {
+        return null;
+    }
+
+    /**
      * Returns all configured plugins.
      *
      * @return configured plugins.

@@ -83,6 +83,8 @@ public class ConfigurationBuilder {
 
     private final List<Plugin> plugins = new ArrayList<>();
 
+    private String reportName;
+
     public ConfigurationBuilder useDefault() {
         final String allureVersion = getVersionFromFile()
                 .orElse(getVersionFromManifest().orElse("Undefined"));
@@ -138,8 +140,14 @@ public class ConfigurationBuilder {
         return this;
     }
 
+    public ConfigurationBuilder withReportName(final String reportName) {
+        this.reportName = reportName;
+        return this;
+    }
+
     public Configuration build() {
         return new DefaultConfiguration(
+                this.reportName,
                 Collections.unmodifiableList(extensions),
                 Collections.unmodifiableList(plugins)
         );

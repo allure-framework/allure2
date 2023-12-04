@@ -33,10 +33,24 @@ public class DefaultConfiguration implements Configuration {
 
     private final List<Plugin> plugins;
 
+    private final String reportName;
+
     public DefaultConfiguration(final List<Extension> extensions,
                                 final List<Plugin> plugins) {
+        this(null, extensions, plugins);
+    }
+
+    public DefaultConfiguration(final String reportName,
+                                final List<Extension> extensions,
+                                final List<Plugin> plugins) {
+        this.reportName = reportName;
         this.extensions = extensions;
         this.plugins = plugins;
+    }
+
+    @Override
+    public String getReportName() {
+        return reportName;
     }
 
     @Override

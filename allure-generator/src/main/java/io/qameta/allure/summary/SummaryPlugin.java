@@ -15,12 +15,15 @@
  */
 package io.qameta.allure.summary;
 
-import io.qameta.allure.CommonJsonAggregator2;
+import io.qameta.allure.Aggregator2;
 import io.qameta.allure.Constants;
+import io.qameta.allure.ReportStorage;
+import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.GroupTime;
 import io.qameta.allure.entity.Statistic;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -28,29 +31,29 @@ import java.util.List;
  *
  * @since 2.0
  */
-public class SummaryPlugin extends CommonJsonAggregator2 {
+public class SummaryPlugin implements Aggregator2 {
 
     /**
      * Name of the json file.
      */
     protected static final String JSON_FILE_NAME = "summary.json";
 
-    public SummaryPlugin() {
-        super(Constants.WIDGETS_DIR, JSON_FILE_NAME);
-    }
-
     @Override
-    protected SummaryData getData(final List<LaunchResults> launches) {
-        final SummaryData data = new SummaryData()
+    public void aggregate(final Configuration configuration,
+                          final List<LaunchResults> launchesResults,
+                          final ReportStorage storage) {
+        final SummaryData data1 = new SummaryData()
                 .setStatistic(new Statistic())
                 .setTime(new GroupTime())
-                .setReportName("Allure Report");
-        launches.stream()
-                .flatMap(launch -> launch.getResults().stream())
+                .setReportName(configuration.getReportName());
+        launchesResults.stream()
+                .map(LaunchResults::getResults)
+                .flatMap(Collection::stream)
                 .forEach(result -> {
-                    data.getStatistic().update(result);
-                    data.getTime().update(result);
+                    data1.getStatistic().update(result);
+                    data1.getTime().update(result);
                 });
-        return data;
+        storage.addDataJson(String.format("%s/%s", Constants.WIDGETS_DIR, JSON_FILE_NAME), data1);
     }
+
 }
