@@ -18,19 +18,13 @@ package io.qameta.allure.allure2;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.qameta.allure.Reader;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
-import io.qameta.allure.entity.Attachment;
-import io.qameta.allure.entity.Label;
-import io.qameta.allure.entity.Link;
-import io.qameta.allure.entity.Parameter;
-import io.qameta.allure.entity.StageResult;
-import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.Step;
-import io.qameta.allure.entity.Time;
+import io.qameta.allure.entity.*;
 import io.qameta.allure.model.FixtureResult;
 import io.qameta.allure.model.StepResult;
 import io.qameta.allure.model.TestResult;
@@ -43,15 +37,7 @@ import java.io.InputStream;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -63,10 +49,7 @@ import static io.qameta.allure.model.Parameter.Mode.HIDDEN;
 import static io.qameta.allure.model.Parameter.Mode.MASKED;
 import static io.qameta.allure.util.ConvertUtils.convertList;
 import static java.nio.file.Files.newDirectoryStream;
-import static java.util.Comparator.comparing;
-import static java.util.Comparator.naturalOrder;
-import static java.util.Comparator.nullsFirst;
-import static java.util.Comparator.nullsLast;
+import static java.util.Comparator.*;
 import static java.util.Objects.nonNull;
 
 /**
@@ -100,7 +83,10 @@ public class Allure2Plugin implements Reader {
             .disable(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES)
             .disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
             .disable(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS)
-            .build();
+            .disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
+            .disable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
+            .build()
+            .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
 
     @Override
     public void readResults(final Configuration configuration,
