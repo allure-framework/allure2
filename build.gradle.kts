@@ -81,7 +81,7 @@ subprojects {
             dependency("commons-io:commons-io:2.15.1")
             dependency("javax.xml.bind:jaxb-api:2.3.1")
             dependency("org.allurefw:allure1-model:1.0")
-            dependency("org.apache.commons:commons-lang3:3.13.0")
+            dependency("org.apache.commons:commons-lang3:3.14.0")
             dependency("org.apache.httpcomponents:httpclient:4.5.14")
             dependency("org.apache.tika:tika-core:2.9.1")
             dependency("org.assertj:assertj-core:3.24.2")
