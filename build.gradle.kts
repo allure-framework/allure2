@@ -1,7 +1,7 @@
 import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import java.nio.charset.StandardCharsets.UTF_8
 
-val linkHomepage by extra("https://qameta.io/allure")
+val linkHomepage by extra("https://allurereport.org/")
 val linkCi by extra("https://ci.qameta.io/job/allure2")
 val linkScmUrl by extra("https://github.com/allure-framework/allure2")
 val linkScmConnection by extra("scm:git:git://github.com/allure-framework/allure2.git")
