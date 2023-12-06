@@ -17,57 +17,26 @@
 [docs]: https://docs.qameta.io/allure-report/
 [discussions]: https://github.com/allure-framework/allure2/discussions
 
-# Allure Report
+# About this fork version
+Allure is a very good report framework and easy to integrate with test script. However, I'm not able to open a report with more than 20000 results, because it takes 48 seconds or longer, depends on test results count. I want to open a report in no more than 60 seconds.
 
-[![build-badge][]][build] [![release-badge][]][release] [![maven-badge][]][maven] [![Backers on Open Collective](https://opencollective.com/allure-report/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/allure-report/sponsors/badge.svg)](#sponsors)
+# What I did
+Briefly speaking I applied two changes to public version:
+1. Disabled attachment in the test report.
+2. Changed the jackson object mapper's property naming strategy, set it to SNAKE_CASE
 
-Allure Report is a flexible multi-language test report tool to show you a detailed representation of what has been tested end extract max from the everyday execution of tests. 
+# Performance comparison
+| | Report1(5 results) | Report2(20218 results) | Report3(40755 results) | Report4(77280 results) |
+| -------- | -------- | -------- | -------- | -------- |
+| Benchmark (allure v2.21) | 1859ms | 48506ms | 167868ms | 609583ms |
+| allure2-perf-plus v2.25 | 3804ms | 13868ms | 23498ms | 42683ms |
+| Improvement | ✕ | ▲ 71% | ▲86% | ▲93% | 
 
-![Allure Report](.github/allure-report-gif.gif)
+## How to get this version
+There're couple of ways:
+1. Clone the repo and build it yourself.
+2. Get the allure executable from publish folder in this repo.
 
-Allure Report is capable to build unified reports for dozens of testing tools across eleven programming languages on several CI/CD systems. 
-Read more at the [official website](https://qameta.io/allure-report) of the project.
-
-![How Allure Report works](.github/how_allure_works.jpg)
-
-## Download
-
-You can use one of the following ways to get Allure:
-
-* Grab it from [releases](https://github.com/allure-framework/allure2/releases) (see Assets section).
-* Using Homebrew:
-
-    ```bash
-    $ brew install allure
-    ```
-* For Windows, Allure is available from the [Scoop](http://scoop.sh/) commandline-installer.
-To install Allure, download and install Scoop and then execute in the Powershell:
-
-    ```bash
-    scoop install allure
-    ```
-
-
-## Documentation
-
-All the documentation is available [on our website][docs].
-
-## Allure TestOps
-    
-DevOps-ready Testing Platform built to reduce code time-to-market without quality loss. Level up your product quality control and boost your QA and development team productivity by setting up your TestOps. 
-    
-Now, Allure TestOps Cloud is generally available to all development teams! Try it on our [website][site].
-    
-[![Allure TestOps](.github/allure-testops-cloud-now.jpg)][site]
-    
-## Join Allure community
-
-Follow [@QametaSoftware][twitter] and its [team members][twitter-team] on Twitter. In-depth articles can be found at [Qameta Software Blog][blog]. 
-
-There are thousands of Allure users all over the world. Feel free to join [GitHub Discussions][discussions] to ask questions, share ideas, or help others with a piece of advice.
-
-If you are looking for a wholesome company of Allure folks, take a look at [Gitter chat][gitter].
-    
 ## Code of Conduct
 
 Please note that this project is released with a [Contributor Code of Conduct][CODE_OF_CONDUCT.md]. By participating in this project you agree to abide by its terms.
