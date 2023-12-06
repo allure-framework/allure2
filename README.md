@@ -35,7 +35,7 @@ Briefly speaking I applied two changes to public version:
 ## How to get this version
 There're couple of ways:
 1. Clone the repo and build it yourself.
-2. Get the allure executable from publish folder in this repo.
+2. Get the allure executable from [public share](https://f6xbr0wtzb.feishu.cn/file/S6k6bNxFXoUKUSxt8W3cGVxQn5f?from=from_copylink).
 
 ## Code of Conduct
 
