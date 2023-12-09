@@ -26,11 +26,11 @@ Briefly speaking I applied two changes to public version:
 2. Changed the jackson object mapper's property naming strategy, set it to SNAKE_CASE
 
 # Performance comparison
-| | Report1(5 results) | Report2(20218 results) | Report3(40755 results) | Report4(77280 results) |
-| -------- | -------- | -------- | -------- | -------- |
-| Benchmark (allure v2.21) | 1859ms | 48506ms | 167868ms | 609583ms |
-| allure2-perf-plus v2.25 | 3804ms | 13868ms | 23498ms | 42683ms |
-| Improvement | ✕ | ▲ 71% | ▲86% | ▲93% | 
+|                          | Report1(5 results) | Report2(20218 results) | Report3(40755 results) | Report4(77280 results) |
+|--------------------------|--------------------|------------------------|------------------------|------------------------|
+| Benchmark (allure v2.21) | 1859ms             | 48506ms                | 167868ms               | 609583ms               |
+| allure2-perf-plus v2.25  | 3804ms             | 13868ms                | 23498ms                | 42683ms                |
+| Improvement              | ✕                  | ▲ 71%                  | ▲86%                   | ▲93%                   | 
 
 ## How to get this version
 There're couple of ways:
