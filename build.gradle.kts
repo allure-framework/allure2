@@ -70,7 +70,7 @@ subprojects {
         imports {
             mavenBom("com.fasterxml.jackson:jackson-bom:2.16.0")
             mavenBom("org.junit:junit-bom:5.10.1")
-            mavenBom("io.qameta.allure:allure-bom:2.24.0")
+            mavenBom("io.qameta.allure:allure-bom:2.25.0")
         }
         dependencies {
             dependency("ch.qos.logback:logback-classic:1.3.11")
