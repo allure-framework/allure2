@@ -28,12 +28,12 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build buildDeb buildRpm
       - name: Upload allure-commandline artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: allure-commandline
           path: allure-commandline/build/install/allure-commandline
       - name: Upload allure-results artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: allure-results
           path: allure-generator/test-data/demo2
