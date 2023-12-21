@@ -27,7 +27,7 @@
 - ❓ [Questions and Support](https://github.com/orgs/allure-framework/discussions/categories/questions-support) – get help from the team and community
 - 📢 [Official announcements](https://github.com/orgs/allure-framework/discussions/categories/announcements) –  stay updated with our latest news and updates
 - 💬 [General Discussion](https://github.com/orgs/allure-framework/discussions/categories/general-discussion) – engage in casual conversations, share insights and ideas with the community
-- 🖥️ [Live Demo](https://demo.allurereport.org/) — explore a live example of Allure Report in action.
+- 🖥️ [Live Demo](https://demo.allurereport.org/) — explore a live example of Allure Report in action
 
 ---
 
