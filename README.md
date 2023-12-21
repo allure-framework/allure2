@@ -18,14 +18,17 @@
 
 [![build-badge][]][build] [![release-badge][]][release] [![maven-badge][]][maven] [![Backers on Open Collective](https://opencollective.com/allure-report/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/allure-report/sponsors/badge.svg)](#sponsors)
 
-Allure Report is a flexible multi-language test report tool to show you a detailed representation of what has been tested and extract maximum from the everyday execution of tests. 
+> Allure Report is a flexible multi-language test report tool to show you a detailed representation of what has been tested and extract maximum from the everyday execution of tests. 
 
-![Allure Report](.github/allure-report-gif.gif)
+<img src="https://allurereport.org/public/img/allure-report.svg" height="85px" alt="Allure Report logo" align="right" />
 
-Allure Report is capable of building unified reports for dozens of testing tools across eleven programming languages on several CI/CD systems. 
-Read more on the project on the [official website][site].
+- Learn more about Allure Report at https://allurereport.org
+- 📚 [Documentation](https://allurereport.org/docs/) – discover official documentation for Allure Report
+- ❓ [Questions and Support](https://github.com/orgs/allure-framework/discussions/categories/questions-support) – get help from the team and community
+- 📢 [Official annoucements](https://github.com/orgs/allure-framework/discussions/categories/announcements) – be in touch with the latest updates
+- 💬 [General Discussion ](https://github.com/orgs/allure-framework/discussions/categories/general-discussion) – engage in casual conversations, share insights and ideas with the community
 
-![How Allure Report works](.github/how_allure_works.jpg)
+---
 
 ## Download
 
@@ -43,26 +46,18 @@ To install Allure, download and install Scoop and then execute in the Powershell
     ```bash
     scoop install allure
     ```
+## How Allure Report works
+    
+Allure Report can build unified reports for dozens of testing tools across eleven programming languages on several CI/CD systems. 
 
-
-## Documentation
-
-All the documentation is available [on our website][docs].
+![How Allure Report works](.github/how_allure_works.jpg)
 
 ## Allure TestOps
 
-[DevOps-ready Testing Platform built][qametaio] to reduce code time-to-market without quality loss. Level up your product quality control and boost your QA and development team productivity by setting up your TestOps.
+[DevOps-ready Testing Platform built][qametaio] to reduce code time-to-market without quality loss. You can set up your product quality control and boost your QA and development team productivity by setting up your TestOps.
     
-## Code of Conduct
-
-Please note that this project is released with a [Contributor Code of Conduct][CODE_OF_CONDUCT.md]. By participating in this project you agree to abide by its terms.
-
 ## Contributors
 
 This project exists thanks to all the people who contributed. [[Contribute]](.github/CONTRIBUTING.md).
 
 <a href="https://github.com/allure-framework/allure2/graphs/contributors"><img src="https://opencollective.com/allure-report/contributors.svg?avatarHeight=24&width=890&showBtn=false" /></a>
-
-## License
-
-The Allure Framework is released under version 2.0 of the [Apache License][license].
