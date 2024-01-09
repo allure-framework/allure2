@@ -16,58 +16,23 @@
 package io.qameta.allure.junitxml;
 
 import io.qameta.allure.Issue;
-import io.qameta.allure.context.RandomUidContext;
-import io.qameta.allure.core.Configuration;
-import io.qameta.allure.core.ResultsVisitor;
-import io.qameta.allure.entity.Attachment;
-import io.qameta.allure.entity.Label;
-import io.qameta.allure.entity.LabelName;
-import io.qameta.allure.entity.Parameter;
-import io.qameta.allure.entity.StageResult;
-import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.entity.Time;
+import io.qameta.allure.entity.*;
 import org.assertj.core.groups.Tuple;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.ZoneOffset;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * @author charlie (Dmitry Baev).
  */
-class JunitXmlPluginTest {
-
-    private Configuration configuration;
-    private ResultsVisitor visitor;
-    private Path resultsDirectory;
-
-    @BeforeEach
-    void setUp(@TempDir final Path resultsDirectory) {
-        configuration = mock(Configuration.class);
-        when(configuration.requireContext(RandomUidContext.class)).thenReturn(new RandomUidContext());
-        visitor = mock(ResultsVisitor.class);
-        this.resultsDirectory = resultsDirectory;
-    }
+class JunitXmlPluginTest extends JunitXmlPluginTestBase {
 
     @Test
     void shouldReadJunitResults() throws Exception {
@@ -150,7 +115,7 @@ class JunitXmlPluginTest {
                         Tuple.tuple(LabelName.SUITE.value(), "test.SampleTest"),
                         Tuple.tuple(LabelName.PACKAGE.value(), "test.SampleTest"),
                         Tuple.tuple(LabelName.TEST_CLASS.value(), "test.SampleTest"),
-                        Tuple.tuple(LabelName.RESULT_FORMAT.value(), JunitXmlPlugin.JUNIT_RESULTS_FORMAT)
+                        Tuple.tuple(LabelName.RESULT_FORMAT.value(), JunitXmlConstants.JUNIT_RESULTS_FORMAT)
                 );
     }
 
@@ -352,27 +317,4 @@ class JunitXmlPluginTest {
                 );
     }
 
-    private void process(String... strings) throws IOException {
-        Iterator<String> iterator = Arrays.asList(strings).iterator();
-        while (iterator.hasNext()) {
-            String first = iterator.next();
-            String second = iterator.next();
-            copyFile(resultsDirectory, first, second);
-        }
-        JunitXmlPlugin reader = new JunitXmlPlugin(ZoneOffset.UTC);
-
-        reader.readResults(configuration, visitor, resultsDirectory);
-    }
-
-    private void copyFile(Path dir, String resourceName, String fileName) throws IOException {
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourceName)) {
-            Files.copy(Objects.requireNonNull(is), dir.resolve(fileName));
-        }
-    }
-
-    private List<TestResult> filterByStatus(List<TestResult> testCases, Status status) {
-        return testCases.stream()
-                .filter(item -> status.equals(item.getStatus()))
-                .collect(Collectors.toList());
-    }
 }

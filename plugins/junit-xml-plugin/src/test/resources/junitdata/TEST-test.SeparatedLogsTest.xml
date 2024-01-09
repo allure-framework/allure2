@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite tests="1" failures="0" name="test.SeparatedLogsTest" time="1.051" errors="0" skipped="0">
+    <testcase classname="test.SeparatedLogsTest" name="pass1" time="1.11"/>
+    <testcase classname="test.SeparatedLogsTest" name="pass2" time="2.22"/>
+    <testcase classname="test.SeparatedLogsTest" name="fail1" time="3.33">
+        <failure>failureMessage1</failure>
+    </testcase>
+    <testcase classname="test.SeparatedLogsTest" name="fail2" time="4.44">
+        <failure>failureMessage2</failure>
+    </testcase>
+</testsuite>

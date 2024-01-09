@@ -42,7 +42,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -58,6 +57,27 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
+import static io.qameta.allure.junitxml.JunitXmlConstants.CLASS_NAME_ATTRIBUTE_NAME;
+import static io.qameta.allure.junitxml.JunitXmlConstants.ERROR_ELEMENT_NAME;
+import static io.qameta.allure.junitxml.JunitXmlConstants.FAILURE_ELEMENT_NAME;
+import static io.qameta.allure.junitxml.JunitXmlConstants.HOSTNAME_ATTRIBUTE_NAME;
+import static io.qameta.allure.junitxml.JunitXmlConstants.JUNIT_RESULTS_FORMAT;
+import static io.qameta.allure.junitxml.JunitXmlConstants.MESSAGE_ATTRIBUTE_NAME;
+import static io.qameta.allure.junitxml.JunitXmlConstants.MULTIPLICAND;
+import static io.qameta.allure.junitxml.JunitXmlConstants.NAME_ATTRIBUTE_NAME;
+import static io.qameta.allure.junitxml.JunitXmlConstants.PROPERTIES_ELEMENT_NAME;
+import static io.qameta.allure.junitxml.JunitXmlConstants.PROPERTY_ELEMENT_NAME;
+import static io.qameta.allure.junitxml.JunitXmlConstants.RERUN_ERROR_ELEMENT_NAME;
+import static io.qameta.allure.junitxml.JunitXmlConstants.RERUN_FAILURE_ELEMENT_NAME;
+import static io.qameta.allure.junitxml.JunitXmlConstants.SKIPPED_ELEMENT_NAME;
+import static io.qameta.allure.junitxml.JunitXmlConstants.SYSTEM_OUTPUT_ELEMENT_NAME;
+import static io.qameta.allure.junitxml.JunitXmlConstants.TEST_CASE_ELEMENT_NAME;
+import static io.qameta.allure.junitxml.JunitXmlConstants.TEST_SUITES_ELEMENT_NAME;
+import static io.qameta.allure.junitxml.JunitXmlConstants.TEST_SUITE_ELEMENT_NAME;
+import static io.qameta.allure.junitxml.JunitXmlConstants.TIMESTAMP_ATTRIBUTE_NAME;
+import static io.qameta.allure.junitxml.JunitXmlConstants.TIME_ATTRIBUTE_NAME;
+import static io.qameta.allure.junitxml.JunitXmlConstants.VALUE_ATTRIBUTE_NAME;
+import static io.qameta.allure.junitxml.JunitXmlConstants.XML_GLOB;
 import static java.nio.file.Files.newDirectoryStream;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
@@ -72,33 +92,6 @@ import static java.util.Objects.nonNull;
 public class JunitXmlPlugin implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JunitXmlPlugin.class);
-
-    public static final String JUNIT_RESULTS_FORMAT = "junit";
-
-    private static final BigDecimal MULTIPLICAND = new BigDecimal(1000);
-
-    private static final String TEST_SUITE_ELEMENT_NAME = "testsuite";
-    private static final String TEST_SUITES_ELEMENT_NAME = "testsuites";
-    private static final String TEST_CASE_ELEMENT_NAME = "testcase";
-    private static final String CLASS_NAME_ATTRIBUTE_NAME = "classname";
-    private static final String NAME_ATTRIBUTE_NAME = "name";
-    private static final String VALUE_ATTRIBUTE_NAME = "value";
-    private static final String TIME_ATTRIBUTE_NAME = "time";
-    private static final String FAILURE_ELEMENT_NAME = "failure";
-    private static final String ERROR_ELEMENT_NAME = "error";
-    private static final String SKIPPED_ELEMENT_NAME = "skipped";
-    private static final String MESSAGE_ATTRIBUTE_NAME = "message";
-    private static final String RERUN_FAILURE_ELEMENT_NAME = "rerunFailure";
-    private static final String RERUN_ERROR_ELEMENT_NAME = "rerunError";
-    private static final String HOSTNAME_ATTRIBUTE_NAME = "hostname";
-    private static final String TIMESTAMP_ATTRIBUTE_NAME = "timestamp";
-    private static final String STATUS_ATTRIBUTE_NAME = "status";
-    private static final String SKIPPED_ATTRIBUTE_VALUE = "notrun";
-    private static final String SYSTEM_OUTPUT_ELEMENT_NAME = "system-out";
-    private static final String PROPERTIES_ELEMENT_NAME = "properties";
-    private static final String PROPERTY_ELEMENT_NAME = "property";
-
-    private static final String XML_GLOB = "*.xml";
 
     private static final Map<String, Status> RETRIES;
 
@@ -163,9 +156,10 @@ public class JunitXmlPlugin implements Reader {
                 .setName(name)
                 .setHostname(hostname)
                 .setTimestamp(getUnix(timestamp));
+//        separateLogFiles(resultsDirectory, name);
         testSuiteElement.get(TEST_CASE_ELEMENT_NAME)
                 .forEach(element -> parseTestCase(info, element,
-                                                  resultsDirectory, parsedFile, context, visitor));
+                        resultsDirectory, parsedFile, context, visitor));
     }
 
     private Long getUnix(final String timestamp) {
@@ -178,10 +172,9 @@ public class JunitXmlPlugin implements Reader {
 
     private void parseTestCase(final TestSuiteInfo info, final XmlElement testCaseElement, final Path resultsDirectory,
                                final Path parsedFile, final RandomUidContext context, final ResultsVisitor visitor) {
-        final String className = testCaseElement.getAttribute(CLASS_NAME_ATTRIBUTE_NAME);
-        final Status status = getStatus(testCaseElement);
         final TestResult result = createStatuslessTestResult(info, testCaseElement, parsedFile, context);
-        result.setStatus(status);
+        final SeparatedLogFile separatedLogFile = new SeparatedLogFile(testCaseElement, resultsDirectory);
+        result.setStatus(separatedLogFile.getStatus());
         result.setFlaky(isFlaky(testCaseElement));
         setStatusDetails(result, testCaseElement);
         final StageResult stageResult = new StageResult();
@@ -193,7 +186,7 @@ public class JunitXmlPlugin implements Reader {
                     .collect(Collectors.toList());
             stageResult.setSteps(steps);
         });
-        getLogFile(resultsDirectory, className)
+        separatedLogFile.getLogFile()
                 .filter(Files::exists)
                 .map(visitor::visitAttachmentFile)
                 .map(attachment1 -> attachment1.setName("System out"))
@@ -217,17 +210,6 @@ public class JunitXmlPlugin implements Reader {
 
     private Optional<String> getLogMessage(final XmlElement testCaseElement) {
         return testCaseElement.getFirst(SYSTEM_OUTPUT_ELEMENT_NAME).map(XmlElement::getValue);
-    }
-
-    private Optional<Path> getLogFile(final Path resultsDirectory, final String className) {
-        try {
-            return Optional.ofNullable(className)
-                    .map(name -> name + ".txt")
-                    .map(resultsDirectory::resolve);
-        } catch (InvalidPathException e) {
-            LOGGER.debug("Can not find log file: invalid className {}", className, e);
-            return Optional.empty();
-        }
     }
 
     private TestResult createStatuslessTestResult(final TestSuiteInfo info, final XmlElement testCaseElement,
@@ -255,25 +237,6 @@ public class JunitXmlPlugin implements Reader {
             result.addLabelIfNotExists(LabelName.PACKAGE, className);
         }
         return result;
-    }
-
-    private Status getStatus(final XmlElement testCaseElement) {
-        if (testCaseElement.contains(FAILURE_ELEMENT_NAME)) {
-            return Status.FAILED;
-        }
-        if (testCaseElement.contains(ERROR_ELEMENT_NAME)) {
-            return Status.BROKEN;
-        }
-        if (testCaseElement.contains(SKIPPED_ELEMENT_NAME)) {
-            return Status.SKIPPED;
-        }
-
-        if ((testCaseElement.containsAttribute(STATUS_ATTRIBUTE_NAME))
-                && (testCaseElement.getAttribute(STATUS_ATTRIBUTE_NAME).equals(SKIPPED_ATTRIBUTE_VALUE))) {
-            return Status.SKIPPED;
-        }
-
-        return Status.PASSED;
     }
 
     private void setStatusDetails(final TestResult result, final XmlElement testCaseElement) {
