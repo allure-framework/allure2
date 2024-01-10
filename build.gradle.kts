@@ -88,7 +88,7 @@ subprojects {
             dependency("org.eclipse.jetty:jetty-server:9.4.53.v20231009")
             dependency("org.freemarker:freemarker:2.3.32")
             dependency("org.junit-pioneer:junit-pioneer:2.2.0")
-            dependency("org.mockito:mockito-core:5.6.0")
+            dependency("org.mockito:mockito-core:5.8.0")
             dependency("org.projectlombok:lombok:1.18.30")
             dependency("org.zeroturnaround:zt-zip:1.16")
             dependencySet("org.slf4j:2.0.7") {
