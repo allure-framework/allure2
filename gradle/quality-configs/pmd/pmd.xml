@@ -6,7 +6,7 @@
     <description>
         General Java quality rules.
     </description>
-    
+
     <!-- Best practices (https://pmd.github.io/pmd-6.0.1/pmd_rules_java_bestpractices.html) -->
     <rule ref="category/java/bestpractices.xml">
         <exclude name="AbstractClassWithoutAbstractMethod"/>
@@ -32,6 +32,7 @@
         <exclude name="CallSuperInConstructor"/>
         <exclude name="CommentDefaultAccessModifier"/>
         <exclude name="ConfusingTernary"/>
+        <exclude name="DefaultPackage"/>
         <exclude name="GenericsNaming"/>
         <exclude name="LinguisticNaming"/>
         <exclude name="LocalHomeNamingConvention"/> <!-- earlier j2ee group-->
