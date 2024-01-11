@@ -68,14 +68,14 @@ subprojects {
 
     dependencyManagement {
         imports {
-            mavenBom("com.fasterxml.jackson:jackson-bom:2.16.0")
+            mavenBom("com.fasterxml.jackson:jackson-bom:2.16.1")
             mavenBom("org.junit:junit-bom:5.10.1")
             mavenBom("io.qameta.allure:allure-bom:2.25.0")
         }
         dependencies {
-            dependency("ch.qos.logback:logback-classic:1.3.11")
+            dependency("ch.qos.logback:logback-classic:1.3.14")
             dependency("com.beust:jcommander:1.82")
-            dependency("com.github.spotbugs:spotbugs-annotations:4.8.2")
+            dependency("com.github.spotbugs:spotbugs-annotations:4.8.3")
             dependency("com.opencsv:opencsv:4.6")
             dependency("commons-beanutils:commons-beanutils:1.9.4")
             dependency("commons-io:commons-io:2.15.1")
@@ -84,11 +84,11 @@ subprojects {
             dependency("org.apache.commons:commons-lang3:3.14.0")
             dependency("org.apache.httpcomponents:httpclient:4.5.14")
             dependency("org.apache.tika:tika-core:2.9.1")
-            dependency("org.assertj:assertj-core:3.24.2")
+            dependency("org.assertj:assertj-core:3.25.1")
             dependency("org.eclipse.jetty:jetty-server:9.4.53.v20231009")
             dependency("org.freemarker:freemarker:2.3.32")
             dependency("org.junit-pioneer:junit-pioneer:2.2.0")
-            dependency("org.mockito:mockito-core:5.6.0")
+            dependency("org.mockito:mockito-core:5.8.0")
             dependency("org.projectlombok:lombok:1.18.30")
             dependency("org.zeroturnaround:zt-zip:1.16")
             dependencySet("org.slf4j:2.0.7") {

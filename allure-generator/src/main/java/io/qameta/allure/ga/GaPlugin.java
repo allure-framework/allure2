@@ -156,15 +156,17 @@ public class GaPlugin implements Aggregator2 {
         return Optional.empty();
     }
 
-    private static String getExecutorType(final List<LaunchResults> launchesResults) {
+    /* package-private */
+    static String getExecutorType(final List<LaunchResults> launchesResults) {
         return launchesResults.stream()
                 .map(results -> results.<ExecutorInfo>getExtra(EXECUTORS_BLOCK_NAME))
+                .filter(Optional::isPresent)
+                .findFirst()
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .map(ExecutorInfo::getType)
                 .map(String::trim)
                 .map(String::toLowerCase)
-                .findFirst()
                 .orElse(LOCAL);
     }
 

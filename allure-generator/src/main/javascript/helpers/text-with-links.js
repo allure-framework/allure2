@@ -1,6 +1,6 @@
 import { SafeString } from "handlebars/runtime";
 
-const URL_REGEXP = /((?:(https?:\/\/|ftp:\/\/)|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}|www\.?))\S+?)(\s|"|'|\)|]|$)/gm;
+const URL_REGEXP = /((?:(https?:\/\/|ftp:\/\/|mailto:)|www\.)\S+?)(\s|"|'|\)|]|}|&#62|$)/gm;
 
 const encodeHTMLEntities = (rawString) =>
   rawString.replace(/[\u00A0-\u9999<>&]/gim, (i) => `&#${i.charCodeAt(0)};`);
