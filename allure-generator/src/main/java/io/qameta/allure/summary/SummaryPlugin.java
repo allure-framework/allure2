@@ -20,11 +20,15 @@ import io.qameta.allure.Constants;
 import io.qameta.allure.ReportStorage;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.GroupTime;
 import io.qameta.allure.entity.Statistic;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+
+import static io.qameta.allure.executor.ExecutorPlugin.getLatestExecutor;
 
 /**
  * Plugins generates Summary widget.
@@ -45,7 +49,8 @@ public class SummaryPlugin implements Aggregator2 {
         final SummaryData data1 = new SummaryData()
                 .setStatistic(new Statistic())
                 .setTime(new GroupTime())
-                .setReportName(configuration.getReportName());
+                .setReportName(getReportName(configuration, launchesResults));
+
         launchesResults.stream()
                 .map(LaunchResults::getResults)
                 .flatMap(Collection::stream)
@@ -53,7 +58,21 @@ public class SummaryPlugin implements Aggregator2 {
                     data1.getStatistic().update(result);
                     data1.getTime().update(result);
                 });
+
         storage.addDataJson(String.format("%s/%s", Constants.WIDGETS_DIR, JSON_FILE_NAME), data1);
+    }
+
+    private static String getReportName(final Configuration configuration,
+                                        final List<LaunchResults> launchesResults) {
+        final String reportName = configuration.getReportName();
+        if (Objects.nonNull(reportName)) {
+            return reportName;
+        }
+
+        return getLatestExecutor(launchesResults)
+                .map(ExecutorInfo::getReportName)
+                .map(String::trim)
+                .orElse(Constants.DEFAULT_REPORT_NAME);
     }
 
 }

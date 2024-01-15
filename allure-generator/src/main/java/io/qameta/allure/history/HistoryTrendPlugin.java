@@ -23,6 +23,7 @@ import io.qameta.allure.Constants;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.executor.ExecutorPlugin;
 import io.qameta.allure.trend.AbstractTrendPlugin;
 
 import java.util.ArrayList;
@@ -76,7 +77,7 @@ public class HistoryTrendPlugin extends AbstractTrendPlugin<HistoryTrendItem> {
                 .collect(Statistic::new, Statistic::update, Statistic::merge);
         final HistoryTrendItem item = new HistoryTrendItem()
                 .setStatistic(statistic);
-        extractLatestExecutor(launchesResults).ifPresent(info -> {
+        ExecutorPlugin.getLatestExecutor(launchesResults).ifPresent(info -> {
             item.setBuildOrder(info.getBuildOrder());
             item.setReportName(info.getReportName());
             item.setReportUrl(info.getReportUrl());

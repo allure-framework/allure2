@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.CommonJsonAggregator2;
 import io.qameta.allure.Constants;
 import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.executor.ExecutorPlugin;
 import io.qameta.allure.trend.AbstractTrendPlugin;
 
 import java.util.ArrayList;
@@ -74,7 +75,7 @@ public class DurationTrendPlugin extends AbstractTrendPlugin<DurationTrendItem> 
 
     private static DurationTrendItem createCurrent(final List<LaunchResults> launchesResults) {
         final DurationTrendItem item = new DurationTrendItem();
-        extractLatestExecutor(launchesResults).ifPresent(info -> {
+        ExecutorPlugin.getLatestExecutor(launchesResults).ifPresent(info -> {
             item.setBuildOrder(info.getBuildOrder());
             item.setReportName(info.getReportName());
             item.setReportUrl(info.getReportUrl());
