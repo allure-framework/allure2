@@ -29,7 +29,7 @@ public class ReportNameOptions {
             names = {"--name", "--report-name"},
             description = "The report name."
     )
-    private String reportName = "Allure Report";
+    private String reportName;
 
     public String getReportName() {
         return reportName;
