@@ -19,6 +19,7 @@ import com.beust.jcommander.Parameters;
 import com.beust.jcommander.ParametersDelegate;
 import io.qameta.allure.option.ConfigOptions;
 import io.qameta.allure.option.HostPortOptions;
+import io.qameta.allure.option.ReportNameOptions;
 import io.qameta.allure.option.ResultsOptions;
 
 /**
@@ -39,6 +40,9 @@ public class ServeCommand {
     @ParametersDelegate
     private ConfigOptions configOptions = new ConfigOptions();
 
+    @ParametersDelegate
+    private ReportNameOptions reportNameOptions = new ReportNameOptions();
+
     public ResultsOptions getResultsOptions() {
         return resultsOptions;
     }
@@ -49,5 +53,9 @@ public class ServeCommand {
 
     public ConfigOptions getConfigOptions() {
         return configOptions;
+    }
+
+    public ReportNameOptions getReportNameOptions() {
+        return reportNameOptions;
     }
 }

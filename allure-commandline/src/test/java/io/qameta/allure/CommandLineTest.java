@@ -16,6 +16,7 @@
 package io.qameta.allure;
 
 import io.qameta.allure.option.ConfigOptions;
+import io.qameta.allure.option.ReportNameOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -115,8 +116,12 @@ class CommandLineTest {
         final Path secondResult = Files.createDirectories(temp.resolve("second"));
         final List<Path> results = Arrays.asList(firstResult, secondResult);
 
-        when(commands.generate(eq(report), eq(results), eq(false), any(ConfigOptions.class)))
-                .thenReturn(NO_ERROR);
+        when(
+                commands.generate(
+                        eq(report), eq(results), eq(false),
+                        any(ConfigOptions.class), any(ReportNameOptions.class)
+                )
+        ).thenReturn(NO_ERROR);
 
         final Optional<ExitCode> exitCode = commandLine.parse(
                 GENERATE_COMMAND, firstResult.toString(), secondResult.toString(),
@@ -126,9 +131,51 @@ class CommandLineTest {
                 .isEmpty();
 
         final ExitCode code = commandLine.run();
-        verify(commands, times(1)).generate(eq(report), eq(results), eq(false), any(ConfigOptions.class));
+        verify(commands, times(1))
+                .generate(
+                        eq(report), eq(results), eq(false),
+                        any(ConfigOptions.class), any(ReportNameOptions.class)
+                );
         assertThat(code)
                 .isEqualTo(NO_ERROR);
+    }
+
+    @Test
+    void shouldRunGenerateWithReportName(@TempDir final Path temp) throws IOException {
+        final Path report = Files.createDirectories(temp.resolve("report"));
+        final Path firstResult = Files.createDirectories(temp.resolve("first"));
+        final Path secondResult = Files.createDirectories(temp.resolve("second"));
+        final List<Path> results = Arrays.asList(firstResult, secondResult);
+        final String reportName = randomString();
+
+        when(
+                commands.generate(
+                        eq(report), eq(results), eq(false),
+                        any(ConfigOptions.class), any(ReportNameOptions.class)
+                )
+        ).thenReturn(NO_ERROR);
+
+        final Optional<ExitCode> exitCode = commandLine.parse(
+                GENERATE_COMMAND, firstResult.toString(), secondResult.toString(),
+                "--output", report.toString(),
+                "--name", reportName
+        );
+        assertThat(exitCode)
+                .isEmpty();
+
+        final ArgumentCaptor<ReportNameOptions> captor = ArgumentCaptor.forClass(ReportNameOptions.class);
+        final ExitCode code = commandLine.run();
+        verify(commands, times(1))
+                .generate(
+                        eq(report), eq(results), eq(false),
+                        any(ConfigOptions.class), captor.capture()
+                );
+        assertThat(code)
+                .isEqualTo(NO_ERROR);
+
+        assertThat(captor.getValue())
+                .extracting(ReportNameOptions::getReportName)
+                .isEqualTo(reportName);
     }
 
     @Test
@@ -208,7 +255,11 @@ class CommandLineTest {
 
         final ArgumentCaptor<ConfigOptions> captor = ArgumentCaptor.forClass(ConfigOptions.class);
 
-        when(commands.serve(eq(Arrays.asList(first, second)), eq(host), eq(port), captor.capture())).thenReturn(NO_ERROR);
+        when(commands.serve(
+                eq(Arrays.asList(first, second)), eq(host), eq(port),
+                captor.capture(), any(ReportNameOptions.class))
+        )
+                .thenReturn(NO_ERROR);
         final ExitCode run = commandLine.run();
         assertThat(run)
                 .isEqualTo(NO_ERROR);
@@ -217,6 +268,50 @@ class CommandLineTest {
                 .hasSize(1)
                 .extracting(ConfigOptions::getProfile)
                 .containsExactly(profile);
+    }
+
+    @Test
+    void shouldParseServeCommandWithReportName(@TempDir final Path temp) throws IOException {
+        final int port = randomPort();
+        final String host = randomString();
+        final String profile = randomString();
+        final String reportName = randomString();
+        final Path first = Files.createDirectories(temp.resolve("first"));
+        final Path second = Files.createDirectories(temp.resolve("second"));
+        final Optional<ExitCode> code = commandLine.parse(
+                SERVE_COMMAND,
+                "--port", String.valueOf(port),
+                "--host", host,
+                "--profile", profile,
+                "--report-name", reportName,
+                first.toString(), second.toString()
+        );
+
+        assertThat(code)
+                .isEmpty();
+
+        final ArgumentCaptor<ConfigOptions> captorConfig
+                = ArgumentCaptor.forClass(ConfigOptions.class);
+        final ArgumentCaptor<ReportNameOptions> captorReportName
+                = ArgumentCaptor.forClass(ReportNameOptions.class);
+
+        when(commands.serve(
+                eq(Arrays.asList(first, second)), eq(host), eq(port),
+                captorConfig.capture(), captorReportName.capture())
+        )
+                .thenReturn(NO_ERROR);
+        final ExitCode run = commandLine.run();
+        assertThat(run)
+                .isEqualTo(NO_ERROR);
+
+        assertThat(captorConfig.getAllValues())
+                .hasSize(1)
+                .extracting(ConfigOptions::getProfile)
+                .containsExactly(profile);
+
+        assertThat(captorReportName.getValue())
+                .extracting(ReportNameOptions::getReportName)
+                .isEqualTo(reportName);
     }
 
     @Test

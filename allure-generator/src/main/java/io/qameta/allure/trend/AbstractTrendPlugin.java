@@ -27,6 +27,7 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.ExecutorInfo;
+import io.qameta.allure.executor.ExecutorPlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,17 +36,12 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Spliterator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.qameta.allure.executor.ExecutorPlugin.EXECUTORS_BLOCK_NAME;
-import static java.util.Comparator.comparing;
-import static java.util.Comparator.naturalOrder;
-import static java.util.Comparator.nullsFirst;
 import static java.util.Spliterators.spliteratorUnknownSize;
 import static java.util.stream.StreamSupport.stream;
 
@@ -114,14 +110,15 @@ public abstract class AbstractTrendPlugin<T> extends CompositeAggregator2 implem
 
     protected abstract Optional<T> parseItem(ObjectMapper mapper, JsonNode child) throws JsonProcessingException;
 
+    /**
+     * Deprecated, use {@link ExecutorPlugin#getLatestExecutor(List)} instead.
+     *
+     * @param launches the launch results.
+     * @return the latest executor
+     * @deprecated use {@link ExecutorPlugin#getLatestExecutor(List)} instead.
+     */
+    @Deprecated
     protected static Optional<ExecutorInfo> extractLatestExecutor(final List<LaunchResults> launches) {
-        final Comparator<ExecutorInfo> comparator = comparing(ExecutorInfo::getBuildOrder, nullsFirst(naturalOrder()));
-        return launches.stream()
-                .map(launch -> launch.getExtra(EXECUTORS_BLOCK_NAME))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .filter(ExecutorInfo.class::isInstance)
-                .map(ExecutorInfo.class::cast)
-                .max(comparator);
+        return ExecutorPlugin.getLatestExecutor(launches);
     }
 }

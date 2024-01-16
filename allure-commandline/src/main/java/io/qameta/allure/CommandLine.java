@@ -162,14 +162,17 @@ public class CommandLine {
                         generateCommand.getResultsOptions().getResultsDirectories(),
                         generateCommand.isCleanReportDirectory(),
                         generateCommand.isSingleFileMode(),
-                        generateCommand.getConfigOptions()
+                        generateCommand.getConfigOptions(),
+                        generateCommand.getReportNameOptions()
                 );
             case SERVE_COMMAND:
                 return commands.serve(
                         serveCommand.getResultsOptions().getResultsDirectories(),
                         serveCommand.getHostPortOptions().getHost(),
                         serveCommand.getHostPortOptions().getPort(),
-                        serveCommand.getConfigOptions());
+                        serveCommand.getConfigOptions(),
+                        serveCommand.getReportNameOptions()
+                );
             case OPEN_COMMAND:
                 return commands.open(
                         openCommand.getReportDirectories().get(0),
