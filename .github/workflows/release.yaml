@@ -1,4 +1,5 @@
 name: Release
+run-name: Release ${{ inputs.releaseVersion }} (next ${{ inputs.nextVersion }}) by ${{ github.actor }}
 
 on:
   workflow_dispatch:
