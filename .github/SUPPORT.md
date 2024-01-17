@@ -23,4 +23,4 @@ The Allure Report Community is also active on Stack Overflow. You can post your 
 
 ## Contributing
 
-* [Contributing Guidelines](https://github.com/allure-framework/allure2/blob/master/.github/CONTRIBUTING.md)
+* [Contributing Guidelines](https://github.com/allure-framework/allure2/blob/main/.github/CONTRIBUTING.md)

@@ -16,7 +16,7 @@ Allure's analytics are sent throughout Allure report's plugins to Google Analyti
 
 ### How?
     
-The code is viewable in [GaPlugin.java](https://github.com/allure-framework/allure2/blob/master/allure-generator/src/main/java/io/qameta/allure/ga/GaPlugin.java)
+The code is viewable in [GaPlugin.java](https://github.com/allure-framework/allure2/blob/main/allure-generator/src/main/java/io/qameta/allure/ga/GaPlugin.java)
 
 ### Opting out
 
