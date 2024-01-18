@@ -269,7 +269,7 @@ public class JunitXmlPlugin implements Reader {
         }
 
         if ((testCaseElement.containsAttribute(STATUS_ATTRIBUTE_NAME))
-                && (testCaseElement.getAttribute(STATUS_ATTRIBUTE_NAME).equals(SKIPPED_ATTRIBUTE_VALUE))) {
+                && (SKIPPED_ATTRIBUTE_VALUE.equals(testCaseElement.getAttribute(STATUS_ATTRIBUTE_NAME)))) {
             return Status.SKIPPED;
         }
 

@@ -24,11 +24,11 @@ public interface WithGroupTime {
 
     void setTime(GroupTime time);
 
-    default void updateTime(GroupTime groupTime) {
+    default void updateTime(final GroupTime groupTime) {
         getTimeSafe().merge(groupTime);
     }
 
-    default void updateTime(Timeable timed) {
+    default void updateTime(final Timeable timed) {
         getTimeSafe().update(timed.getTime());
     }
 

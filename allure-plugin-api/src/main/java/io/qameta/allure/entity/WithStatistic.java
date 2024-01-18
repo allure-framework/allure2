@@ -25,7 +25,7 @@ public interface WithStatistic {
 
     void setStatistic(Statistic statistic);
 
-    default void updateStatistic(Statistic other) {
+    default void updateStatistic(final Statistic other) {
         getStatistic().setFailed(other.getFailed() + getStatistic().getFailed());
         getStatistic().setBroken(other.getBroken() + getStatistic().getBroken());
         getStatistic().setPassed(other.getPassed() + getStatistic().getPassed());
@@ -33,7 +33,7 @@ public interface WithStatistic {
         getStatistic().setUnknown(other.getUnknown() + getStatistic().getUnknown());
     }
 
-    default void updateStatistic(Statusable statusable) {
+    default void updateStatistic(final Statusable statusable) {
         if (statusable == null) {
             return;
         }

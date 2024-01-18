@@ -8,8 +8,8 @@ plugins {
 description = "Allure Report Generator"
 
 node {
-    // enforce https
-    distBaseUrl.set("https://nodejs.org/dist")
+    // repository is declared in root settings.gradle.kts
+    distBaseUrl.set(null as String?)
     version.set("16.18.0")
     download.set(true)
 }

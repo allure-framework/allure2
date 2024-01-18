@@ -99,7 +99,7 @@ public interface Configuration {
      * @param <T>         the java type of context's type.
      * @return resolved context.
      */
-    default <T, S extends Context<T>> Optional<S> getContext(Class<S> contextType) {
+    default <T, S extends Context<T>> Optional<S> getContext(final Class<S> contextType) {
         return getExtensions(contextType).stream()
                 .findFirst();
     }
@@ -111,7 +111,7 @@ public interface Configuration {
      * @return resolved context.
      * @throws ContextNotFoundException if no such context present.
      */
-    default <T, S extends Context<T>> S requireContext(Class<S> contextType) {
+    default <T, S extends Context<T>> S requireContext(final Class<S> contextType) {
         return getContext(contextType).orElseThrow(() -> new ContextNotFoundException(contextType));
     }
 }
