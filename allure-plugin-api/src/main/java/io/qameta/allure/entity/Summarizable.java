@@ -65,7 +65,7 @@ public interface Summarizable {
                 .noneMatch(step -> step.hasMessage(message.get()));
     }
 
-    default boolean hasMessage(String message) {
+    default boolean hasMessage(final String message) {
         final Optional<String> current = Optional.ofNullable(getStatusMessage())
                 .filter(s -> Objects.equals(s, message));
         return current.isPresent() || getSteps().stream()

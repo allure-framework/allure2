@@ -52,7 +52,7 @@ public class SeverityPlugin extends CompositeAggregator2 {
     /**
      * Adds severity to test results.
      */
-    private static class SeverityAggregator implements Aggregator2 {
+    private static final class SeverityAggregator implements Aggregator2 {
 
         @Override
         public void aggregate(final Configuration configuration,
@@ -75,7 +75,7 @@ public class SeverityPlugin extends CompositeAggregator2 {
     /**
      * Generates widget data.
      */
-    private static class WidgetAggregator extends CommonJsonAggregator2 {
+    private static final class WidgetAggregator extends CommonJsonAggregator2 {
 
         WidgetAggregator() {
             super("widgets", JSON_FILE_NAME);

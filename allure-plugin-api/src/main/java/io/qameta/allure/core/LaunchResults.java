@@ -75,7 +75,7 @@ public interface LaunchResults {
      * @param <T>          the java type of extra block.
      * @return the found block or default value.
      */
-    default <T> T getExtra(String name, Supplier<T> defaultValue) {
+    default <T> T getExtra(final String name, final Supplier<T> defaultValue) {
         final Optional<T> extra = getExtra(name);
         return extra.orElseGet(defaultValue);
     }

@@ -43,6 +43,7 @@ import java.util.UUID;
 /**
  * @author charlie (Dmitry Baev).
  */
+@SuppressWarnings("PMD.CognitiveComplexity")
 public class ReportWebGenerator {
 
     private static final String FAVICON_ICO = "favicon.ico";
