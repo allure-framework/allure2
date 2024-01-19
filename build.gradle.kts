@@ -71,7 +71,7 @@ subprojects {
     apply(plugin = "com.diffplug.spotless")
     apply(plugin = "io.spring.dependency-management")
 
-    val orgSlf4jVersion = "2.0.9"
+    val orgSlf4jVersion = "2.0.11"
     val comSquareupRetrofit2Version = "2.9.0"
 
     dependencyManagement {
