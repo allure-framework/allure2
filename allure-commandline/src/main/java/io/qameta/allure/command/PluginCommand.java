@@ -25,7 +25,7 @@ import io.qameta.allure.option.ConfigOptions;
  * @since 2.0
  */
 @SuppressWarnings("PMD.ImmutableField")
-@Parameters(commandDescription = "Generate the report")
+@Parameters(commandDescription = "Display plugins")
 public class PluginCommand {
 
     @ParametersDelegate
