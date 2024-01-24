@@ -10,7 +10,7 @@
 <head>
     <meta charset="utf-8">
     <title>Allure Report</title>
-    <link rel="favicon" href="${faviconUrl}">
+    <link rel="icon" href="${faviconUrl}">
     <#list stylesUrls as styleUrl>
     <link rel="stylesheet" type="text/css" href="${styleUrl}">
     </#list>
