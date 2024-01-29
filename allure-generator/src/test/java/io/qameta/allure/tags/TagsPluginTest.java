@@ -284,7 +284,7 @@ class TagsPluginTest {
                                 .setValue("@allure.label.suite:Search_Articles"),
                         new Label()
                                 .setName("tag")
-                                .setValue("@allure.label.subSuite:Mobile")
+                                .setValue("allure.label.subSuite=Mobile")
                 ));
 
         final List<LaunchResults> launchResults = List.of(
@@ -312,7 +312,7 @@ class TagsPluginTest {
                         tuple("tag", "@allure.label.story=Some_story"),
                         tuple("tag", "@allure.label.parentSuite:Regression"),
                         tuple("tag", "@allure.label.suite:Search_Articles"),
-                        tuple("tag", "@allure.label.subSuite:Mobile"),
+                        tuple("tag", "allure.label.subSuite=Mobile"),
                         tuple("story", "Some story"),
                         tuple("parentSuite", "Regression"),
                         tuple("suite", "Search Articles"),
