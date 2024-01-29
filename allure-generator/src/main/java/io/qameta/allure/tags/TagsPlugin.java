@@ -50,6 +50,7 @@ public class TagsPlugin implements Aggregator2 {
                 .map(LaunchResults::getAllResults)
                 .flatMap(Collection::stream)
                 .forEach(result -> {
+
                     final Set<String> tags = result.findAllLabels(LabelName.TAG, Collectors.toSet());
 
                     final List<Label> extraLabels = tags.stream()
@@ -63,7 +64,7 @@ public class TagsPlugin implements Aggregator2 {
                     if (!extraLabels.isEmpty()) {
                         final List<Label> labels = new ArrayList<>(result.getLabels());
                         labels.addAll(extraLabels);
-                        result.setLabels(extraLabels);
+                        result.setLabels(labels);
                     }
 
                     final Set<String> filteredTags = tags.stream()

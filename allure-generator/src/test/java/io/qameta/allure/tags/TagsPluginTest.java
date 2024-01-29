@@ -304,7 +304,15 @@ class TagsPluginTest {
 
         assertThat(testResult.getLabels())
                 .extracting(Label::getName, Label::getValue)
-                .contains(
+                .containsExactlyInAnyOrder(
+                        tuple("not a tag", "some value"),
+                        tuple("tag", "first"),
+                        tuple("feature", "Auth"),
+                        tuple("tag", "second"),
+                        tuple("tag", "@allure.label.story=Some_story"),
+                        tuple("tag", "@allure.label.parentSuite:Regression"),
+                        tuple("tag", "@allure.label.suite:Search_Articles"),
+                        tuple("tag", "@allure.label.subSuite:Mobile"),
                         tuple("story", "Some story"),
                         tuple("parentSuite", "Regression"),
                         tuple("suite", "Search Articles"),
