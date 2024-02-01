@@ -109,7 +109,7 @@ subprojects {
             dependency("org.slf4j:slf4j-api:${orgSlf4jVersion}")
             dependency("org.slf4j:slf4j-nop:${orgSlf4jVersion}")
             dependency("org.slf4j:slf4j-simple:${orgSlf4jVersion}")
-            dependency("org.zeroturnaround:zt-zip:1.16")
+            dependency("org.zeroturnaround:zt-zip:1.17")
         }
     }
 
