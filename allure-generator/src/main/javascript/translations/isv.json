@@ -1,0 +1,208 @@
+{
+  "chart": {
+    "duration": {
+      "empty": "Nema informacije",
+      "name": "Trvanje testov"
+    },
+    "severity": {
+      "name": "Važnost testov"
+    },
+    "status": {
+      "name": "Statusy testov"
+    },
+    "trend": {
+      "empty": "Nema informacije"
+    }
+  },
+  "component": {
+    "markToggle": {
+      "hideCases": "Skryj rezultaty označene kako \"{{mark}}\"",
+      "showCases": "Pokaži rezultaty označene kako \"{{mark}}\""
+    },
+    "statusToggle": {
+      "hideCases": "Skryj rezultaty so statusom \"{{status}}\"",
+      "showCases": "Pokaži rezultaty so statusom \"{{status}}\""
+    },
+    "tree": {
+      "download": "Daunloduj CSV",
+      "empty": "Nema informacije",
+      "filter": "Statusy",
+      "filter-marks": "Označenja",
+      "filtered": {
+        "shown_0": "{{count}} pokazany",
+        "shown_1": "{{count}} pokazane",
+        "shown_2": "{{count}} pokazane",
+        "total_0": "{{count}} test vsěgo",
+        "total_1": "{{count}} testy vsěgo",
+        "total_2": "{{count}} testov vsěgo"
+      },
+      "groups": "Pokaži informaciju o grupah",
+      "time": {
+        "max": {
+          "name": "Najvyše dolgy",
+          "tooltip": "Koliko časa trval najvyše dolgy test v grupě"
+        },
+        "sum": {
+          "name": "V sumě",
+          "tooltip": "Suma trvanij vsih testov v grupě"
+        },
+        "total": {
+          "name": "Cělo",
+          "tooltip": "Čas od početka prvogo testa do konca poslědnogo"
+        }
+      },
+      "unknown": "<Nema>"
+    },
+    "widgetStatus": {
+      "showAll": "Pokaži vsečto",
+      "total_0": "{{count}} element vsěgo",
+      "total_1": "{{count}} elementa vsěgo",
+      "total_2": "{{count}} elementov vsěgo"
+    }
+  },
+  "controls": {
+    "backto": "Vzad do",
+    "clipboard": "Kopiruj do klipborda",
+    "clipboardError": "Pogrěška. Věrojetno, vaša prěgledka (brauzer) ne podpira kopirovanje do klipborda.",
+    "clipboardSuccess": "Tekst byl skopirovany",
+    "collapse": "Minimizuj",
+    "expand": "Razširi",
+    "fullscreen": "Na cěly ekran",
+    "language": "Izměni jezyk"
+  },
+  "errors": {
+    "missedAttachment": "Priloga ne najdena",
+    "notFound": "Ne najdeno"
+  },
+  "marks": {
+    "flaky": "Nestabilny",
+    "newBroken": "Iznova slomjeny",
+    "newFailed": "Iznova neuspěšny",
+    "newPassed": "Iznova uspěšny",
+    "retriesStatusChange": "Status měnjal se od proby do proby"
+  },
+  "sorter": {
+    "duration": "trvanje",
+    "name": "nazva",
+    "order": "poredok",
+    "status": "status"
+  },
+  "status": {
+    "broken": "Slomjeny",
+    "failed": "Neuspěšny",
+    "passed": "Uspěšny",
+    "skipped": "Propuščeny",
+    "unknown": "Neznany"
+  },
+  "tab": {
+    "categories": {
+      "name": "Kategorije"
+    },
+    "graph": {
+      "name": "Diagramy"
+    },
+    "overview": {
+      "name": "Prěgled"
+    },
+    "suites": {
+      "name": "Komplety testov"
+    },
+    "timeline": {
+      "name": "Hronologija",
+      "selected_0": "Izbrany {{count}} test ({{percent}}%) s trvanjem vyše od {{duration}}",
+      "selected_1": "Izbrane {{count}} testy ({{percent}}%) s trvanjem vyše od {{duration}}",
+      "selected_2": "Izbrane {{count}} testov ({{percent}}%) s trvanjem vyše od {{duration}}"
+    }
+  },
+  "testResult": {
+    "categories": {
+      "name": "Kategorije"
+    },
+    "description": {
+      "name": "Opis"
+    },
+    "duration": {
+      "name": "Trvanje"
+    },
+    "execution": {
+      "body": "Tělo testa",
+      "name": "Izpolnjenje",
+      "setup": "Prigotovjenje",
+      "teardown": "Zaključenje"
+    },
+    "history": {
+      "name": "Historija",
+      "successRate": "Procent uspěha"
+    },
+    "links": {
+      "name": "Linky"
+    },
+    "overview": {
+      "name": "Prěgled"
+    },
+    "owner": {
+      "name": "Vlastnik"
+    },
+    "parameters": {
+      "name": "Parametry"
+    },
+    "retries": {
+      "empty": "Nema informacije o minulyh probah testa",
+      "name": "Minule proby"
+    },
+    "severity": {
+      "name": "Važnost"
+    },
+    "stats": {
+      "count": {
+        "attachments_0": "{{count}} priloga",
+        "attachments_1": "{{count}} prilogy",
+        "attachments_2": "{{count}} prilog",
+        "parameters_0": "{{count}} parametr",
+        "parameters_1": "{{count}} parametry",
+        "parameters_2": "{{count}} parametrov",
+        "steps_0": "{{count}} vloženy krok",
+        "steps_1": "{{count}} vložene kroky",
+        "steps_2": "{{count}} vloženyh krokov"
+      }
+    },
+    "status": {
+      "empty": "Nema dodatnoj informacije o statusu",
+      "trace": "Pokaži dodatnu informaciju"
+    }
+  },
+  "widget": {
+    "categories": {
+      "name": "Kategorije"
+    },
+    "environment": {
+      "empty": "Nema informacije o obsrědině",
+      "name": "Obsrědina",
+      "showAll": "Pokaži vsečto"
+    },
+    "executors": {
+      "empty": "Nema informacije o izpolniteljah",
+      "name": "Sistemy izpolnjenja testov",
+      "unknown": "Neznano"
+    },
+    "launches": {
+      "empty": "Nema informacije o puščenjah",
+      "name": "Puščenja testov"
+    },
+    "suites": {
+      "name": "Komplety testov"
+    },
+    "summary": {
+      "aggregatedName": "Agregovany raport",
+      "launches_0": "puščenje testov",
+      "launches_1": "puščenja testov",
+      "launches_2": "puščenij testov",
+      "testResults_0": "testovy scenarij",
+      "testResults_1": "testove scenarije",
+      "testResults_2": "testovyh scenarijev"
+    },
+    "trend": {
+      "name": "Trend"
+    }
+  }
+}
