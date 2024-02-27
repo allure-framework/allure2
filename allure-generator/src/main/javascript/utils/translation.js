@@ -17,6 +17,7 @@ export const LANGUAGES = [
   { id: "fr", title: "Français" },
   { id: "az", title: "Azərbaycanca" },
   { id: "tr", title: "Türkçe" },
+  { id: "isv", abbr: "Ⱄ", title: "Medžuslovjansky" },
 ];
 
 LANGUAGES.map((lang) => lang.id).forEach((lang) =>
@@ -36,6 +37,12 @@ export function initTranslations() {
       },
       (err) => (err ? reject(err) : resolve()),
     );
+
+    i18next.on("initialized", () => {
+      const pluralResolver = i18next.services.pluralResolver;
+      pluralResolver.addRule("isv", pluralResolver.getRule("be"));
+    });
+
     gtag("init_language", { language: language || "en" });
   });
 }
