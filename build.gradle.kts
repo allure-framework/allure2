@@ -84,7 +84,7 @@ subprojects {
             mavenBom("org.junit:junit-bom:5.10.2")
         }
         dependencies {
-            dependency("ch.qos.logback:logback-classic:1.3.14")
+            dependency("ch.qos.logback:logback-classic:1.5.2")
             dependency("com.beust:jcommander:1.82")
             dependency("com.github.spotbugs:spotbugs-annotations:4.8.3")
             dependency("com.github.spotbugs:spotbugs:4.8.3")
