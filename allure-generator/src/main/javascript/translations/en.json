@@ -153,7 +153,12 @@
       "time": "{{date}} at {{time}}"
     },
     "severity": {
-      "name": "Severity"
+      "name": "Severity",
+      "blocker": "blocker",
+      "critical": "critical",
+      "normal": "normal",
+      "minor": "minor",
+      "trivial": "trivial"
     },
     "stats": {
       "count": {

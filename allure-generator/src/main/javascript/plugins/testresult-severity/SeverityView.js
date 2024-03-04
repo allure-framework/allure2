@@ -3,12 +3,20 @@ import { escapeExpression } from "handlebars/runtime";
 import { className } from "../../decorators/index";
 import translate from "../../helpers/t";
 
+const severities = ["blocker", "critical", "normal", "minor", "trivial"];
+
 @className("pane__section")
 class SeverityView extends View {
-  template(data) {
-    return data.severity
-      ? `${translate("testResult.severity.name")}: ${escapeExpression(data.severity)}`
-      : "";
+  template({ severity }) {
+    if (!severity) {
+      return "";
+    }
+
+    if (severities.indexOf(severity) >= 0) {
+      return `${translate("testResult.severity.name")}: ${translate(`testResult.severity.${severity}`)}`;
+    }
+
+    return `${translate("testResult.severity.name")}: ${escapeExpression(severity)}`;
   }
 
   serializeData() {

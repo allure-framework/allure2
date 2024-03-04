@@ -151,7 +151,12 @@
       "name": "Minule proby"
     },
     "severity": {
-      "name": "Važnost"
+      "name": "Važnost",
+      "blocker": "bloker",
+      "critical": "kritična",
+      "normal": "obyčajna",
+      "minor": "mala",
+      "trivial": "kosmetična"
     },
     "stats": {
       "count": {
