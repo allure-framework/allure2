@@ -168,6 +168,9 @@
     "status": {
       "empty": "Lege statusdetails",
       "trace": "Toon trace"
+    },
+    "tags": {
+      "name": "Tags"
     }
   },
   "widget": {

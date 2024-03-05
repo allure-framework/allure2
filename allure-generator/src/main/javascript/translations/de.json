@@ -156,6 +156,9 @@
     "status": {
       "empty": "Keine Status Details",
       "trace": "Zeige Stracktrace"
+    },
+    "tags": {
+      "name": "Tags"
     }
   },
   "widget": {

@@ -168,6 +168,9 @@
     "status": {
       "empty": "Boş status detalları",
       "trace": "Trace-i göstər"
+    },
+    "tags": {
+      "name": "Teqlər"
     }
   },
   "widget": {

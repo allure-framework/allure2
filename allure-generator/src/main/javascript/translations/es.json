@@ -160,6 +160,9 @@
     "status": {
       "empty": "Detalles de estado no existente",
       "trace": "Mostrar trace"
+    },
+    "tags": {
+      "name": "Etiquetas"
     }
   },
   "widget": {

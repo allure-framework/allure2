@@ -156,6 +156,9 @@
     "status": {
       "empty": "Detalhes da situação vazio.",
       "trace": "Mostrar trace"
+    },
+    "tags": {
+      "name": "Tags"
     }
   },
   "widget": {
