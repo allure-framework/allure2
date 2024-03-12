@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2023 Qameta Software OÜ
+ *  Copyright 2016-2024 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 package io.qameta.allure.timeline;
 
-import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.CommonJsonAggregator2;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.TestResult;
@@ -32,7 +32,7 @@ import static io.qameta.allure.tree.TreeUtils.groupByLabels;
  *
  * @since 2.0
  */
-public class TimelinePlugin extends CommonJsonAggregator {
+public class TimelinePlugin extends CommonJsonAggregator2 {
 
     public TimelinePlugin() {
         super("timeline.json");

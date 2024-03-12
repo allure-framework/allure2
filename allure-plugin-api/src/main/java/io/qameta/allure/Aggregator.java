@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2023 Qameta Software OÜ
+ *  Copyright 2016-2024 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -27,8 +27,10 @@ import java.util.List;
  * some data to report directory.
  *
  * @since 2.0
+ * @deprecated for removal. Use {@link Aggregator2} instead.
  */
 @FunctionalInterface
+@Deprecated
 public interface Aggregator extends Extension {
 
     /**

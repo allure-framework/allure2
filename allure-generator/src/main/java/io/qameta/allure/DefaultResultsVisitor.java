@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2023 Qameta Software OÜ
+ *  Copyright 2016-2024 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -31,12 +31,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static java.nio.file.Files.newInputStream;
 import static java.nio.file.Files.size;
@@ -63,9 +62,9 @@ public class DefaultResultsVisitor implements ResultsVisitor {
 
     public DefaultResultsVisitor(final Configuration configuration) {
         this.configuration = configuration;
-        this.results = new HashSet<>();
-        this.attachments = new HashMap<>();
-        this.extra = new HashMap<>();
+        this.results = ConcurrentHashMap.newKeySet();
+        this.attachments = new ConcurrentHashMap<>();
+        this.extra = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -121,7 +120,7 @@ public class DefaultResultsVisitor implements ResultsVisitor {
         try {
             return getDefaultMimeTypes().forName(type).getExtension();
         } catch (Exception e) {
-            LOGGER.warn("Can't detect extension for MIME-type {} {}", type, e);
+            LOGGER.warn("Can't detect extension for MIME-type {}", type, e);
             return "";
         }
     }
@@ -130,7 +129,7 @@ public class DefaultResultsVisitor implements ResultsVisitor {
         try (InputStream stream = newInputStream(path)) {
             return probeContentType(stream, Objects.toString(path.getFileName()));
         } catch (IOException e) {
-            LOGGER.warn("Couldn't detect the media type of attachment {} {}", path, e);
+            LOGGER.warn("Couldn't detect the media type of attachment {}", path, e);
             return WILDCARD;
         }
     }
@@ -141,7 +140,7 @@ public class DefaultResultsVisitor implements ResultsVisitor {
             metadata.set(TikaCoreProperties.RESOURCE_NAME_KEY, name);
             return getDefaultMimeTypes().detect(stream, metadata).toString();
         } catch (IOException e) {
-            LOGGER.warn("Couldn't detect the media type of attachment {} {}", name, e);
+            LOGGER.warn("Couldn't detect the media type of attachment {}", name, e);
             return WILDCARD;
         }
     }
@@ -150,7 +149,7 @@ public class DefaultResultsVisitor implements ResultsVisitor {
         try {
             return size(path);
         } catch (IOException e) {
-            LOGGER.warn("Could not get the size of file {} {}", path, e);
+            LOGGER.warn("Could not get the size of file {}", path, e);
             return null;
         }
     }

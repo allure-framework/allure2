@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2023 Qameta Software OÜ
+ *  Copyright 2016-2024 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,42 +15,64 @@
  */
 package io.qameta.allure.summary;
 
-import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.Aggregator2;
 import io.qameta.allure.Constants;
+import io.qameta.allure.ReportStorage;
+import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.GroupTime;
 import io.qameta.allure.entity.Statistic;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+
+import static io.qameta.allure.executor.ExecutorPlugin.getLatestExecutor;
 
 /**
  * Plugins generates Summary widget.
  *
  * @since 2.0
  */
-public class SummaryPlugin extends CommonJsonAggregator {
+public class SummaryPlugin implements Aggregator2 {
 
     /**
      * Name of the json file.
      */
     protected static final String JSON_FILE_NAME = "summary.json";
 
-    public SummaryPlugin() {
-        super(Constants.WIDGETS_DIR, JSON_FILE_NAME);
-    }
-
     @Override
-    protected SummaryData getData(final List<LaunchResults> launches) {
-        final SummaryData data = new SummaryData()
+    public void aggregate(final Configuration configuration,
+                          final List<LaunchResults> launchesResults,
+                          final ReportStorage storage) {
+        final SummaryData data1 = new SummaryData()
                 .setStatistic(new Statistic())
                 .setTime(new GroupTime())
-                .setReportName("Allure Report");
-        launches.stream()
-                .flatMap(launch -> launch.getResults().stream())
+                .setReportName(getReportName(configuration, launchesResults));
+
+        launchesResults.stream()
+                .map(LaunchResults::getResults)
+                .flatMap(Collection::stream)
                 .forEach(result -> {
-                    data.getStatistic().update(result);
-                    data.getTime().update(result);
+                    data1.getStatistic().update(result);
+                    data1.getTime().update(result);
                 });
-        return data;
+
+        storage.addDataJson(String.format("%s/%s", Constants.WIDGETS_DIR, JSON_FILE_NAME), data1);
     }
+
+    private static String getReportName(final Configuration configuration,
+                                        final List<LaunchResults> launchesResults) {
+        final String reportName = configuration.getReportName();
+        if (Objects.nonNull(reportName)) {
+            return reportName;
+        }
+
+        return getLatestExecutor(launchesResults)
+                .map(ExecutorInfo::getReportName)
+                .map(String::trim)
+                .orElse(Constants.DEFAULT_REPORT_NAME);
+    }
+
 }

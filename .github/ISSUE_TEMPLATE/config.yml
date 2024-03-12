@@ -1,0 +1,20 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🐅 Allure Java Integrations
+    url: https://github.com/allure-framework/allure-java
+    about: For Allure Java Integrations related issues.
+  - name: 🦏 Allure JavaScript Integrations
+    url: https://github.com/allure-framework/allure-js
+    about: For Allure JavaScript Integrations related issues.
+  - name: 🐍 Allure Python Integrations
+    url: https://github.com/allure-framework/allure-python
+    about: For Allure Python Integrations related issues.
+  - name: 🪿 Allure Csharp Integrations
+    url: https://github.com/allure-framework/allure-csharp
+    about: For Allure Csharp Integrations related issues.
+  - name: 💬 Allure Report Community - for bugs, issues, dedicated support and more!
+    url: https://github.com/orgs/allure-framework/discussions
+    about: Please ask and answer questions here.
+  - name: 💚 Allure TestOps Support
+    url: https://help.qameta.io/support/home
+    about: Please report Allure TestOps issues here.

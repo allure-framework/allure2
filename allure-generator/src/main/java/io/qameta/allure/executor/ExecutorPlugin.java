@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2023 Qameta Software OÜ
+ *  Copyright 2016-2024 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 package io.qameta.allure.executor;
 
-import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.CommonJsonAggregator2;
 import io.qameta.allure.Constants;
 import io.qameta.allure.Reader;
 import io.qameta.allure.context.JacksonContext;
@@ -28,17 +28,26 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.naturalOrder;
+import static java.util.Comparator.nullsFirst;
+
 /**
  * @author charlie (Dmitry Baev).
  */
-public class ExecutorPlugin extends CommonJsonAggregator implements Reader {
+public class ExecutorPlugin extends CommonJsonAggregator2 implements Reader {
 
     public static final String EXECUTORS_BLOCK_NAME = "executor";
+
     protected static final String JSON_FILE_NAME = "executor.json";
+
+    private static final Comparator<ExecutorInfo> COMPARATOR
+            = comparing(ExecutorInfo::getBuildOrder, nullsFirst(naturalOrder()));
 
     public ExecutorPlugin() {
         super(Constants.WIDGETS_DIR, "executors.json");
@@ -69,5 +78,15 @@ public class ExecutorPlugin extends CommonJsonAggregator implements Reader {
                 .filter(ExecutorInfo.class::isInstance)
                 .map(ExecutorInfo.class::cast)
                 .collect(Collectors.toList());
+    }
+
+    public static Optional<ExecutorInfo> getLatestExecutor(final List<LaunchResults> launches) {
+        return launches.stream()
+                .map(launch -> launch.getExtra(EXECUTORS_BLOCK_NAME))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .filter(ExecutorInfo.class::isInstance)
+                .map(ExecutorInfo.class::cast)
+                .max(COMPARATOR);
     }
 }

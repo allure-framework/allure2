@@ -1,0 +1,214 @@
+{
+  "chart": {
+    "duration": {
+      "empty": "Gösterilecek bir şey yok",
+      "name": "Süre"
+    },
+    "severity": {
+      "name": "Önem Derecesi"
+    },
+    "status": {
+      "name": "Durum"
+    },
+    "trend": {
+      "empty": "Gösterilecek bir şey yok"
+    }
+  },
+  "component": {
+    "markToggle": {
+      "hideCases": "{{mark}} test sonuçlarını gizle",
+      "showCases": "{{mark}} test sonuçlarını göster"
+    },
+    "statusToggle": {
+      "hideCases": "{{status}} durumlu test sonuçlarını gizle",
+      "showCases": "{{status}} durumlu test sonuçlarını göster"
+    },
+    "tree": {
+      "download": "CSV indir",
+      "empty": "Öğe yok",
+      "filter": "Durum",
+      "filter-marks": "İşaretler",
+      "filtered": {
+        "shown": "{{count}} gösteriliyor",
+        "total": "{{count}} test sonucu",
+        "total_plural": "{{count}} test sonucu"
+      },
+      "groups": "Grup bilgisini aç/kapat",
+      "time": {
+        "max": {
+          "name": "Maks.",
+          "tooltip": "En uzun test süresi"
+        },
+        "sum": {
+          "name": "Toplam",
+          "tooltip": "Tüm test sürelerinin toplamı"
+        },
+        "total": {
+          "name": "Toplam Süre",
+          "tooltip": "İlk testin başlangıcından son testin bitişine kadar geçen süre"
+        }
+      },
+      "unknown": "<Boş>"
+    },
+    "widgetStatus": {
+      "showAll": "Hepsini Göster",
+      "total": "{{count}} öğe toplam",
+      "total_plural": "{{count}} öğe toplam"
+    }
+  },
+  "controls": {
+    "backto": "Geri Dön",
+    "clipboard": "Panoya Kopyala",
+    "clipboardError": "Değer panoya kopyalanamadı. Tarayıcınız tarafından desteklenmediği görünüyor.",
+    "clipboardSuccess": "Başarıyla kopyalandı",
+    "collapse": "Daralt",
+    "expand": "Genişlet",
+    "fullscreen": "Tam Ekran",
+    "language": "Dili Değiştir"
+  },
+  "errors": {
+    "missedAttachment": "Ek dosya bulunamadı",
+    "notFound": "Bulunamadı"
+  },
+  "marks": {
+    "flaky": "Kararsız",
+    "newBroken": "Yeni Bozuk",
+    "newFailed": "Yeni Başarısız",
+    "newPassed": "Yeni Başarılı",
+    "retriesStatusChange": "Yeniden deneme sonrası durum değişikliği"
+  },
+  "sorter": {
+    "duration": "süre",
+    "name": "ad",
+    "order": "sıralama",
+    "status": "durum"
+  },
+  "status": {
+    "broken": "Kırık",
+    "failed": "Başarısız",
+    "passed": "Başarılı",
+    "skipped": "Atlandı",
+    "unknown": "Bilinmeyen"
+  },
+  "tab": {
+    "categories": {
+      "name": "Kategoriler"
+    },
+    "graph": {
+      "name": "Grafikler"
+    },
+    "overview": {
+      "name": "Genel Bakış"
+    },
+    "suites": {
+      "name": "Test Suitleri"
+    },
+    "timeline": {
+      "name": "Zaman Çizelgesi",
+      "selected": "{{duration}} süreden fazla süren {{count}} test (%{{percent}}) seçildi",
+      "selected_plural": "{{duration}} süreden fazla süren {{count}} test (%{{percent}}) seçildi"
+    }
+  },
+  "testResult": {
+    "categories": {
+      "name": "Kategoriler"
+    },
+    "description": {
+      "name": "Açıklama"
+    },
+    "duration": {
+      "name": "Süre"
+    },
+    "execution": {
+      "body": "Test gövdesi",
+      "downloadAttachment": {
+        "tooltip": "Eki yeni bir sekmede aç"
+      },
+      "name": "Çalıştırma",
+      "setup": "Kurulum",
+      "teardown": "Kaldırma"
+    },
+    "history": {
+      "empty": "Geçmiş bilgisi yok.",
+      "name": "Geçmiş",
+      "statistic": "{{total}}'nin {{passed}} geçti",
+      "successRate": "Başarı oranı",
+      "time": "{{time}} tarihinde, {{date}}"
+    },
+    "links": {
+      "name": "Bağlantılar"
+    },
+    "overview": {
+      "name": "Genel Bakış"
+    },
+    "owner": {
+      "name": "Sahip"
+    },
+    "parameters": {
+      "name": "Parametreler"
+    },
+    "retries": {
+      "empty": "Test yeniden deneme hakkında bilgi yok",
+      "name": "Yeniden Denemeler",
+      "time": "{{time}} tarihinde, {{date}}"
+    },
+    "severity": {
+      "name": "Önem"
+    },
+    "stats": {
+      "count": {
+        "attachments": "{{count}} eklenti",
+        "attachments_plural": "{{count}} eklenti",
+        "parameters": "{{count}} parametre",
+        "parameters_plural": "{{count}} parametre",
+        "steps": "{{count}} alt adım",
+        "steps_plural": "{{count}} alt adım"
+      }
+    },
+    "status": {
+      "empty": "Boş durum ayrıntıları",
+      "trace": "İzlemeyi göster"
+    }
+  },
+  "widget": {
+    "categories": {
+      "name": "Kategoriler"
+    },
+    "categoriesTrend": {
+      "name": "Kategoriler trendi"
+    },
+    "durationTrend": {
+      "name": "Süre trendi"
+    },
+    "environment": {
+      "empty": "Herhangi bir çevresel değişken yok",
+      "name": "Çevre",
+      "showAll": "Hepsini göster"
+    },
+    "executors": {
+      "empty": "Test yürütücüleri hakkında bilgi yok",
+      "name": "Yürütücüler",
+      "unknown": "Bilinmiyor"
+    },
+    "launches": {
+      "empty": "Başlatma hakkında bilgi yok",
+      "name": "Başlatmalar"
+    },
+    "retryTrend": {
+      "name": "Tekrar trendi"
+    },
+    "suites": {
+      "name": "Suitler"
+    },
+    "summary": {
+      "aggregatedName": "Toplu rapor",
+      "launches": "başlatma",
+      "launches_plural": "başlatmalar",
+      "testResults": "test durumu",
+      "testResults_plural": "test durumları"
+    },
+    "trend": {
+      "name": "Trend"
+    }
+  }
+}

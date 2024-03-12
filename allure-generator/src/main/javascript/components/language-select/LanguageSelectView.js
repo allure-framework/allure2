@@ -1,6 +1,7 @@
 import "./styles.scss";
 import PopoverView from "app/components/popover/PopoverView";
 import { className, on } from "app/decorators";
+import gtag from "app/utils/gtag";
 import settings from "app/utils/settings";
 import i18next, { LANGUAGES } from "app/utils/translation";
 import $ from "jquery";
@@ -34,6 +35,7 @@ class LanguageSelectView extends PopoverView {
     const langId = this.$(e.currentTarget).data("id");
     settings.setLanguage(langId);
     i18next.changeLanguage(langId);
+    gtag( "language_change", { language: langId });
   }
 }
 

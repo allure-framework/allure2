@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2023 Qameta Software OÜ
+ *  Copyright 2016-2024 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 package io.qameta.allure.influxdb;
 
-import io.qameta.allure.CommonMetricAggregator;
+import io.qameta.allure.CommonMetricAggregator2;
 import io.qameta.allure.category.CategoriesMetric;
 import io.qameta.allure.metric.Metric;
 import io.qameta.allure.metric.StatusMetric;
@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Plugin that generates data for influx db.
  */
-public class InfluxDbExportPlugin extends CommonMetricAggregator {
+public class InfluxDbExportPlugin extends CommonMetricAggregator2 {
 
     public InfluxDbExportPlugin() {
         super("influxDbData.txt");

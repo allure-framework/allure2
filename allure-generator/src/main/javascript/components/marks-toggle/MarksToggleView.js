@@ -2,6 +2,7 @@ import "./styles.scss";
 import { View } from "backbone.marionette";
 import { className, on } from "../../decorators";
 import translate from "../../helpers/t";
+import gtag from "../../utils/gtag";
 import { values } from "../../utils/marks";
 import template from "./MarksToggleView.hbs";
 
@@ -33,6 +34,7 @@ class MarksToggleView extends View {
     const checked = el.hasClass("n-label-mark");
     const marks = this.settings.getVisibleMarks();
     this.settings.setVisibleMarks(Object.assign({}, marks, { [name]: checked }));
+    gtag("marks_toggle_click", { status: name, checked });
   }
 }
 

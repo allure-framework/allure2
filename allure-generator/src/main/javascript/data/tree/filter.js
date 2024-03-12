@@ -1,4 +1,4 @@
-import {values as marksValues} from "../../utils/marks";
+import { values as marksValues } from "../../utils/marks";
 
 function byStatuses(statuses) {
   return (child) => {
@@ -41,7 +41,9 @@ function byTags(tag) {
   tag = (tag && tag.toLowerCase().trim()) || "";
   const tags = tag.split(/\s*,\s*/).filter((t) => t);
   return (child) => {
-    const childTags = Array.isArray(child.tags) ? child.tags.filter(t => t).map(t => t.toLowerCase().trim()) : [];
+    const childTags = Array.isArray(child.tags)
+      ? child.tags.filter((t) => t).map((t) => t.toLowerCase().trim())
+      : [];
     return (
       !tag ||
       tags.every((t) => childTags.indexOf(t) > -1) ||
@@ -55,9 +57,7 @@ function byMark(marks) {
     if (child.children) {
       return child.children.length > 0;
     }
-    return marksValues
-        .map(k => !marks[k] || child[k])
-        .reduce((a, b) => a && b, true);
+    return marksValues.map((k) => !marks[k] || child[k]).reduce((a, b) => a && b, true);
   };
 }
 

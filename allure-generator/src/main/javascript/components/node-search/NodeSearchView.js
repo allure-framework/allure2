@@ -1,6 +1,7 @@
 import "./styles.scss";
 import { View } from "backbone.marionette";
 import { className, on } from "../../decorators";
+import gtag from "../../utils/gtag";
 import template from "./NodeSearchView.hbs";
 
 export const SEARCH_QUERY_KEY = "searchQuery";
@@ -20,6 +21,7 @@ class NodeSearchView extends View {
   @on("input input")
   onChangeSorting(e) {
     this.state.set(SEARCH_QUERY_KEY, e.target.value);
+    gtag("search");
   }
 
   close() {

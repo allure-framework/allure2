@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2023 Qameta Software OÜ
+ *  Copyright 2016-2024 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,9 +18,10 @@ package io.qameta.allure.category;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.CommonJsonAggregator2;
 import io.qameta.allure.Constants;
 import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.executor.ExecutorPlugin;
 import io.qameta.allure.trend.AbstractTrendPlugin;
 
 import java.util.ArrayList;
@@ -73,7 +74,7 @@ public class CategoriesTrendPlugin extends AbstractTrendPlugin<CategoriesTrendIt
 
     private static CategoriesTrendItem createCurrent(final List<LaunchResults> launchesResults) {
         final CategoriesTrendItem item = new CategoriesTrendItem();
-        extractLatestExecutor(launchesResults).ifPresent(info -> {
+        ExecutorPlugin.getLatestExecutor(launchesResults).ifPresent(info -> {
             item.setBuildOrder(info.getBuildOrder());
             item.setReportName(info.getReportName());
             item.setReportUrl(info.getReportUrl());
@@ -87,7 +88,7 @@ public class CategoriesTrendPlugin extends AbstractTrendPlugin<CategoriesTrendIt
     /**
      * Generates history trend data.
      */
-    private static class JsonAggregator extends CommonJsonAggregator {
+    private static class JsonAggregator extends CommonJsonAggregator2 {
 
         JsonAggregator() {
             super(Constants.HISTORY_DIR, JSON_FILE_NAME);
@@ -102,7 +103,7 @@ public class CategoriesTrendPlugin extends AbstractTrendPlugin<CategoriesTrendIt
     /**
      * Generates widget data.
      */
-    private static class WidgetAggregator extends CommonJsonAggregator {
+    private static class WidgetAggregator extends CommonJsonAggregator2 {
 
         WidgetAggregator() {
             super(Constants.WIDGETS_DIR, JSON_FILE_NAME);

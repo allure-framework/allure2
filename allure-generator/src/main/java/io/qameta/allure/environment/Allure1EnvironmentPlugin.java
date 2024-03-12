@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2023 Qameta Software OÜ
+ *  Copyright 2016-2024 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 package io.qameta.allure.environment;
 
-import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.CommonJsonAggregator2;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.EnvironmentItem;
 
@@ -35,7 +35,7 @@ import static java.util.stream.Collectors.toSet;
 /**
  * @author Egor Borisov ehborisov@gmail.com
  */
-public class Allure1EnvironmentPlugin extends CommonJsonAggregator {
+public class Allure1EnvironmentPlugin extends CommonJsonAggregator2 {
 
     public Allure1EnvironmentPlugin() {
         super("widgets", "environment.json");

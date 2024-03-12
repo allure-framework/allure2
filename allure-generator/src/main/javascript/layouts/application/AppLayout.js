@@ -2,7 +2,7 @@ import "./styles.scss";
 import { View } from "backbone.marionette";
 import ErrorSplashView from "../../components/error-splash/ErrorSplashView";
 import SideNav from "../../components/side-nav/SideNavView";
-import { className, regions } from "../../decorators";
+import { behavior, className, regions } from "../../decorators";
 import translate from "../../helpers/t";
 import template from "./AppLayout.hbs";
 
@@ -11,6 +11,8 @@ import template from "./AppLayout.hbs";
   content: ".app__content",
   nav: ".app__nav",
 })
+@behavior("GaBehavior")
+@behavior("DownloadBehavior")
 class AppLayout extends View {
   template = template;
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2023 Qameta Software OÜ
+ *  Copyright 2016-2024 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import io.qameta.allure.config.ConfigLoader;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.Plugin;
 import io.qameta.allure.option.ConfigOptions;
+import io.qameta.allure.option.ReportNameOptions;
 import io.qameta.allure.plugin.DefaultPluginLoader;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.server.Server;
@@ -51,7 +52,7 @@ public class Commands {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Commands.class);
     private static final String DIRECTORY_EXISTS_MESSAGE = "Allure: Target directory {} for the report is already"
-            + " in use, add a '--clean' option to overwrite";
+                                                           + " in use, add a '--clean' option to overwrite";
 
     private final Path allureHome;
 
@@ -90,7 +91,17 @@ public class Commands {
     public ExitCode generate(final Path reportDirectory,
                              final List<Path> resultsDirectories,
                              final boolean clean,
-                             final ConfigOptions profile) {
+                             final ConfigOptions profile,
+                             final ReportNameOptions reportNameOptions) {
+        return generate(reportDirectory, resultsDirectories, clean, false, profile, reportNameOptions);
+    }
+
+    public ExitCode generate(final Path reportDirectory,
+                             final List<Path> resultsDirectories,
+                             final boolean clean,
+                             final boolean singleFileMode,
+                             final ConfigOptions profile,
+                             final ReportNameOptions reportNameOptions) {
         final boolean directoryExists = Files.exists(reportDirectory);
         if (clean && directoryExists) {
             FileUtils.deleteQuietly(reportDirectory.toFile());
@@ -98,12 +109,11 @@ public class Commands {
             LOGGER.error(DIRECTORY_EXISTS_MESSAGE, reportDirectory.toAbsolutePath());
             return ExitCode.GENERIC_ERROR;
         }
-        try {
-            final ReportGenerator generator = new ReportGenerator(createReportConfiguration(profile));
+        final ReportGenerator generator = new ReportGenerator(createReportConfiguration(profile, reportNameOptions));
+        if (singleFileMode) {
+            generator.generateSingleFile(reportDirectory, resultsDirectories);
+        } else {
             generator.generate(reportDirectory, resultsDirectories);
-        } catch (IOException e) {
-            LOGGER.error("Could not generate report", e);
-            return ExitCode.GENERIC_ERROR;
         }
         LOGGER.info("Report successfully generated to {}", reportDirectory);
         return ExitCode.NO_ERROR;
@@ -112,7 +122,8 @@ public class Commands {
     public ExitCode serve(final List<Path> resultsDirectories,
                           final String host,
                           final int port,
-                          final ConfigOptions configOptions) {
+                          final ConfigOptions configOptions,
+                          final ReportNameOptions reportNameOptions) {
         LOGGER.info("Generating report to temp directory...");
 
         final Path reportDirectory;
@@ -129,7 +140,8 @@ public class Commands {
                 reportDirectory,
                 resultsDirectories,
                 false,
-                configOptions
+                configOptions,
+                reportNameOptions
         );
         if (exitCode.isSuccess()) {
             return open(reportDirectory, host, port);
@@ -152,7 +164,7 @@ public class Commands {
             openBrowser(server.getURI());
         } catch (IOException | AWTError e) {
             LOGGER.error(
-                    "Could not open the report in browser, try to open it manually {}: {}",
+                    "Could not open the report in browser, try to open it manually {}",
                     server.getURI(),
                     e
             );
@@ -179,7 +191,8 @@ public class Commands {
      * @param profile selected profile.
      * @return created report configuration.
      */
-    protected Configuration createReportConfiguration(final ConfigOptions profile) {
+    protected Configuration createReportConfiguration(final ConfigOptions profile,
+                                                      final ReportNameOptions reportNameOptions) {
         final DefaultPluginLoader loader = new DefaultPluginLoader();
         final CommandlineConfig commandlineConfig = getConfig(profile);
         final ClassLoader classLoader = getClass().getClassLoader();
@@ -192,6 +205,7 @@ public class Commands {
         return new ConfigurationBuilder()
                 .useDefault()
                 .fromPlugins(plugins)
+                .withReportName(reportNameOptions.getReportName())
                 .build();
     }
 
@@ -221,11 +235,11 @@ public class Commands {
                 Desktop.getDesktop().browse(url);
             } catch (UnsupportedOperationException e) {
                 LOGGER.error("Browse operation is not supported on your platform."
-                        + "You can use the link below to open the report manually.", e);
+                             + "You can use the link below to open the report manually.", e);
             }
         } else {
             LOGGER.error("Can not open browser because this capability is not supported on "
-                    + "your platform. You can use the link below to open the report manually.");
+                         + "your platform. You can use the link below to open the report manually.");
         }
     }
 

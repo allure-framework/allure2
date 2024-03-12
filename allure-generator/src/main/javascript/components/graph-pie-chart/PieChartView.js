@@ -29,11 +29,13 @@ class PieChartView extends BaseChartView {
     this.statistic = this.model.get("statistic");
     const { total } = this.statistic;
     const stats = omit(this.statistic, "total");
-    this.data = Object.keys(stats).map((key) => ({
-      name: key.toUpperCase(),
-      value: stats[key],
-      part: stats[key] / total,
-    })).filter(item => item.value);
+    this.data = Object.keys(stats)
+      .map((key) => ({
+        name: key.toUpperCase(),
+        value: stats[key],
+        part: stats[key] / total,
+      }))
+      .filter((item) => item.value);
   }
 
   setupViewport() {
@@ -98,8 +100,16 @@ class PieChartView extends BaseChartView {
   }
 
   getChartTitle() {
-    const { passed, total } = this.statistic;
-    return `${this.formatNumber(((passed || 0) / total) * 100)}%`;
+    const { passed = 0, failed = 0, broken = 0, total = 0 } = this.statistic;
+    if (!total) {
+      return "???";
+    }
+
+    if (!passed) {
+      return "0%";
+    }
+
+    return `${this.formatNumber((passed / (passed + failed + broken)) * 100)}%`;
   }
 
   getTooltipContent({ data }) {

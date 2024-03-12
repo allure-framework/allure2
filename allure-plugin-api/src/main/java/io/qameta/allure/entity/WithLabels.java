@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2023 Qameta Software OÜ
+ *  Copyright 2016-2024 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -30,41 +30,41 @@ public interface WithLabels {
 
     void setLabels(List<Label> labels);
 
-    default <T> T findAll(LabelName name, Collector<String, ?, T> collector) {
+    default <T> T findAll(final LabelName name, final Collector<String, ?, T> collector) {
         return findAll(name.value(), collector);
     }
 
-    default <T> T findAll(String name, Collector<String, ?, T> collector) {
+    default <T> T findAll(final String name, final Collector<String, ?, T> collector) {
         return getLabels().stream()
                 .filter(label -> name.equals(label.getName()))
                 .map(Label::getValue)
                 .collect(collector);
     }
 
-    default List<String> findAll(LabelName name) {
+    default List<String> findAll(final LabelName name) {
         return findAll(name, Collectors.toList());
     }
 
-    default List<String> findAll(String name) {
+    default List<String> findAll(final String name) {
         return findAll(name, Collectors.toList());
     }
 
-    default Optional<String> findOne(LabelName name) {
+    default Optional<String> findOne(final LabelName name) {
         return findOne(name.value());
     }
 
-    default Optional<String> findOne(String name) {
+    default Optional<String> findOne(final String name) {
         return getLabels().stream()
                 .filter(label -> name.equals(label.getName()))
                 .map(Label::getValue)
                 .findAny();
     }
 
-    default void addLabelIfNotExists(LabelName name, String value) {
+    default void addLabelIfNotExists(final LabelName name, final String value) {
         addLabelIfNotExists(name.value(), value);
     }
 
-    default void addLabelIfNotExists(String name, String value) {
+    default void addLabelIfNotExists(final String name, final String value) {
         if (value == null || name == null) {
             return;
         }
@@ -77,7 +77,7 @@ public interface WithLabels {
         }
     }
 
-    default void addLabel(String name, String value) {
+    default void addLabel(final String name, final String value) {
         getLabels().add(new Label().setName(name).setValue(value));
     }
 }

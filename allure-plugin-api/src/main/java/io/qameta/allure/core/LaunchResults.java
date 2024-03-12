@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2023 Qameta Software OÜ
+ *  Copyright 2016-2024 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -75,7 +75,7 @@ public interface LaunchResults {
      * @param <T>          the java type of extra block.
      * @return the found block or default value.
      */
-    default <T> T getExtra(String name, Supplier<T> defaultValue) {
+    default <T> T getExtra(final String name, final Supplier<T> defaultValue) {
         final Optional<T> extra = getExtra(name);
         return extra.orElseGet(defaultValue);
     }

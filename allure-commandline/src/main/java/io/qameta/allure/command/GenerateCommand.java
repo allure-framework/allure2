@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2023 Qameta Software OÜ
+ *  Copyright 2016-2024 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import com.beust.jcommander.Parameters;
 import com.beust.jcommander.ParametersDelegate;
 import io.qameta.allure.convert.PathConverter;
 import io.qameta.allure.option.ConfigOptions;
+import io.qameta.allure.option.ReportNameOptions;
 import io.qameta.allure.option.ResultsOptions;
 
 import java.nio.file.Path;
@@ -47,11 +48,20 @@ public class GenerateCommand {
     )
     private Path reportDirectory = Paths.get("allure-report");
 
+    @Parameter(
+            names = {"--single-file"},
+            description = "Generate Allure report in single file mode."
+    )
+    private boolean singleFileMode;
+
     @ParametersDelegate
     private ResultsOptions resultsOptions = new ResultsOptions();
 
     @ParametersDelegate
     private ConfigOptions configOptions = new ConfigOptions();
+
+    @ParametersDelegate
+    private ReportNameOptions reportNameOptions = new ReportNameOptions();
 
     public boolean isCleanReportDirectory() {
         return cleanReportDirectory;
@@ -67,5 +77,13 @@ public class GenerateCommand {
 
     public ConfigOptions getConfigOptions() {
         return configOptions;
+    }
+
+    public ReportNameOptions getReportNameOptions() {
+        return reportNameOptions;
+    }
+
+    public boolean isSingleFileMode() {
+        return singleFileMode;
     }
 }

@@ -1,0 +1,99 @@
+name: 🐞 Bug Report
+description: File a Bug report in Java Integration
+labels: [ "type:bug", "triage" ]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        🌟 **Welcome to Allure Report!** 🌟\
+        \
+        👋 Hello there! Thanks for taking the time to fill out this bug report! We're thrilled to have you as a potential Allure Report open-source project contributor. 😄🎉 Whether you're an experienced developer or just starting out, we welcome you to our community warmly!\
+        \
+        💡 For all the Ideas and Feature Requests, please create a [Github Discussion](https://github.com/orgs/allure-framework/discussions) first. That will allow us to discuss the proposed changes first and maybe find a better solution.\
+        \
+        📖 When creating a new issue, providing detailed and clear information is important. This helps our team understand and address the issue effectively. 🦶 Please include specific steps to reproduce the problem and provide logs and screenshots if you have any. The more information you provide, the better equipped we are to assist you. 🚀\
+        \
+        🤔 If you have any questions or need further assistance, you can ask in our [GitHub Discussions](https://github.com/orgs/allure-framework/discussions). While English is the primary language of our community, you can use tools like Google Translate to communicate if needed. We value inclusivity and aim to create a welcoming environment for everyone.\
+        \
+        Once again, welcome to **Allure Report**! We're excited to have you on board. Let's work together to make software testing and reporting a breeze! 💪\
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the Bug
+      description: Provide a clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Detail the steps that would replicate this issue
+      placeholder: |
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behaviour
+      description: Provide clear and concise description of what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Screenshots or Additional Context
+      description: Provide any additional context and screenshots here to help us solve this issue
+    validations:
+      required: false
+  - type: dropdown
+    id: integration
+    attributes:
+      label: What Language are you using?
+      multiple: true
+      description: Please select the Language you are using
+      options:
+        - Android (Kotlin)
+        - C#
+        - Go
+        - Java
+        - JavaScript
+        - Kotlin
+        - PHP
+        - Ruby
+        - TypeScript
+    validations:
+      required: true
+  - type: input
+    id: framework
+    attributes:
+      label: What Framework/Allure Integration you are using?
+      placeholder: allure-junit5
+    validations:
+      required: true
+  - type: input
+    id: integration_version
+    attributes:
+      label: What version of Allure Integration you are using?
+      placeholder: 2.22.3
+    validations:
+      required: true
+  - type: input
+    id: allure_report_version
+    attributes:
+      label: What version of Allure Report you are using?
+      placeholder: 2.22.3
+    validations:
+      required: true
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/allure-framework/allure2/blob/main/CODE_OF_CONDUCT.md)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

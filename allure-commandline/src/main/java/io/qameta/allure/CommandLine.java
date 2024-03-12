@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2023 Qameta Software OÜ
+ *  Copyright 2016-2024 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -161,14 +161,18 @@ public class CommandLine {
                         generateCommand.getReportDirectory(),
                         generateCommand.getResultsOptions().getResultsDirectories(),
                         generateCommand.isCleanReportDirectory(),
-                        generateCommand.getConfigOptions()
+                        generateCommand.isSingleFileMode(),
+                        generateCommand.getConfigOptions(),
+                        generateCommand.getReportNameOptions()
                 );
             case SERVE_COMMAND:
                 return commands.serve(
                         serveCommand.getResultsOptions().getResultsDirectories(),
                         serveCommand.getHostPortOptions().getHost(),
                         serveCommand.getHostPortOptions().getPort(),
-                        serveCommand.getConfigOptions());
+                        serveCommand.getConfigOptions(),
+                        serveCommand.getReportNameOptions()
+                );
             case OPEN_COMMAND:
                 return commands.open(
                         openCommand.getReportDirectories().get(0),

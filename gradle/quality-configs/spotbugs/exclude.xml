@@ -2,36 +2,35 @@
 <!-- http://spotbugs.readthedocs.io/en/latest/filter.html -->
 <FindBugsFilter>
 
-    <!-- Do not check groovy -->
-    <Match>
-        <Source name="~.*\.groovy"/>
-    </Match>
+  <!-- Do not check groovy -->
+  <Match>
+    <Source name="~.*\.groovy"/>
+  </Match>
 
-    <!-- Disable check -->
-    <Match>
-        <!-- The reason for disable is guava, which use @Nullable for function and if you want not nullable function
-         you will have to use @NotNull annotation, which contradict with original contract
-         (actually not, because guava intend weaker semantics). So disable this check to be able to properly
-         use nullability annotations -->
-        <Bug pattern="NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION" />
-    </Match>
-    <Match>
-        <!-- Disabled as confusing check (very misleading description) and also not so useful -->
-        <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
-    </Match>
-    <Match>
-        <!-- Disabled because of bug in JDK11 with try-with-resources code -->
-        <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
-    </Match>
-    <Match>
-        <Bug pattern="EI_EXPOSE_REP"/>
-    </Match>
-    <Match>
-        <Bug pattern="EI_EXPOSE_REP2"/>
-    </Match>
-
-    <!-- Do not check class -->
-    <!--<Match>-->
-        <!--<Class name="com.foobar.ClassNotToBeAnalyzed" />-->
-    <!--</Match>-->
+  <!-- Disable check -->
+  <Match>
+    <!-- The reason for disable is guava, which use @Nullable for function and if you want not nullable function
+     you will have to use @NotNull annotation, which contradict with original contract
+     (actually not, because guava intend weaker semantics). So disable this check to be able to properly
+     use nullability annotations -->
+    <Bug pattern="NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION"/>
+  </Match>
+  <Match>
+    <!-- Disabled as confusing check (very misleading description) and also not so useful -->
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+  <Match>
+    <!-- Disabled because of bug in JDK11 with try-with-resources code -->
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
+  </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP2"/>
+  </Match>
+  <Match>
+    <!-- finalizer methods are pretty much a dead pattern in Java -->
+    <Bug pattern="CT_CONSTRUCTOR_THROW"/>
+  </Match>
 </FindBugsFilter>

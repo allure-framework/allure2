@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2023 Qameta Software OÜ
+ *  Copyright 2016-2024 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26,6 +26,8 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class GaParameters {
+
+    private String reportUuid;
 
     private String allureVersion;
 

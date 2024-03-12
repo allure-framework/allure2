@@ -1,4 +1,5 @@
 import { Model } from "backbone";
+import { reportDataUrl } from "../loader";
 
 export default class WidgetsModel extends Model {
   initialize(model, options) {
@@ -11,6 +12,12 @@ export default class WidgetsModel extends Model {
 
   parse(data) {
     return Array.isArray(data) ? { items: data } : data;
+  }
+
+  fetch(options) {
+    return reportDataUrl(this.url(), "application/json").then((value) =>
+      super.fetch({ ...options, url: value }),
+    );
   }
 
   getWidgetData(name) {

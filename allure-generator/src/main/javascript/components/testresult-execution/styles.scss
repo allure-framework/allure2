@@ -10,6 +10,9 @@
 }
 
 .step {
+  &__name {
+    display: inline;
+  }
   line-height: 1.2em;
   &__status {
     left: 7px;

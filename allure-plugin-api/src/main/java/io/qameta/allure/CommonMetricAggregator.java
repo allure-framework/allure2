@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2023 Qameta Software OÜ
+ *  Copyright 2016-2024 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -32,7 +32,9 @@ import java.util.stream.Collectors;
 
 /**
  * @author charlie (Dmitry Baev).
+ * @deprecated for removal. Use {@link CommonJsonAggregator2} instead.
  */
+@Deprecated
 public abstract class CommonMetricAggregator implements Aggregator {
 
     private final String location;

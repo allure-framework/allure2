@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2023 Qameta Software OÜ
+ *  Copyright 2016-2024 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@ package io.qameta.allure.trend;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.qameta.allure.Aggregator;
-import io.qameta.allure.CompositeAggregator;
+import io.qameta.allure.Aggregator2;
+import io.qameta.allure.CompositeAggregator2;
 import io.qameta.allure.Constants;
 import io.qameta.allure.Reader;
 import io.qameta.allure.context.JacksonContext;
@@ -27,6 +27,7 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.ExecutorInfo;
+import io.qameta.allure.executor.ExecutorPlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,17 +36,12 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Spliterator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.qameta.allure.executor.ExecutorPlugin.EXECUTORS_BLOCK_NAME;
-import static java.util.Comparator.comparing;
-import static java.util.Comparator.naturalOrder;
-import static java.util.Comparator.nullsFirst;
 import static java.util.Spliterators.spliteratorUnknownSize;
 import static java.util.stream.StreamSupport.stream;
 
@@ -54,15 +50,15 @@ import static java.util.stream.StreamSupport.stream;
  *
  * @param <T> Trend item type
  */
-public abstract class AbstractTrendPlugin<T> extends CompositeAggregator implements Reader {
+public abstract class AbstractTrendPlugin<T> extends CompositeAggregator2 implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTrendPlugin.class);
 
     private final String jsonFileName;
     private final String trendBlockName;
 
-    protected AbstractTrendPlugin(final List<Aggregator> aggregators, final String jsonFileName,
-            final String trendBlockName) {
+    protected AbstractTrendPlugin(final List<Aggregator2> aggregators, final String jsonFileName,
+                                  final String trendBlockName) {
         super(aggregators);
         this.jsonFileName = jsonFileName;
         this.trendBlockName = trendBlockName;
@@ -114,14 +110,15 @@ public abstract class AbstractTrendPlugin<T> extends CompositeAggregator impleme
 
     protected abstract Optional<T> parseItem(ObjectMapper mapper, JsonNode child) throws JsonProcessingException;
 
+    /**
+     * Deprecated, use {@link ExecutorPlugin#getLatestExecutor(List)} instead.
+     *
+     * @param launches the launch results.
+     * @return the latest executor
+     * @deprecated use {@link ExecutorPlugin#getLatestExecutor(List)} instead.
+     */
+    @Deprecated
     protected static Optional<ExecutorInfo> extractLatestExecutor(final List<LaunchResults> launches) {
-        final Comparator<ExecutorInfo> comparator = comparing(ExecutorInfo::getBuildOrder, nullsFirst(naturalOrder()));
-        return launches.stream()
-                .map(launch -> launch.getExtra(EXECUTORS_BLOCK_NAME))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .filter(ExecutorInfo.class::isInstance)
-                .map(ExecutorInfo.class::cast)
-                .max(comparator);
+        return ExecutorPlugin.getLatestExecutor(launches);
     }
 }

@@ -2,14 +2,14 @@ import com.github.gradle.node.npm.task.NpmTask
 
 plugins {
     `java-library`
-    id("com.github.node-gradle.node") version "3.5.1"
+    id("com.github.node-gradle.node")
 }
 
 description = "Allure Report Generator"
 
 node {
-    // enforce https
-    distBaseUrl.set("https://nodejs.org/dist")
+    // repository is declared in root settings.gradle.kts
+    distBaseUrl.set(null as String?)
     version.set("16.18.0")
     download.set(true)
 }
@@ -18,7 +18,7 @@ val generatedStatic = "build/www"
 
 tasks.npmInstall {
     group = "Build"
-    args.set(listOf("--silent"))
+    args.set(listOf("--silent", "--no-audit"))
     npmCommand.set(listOf("ci"))
     environment.set(mapOf("ADBLOCK" to "true"))
     inputs.file("package-lock.json")
@@ -67,7 +67,7 @@ val cleanUpDemoReport by tasks.creating(Delete::class) {
 val generateDemoReport by tasks.creating(JavaExec::class) {
     group = "Documentation"
     dependsOn(cleanUpDemoReport, tasks.named("copyPlugins"))
-    main = "io.qameta.allure.DummyReportGenerator"
+    mainClass.set("io.qameta.allure.DummyReportGenerator")
     classpath = sourceSets.getByName("test").runtimeClasspath
     systemProperty("allure.plugins.directory", "build/plugins")
     setArgs(arrayListOf(file("test-data/new-demo"), file("build/demo-report")))
@@ -91,6 +91,11 @@ tasks.processResources {
 
 tasks.test {
     dependsOn(testWeb)
+    jvmArgs = listOf(
+        "--add-opens",
+        "java.base/java.lang=ALL-UNNAMED",
+        "java.base/java.util=ALL-UNNAMED",
+    )
 }
 
 val allurePlugin by configurations.existing
@@ -116,6 +121,7 @@ dependencies {
     testImplementation("io.qameta.allure:allure-junit-platform")
     testImplementation("org.apache.commons:commons-lang3")
     testImplementation("org.assertj:assertj-core")
+    testImplementation("org.junit-pioneer:junit-pioneer")
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.slf4j:slf4j-simple")

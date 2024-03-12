@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2023 Qameta Software OÜ
+ *  Copyright 2016-2024 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -269,7 +269,7 @@ public class JunitXmlPlugin implements Reader {
         }
 
         if ((testCaseElement.containsAttribute(STATUS_ATTRIBUTE_NAME))
-                && (testCaseElement.getAttribute(STATUS_ATTRIBUTE_NAME).equals(SKIPPED_ATTRIBUTE_VALUE))) {
+                && (SKIPPED_ATTRIBUTE_VALUE.equals(testCaseElement.getAttribute(STATUS_ATTRIBUTE_NAME)))) {
             return Status.SKIPPED;
         }
 

@@ -4,7 +4,7 @@ import org.gradle.kotlin.dsl.support.unzipTo
 
 plugins {
     application
-    id("nebula.ospackage") version "9.1.1"
+    id("com.netflix.nebula.ospackage")
 }
 
 description = "Allure Commandline"
@@ -74,9 +74,7 @@ ospackage {
     os = org.redline_rpm.header.Os.LINUX
     release = "1"
 
-    requires("java8-runtime | java8-runtime-headless | " +
-            "openjdk8-jre-headless | openjdk-8-jre | openjdk-8-jdk | " +
-            "oracle-java8-installer | oracle-java8-installer")
+    requires("default-jre-headless")
 
     // Remove closureOf when https://github.com/nebula-plugins/gradle-ospackage-plugin/issues/399 is fixed
     from("${pack}/bin", closureOf<CopySpec> {

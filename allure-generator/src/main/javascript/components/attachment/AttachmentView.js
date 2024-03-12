@@ -1,6 +1,7 @@
 import "./styles.scss";
+import { $ } from "backbone";
 import { View } from "backbone.marionette";
-import $ from "jquery";
+import { reportDataUrl } from "../../data/loader";
 import { behavior, className, on, regions } from "../../decorators";
 import router from "../../router";
 import attachmentType from "../../utils/attachmentType";
@@ -19,10 +20,22 @@ class AttachmentView extends View {
     this.fullScreen = !!this.options.fullScreen;
     this.attachment = this.options.attachment;
     this.attachmentInfo = attachmentType(this.attachment.type);
-    this.sourceUrl = `data/attachments/${this.attachment.source}`;
   }
 
   onRender() {
+    if (!this.sourceUrl) {
+      reportDataUrl(`data/attachments/${this.attachment.source}`, this.attachment.type)
+        .then((sourceUrl) => {
+          this.sourceUrl = sourceUrl;
+        })
+        .then(() => {
+          if (this.needsFetch()) {
+            return this.loadContent();
+          }
+        })
+        .then(this.render);
+    }
+
     if (this.attachmentInfo.type === "custom") {
       this.showChildView(
         "customView",
@@ -31,12 +44,10 @@ class AttachmentView extends View {
           attachment: this.attachment,
         }),
       );
-    } else if (this.needsFetch() && !this.content) {
-      this.loadContent().then(this.render);
     } else if (this.attachmentInfo.type === "code") {
       const codeBlock = this.$(".attachment__code");
       codeBlock.addClass(`language-${this.attachment.type.split("/").pop()}`);
-      highlight.highlightBlock(codeBlock[0]);
+      highlight.highlightElement(codeBlock[0]);
     }
   }
 
@@ -54,15 +65,15 @@ class AttachmentView extends View {
     }
   }
 
+  needsFetch() {
+    return "parser" in this.attachmentInfo;
+  }
+
   loadContent() {
     return $.ajax(this.sourceUrl, { dataType: "text" }).then((responseText) => {
       const parser = this.attachmentInfo.parser;
       this.content = parser(responseText);
     });
-  }
-
-  needsFetch() {
-    return "parser" in this.attachmentInfo;
   }
 
   serializeData() {

@@ -1,23 +1,29 @@
 {{#each steps}}
     <div class="step">
+        {{#if attachmentStep}}
+        {{#each attachments}}
+          {{> ../../blocks/attachment-row/attachment-row . baseUrl=../../baseUrl}}
+        {{/each}}
+        {{else}}
         <div class="{{b "step" "title" hasContent=hasContent}} long-line">
-            {{#if hasContent}}
-                <span class="step__arrow block__arrow">{{arrow status}}</span>
-            {{else}}
-                <span class="step__status">{{allure-icon status}}</span>
-            {{/if}}
-            <div class="step__name">{{text-with-links name}}</div>
-            {{> ../../blocks/step-stats/step-stats . baseUrl=../../baseUrl}}
+          {{#if hasContent}}
+            <span class="step__arrow block__arrow">{{arrow status}}</span>
+          {{else}}
+            <span class="step__status">{{allure-icon status}}</span>
+          {{/if}}
+          <div class="step__name">{{text-with-links name}}</div>
+          {{> ../../blocks/step-stats/step-stats . baseUrl=../../baseUrl}}
         </div>
         <div class="step__content">
-            {{> ../../blocks/parameters-table/parameters-table parameters=parameters }}
-            {{~> steps-list steps=steps baseUrl=../baseUrl}}
-            {{#each attachments}}
-                {{> ../../blocks/attachment-row/attachment-row . baseUrl=../../baseUrl}}
-            {{/each}}
-            {{#if shouldDisplayMessage}}
-                {{~> ../../blocks/status-details/status-details .}}
-            {{/if}}
+          {{> ../../blocks/parameters-table/parameters-table parameters=parameters }}
+          {{~> steps-list steps=steps baseUrl=../baseUrl}}
+          {{#each attachments}}
+            {{> ../../blocks/attachment-row/attachment-row . baseUrl=../../baseUrl}}
+          {{/each}}
+          {{#if shouldDisplayMessage}}
+            {{~> ../../blocks/status-details/status-details .}}
+          {{/if}}
         </div>
+        {{/if}}
     </div>
 {{/each}}

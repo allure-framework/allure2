@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2023 Qameta Software OÜ
+ *  Copyright 2016-2024 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,11 +18,12 @@ package io.qameta.allure.history;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.qameta.allure.CommonJsonAggregator;
+import io.qameta.allure.CommonJsonAggregator2;
 import io.qameta.allure.Constants;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.executor.ExecutorPlugin;
 import io.qameta.allure.trend.AbstractTrendPlugin;
 
 import java.util.ArrayList;
@@ -76,7 +77,7 @@ public class HistoryTrendPlugin extends AbstractTrendPlugin<HistoryTrendItem> {
                 .collect(Statistic::new, Statistic::update, Statistic::merge);
         final HistoryTrendItem item = new HistoryTrendItem()
                 .setStatistic(statistic);
-        extractLatestExecutor(launchesResults).ifPresent(info -> {
+        ExecutorPlugin.getLatestExecutor(launchesResults).ifPresent(info -> {
             item.setBuildOrder(info.getBuildOrder());
             item.setReportName(info.getReportName());
             item.setReportUrl(info.getReportUrl());
@@ -100,7 +101,7 @@ public class HistoryTrendPlugin extends AbstractTrendPlugin<HistoryTrendItem> {
     /**
      * Generates history trend data.
      */
-    protected static class JsonAggregator extends CommonJsonAggregator {
+    protected static class JsonAggregator extends CommonJsonAggregator2 {
 
         JsonAggregator() {
             super(Constants.HISTORY_DIR, JSON_FILE_NAME);
@@ -115,7 +116,7 @@ public class HistoryTrendPlugin extends AbstractTrendPlugin<HistoryTrendItem> {
     /**
      * Generates widget data.
      */
-    private static class WidgetAggregator extends CommonJsonAggregator {
+    private static class WidgetAggregator extends CommonJsonAggregator2 {
 
         WidgetAggregator() {
             super(Constants.WIDGETS_DIR, JSON_FILE_NAME);

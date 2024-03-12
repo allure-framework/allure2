@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2023 Qameta Software OÜ
+ *  Copyright 2016-2024 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -45,13 +45,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.function.Function;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -74,9 +75,10 @@ import static java.util.Objects.nonNull;
  * @since 2.0
  */
 @SuppressWarnings({
-        "PMD.ExcessiveImports",
         "ClassDataAbstractionCoupling",
-        "ClassFanOutComplexity"
+        "ClassFanOutComplexity",
+        "PMD.ExcessiveImports",
+        "PMD.TooManyMethods",
 })
 public class Allure2Plugin implements Reader {
 
@@ -106,17 +108,74 @@ public class Allure2Plugin implements Reader {
                             final ResultsVisitor visitor,
                             final Path resultsDirectory) {
         final RandomUidContext context = configuration.requireContext(RandomUidContext.class);
-        final List<TestResultContainer> groups = readTestResultsContainers(resultsDirectory)
-                .collect(Collectors.toList());
+
+        final Map<String, List<StageResult>> befores = new ConcurrentHashMap<>();
+        final Map<String, List<StageResult>> afters = new ConcurrentHashMap<>();
+
+        readTestResultsContainers(resultsDirectory)
+                .filter(group -> !Objects.isNull(group.getChildren()))
+                .forEach(group -> {
+                    processStages(visitor, resultsDirectory, group, befores, group.getBefores());
+                    processStages(visitor, resultsDirectory, group, afters, group.getAfters());
+                });
+
+        sortByStart(befores);
+        sortByStart(afters);
 
         readTestResults(resultsDirectory)
-                .forEach(result -> convert(context.getValue(), resultsDirectory, visitor, groups, result));
+                .forEach(result -> convert(
+                        context.getValue(),
+                        resultsDirectory, visitor,
+                        result,
+                        befores, afters
+                ));
+    }
+
+    private static void sortByStart(final Map<String, List<StageResult>> befores) {
+        befores.keySet().forEach(key -> befores.compute(key, (s, stageResults) -> {
+            if (Objects.isNull(stageResults)) {
+                return null;
+            }
+            final List<StageResult> res = new ArrayList<>(stageResults);
+            res.sort(BY_START);
+            return res;
+        }));
+    }
+
+    private void processStages(final ResultsVisitor visitor,
+                               final Path resultsDirectory,
+                               final TestResultContainer group,
+                               final Map<String, List<StageResult>> befores,
+                               final List<FixtureResult> fixtureResults) {
+        if (Objects.isNull(fixtureResults)) {
+            return;
+        }
+
+        final List<StageResult> stages = fixtureResults.stream()
+                .map(fixtureResult -> convert(resultsDirectory, visitor, fixtureResult))
+                .collect(Collectors.toList());
+
+        final Set<String> visited = ConcurrentHashMap.newKeySet();
+
+        group.getChildren()
+                .parallelStream()
+                .filter(Objects::nonNull)
+                .filter(visited::add)
+                .forEach(child -> befores.compute(child, (s, stageResults) -> {
+                    if (Objects.isNull(stageResults)) {
+                        return new LinkedList<>(stages);
+                    }
+                    stageResults.addAll(stages);
+                    return stageResults;
+                }));
     }
 
     private void convert(final Supplier<String> uidGenerator,
                          final Path resultsDirectory,
                          final ResultsVisitor visitor,
-                         final List<TestResultContainer> groups, final TestResult result) {
+                         final TestResult result,
+                         final Map<String, List<StageResult>> befores,
+                         final Map<String, List<StageResult>> afters) {
         final io.qameta.allure.entity.TestResult dest = new io.qameta.allure.entity.TestResult();
         dest.setUid(uidGenerator.get());
         dest.setHistoryId(result.getHistoryId());
@@ -142,9 +201,17 @@ public class Allure2Plugin implements Reader {
             dest.setTestStage(getTestStage(resultsDirectory, visitor, result));
         }
 
-        final List<TestResultContainer> parents = findAllParents(groups, result.getUuid(), new HashSet<>());
-        dest.getBeforeStages().addAll(getStages(parents, fixture -> getBefore(resultsDirectory, visitor, fixture)));
-        dest.getAfterStages().addAll(getStages(parents, fixture -> getAfter(resultsDirectory, visitor, fixture)));
+        if (nonNull(result.getUuid())) {
+            final List<StageResult> resultBefores = befores.get(result.getUuid());
+            if (nonNull(resultBefores)) {
+                dest.getBeforeStages().addAll(resultBefores);
+            }
+
+            final List<StageResult> resultAfters = afters.get(result.getUuid());
+            if (nonNull(resultAfters)) {
+                dest.getAfterStages().addAll(resultAfters);
+            }
+        }
         visitor.visitTestResult(dest);
     }
 
@@ -285,46 +352,6 @@ public class Allure2Plugin implements Reader {
         return !result.getSteps().isEmpty() || !result.getAttachments().isEmpty();
     }
 
-    private List<StageResult> getStages(final List<TestResultContainer> parents,
-                                        final Function<TestResultContainer, Stream<StageResult>> getter) {
-        return parents.stream()
-                .flatMap(getter)
-                .sorted(BY_START)
-                .collect(Collectors.toList());
-    }
-
-    private Stream<StageResult> getBefore(final Path source,
-                                          final ResultsVisitor visitor,
-                                          final TestResultContainer container) {
-        return convertList(container.getBefores(), fixture -> convert(source, visitor, fixture)).stream();
-    }
-
-    private Stream<StageResult> getAfter(final Path source,
-                                         final ResultsVisitor visitor,
-                                         final TestResultContainer container) {
-        return convertList(container.getAfters(), fixture -> convert(source, visitor, fixture)).stream();
-    }
-
-    private List<TestResultContainer> findAllParents(final List<TestResultContainer> groups,
-                                                     final String id,
-                                                     final Set<String> seen) {
-        final List<TestResultContainer> parents = findParents(groups, id, seen);
-        final List<TestResultContainer> result = new ArrayList<>(parents);
-        for (TestResultContainer container : parents) {
-            result.addAll(findAllParents(groups, container.getUuid(), seen));
-        }
-        return result;
-    }
-
-    private List<TestResultContainer> findParents(final List<TestResultContainer> groups,
-                                                  final String id,
-                                                  final Set<String> seen) {
-        return groups.stream()
-                .filter(container -> container.getChildren().contains(id))
-                .filter(container -> !seen.contains(container.getUuid()))
-                .collect(Collectors.toList());
-    }
-
     @SafeVarargs
     private static <T> T firstNonNull(final T... items) {
         return Stream.of(items)
@@ -337,6 +364,7 @@ public class Allure2Plugin implements Reader {
 
     private Stream<TestResultContainer> readTestResultsContainers(final Path resultsDirectory) {
         return listFiles(resultsDirectory, "*-container.json")
+                .parallel()
                 .map(this::readTestResultContainer)
                 .filter(Optional::isPresent)
                 .map(Optional::get);
@@ -344,6 +372,7 @@ public class Allure2Plugin implements Reader {
 
     private Stream<TestResult> readTestResults(final Path resultsDirectory) {
         return listFiles(resultsDirectory, "*-result.json")
+                .parallel()
                 .map(this::readTestResult)
                 .filter(Optional::isPresent)
                 .map(Optional::get);
@@ -369,7 +398,7 @@ public class Allure2Plugin implements Reader {
 
     private Stream<Path> listFiles(final Path directory, final String glob) {
         try (DirectoryStream<Path> directoryStream = newDirectoryStream(directory, glob)) {
-            return StreamSupport.stream(directoryStream.spliterator(), false)
+            return StreamSupport.stream(directoryStream.spliterator(), true)
                     .filter(Files::isRegularFile)
                     .collect(Collectors.toList())
                     .stream();

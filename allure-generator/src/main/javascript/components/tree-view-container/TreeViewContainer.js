@@ -2,6 +2,7 @@ import "./styles.scss";
 import { Model } from "backbone";
 import { View } from "backbone.marionette";
 import { behavior, className, on, regions } from "../../decorators";
+import gtag from "../../utils/gtag";
 import { getSettingsForTreePlugin } from "../../utils/settingsFactory";
 import MarksToggleView from "../marks-toggle/MarksToggleView";
 import NodeSearchView from "../node-search/NodeSearchView";
@@ -43,6 +44,7 @@ class TreeViewContainer extends View {
   onInfoClick() {
     const show = this.settings.isShowGroupInfo();
     this.settings.setShowGroupInfo(!show);
+    gtag("tree_info_click", { enable: !show });
   }
 
   onRender() {

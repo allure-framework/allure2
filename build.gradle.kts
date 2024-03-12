@@ -1,7 +1,8 @@
 import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+import com.github.spotbugs.snom.SpotBugsTask
 import java.nio.charset.StandardCharsets.UTF_8
 
-val linkHomepage by extra("https://qameta.io/allure")
+val linkHomepage by extra("https://allurereport.org/")
 val linkCi by extra("https://ci.qameta.io/job/allure2")
 val linkScmUrl by extra("https://github.com/allure-framework/allure2")
 val linkScmConnection by extra("scm:git:git://github.com/allure-framework/allure2.git")
@@ -13,7 +14,7 @@ val qualityConfigsDir by extra("$gradleScriptDir/quality-configs")
 val spotlessDtr by extra("$qualityConfigsDir/spotless")
 
 tasks.wrapper {
-    gradleVersion = "7.5.1"
+    gradleVersion = "8.5"
 }
 
 plugins {
@@ -21,18 +22,21 @@ plugins {
     `java-library`
     `maven-publish`
     signing
-    id("com.bmuschko.docker-remote-api") version "6.7.0"
-    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
-    id("com.diffplug.spotless") version "6.13.0"
-    id("com.gorylenko.gradle-git-properties") version "2.4.1"
-    id("io.spring.dependency-management") version "1.1.0"
-    id("ru.vyarus.quality") version "4.7.0"
-    id("org.owasp.dependencycheck") version "7.4.4"
+    checkstyle
+    pmd
+    id("com.github.spotbugs")
+    id("com.bmuschko.docker-remote-api")
+    id("io.github.gradle-nexus.publish-plugin")
+    id("com.diffplug.spotless")
+    id("com.gorylenko.gradle-git-properties")
+    id("io.spring.dependency-management")
+    id("org.owasp.dependencycheck")
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
 }
 
 allprojects {
@@ -61,47 +65,59 @@ subprojects {
     apply(plugin = "java")
     apply(plugin = "signing")
     apply(plugin = "maven-publish")
-    apply(plugin = "ru.vyarus.quality")
+    apply(plugin = "checkstyle")
+    apply(plugin = "pmd")
+    apply(plugin = "com.github.spotbugs")
     apply(plugin = "com.diffplug.spotless")
     apply(plugin = "io.spring.dependency-management")
 
+    val orgSlf4jVersion = "2.0.12"
+    val comSquareupRetrofit2Version = "2.9.0"
+
     dependencyManagement {
         imports {
-            mavenBom("com.fasterxml.jackson:jackson-bom:2.14.1")
-            mavenBom("org.junit:junit-bom:5.9.2")
-            mavenBom("io.qameta.allure:allure-bom:2.20.1")
+            mavenBom("com.fasterxml.jackson:jackson-bom:2.16.1")
+            mavenBom("com.squareup.okhttp3:okhttp-bom:4.12.0")
+            // latest version that supports java 8
+            mavenBom("com.vladsch.flexmark:flexmark-all:0.62.2")
+            mavenBom("io.qameta.allure:allure-bom:2.25.0")
+            mavenBom("org.junit:junit-bom:5.10.2")
         }
         dependencies {
-            dependency("ch.qos.logback:logback-classic:1.3.5")
+            dependency("ch.qos.logback:logback-classic:1.3.14")
             dependency("com.beust:jcommander:1.82")
-            dependency("com.github.spotbugs:spotbugs-annotations:4.7.3")
+            dependency("com.github.spotbugs:spotbugs-annotations:4.8.3")
+            dependency("com.github.spotbugs:spotbugs:4.8.3")
             dependency("com.opencsv:opencsv:5.7.1")
+            dependency("com.puppycrawl.tools:checkstyle:10.13.0")
+            dependency("com.squareup.retrofit2:converter-jackson:${comSquareupRetrofit2Version}")
+            dependency("com.squareup.retrofit2:retrofit:${comSquareupRetrofit2Version}")
             dependency("commons-beanutils:commons-beanutils:1.9.4")
-            dependency("commons-io:commons-io:2.11.0")
+            dependency("commons-io:commons-io:2.15.1")
             dependency("javax.xml.bind:jaxb-api:2.3.1")
+            dependency("net.sourceforge.pmd:pmd-java:6.55.0")
             dependency("org.allurefw:allure1-model:1.0")
-            dependency("org.apache.commons:commons-lang3:3.12.0")
+            dependency("org.apache.commons:commons-lang3:3.14.0")
             dependency("org.apache.httpcomponents:httpclient:4.5.14")
-            dependency("org.apache.tika:tika-core:2.6.0")
-            dependency("org.assertj:assertj-core:3.23.1")
-            dependency("org.eclipse.jetty:jetty-server:9.4.49.v20220914")
+            dependency("org.apache.tika:tika-core:2.9.1")
+            dependency("org.assertj:assertj-core:3.25.3")
+            dependency("org.eclipse.jetty:jetty-server:9.4.53.v20231009")
             dependency("org.freemarker:freemarker:2.3.32")
-            dependency("org.mockito:mockito-core:4.11.0")
-            dependency("org.projectlombok:lombok:1.18.24")
-            dependency("org.zeroturnaround:zt-zip:1.15")
-            dependencySet("org.slf4j:2.0.3") {
-                entry("slf4j-api")
-                entry("slf4j-nop")
-                entry("slf4j-simple")
-            }
-            dependencySet("com.squareup.retrofit2:2.6.1") {
-                entry("converter-jackson")
-                entry("retrofit")
-            }
-            dependencySet("com.vladsch.flexmark:0.62.2") {
-                entry("flexmark")
-                entry("flexmark-ext-tables")
-            }
+            dependency("org.junit-pioneer:junit-pioneer:2.2.0")
+            dependency("org.mockito:mockito-core:5.11.0")
+            dependency("org.projectlombok:lombok:1.18.30")
+            dependency("org.slf4j:slf4j-api:${orgSlf4jVersion}")
+            dependency("org.slf4j:slf4j-nop:${orgSlf4jVersion}")
+            dependency("org.slf4j:slf4j-simple:${orgSlf4jVersion}")
+            dependency("org.zeroturnaround:zt-zip:1.17")
+        }
+    }
+
+    tasks.compileJava {
+        if (JavaVersion.current().isJava8) {
+            java.targetCompatibility = JavaVersion.VERSION_1_8
+        } else {
+            options.release.set(8)
         }
     }
 
@@ -138,29 +154,45 @@ subprojects {
         }
     }
 
-    quality {
-        configDir = "$gradleScriptDir/quality-configs"
-        excludeSources = fileTree("build/generated-sources")
-        exclude("**/*.json")
-        checkstyleVersion = "8.36.1"
-        pmdVersion = "6.28.0"
-        spotbugsVersion = "4.1.2"
-        codenarcVersion = "1.6"
-        spotbugs = true
-        codenarc = true
-        pmd = true
-        checkstyle = true
-        htmlReports = false
+    fun excludeGeneratedSources(source: FileTree): FileTree = (source - fileTree("build/generated-sources")).asFileTree
 
-        afterEvaluate {
-            val spotbugs = configurations.findByName("spotbugs")
-            if (spotbugs != null) {
-                dependencies {
-                    spotbugs("org.slf4j:slf4j-simple")
-                    spotbugs("com.github.spotbugs:spotbugs:4.7.3")
-                }
-            }
-        }
+    checkstyle {
+        toolVersion = dependencyManagement.managedVersions["com.puppycrawl.tools:checkstyle"]!!
+        configDirectory = rootProject.layout.projectDirectory.dir("gradle/quality-configs/checkstyle")
+    }
+
+    pmd {
+        toolVersion = dependencyManagement.managedVersions["net.sourceforge.pmd:pmd-java"]!!
+        ruleSets = listOf()
+        ruleSetFiles = rootProject.files("gradle/quality-configs/pmd/pmd.xml")
+    }
+
+    spotbugs {
+        toolVersion = dependencyManagement.managedVersions["com.github.spotbugs:spotbugs"]!!
+        excludeFilter = rootProject.file("gradle/quality-configs/spotbugs/exclude.xml")
+    }
+
+    tasks.withType(Checkstyle::class) {
+        source = excludeGeneratedSources(source)
+    }
+
+    tasks.withType(Pmd::class) {
+        source = excludeGeneratedSources(source)
+    }
+
+    tasks.withType(SpotBugsTask::class) {
+    }
+
+    tasks.checkstyleTest {
+        enabled = false
+    }
+
+    tasks.pmdTest {
+        enabled = false
+    }
+
+    tasks.spotbugsTest {
+        enabled = false
     }
 
     spotless {
@@ -213,7 +245,11 @@ subprojects {
                 pom {
                     name.set(project.name)
                     description.set("Module ${project.name} of Allure Framework.")
-                    url.set("https://github.com/allure-framework/allure2")
+                    url.set("https://allurereport.org/")
+                    organization {
+                        name.set("Qameta Software")
+                        url.set("https://qameta.io/")
+                    }
                     licenses {
                         license {
                             name.set("The Apache License, Version 2.0")
@@ -225,11 +261,13 @@ subprojects {
                             id.set("baev")
                             name.set("Dmitry Baev")
                             email.set("dmitry.baev@qameta.io")
+                            url.set("https://github.com/baev")
                         }
                         developer {
                             id.set("eroshenkoam")
                             name.set("Artem Eroshenko")
                             email.set("artem.eroshenko@qameta.io")
+                            url.set("https://github.com/eroshenkoam")
                         }
                     }
                     scm {
@@ -240,6 +278,10 @@ subprojects {
                     issueManagement {
                         system.set("GitHub Issues")
                         url.set("https://github.com/allure-framework/allure2/issues")
+                    }
+                    ciManagement {
+                        system.set("Github Actions")
+                        url.set("https://github.com/allure-framework/allure-java/actions")
                     }
                     versionMapping {
                         usage("java-api") {
@@ -271,7 +313,7 @@ subprojects {
         }
     }
 
-    val pluginsDir = "$buildDir/plugins/"
+    val pluginsDir = layout.buildDirectory.dir("plugins")
     val copyPlugins by tasks.creating(Sync::class) {
         group = "Build"
         dependsOn(allurePlugin)
@@ -282,11 +324,6 @@ subprojects {
             segments[0] = segments[0].replace("-${project.version}", "")
         }
         includeEmptyDirs = false
-    }
-
-    repositories {
-        mavenLocal()
-        mavenCentral()
     }
 }
 
