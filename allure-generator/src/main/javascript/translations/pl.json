@@ -164,6 +164,9 @@
     "status": {
       "empty": "Puste szczegóły statusu",
       "trace": "Pokaż ślady"
+    },
+    "tags": {
+      "name": "Tagi"
     }
   },
   "widget": {

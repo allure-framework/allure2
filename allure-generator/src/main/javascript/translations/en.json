@@ -168,6 +168,9 @@
     "status": {
       "empty": "Empty status details",
       "trace": "Show trace"
+    },
+    "tags": {
+      "name": "Tags"
     }
   },
   "widget": {

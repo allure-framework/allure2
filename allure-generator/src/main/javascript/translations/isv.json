@@ -169,6 +169,9 @@
     "status": {
       "empty": "Nema dodatnoj informacije o statusu",
       "trace": "Pokaži dodatnu informaciju"
+    },
+    "tags": {
+      "name": "Označenja"
     }
   },
   "widget": {

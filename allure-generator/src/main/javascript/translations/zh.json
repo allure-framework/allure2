@@ -151,6 +151,9 @@
     "status": {
       "empty": "状态详情为空",
       "trace": "展示堆栈"
+    },
+    "tags": {
+      "name": "标签"
     }
   },
   "widget": {

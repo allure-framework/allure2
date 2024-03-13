@@ -168,6 +168,9 @@
     "status": {
       "empty": "Boş durum ayrıntıları",
       "trace": "İzlemeyi göster"
+    },
+    "tags": {
+      "name": "Etiketler"
     }
   },
   "widget": {

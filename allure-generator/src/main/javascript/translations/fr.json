@@ -168,6 +168,9 @@
     "status": {
       "empty": "Détails du statut vide",
       "trace": "Afficher la trace"
+    },
+    "tags": {
+      "name": "Tags"
     }
   },
   "widget": {
