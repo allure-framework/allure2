@@ -147,7 +147,12 @@
       "name": "Powtórzenia"
     },
     "severity": {
-      "name": "Ważność"
+      "name": "Ważność",
+      "blocker": "bloker",
+      "critical": "krytyczna",
+      "normal": "zwyczajna",
+      "minor": "niewielka",
+      "trivial": "minimalna"
     },
     "stats": {
       "count": {
