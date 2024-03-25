@@ -1,0 +1,223 @@
+{
+    "chart": {
+      "duration": {
+        "empty": "Det finns ingenting att visa här",
+        "name": "Varaktighet"
+      },
+      "severity": {
+        "name": "Allvarlighetsgrad"
+      },
+      "status": {
+        "name": "Status"
+      },
+      "trend": {
+        "empty": "Det finns ingenting att visa här"
+      }
+    },
+    "component": {
+      "markToggle": {
+        "hideCases": "Dölj testresultat med statusen {{mark}}",
+        "showCases": "Visa testresultat med statusen {{mark}}"
+      },
+      "statusToggle": {
+        "hideCases": "Dölj testresultat med statusen {{status}}",
+        "showCases": "Visa testresultat med statusen {{status}}"
+      },
+      "tree": {
+        "download": "Ladda ner CSV-fil",
+        "empty": "Det finns inga föremål",
+        "filter": "Status",
+        "filter-marks": "Märken",
+        "filtered": {
+          "shown": "{{count}} visas",
+          "total": "{{count}} testresultat",
+          "total_plural": "{{count}} testresultat"
+        },
+        "groups": "Växla gruppinformation",
+        "time": {
+          "max": {
+            "name": "Max",
+            "tooltip": "Längsta testkörningstid"
+          },
+          "sum": {
+            "name": "Summa",
+            "tooltip": "Summan av alla testkörningstider"
+          },
+          "total": {
+            "name": "Total",
+            "tooltip": "Varaktighet från det första testet började till det sista testet avslutat"
+          }
+        },
+        "unknown": "<Töm>"
+      },
+      "widgetStatus": {
+        "showAll": "Visa allt",
+        "total": "{{count}} artikel totalt",
+        "total_plural": "{{count}} artiklar totalt"
+      }
+    },
+    "controls": {
+      "backto": "Tillbaka till",
+      "clipboard": "Kopiera till urklipp",
+      "clipboardError": "Kan inte kopiera värde till urklipp. Det verkar som urklippsfunktionen inte stöds för din webbläsare",
+      "clipboardSuccess": "Värdet har kopierats",
+      "collapse": "Komprimera",
+      "expand": "Utöka",
+      "fullscreen": "Helskärmsläge",
+      "language": "Ändra språk"
+    },
+    "errors": {
+      "missedAttachment": "Det gick inte att hitta bilagan",
+      "notFound": "Hittades inte"
+    },
+    "marks": {
+      "flaky": "Flagnande",
+      "newBroken": "Ny trasig",
+      "newFailed": "Ny misslyckades",
+      "newPassed": "Ny godkänd",
+      "retriesStatusChange": "Status ändrades efter ett nytt försök"
+    },
+    "sorter": {
+      "duration": "varaktighet",
+      "name": "namn",
+      "order": "ordning",
+      "status": "status"
+    },
+    "status": {
+      "broken": "Trasig",
+      "failed": "Misslyckades",
+      "passed": "Godkänt",
+      "skipped": "Skippad",
+      "unknown": "Okänd"
+    },
+    "tab": {
+      "categories": {
+        "name": "Kategorier"
+      },
+      "graph": {
+        "name": "Grapher"
+      },
+      "overview": {
+        "name": "Överblick"
+      },
+      "suites": {
+        "name": "Testsviter"
+      },
+      "timeline": {
+        "name": "Tidslinje",
+        "selected": "{{count}} test valt ({{percent}}%) med en varaktighet på över {{duration}}",
+        "selected_plural": "{{count}} tester valda ({{percent}}%) med en varaktighet på över {{duration}}"
+      }
+    },
+    "testResult": {
+      "categories": {
+        "name": "Kategorier"
+      },
+      "description": {
+        "name": "Beskrivning"
+      },
+      "duration": {
+        "name": "Varaktighet"
+      },
+      "execution": {
+        "body": "Teststeg",
+        "downloadAttachment": {
+          "tooltip": "Öppna bilaga i ny flik"
+        },
+        "name": "Exekvering",
+        "setup": "Initiera",
+        "teardown": "Städa upp"
+      },
+      "history": {
+        "empty": "Ingen händelseinformation tillgänglig.",
+        "name": "Händelser",
+        "statistic": "{{passed}} av {{total}}",
+        "successRate": "Framgångsfrekvens",
+        "time": "{{date}} kl {{time}}"
+      },
+      "links": {
+        "name": "Länkar"
+      },
+      "overview": {
+        "name": "Överblick"
+      },
+      "owner": {
+        "name": "Ägare"
+      },
+      "parameters": {
+        "name": "Parametrar"
+      },
+      "retries": {
+        "empty": "Det finns ingen information tillgänglig om teståterförsök",
+        "name": "Återförsök",
+        "time": "{{date}} kl {{time}}"
+      },
+      "severity": {
+        "name": "Allvarlighetsgrad",
+        "blocker": "blockare",
+        "critical": "kritisk",
+        "normal": "normal",
+        "minor": "mindre",
+        "trivial": "trivial"
+      },
+      "stats": {
+        "count": {
+          "attachments": "{{count}} bilaga",
+          "attachments_plural": "{{count}} bilagor",
+          "parameters": "{{count}} parameter",
+          "parameters_plural": "{{count}} parametrar",
+          "steps": "{{count}} delsteg",
+          "steps_plural": "{{count}} delsteg"
+        }
+      },
+      "status": {
+        "empty": "Tom statusinformation",
+        "trace": "Visa stackspår"
+      },
+      "tags": {
+        "name": "Taggar"
+      }
+    },
+    "widget": {
+      "categories": {
+        "name": "Kategorier"
+      },
+      "categoriesTrend": {
+        "name": "Kategorier trend"
+      },
+      "durationTrend": {
+        "name": "Varaktighet trend"
+      },
+      "environment": {
+        "empty": "Det finns inga miljövariabler",
+        "name": "Miljö",
+        "showAll": "Visa allt"
+      },
+      "executors": {
+        "empty": "Det finns ingen information om testagenter",
+        "name": "Testagenter",
+        "unknown": "Okänd"
+      },
+      "launches": {
+        "empty": "Det finns ingen information om lanseringar",
+        "name": "Lanseringar"
+      },
+      "retryTrend": {
+        "name": "Återförsöks trend"
+      },
+      "suites": {
+        "name": "Testsviter"
+      },
+      "summary": {
+        "aggregatedName": "Sammanlagd rapport",
+        "launches": "lansering",
+        "launches_plural": "lanseringar",
+        "testResults": "testfall",
+        "testResults_plural": "testfall"
+      },
+      "trend": {
+        "name": "Trend"
+      }
+    }
+  }
+  
