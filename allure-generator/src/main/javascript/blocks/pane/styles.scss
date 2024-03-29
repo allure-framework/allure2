@@ -48,5 +48,11 @@
 
   &__section-title {
     margin: 0 0 $gap-size;
+
+    @at-root #{selector-append('span', &)} {
+      &::after {
+        content: ':';
+      }
+    }
   }
 }

@@ -1,5 +1,6 @@
 {{#if parameters.length}}
-<h3>{{t 'testResult.parameters.name'}}</h3>
+<h3 class="pane__section-title">{{t 'testResult.parameters.name'}}</h3>
+<div class="pane__section-content">
     {{#each parameters}}
         <div class="environment long-line line-ellipsis">
             <span class="environment__key">{{#if name}}{{name}}{{else}}&lt;null&gt;{{/if}}</span>:
@@ -10,4 +11,5 @@
             {{/if}}
         </div>
     {{/each}}
+</div>
 {{/if}}

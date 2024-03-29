@@ -1,4 +1,6 @@
 {{#if severity}}
-    {{t 'testResult.severity.name'}}:
-    {{t (concat 'testResult.severity.' severity)}}
+    <span class="pane__section-title">{{t 'testResult.severity.name'}}</span>
+    <span class="pane__section-content" data-severity="{{severity}}">
+        {{t (concat 'testResult.severity.' severity)}}
+    </span>
 {{/if}}
