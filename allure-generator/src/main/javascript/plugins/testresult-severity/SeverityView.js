@@ -1,14 +1,10 @@
 import { View } from "backbone.marionette";
-import { className } from "../../decorators/index";
-import translate from "../../helpers/t";
+import { className } from "../../decorators";
+import template from "./SeverityView.hbs";
 
 @className("pane__section")
 class SeverityView extends View {
-  template({ severity }) {
-    return severity
-      ? `${translate("testResult.severity.name")}: ${translate(`testResult.severity.${severity}`)}`
-      : "";
-  }
+  template = template;
 
   serializeData() {
     const extra = this.model.get("extra");
