@@ -72,7 +72,7 @@ subprojects {
     apply(plugin = "io.spring.dependency-management")
 
     val orgSlf4jVersion = "2.0.12"
-    val comSquareupRetrofit2Version = "2.10.0"
+    val comSquareupRetrofit2Version = "2.11.0"
 
     dependencyManagement {
         imports {
@@ -93,7 +93,7 @@ subprojects {
             dependency("com.squareup.retrofit2:converter-jackson:${comSquareupRetrofit2Version}")
             dependency("com.squareup.retrofit2:retrofit:${comSquareupRetrofit2Version}")
             dependency("commons-beanutils:commons-beanutils:1.9.4")
-            dependency("commons-io:commons-io:2.15.1")
+            dependency("commons-io:commons-io:2.16.0")
             dependency("javax.xml.bind:jaxb-api:2.3.1")
             dependency("net.sourceforge.pmd:pmd-java:6.55.0")
             dependency("org.allurefw:allure1-model:1.0")

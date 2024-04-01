@@ -3,7 +3,7 @@ import { className } from "../../decorators/index";
 import template from "./CategoryView.hbs";
 
 @className("pane__section")
-class SeverityView extends View {
+class CategoryView extends View {
   template = template;
 
   serializeData() {
@@ -14,4 +14,4 @@ class SeverityView extends View {
   }
 }
 
-export default SeverityView;
+export default CategoryView;
