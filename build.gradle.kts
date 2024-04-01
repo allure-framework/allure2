@@ -72,7 +72,7 @@ subprojects {
     apply(plugin = "io.spring.dependency-management")
 
     val orgSlf4jVersion = "2.0.12"
-    val comSquareupRetrofit2Version = "2.10.0"
+    val comSquareupRetrofit2Version = "2.11.0"
 
     dependencyManagement {
         imports {
