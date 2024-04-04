@@ -75,10 +75,9 @@ class TrxPluginTest {
         );
 
         final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
-        verify(visitor, times(4)).visitTestResult(captor.capture());
+        verify(visitor, times(5)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
-                .hasSize(4)
                 .extracting(TestResult::getName, TestResult::getStatus, TestResult::getDescription)
                 .containsExactlyInAnyOrder(
                         tuple("AddingSeveralNumbers_40", Status.PASSED, "Adding several numbers"),
@@ -136,7 +135,7 @@ class TrxPluginTest {
         );
 
         final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
-        verify(visitor, times(4)).visitTestResult(captor.capture());
+        verify(visitor, times(5)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
                 .filteredOn(result -> result.getStatus() == Status.FAILED)

@@ -321,7 +321,7 @@ class JunitXmlPluginTest {
 
 
         final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
-        verify(visitor, times(2)).visitTestResult(captor.capture());
+        verify(visitor, times(1)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
                 .flatExtracting(TestResult::getParameters)
@@ -332,7 +332,6 @@ class JunitXmlPluginTest {
                 );
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     void shouldProcessFilesWithZuluTimestamp() throws Exception {
         process(

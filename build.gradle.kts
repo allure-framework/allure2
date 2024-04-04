@@ -146,6 +146,12 @@ subprojects {
         }
         maxHeapSize = project.property("test.maxHeapSize").toString()
         maxParallelForks = Integer.parseInt(project.property("test.maxParallelForks") as String)
+        jvmArgs = listOf(
+            "--add-opens",
+            "java.base/java.lang=ALL-UNNAMED",
+            "--add-opens",
+            "java.base/java.util=ALL-UNNAMED",
+        )
     }
 
     tasks.processTestResources {

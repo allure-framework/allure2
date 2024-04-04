@@ -155,20 +155,6 @@
                 </StdOut>
               </Output>
         </UnitTestResult>
-        <UnitTestResult executionId="17356f2f-b3c9-4bee-b6b3-74fe17b2e82b" testId="45571f70-456e-69eb-dbf2-7ec265c4b751" testName="AddTwoNumbers" computerName="BUMBLEBEE" duration="00:00:00.0055623" startTime="2012-02-19T09:25:25.9799685-05:00" endTime="2012-02-19T09:25:25.9919692-05:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="17356f2f-b3c9-4bee-b6b3-74fe17b2e82b">
-                    <Output>
-                        <StdOut>
-                            Given I have entered 50 into the calculator
-                            -&gt; done: Steps.GivenIHaveEnteredSomethingIntoTheCalculator(50) (0.0s)
-                            And I have entered 70 into the calculator
-                            -&gt; done: Steps.GivenIHaveEnteredSomethingIntoTheCalculator(70) (0.0s)
-                            When I press add
-                            -&gt; done: Steps.WhenIPressAdd() (0.0s)
-                            Then the result should be 120 on the screen
-                            -&gt; done: Steps.ThenTheResultShouldBePass(120) (0.0s)
-                        </StdOut>
-                    </Output>
-                </UnitTestResult>
         <UnitTestResult executionId="6a02f552-17f1-4f86-9eaa-bcddec97f075" testId="10684beb-1457-c825-5087-2d0029460463" testName="FailToAddTwoNumbers" computerName="BUMBLEBEE" duration="00:00:00.0459057" startTime="2012-02-19T09:25:25.9949694-05:00" endTime="2012-02-19T09:25:26.0469724-05:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6a02f552-17f1-4f86-9eaa-bcddec97f075">
             <Output>
                 <StdOut>

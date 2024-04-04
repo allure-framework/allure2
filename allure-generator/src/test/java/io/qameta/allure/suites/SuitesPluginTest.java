@@ -17,7 +17,6 @@ package io.qameta.allure.suites;
 
 import io.qameta.allure.ConfigurationBuilder;
 import io.qameta.allure.Issue;
-import io.qameta.allure.category.CategoriesPlugin;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.InMemoryReportStorage;
 import io.qameta.allure.core.LaunchResults;
@@ -82,10 +81,10 @@ class SuitesPluginTest {
         plugin.aggregate(configuration, getSimpleLaunchResults(), storage);
 
         assertThat(storage.getReportDataFiles())
-                .containsKey("data/" + CategoriesPlugin.JSON_FILE_NAME);
+                .containsKey("data/" + SuitesPlugin.JSON_FILE_NAME);
 
         assertThat(storage.getReportDataFiles())
-                .containsKey("data/" + CategoriesPlugin.CSV_FILE_NAME);
+                .containsKey("data/" + SuitesPlugin.CSV_FILE_NAME);
     }
 
     private List<LaunchResults> getSimpleLaunchResults() {
