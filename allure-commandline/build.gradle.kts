@@ -5,6 +5,7 @@ import org.gradle.kotlin.dsl.support.unzipTo
 plugins {
     application
     id("com.netflix.nebula.ospackage")
+    id("org.graalvm.buildtools.native")
 }
 
 description = "Allure Commandline"
@@ -112,7 +113,6 @@ publishing {
     }
 }
 
-
 dependencies {
     allurePlugin(project(path = ":behaviors-plugin", configuration = "allurePlugin"))
     allurePlugin(project(path = ":custom-logo-plugin", configuration = "allurePlugin"))
@@ -138,4 +138,97 @@ dependencies {
     testImplementation("org.assertj:assertj-core")
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.mockito:mockito-core")
+}
+
+graalvmNative {
+    toolchainDetection.set(true)
+
+    binaries {
+        named("main") {
+            imageName.set("allure")
+
+            useFatJar.set(false)
+            verbose.set(true)
+
+            javaLauncher.set(javaToolchains.launcherFor {
+                languageVersion.set(JavaLanguageVersion.of(21))
+            })
+            requiredVersion.set("23.1.2")
+
+            metadataRepository {
+                enabled.set(true)
+                version.set("0.3.6")
+            }
+
+            configurationFileDirectories.from(
+                    file("src/main/resources/META-INF/native-image")
+            )
+
+            buildArgs.addAll(
+                    "-march=compatibility",
+                    "-H:+AddAllCharsets",
+                    "-Djava.awt.headless=false",
+                    "--initialize-at-run-time=io.netty.handler.ssl.util.ThreadLocalInsecureRandom",
+            )
+            jvmArgs.addAll(
+                    "-Dfile.encoding=UTF-8",
+                    "-Dsun.jnu.encoding=UTF-8",
+                    "-Djava.awt.headless=false",
+                    "-Djava.net.preferIPv4Stack=true",
+                    "-Djava.net.preferIPv4Addresses=true",
+            )
+            runtimeArgs.addAll(
+                    "generate",
+                    "$rootDir/allure-generator/test-data/allure2",
+                    "-o",
+                    "$projectDir/build/allure-report-demo-native",
+                    "-c",
+                    "--single-file",
+            )
+        }
+    }
+
+    agent {
+        enabled.set(true)
+
+        // for generate
+//        defaultMode.set("standard")
+        // For serve and open
+//        defaultMode.set("direct")
+
+        // Copies metadata collected from tasks into the specified directories.
+        metadataCopy {
+            inputTaskNames.addAll("runAndGenerate", "runAndServe", "runAndOpen") // Tasks previously executed with the agent attached.
+            outputDirectories.add("src/main/resources/META-INF/native-image")
+            mergeWithExisting.set(true) // Instead of copying, merge with existing metadata in the output directories.
+        }
+
+        modes {
+            direct {
+                options.add("config-write-period-secs=1")
+                options.add("config-output-dir={output_dir}")
+            }
+        }
+    }
+}
+
+task("runAndGenerate", JavaExec::class) {
+    group = "nativeTasks"
+    mainClass = application.mainClass
+    classpath = sourceSets["main"].runtimeClasspath
+    args = arrayListOf("generate", "$rootDir/allure-generator/test-data/allure2", "-o", "$projectDir/build/allure-report-demo-generate", "-c", "--single-file")
+}
+
+task("runAndServe", JavaExec::class) {
+    group = "nativeTasks"
+    mainClass = application.mainClass
+    classpath = sourceSets["main"].runtimeClasspath
+    args = arrayListOf("serve", "$rootDir/allure-generator/test-data/allure2")
+}
+
+task("runAndOpen", JavaExec::class) {
+    group = "nativeTasks"
+    mainClass = application.mainClass
+    classpath = sourceSets["main"].runtimeClasspath
+    args = arrayListOf("open", "$projectDir/build/allure-report-demo-generate")
 }

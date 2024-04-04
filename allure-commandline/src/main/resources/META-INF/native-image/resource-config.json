@@ -1,0 +1,91 @@
+{
+  "resources":{
+  "includes":[{
+    "pattern":"\\QMETA-INF/services/ch.qos.logback.classic.spi.Configurator\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/java.lang.System$LoggerFinder\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/java.net.spi.InetAddressResolverProvider\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/java.net.spi.URLStreamHandlerProvider\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/java.nio.channels.spi.SelectorProvider\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/java.time.zone.ZoneRulesProvider\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/java.util.spi.ResourceBundleControlProvider\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/javax.xml.datatype.DatatypeFactory\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/javax.xml.parsers.DocumentBuilderFactory\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/javax.xml.parsers.SAXParserFactory\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/javax.xml.stream.XMLInputFactory\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/javax.xml.stream.XMLOutputFactory\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/org.apache.commons.logging.LogFactory\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/org.eclipse.jetty.http.HttpFieldPreEncoder\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/org.slf4j.spi.SLF4JServiceProvider\\E"
+  }, {
+    "pattern":"\\Qallure-version.txt\\E"
+  }, {
+    "pattern":"\\Qapp.js\\E"
+  }, {
+    "pattern":"\\Qcommons-logging.properties\\E"
+  }, {
+    "pattern":"\\Qfavicon.ico\\E"
+  }, {
+    "pattern":"\\Qfreemarker/ext/beans/DefaultMemberAccessPolicy-rules\\E"
+  }, {
+    "pattern":"\\Qfreemarker/version.properties\\E"
+  }, {
+    "pattern":"\\Qjetty-logging-windows-11.properties\\E"
+  }, {
+    "pattern":"\\Qjetty-logging.properties\\E"
+  }, {
+    "pattern":"\\Qlogback-test.scmo\\E"
+  }, {
+    "pattern":"\\Qlogback-test.xml\\E"
+  }, {
+    "pattern":"\\Qlogback.scmo\\E"
+  }, {
+    "pattern":"\\Qlogback.xml\\E"
+  }, {
+    "pattern":"\\Qmozilla/public-suffix-list.txt\\E"
+  }, {
+    "pattern":"\\Qorg/apache/http/client/version.properties\\E"
+  }, {
+    "pattern":"\\Qorg/apache/tika/mime/custom-mimetypes.xml\\E"
+  }, {
+    "pattern":"\\Qorg/apache/tika/mime/tika-mimetypes.xml\\E"
+  }, {
+    "pattern":"\\Qorg/eclipse/jetty/http/encoding.properties\\E"
+  }, {
+    "pattern":"\\Qorg/eclipse/jetty/http/mime.properties\\E"
+  }, {
+    "pattern":"\\Qorg/eclipse/jetty/version/build.properties\\E"
+  }, {
+    "pattern":"\\Qstyles.css\\E"
+  }, {
+    "pattern":"\\Qtpl/index.html.ftl\\E"
+  }, {
+    "pattern":"\\Qtpl/mail.html.ftl\\E"
+  }, {
+    "pattern":"java.base:\\Qjdk/internal/icu/impl/data/icudt72b/nfkc.nrm\\E"
+  }, {
+    "pattern":"java.base:\\Qjdk/internal/icu/impl/data/icudt72b/uprops.icu\\E"
+  }, {
+    "pattern":"java.base:\\Qsun/net/idn/uidna.spp\\E"
+  }]},
+  "bundles":[{
+    "name":"javax.servlet.LocalStrings",
+    "locales":["und"]
+  }, {
+    "name":"sun.awt.resources.awt",
+    "classNames":["sun.awt.resources.awt"]
+  }]
+}

@@ -1,0 +1,1118 @@
+[
+{
+  "name":"[B"
+},
+{
+  "name":"[C"
+},
+{
+  "name":"[D"
+},
+{
+  "name":"[F"
+},
+{
+  "name":"[I"
+},
+{
+  "name":"[J"
+},
+{
+  "name":"[Lcom.fasterxml.jackson.databind.deser.BeanDeserializerModifier;"
+},
+{
+  "name":"[Lcom.fasterxml.jackson.databind.ser.BeanSerializerModifier;"
+},
+{
+  "name":"[Ljava.io.File;"
+},
+{
+  "name":"[Ljava.lang.Boolean;"
+},
+{
+  "name":"[Ljava.lang.Byte;"
+},
+{
+  "name":"[Ljava.lang.Character;"
+},
+{
+  "name":"[Ljava.lang.Class;"
+},
+{
+  "name":"[Ljava.lang.Double;"
+},
+{
+  "name":"[Ljava.lang.Float;"
+},
+{
+  "name":"[Ljava.lang.Integer;"
+},
+{
+  "name":"[Ljava.lang.Long;"
+},
+{
+  "name":"[Ljava.lang.Short;"
+},
+{
+  "name":"[Ljava.lang.String;"
+},
+{
+  "name":"[Ljava.math.BigDecimal;"
+},
+{
+  "name":"[Ljava.math.BigInteger;"
+},
+{
+  "name":"[Ljava.net.URL;"
+},
+{
+  "name":"[Ljava.sql.Date;"
+},
+{
+  "name":"[Ljava.sql.Time;"
+},
+{
+  "name":"[Ljava.sql.Timestamp;"
+},
+{
+  "name":"[Ljava.util.Calendar;"
+},
+{
+  "name":"[Ljava.util.Date;"
+},
+{
+  "name":"[Lsun.security.pkcs.SignerInfo;"
+},
+{
+  "name":"[S"
+},
+{
+  "name":"[Z"
+},
+{
+  "name":"boolean",
+  "allDeclaredFields":true
+},
+{
+  "name":"ch.qos.logback.classic.BasicConfigurator",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"ch.qos.logback.classic.joran.SerializedModelConfigurator",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"ch.qos.logback.classic.util.DefaultJoranConfigurator",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.beust.jcommander.converters.BooleanConverter",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"com.beust.jcommander.converters.CommaParameterSplitter",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.beust.jcommander.validators.NoValidator",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.beust.jcommander.validators.NoValueValidator",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.fasterxml.jackson.databind.ext.Java7SupportImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.fasterxml.jackson.module.jaxb.deser.DataHandlerJsonDeserializer",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.fasterxml.jackson.module.jaxb.ser.DataHandlerJsonSerializer",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.AESCipher$General",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.ARCFOURCipher",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.ChaCha20Cipher$ChaCha20Poly1305",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.DESCipher",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.DESedeCipher",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.DHParameters",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.GaloisCounterMode$AESGCM",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.HmacCore$HmacSHA384",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.crypto.provider.TlsMasterSecretGenerator",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.org.apache.xerces.internal.jaxp.datatype.DatatypeFactoryImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.vladsch.flexmark.util.sequence.BasedOptionsHolder$Options",
+  "allPublicFields":true
+},
+{
+  "name":"com.vladsch.flexmark.util.sequence.LineAppendable$Options",
+  "allPublicFields":true
+},
+{
+  "name":"com.vladsch.flexmark.util.sequence.LineInfo$Flags",
+  "allPublicFields":true
+},
+{
+  "name":"com.vladsch.flexmark.util.sequence.builder.ISegmentBuilder$Options",
+  "allPublicFields":true
+},
+{
+  "name":"freemarker.core._2_4_OrLaterMarker"
+},
+{
+  "name":"freemarker.ext.jython.JythonModel"
+},
+{
+  "name":"io.qameta.allure.category.CategoriesTrendItem",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"io.qameta.allure.command.GenerateCommand",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.command.MainCommand",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.command.OpenCommand",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.command.PluginCommand",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.command.ServeCommand",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.convert.PathConverter",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.csv.CsvExportCategory",
+  "allDeclaredFields":true,
+  "queryAllPublicMethods":true
+},
+{
+  "name":"io.qameta.allure.csv.CsvExportCategoryBeanInfo"
+},
+{
+  "name":"io.qameta.allure.csv.CsvExportCategoryCustomizer"
+},
+{
+  "name":"io.qameta.allure.csv.CsvExportSuite",
+  "allDeclaredFields":true,
+  "queryAllPublicMethods":true,
+  "methods":[{"name":"getDescription","parameterTypes":[] }, {"name":"getDuration","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getParentSuite","parameterTypes":[] }, {"name":"getStart","parameterTypes":[] }, {"name":"getStatus","parameterTypes":[] }, {"name":"getStop","parameterTypes":[] }, {"name":"getSubSuite","parameterTypes":[] }, {"name":"getSuite","parameterTypes":[] }, {"name":"getTestClass","parameterTypes":[] }, {"name":"getTestMethod","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.csv.CsvExportSuiteBeanInfo"
+},
+{
+  "name":"io.qameta.allure.csv.CsvExportSuiteCustomizer"
+},
+{
+  "name":"io.qameta.allure.duration.DurationData",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getName","parameterTypes":[] }, {"name":"getSeverity","parameterTypes":[] }, {"name":"getStatus","parameterTypes":[] }, {"name":"getTime","parameterTypes":[] }, {"name":"getUid","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.duration.DurationTrendItem",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"io.qameta.allure.entity.Attachment",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getName","parameterTypes":[] }, {"name":"getSize","parameterTypes":[] }, {"name":"getSource","parameterTypes":[] }, {"name":"getType","parameterTypes":[] }, {"name":"getUid","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.entity.ExecutorInfo",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getBuildName","parameterTypes":[] }, {"name":"getBuildOrder","parameterTypes":[] }, {"name":"getBuildUrl","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getReportName","parameterTypes":[] }, {"name":"getReportUrl","parameterTypes":[] }, {"name":"getType","parameterTypes":[] }, {"name":"getUrl","parameterTypes":[] }, {"name":"setBuildName","parameterTypes":["java.lang.String"] }, {"name":"setName","parameterTypes":["java.lang.String"] }, {"name":"setType","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"io.qameta.allure.entity.GroupTime",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getDuration","parameterTypes":[] }, {"name":"getMaxDuration","parameterTypes":[] }, {"name":"getMinDuration","parameterTypes":[] }, {"name":"getStart","parameterTypes":[] }, {"name":"getStop","parameterTypes":[] }, {"name":"getSumDuration","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.entity.Label",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getName","parameterTypes":[] }, {"name":"getValue","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.entity.Nameable",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.entity.Parameter",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getName","parameterTypes":[] }, {"name":"getValue","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.entity.Parameterizable",
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"getParameterValues","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.entity.StageResult",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getAttachments","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getDescriptionHtml","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getParameters","parameterTypes":[] }, {"name":"getStatus","parameterTypes":[] }, {"name":"getStatusMessage","parameterTypes":[] }, {"name":"getStatusTrace","parameterTypes":[] }, {"name":"getSteps","parameterTypes":[] }, {"name":"getTime","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.entity.Statistic",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getBroken","parameterTypes":[] }, {"name":"getFailed","parameterTypes":[] }, {"name":"getPassed","parameterTypes":[] }, {"name":"getSkipped","parameterTypes":[] }, {"name":"getTotal","parameterTypes":[] }, {"name":"getUnknown","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.entity.Status",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"value","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.entity.Statusable",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.entity.Step",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getAttachments","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getParameters","parameterTypes":[] }, {"name":"getStatus","parameterTypes":[] }, {"name":"getStatusMessage","parameterTypes":[] }, {"name":"getStatusTrace","parameterTypes":[] }, {"name":"getSteps","parameterTypes":[] }, {"name":"getTime","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.entity.Summarizable",
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"getAttachmentsCount","parameterTypes":[] }, {"name":"getStepsCount","parameterTypes":[] }, {"name":"hasContent","parameterTypes":[] }, {"name":"isAttachmentStep","parameterTypes":[] }, {"name":"shouldDisplayMessage","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.entity.TestResult",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getAfterStages","parameterTypes":[] }, {"name":"getBeforeStages","parameterTypes":[] }, {"name":"getDescription","parameterTypes":[] }, {"name":"getDescriptionHtml","parameterTypes":[] }, {"name":"getExtra","parameterTypes":[] }, {"name":"getFullName","parameterTypes":[] }, {"name":"getHistoryId","parameterTypes":[] }, {"name":"getLabels","parameterTypes":[] }, {"name":"getLinks","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getParameters","parameterTypes":[] }, {"name":"getRetriesCount","parameterTypes":[] }, {"name":"getSource","parameterTypes":[] }, {"name":"getStatus","parameterTypes":[] }, {"name":"getStatusMessage","parameterTypes":[] }, {"name":"getStatusTrace","parameterTypes":[] }, {"name":"getTestId","parameterTypes":[] }, {"name":"getTestStage","parameterTypes":[] }, {"name":"getTime","parameterTypes":[] }, {"name":"getUid","parameterTypes":[] }, {"name":"isFlaky","parameterTypes":[] }, {"name":"isHidden","parameterTypes":[] }, {"name":"isNewBroken","parameterTypes":[] }, {"name":"isNewFailed","parameterTypes":[] }, {"name":"isNewPassed","parameterTypes":[] }, {"name":"isRetriesStatusChange","parameterTypes":[] }, {"name":"isRetry","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.entity.Time",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getDuration","parameterTypes":[] }, {"name":"getStart","parameterTypes":[] }, {"name":"getStop","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.entity.Timeable",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.ga.GaEvent",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getName","parameterTypes":[] }, {"name":"getParams","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.ga.GaParameters",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getAllureVersion","parameterTypes":[] }, {"name":"getExecutorType","parameterTypes":[] }, {"name":"getFramework","parameterTypes":[] }, {"name":"getLanguage","parameterTypes":[] }, {"name":"getReportUuid","parameterTypes":[] }, {"name":"getResultsCount","parameterTypes":[] }, {"name":"getResultsFormat","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.ga.GaRequest",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getClientId","parameterTypes":[] }, {"name":"getEvents","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.history.HistoryData",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getItems","parameterTypes":[] }, {"name":"getStatistic","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.history.HistoryItem",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getReportUrl","parameterTypes":[] }, {"name":"getStatus","parameterTypes":[] }, {"name":"getStatusDetails","parameterTypes":[] }, {"name":"getTime","parameterTypes":[] }, {"name":"getUid","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.history.HistoryTrendItem",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getBuildOrder","parameterTypes":[] }, {"name":"getData","parameterTypes":[] }, {"name":"getReportName","parameterTypes":[] }, {"name":"getReportUrl","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.model.Attachment",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"setName","parameterTypes":["java.lang.String"] }, {"name":"setSource","parameterTypes":["java.lang.String"] }, {"name":"setType","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"io.qameta.allure.model.ExecutableItem",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.model.FixtureResult",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"setAttachments","parameterTypes":["java.util.List"] }, {"name":"setName","parameterTypes":["java.lang.String"] }, {"name":"setParameters","parameterTypes":["java.util.List"] }, {"name":"setStage","parameterTypes":["io.qameta.allure.model.Stage"] }, {"name":"setStart","parameterTypes":["java.lang.Long"] }, {"name":"setStatus","parameterTypes":["io.qameta.allure.model.Status"] }, {"name":"setSteps","parameterTypes":["java.util.List"] }, {"name":"setStop","parameterTypes":["java.lang.Long"] }]
+},
+{
+  "name":"io.qameta.allure.model.Label",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"setName","parameterTypes":["java.lang.String"] }, {"name":"setValue","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"io.qameta.allure.model.Link",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"io.qameta.allure.model.Parameter",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"setName","parameterTypes":["java.lang.String"] }, {"name":"setValue","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"io.qameta.allure.model.Parameter$Mode",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.model.Stage",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.model.Status",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.model.StatusDetails",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"setFlaky","parameterTypes":["boolean"] }, {"name":"setKnown","parameterTypes":["boolean"] }, {"name":"setMuted","parameterTypes":["boolean"] }]
+},
+{
+  "name":"io.qameta.allure.model.StepResult",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"setAttachments","parameterTypes":["java.util.List"] }, {"name":"setName","parameterTypes":["java.lang.String"] }, {"name":"setParameters","parameterTypes":["java.util.List"] }, {"name":"setStage","parameterTypes":["io.qameta.allure.model.Stage"] }, {"name":"setStart","parameterTypes":["java.lang.Long"] }, {"name":"setStatus","parameterTypes":["io.qameta.allure.model.Status"] }, {"name":"setStatusDetails","parameterTypes":["io.qameta.allure.model.StatusDetails"] }, {"name":"setSteps","parameterTypes":["java.util.List"] }, {"name":"setStop","parameterTypes":["java.lang.Long"] }]
+},
+{
+  "name":"io.qameta.allure.model.TestResult",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"setAttachments","parameterTypes":["java.util.List"] }, {"name":"setDescription","parameterTypes":["java.lang.String"] }, {"name":"setFullName","parameterTypes":["java.lang.String"] }, {"name":"setHistoryId","parameterTypes":["java.lang.String"] }, {"name":"setLabels","parameterTypes":["java.util.List"] }, {"name":"setLinks","parameterTypes":["java.util.List"] }, {"name":"setName","parameterTypes":["java.lang.String"] }, {"name":"setParameters","parameterTypes":["java.util.List"] }, {"name":"setStage","parameterTypes":["io.qameta.allure.model.Stage"] }, {"name":"setStart","parameterTypes":["java.lang.Long"] }, {"name":"setStatus","parameterTypes":["io.qameta.allure.model.Status"] }, {"name":"setSteps","parameterTypes":["java.util.List"] }, {"name":"setStop","parameterTypes":["java.lang.Long"] }, {"name":"setUuid","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"io.qameta.allure.model.TestResultContainer",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"setAfters","parameterTypes":["java.util.List"] }, {"name":"setBefores","parameterTypes":["java.util.List"] }, {"name":"setChildren","parameterTypes":["java.util.List"] }, {"name":"setLinks","parameterTypes":["java.util.List"] }, {"name":"setName","parameterTypes":["java.lang.String"] }, {"name":"setStart","parameterTypes":["java.lang.Long"] }, {"name":"setStop","parameterTypes":["java.lang.Long"] }, {"name":"setUuid","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"io.qameta.allure.model.WithAttachments",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.model.WithLinks",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.model.WithParameters",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.model.WithStatus",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.model.WithStatusDetails",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.model.WithSteps",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.option.ConfigOptions",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.option.HostPortOptions",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.option.ReportNameOptions",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.option.ResultsOptions",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.option.VerboseOptions",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.retry.RetryItem",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getStatus","parameterTypes":[] }, {"name":"getStatusDetails","parameterTypes":[] }, {"name":"getTime","parameterTypes":[] }, {"name":"getUid","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.retry.RetryTrendItem",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"io.qameta.allure.severity.SeverityData",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getName","parameterTypes":[] }, {"name":"getSeverity","parameterTypes":[] }, {"name":"getStatus","parameterTypes":[] }, {"name":"getTime","parameterTypes":[] }, {"name":"getUid","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.severity.SeverityLevel",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"value","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.status.StatusChartData",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getName","parameterTypes":[] }, {"name":"getSeverity","parameterTypes":[] }, {"name":"getStatus","parameterTypes":[] }, {"name":"getTime","parameterTypes":[] }, {"name":"getUid","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.summary.SummaryData",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getReportName","parameterTypes":[] }, {"name":"getStatistic","parameterTypes":[] }, {"name":"getTestRuns","parameterTypes":[] }, {"name":"getTime","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.tree.AbstractTree",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"getChildren","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.tree.DefaultTreeGroup",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"getChildren","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.tree.DefaultTreeLeaf",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"getName","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.tree.TestResultTree",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getUid","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.tree.TestResultTreeGroup",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getUid","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.tree.TestResultTreeLeaf",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getParameters","parameterTypes":[] }, {"name":"getParentUid","parameterTypes":[] }, {"name":"getRetriesCount","parameterTypes":[] }, {"name":"getStatus","parameterTypes":[] }, {"name":"getTags","parameterTypes":[] }, {"name":"getTime","parameterTypes":[] }, {"name":"getUid","parameterTypes":[] }, {"name":"isFlaky","parameterTypes":[] }, {"name":"isNewBroken","parameterTypes":[] }, {"name":"isNewFailed","parameterTypes":[] }, {"name":"isNewPassed","parameterTypes":[] }, {"name":"isRetriesStatusChange","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.tree.Tree",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.tree.TreeGroup",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.tree.TreeLeaf",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.tree.TreeNode",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.qameta.allure.tree.TreeWidgetData",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getItems","parameterTypes":[] }, {"name":"getTotal","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.tree.TreeWidgetItem",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getName","parameterTypes":[] }, {"name":"getStatistic","parameterTypes":[] }, {"name":"getUid","parameterTypes":[] }]
+},
+{
+  "name":"io.qameta.allure.trend.TrendItem",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"getBuildOrder","parameterTypes":[] }, {"name":"getData","parameterTypes":[] }, {"name":"getReportName","parameterTypes":[] }, {"name":"getReportUrl","parameterTypes":[] }]
+},
+{
+  "name":"java.beans.PropertyVetoException"
+},
+{
+  "name":"java.io.FilePermission"
+},
+{
+  "name":"java.io.Serializable",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"java.lang.Boolean",
+  "methods":[{"name":"valueOf","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"java.lang.Byte",
+  "methods":[{"name":"valueOf","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"java.lang.Class",
+  "methods":[{"name":"arrayType","parameterTypes":[] }, {"name":"asSubclass","parameterTypes":["java.lang.Class"] }, {"name":"cast","parameterTypes":["java.lang.Object"] }, {"name":"componentType","parameterTypes":[] }, {"name":"describeConstable","parameterTypes":[] }, {"name":"descriptorString","parameterTypes":[] }, {"name":"desiredAssertionStatus","parameterTypes":[] }, {"name":"getAnnotatedInterfaces","parameterTypes":[] }, {"name":"getAnnotatedSuperclass","parameterTypes":[] }, {"name":"getAnnotation","parameterTypes":["java.lang.Class"] }, {"name":"getAnnotations","parameterTypes":[] }, {"name":"getAnnotationsByType","parameterTypes":["java.lang.Class"] }, {"name":"getCanonicalName","parameterTypes":[] }, {"name":"getClasses","parameterTypes":[] }, {"name":"getComponentType","parameterTypes":[] }, {"name":"getConstructor","parameterTypes":["java.lang.Class[]"] }, {"name":"getConstructors","parameterTypes":[] }, {"name":"getDeclaredAnnotation","parameterTypes":["java.lang.Class"] }, {"name":"getDeclaredAnnotations","parameterTypes":[] }, {"name":"getDeclaredAnnotationsByType","parameterTypes":["java.lang.Class"] }, {"name":"getDeclaredClasses","parameterTypes":[] }, {"name":"getDeclaredConstructor","parameterTypes":["java.lang.Class[]"] }, {"name":"getDeclaredConstructors","parameterTypes":[] }, {"name":"getDeclaredField","parameterTypes":["java.lang.String"] }, {"name":"getDeclaredFields","parameterTypes":[] }, {"name":"getDeclaredMethod","parameterTypes":["java.lang.String","java.lang.Class[]"] }, {"name":"getDeclaredMethods","parameterTypes":[] }, {"name":"getDeclaringClass","parameterTypes":[] }, {"name":"getEnclosingClass","parameterTypes":[] }, {"name":"getEnclosingConstructor","parameterTypes":[] }, {"name":"getEnclosingMethod","parameterTypes":[] }, {"name":"getEnumConstants","parameterTypes":[] }, {"name":"getField","parameterTypes":["java.lang.String"] }, {"name":"getFields","parameterTypes":[] }, {"name":"getGenericInterfaces","parameterTypes":[] }, {"name":"getGenericSuperclass","parameterTypes":[] }, {"name":"getInterfaces","parameterTypes":[] }, {"name":"getMethod","parameterTypes":["java.lang.String","java.lang.Class[]"] }, {"name":"getMethods","parameterTypes":[] }, {"name":"getModifiers","parameterTypes":[] }, {"name":"getModule","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getNestHost","parameterTypes":[] }, {"name":"getNestMembers","parameterTypes":[] }, {"name":"getPackage","parameterTypes":[] }, {"name":"getPackageName","parameterTypes":[] }, {"name":"getProtectionDomain","parameterTypes":[] }, {"name":"getSimpleName","parameterTypes":[] }, {"name":"getSuperclass","parameterTypes":[] }, {"name":"getTypeName","parameterTypes":[] }, {"name":"getTypeParameters","parameterTypes":[] }, {"name":"isAnnotation","parameterTypes":[] }, {"name":"isAnnotationPresent","parameterTypes":["java.lang.Class"] }, {"name":"isAnonymousClass","parameterTypes":[] }, {"name":"isArray","parameterTypes":[] }, {"name":"isAssignableFrom","parameterTypes":["java.lang.Class"] }, {"name":"isEnum","parameterTypes":[] }, {"name":"isInstance","parameterTypes":["java.lang.Object"] }, {"name":"isInterface","parameterTypes":[] }, {"name":"isLocalClass","parameterTypes":[] }, {"name":"isMemberClass","parameterTypes":[] }, {"name":"isNestmateOf","parameterTypes":["java.lang.Class"] }, {"name":"isPrimitive","parameterTypes":[] }, {"name":"isSynthetic","parameterTypes":[] }, {"name":"toGenericString","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.ClassLoader",
+  "methods":[{"name":"getName","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.Double",
+  "methods":[{"name":"valueOf","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"java.lang.Float",
+  "methods":[{"name":"valueOf","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"java.lang.Integer",
+  "methods":[{"name":"valueOf","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"java.lang.Long",
+  "methods":[{"name":"valueOf","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"java.lang.Module",
+  "methods":[{"name":"getDescriptor","parameterTypes":[] }, {"name":"getLayer","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.ModuleLayer",
+  "methods":[{"name":"configuration","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.Object",
+  "allDeclaredFields":true,
+  "allPublicFields":true,
+  "queryAllPublicMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"equals","parameterTypes":["java.lang.Object"] }, {"name":"getClass","parameterTypes":[] }, {"name":"hashCode","parameterTypes":[] }, {"name":"toString","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.ObjectBeanInfo"
+},
+{
+  "name":"java.lang.ObjectCustomizer"
+},
+{
+  "name":"java.lang.Package",
+  "methods":[{"name":"getAnnotation","parameterTypes":["java.lang.Class"] }, {"name":"getAnnotations","parameterTypes":[] }, {"name":"getAnnotationsByType","parameterTypes":["java.lang.Class"] }, {"name":"getDeclaredAnnotation","parameterTypes":["java.lang.Class"] }, {"name":"getDeclaredAnnotations","parameterTypes":[] }, {"name":"getDeclaredAnnotationsByType","parameterTypes":["java.lang.Class"] }, {"name":"getImplementationTitle","parameterTypes":[] }, {"name":"getImplementationVendor","parameterTypes":[] }, {"name":"getImplementationVersion","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getPackage","parameterTypes":["java.lang.String"] }, {"name":"getSpecificationTitle","parameterTypes":[] }, {"name":"getSpecificationVendor","parameterTypes":[] }, {"name":"getSpecificationVersion","parameterTypes":[] }, {"name":"isAnnotationPresent","parameterTypes":["java.lang.Class"] }, {"name":"isCompatibleWith","parameterTypes":["java.lang.String"] }, {"name":"isSealed","parameterTypes":[] }, {"name":"isSealed","parameterTypes":["java.net.URL"] }]
+},
+{
+  "name":"java.lang.Runtime",
+  "methods":[{"name":"availableProcessors","parameterTypes":[] }, {"name":"freeMemory","parameterTypes":[] }, {"name":"maxMemory","parameterTypes":[] }, {"name":"totalMemory","parameterTypes":[] }, {"name":"version","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.RuntimePermission"
+},
+{
+  "name":"java.lang.Short",
+  "methods":[{"name":"valueOf","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"java.lang.String"
+},
+{
+  "name":"java.lang.System",
+  "methods":[{"name":"currentTimeMillis","parameterTypes":[] }, {"name":"getProperties","parameterTypes":[] }, {"name":"getProperty","parameterTypes":["java.lang.String"] }, {"name":"getProperty","parameterTypes":["java.lang.String","java.lang.String"] }, {"name":"getenv","parameterTypes":[] }, {"name":"getenv","parameterTypes":["java.lang.String"] }, {"name":"identityHashCode","parameterTypes":["java.lang.Object"] }, {"name":"lineSeparator","parameterTypes":[] }, {"name":"mapLibraryName","parameterTypes":["java.lang.String"] }, {"name":"nanoTime","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.Thread",
+  "allPublicFields":true,
+  "queryAllPublicMethods":true,
+  "queryAllPublicConstructors":true,
+  "fields":[{"name":"threadLocalRandomProbe"}],
+  "methods":[{"name":"activeCount","parameterTypes":[] }, {"name":"checkAccess","parameterTypes":[] }, {"name":"countStackFrames","parameterTypes":[] }, {"name":"getId","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getPriority","parameterTypes":[] }, {"name":"getState","parameterTypes":[] }, {"name":"getThreadGroup","parameterTypes":[] }, {"name":"holdsLock","parameterTypes":["java.lang.Object"] }, {"name":"interrupted","parameterTypes":[] }, {"name":"isAlive","parameterTypes":[] }, {"name":"isDaemon","parameterTypes":[] }, {"name":"isInterrupted","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.ThreadGroup",
+  "methods":[{"name":"activeCount","parameterTypes":[] }, {"name":"activeGroupCount","parameterTypes":[] }, {"name":"checkAccess","parameterTypes":[] }, {"name":"getMaxPriority","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getParent","parameterTypes":[] }, {"name":"isDaemon","parameterTypes":[] }, {"name":"isDestroyed","parameterTypes":[] }, {"name":"parentOf","parameterTypes":["java.lang.ThreadGroup"] }]
+},
+{
+  "name":"java.lang.Throwable",
+  "methods":[{"name":"initCause","parameterTypes":["java.lang.Throwable"] }]
+},
+{
+  "name":"java.lang.annotation.Annotation",
+  "methods":[{"name":"annotationType","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.constant.ClassDesc",
+  "methods":[{"name":"arrayType","parameterTypes":[] }, {"name":"arrayType","parameterTypes":["int"] }, {"name":"componentType","parameterTypes":[] }, {"name":"descriptorString","parameterTypes":[] }, {"name":"displayName","parameterTypes":[] }, {"name":"isArray","parameterTypes":[] }, {"name":"isClassOrInterface","parameterTypes":[] }, {"name":"isPrimitive","parameterTypes":[] }, {"name":"packageName","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.management.ManagementFactory",
+  "methods":[{"name":"getRuntimeMXBean","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.management.RuntimeMXBean",
+  "methods":[{"name":"getUptime","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.module.Configuration",
+  "methods":[{"name":"findModule","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"java.lang.module.ModuleReference",
+  "methods":[{"name":"location","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.module.ResolvedModule",
+  "methods":[{"name":"reference","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.reflect.AccessibleObject",
+  "allPublicFields":true,
+  "queryAllPublicMethods":true,
+  "queryAllPublicConstructors":true,
+  "methods":[{"name":"canAccess","parameterTypes":["java.lang.Object"] }, {"name":"getAnnotation","parameterTypes":["java.lang.Class"] }, {"name":"getAnnotations","parameterTypes":[] }, {"name":"getAnnotationsByType","parameterTypes":["java.lang.Class"] }, {"name":"getDeclaredAnnotation","parameterTypes":["java.lang.Class"] }, {"name":"getDeclaredAnnotations","parameterTypes":[] }, {"name":"getDeclaredAnnotationsByType","parameterTypes":["java.lang.Class"] }, {"name":"isAccessible","parameterTypes":[] }, {"name":"isAnnotationPresent","parameterTypes":["java.lang.Class"] }]
+},
+{
+  "name":"java.lang.reflect.AnnotatedElement",
+  "methods":[{"name":"getAnnotation","parameterTypes":["java.lang.Class"] }, {"name":"getAnnotations","parameterTypes":[] }, {"name":"getAnnotationsByType","parameterTypes":["java.lang.Class"] }, {"name":"getDeclaredAnnotation","parameterTypes":["java.lang.Class"] }, {"name":"getDeclaredAnnotations","parameterTypes":[] }, {"name":"getDeclaredAnnotationsByType","parameterTypes":["java.lang.Class"] }, {"name":"isAnnotationPresent","parameterTypes":["java.lang.Class"] }]
+},
+{
+  "name":"java.lang.reflect.AnnotatedType",
+  "methods":[{"name":"getAnnotatedOwnerType","parameterTypes":[] }, {"name":"getAnnotation","parameterTypes":["java.lang.Class"] }, {"name":"getAnnotations","parameterTypes":[] }, {"name":"getDeclaredAnnotations","parameterTypes":[] }, {"name":"getType","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.reflect.Constructor",
+  "methods":[{"name":"getAnnotatedReceiverType","parameterTypes":[] }, {"name":"getAnnotatedReturnType","parameterTypes":[] }, {"name":"getAnnotation","parameterTypes":["java.lang.Class"] }, {"name":"getDeclaredAnnotations","parameterTypes":[] }, {"name":"getDeclaringClass","parameterTypes":[] }, {"name":"getExceptionTypes","parameterTypes":[] }, {"name":"getGenericExceptionTypes","parameterTypes":[] }, {"name":"getGenericParameterTypes","parameterTypes":[] }, {"name":"getModifiers","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getParameterAnnotations","parameterTypes":[] }, {"name":"getParameterCount","parameterTypes":[] }, {"name":"getParameterTypes","parameterTypes":[] }, {"name":"getTypeParameters","parameterTypes":[] }, {"name":"isSynthetic","parameterTypes":[] }, {"name":"isVarArgs","parameterTypes":[] }, {"name":"toGenericString","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.reflect.Executable",
+  "methods":[{"name":"getAnnotatedExceptionTypes","parameterTypes":[] }, {"name":"getAnnotatedParameterTypes","parameterTypes":[] }, {"name":"getAnnotatedReceiverType","parameterTypes":[] }, {"name":"getAnnotatedReturnType","parameterTypes":[] }, {"name":"getAnnotation","parameterTypes":["java.lang.Class"] }, {"name":"getAnnotationsByType","parameterTypes":["java.lang.Class"] }, {"name":"getDeclaredAnnotations","parameterTypes":[] }, {"name":"getDeclaringClass","parameterTypes":[] }, {"name":"getExceptionTypes","parameterTypes":[] }, {"name":"getGenericExceptionTypes","parameterTypes":[] }, {"name":"getGenericParameterTypes","parameterTypes":[] }, {"name":"getModifiers","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getParameterAnnotations","parameterTypes":[] }, {"name":"getParameterCount","parameterTypes":[] }, {"name":"getParameterTypes","parameterTypes":[] }, {"name":"getParameters","parameterTypes":[] }, {"name":"getTypeParameters","parameterTypes":[] }, {"name":"isSynthetic","parameterTypes":[] }, {"name":"isVarArgs","parameterTypes":[] }, {"name":"toGenericString","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.reflect.Field",
+  "methods":[{"name":"getAnnotatedType","parameterTypes":[] }, {"name":"getAnnotation","parameterTypes":["java.lang.Class"] }, {"name":"getAnnotationsByType","parameterTypes":["java.lang.Class"] }, {"name":"getDeclaredAnnotations","parameterTypes":[] }, {"name":"getDeclaringClass","parameterTypes":[] }, {"name":"getGenericType","parameterTypes":[] }, {"name":"getModifiers","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getType","parameterTypes":[] }, {"name":"isEnumConstant","parameterTypes":[] }, {"name":"isSynthetic","parameterTypes":[] }, {"name":"toGenericString","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.reflect.GenericDeclaration",
+  "methods":[{"name":"getTypeParameters","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.reflect.Member",
+  "methods":[{"name":"getDeclaringClass","parameterTypes":[] }, {"name":"getModifiers","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"isSynthetic","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.reflect.Method",
+  "methods":[{"name":"getAnnotatedReturnType","parameterTypes":[] }, {"name":"getAnnotation","parameterTypes":["java.lang.Class"] }, {"name":"getDeclaredAnnotations","parameterTypes":[] }, {"name":"getDeclaringClass","parameterTypes":[] }, {"name":"getDefaultValue","parameterTypes":[] }, {"name":"getExceptionTypes","parameterTypes":[] }, {"name":"getGenericExceptionTypes","parameterTypes":[] }, {"name":"getGenericParameterTypes","parameterTypes":[] }, {"name":"getGenericReturnType","parameterTypes":[] }, {"name":"getModifiers","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getParameterAnnotations","parameterTypes":[] }, {"name":"getParameterCount","parameterTypes":[] }, {"name":"getParameterTypes","parameterTypes":[] }, {"name":"getReturnType","parameterTypes":[] }, {"name":"getTypeParameters","parameterTypes":[] }, {"name":"isBridge","parameterTypes":[] }, {"name":"isDefault","parameterTypes":[] }, {"name":"isSynthetic","parameterTypes":[] }, {"name":"isVarArgs","parameterTypes":[] }, {"name":"toGenericString","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.reflect.Parameter",
+  "methods":[{"name":"getAnnotatedType","parameterTypes":[] }, {"name":"getAnnotation","parameterTypes":["java.lang.Class"] }, {"name":"getAnnotations","parameterTypes":[] }, {"name":"getAnnotationsByType","parameterTypes":["java.lang.Class"] }, {"name":"getDeclaredAnnotation","parameterTypes":["java.lang.Class"] }, {"name":"getDeclaredAnnotations","parameterTypes":[] }, {"name":"getDeclaredAnnotationsByType","parameterTypes":["java.lang.Class"] }, {"name":"getDeclaringExecutable","parameterTypes":[] }, {"name":"getModifiers","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }, {"name":"getParameterizedType","parameterTypes":[] }, {"name":"getType","parameterTypes":[] }, {"name":"isImplicit","parameterTypes":[] }, {"name":"isNamePresent","parameterTypes":[] }, {"name":"isSynthetic","parameterTypes":[] }, {"name":"isVarArgs","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.reflect.Type",
+  "methods":[{"name":"getTypeName","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.reflect.TypeVariable",
+  "methods":[{"name":"getAnnotatedBounds","parameterTypes":[] }, {"name":"getBounds","parameterTypes":[] }, {"name":"getGenericDeclaration","parameterTypes":[] }, {"name":"getName","parameterTypes":[] }]
+},
+{
+  "name":"java.net.NetPermission"
+},
+{
+  "name":"java.net.SocketPermission"
+},
+{
+  "name":"java.net.URI",
+  "methods":[{"name":"compareTo","parameterTypes":["java.lang.Object"] }, {"name":"compareTo","parameterTypes":["java.net.URI"] }, {"name":"create","parameterTypes":["java.lang.String"] }, {"name":"getAuthority","parameterTypes":[] }, {"name":"getFragment","parameterTypes":[] }, {"name":"getHost","parameterTypes":[] }, {"name":"getPath","parameterTypes":[] }, {"name":"getPort","parameterTypes":[] }, {"name":"getQuery","parameterTypes":[] }, {"name":"getRawAuthority","parameterTypes":[] }, {"name":"getRawFragment","parameterTypes":[] }, {"name":"getRawPath","parameterTypes":[] }, {"name":"getRawQuery","parameterTypes":[] }, {"name":"getRawSchemeSpecificPart","parameterTypes":[] }, {"name":"getRawUserInfo","parameterTypes":[] }, {"name":"getScheme","parameterTypes":[] }, {"name":"getSchemeSpecificPart","parameterTypes":[] }, {"name":"getUserInfo","parameterTypes":[] }, {"name":"isAbsolute","parameterTypes":[] }, {"name":"isOpaque","parameterTypes":[] }, {"name":"normalize","parameterTypes":[] }, {"name":"parseServerAuthority","parameterTypes":[] }, {"name":"relativize","parameterTypes":["java.net.URI"] }, {"name":"resolve","parameterTypes":["java.lang.String"] }, {"name":"resolve","parameterTypes":["java.net.URI"] }, {"name":"toASCIIString","parameterTypes":[] }, {"name":"toURL","parameterTypes":[] }]
+},
+{
+  "name":"java.net.URL",
+  "methods":[{"name":"getAuthority","parameterTypes":[] }, {"name":"getDefaultPort","parameterTypes":[] }, {"name":"getFile","parameterTypes":[] }, {"name":"getHost","parameterTypes":[] }, {"name":"getPath","parameterTypes":[] }, {"name":"getPort","parameterTypes":[] }, {"name":"getProtocol","parameterTypes":[] }, {"name":"getQuery","parameterTypes":[] }, {"name":"getRef","parameterTypes":[] }, {"name":"getUserInfo","parameterTypes":[] }, {"name":"sameFile","parameterTypes":["java.net.URL"] }, {"name":"toExternalForm","parameterTypes":[] }, {"name":"toURI","parameterTypes":[] }]
+},
+{
+  "name":"java.net.URLPermission",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String"] }]
+},
+{
+  "name":"java.nio.file.Path",
+  "allDeclaredFields":true
+},
+{
+  "name":"java.security.AlgorithmParametersSpi"
+},
+{
+  "name":"java.security.AllPermission"
+},
+{
+  "name":"java.security.KeyStoreSpi"
+},
+{
+  "name":"java.security.ProtectionDomain"
+},
+{
+  "name":"java.security.SecureRandomParameters"
+},
+{
+  "name":"java.security.SecurityPermission"
+},
+{
+  "name":"java.security.interfaces.ECPrivateKey"
+},
+{
+  "name":"java.security.interfaces.ECPublicKey"
+},
+{
+  "name":"java.security.interfaces.RSAPrivateKey"
+},
+{
+  "name":"java.security.interfaces.RSAPublicKey"
+},
+{
+  "name":"java.util.Date"
+},
+{
+  "name":"java.util.PropertyPermission"
+},
+{
+  "name":"java.util.concurrent.ConcurrentMap",
+  "methods":[{"name":"remove","parameterTypes":["java.lang.Object","java.lang.Object"] }]
+},
+{
+  "name":"java.util.concurrent.ForkJoinTask",
+  "fields":[{"name":"aux"}, {"name":"status"}]
+},
+{
+  "name":"java.util.concurrent.atomic.AtomicBoolean",
+  "fields":[{"name":"value"}]
+},
+{
+  "name":"java.util.concurrent.atomic.AtomicMarkableReference",
+  "fields":[{"name":"pair"}]
+},
+{
+  "name":"java.util.concurrent.atomic.AtomicReference",
+  "fields":[{"name":"value"}]
+},
+{
+  "name":"java.util.concurrent.atomic.Striped64",
+  "fields":[{"name":"base"}, {"name":"cellsBusy"}]
+},
+{
+  "name":"javax.security.auth.x500.X500Principal",
+  "fields":[{"name":"thisX500Name"}],
+  "methods":[{"name":"<init>","parameterTypes":["sun.security.x509.X500Name"] }]
+},
+{
+  "name":"javax.smartcardio.CardPermission"
+},
+{
+  "name":"jdk.internal.misc.Unsafe"
+},
+{
+  "name":"org.apache.commons.logging.LogFactory"
+},
+{
+  "name":"org.apache.commons.logging.impl.Jdk14Logger",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String"] }, {"name":"setLogFactory","parameterTypes":["org.apache.commons.logging.LogFactory"] }]
+},
+{
+  "name":"org.apache.commons.logging.impl.Log4JLogger"
+},
+{
+  "name":"org.apache.commons.logging.impl.LogFactoryImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.apache.commons.logging.impl.WeakHashtable",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.apache.log.Logger"
+},
+{
+  "name":"org.apache.log4j.Logger"
+},
+{
+  "name":"org.apache.xerces.util.SecurityManager"
+},
+{
+  "name":"org.eclipse.jetty.util.ModuleLocation",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.eclipse.jetty.util.log.Slf4jLog",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.python.core.PyObject"
+},
+{
+  "name":"org.zeroturnaround.javarebel.ClassEventListener"
+},
+{
+  "name":"sun.java2d.marlin.DMarlinRenderingEngine",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.pkcs12.PKCS12KeyStore",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.pkcs12.PKCS12KeyStore$DualFormatPKCS12",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.DRBG",
+  "methods":[{"name":"<init>","parameterTypes":["java.security.SecureRandomParameters"] }]
+},
+{
+  "name":"sun.security.provider.DSA$SHA224withDSA",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.DSA$SHA256withDSA",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.MD5",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.SHA",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.SHA2$SHA224",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.SHA2$SHA256",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.SHA5$SHA384",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.SHA5$SHA512",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.X509Factory",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.certpath.PKIXCertPathValidator",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.rsa.PSSParameters",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.rsa.RSAKeyFactory$Legacy",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.rsa.RSAPSSSignature",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.rsa.RSASignature$SHA224withRSA",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.rsa.RSASignature$SHA256withRSA",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.ssl.SSLContextImpl$TLSContext",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.ssl.TrustManagerFactoryImpl$PKIXFactory",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.util.ObjectIdentifier"
+},
+{
+  "name":"sun.security.x509.AuthorityInfoAccessExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.AuthorityKeyIdentifierExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.BasicConstraintsExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.CRLDistributionPointsExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.CertificateExtensions"
+},
+{
+  "name":"sun.security.x509.CertificatePoliciesExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.ExtendedKeyUsageExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.IssuerAlternativeNameExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.KeyUsageExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.NetscapeCertTypeExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.PrivateKeyUsageExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.SubjectAlternativeNameExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.x509.SubjectKeyIdentifierExtension",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
+}
+]

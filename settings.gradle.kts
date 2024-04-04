@@ -60,5 +60,6 @@ pluginManagement {
         id("io.spring.dependency-management") version "1.1.4"
         id("org.owasp.dependencycheck") version "9.1.0"
         id("com.github.spotbugs") version "6.0.9"
+        id("org.graalvm.buildtools.native") version "0.10.1"
     }
 }
