@@ -15,7 +15,7 @@
  */
 package io.qameta.allure.tags;
 
-import io.qameta.allure.DefaultConfiguration;
+import io.qameta.allure.ConfigurationBuilder;
 import io.qameta.allure.DefaultLaunchResults;
 import io.qameta.allure.ReportStorage;
 import io.qameta.allure.core.Configuration;
@@ -63,8 +63,7 @@ class TagsPluginTest {
                 new DefaultLaunchResults(Set.of(testResult), Map.of(), Map.of())
         );
 
-        final Configuration configuration
-                = new DefaultConfiguration(List.of(), List.of());
+        final Configuration configuration = ConfigurationBuilder.empty().build();
 
         final ReportStorage storage = mock();
 
@@ -113,8 +112,7 @@ class TagsPluginTest {
                 new DefaultLaunchResults(Set.of(testResult), Map.of(), Map.of())
         );
 
-        final Configuration configuration
-                = new DefaultConfiguration(List.of(), List.of());
+        final Configuration configuration = ConfigurationBuilder.empty().build();
 
         final ReportStorage storage = mock();
 
@@ -157,8 +155,7 @@ class TagsPluginTest {
                 new DefaultLaunchResults(Set.of(testResult), Map.of(), Map.of())
         );
 
-        final Configuration configuration
-                = new DefaultConfiguration(List.of(), List.of());
+        final Configuration configuration = ConfigurationBuilder.empty().build();
 
         final ReportStorage storage = mock();
 
@@ -200,8 +197,7 @@ class TagsPluginTest {
                 new DefaultLaunchResults(Set.of(testResult), Map.of(), Map.of())
         );
 
-        final Configuration configuration
-                = new DefaultConfiguration(List.of(), List.of());
+        final Configuration configuration = ConfigurationBuilder.empty().build();
 
         final ReportStorage storage = mock();
 
@@ -239,8 +235,7 @@ class TagsPluginTest {
                 new DefaultLaunchResults(Set.of(testResult), Map.of(), Map.of())
         );
 
-        final Configuration configuration
-                = new DefaultConfiguration(List.of(), List.of());
+        final Configuration configuration = ConfigurationBuilder.empty().build();
 
         final ReportStorage storage = mock();
 
@@ -291,8 +286,7 @@ class TagsPluginTest {
                 new DefaultLaunchResults(Set.of(testResult), Map.of(), Map.of())
         );
 
-        final Configuration configuration
-                = new DefaultConfiguration(List.of(), List.of());
+        final Configuration configuration = ConfigurationBuilder.empty().build();
 
         final ReportStorage storage = mock();
 

@@ -15,10 +15,9 @@
  */
 package io.qameta.allure.history;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import io.qameta.allure.ReportStorage;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
-import io.qameta.allure.core.InMemoryReportStorage;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.ExecutorInfo;
@@ -30,7 +29,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
 
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -48,7 +46,6 @@ import static io.qameta.allure.testdata.TestData.randomHistoryTrendItems;
 import static io.qameta.allure.testdata.TestData.randomTestResult;
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -76,7 +73,7 @@ class HistoryTrendPluginTest {
         final HistoryTrendPlugin plugin = new HistoryTrendPlugin();
         plugin.readResults(configuration, visitor, resultsDirectory);
 
-        final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.forClass(List.class);
+        final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.captor();
         verify(visitor, times(1))
                 .visitExtra(eq(HISTORY_TREND_BLOCK_NAME), captor.capture());
 
@@ -103,7 +100,7 @@ class HistoryTrendPluginTest {
         final HistoryTrendPlugin plugin = new HistoryTrendPlugin();
         plugin.readResults(configuration, visitor, resultsDirectory);
 
-        final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.forClass(List.class);
+        final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.captor();
         verify(visitor, times(1))
                 .visitExtra(eq(HISTORY_TREND_BLOCK_NAME), captor.capture());
 
@@ -140,32 +137,24 @@ class HistoryTrendPluginTest {
         final HistoryTrendPlugin plugin = new HistoryTrendPlugin();
         plugin.readResults(configuration, visitor, resultsDirectory);
 
-        final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.forClass(List.class);
+        final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.captor();
         verify(visitor, times(1))
                 .visitExtra(eq(HISTORY_TREND_BLOCK_NAME), captor.capture());
 
         assertThat(captor.getValue()).hasSize(0);
     }
 
-    @SuppressWarnings("unchecked")
     @Test
-    void shouldAggregateForEmptyReport() throws Exception {
+    void shouldAggregateForEmptyReport() {
         final Configuration configuration = mock(Configuration.class);
-        final JacksonContext context = mock(JacksonContext.class);
-        final ObjectMapper mapper = mock(ObjectMapper.class);
-
-        when(configuration.requireContext(JacksonContext.class))
-                .thenReturn(context);
-
-        when(context.getValue())
-                .thenReturn(mapper);
 
         final HistoryTrendPlugin.JsonAggregator aggregator = new HistoryTrendPlugin.JsonAggregator();
-        aggregator.aggregate(configuration, Collections.emptyList(), new InMemoryReportStorage());
+        final ReportStorage reportStorage = mock();
+        aggregator.aggregate(configuration, Collections.emptyList(), reportStorage);
 
-        final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.forClass(List.class);
-        verify(mapper, times(1))
-                .writeValue(any(OutputStream.class), captor.capture());
+
+        final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.captor();
+        verify(reportStorage, times(1)).addDataJson(eq("history/history-trend.json"), captor.capture());
 
         assertThat(captor.getValue())
                 .hasSize(1)

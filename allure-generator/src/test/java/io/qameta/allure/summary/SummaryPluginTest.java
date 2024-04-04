@@ -15,7 +15,7 @@
  */
 package io.qameta.allure.summary;
 
-import io.qameta.allure.DefaultConfiguration;
+import io.qameta.allure.ConfigurationBuilder;
 import io.qameta.allure.DefaultLaunchResults;
 import io.qameta.allure.ReportStorage;
 import io.qameta.allure.core.Configuration;
@@ -47,8 +47,9 @@ class SummaryPluginTest {
         );
         final String reportName = "some report name";
 
-        final Configuration configuration
-                = new DefaultConfiguration(reportName, List.of(), List.of());
+        final Configuration configuration = ConfigurationBuilder.empty()
+                .withReportName(reportName)
+                .build();
 
         final ReportStorage storage = mock();
         new SummaryPlugin().aggregate(configuration, launchResults, storage);
@@ -83,8 +84,9 @@ class SummaryPluginTest {
                 )
         );
 
-        final Configuration configuration
-                = new DefaultConfiguration(null, List.of(), List.of());
+        final Configuration configuration = ConfigurationBuilder.empty()
+                .withReportName(reportName)
+                .build();
 
         final ReportStorage storage = mock();
         new SummaryPlugin().aggregate(configuration, launchResults, storage);
@@ -119,8 +121,9 @@ class SummaryPluginTest {
                 )
         );
 
-        final Configuration configuration
-                = new DefaultConfiguration(reportName, List.of(), List.of());
+        final Configuration configuration = ConfigurationBuilder.empty()
+                .withReportName(reportName)
+                .build();
 
         final ReportStorage storage = mock();
         new SummaryPlugin().aggregate(configuration, launchResults, storage);
@@ -149,8 +152,8 @@ class SummaryPluginTest {
                 )
         );
 
-        final Configuration configuration
-                = new DefaultConfiguration(null, List.of(), List.of());
+        final Configuration configuration = ConfigurationBuilder.empty()
+                .build();
 
         final ReportStorage storage = mock();
         new SummaryPlugin().aggregate(configuration, launchResults, storage);

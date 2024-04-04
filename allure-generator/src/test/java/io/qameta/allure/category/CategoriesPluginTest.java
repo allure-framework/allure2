@@ -25,10 +25,8 @@ import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeNode;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,13 +49,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CategoriesPluginTest {
 
     private static final String CATEGORY_NAME = "Category";
-
-    private Configuration configuration;
-
-    @BeforeEach
-    void setUp() {
-        configuration = new ConfigurationBuilder().useDefault().build();
-    }
 
     @Test
     void shouldDefaultCategoriesToResults() {
@@ -164,7 +155,8 @@ class CategoriesPluginTest {
     }
 
     @Test
-    void shouldWork() throws IOException {
+    void shouldWork() {
+        final Configuration configuration = ConfigurationBuilder.bundled().build();
 
         Category category = new Category()
                 .setName(CATEGORY_NAME)
@@ -199,7 +191,9 @@ class CategoriesPluginTest {
     }
 
     @Test
-    void flakyTestsCanBeAddedToCategory() throws IOException {
+    void flakyTestsCanBeAddedToCategory() {
+        final Configuration configuration = ConfigurationBuilder.bundled().build();
+
         Category category = new Category()
                 .setName(CATEGORY_NAME)
                 .setMatchedStatuses(singletonList(Status.FAILED))

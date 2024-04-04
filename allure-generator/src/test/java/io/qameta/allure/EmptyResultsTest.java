@@ -31,7 +31,7 @@ class EmptyResultsTest {
     void shouldAllowEmptyResultsDirectory(@TempDir final Path temp) throws Exception {
         final Path resultsDirectory = Files.createDirectories(temp.resolve("results"));
         final Path outputDirectory = Files.createDirectories(temp.resolve("report"));
-        final Configuration configuration = new ConfigurationBuilder().useDefault().build();
+        final Configuration configuration = ConfigurationBuilder.bundled().build();
         final ReportGenerator generator = new ReportGenerator(configuration);
 
         generator.generate(outputDirectory, resultsDirectory);
@@ -41,7 +41,7 @@ class EmptyResultsTest {
     void shouldAllowNonExistsResultsDirectory(@TempDir final Path temp) throws Exception {
         final Path resultsDirectory = temp.resolve("results");
         final Path outputDirectory = Files.createDirectories(temp.resolve("report"));
-        final Configuration configuration = new ConfigurationBuilder().useDefault().build();
+        final Configuration configuration = ConfigurationBuilder.bundled().build();
         final ReportGenerator generator = new ReportGenerator(configuration);
 
         generator.generate(outputDirectory, resultsDirectory);
@@ -51,7 +51,7 @@ class EmptyResultsTest {
     void shouldAllowRegularFileAsResultsDirectory(@TempDir final Path temp) throws Exception {
         final Path resultsDirectory = Files.createTempFile(temp, "a", ".txt");
         final Path outputDirectory = Files.createDirectories(temp.resolve("report"));
-        final Configuration configuration = new ConfigurationBuilder().useDefault().build();
+        final Configuration configuration = ConfigurationBuilder.bundled().build();
         final ReportGenerator generator = new ReportGenerator(configuration);
 
         generator.generate(outputDirectory, resultsDirectory);

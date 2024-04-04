@@ -17,20 +17,27 @@ package io.qameta.allure.context;
 
 import io.qameta.allure.Context;
 import io.qameta.allure.ReportInfo;
+import io.qameta.allure.core.Configuration;
 
 import java.util.UUID;
 
 /**
  * @author charlie (Dmitry Baev).
+ * @deprecated use {@link Configuration#getUuid()} and {@link Configuration#getVersion()} instead.
  */
+@Deprecated
 public class ReportInfoContext implements Context<ReportInfo> {
 
     private final ReportInfo reportInfo;
 
     public ReportInfoContext(final String allureVersion) {
+        this(allureVersion, UUID.randomUUID().toString());
+    }
+
+    public ReportInfoContext(final String uuid, final String allureVersion) {
         this.reportInfo = new ReportInfo()
                 .setAllureVersion(allureVersion)
-                .setReportUuid(UUID.randomUUID().toString());
+                .setReportUuid(uuid);
     }
 
     @Override

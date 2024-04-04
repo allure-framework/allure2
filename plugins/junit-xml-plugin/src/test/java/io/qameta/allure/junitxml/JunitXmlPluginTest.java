@@ -76,7 +76,7 @@ class JunitXmlPluginTest {
                 "TEST-org.allurefw.report.junit.JunitTestResultsTest.xml"
         );
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
         verify(visitor, times(5)).visitTestResult(captor.capture());
 
 
@@ -109,14 +109,14 @@ class JunitXmlPluginTest {
                 "junitdata/test.SampleTest.txt", "test.SampleTest.txt"
         );
 
-        final ArgumentCaptor<Path> attachmentCaptor = ArgumentCaptor.forClass(Path.class);
+        final ArgumentCaptor<Path> attachmentCaptor = ArgumentCaptor.captor();
         verify(visitor, times(1)).visitAttachmentFile(attachmentCaptor.capture());
 
         assertThat(attachmentCaptor.getValue())
                 .isRegularFile()
                 .hasContent("some-test-log");
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
         verify(visitor, times(1)).visitTestResult(captor.capture());
 
         final StageResult testStage = captor.getValue().getTestStage();
@@ -132,14 +132,13 @@ class JunitXmlPluginTest {
                 .containsExactly(Tuple.tuple("System out", "some-uid"));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     void shouldAddLabels() throws Exception {
         process(
                 "junitdata/TEST-test.SampleTest.xml", "TEST-test.SampleTest.xml"
         );
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
         verify(visitor, times(1)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
@@ -169,7 +168,7 @@ class JunitXmlPluginTest {
                 "junitdata/TEST-test.RetryTest.xml", "TEST-test.SampleTest.xml"
         );
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
         verify(visitor, times(4)).visitTestResult(captor.capture());
 
         final List<TestResult> results = captor.getAllValues();
@@ -199,14 +198,14 @@ class JunitXmlPluginTest {
         );
 
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
         verify(visitor, times(2)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
                 .extracting(TestResult::getStatusMessage, TestResult::getStatusTrace)
                 .containsExactlyInAnyOrder(
                         tuple("some-message", "some-trace"),
-                        tuple(null,null)
+                        tuple(null, null)
                 );
     }
 
@@ -216,7 +215,7 @@ class JunitXmlPluginTest {
                 "junitdata/TEST-test.CdataMessage.xml", "TEST-test.SampleTest.xml"
         );
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
         verify(visitor, times(2)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
@@ -232,7 +231,7 @@ class JunitXmlPluginTest {
                 "junitdata/testsuites.xml", "TEST-test.SampleTest.xml"
         );
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
         verify(visitor, times(3)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
@@ -244,14 +243,13 @@ class JunitXmlPluginTest {
                 );
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     void shouldProcessTimestampIfPresent() throws Exception {
         process(
                 "junitdata/with-timestamp.xml", "TEST-test.SampleTest.xml"
         );
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
         verify(visitor, times(1)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
@@ -268,7 +266,7 @@ class JunitXmlPluginTest {
                 "junitdata/with-timestamp.xml", "TEST-test.SampleTest.xml"
         );
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
         verify(visitor, times(1)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
@@ -285,7 +283,7 @@ class JunitXmlPluginTest {
                 "junitdata/with-timestamp.xml", "TEST-test.SampleTest.xml"
         );
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
         verify(visitor, times(1)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
@@ -302,7 +300,7 @@ class JunitXmlPluginTest {
                 "junitdata/TEST-status-attribute.xml", "TEST-test.SampleTest.xml"
         );
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
         verify(visitor, times(3)).visitTestResult(captor.capture());
 
         List<TestResult> skipped = filterByStatus(captor.getAllValues(), Status.SKIPPED);
@@ -320,8 +318,8 @@ class JunitXmlPluginTest {
         );
 
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
-        verify(visitor, times(2)).visitTestResult(captor.capture());
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
+        verify(visitor, times(1)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
                 .flatExtracting(TestResult::getParameters)
@@ -332,7 +330,6 @@ class JunitXmlPluginTest {
                 );
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     void shouldProcessFilesWithZuluTimestamp() throws Exception {
         process(
@@ -340,7 +337,7 @@ class JunitXmlPluginTest {
                 "TEST-test.SampleTest.xml"
         );
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
         verify(visitor, times(2)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())

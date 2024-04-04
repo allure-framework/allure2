@@ -20,6 +20,7 @@ import com.beust.jcommander.Parameters;
 import com.beust.jcommander.ParametersDelegate;
 import io.qameta.allure.convert.PathConverter;
 import io.qameta.allure.option.ConfigOptions;
+import io.qameta.allure.option.ReportLanguageOptions;
 import io.qameta.allure.option.ReportNameOptions;
 import io.qameta.allure.option.ResultsOptions;
 
@@ -63,6 +64,9 @@ public class GenerateCommand {
     @ParametersDelegate
     private ReportNameOptions reportNameOptions = new ReportNameOptions();
 
+    @ParametersDelegate
+    private ReportLanguageOptions reportLanguageOptions = new ReportLanguageOptions();
+
     public boolean isCleanReportDirectory() {
         return cleanReportDirectory;
     }
@@ -81,6 +85,10 @@ public class GenerateCommand {
 
     public ReportNameOptions getReportNameOptions() {
         return reportNameOptions;
+    }
+
+    public ReportLanguageOptions getReportLanguageOptions() {
+        return reportLanguageOptions;
     }
 
     public boolean isSingleFileMode() {

@@ -16,6 +16,7 @@
 package io.qameta.allure;
 
 import io.qameta.allure.option.ConfigOptions;
+import io.qameta.allure.option.ReportLanguageOptions;
 import io.qameta.allure.option.ReportNameOptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -54,8 +55,8 @@ class CommandsTest {
         Files.createTempFile(reportPath, "some", ".txt");
         final Commands commands = new Commands(home);
         final ExitCode exitCode = commands.generate(
-                reportPath, Collections.emptyList(), false,
-                new ConfigOptions(), new ReportNameOptions()
+                reportPath, Collections.emptyList(), false, false,
+                new ConfigOptions(), new ReportNameOptions(), new ReportLanguageOptions()
         );
 
         assertThat(exitCode)
@@ -104,7 +105,8 @@ class CommandsTest {
         final Commands commands = new Commands(home);
         final ExitCode exitCode = commands.generate(
                 reportPath,
-                Collections.emptyList(), false, options, new ReportNameOptions()
+                Collections.emptyList(), false, false, options,
+                new ReportNameOptions(), new ReportLanguageOptions()
         );
 
         assertThat(exitCode)

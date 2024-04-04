@@ -71,7 +71,7 @@ class XunitXmlPluginTest {
                 "passed-test.xml"
         );
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
         verify(visitor, times(1)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
@@ -89,7 +89,7 @@ class XunitXmlPluginTest {
                 "passed-test.xml"
         );
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
         verify(visitor, times(1)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
@@ -99,7 +99,6 @@ class XunitXmlPluginTest {
                 .containsExactlyInAnyOrder(44L);
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     void shouldSetLabels() throws Exception {
         process(
@@ -107,7 +106,7 @@ class XunitXmlPluginTest {
                 "passed-test.xml"
         );
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
         verify(visitor, times(1)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
@@ -129,7 +128,7 @@ class XunitXmlPluginTest {
                 "passed-test.xml"
         );
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
         verify(visitor, times(1)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
@@ -147,7 +146,7 @@ class XunitXmlPluginTest {
                 "passed-test.xml"
         );
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
         verify(visitor, times(1)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
@@ -162,7 +161,7 @@ class XunitXmlPluginTest {
         return Stream.of(
                 Arguments.of("xunitdata/failed-test.xml", "failed-test.xml",
                         String.format("%s%n", "Assert.True() Failure\\r\\nExpected: True\\r\\nActual:   False") +
-                                "test output\\n", "FAILED-TRACE"),
+                        "test output\\n", "FAILED-TRACE"),
                 Arguments.of("xunitdata/passed-test.xml", "passed-test.xml", "test output\\n", null)
         );
     }
@@ -175,7 +174,7 @@ class XunitXmlPluginTest {
                                 final String trace) throws Exception {
         process(resource, fileName);
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
         verify(visitor, times(1)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())

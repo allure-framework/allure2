@@ -41,6 +41,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -341,7 +342,7 @@ class Allure1PluginTest {
             copyFile(directory, first, second);
         }
         Allure1Plugin reader = new Allure1Plugin();
-        final Configuration configuration = new ConfigurationBuilder().useDefault().build();
+        final Configuration configuration = ConfigurationBuilder.bundled().build();
         final DefaultResultsVisitor resultsVisitor = new DefaultResultsVisitor(configuration);
         reader.readResults(configuration, resultsVisitor, directory);
         return resultsVisitor.getLaunchResults();
@@ -349,7 +350,10 @@ class Allure1PluginTest {
 
     private void copyFile(Path dir, String resourceName, String fileName) throws IOException {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourceName)) {
-            Files.copy(is, dir.resolve(fileName));
+            Files.copy(
+                    Objects.requireNonNull(is, "resource " + resourceName + " not found"),
+                    dir.resolve(fileName)
+            );
         }
     }
 }
