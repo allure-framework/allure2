@@ -16,6 +16,7 @@
 package io.qameta.allure;
 
 import io.qameta.allure.option.ConfigOptions;
+import io.qameta.allure.option.ReportLanguageOptions;
 import io.qameta.allure.option.ReportNameOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -118,8 +119,10 @@ class CommandLineTest {
 
         when(
                 commands.generate(
-                        eq(report), eq(results), eq(false),
-                        any(ConfigOptions.class), any(ReportNameOptions.class)
+                        eq(report), eq(results),
+                        eq(false), eq(false),
+                        any(ConfigOptions.class),
+                        any(ReportNameOptions.class), any(ReportLanguageOptions.class)
                 )
         ).thenReturn(NO_ERROR);
 
@@ -133,8 +136,10 @@ class CommandLineTest {
         final ExitCode code = commandLine.run();
         verify(commands, times(1))
                 .generate(
-                        eq(report), eq(results), eq(false),
-                        any(ConfigOptions.class), any(ReportNameOptions.class)
+                        eq(report), eq(results),
+                        eq(false), eq(false),
+                        any(ConfigOptions.class),
+                        any(ReportNameOptions.class), any(ReportLanguageOptions.class)
                 );
         assertThat(code)
                 .isEqualTo(NO_ERROR);
@@ -150,8 +155,10 @@ class CommandLineTest {
 
         when(
                 commands.generate(
-                        eq(report), eq(results), eq(false),
-                        any(ConfigOptions.class), any(ReportNameOptions.class)
+                        eq(report), eq(results),
+                        eq(false), eq(false),
+                        any(ConfigOptions.class),
+                        any(ReportNameOptions.class), any(ReportLanguageOptions.class)
                 )
         ).thenReturn(NO_ERROR);
 
@@ -167,8 +174,8 @@ class CommandLineTest {
         final ExitCode code = commandLine.run();
         verify(commands, times(1))
                 .generate(
-                        eq(report), eq(results), eq(false),
-                        any(ConfigOptions.class), captor.capture()
+                        eq(report), eq(results), eq(false), eq(false),
+                        any(ConfigOptions.class), captor.capture(), any(ReportLanguageOptions.class)
                 );
         assertThat(code)
                 .isEqualTo(NO_ERROR);
@@ -257,7 +264,7 @@ class CommandLineTest {
 
         when(commands.serve(
                 eq(Arrays.asList(first, second)), eq(host), eq(port),
-                captor.capture(), any(ReportNameOptions.class))
+                captor.capture(), any(ReportNameOptions.class), any(ReportLanguageOptions.class))
         )
                 .thenReturn(NO_ERROR);
         final ExitCode run = commandLine.run();
@@ -297,8 +304,8 @@ class CommandLineTest {
 
         when(commands.serve(
                 eq(Arrays.asList(first, second)), eq(host), eq(port),
-                captorConfig.capture(), captorReportName.capture())
-        )
+                captorConfig.capture(), captorReportName.capture(), any(ReportLanguageOptions.class)
+        ))
                 .thenReturn(NO_ERROR);
         final ExitCode run = commandLine.run();
         assertThat(run)

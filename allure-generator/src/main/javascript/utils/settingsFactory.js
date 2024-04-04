@@ -1,7 +1,6 @@
 import LocalStorageModel from "../data/localstorage/LocalStorageModel";
 
 const globalSettingsDefaults = {
-  language: "en",
   sidebarCollapsed: false,
   sideBySidePosition: [50, 50],
 };
@@ -35,7 +34,7 @@ const widgetGridPluginDefaults = {
 function getGlobalSettings() {
   const SettingsModel = LocalStorageModel.extend({
     defaults() {
-      return globalSettingsDefaults;
+      return { ...globalSettingsDefaults, language: document.documentElement.lang || "en" };
     },
 
     getLanguage() {

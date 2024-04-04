@@ -15,15 +15,13 @@
  */
 package io.qameta.allure.core;
 
-import io.qameta.allure.DefaultConfiguration;
-import io.qameta.allure.context.FreemarkerContext;
+import io.qameta.allure.ConfigurationBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junitpioneer.jupiter.SetEnvironmentVariable;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,7 +33,7 @@ class ReportWebGeneratorTest {
     @SetEnvironmentVariable(key = "ALLURE_NO_ANALYTICS", value = "true")
     @Test
     void shouldDisableAnalytics(@TempDir final Path tempDirectory) {
-        final DefaultConfiguration configuration = new DefaultConfiguration(Collections.singletonList(new FreemarkerContext()), Collections.emptyList());
+        final Configuration configuration = ConfigurationBuilder.empty().build();
         final InMemoryReportStorage reportStorage = new InMemoryReportStorage();
         new ReportWebGenerator()
                 .generate(

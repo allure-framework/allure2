@@ -17,9 +17,7 @@ package io.qameta.allure.ga;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.qameta.allure.Aggregator2;
-import io.qameta.allure.ReportInfo;
 import io.qameta.allure.ReportStorage;
-import io.qameta.allure.context.ReportInfoContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.ExecutorInfo;
@@ -80,13 +78,11 @@ public class GaPlugin implements Aggregator2 {
             LOGGER.debug("analytics is disabled");
             return;
         }
-        final ReportInfoContext reportInfoContext = configuration.requireContext(ReportInfoContext.class);
-        final ReportInfo reportInfo = reportInfoContext.getValue();
 
         LOGGER.debug("send analytics");
         final GaParameters parameters = new GaParameters()
-                .setReportUuid(reportInfo.getReportUuid())
-                .setAllureVersion(reportInfo.getAllureVersion())
+                .setReportUuid(configuration.getUuid())
+                .setAllureVersion(configuration.getVersion())
                 .setExecutorType(getExecutorType(launchesResults))
                 .setResultsCount(getTestResultsCount(launchesResults))
                 .setResultsFormat(getLabelValuesAsString(launchesResults, LabelName.RESULT_FORMAT))

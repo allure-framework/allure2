@@ -33,6 +33,33 @@ import java.util.stream.Collectors;
 public interface Configuration {
 
     /**
+     * Gets uuid.
+     *
+     * @return the uuid
+     */
+    default String getUuid() {
+        return null;
+    }
+
+    /**
+     * Gets version.
+     *
+     * @return the version
+     */
+    default String getVersion() {
+        return null;
+    }
+
+    /**
+     * Returns the report language. If not specified, uses "en".
+     *
+     * @return the report language.
+     */
+    default String getReportLanguage() {
+        return null;
+    }
+
+    /**
      * Returns the report name.
      *
      * @return the report name.
@@ -94,9 +121,9 @@ public interface Configuration {
     /**
      * Resolve context by given type.
      *
-     * @param contextType type of context to resolve.
-     * @param <S>         the java type of context.
      * @param <T>         the java type of context's type.
+     * @param <S>         the java type of context.
+     * @param contextType type of context to resolve.
      * @return resolved context.
      */
     default <T, S extends Context<T>> Optional<S> getContext(final Class<S> contextType) {
@@ -108,6 +135,9 @@ public interface Configuration {
      * The same as {@link #getContext(Class)} but throws an exception
      * if context doesn't present.
      *
+     * @param <T>         the type parameter
+     * @param <S>         the type parameter
+     * @param contextType the context type
      * @return resolved context.
      * @throws ContextNotFoundException if no such context present.
      */

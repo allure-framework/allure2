@@ -21,6 +21,7 @@ import io.qameta.allure.core.Plugin;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Default implementation of {@link Configuration}.
@@ -29,23 +30,86 @@ import java.util.Optional;
  */
 public class DefaultConfiguration implements Configuration {
 
+    private static final String UNDEFINED = "Undefined";
+
     private final List<Extension> extensions;
 
     private final List<Plugin> plugins;
 
+    private final String uuid;
+
+    private final String version;
+
     private final String reportName;
 
+    private final String reportLanguage;
+
+    /**
+     * Instantiates a new Default configuration.
+     *
+     * @param extensions the extensions
+     * @param plugins    the plugins
+     * @deprecated use {@link ConfigurationBuilder} instead.
+     */
+    @Deprecated
     public DefaultConfiguration(final List<Extension> extensions,
                                 final List<Plugin> plugins) {
-        this(null, extensions, plugins);
+        this(UUID.randomUUID().toString(), UNDEFINED, null, null, extensions, plugins);
     }
 
+    /**
+     * Instantiates a new Default configuration.
+     *
+     * @param reportName the report name
+     * @param extensions the extensions
+     * @param plugins    the plugins
+     * @deprecated use {@link ConfigurationBuilder} instead.
+     */
+    @Deprecated
     public DefaultConfiguration(final String reportName,
                                 final List<Extension> extensions,
                                 final List<Plugin> plugins) {
+        this(UUID.randomUUID().toString(), UNDEFINED, reportName, null, extensions, plugins);
+
+    }
+
+    /**
+     * Instantiates a new Default configuration.
+     *
+     * @param uuid           the report uuid
+     * @param version        the Allure version
+     * @param reportName     the report name
+     * @param reportLanguage the report language
+     * @param extensions     the extensions
+     * @param plugins        the plugins
+     */
+    DefaultConfiguration(final String uuid,
+                         final String version,
+                         final String reportName,
+                         final String reportLanguage,
+                         final List<Extension> extensions,
+                         final List<Plugin> plugins) {
         this.reportName = reportName;
+        this.reportLanguage = reportLanguage;
         this.extensions = extensions;
         this.plugins = plugins;
+        this.uuid = uuid;
+        this.version = version;
+    }
+
+    @Override
+    public String getUuid() {
+        return uuid;
+    }
+
+    @Override
+    public String getVersion() {
+        return version;
+    }
+
+    @Override
+    public String getReportLanguage() {
+        return reportLanguage;
     }
 
     @Override
@@ -68,4 +132,5 @@ public class DefaultConfiguration implements Configuration {
         return getExtensions(contextType).stream()
                 .findFirst();
     }
+
 }

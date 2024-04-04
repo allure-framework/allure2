@@ -97,6 +97,7 @@ subprojects {
             dependency("javax.xml.bind:jaxb-api:2.3.1")
             dependency("net.sourceforge.pmd:pmd-java:6.55.0")
             dependency("org.allurefw:allure1-model:1.0")
+            dependency("org.apache.commons:commons-collections4:4.4")
             dependency("org.apache.commons:commons-lang3:3.14.0")
             dependency("org.apache.httpcomponents:httpclient:4.5.14")
             dependency("org.apache.tika:tika-core:2.9.2")
@@ -135,6 +136,7 @@ subprojects {
     }
 
     tasks.test {
+        useJUnitPlatform()
         systemProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug")
         systemProperty("allure.model.indentOutput", "true")
         systemProperty("junit.jupiter.execution.parallel.enabled", true)

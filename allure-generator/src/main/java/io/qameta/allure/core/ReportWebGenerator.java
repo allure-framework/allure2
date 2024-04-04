@@ -38,7 +38,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -148,8 +147,11 @@ public class ReportWebGenerator {
                     .map(Boolean::parseBoolean)
                     .orElse(false);
             dataModel.put("analyticsDisable", analyticsDisable);
-            dataModel.put("reportUuid", UUID.randomUUID().toString());
-            dataModel.put("allureVersion", "dev");
+
+            dataModel.put("reportUuid", configuration.getUuid());
+            dataModel.put("reportName", configuration.getReportName());
+            dataModel.put("reportLanguage", configuration.getReportLanguage());
+            dataModel.put("allureVersion", configuration.getVersion());
 
             template.process(dataModel, writer);
         } catch (Exception e) {

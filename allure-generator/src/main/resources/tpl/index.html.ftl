@@ -5,11 +5,13 @@
 <#-- @ftlvariable name="analyticsDisable" type="boolean" -->
 <#-- @ftlvariable name="allureVersion" type="java.lang.String" -->
 <#-- @ftlvariable name="reportUuid" type="java.lang.String" -->
+<#-- @ftlvariable name="reportName" type="java.lang.String" -->
+<#-- @ftlvariable name="reportLanguage" type="java.lang.String" -->
 <!DOCTYPE html>
-<html dir="ltr" lang="en">
+<html dir="ltr" lang="${reportLanguage!"en"}">
 <head>
     <meta charset="utf-8">
-    <title>Allure Report</title>
+    <title>${reportName!"Allure Report"}</title>
     <link rel="icon" href="${faviconUrl}">
     <#list stylesUrls as styleUrl>
     <link rel="stylesheet" type="text/css" href="${styleUrl}">

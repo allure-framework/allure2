@@ -26,10 +26,8 @@ import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeNode;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.List;
 
 import static io.qameta.allure.testdata.TestData.createSingleLaunchResults;
@@ -40,13 +38,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author charlie (Dmitry Baev).
  */
 class SuitesPluginTest {
-
-    private Configuration configuration;
-
-    @BeforeEach
-    void setUp() {
-        configuration = new ConfigurationBuilder().useDefault().build();
-    }
 
     @Test
     void shouldCreateTree() {
@@ -82,7 +73,8 @@ class SuitesPluginTest {
     }
 
     @Test
-    void shouldCreateCsvFile() throws IOException {
+    void shouldCreateCsvFile() {
+        final Configuration configuration = ConfigurationBuilder.bundled().build();
 
         final SuitesPlugin plugin = new SuitesPlugin();
 
