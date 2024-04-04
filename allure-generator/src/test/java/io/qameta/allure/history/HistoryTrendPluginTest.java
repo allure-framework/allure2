@@ -73,7 +73,7 @@ class HistoryTrendPluginTest {
         final HistoryTrendPlugin plugin = new HistoryTrendPlugin();
         plugin.readResults(configuration, visitor, resultsDirectory);
 
-        final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.forClass(List.class);
+        final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.captor();
         verify(visitor, times(1))
                 .visitExtra(eq(HISTORY_TREND_BLOCK_NAME), captor.capture());
 
@@ -100,7 +100,7 @@ class HistoryTrendPluginTest {
         final HistoryTrendPlugin plugin = new HistoryTrendPlugin();
         plugin.readResults(configuration, visitor, resultsDirectory);
 
-        final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.forClass(List.class);
+        final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.captor();
         verify(visitor, times(1))
                 .visitExtra(eq(HISTORY_TREND_BLOCK_NAME), captor.capture());
 
@@ -137,7 +137,7 @@ class HistoryTrendPluginTest {
         final HistoryTrendPlugin plugin = new HistoryTrendPlugin();
         plugin.readResults(configuration, visitor, resultsDirectory);
 
-        final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.forClass(List.class);
+        final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.captor();
         verify(visitor, times(1))
                 .visitExtra(eq(HISTORY_TREND_BLOCK_NAME), captor.capture());
 

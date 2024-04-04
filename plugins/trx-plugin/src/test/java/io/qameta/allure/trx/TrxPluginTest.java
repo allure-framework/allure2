@@ -74,7 +74,7 @@ class TrxPluginTest {
                 "sample.trx"
         );
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
         verify(visitor, times(5)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
@@ -102,7 +102,7 @@ class TrxPluginTest {
                 "sample.trx"
         );
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
         verify(visitor, times(1)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
@@ -118,7 +118,7 @@ class TrxPluginTest {
                 "sample.trx"
         );
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
         verify(visitor, times(1)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
@@ -134,7 +134,7 @@ class TrxPluginTest {
                 "sample.trx"
         );
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
         verify(visitor, times(5)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())
@@ -152,7 +152,7 @@ class TrxPluginTest {
                 "sample.trx"
         );
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
         verify(visitor, times(7)).visitTestResult(captor.capture());
 
         assertThat(captor.getAllValues())

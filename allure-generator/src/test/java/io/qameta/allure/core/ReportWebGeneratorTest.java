@@ -49,4 +49,45 @@ class ReportWebGeneratorTest {
                 .content(StandardCharsets.UTF_8)
                 .doesNotContain("googletagmanager");
     }
+
+    @Test
+    void shouldSetLanguage(@TempDir final Path tempDirectory) {
+        final Configuration configuration = ConfigurationBuilder.empty()
+                .withReportLanguage("xyz")
+                .build();
+        final InMemoryReportStorage reportStorage = new InMemoryReportStorage();
+        new ReportWebGenerator()
+                .generate(
+                        configuration,
+                        reportStorage,
+                        tempDirectory
+                );
+
+        final Path indexHtml = tempDirectory.resolve("index.html");
+
+        assertThat(indexHtml)
+                .isRegularFile()
+                .content(StandardCharsets.UTF_8)
+                .contains("lang=\"xyz\"");
+    }
+
+    @Test
+    void shouldSetDefaultLanguageIfNotProvided(@TempDir final Path tempDirectory) {
+        final Configuration configuration = ConfigurationBuilder.empty()
+                .build();
+        final InMemoryReportStorage reportStorage = new InMemoryReportStorage();
+        new ReportWebGenerator()
+                .generate(
+                        configuration,
+                        reportStorage,
+                        tempDirectory
+                );
+
+        final Path indexHtml = tempDirectory.resolve("index.html");
+
+        assertThat(indexHtml)
+                .isRegularFile()
+                .content(StandardCharsets.UTF_8)
+                .contains("lang=\"en\"");
+    }
 }
