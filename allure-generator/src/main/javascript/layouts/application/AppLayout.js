@@ -27,10 +27,10 @@ class AppLayout extends View {
           this.showChildView("content", this.getContentView());
           this.onViewReady();
         })
-        .catch((e) => {
+        .catch(() => {
           this.showChildView(
             "content",
-            new ErrorSplashView({ code: 4041, message: e.message }),
+            new ErrorSplashView({ code: 404, message: translate("errors.notFound") }),
           );
         });
     } else {

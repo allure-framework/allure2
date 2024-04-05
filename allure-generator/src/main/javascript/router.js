@@ -1,6 +1,6 @@
+import urlLib from "url";
 import { history, Router } from "backbone";
 import { omit } from "underscore";
-import urlLib from "url";
 
 class AppRouter extends Router {
   currentUrl = null;
