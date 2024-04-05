@@ -25,7 +25,7 @@ const dateTokens = [
   },
 ];
 
-export default function(timeInt, count) {
+export default function (timeInt, count) {
   if (timeInt === 0) {
     return "0s";
   }
@@ -49,7 +49,7 @@ export default function(timeInt, count) {
       },
       { hasValue: false, out: [] },
     )
-    .out.map(function(token, index) {
+    .out.map(function (token, index) {
       const value = index === 0 ? token.value : pad(token.value, token.pad || 2, "0");
       return value + token.suffix;
     });

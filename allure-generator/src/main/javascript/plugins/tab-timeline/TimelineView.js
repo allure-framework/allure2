@@ -248,10 +248,7 @@ class TimelineView extends BaseChartView {
       this.svgChart.select(".timeline__chart__axis_x").call(this.xChartAxis);
     }
 
-    this.svgBrush
-      .selectAll(".handle")
-      .attr("y", 0)
-      .attr("height", BAR_HEIGHT);
+    this.svgBrush.selectAll(".handle").attr("y", 0).attr("height", BAR_HEIGHT);
   }
 
   getTooltipContent(d) {

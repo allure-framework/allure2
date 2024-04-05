@@ -1,6 +1,6 @@
 import i18next from "../utils/translation";
 
-export default function(date) {
+export default function (date) {
   if (!date) {
     return "unknown";
   }

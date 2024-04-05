@@ -58,15 +58,9 @@ class TrendChartView extends BaseChartView {
     });
 
     if (document.dir === "rtl") {
-      this.svg
-        .selectAll(".chart__axis_x")
-        .selectAll("text")
-        .style("text-anchor", "start");
+      this.svg.selectAll(".chart__axis_x").selectAll("text").style("text-anchor", "start");
     } else {
-      this.svg
-        .selectAll(".chart__axis_x")
-        .selectAll("text")
-        .style("text-anchor", "end");
+      this.svg.selectAll(".chart__axis_x").selectAll("text").style("text-anchor", "end");
     }
 
     this.svg
@@ -136,12 +130,7 @@ class TrendChartView extends BaseChartView {
   }
 
   showSlices(data) {
-    this.plot
-      .selectAll(".slice")
-      .data(data)
-      .enter()
-      .append("g")
-      .attr("class", "slice");
+    this.plot.selectAll(".slice").data(data).enter().append("g").attr("class", "slice");
 
     this.plot
       .selectAll(".slice")

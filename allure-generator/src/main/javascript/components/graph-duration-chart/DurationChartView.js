@@ -88,9 +88,7 @@ export default class DurationChart extends BaseChartView {
       bars = bars.transition().duration(500);
     }
 
-    bars
-      .attr("y", (d) => this.y(d.y))
-      .attr("height", (d) => this.height - this.y(d.y));
+    bars.attr("y", (d) => this.y(d.y)).attr("height", (d) => this.height - this.y(d.y));
   }
 
   getTooltipContent({ testResults }) {

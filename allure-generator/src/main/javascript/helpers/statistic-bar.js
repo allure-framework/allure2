@@ -1,7 +1,7 @@
 import { SafeString } from "handlebars/runtime";
 import { values } from "../utils/statuses";
 
-export default function(statistic) {
+export default function (statistic) {
   const fill = values
     .map((status) => {
       const count = !statistic || typeof statistic[status] === "undefined" ? 0 : statistic[status];

@@ -1,8 +1,8 @@
 import { clone, has, isFunction } from "underscore";
 
 function onDecoratorFactory(decoratorName, propertyName) {
-  return function(eventName) {
-    return function(target, name, descriptor) {
+  return function (eventName) {
+    return function (target, name, descriptor) {
       if (!eventName) {
         throw new Error(`The ${decoratorName} decorator requires an eventName argument`);
       }
@@ -26,7 +26,7 @@ function onDecoratorFactory(decoratorName, propertyName) {
 export const on = onDecoratorFactory("on", "events");
 
 export function behavior(name, config = {}) {
-  return function(target) {
+  return function (target) {
     target.prototype.behaviors = Object.assign(
       {
         [name]: config,
@@ -37,19 +37,19 @@ export function behavior(name, config = {}) {
 }
 
 export function className(name) {
-  return function(target) {
+  return function (target) {
     target.prototype.className = name;
   };
 }
 
 export function regions(opts) {
-  return function(target) {
+  return function (target) {
     target.prototype.regions = Object.assign(opts, target.regions);
   };
 }
 
 export function options(opts) {
-  return function(target) {
+  return function (target) {
     target.prototype.options = Object.assign(opts, target.options);
   };
 }
