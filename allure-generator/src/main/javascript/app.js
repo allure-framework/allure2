@@ -2,12 +2,12 @@ import "font-awesome/css/font-awesome.css";
 import "./styles.scss";
 import { history } from "backbone";
 import { Application, Behaviors } from "backbone.marionette";
-import * as behaviors from "./behaviors";
-import translate from "./helpers/t";
-import { ErrorLayout } from "./layouts/error/ErrorLayout";
-import TestResultLayout from "./layouts/testresult/TestResultLayout";
-import router from "./router";
-import i18next, { initTranslations } from "./utils/translation";
+import * as behaviors from "./behaviors/index.js";
+import translate from "./helpers/t.js";
+import { ErrorLayout } from "./layouts/error/ErrorLayout.js";
+import TestResultLayout from "./layouts/testresult/TestResultLayout.js";
+import router from "./router.js";
+import i18next, { initTranslations } from "./utils/translation.js";
 
 // https://github.com/d3/d3-timer/pull/21
 if (typeof window.requestAnimationFrame === "function") {

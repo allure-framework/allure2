@@ -1,5 +1,5 @@
 const webpack = require("webpack");
-const webpackMerge = require("webpack-merge");
+const { merge } = require("webpack-merge");
 const sass = require("sass");
 const utils = require("./utils.js");
 
@@ -10,12 +10,14 @@ const ENV = "development";
 const postcssLoader = {
   loader: "postcss-loader",
   options: {
-    plugins: [require("autoprefixer")()],
+    postcssOptions: {
+      plugins: [require("autoprefixer")()],
+    },
   },
 };
 
-module.exports = options =>
-  webpackMerge(commonConfig({ env: ENV }), {
+module.exports = (options) =>
+  merge(commonConfig({ env: ENV }), {
     devtool: "cheap-module-source-map", // https://reactjs.org/docs/cross-origin-errors.html
     mode: ENV,
     entry: ["./src/main/javascript/index.js"],
@@ -41,13 +43,9 @@ module.exports = options =>
       ],
     },
     devServer: {
-      stats: options.stats,
       hot: true,
-      contentBase: "./build/demo-report",
+      static: "./build/demo-report",
       historyApiFallback: true,
-      watchOptions: {
-        ignored: /node_modules/,
-      },
+      watchFiles: ["./src/main/javascript"],
     },
-    plugins: [new webpack.HotModuleReplacementPlugin()],
   });
