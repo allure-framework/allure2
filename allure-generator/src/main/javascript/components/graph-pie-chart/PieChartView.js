@@ -146,9 +146,11 @@ class PieChartView extends BaseChartView {
   onLegendHover(e) {
     const el = this.$(e.currentTarget);
     const status = el.data("status");
-    const sector = this.$(`.chart__fill_status_${status}`)[0];
-    const data = select(sector).datum();
-    this.showTooltip(data, sector);
+    const sector = this.$el.find(`.chart__fill_status_${status}`)[0];
+    if (sector) {
+      const data = select(sector).datum();
+      this.showTooltip(data, sector);
+    }
   }
 }
 
