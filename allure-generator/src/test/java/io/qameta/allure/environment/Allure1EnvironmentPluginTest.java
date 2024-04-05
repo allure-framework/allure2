@@ -123,7 +123,7 @@ class Allure1EnvironmentPluginTest {
     @SafeVarargs
     private List<EnvironmentItem> process(List<String>... results) throws IOException {
         List<LaunchResults> launches = new ArrayList<>();
-        final Configuration configuration = new ConfigurationBuilder().useDefault().build();
+        final Configuration configuration = ConfigurationBuilder.bundled().build();
         Allure1Plugin reader = new Allure1Plugin();
         for (List<String> result : results) {
             Path resultsDirectory = Files.createTempDirectory(temp, "results");

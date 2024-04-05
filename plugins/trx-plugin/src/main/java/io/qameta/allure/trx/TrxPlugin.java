@@ -125,7 +125,7 @@ public class TrxPlugin implements Reader {
             testRunElement.getFirst(RESULTS_ELEMENT_NAME)
                     .ifPresent(resultsElement -> parseResults(resultsElement, tests, context, visitor));
         } catch (SAXException | ParserConfigurationException | IOException e) {
-            LOGGER.error("Could not parse file {}: {}", parsedFile, e);
+            LOGGER.error("Could not parse file {}", parsedFile, e);
         }
     }
 
@@ -219,10 +219,10 @@ public class TrxPlugin implements Reader {
         unitTestResult.getFirst(UNIT_TEST_INNER_RESULTS)
             .ifPresent(innerResults -> {
                 innerResults.get(UNIT_TEST_RESULT_ELEMENT_NAME)
-                    .forEach(unitTestChildResult -> 
+                    .forEach(unitTestChildResult ->
                         parseUnitTestResult(unitTestChildResult, tests, context, visitor, result.getLabels())
                     );
-            }); 
+            });
     }
 
     protected void parseUnitTestResult(final XmlElement unitTestResult,
@@ -259,10 +259,10 @@ public class TrxPlugin implements Reader {
         unitTestResult.getFirst(UNIT_TEST_INNER_RESULTS)
             .ifPresent(innerResults -> {
                 innerResults.get(UNIT_TEST_RESULT_ELEMENT_NAME)
-                    .forEach(unitTestChildResult -> 
+                    .forEach(unitTestChildResult ->
                         parseUnitTestResult(unitTestChildResult, tests, context, visitor, result.getLabels())
                     );
-            }); 
+            });
     }
 
     private List<String> splitLines(final String str) {
@@ -340,7 +340,7 @@ public class TrxPlugin implements Reader {
                 }
             }
         } catch (IOException e) {
-            LOGGER.error("Could not read data from {}: {}", directory, e);
+            LOGGER.error("Could not read data from {}", directory, e);
         }
         return result;
     }

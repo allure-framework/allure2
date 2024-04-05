@@ -16,6 +16,7 @@
 package io.qameta.allure;
 
 import io.qameta.allure.option.ConfigOptions;
+import io.qameta.allure.option.ReportLanguageOptions;
 import io.qameta.allure.option.ReportNameOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -118,8 +119,10 @@ class CommandLineTest {
 
         when(
                 commands.generate(
-                        eq(report), eq(results), eq(false),
-                        any(ConfigOptions.class), any(ReportNameOptions.class)
+                        eq(report), eq(results),
+                        eq(false), eq(false),
+                        any(ConfigOptions.class),
+                        any(ReportNameOptions.class), any(ReportLanguageOptions.class)
                 )
         ).thenReturn(NO_ERROR);
 
@@ -133,8 +136,10 @@ class CommandLineTest {
         final ExitCode code = commandLine.run();
         verify(commands, times(1))
                 .generate(
-                        eq(report), eq(results), eq(false),
-                        any(ConfigOptions.class), any(ReportNameOptions.class)
+                        eq(report), eq(results),
+                        eq(false), eq(false),
+                        any(ConfigOptions.class),
+                        any(ReportNameOptions.class), any(ReportLanguageOptions.class)
                 );
         assertThat(code)
                 .isEqualTo(NO_ERROR);
@@ -150,8 +155,10 @@ class CommandLineTest {
 
         when(
                 commands.generate(
-                        eq(report), eq(results), eq(false),
-                        any(ConfigOptions.class), any(ReportNameOptions.class)
+                        eq(report), eq(results),
+                        eq(false), eq(false),
+                        any(ConfigOptions.class),
+                        any(ReportNameOptions.class), any(ReportLanguageOptions.class)
                 )
         ).thenReturn(NO_ERROR);
 
@@ -163,12 +170,12 @@ class CommandLineTest {
         assertThat(exitCode)
                 .isEmpty();
 
-        final ArgumentCaptor<ReportNameOptions> captor = ArgumentCaptor.forClass(ReportNameOptions.class);
+        final ArgumentCaptor<ReportNameOptions> captor = ArgumentCaptor.captor();
         final ExitCode code = commandLine.run();
         verify(commands, times(1))
                 .generate(
-                        eq(report), eq(results), eq(false),
-                        any(ConfigOptions.class), captor.capture()
+                        eq(report), eq(results), eq(false), eq(false),
+                        any(ConfigOptions.class), captor.capture(), any(ReportLanguageOptions.class)
                 );
         assertThat(code)
                 .isEqualTo(NO_ERROR);
@@ -176,6 +183,46 @@ class CommandLineTest {
         assertThat(captor.getValue())
                 .extracting(ReportNameOptions::getReportName)
                 .isEqualTo(reportName);
+    }
+
+    @Test
+    void shouldRunGenerateWithReportLanguage(@TempDir final Path temp) throws IOException {
+        final Path report = Files.createDirectories(temp.resolve("report"));
+        final Path firstResult = Files.createDirectories(temp.resolve("first"));
+        final Path secondResult = Files.createDirectories(temp.resolve("second"));
+        final List<Path> results = Arrays.asList(firstResult, secondResult);
+        final String lang = "nl";
+
+        when(
+                commands.generate(
+                        eq(report), eq(results),
+                        eq(false), eq(false),
+                        any(ConfigOptions.class),
+                        any(ReportNameOptions.class), any(ReportLanguageOptions.class)
+                )
+        ).thenReturn(NO_ERROR);
+
+        final Optional<ExitCode> exitCode = commandLine.parse(
+                GENERATE_COMMAND, firstResult.toString(), secondResult.toString(),
+                "--output", report.toString(),
+                "--lang", lang
+        );
+        assertThat(exitCode)
+                .isEmpty();
+
+        final ArgumentCaptor<ReportLanguageOptions> captor = ArgumentCaptor.captor();
+        final ExitCode code = commandLine.run();
+        verify(commands, times(1))
+                .generate(
+                        eq(report), eq(results), eq(false), eq(false),
+                        any(ConfigOptions.class), any(ReportNameOptions.class), captor.capture()
+                );
+        assertThat(code)
+                .isEqualTo(NO_ERROR);
+
+        assertThat(captor.getValue())
+                .extracting(ReportLanguageOptions::getReportLanguage)
+                .isEqualTo(lang);
     }
 
     @Test
@@ -253,11 +300,11 @@ class CommandLineTest {
         assertThat(code)
                 .isEmpty();
 
-        final ArgumentCaptor<ConfigOptions> captor = ArgumentCaptor.forClass(ConfigOptions.class);
+        final ArgumentCaptor<ConfigOptions> captor = ArgumentCaptor.captor();
 
         when(commands.serve(
                 eq(Arrays.asList(first, second)), eq(host), eq(port),
-                captor.capture(), any(ReportNameOptions.class))
+                captor.capture(), any(ReportNameOptions.class), any(ReportLanguageOptions.class))
         )
                 .thenReturn(NO_ERROR);
         final ExitCode run = commandLine.run();
@@ -290,15 +337,13 @@ class CommandLineTest {
         assertThat(code)
                 .isEmpty();
 
-        final ArgumentCaptor<ConfigOptions> captorConfig
-                = ArgumentCaptor.forClass(ConfigOptions.class);
-        final ArgumentCaptor<ReportNameOptions> captorReportName
-                = ArgumentCaptor.forClass(ReportNameOptions.class);
+        final ArgumentCaptor<ConfigOptions> captorConfig = ArgumentCaptor.captor();
+        final ArgumentCaptor<ReportNameOptions> captorReportName = ArgumentCaptor.captor();
 
         when(commands.serve(
                 eq(Arrays.asList(first, second)), eq(host), eq(port),
-                captorConfig.capture(), captorReportName.capture())
-        )
+                captorConfig.capture(), captorReportName.capture(), any(ReportLanguageOptions.class)
+        ))
                 .thenReturn(NO_ERROR);
         final ExitCode run = commandLine.run();
         assertThat(run)
@@ -312,6 +357,57 @@ class CommandLineTest {
         assertThat(captorReportName.getValue())
                 .extracting(ReportNameOptions::getReportName)
                 .isEqualTo(reportName);
+    }
+
+    @Test
+    void shouldParseServeCommandWithReportLanguage(@TempDir final Path temp) throws IOException {
+        final int port = randomPort();
+        final String host = randomString();
+        final String profile = randomString();
+        final String lang = "de";
+        final Path first = Files.createDirectories(temp.resolve("first"));
+        final Path second = Files.createDirectories(temp.resolve("second"));
+        final Optional<ExitCode> code = commandLine.parse(
+                SERVE_COMMAND,
+                "--port", String.valueOf(port),
+                "--host", host,
+                "--profile", profile,
+                "--lang", lang,
+                first.toString(), second.toString()
+        );
+
+        assertThat(code)
+                .isEmpty();
+
+        final ArgumentCaptor<ConfigOptions> captorConfig = ArgumentCaptor.captor();
+        final ArgumentCaptor<ReportLanguageOptions> captorReportLang = ArgumentCaptor.captor();
+
+        when(commands.serve(
+                eq(Arrays.asList(first, second)), eq(host), eq(port),
+                captorConfig.capture(), any(ReportNameOptions.class), captorReportLang.capture()
+        ))
+                .thenReturn(NO_ERROR);
+        final ExitCode run = commandLine.run();
+        assertThat(run)
+                .isEqualTo(NO_ERROR);
+
+        assertThat(captorConfig.getAllValues())
+                .hasSize(1)
+                .extracting(ConfigOptions::getProfile)
+                .containsExactly(profile);
+
+        assertThat(captorReportLang.getValue())
+                .extracting(ReportLanguageOptions::getReportLanguage)
+                .isEqualTo(lang);
+    }
+
+    @Test
+    void shouldValidateLanguageValue() {
+        final Optional<ExitCode> exitCode = commandLine.parse(SERVE_COMMAND, "--lang", "invalid");
+
+        assertThat(exitCode)
+                .isPresent()
+                .hasValue(ARGUMENT_PARSING_ERROR);
     }
 
     @Test

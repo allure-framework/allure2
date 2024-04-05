@@ -89,7 +89,7 @@ subprojects {
             dependency("com.github.spotbugs:spotbugs-annotations:4.8.3")
             dependency("com.github.spotbugs:spotbugs:4.8.3")
             dependency("com.opencsv:opencsv:4.6")
-            dependency("com.puppycrawl.tools:checkstyle:10.14.2")
+            dependency("com.puppycrawl.tools:checkstyle:10.15.0")
             dependency("com.squareup.retrofit2:converter-jackson:${comSquareupRetrofit2Version}")
             dependency("com.squareup.retrofit2:retrofit:${comSquareupRetrofit2Version}")
             dependency("commons-beanutils:commons-beanutils:1.9.4")
@@ -97,9 +97,10 @@ subprojects {
             dependency("javax.xml.bind:jaxb-api:2.3.1")
             dependency("net.sourceforge.pmd:pmd-java:6.55.0")
             dependency("org.allurefw:allure1-model:1.0")
+            dependency("org.apache.commons:commons-collections4:4.4")
             dependency("org.apache.commons:commons-lang3:3.14.0")
             dependency("org.apache.httpcomponents:httpclient:4.5.14")
-            dependency("org.apache.tika:tika-core:2.9.1")
+            dependency("org.apache.tika:tika-core:2.9.2")
             dependency("org.assertj:assertj-core:3.25.3")
             dependency("org.eclipse.jetty:jetty-server:9.4.53.v20231009")
             dependency("org.freemarker:freemarker:2.3.32")
@@ -135,6 +136,7 @@ subprojects {
     }
 
     tasks.test {
+        useJUnitPlatform()
         systemProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug")
         systemProperty("allure.model.indentOutput", "true")
         systemProperty("junit.jupiter.execution.parallel.enabled", true)
@@ -144,6 +146,12 @@ subprojects {
         }
         maxHeapSize = project.property("test.maxHeapSize").toString()
         maxParallelForks = Integer.parseInt(project.property("test.maxParallelForks") as String)
+        jvmArgs = listOf(
+            "--add-opens",
+            "java.base/java.lang=ALL-UNNAMED",
+            "--add-opens",
+            "java.base/java.util=ALL-UNNAMED",
+        )
     }
 
     tasks.processTestResources {

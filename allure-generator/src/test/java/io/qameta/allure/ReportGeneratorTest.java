@@ -33,7 +33,7 @@ class ReportGeneratorTest {
 
     @BeforeAll
     static void setUp(@TempDir final Path temp) throws Exception {
-        final Configuration configuration = new ConfigurationBuilder().useDefault().build();
+        final Configuration configuration = ConfigurationBuilder.bundled().build();
         final ReportGenerator generator = new ReportGenerator(configuration);
         output = temp.resolve("report");
         final Path resultsDirectory = Files.createDirectories(temp.resolve("results"));

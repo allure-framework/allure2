@@ -26,7 +26,7 @@ LANGUAGES.map((lang) => lang.id).forEach((lang) =>
 
 export function initTranslations() {
   return new Promise((resolve, reject) => {
-    const language = settings.get("language");
+    const language = settings.getLanguage();
     i18next.init(
       {
         lng: language,

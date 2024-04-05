@@ -17,7 +17,6 @@ package io.qameta.allure.suites;
 
 import io.qameta.allure.ConfigurationBuilder;
 import io.qameta.allure.Issue;
-import io.qameta.allure.category.CategoriesPlugin;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.InMemoryReportStorage;
 import io.qameta.allure.core.LaunchResults;
@@ -26,10 +25,8 @@ import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeNode;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.List;
 
 import static io.qameta.allure.testdata.TestData.createSingleLaunchResults;
@@ -40,13 +37,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author charlie (Dmitry Baev).
  */
 class SuitesPluginTest {
-
-    private Configuration configuration;
-
-    @BeforeEach
-    void setUp() {
-        configuration = new ConfigurationBuilder().useDefault().build();
-    }
 
     @Test
     void shouldCreateTree() {
@@ -82,7 +72,8 @@ class SuitesPluginTest {
     }
 
     @Test
-    void shouldCreateCsvFile() throws IOException {
+    void shouldCreateCsvFile() {
+        final Configuration configuration = ConfigurationBuilder.bundled().build();
 
         final SuitesPlugin plugin = new SuitesPlugin();
 
@@ -90,10 +81,10 @@ class SuitesPluginTest {
         plugin.aggregate(configuration, getSimpleLaunchResults(), storage);
 
         assertThat(storage.getReportDataFiles())
-                .containsKey("data/" + CategoriesPlugin.JSON_FILE_NAME);
+                .containsKey("data/" + SuitesPlugin.JSON_FILE_NAME);
 
         assertThat(storage.getReportDataFiles())
-                .containsKey("data/" + CategoriesPlugin.CSV_FILE_NAME);
+                .containsKey("data/" + SuitesPlugin.CSV_FILE_NAME);
     }
 
     private List<LaunchResults> getSimpleLaunchResults() {

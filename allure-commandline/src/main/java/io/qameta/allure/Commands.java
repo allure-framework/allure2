@@ -19,6 +19,7 @@ import io.qameta.allure.config.ConfigLoader;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.Plugin;
 import io.qameta.allure.option.ConfigOptions;
+import io.qameta.allure.option.ReportLanguageOptions;
 import io.qameta.allure.option.ReportNameOptions;
 import io.qameta.allure.plugin.DefaultPluginLoader;
 import org.apache.commons.io.FileUtils;
@@ -45,6 +46,8 @@ import java.util.stream.Collectors;
 import static java.lang.String.format;
 
 /**
+ * The type Commands.
+ *
  * @author charlie (Dmitry Baev).
  */
 @SuppressWarnings({"ClassDataAbstractionCoupling", "ClassFanOutComplexity", "ReturnCount"})
@@ -56,10 +59,21 @@ public class Commands {
 
     private final Path allureHome;
 
+    /**
+     * Instantiates a new Commands.
+     *
+     * @param allureHome the allure home
+     */
     public Commands(final Path allureHome) {
         this.allureHome = allureHome;
     }
 
+    /**
+     * Gets config.
+     *
+     * @param configOptions the config options
+     * @return the config
+     */
     public CommandlineConfig getConfig(final ConfigOptions configOptions) {
         return getConfigFile(configOptions)
                 .map(ConfigLoader::new)
@@ -67,6 +81,12 @@ public class Commands {
                 .orElseGet(CommandlineConfig::new);
     }
 
+    /**
+     * Gets config file.
+     *
+     * @param configOptions the config options
+     * @return the config file
+     */
     public Optional<Path> getConfigFile(final ConfigOptions configOptions) {
         if (Objects.nonNull(configOptions.getConfigPath())) {
             return Optional.of(Paths.get(configOptions.getConfigPath()));
@@ -82,26 +102,33 @@ public class Commands {
         return Optional.empty();
     }
 
+    /**
+     * Gets config file name.
+     *
+     * @param profile the profile
+     * @return the config file name
+     */
     public String getConfigFileName(final String profile) {
         return Objects.isNull(profile)
                 ? "allure.yml"
                 : format("allure-%s.yml", profile);
     }
 
-    public ExitCode generate(final Path reportDirectory,
-                             final List<Path> resultsDirectories,
-                             final boolean clean,
-                             final ConfigOptions profile,
-                             final ReportNameOptions reportNameOptions) {
-        return generate(reportDirectory, resultsDirectories, clean, false, profile, reportNameOptions);
-    }
-
-    public ExitCode generate(final Path reportDirectory,
-                             final List<Path> resultsDirectories,
-                             final boolean clean,
-                             final boolean singleFileMode,
-                             final ConfigOptions profile,
-                             final ReportNameOptions reportNameOptions) {
+    /**
+     * Generate exit code.
+     *
+     * @param reportDirectory    the report directory
+     * @param resultsDirectories the results directories
+     * @param clean              the clean
+     * @param singleFileMode     the single file mode
+     * @param configuration      the configuration
+     * @return the exit code
+     */
+    private ExitCode generate(final Path reportDirectory,
+                              final List<Path> resultsDirectories,
+                              final boolean clean,
+                              final boolean singleFileMode,
+                              final Configuration configuration) {
         final boolean directoryExists = Files.exists(reportDirectory);
         if (clean && directoryExists) {
             FileUtils.deleteQuietly(reportDirectory.toFile());
@@ -109,7 +136,7 @@ public class Commands {
             LOGGER.error(DIRECTORY_EXISTS_MESSAGE, reportDirectory.toAbsolutePath());
             return ExitCode.GENERIC_ERROR;
         }
-        final ReportGenerator generator = new ReportGenerator(createReportConfiguration(profile, reportNameOptions));
+        final ReportGenerator generator = new ReportGenerator(configuration);
         if (singleFileMode) {
             generator.generateSingleFile(reportDirectory, resultsDirectories);
         } else {
@@ -119,11 +146,48 @@ public class Commands {
         return ExitCode.NO_ERROR;
     }
 
+    /**
+     * Generate exit code.
+     *
+     * @param reportDirectory    the report directory
+     * @param resultsDirectories the results directories
+     * @param clean              the clean
+     * @param singleFileMode     the single file mode
+     * @param profile            the profile
+     * @param reportNameOptions  the report name options
+     * @return the exit code
+     */
+    public ExitCode generate(final Path reportDirectory,
+                             final List<Path> resultsDirectories,
+                             final boolean clean,
+                             final boolean singleFileMode,
+                             final ConfigOptions profile,
+                             final ReportNameOptions reportNameOptions,
+                             final ReportLanguageOptions reportLanguageOptions) {
+        final Configuration configuration = createReportConfiguration(
+                profile, reportNameOptions, reportLanguageOptions
+        );
+
+        return generate(reportDirectory, resultsDirectories, clean, singleFileMode, configuration);
+    }
+
+    /**
+     * Serve exit code.
+     *
+     * @param resultsDirectories    the results directories
+     * @param host                  the host
+     * @param port                  the port
+     * @param configOptions         the config options
+     * @param reportNameOptions     the report name options
+     * @param reportLanguageOptions the report language options
+     * @return the exit code
+     */
     public ExitCode serve(final List<Path> resultsDirectories,
                           final String host,
                           final int port,
                           final ConfigOptions configOptions,
-                          final ReportNameOptions reportNameOptions) {
+                          final ReportNameOptions reportNameOptions,
+                          final ReportLanguageOptions reportLanguageOptions) {
         LOGGER.info("Generating report to temp directory...");
 
         final Path reportDirectory;
@@ -136,12 +200,16 @@ public class Commands {
             return ExitCode.GENERIC_ERROR;
         }
 
+        final Configuration configuration = createReportConfiguration(
+                configOptions, reportNameOptions, reportLanguageOptions
+        );
+
         final ExitCode exitCode = generate(
                 reportDirectory,
                 resultsDirectories,
                 false,
-                configOptions,
-                reportNameOptions
+                false,
+                configuration
         );
         if (exitCode.isSuccess()) {
             return open(reportDirectory, host, port);
@@ -149,6 +217,14 @@ public class Commands {
         return exitCode;
     }
 
+    /**
+     * Open exit code.
+     *
+     * @param reportDirectory the report directory
+     * @param host            the host
+     * @param port            the port
+     * @return the exit code
+     */
     public ExitCode open(final Path reportDirectory, final String host, final int port) {
         LOGGER.info("Starting web server...");
         final Server server;
@@ -179,6 +255,12 @@ public class Commands {
         return ExitCode.NO_ERROR;
     }
 
+    /**
+     * List plugins exit code.
+     *
+     * @param configOptions the config options
+     * @return the exit code
+     */
     public ExitCode listPlugins(final ConfigOptions configOptions) {
         final CommandlineConfig config = getConfig(configOptions);
         config.getPlugins().forEach(System.out::println);
@@ -188,11 +270,15 @@ public class Commands {
     /**
      * Creates report configuration for a given profile.
      *
-     * @param profile selected profile.
+     * @param profile               selected profile.
+     * @param reportNameOptions     the report name options
+     * @param reportLanguageOptions the report language options
      * @return created report configuration.
      */
-    protected Configuration createReportConfiguration(final ConfigOptions profile,
-                                                      final ReportNameOptions reportNameOptions) {
+    protected Configuration createReportConfiguration(
+            final ConfigOptions profile,
+            final ReportNameOptions reportNameOptions,
+            final ReportLanguageOptions reportLanguageOptions) {
         final DefaultPluginLoader loader = new DefaultPluginLoader();
         final CommandlineConfig commandlineConfig = getConfig(profile);
         final ClassLoader classLoader = getClass().getClassLoader();
@@ -202,15 +288,22 @@ public class Commands {
                 .map(Optional::get)
                 .collect(Collectors.toList());
 
-        return new ConfigurationBuilder()
-                .useDefault()
-                .fromPlugins(plugins)
+        return ConfigurationBuilder
+                .bundled()
+                .withPlugins(plugins)
                 .withReportName(reportNameOptions.getReportName())
+                .withReportLanguage(reportLanguageOptions.getReportLanguage())
                 .build();
     }
 
     /**
      * Set up Jetty server to serve Allure Report.
+     *
+     * @param host            the host
+     * @param port            the port
+     * @param reportDirectory the report directory
+     * @return self for method chaining
+     * @throws IOException the io exception
      */
     protected Server setUpServer(final String host, final int port, final Path reportDirectory) throws IOException {
         final Server server = Objects.isNull(host)
@@ -228,6 +321,9 @@ public class Commands {
 
     /**
      * Open the given url in default system browser.
+     *
+     * @param url the url
+     * @throws IOException the io exception
      */
     protected void openBrowser(final URI url) throws IOException {
         if (Desktop.isDesktopSupported()) {
@@ -251,4 +347,6 @@ public class Commands {
             return false;
         }
     }
+
+
 }

@@ -21,9 +21,7 @@ import io.qameta.allure.Aggregator;
 import io.qameta.allure.Constants;
 import io.qameta.allure.PluginConfiguration;
 import io.qameta.allure.ReportGenerationException;
-import io.qameta.allure.ReportInfo;
 import io.qameta.allure.context.FreemarkerContext;
-import io.qameta.allure.context.ReportInfoContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,7 +73,6 @@ public class ReportWebPlugin implements Aggregator {
     protected void writeIndexHtml(final Configuration configuration,
                                   final Path outputDirectory) throws IOException {
         final FreemarkerContext context = configuration.requireContext(FreemarkerContext.class);
-        final ReportInfo reportInfo = configuration.requireContext(ReportInfoContext.class).getValue();
         final Path indexHtml = outputDirectory.resolve("index.html");
         final List<PluginConfiguration> pluginConfigurations = configuration.getPlugins().stream()
                 .map(Plugin::getConfig)
@@ -89,8 +86,8 @@ public class ReportWebPlugin implements Aggregator {
                     .map(Boolean::parseBoolean)
                     .orElse(false);
             dataModel.put(Constants.NO_ANALYTICS, noAnalytics);
-            dataModel.put("reportUuid", reportInfo.getReportUuid());
-            dataModel.put("allureVersion", reportInfo.getAllureVersion());
+            dataModel.put("reportUuid", configuration.getUuid());
+            dataModel.put("allureVersion", configuration.getVersion());
             template.process(dataModel, writer);
         } catch (TemplateException e) {
             LOGGER.error("Couldn't write index file", e);
