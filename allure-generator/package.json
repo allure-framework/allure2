@@ -30,7 +30,7 @@
     "eslint-plugin-no-null": "^1.0.2",
     "eslint-plugin-prefer-arrow": "^1.2.2",
     "file-loader": "^6.2.0",
-    "handlebars-loader": "^1.7.1",
+    "handlebars-loader": "^1.7.3",
     "mini-css-extract-plugin": "^2.8.1",
     "postcss-loader": "^8.1.1",
     "postcss-rtl": "^2.0.0",
