@@ -3,7 +3,6 @@ import { View } from "backbone.marionette";
 import ErrorSplashView from "../../components/error-splash/ErrorSplashView";
 import SideNav from "../../components/side-nav/SideNavView";
 import { behavior, className, regions } from "../../decorators";
-import translate from "../../helpers/t";
 import template from "./AppLayout.hbs";
 
 @className("app")
@@ -27,10 +26,10 @@ class AppLayout extends View {
           this.showChildView("content", this.getContentView());
           this.onViewReady();
         })
-        .catch(() => {
+        .catch((e) => {
           this.showChildView(
             "content",
-            new ErrorSplashView({ code: 404, message: translate("errors.notFound") }),
+            new ErrorSplashView({ code: 404, message: e }),
           );
         });
     } else {

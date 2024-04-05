@@ -1,7 +1,8 @@
 import "./styles.scss";
 import { max } from "d3-array";
 import { scaleLinear, scalePoint } from "d3-scale";
-import { scaleOrdinal, schemeCategory20 } from "d3-scale";
+import { scaleOrdinal } from "d3-scale";
+import { schemeCategory10 } from "d3-scale-chromatic";
 import { area, line, stack } from "d3-shape";
 import BaseChartView from "../../components/graph-base/BaseChartView";
 import TooltipView from "../../components/tooltip/TooltipView";
@@ -22,7 +23,7 @@ class TrendChartView extends BaseChartView {
       .keys(this.keys)
       .value((d, key) => d.data[key] || 0);
 
-    this.color = options.colors || scaleOrdinal(schemeCategory20);
+    this.color = options.colors || scaleOrdinal(schemeCategory10);
 
     options.notStacked && this.stack.offset(() => {});
     this.yTickFormat = options.yTickFormat || ((d) => d);
@@ -179,7 +180,7 @@ class TrendChartView extends BaseChartView {
       .attr("width", (d, i) =>
         i === 0 || this.x(d.id) === this.width ? this.x.step() / 2 : this.x.step(),
       )
-      .on("mouseover", (d) => {
+      .on("mouseover", (event, d) => {
         const anchor = this.plot
           .append("circle")
           .attr("class", "anchor")

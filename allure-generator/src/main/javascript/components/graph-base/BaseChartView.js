@@ -1,8 +1,9 @@
 import "./styles.scss";
 import { View } from "backbone";
 import { axisBottom, axisLeft } from "d3-axis";
-import { event as currentEvent, select } from "d3-selection";
+import { select } from "d3-selection";
 import template from "./BaseChartView.hbs";
+import "d3-selection-multi";
 
 export default class BaseChartView extends View {
   PAD_LEFT = 50;
@@ -54,16 +55,14 @@ export default class BaseChartView extends View {
 
   makeAxis(axis, element, options, { left = 0, top = 0 } = {}) {
     Object.keys(options).forEach((option) => axis[option](options[option]));
-    element.call(axis).attrs({
-      transform: `translate(${left},${top})`,
-    });
+    element.call(axis).attr("transform", `translate(${left},${top})`);
     return axis;
   }
 
   getTooltipContent() {}
 
-  onItemOver(d) {
-    this.showTooltip(d, currentEvent.target);
+  onItemOver(event, d) {
+    this.showTooltip(d, event.target);
   }
 
   showTooltip(d, element) {
