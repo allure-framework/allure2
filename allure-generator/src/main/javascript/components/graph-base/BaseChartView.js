@@ -3,7 +3,6 @@ import { View } from "backbone";
 import { axisBottom, axisLeft } from "d3-axis";
 import { select } from "d3-selection";
 import template from "./BaseChartView.hbs";
-import "d3-selection-multi";
 
 export default class BaseChartView extends View {
   PAD_LEFT = 50;

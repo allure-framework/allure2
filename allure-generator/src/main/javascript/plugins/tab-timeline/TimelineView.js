@@ -11,7 +11,6 @@ import { byDuration } from "../../data/tree/filter";
 import { className } from "../../decorators";
 import duration from "../../helpers/duration";
 import translate from "../../helpers/t";
-import "d3-selection-multi";
 import escape from "../../utils/escape";
 import template from "./TimelineView.hbs";
 
