@@ -1,4 +1,4 @@
-export default function(...values) {
+export default function (...values) {
   values.pop();
   for (const value of values) {
     if (value) {

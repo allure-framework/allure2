@@ -20,7 +20,7 @@ export default class SeverityChartView extends BaseChartView {
   getChartData() {
     this.data = severities.map((severity) =>
       values.map((status) => {
-        const testResults = this.collection.filter(function(item) {
+        const testResults = this.collection.filter(function (item) {
           return item.status === status && item.severity === severity;
         });
         return {
@@ -69,13 +69,12 @@ export default class SeverityChartView extends BaseChartView {
       .enter()
       .append("rect");
 
-    bars.attrs({
-      x: (d) => this.status(d.status),
-      y: this.height,
-      height: 0,
-      width: this.status.step(),
-      class: (d) => `chart__bar chart__fill_status_${d.status}`,
-    });
+    bars
+      .attr("x", (d) => this.status(d.status))
+      .attr("y", this.height)
+      .attr("height", 0)
+      .attr("width", this.status.step())
+      .attr("class", (d) => `chart__bar chart__fill_status_${d.status}`);
 
     this.bindTooltip(bars);
 
@@ -83,10 +82,7 @@ export default class SeverityChartView extends BaseChartView {
       bars = bars.transition().duration(500);
     }
 
-    bars.attrs({
-      y: (d) => this.y(d.value),
-      height: (d) => this.height - this.y(d.value),
-    });
+    bars.attr("y", (d) => this.y(d.value)).attr("height", (d) => this.height - this.y(d.value));
     super.onAttach();
   }
 

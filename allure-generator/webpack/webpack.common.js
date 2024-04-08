@@ -2,12 +2,15 @@ const webpack = require("webpack");
 
 const utils = require("./utils.js");
 
-module.exports = options => ({
+module.exports = (options) => ({
   cache: options.env !== "production",
   resolve: {
     extensions: [".js", ".json"],
     alias: {
       app: utils.root("src/main/javascript"),
+    },
+    fallback: {
+      url: require.resolve("url"),
     },
   },
   module: {
@@ -20,11 +23,14 @@ module.exports = options => ({
       },
       {
         test: /\.(png|svg|woff2?|ttf|eot|gif)(\?.*)?$/,
-        use: "url-loader",
+        type: "asset/inline",
       },
       {
         test: /\.(ico)(\?.*)?$/,
-        loader: "file-loader?name=[name].ico",
+        loader: "file-loader",
+        options: {
+          name: "[name].ico",
+        },
       },
       {
         test: /\.hbs$/,
@@ -46,7 +52,6 @@ module.exports = options => ({
   plugins: [
     new webpack.DefinePlugin({
       "process.env": {
-        NODE_ENV: `'${options.env}'`,
         DEBUG_INFO_ENABLED: options.env === "development",
       },
     }),

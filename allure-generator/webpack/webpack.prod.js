@@ -1,7 +1,7 @@
-const webpackMerge = require("webpack-merge");
+const { merge } = require("webpack-merge");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const sass = require("sass");
 
 const commonConfig = require("./webpack.common.js");
@@ -11,13 +11,15 @@ const utils = require("./utils.js");
 const postcssLoader = {
   loader: "postcss-loader",
   options: {
-    plugins: [require("autoprefixer")()],
+    postcssOptions: {
+      plugins: [require("autoprefixer")()],
+    },
   },
 };
 
 const ENV = "production";
 
-module.exports = webpackMerge(commonConfig({ env: ENV }), {
+module.exports = merge(commonConfig({ env: ENV }), {
   mode: ENV,
   entry: {
     main: "./src/main/javascript/index",
@@ -50,23 +52,7 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
   },
   optimization: {
     runtimeChunk: false,
-    minimizer: [
-      new TerserPlugin({
-        cache: true,
-        parallel: true,
-        terserOptions: {
-          beautify: false,
-          comments: false,
-          compress: {
-            warnings: false,
-          },
-          mangle: {
-            keep_fnames: true,
-          },
-        },
-      }),
-      new OptimizeCSSAssetsPlugin({}),
-    ],
+    minimizer: [new TerserPlugin(), new CssMinimizerPlugin()],
   },
   plugins: [
     new MiniCssExtractPlugin({

@@ -3,21 +3,21 @@ import gtag from "./gtag";
 import settings from "./settings";
 
 export const LANGUAGES = [
-  { id: "en", title: "English" },
-  { id: "ru", title: "Русский" },
-  { id: "zh", title: "中文" },
-  { id: "de", title: "Deutsch" },
-  { id: "nl", title: "Nederlands" },
-  { id: "he", title: "Hebrew" },
-  { id: "br", title: "Brazil" },
-  { id: "pl", title: "Polski" },
-  { id: "ja", title: "日本語" },
-  { id: "es", title: "Español" },
-  { id: "kr", title: "한국어" },
-  { id: "fr", title: "Français" },
   { id: "az", title: "Azərbaycanca" },
-  { id: "tr", title: "Türkçe" },
+  { id: "br", title: "Brazil" },
+  { id: "de", title: "Deutsch" },
+  { id: "en", title: "English" },
+  { id: "es", title: "Español" },
+  { id: "fr", title: "Français" },
+  { id: "he", title: "Hebrew" },
   { id: "isv", abbr: "Ⱄ", title: "Medžuslovjansky" },
+  { id: "ja", title: "日本語" },
+  { id: "kr", title: "한국어" },
+  { id: "nl", title: "Nederlands" },
+  { id: "pl", title: "Polski" },
+  { id: "ru", title: "Русский" },
+  { id: "tr", title: "Türkçe" },
+  { id: "zh", title: "中文" },
 ];
 
 LANGUAGES.map((lang) => lang.id).forEach((lang) =>

@@ -78,21 +78,17 @@ export default class DurationChart extends BaseChartView {
 
     this.bindTooltip(bars);
 
-    bars.attrs({
-      x: (d) => this.x(d.x0) + 2,
-      y: this.height,
-      width: (d) => Math.max(this.x(d.x1) - this.x(d.x0) - 2, 0),
-      height: 0,
-    });
+    bars
+      .attr("x", (d) => this.x(d.x0) + 2)
+      .attr("y", this.height)
+      .attr("width", (d) => Math.max(this.x(d.x1) - this.x(d.x0) - 2, 0))
+      .attr("height", 0);
 
     if (this.firstRender) {
       bars = bars.transition().duration(500);
     }
 
-    bars.attrs({
-      y: (d) => this.y(d.y),
-      height: (d) => this.height - this.y(d.y),
-    });
+    bars.attr("y", (d) => this.y(d.y)).attr("height", (d) => this.height - this.y(d.y));
   }
 
   getTooltipContent({ testResults }) {

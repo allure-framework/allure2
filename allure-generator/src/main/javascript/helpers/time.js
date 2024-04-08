@@ -1,6 +1,6 @@
 import pad from "underscore.string/pad";
 
-export default function(date, showMilliseconds) {
+export default function (date, showMilliseconds) {
   if (!date) {
     return "unknown";
   }

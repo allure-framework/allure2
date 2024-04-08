@@ -3,7 +3,7 @@ import { axisBottom } from "d3-axis";
 import { brushX } from "d3-brush";
 import { drag } from "d3-drag";
 import { scaleLinear } from "d3-scale";
-import { event as currentEvent, select } from "d3-selection";
+import { select } from "d3-selection";
 import BaseChartView from "../../components/graph-base/BaseChartView";
 import TooltipView from "../../components/tooltip/TooltipView";
 import getComparator from "../../data/tree/comparator";
@@ -11,7 +11,6 @@ import { byDuration } from "../../data/tree/filter";
 import { className } from "../../decorators";
 import duration from "../../helpers/duration";
 import translate from "../../helpers/t";
-import "d3-selection-multi";
 import escape from "../../utils/escape";
 import template from "./TimelineView.hbs";
 
@@ -55,23 +54,21 @@ class TimelineView extends BaseChartView {
       .domain([this.minDuration, this.maxDuration])
       .clamp(true);
 
-    this.slider.append("line").attrs({
-      class: "timeline__slider_track",
-      x1: sliderScale.range()[0],
-      x2: sliderScale.range()[1],
-    });
+    this.slider
+      .append("line")
+      .attr("class", "timeline__slider_track")
+      .attr("x1", sliderScale.range()[0])
+      .attr("x2", sliderScale.range()[1]);
 
     this.handle = this.slider
       .insert("circle")
-      .attrs({
-        class: "timeline__slider_handle",
-        cx: sliderScale(this.selectedDuration),
-        r: 8,
-      })
+      .attr("class", "timeline__slider_handle")
+      .attr("cx", sliderScale(this.selectedDuration))
+      .attr("r", 8)
       .call(
         drag()
-          .on("drag", () => {
-            this.selectedDuration = sliderScale.invert(currentEvent.x);
+          .on("drag", (event) => {
+            this.selectedDuration = sliderScale.invert(event.x);
             this.handle.attr("cx", sliderScale(this.selectedDuration));
           })
           .on("end", () => {
@@ -160,10 +157,8 @@ class TimelineView extends BaseChartView {
     ]);
     this.svgBrush
       .append("g")
-      .attrs({
-        transform: `translate(${PADDING}, ${BAR_GAP})`,
-        class: "brush",
-      })
+      .attr("transform", `translate(${PADDING}, ${BAR_GAP})`)
+      .attr("class", "brush")
       .call(this.brush)
       .call(this.brush.move, this.chartX.range());
 
@@ -190,10 +185,10 @@ class TimelineView extends BaseChartView {
       .filter((item) => item.children)
       .forEach((item) => {
         let groupHeight = 0;
-        const group = parent.append("g").attrs({
-          class: "timeline__group",
-          transform: `translate(0, ${offset})`,
-        });
+        const group = parent
+          .append("g")
+          .attr("class", "timeline__group")
+          .attr("transform", `translate(0, ${offset})`);
 
         if (showTitle) {
           const text = group
@@ -225,14 +220,12 @@ class TimelineView extends BaseChartView {
         .append("a")
         .attr("xlink:href", (d) => `#testresult/${d.uid}`)
         .append("rect")
-        .attrs({
-          class: (d) => `timeline__item chart__fill_status_${d.status}`,
-          x: (d) => this.chartX(d.time.start),
-          width: (d) => this.chartX(d.time.start + d.time.duration),
-          rx: 2,
-          ry: 2,
-          height: BAR_HEIGHT,
-        });
+        .attr("class", (d) => `timeline__item chart__fill_status_${d.status}`)
+        .attr("x", (d) => this.chartX(d.time.start))
+        .attr("width", (d) => this.chartX(d.time.start + d.time.duration))
+        .attr("rx", 2)
+        .attr("ry", 2)
+        .attr("height", BAR_HEIGHT);
       this.bindTooltip(bars);
       bars.on("click", this.hideTooltip.bind(this));
       return BAR_HEIGHT + BAR_GAP;
@@ -240,25 +233,22 @@ class TimelineView extends BaseChartView {
     return 0;
   }
 
-  onBrushChange() {
-    const selection = currentEvent.selection;
+  onBrushChange(event) {
+    const selection = event.selection;
     const start = (d) => Math.max(0, Math.min(this.chartX(d.time.start), this.width));
     const stop = (d) => Math.max(0, Math.min(this.chartX(d.time.stop), this.width));
 
     if (selection) {
       this.chartX.domain(selection.map(this.brushX.invert, this.brushX));
-      this.svgChart.selectAll(".timeline__item").attrs({
-        x: (d) => start(d),
-        width: (d) => stop(d) - start(d),
-      });
+      this.svgChart
+        .selectAll(".timeline__item")
+        .attr("x", (d) => start(d))
+        .attr("width", (d) => stop(d) - start(d));
       this.svgBrush.select(".timeline__brush__axis_x").call(this.xBrushAxis);
       this.svgChart.select(".timeline__chart__axis_x").call(this.xChartAxis);
     }
 
-    this.svgBrush.selectAll(".handle").attrs({
-      y: 0,
-      height: BAR_HEIGHT,
-    });
+    this.svgBrush.selectAll(".handle").attr("y", 0).attr("height", BAR_HEIGHT);
   }
 
   getTooltipContent(d) {

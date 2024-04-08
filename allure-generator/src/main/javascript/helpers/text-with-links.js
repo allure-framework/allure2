@@ -5,7 +5,7 @@ const URL_REGEXP = /((?:(https?:\/\/|ftp:\/\/|mailto:)|www\.)\S+?)(\s|"|'|\)|]|}
 const encodeHTMLEntities = (rawString) =>
   rawString.replace(/[\u00A0-\u9999<>&]/gim, (i) => `&#${i.charCodeAt(0)};`);
 
-export default function(text) {
+export default function (text) {
   const hasUrl = text !== undefined && text.match(URL_REGEXP);
   return hasUrl
     ? new SafeString(
