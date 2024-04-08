@@ -173,6 +173,7 @@ subprojects {
         toolVersion = dependencyManagement.managedVersions["net.sourceforge.pmd:pmd-java"]!!
         ruleSets = listOf()
         ruleSetFiles = rootProject.files("gradle/quality-configs/pmd/pmd.xml")
+        targetJdk = TargetJdk.VERSION_1_7
     }
 
     spotbugs {

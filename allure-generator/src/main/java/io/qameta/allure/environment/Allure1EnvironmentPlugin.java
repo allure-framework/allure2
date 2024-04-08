@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Supplier;
 
 import static io.qameta.allure.allure1.Allure1Plugin.ENVIRONMENT_BLOCK_NAME;
@@ -51,13 +50,11 @@ public class Allure1EnvironmentPlugin extends CommonJsonAggregator2 {
         return launchEnvironments.stream()
                 .collect(groupingBy(Map.Entry::getKey, LinkedHashMap::new, mapping(Map.Entry::getValue, toSet())))
                 .entrySet().stream()
-                .map(Allure1EnvironmentPlugin::aggregateItem)
+                .map(entry -> new EnvironmentItem()
+                        .setName(entry.getKey())
+                        .setValues(new ArrayList<>(entry.getValue()))
+                )
                 .collect(toList());
     }
 
-    private static EnvironmentItem aggregateItem(final Map.Entry<String, Set<String>> entry) {
-        return new EnvironmentItem()
-                .setName(entry.getKey())
-                .setValues(new ArrayList<>(entry.getValue()));
-    }
 }
