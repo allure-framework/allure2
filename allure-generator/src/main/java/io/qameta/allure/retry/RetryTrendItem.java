@@ -27,6 +27,7 @@ public class RetryTrendItem extends TrendItem {
 
     private static final String RETRY_KEY = "retry";
 
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public RetryTrendItem() {
         this.setMetric(RETRY_KEY, 0L);
         this.setMetric(RUN_KEY, 0L);

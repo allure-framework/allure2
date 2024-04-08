@@ -95,7 +95,7 @@ subprojects {
             dependency("commons-beanutils:commons-beanutils:1.9.4")
             dependency("commons-io:commons-io:2.16.0")
             dependency("javax.xml.bind:jaxb-api:2.3.1")
-            dependency("net.sourceforge.pmd:pmd-java:6.55.0")
+            dependency("net.sourceforge.pmd:pmd-java:7.0.0")
             dependency("org.allurefw:allure1-model:1.0")
             dependency("org.apache.commons:commons-collections4:4.4")
             dependency("org.apache.commons:commons-lang3:3.14.0")
@@ -173,6 +173,7 @@ subprojects {
         toolVersion = dependencyManagement.managedVersions["net.sourceforge.pmd:pmd-java"]!!
         ruleSets = listOf()
         ruleSetFiles = rootProject.files("gradle/quality-configs/pmd/pmd.xml")
+        targetJdk = TargetJdk.VERSION_1_7
     }
 
     spotbugs {

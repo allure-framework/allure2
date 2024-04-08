@@ -46,10 +46,10 @@ public final class ResultsUtils {
     public static TestResult getTestResult(final Map<String, Object> props) {
         return new TestResult()
                 .setUid(UUID.randomUUID().toString())
-                .setName(ResultsUtils.getTestName(props))
-                .setStatus(ResultsUtils.getTestStatus(props))
-                .setFullName(ResultsUtils.getFullName(props))
-                .setTime(ResultsUtils.getTestTime(props))
+                .setName(getTestName(props))
+                .setStatus(getTestStatus(props))
+                .setFullName(getFullName(props))
+                .setTime(getTestTime(props))
                 .setTestStage(new StageResult());
     }
 
@@ -102,8 +102,8 @@ public final class ResultsUtils {
     }
 
     private static long parseTime(final String time) {
-        final Double doubleTime = Double.parseDouble(time);
-        final int seconds = doubleTime.intValue();
-        return seconds * 1000;
+        final double doubleTime = Double.parseDouble(time);
+        final int seconds = (int) doubleTime;
+        return seconds * 1000L;
     }
 }

@@ -92,6 +92,10 @@ public class Allure2Plugin implements Reader {
             nullsLast(comparing(Time::getStart, nullsLast(naturalOrder())))
     );
 
+    private static final Comparator<Parameter> PARAMETER_COMPARATOR =
+            comparing(Parameter::getName, nullsFirst(naturalOrder()))
+                    .thenComparing(Parameter::getValue, nullsFirst(naturalOrder()));
+
     private final ObjectMapper mapper = JsonMapper.builder()
             .enable(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME)
             .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
@@ -316,11 +320,16 @@ public class Allure2Plugin implements Reader {
     }
 
     private List<Parameter> getParameters(final TestResult result) {
-        final TreeSet<Parameter> parametersSet = new TreeSet<>(
-                comparing(Parameter::getName, nullsFirst(naturalOrder()))
-                        .thenComparing(Parameter::getValue, nullsFirst(naturalOrder()))
+        final List<Parameter> parameters = convertList(
+                result.getParameters(),
+                p -> !HIDDEN.equals(p.getMode()),
+                this::convert
         );
-        parametersSet.addAll(convertList(result.getParameters(), p -> !HIDDEN.equals(p.getMode()), this::convert));
+        if (Objects.isNull(parameters)) {
+            return new ArrayList<>();
+        }
+        final Set<Parameter> parametersSet = new TreeSet<>(PARAMETER_COMPARATOR);
+        parametersSet.addAll(parameters);
         return new ArrayList<>(parametersSet);
     }
 

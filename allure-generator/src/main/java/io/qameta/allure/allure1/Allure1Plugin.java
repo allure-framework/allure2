@@ -370,11 +370,12 @@ public class Allure1Plugin implements Reader {
     }
 
     private List<Parameter> getParameters(final TestCaseResult source) {
-        final TreeSet<Parameter> parametersSet = new TreeSet<>(
-                comparing(Parameter::getName, nullsFirst(naturalOrder()))
-                        .thenComparing(Parameter::getValue, nullsFirst(naturalOrder()))
-        );
-        parametersSet.addAll(convertList(source.getParameters(), this::hasArgumentType, this::convert));
+        final List<Parameter> parameters = convertList(source.getParameters(), this::hasArgumentType, this::convert);
+        if (Objects.isNull(parameters)) {
+            return new ArrayList<>();
+        }
+        final Set<Parameter> parametersSet = new TreeSet<>(PARAMETER_COMPARATOR);
+        parametersSet.addAll(parameters);
         return new ArrayList<>(parametersSet);
     }
 
@@ -467,7 +468,7 @@ public class Allure1Plugin implements Reader {
         try (InputStream is = Files.newInputStream(source)) {
             return Optional.of(xmlMapper.readValue(is, TestSuiteResult.class));
         } catch (IOException e) {
-            LOGGER.error("Could not read xml result {}: {}", source, e);
+            LOGGER.error("Could not read xml result {}", source, e);
         }
         return Optional.empty();
     }
@@ -476,7 +477,7 @@ public class Allure1Plugin implements Reader {
         try (InputStream is = Files.newInputStream(source)) {
             return Optional.of(jsonMapper.readValue(is, TestSuiteResult.class));
         } catch (IOException e) {
-            LOGGER.error("Could not read json result {}: {}", source, e);
+            LOGGER.error("Could not read json result {}", source, e);
             return Optional.empty();
         }
     }
