@@ -74,9 +74,7 @@ class TreeView extends View {
     this.selectNode();
     if (this.state.get(SEARCH_QUERY_KEY)) {
       this.$(".node__title").each((i, node) => {
-        this.$(node)
-          .parent()
-          .addClass("node__expanded");
+        this.$(node).parent().addClass("node__expanded");
       });
     } else {
       this.restoreState();
@@ -114,17 +112,13 @@ class TreeView extends View {
       const uid = el.data("uid");
       el.toggleClass("node__expanded", this.state.has(uid));
     });
-    this.$(".node__title_active")
-      .parents(".node")
-      .toggleClass("node__expanded", true);
+    this.$(".node__title_active").parents(".node").toggleClass("node__expanded", true);
     if (this.$(".node").parents(".node__expanded").length > 0) {
       this.$(".node__expanded")
         .parents("div.node.node__expanded")
         .toggleClass("node__expanded", true);
     } else {
-      this.$(".node__expanded")
-        .parents(".node")
-        .toggleClass("node__expanded", true);
+      this.$(".node__expanded").parents(".node").toggleClass("node__expanded", true);
     }
   }
 

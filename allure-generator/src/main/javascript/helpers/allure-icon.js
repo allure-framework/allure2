@@ -44,7 +44,7 @@ const icons = {
   },
 };
 
-export default function(value, opts) {
+export default function (value, opts) {
   const {
     hash: { extraClasses = "", noTooltip = false },
   } = opts;

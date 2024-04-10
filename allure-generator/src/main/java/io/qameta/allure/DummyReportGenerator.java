@@ -135,7 +135,7 @@ public final class DummyReportGenerator {
                 .withPlugins(plugins)
                 .build();
         final ReportGenerator generator = new ReportGenerator(configuration);
-        generator.generateSingleFile(files[lastIndex], Arrays.asList(Arrays.copyOf(files, lastIndex)));
+        generator.generate(files[lastIndex], Arrays.asList(Arrays.copyOf(files, lastIndex)));
     }
 
     public static Path[] getFiles(final String... paths) {

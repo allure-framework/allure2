@@ -2,7 +2,7 @@ import { Collection } from "backbone";
 import { reportDataUrl } from "../../data/loader";
 
 export default class GraphCollection extends Collection {
-  url = function() {
+  url = function () {
     return "widgets/status-chart.json";
   };
 

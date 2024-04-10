@@ -1,5 +1,5 @@
 import { Model } from "backbone";
-import TestResultTreeView from "../../components/testresult-tree/TestResultTreeView";
+import TestResultTreeView from "../../components/testresult-tree/TestResultTreeView.js";
 import TreeCollection from "../../data/tree/TreeCollection";
 import router from "../../router";
 import AppLayout from "../application/AppLayout";

@@ -26,13 +26,10 @@
 
   <!-- Code style (https://pmd.github.io/pmd-6.0.1/pmd_rules_java_codestyle.html) -->
   <rule ref="category/java/codestyle.xml">
-    <exclude name="AbstractNaming"/>
     <exclude name="AtLeastOneConstructor"/>
-    <exclude name="AvoidFinalLocalVariable"/>
     <exclude name="CallSuperInConstructor"/>
     <exclude name="CommentDefaultAccessModifier"/>
     <exclude name="ConfusingTernary"/>
-    <exclude name="DefaultPackage"/>
     <exclude name="GenericsNaming"/>
     <exclude name="LinguisticNaming"/>
     <exclude name="LocalHomeNamingConvention"/> <!-- earlier j2ee group-->
@@ -48,6 +45,7 @@
     <exclude name="ShortVariable"/>
     <exclude name="TooManyStaticImports"/>
     <exclude name="UnnecessaryAnnotationValueElement"/>
+    <exclude name="UseDiamondOperator"/>
     <exclude name="UselessParentheses"/>
   </rule>
 
@@ -60,16 +58,13 @@
   <!-- Design (https://pmd.github.io/pmd-6.0.1/pmd_rules_java_design.html) -->
   <rule ref="category/java/design.xml">
     <exclude name="AvoidCatchingGenericException"/>
+    <exclude name="CouplingBetweenObjects"/>
     <exclude name="DataClass"/>
-    <exclude name="ExcessiveClassLength"/> <!-- replaced by NcssCount -->
     <exclude name="ExcessiveImports"/>
-    <exclude name="ExcessiveMethodLength"/> <!-- replaced by NcssCount -->
     <exclude name="LawOfDemeter"/>
     <exclude name="CyclomaticComplexity"/> <!-- disabled in favour of checkstyle's CyclomaticComplexity check -->
     <exclude name="LoosePackageCoupling"/>
-    <exclude name="ModifiedCyclomaticComplexity"/>
     <exclude name="SignatureDeclareThrowsException"/>
-    <exclude name="StdCyclomaticComplexity"/>
     <exclude name="TooManyFields"/>
   </rule>
   <rule ref="category/java/design.xml/AvoidDeeplyNestedIfStmts">
@@ -106,13 +101,12 @@
   <rule ref="category/java/errorprone.xml">
     <exclude name="AvoidCatchingThrowable"/>
     <exclude name="AvoidFieldNameMatchingMethodName"/>
-    <exclude name="DataflowAnomalyAnalysis"/>
+    <exclude name="AvoidLiteralsInIfCondition"/>
     <exclude name="EmptyFinalizer"/>
     <exclude name="FinalizeDoesNotCallSuperFinalize"/>
     <exclude name="FinalizeOnlyCallsSuperFinalize"/>
     <exclude name="JUnitSpelling"/>
     <exclude name="JUnitStaticSuite"/>
-    <exclude name="LoggerIsNotStaticFinal"/>
     <exclude name="MissingSerialVersionUID"/>
     <exclude name="NullAssignment"/> <!-- disabled due to false positive for initialization with ternary operator -->
     <exclude name="StaticEJBFieldShouldBeFinal"/> <!-- earlier j2ee group-->

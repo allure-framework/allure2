@@ -1,5 +1,5 @@
 const ensureReportDataReady = () =>
-  new Promise(function(resolve) {
+  new Promise(function (resolve) {
     (function waitForReady() {
       if (window.reportDataReady !== false) {
         return resolve(true);
@@ -9,8 +9,8 @@ const ensureReportDataReady = () =>
   });
 
 const loadReportData = (name) => {
-  return ensureReportDataReady().then(function() {
-    return new Promise(function(resolve, reject) {
+  return ensureReportDataReady().then(function () {
+    return new Promise(function (resolve, reject) {
       if (window.reportData[name]) {
         resolve(window.reportData[name]);
       } else {

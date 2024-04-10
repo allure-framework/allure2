@@ -48,9 +48,7 @@ class TestResultExecutionView extends View {
 
   @on("click .step__title_hasContent")
   onStepClick(e) {
-    this.$(e.currentTarget)
-      .parent()
-      .toggleClass("step_expanded");
+    this.$(e.currentTarget).parent().toggleClass("step_expanded");
   }
 
   @on("click .attachment-row")
@@ -73,19 +71,14 @@ class TestResultExecutionView extends View {
 
   @on("click .attachment-row__fullscreen")
   onAttachmnetFullScrennClick(e) {
-    const attachment = $(e.currentTarget)
-      .closest(".attachment-row")
-      .data("uid");
+    const attachment = $(e.currentTarget).closest(".attachment-row").data("uid");
     router.setSearch({ attachment });
     e.stopPropagation();
   }
 
   @on("click .parameters-table__cell")
   onParameterClick(e) {
-    this.$(e.target)
-      .siblings()
-      .addBack()
-      .toggleClass("line-ellipsis");
+    this.$(e.target).siblings().addBack().toggleClass("line-ellipsis");
   }
 }
 

@@ -80,22 +80,22 @@ subprojects {
             mavenBom("com.squareup.okhttp3:okhttp-bom:4.12.0")
             // latest version that supports java 8
             mavenBom("com.vladsch.flexmark:flexmark-all:0.62.2")
-            mavenBom("io.qameta.allure:allure-bom:2.26.0")
+            mavenBom("io.qameta.allure:allure-bom:2.27.0")
             mavenBom("org.junit:junit-bom:5.10.2")
         }
         dependencies {
             dependency("ch.qos.logback:logback-classic:1.3.14")
             dependency("com.beust:jcommander:1.82")
-            dependency("com.github.spotbugs:spotbugs-annotations:4.8.3")
-            dependency("com.github.spotbugs:spotbugs:4.8.3")
+            dependency("com.github.spotbugs:spotbugs-annotations:4.8.4")
+            dependency("com.github.spotbugs:spotbugs:4.8.4")
             dependency("com.opencsv:opencsv:4.6")
             dependency("com.puppycrawl.tools:checkstyle:10.15.0")
             dependency("com.squareup.retrofit2:converter-jackson:${comSquareupRetrofit2Version}")
             dependency("com.squareup.retrofit2:retrofit:${comSquareupRetrofit2Version}")
             dependency("commons-beanutils:commons-beanutils:1.9.4")
-            dependency("commons-io:commons-io:2.16.0")
+            dependency("commons-io:commons-io:2.16.1")
             dependency("javax.xml.bind:jaxb-api:2.3.1")
-            dependency("net.sourceforge.pmd:pmd-java:6.55.0")
+            dependency("net.sourceforge.pmd:pmd-java:7.0.0")
             dependency("org.allurefw:allure1-model:1.0")
             dependency("org.apache.commons:commons-collections4:4.4")
             dependency("org.apache.commons:commons-lang3:3.14.0")
@@ -173,6 +173,7 @@ subprojects {
         toolVersion = dependencyManagement.managedVersions["net.sourceforge.pmd:pmd-java"]!!
         ruleSets = listOf()
         ruleSetFiles = rootProject.files("gradle/quality-configs/pmd/pmd.xml")
+        targetJdk = TargetJdk.VERSION_1_7
     }
 
     spotbugs {

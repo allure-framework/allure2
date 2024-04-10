@@ -63,7 +63,7 @@ class PieChartView extends BaseChartView {
 
     const sectors = this.svg
       .select(".chart__plot")
-      .attrs({ transform: `translate(${leftOffset},${topOffset})` })
+      .attr("transform", `translate(${leftOffset},${topOffset})`)
       .selectAll(".chart__arc")
       .data(this.pie(data))
       .enter()
@@ -76,8 +76,8 @@ class PieChartView extends BaseChartView {
       .select(".chart__plot")
       .append("text")
       .classed("chart__caption", true)
-      .attrs({ dy: "0.4em" })
-      .styles({ "font-size": `${radius / 3}px` })
+      .attr("dy", "0.4em")
+      .style("font-size", `${radius / 3}px`)
       .text(this.getChartTitle());
 
     if (this.firstRender) {
@@ -146,9 +146,11 @@ class PieChartView extends BaseChartView {
   onLegendHover(e) {
     const el = this.$(e.currentTarget);
     const status = el.data("status");
-    const sector = this.$(`.chart__fill_status_${status}`)[0];
-    const data = select(sector).datum();
-    this.showTooltip(data, sector);
+    const sector = this.$el.find(`.chart__fill_status_${status}`)[0];
+    if (sector) {
+      const data = select(sector).datum();
+      this.showTooltip(data, sector);
+    }
   }
 }
 

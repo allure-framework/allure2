@@ -18,7 +18,7 @@ class SideBySideView extends View {
     const splitter = split([".side-by-side__left", ".side-by-side__right"], {
       gutterSize: 7,
       sizes: settings.getSideBySidePosition(),
-      onDragEnd: function() {
+      onDragEnd: function () {
         const sizes = splitter.getSizes();
         settings.setSideBySidePosition(sizes);
         gtag("side-by-side-resize", { sizes });
