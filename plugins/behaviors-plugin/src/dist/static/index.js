@@ -182,6 +182,20 @@ allure.api.addTranslation('az', {
     }
 });
 
+allure.api.addTranslation('sv', {
+    tab: {
+        behaviors: {
+            name: 'Beteenden'
+        }
+    },
+    widget: {
+        behaviors: {
+            name: 'Funktioner efter user stories',
+            showAll: 'visa allt'
+        }
+    }
+});
+
 allure.api.addTranslation('isv', {
     tab: {
         behaviors: {
