@@ -16,6 +16,7 @@ export const LANGUAGES = [
   { id: "nl", title: "Nederlands" },
   { id: "pl", title: "Polski" },
   { id: "ru", title: "Русский" },
+  { id: "sv", title: "Svenska" },
   { id: "tr", title: "Türkçe" },
   { id: "zh", title: "中文" },
 ];

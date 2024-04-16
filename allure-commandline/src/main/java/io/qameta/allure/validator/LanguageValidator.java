@@ -44,6 +44,7 @@ public class LanguageValidator implements IParameterValidator {
                     "fr",
                     "az",
                     "tr",
+                    "sv",
                     "isv"
             ))
     );

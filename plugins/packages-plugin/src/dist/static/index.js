@@ -104,6 +104,14 @@ allure.api.addTranslation('az', {
     }
 });
 
+allure.api.addTranslation('sv', {
+    tab: {
+        packages: {
+            name: 'Paket'
+        }
+    }
+});
+
 allure.api.addTranslation('isv', {
     tab: {
         packages: {
