@@ -10,7 +10,7 @@ import template from "./LanguageSelectView.hbs";
 @className("language-select popover")
 class LanguageSelectView extends PopoverView {
   initialize() {
-    super.initialize({ position: "right" });
+    super.initialize({ position: "top-right" });
   }
 
   setContent() {

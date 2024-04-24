@@ -12,7 +12,12 @@ export const POSITION = {
       left: left + width / 2 - tipSize.width / 2,
     };
   },
-
+  "top-right": function ({ top, left, width }, { offset }, tipSize) {
+    return {
+      top: top - tipSize.height - offset,
+      left: left + width + offset,
+    };
+  },
   center: function ({ top, left, height, width }, offsets, tipSize) {
     return {
       top: top + height / 2,
