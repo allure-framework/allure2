@@ -19,7 +19,27 @@
             if (matchedImage) {
                 return 'data/attachments/' + matchedImage.source;
             }
+            return findImageInSteps(data.testStage.steps, name)
         }
+        return null;
+    }
+
+    function findImageInSteps(steps, name) {
+        for (var index = 0; index < steps.length; index++) {
+            var matchedImage = steps[index].attachments.filter(function (attachment) {
+                return attachment.name === name;
+            })[0];
+
+            if (matchedImage) {
+                return "data/attachments/" + matchedImage.source;
+            }
+
+            var foundImage = findImageInSteps(steps[index].steps, name);
+            if (foundImage) {
+                return foundImage;
+            }
+        }
+
         return null;
     }
 
