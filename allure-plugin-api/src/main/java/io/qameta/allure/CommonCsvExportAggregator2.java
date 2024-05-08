@@ -15,17 +15,14 @@
  */
 package io.qameta.allure;
 
-import com.opencsv.bean.BeanField;
-import com.opencsv.bean.ColumnPositionMappingStrategy;
-import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.HeaderColumnNameMappingStrategy;
+import com.opencsv.bean.HeaderColumnNameMappingStrategyBuilder;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -60,7 +57,8 @@ public abstract class CommonCsvExportAggregator2<T> implements Aggregator2 {
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         try (Writer writer = new OutputStreamWriter(bos, StandardCharsets.UTF_8)) {
             final StatefulBeanToCsvBuilder<T> builder = new StatefulBeanToCsvBuilder<>(writer);
-            final CustomMappingStrategy<T> mappingStrategy = new CustomMappingStrategy<>();
+            final HeaderColumnNameMappingStrategy<T> mappingStrategy =
+                    new HeaderColumnNameMappingStrategyBuilder<T>().build();
             mappingStrategy.setType(type);
             final StatefulBeanToCsv<T> beanWriter = builder.withMappingStrategy(mappingStrategy).build();
             try {
@@ -78,39 +76,4 @@ public abstract class CommonCsvExportAggregator2<T> implements Aggregator2 {
     }
 
     protected abstract List<T> getData(List<LaunchResults> launchesResults);
-
-    @SuppressWarnings("all")
-    private static final class CustomMappingStrategy<T> extends ColumnPositionMappingStrategy<T> {
-
-        @Override
-        public String[] generateHeader(T bean) throws CsvRequiredFieldEmptyException {
-
-            super.setColumnMapping(new String[FieldUtils.getAllFields(bean.getClass()).length]);
-            final int numColumns = findMaxFieldIndex();
-            if (!isAnnotationDriven() || numColumns == -1) {
-                return super.generateHeader(bean);
-            }
-
-            String[] header = new String[numColumns + 1];
-
-            BeanField<T> beanField;
-            for (int i = 0; i <= numColumns; i++) {
-                beanField = findField(i);
-                String columnHeaderName = extractHeaderName(beanField);
-                header[i] = columnHeaderName;
-            }
-            return header;
-        }
-
-        private String extractHeaderName(final BeanField<T> beanField) {
-            if (beanField == null || beanField.getField() == null
-                || beanField.getField().getDeclaredAnnotationsByType(CsvBindByName.class).length == 0) {
-                return StringUtils.EMPTY;
-            }
-
-            final CsvBindByName bindByNameAnnotation = beanField.getField()
-                    .getDeclaredAnnotationsByType(CsvBindByName.class)[0];
-            return bindByNameAnnotation.column();
-        }
-    }
 }
