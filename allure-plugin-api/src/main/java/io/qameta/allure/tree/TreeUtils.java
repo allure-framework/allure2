@@ -49,6 +49,7 @@ public final class TreeUtils {
                                                 final LabelName... labelNames) {
         return Stream.of(labelNames)
                 .map(testResult::findAllLabels)
+                .map(strings -> strings.stream().distinct().collect(Collectors.toList()))
                 .filter(strings -> !strings.isEmpty())
                 .map(DefaultTreeLayer::new)
                 .collect(Collectors.toList());
