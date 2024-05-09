@@ -32,9 +32,9 @@
         "shown_0": "{{count}} pokazany",
         "shown_1": "{{count}} pokazane",
         "shown_2": "{{count}} pokazane",
-        "total_0": "{{count}} test vsěgo",
-        "total_1": "{{count}} testy vsěgo",
-        "total_2": "{{count}} testov vsěgo"
+        "total_0": "{{count}} test vsego",
+        "total_1": "{{count}} testy vsego",
+        "total_2": "{{count}} testov vsego"
       },
       "groups": "Pokaži informaciju o grupah",
       "time": {
@@ -55,9 +55,9 @@
     },
     "widgetStatus": {
       "showAll": "Pokaži vsečto",
-      "total_0": "{{count}} element vsěgo",
-      "total_1": "{{count}} elementa vsěgo",
-      "total_2": "{{count}} elementov vsěgo"
+      "total_0": "{{count}} element vsego",
+      "total_1": "{{count}} elementa vsego",
+      "total_2": "{{count}} elementov vsego"
     }
   },
   "controls": {
