@@ -74,8 +74,6 @@ ospackage {
     os = org.redline_rpm.header.Os.LINUX
     release = "1"
 
-    requires("default-jre-headless")
-
     // Remove closureOf when https://github.com/nebula-plugins/gradle-ospackage-plugin/issues/399 is fixed
     from("${pack}/bin", closureOf<CopySpec> {
         into("${dest}/bin")
@@ -97,10 +95,12 @@ ospackage {
 
 val buildDeb by tasks.existing(Deb::class) {
     dependsOn(preparePackageOutput)
+    requires("default-jre-headless")
 }
 
 val buildRpm by tasks.existing(Rpm::class) {
     dependsOn(preparePackageOutput)
+    requires("jre")
 }
 
 publishing {
