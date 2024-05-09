@@ -32,7 +32,7 @@ class OwnerAddressParserTest {
 
     @Test
     void shouldParseRFC2822FormattedStringWithEmail() {
-        String input = "John Doe <john.doe@example.com>";
+        String input = "John Doe < john.doe@example.com >";
         OwnerAddress expected = new OwnerAddress("John Doe", "mailto:john.doe@example.com");
         assertEquals(expected.getDisplayName(), OwnerAddressParser.parseAddress(input).getDisplayName());
         assertEquals(expected.getUrl(), OwnerAddressParser.parseAddress(input).getUrl());
@@ -40,10 +40,18 @@ class OwnerAddressParserTest {
 
     @Test
     void shouldParseRFC2822FormattedStringWithURL() {
-        String input = "John Doe <https://github.com/john.doe>";
-        OwnerAddress expected = new OwnerAddress("John Doe", "https://github.com/john.doe");
+        String input = "John Doe <https://github.com/@john.doe>";
+        OwnerAddress expected = new OwnerAddress("John Doe", "https://github.com/@john.doe");
         assertEquals(expected.getDisplayName(), OwnerAddressParser.parseAddress(input).getDisplayName());
         assertEquals(expected.getUrl(), OwnerAddressParser.parseAddress(input).getUrl());
+    }
+
+    @Test
+    void shouldReturnOnlyDisplayNameForEmptyRFC822Address() {
+        String emptyAddress = "John Doe <>";
+        OwnerAddress actual = OwnerAddressParser.parseAddress(emptyAddress);
+        assertEquals("John Doe", actual.getDisplayName());
+        assertNull(actual.getUrl());
     }
 
     @Test
@@ -68,5 +76,29 @@ class OwnerAddressParserTest {
         OwnerAddress expected = new OwnerAddress(validUrl, validUrl);
         assertEquals(expected.getDisplayName(), OwnerAddressParser.parseAddress(validUrl).getDisplayName());
         assertEquals(expected.getUrl(), OwnerAddressParser.parseAddress(validUrl).getUrl());
+    }
+
+    @Test
+    void shouldReturnOnlyDisplayNameForInvalidURL() {
+        String invalidUrl = "htp:/www.example.com/page";
+        OwnerAddress actual = OwnerAddressParser.parseAddress(invalidUrl);
+        assertEquals(invalidUrl, actual.getDisplayName());
+        assertNull(actual.getUrl());
+    }
+
+    @Test
+    void shouldReturnOnlyDisplayNameForInvalidEmail() {
+        String invalidEmail = "user@.example.com";
+        OwnerAddress actual = OwnerAddressParser.parseAddress(invalidEmail);
+        assertEquals(invalidEmail, actual.getDisplayName());
+        assertNull(actual.getUrl());
+    }
+
+    @Test
+    void shouldReturnInvalidRFC822AddressUnchanged() {
+        String invalidAddress = "John Doe <john@@doe>";
+        OwnerAddress actual = OwnerAddressParser.parseAddress(invalidAddress);
+        assertEquals(invalidAddress, actual.getDisplayName());
+        assertNull(actual.getUrl());
     }
 }

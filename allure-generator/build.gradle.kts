@@ -106,6 +106,7 @@ dependencies {
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
     implementation("com.fasterxml.jackson.module:jackson-module-jaxb-annotations")
     implementation("commons-io:commons-io")
+    implementation("commons-validator:commons-validator:1.7")
     implementation("io.qameta.allure:allure-model")
     implementation("javax.xml.bind:jaxb-api")
     implementation("org.allurefw:allure1-model")

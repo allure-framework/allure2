@@ -15,50 +15,62 @@
  */
 package io.qameta.allure.owner;
 
-import java.net.MalformedURLException;
+import org.apache.commons.validator.routines.EmailValidator;
+import org.apache.commons.validator.routines.UrlValidator;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class OwnerAddressParser {
-    private static final Pattern RFC2822_ADDRESS = Pattern.compile("^(.*) <(.*)>$");
-    private static final Pattern LOOKS_LIKE_EMAIL = Pattern.compile("^[^@]+@[^@]+$");
+    private static final Pattern RFC2822_ADDRESS = Pattern.compile("^([^<>]+)\\s+<\\s*(\\S*)\\s*>$");
 
     private OwnerAddressParser() {
     }
 
+    @SuppressWarnings("ReturnCount")
     public static OwnerAddress parseAddress(final String maybeAddress) {
         if (maybeAddress == null || maybeAddress.isEmpty()) {
             return null;
         }
 
+        // Prevent performance degradation for plain text
+        if (!isLikelyAddress(maybeAddress)) {
+            return new OwnerAddress(maybeAddress, null);
+        }
+
+        String displayName = maybeAddress;
+        String urlOrEmail = maybeAddress;
+
         final Matcher matcher = RFC2822_ADDRESS.matcher(maybeAddress);
         if (matcher.matches()) {
-            final String displayName = matcher.group(1);
-            final String url = toHref(matcher.group(2));
-            return new OwnerAddress(displayName, url);
+            displayName = matcher.group(1);
+            urlOrEmail = matcher.group(2);
         }
 
-        return new OwnerAddress(maybeAddress, toHref(maybeAddress));
+        // e.g.: John Doe <>
+        if (urlOrEmail.isEmpty()) {
+            return new OwnerAddress(displayName, null);
+        }
+
+        // e.g.: John Doe <https://example.com>
+        if (UrlValidator.getInstance().isValid(urlOrEmail)) {
+            return new OwnerAddress(displayName, urlOrEmail);
+        }
+
+        // e.g.: John Doe <mail@example.com>
+        if (EmailValidator.getInstance().isValid(urlOrEmail)) {
+            return new OwnerAddress(displayName, "mailto:" + urlOrEmail);
+        }
+
+        // Non-compliant addresses are treated as plain text
+        return new OwnerAddress(maybeAddress, null);
     }
 
-    private static String toHref(final String address) {
-        if (isValidURL(address)) {
-            return address;
-        }
-
-        if (LOOKS_LIKE_EMAIL.matcher(address).matches()) {
-            return "mailto:" + address;
-        }
-
-        return null;
-    }
-
-    private static boolean isValidURL(final String maybeURL) {
-        try {
-            new java.net.URL(maybeURL);
-            return true;
-        } catch (MalformedURLException e) {
-            return false;
-        }
+    /**
+     * Checks if the given string is likely to be a plain text (not an email or URL).
+     * Regular expressions are slow, therefore we just check for common characters.
+     */
+    private static boolean isLikelyAddress(final String input) {
+        return input.contains("@") || input.contains(":") || input.contains("<");
     }
 }
