@@ -86,8 +86,8 @@ subprojects {
         dependencies {
             dependency("ch.qos.logback:logback-classic:1.3.14")
             dependency("com.beust:jcommander:1.82")
-            dependency("com.github.spotbugs:spotbugs-annotations:4.8.5")
-            dependency("com.github.spotbugs:spotbugs:4.8.5")
+            dependency("com.github.spotbugs:spotbugs-annotations:4.8.6")
+            dependency("com.github.spotbugs:spotbugs:4.8.6")
             dependency("com.opencsv:opencsv:5.9")
             dependency("com.puppycrawl.tools:checkstyle:10.17.0")
             dependency("com.squareup.retrofit2:converter-jackson:${comSquareupRetrofit2Version}")
