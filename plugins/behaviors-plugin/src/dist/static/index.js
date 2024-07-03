@@ -210,6 +210,22 @@ allure.api.addTranslation('isv', {
     }
 });
 
+
+allure.api.addTranslation('ka', {
+    tab: {
+        behaviors: {
+            name: 'ფუნქციონალი',
+        }
+    },
+    widget: {
+        behaviors: {
+            name: 'ფუნქციონალი',
+            showAll: 'ყველას ჩვენება',
+        }
+    }
+});
+
+
 allure.api.addTab('behaviors', {
     title: 'tab.behaviors.name', icon: 'fa fa-list',
     route: 'behaviors(/)(:testGroup)(/)(:testResult)(/)(:testResultTab)(/)',
