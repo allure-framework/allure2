@@ -49,7 +49,9 @@ public class TimeMetric implements Metric {
                 lineFactory.apply("duration", zeroIfNull(groupTime.getDuration())),
                 lineFactory.apply("min_duration", zeroIfNull(groupTime.getMinDuration())),
                 lineFactory.apply("max_duration", zeroIfNull(groupTime.getMaxDuration())),
-                lineFactory.apply("sum_duration", zeroIfNull(groupTime.getSumDuration()))
+                lineFactory.apply("sum_duration", zeroIfNull(groupTime.getSumDuration())),
+                lineFactory.apply("start", zeroIfNull(groupTime.getStart())),
+                lineFactory.apply("stop", zeroIfNull(groupTime.getStop()))
         );
     }
 
