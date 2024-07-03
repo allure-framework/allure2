@@ -55,10 +55,10 @@ pluginManagement {
         id("com.diffplug.spotless") version "6.25.0"
         id("com.github.node-gradle.node") version "7.0.2"
         id("com.gorylenko.gradle-git-properties") version "2.4.2"
-        id("com.netflix.nebula.ospackage") version "11.9.0"
+        id("com.netflix.nebula.ospackage") version "11.9.1"
         id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
         id("io.spring.dependency-management") version "1.1.5"
-        id("org.owasp.dependencycheck") version "9.2.0"
+        id("org.owasp.dependencycheck") version "10.0.1"
         id("com.github.spotbugs") version "6.0.18"
     }
 }
