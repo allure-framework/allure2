@@ -1,0 +1,222 @@
+{
+  "chart": {
+    "duration": {
+      "empty": "მონაცემები არაა ხელმისაწვდომი",
+      "name": "ხანგრძლივობა"
+    },
+    "severity": {
+      "name": "სიმწვავე"
+    },
+    "status": {
+      "name": "სტატუსი"
+    },
+    "trend": {
+      "empty": "მონაცემები არაა ხელმისაწვდომი"
+    }
+  },
+  "component": {
+    "markToggle": {
+      "hideCases": "დამალე {{mark}} ტესტის შედეგები",
+      "showCases": "გამოაჩინე {{mark}} ტესტის შედეგები"
+    },
+    "statusToggle": {
+      "hideCases": "დამალე ტესტის შედეგები {{status}} სტატუსით",
+      "showCases": "გამოაჩინე ტესტის შედეგები {{status}} სტატუსით"
+    },
+    "tree": {
+      "download": "ჩამოტვირთე CSV",
+      "empty": "მონაცემები არაა ხელმისაწვდომი",
+      "filter": "სტატუსი",
+      "filter-marks": "მონიშვნები",
+      "filtered": {
+        "shown": "ნაჩვენებია {{count}}",
+        "total": "{{count}} ტესტის შედეგი",
+        "total_plural": "{{count}} ტესტის შედეგი"
+      },
+      "groups": "ჯგუფის ინფორმაციის გადართვა",
+      "time": {
+        "max": {
+          "name": "ყველაზე გრძელი",
+          "tooltip": "ყველაზე ხანგრძლივი ტესტი"
+        },
+        "sum": {
+          "name": "ჯამი",
+          "tooltip": "ყველა ტესტის ხანგრძლივობის ჯამი"
+        },
+        "total": {
+          "name": "სულ",
+          "tooltip": "ტესტის ხანგრძლივობა პირველი ტესტიდან ბოლოს ჩათვლით"
+        }
+      },
+      "unknown": "<ცარიელი>"
+    },
+    "widgetStatus": {
+      "showAll": "ყველას ჩვენება",
+      "total": "სულ {{count}} ელემენტი",
+      "total_plural": "სულ {{count}} ელემენტი"
+    }
+  },
+  "controls": {
+    "backto": "Back to",
+    "clipboard": "გაცვლის ბუფერში კოპირება",
+    "clipboardError": "გაცვლის ბიფერში კოპირება შეუძლებელია. როგორც ჩანს ეს ფუნქციონალი არაა მხარდაჭერილი ბრაუზერში",
+    "clipboardSuccess": "წარმატებით დაკოპირდა",
+    "collapse": "ჩაკეცვა",
+    "expand": "გაშლა",
+    "fullscreen": "სრულ ეკრანზე",
+    "language": "ენის შეცვლა"
+  },
+  "errors": {
+    "missedAttachment": "მიმაგრებული ფაილი არ მოიძებნა",
+    "notFound": "არ მოიძებნა"
+  },
+  "marks": {
+    "flaky": "არასტაბილური",
+    "newBroken": "ახალი დაზიანებული",
+    "newFailed": "ახალი წარუმატებელი",
+    "newPassed": "ახალი წარმატებული",
+    "retriesStatusChange": "სტატუსი შეიცვალა ხელახლა მცდელობისას"
+  },
+  "sorter": {
+    "duration": "ხანგრძლივობა",
+    "name": "სათაური",
+    "order": "მიმდევრობა",
+    "status": "სტატუსი"
+  },
+  "status": {
+    "broken": "დაზიანებული",
+    "failed": "წარუმატებელი",
+    "passed": "წარმატებული",
+    "skipped": "გამოტოვებული",
+    "unknown": "უცნობი"
+  },
+  "tab": {
+    "categories": {
+      "name": "კატეგორიები"
+    },
+    "graph": {
+      "name": "გრაფიკები"
+    },
+    "overview": {
+      "name": "მიმოხილვა"
+    },
+    "suites": {
+      "name": "პაკეტები"
+    },
+    "timeline": {
+      "name": "დროის დიაგრამა",
+      "selected": "მონიშნულია {{count}} ტესტი ({{percent}}%) {{duration}}-ზე მეტი ხანგრძლივობით",
+      "selected_plural": "მონიშნულია {{count}} ტესტი ({{percent}}%) {{duration}}-ზე მეტი ხანგრძლივობით"
+    }
+  },
+  "testResult": {
+    "categories": {
+      "name": "კატეგორიები"
+    },
+    "description": {
+      "name": "აღწერა"
+    },
+    "duration": {
+      "name": "ხანგრძლივობა"
+    },
+    "execution": {
+      "body": "ტესტის ძირითადი ნაწილი",
+      "downloadAttachment": {
+        "tooltip": "გახსენი მიმაგრებული ფაილი ახალ ჩანართში"
+      },
+      "name": "შესრულება",
+      "setup": "მომზადება",
+      "teardown": "დასრულება"
+    },
+    "history": {
+      "empty": "ისტორია არაა ხელმისაწვდომი",
+      "name": "ისტორია",
+      "statistic": "{{passed}} {{total}}-დან",
+      "successRate": "წარმატების მაჩვენებელი",
+      "time": "{{date}} {{time}}-ზე"
+    },
+    "links": {
+      "name": "ბმულები"
+    },
+    "overview": {
+      "name": "მიმოხილვა"
+    },
+    "owner": {
+      "name": "მფლობელი"
+    },
+    "parameters": {
+      "name": "პარამეტრები"
+    },
+    "retries": {
+      "empty": "ინფრმაცია ხელახლა მცდელობაზე არაა ხელმისაწვდომი",
+      "name": "მცდელობები",
+      "time": "{{date}} {{time}}-ზე"
+    },
+    "severity": {
+      "name": "სიმწვავე",
+      "blocker": "ბლოკერი",
+      "critical": "კრიტიკული",
+      "normal": "ჩვეულებრივი",
+      "minor": "მცირე",
+      "trivial": "უმნიშვნელო"
+    },
+    "stats": {
+      "count": {
+        "attachments": "{{count}} მიმაგრებული ფაილი",
+        "attachments_plural": "{{count}} მიმაგრებული ფაილი",
+        "parameters": "{{count}} პარამეტრი",
+        "parameters_plural": "{{count}} პარამეტრი",
+        "steps": "{{count}} ქვე-ნაბიჯი",
+        "steps_plural": "{{count}} ქვე-ნაბიჯი"
+      }
+    },
+    "status": {
+      "empty": "სტატუსის დეტალები ხელმიუწვდომელია",
+      "trace": "კვალის ჩვენება"
+    },
+    "tags": {
+      "name": "ტეგები"
+    }
+  },
+  "widget": {
+    "categories": {
+      "name": "კატეგორიები"
+    },
+    "categoriesTrend": {
+      "name": "კატეგორიზებული ტენდენცია"
+    },
+    "durationTrend": {
+      "name": "ხანგრძლივობის ტენდენცია"
+    },
+    "environment": {
+      "empty": "გარემოს ცვლადები არაა ხელმისაწვდომი",
+      "name": "გარემო",
+      "showAll": "ყველას ჩვენება"
+    },
+    "executors": {
+      "empty": "ინფორმაცია ტესტის შემსრულებელზე არაა ხელმისაწვდომი",
+      "name": "შემსრულებელი",
+      "unknown": "უცნობი"
+    },
+    "launches": {
+      "empty": "გამშვებებზე ინფორმაცია არაა ხელმისაწვდომი",
+      "name": "გამშვებები"
+    },
+    "retryTrend": {
+      "name": "მცდელობის ტენდენცია"
+    },
+    "suites": {
+      "name": "პაკეტები"
+    },
+    "summary": {
+      "aggregatedName": "საერთო ანგარიში",
+      "launches": "გაშვება",
+      "launches_plural": "გაშვება",
+      "testResults": "ტესტ ქეისი",
+      "testResults_plural": "ტესტ ქეისი"
+    },
+    "trend": {
+      "name": "ტენდენცია"
+    }
+  }
+}

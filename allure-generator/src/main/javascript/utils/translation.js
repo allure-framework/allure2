@@ -12,6 +12,7 @@ export const LANGUAGES = [
   { id: "he", title: "Hebrew" },
   { id: "isv", abbr: "Ⱄ", title: "Medžuslovjansky" },
   { id: "ja", title: "日本語" },
+  { id: "ka", title: "ქართული" },
   { id: "kr", title: "한국어" },
   { id: "nl", title: "Nederlands" },
   { id: "pl", title: "Polski" },
