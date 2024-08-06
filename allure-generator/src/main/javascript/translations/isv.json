@@ -85,7 +85,8 @@
     "duration": "trvanje",
     "name": "nazva",
     "order": "poredok",
-    "status": "status"
+    "status": "status",
+    "date": "date"
   },
   "status": {
     "broken": "Slomjeny",

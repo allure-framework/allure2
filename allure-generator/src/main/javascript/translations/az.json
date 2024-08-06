@@ -81,7 +81,8 @@
     "duration": "müddət",
     "name": "ad",
     "order": "sıra",
-    "status": "status"
+    "status": "status",
+    "date": "date"
   },
   "status": {
     "broken": "Qırılmış",

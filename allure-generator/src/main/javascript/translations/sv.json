@@ -81,7 +81,8 @@
       "duration": "varaktighet",
       "name": "namn",
       "order": "ordning",
-      "status": "status"
+      "status": "status",
+    "date": "date"
     },
     "status": {
       "broken": "Trasig",

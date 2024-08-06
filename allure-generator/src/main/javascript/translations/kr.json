@@ -81,7 +81,8 @@
     "duration": "소요시간",
     "name": "이름",
     "order": "순서",
-    "status": "상태"
+    "status": "상태",
+    "date": "date"
   },
   "status": {
     "broken": "고장",

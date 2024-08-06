@@ -81,7 +81,8 @@
     "duration": "duration",
     "name": "name",
     "order": "order",
-    "status": "status"
+    "status": "status",
+    "date": "date"
   },
   "status": {
     "broken": "Broken",

@@ -76,7 +76,8 @@
     "duration": "Dauer",
     "name": "Name",
     "order": "Reihenfolge",
-    "status": "Status"
+    "status": "Status",
+    "date": "date"
   },
   "status": {
     "broken": "Defekt",

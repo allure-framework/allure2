@@ -76,7 +76,8 @@
     "duration": "זמן ריצה",
     "name": "שם מקרה הבדיקה",
     "order": "סדר",
-    "status": "סטטוס"
+    "status": "סטטוס",
+    "date": "date"
   },
   "status": {
     "broken": "שבור",

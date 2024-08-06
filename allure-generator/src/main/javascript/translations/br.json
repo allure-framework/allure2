@@ -76,7 +76,8 @@
     "duration": "duração",
     "name": "nome",
     "order": "ordem",
-    "status": "situação"
+    "status": "situação",
+    "date": "date"
   },
   "status": {
     "broken": "Quebrado",

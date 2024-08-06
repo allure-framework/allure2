@@ -80,7 +80,8 @@
     "duration": "duración",
     "name": "nombre",
     "order": "orden",
-    "status": "estado"
+    "status": "estado",
+    "date": "date"
   },
   "status": {
     "broken": "Roto",

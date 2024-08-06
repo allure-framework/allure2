@@ -81,7 +81,8 @@
     "duration": "duur",
     "name": "naam",
     "order": "volgorde",
-    "status": "status"
+    "status": "status",
+    "date": "date"
   },
   "status": {
     "broken": "Defect",

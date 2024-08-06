@@ -81,7 +81,8 @@
     "duration": "czas trwania",
     "name": "nazwa",
     "order": "kolejność",
-    "status": "status"
+    "status": "status",
+    "date": "date"
   },
   "status": {
     "broken": "Uszkodzony",
