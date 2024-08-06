@@ -2,7 +2,10 @@
 
 ## Build Allure project
 ```bash
- ./gradlew build buildDeb buildRpm
+# ~SNAPSHOT
+./gradlew build buildDeb buildRpm
+# My version
+./gradlew build buildRpm buildDeb -Pversion=1.1.1
 ```
 
 ## Install Allure
@@ -11,17 +14,17 @@
 sudo dpkg -i allure_.deb
 ```
 
-# Version Allure
+## Version Allure
 ```bash
 allure --version
 ```
 
-# Allure generate report
+## Allure generate report
 ```bash
 allure generate logs -c - report
 ```
 
-# Allure server
+## Allure server
 ```bash
 allure open -p 9000 allure-report
 ```
