@@ -1,7 +1,7 @@
 {
   "name": "allure-generator",
   "version": "1.0.0",
-  "description": "Allure Report",
+  "description": "Allure Report-IL",
   "main": "index.js",
   "repository": {
     "type": "git",

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Allure Report summary mail</title>
+    <title>Allure Report-IL summary mail</title>
 </head>
 <body>
     Mail body

@@ -169,6 +169,6 @@ class SummaryPluginTest {
         final SummaryData data = (SummaryData) dataCaptor.getValue();
 
         assertThat(data.getReportName())
-                .isEqualTo("Allure Report");
+                .isEqualTo("Allure Report-IL");
     }
 }

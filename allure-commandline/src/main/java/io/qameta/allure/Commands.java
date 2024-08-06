@@ -297,7 +297,7 @@ public class Commands {
     }
 
     /**
-     * Set up Jetty server to serve Allure Report.
+     * Set up Jetty server to serve Allure Report-IL.
      *
      * @param host            the host
      * @param port            the port

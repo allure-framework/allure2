@@ -1,7 +1,6 @@
-# Allure Report (Linux)
+# Allure Report-IL (Linux)
 
 ## BUILD ALLURE
-
 ### Build Allure project
 ```bash
 # ~SNAPSHOT
@@ -13,7 +12,7 @@
 ### Install Allure
 ```bash
 # allure2/allure-commandline/build/distributions
-sudo dpkg -i allure_.deb
+sudo dpkg -i allure_0.0.1~il-1_all.deb
 ```
 
 ### Version Allure
@@ -22,7 +21,6 @@ allure --version
 ```
 
 ## START ALLURE
-
 ### Allure generate report
 ```bash
 allure generate logs -c - report
@@ -32,3 +30,6 @@ allure generate logs -c - report
 ```bash
 allure open -p 9000 allure-report
 ```
+
+#### Version
+- **JAVA**: "17.0.6" 2023-01-17

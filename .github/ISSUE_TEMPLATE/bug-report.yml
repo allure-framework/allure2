@@ -6,9 +6,9 @@ body:
   - type: markdown
     attributes:
       value: |
-        🌟 **Welcome to Allure Report!** 🌟\
+        🌟 **Welcome to Allure Report-IL!** 🌟\
         \
-        👋 Hello there! Thanks for taking the time to fill out this bug report! We're thrilled to have you as a potential Allure Report open-source project contributor. 😄🎉 Whether you're an experienced developer or just starting out, we welcome you to our community warmly!\
+        👋 Hello there! Thanks for taking the time to fill out this bug report! We're thrilled to have you as a potential Allure Report-IL open-source project contributor. 😄🎉 Whether you're an experienced developer or just starting out, we welcome you to our community warmly!\
         \
         💡 For all the Ideas and Feature Requests, please create a [Github Discussion](https://github.com/orgs/allure-framework/discussions) first. That will allow us to discuss the proposed changes first and maybe find a better solution.\
         \
@@ -16,7 +16,7 @@ body:
         \
         🤔 If you have any questions or need further assistance, you can ask in our [GitHub Discussions](https://github.com/orgs/allure-framework/discussions). While English is the primary language of our community, you can use tools like Google Translate to communicate if needed. We value inclusivity and aim to create a welcoming environment for everyone.\
         \
-        Once again, welcome to **Allure Report**! We're excited to have you on board. Let's work together to make software testing and reporting a breeze! 💪\
+        Once again, welcome to **Allure Report-IL**! We're excited to have you on board. Let's work together to make software testing and reporting a breeze! 💪\
   - type: textarea
     id: description
     attributes:
@@ -85,7 +85,7 @@ body:
   - type: input
     id: allure_report_version
     attributes:
-      label: What version of Allure Report you are using?
+      label: What version of Allure Report-IL you are using?
       placeholder: 2.22.3
     validations:
       required: true

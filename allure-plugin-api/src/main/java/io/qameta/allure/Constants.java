@@ -28,7 +28,7 @@ public final class Constants {
     /**
      * The default report name.
      */
-    public static final String DEFAULT_REPORT_NAME = "Allure Report";
+    public static final String DEFAULT_REPORT_NAME = "Allure Report-IL";
 
     /**
      * The name of directory that contains widgets data.

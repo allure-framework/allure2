@@ -45,7 +45,7 @@ allprojects {
     }
 }
 
-description = "Allure Report"
+description = "Allure Report-IL"
 group = "io.qameta.allure"
 
 nexusPublishing {
