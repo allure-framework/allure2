@@ -3,7 +3,7 @@ import { View } from "backbone.marionette";
 import { className, on } from "../../decorators";
 import template from "./NodeSorterView.hbs";
 
-const AVAILABLE_SORTERS = ["sorter.order", "sorter.name", "sorter.duration", "sorter.status", "sorter.date"];
+const AVAILABLE_SORTERS = ["sorter.order", "sorter.name", "sorter.duration", "sorter.status", "sorter.dateIl"];
 
 @className("sorter")
 class NodeSorterView extends View {

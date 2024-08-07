@@ -82,7 +82,7 @@
     "name": "nazwa",
     "order": "kolejność",
     "status": "status",
-    "dateTest": "date"
+    "dateIl": "date"
   },
   "status": {
     "broken": "Uszkodzony",

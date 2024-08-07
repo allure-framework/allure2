@@ -86,7 +86,7 @@
     "name": "nazva",
     "order": "poredok",
     "status": "status",
-    "dateTest": "date"
+    "dateIl": "date"
   },
   "status": {
     "broken": "Slomjeny",

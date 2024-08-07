@@ -82,7 +82,7 @@
     "name": "ad",
     "order": "sıralama",
     "status": "durum",
-    "dateTest": "date"
+    "dateIl": "date"
   },
   "status": {
     "broken": "Kırık",

@@ -34,8 +34,8 @@ function byGroupStatuses(a, b) {
   }, 0);
 }
 
-function byDate(a, b) {
-  return String(a.date) < String(b.date) ? -1 : 1;
+function byDateIl(a, b) {
+  return String(a.dateIl) < String(b.dateIl) ? -1 : 1;
 }
 
 function compare(a, b, nodeCmp, groupCmp, direction) {
@@ -63,8 +63,8 @@ export default function getComparator({ sorter, ascending }) {
       return (a, b) => compare(a, b, byDuration, byMaxDuration, direction);
     case "sorter.status":
       return (a, b) => compare(a, b, byNodeStatus, byGroupStatuses, direction);
-    case "sorter.date":
-      return (a, b) => compare(a, b, byDate, byDate, direction);
+    case "sorter.dateIl":
+      return (a, b) => compare(a, b, byDateIl, byDateIl, direction);
     default:
       return 0;
   }

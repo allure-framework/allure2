@@ -77,7 +77,7 @@
     "name": "nome",
     "order": "ordem",
     "status": "situação",
-    "dateTest": "date"
+    "dateIl": "date"
   },
   "status": {
     "broken": "Quebrado",
