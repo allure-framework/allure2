@@ -82,7 +82,7 @@
     "name": "ad",
     "order": "sıra",
     "status": "status",
-    "date": "date"
+    "dateTest": "date"
   },
   "status": {
     "broken": "Qırılmış",

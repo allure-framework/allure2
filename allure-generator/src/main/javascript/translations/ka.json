@@ -82,7 +82,7 @@
     "name": "სათაური",
     "order": "მიმდევრობა",
     "status": "სტატუსი",
-    "date": "date"
+    "dateTest": "date"
   },
   "status": {
     "broken": "დაზიანებული",

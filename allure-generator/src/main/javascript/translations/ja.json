@@ -82,7 +82,7 @@
     "name": "名前",
     "order": "順序",
     "status": "ステータス",
-    "date": "date"
+    "dateTest": "date"
   },
   "status": {
     "broken": "故障",

@@ -81,7 +81,7 @@
     "name": "nombre",
     "order": "orden",
     "status": "estado",
-    "date": "date"
+    "dateTest": "date"
   },
   "status": {
     "broken": "Roto",

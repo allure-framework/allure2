@@ -82,7 +82,7 @@
       "name": "namn",
       "order": "ordning",
       "status": "status",
-    "date": "date"
+    "dateTest": "date"
     },
     "status": {
       "broken": "Trasig",

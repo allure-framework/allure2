@@ -85,7 +85,7 @@
     "name": "имя",
     "order": "порядок",
     "status": "статус",
-    "date": "дата"
+    "dateTest": "дата"
   },
   "status": {
     "broken": "Сломалось",

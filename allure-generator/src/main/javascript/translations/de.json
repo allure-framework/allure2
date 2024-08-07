@@ -77,7 +77,7 @@
     "name": "Name",
     "order": "Reihenfolge",
     "status": "Status",
-    "date": "date"
+    "dateTest": "date"
   },
   "status": {
     "broken": "Defekt",

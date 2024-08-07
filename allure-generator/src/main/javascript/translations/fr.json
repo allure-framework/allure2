@@ -82,7 +82,7 @@
     "name": "nom",
     "order": "ordre",
     "status": "statut",
-    "date": "date"
+    "dateTest": "date"
   },
   "status": {
     "broken": "Cassé",

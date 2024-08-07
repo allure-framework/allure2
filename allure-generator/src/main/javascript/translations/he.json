@@ -77,7 +77,7 @@
     "name": "שם מקרה הבדיקה",
     "order": "סדר",
     "status": "סטטוס",
-    "date": "date"
+    "dateTest": "date"
   },
   "status": {
     "broken": "שבור",

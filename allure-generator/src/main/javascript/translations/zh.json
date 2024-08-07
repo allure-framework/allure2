@@ -73,7 +73,7 @@
     "duration": "用时",
     "name": "名称",
     "status": "状态",
-    "date": "date"
+    "dateTest": "date"
   },
   "status": {
     "broken": "故障",

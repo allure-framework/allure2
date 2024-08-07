@@ -82,7 +82,7 @@
     "name": "naam",
     "order": "volgorde",
     "status": "status",
-    "date": "date"
+    "dateTest": "date"
   },
   "status": {
     "broken": "Defect",
