@@ -33,7 +33,9 @@ allure open -p 9000 allure-report
 
 #### Version
 - **JAVA**: "17.0.6" 2023-01-17
+- **NODE js**: 20.16.0
 - **Apache Maven** - 3.6.3
+- **Kubuntu** - 22.04
 
 #### Version VS code plugins
 - **Test Runner for Java** - 0.42.0
@@ -42,3 +44,17 @@ allure open -p 9000 allure-report
 - **Gradle for Java** - 3.16.2
 - **Extension Pack for Java** - 0.28.0
 - **Debugger for Java** - 0.58.0
+
+#### Change version JAVA
+```bash
+# deafault version
+sudo ln -svf /home/jdk-17.0.6+10/bin/java /usr/bin/java
+# version
+java -version
+# tag version
+sudo ln -svf /home/jdk-17.0.6+10/bin/java /usr/bin/java17
+# version
+java -version17
+```
+
+
