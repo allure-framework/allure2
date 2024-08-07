@@ -10,7 +10,7 @@ description = "Allure Report-IL Generator"
 node {
     // repository is declared in root settings.gradle.kts
     distBaseUrl.set(null as String?)
-    version.set("20.12.1")
+    version.set("20.16.0")
     download.set(true)
 }
 
