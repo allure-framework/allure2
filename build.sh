@@ -6,10 +6,10 @@ rm -rf ./allure-jira-commons/build
 rm -rf ./allure-plugin-api/build
 rm -rf allure-report
 
-./gradlew build buildRpm buildDeb -Pversion=0.0.1-il
+./gradlew build buildRpm buildDeb -Pversion=2.30.0-il
 
 cd ./allure-commandline/build/distributions
-sudo dpkg -i allure_0.0.1~il-1_all.deb
+sudo dpkg -i allure_2.30.0~il-1_all.deb
 allure --version
 
 cd ../../../
