@@ -1,15 +1,17 @@
 # del build
-rm -rf build
-rm -rf ./allure-commandline/build
-rm -rf ./allure-generator/build
-rm -rf ./allure-generator/node_modules
+
+# rm -rf build
+# rm -rf ./allure-commandline/build
+# rm -rf ./allure-generator/build
+# rm -rf ./allure-generator/node_modules
 # rm -rf ./allure-generator/.gradle
-rm -rf ./allure-jira-commons/build
-rm -rf ./allure-plugin-api/build
+# rm -rf ./allure-jira-commons/build
+# rm -rf ./allure-plugin-api/build
 rm -rf allure-report
 
 # build deb
-./gradlew build buildRpm buildDeb -Pversion=2.30.0-1-il
+# ./gradlew build buildRpm buildDeb -Pversion=2.30.0-1-il
+./gradlew buildDeb -Pversion=2.30.0-1-il
 
 # install allure (LINUX)
 cd ./allure-commandline/build/distributions

@@ -1,12 +1,12 @@
 # Allure Report-IL (Linux)
 
 ## BUILD ALLURE
-### Build Allure project
+### Prod build Allure project
 ```bash
 # ~SNAPSHOT
 ./gradlew build buildDeb buildRpm
-# My version
-./gradlew build buildRpm buildDeb -Pversion=2.30.0-1_il
+# My version prod
+./gradlew buildDeb -Pversion=2.30.0-1-il
 ```
 
 ### Install Allure
@@ -35,6 +35,7 @@ allure open -p 9000 allure-report
 - **JAVA**: "17.0.6" 2023-01-17
 - **NODE js**: 20.16.0
 - **Apache Maven** - 3.6.3
+- **Gradle** - 8.5
 - **Kubuntu** - 22.04
 
 #### Version VS code plugins

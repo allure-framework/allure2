@@ -28,9 +28,6 @@
     <#list jsUrls as jsUrl>
     <script src="${jsUrl}"></script>
     </#list>
-    <#if analyticsDisable == false>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FVWC4GKEYS"></script>
-    </#if>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
