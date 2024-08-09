@@ -7,6 +7,12 @@
         <div class="node__name">
             {{name}}
         </div>
+        <div>DATE - </div>
+        {{#if dateIl}}
+            <div class="node__dateIl">
+                {{dateIl}}
+            </div>
+        {{/if}}
         {{#if parameters}}
             <div class="node__parameters long-line line-ellipsis">
                 <span>&nbsp</span>

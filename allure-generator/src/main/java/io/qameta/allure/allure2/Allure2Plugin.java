@@ -24,6 +24,8 @@ import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Attachment;
+// #IL_add Добавим дату
+import io.qameta.allure.entity.DateIl;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.Link;
 import io.qameta.allure.entity.Parameter;

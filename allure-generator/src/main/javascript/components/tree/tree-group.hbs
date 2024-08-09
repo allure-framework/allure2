@@ -6,6 +6,11 @@
                 <div class="node__name">
                     {{name}}
                 </div>
+                {{#if dateIl}}
+                    <div class="node__dateIl">
+                        {{dateIl}}
+                    </div>
+                {{/if}}
             {{else}}
                 <span class="node__unknown">{{t 'component.tree.unknown'}}</span>
             {{/if}}

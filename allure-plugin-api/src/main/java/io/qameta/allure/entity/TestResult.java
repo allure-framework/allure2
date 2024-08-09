@@ -59,6 +59,9 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
     protected boolean newFailed;
     protected boolean newBroken;
     protected boolean newPassed;
+    // #IL_add Добавим дату
+    protected String dateIl;
+
     protected int retriesCount;
     protected boolean retriesStatusChange;
 

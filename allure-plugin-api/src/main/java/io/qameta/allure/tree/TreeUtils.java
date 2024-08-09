@@ -44,6 +44,10 @@ public final class TreeUtils {
         md.update(Objects.toString(groupName).getBytes(UTF_8));
         return DatatypeConverter.printHexBinary(md.digest()).toLowerCase();
     }
+    // #IL_add Добавим дату
+    public static String dateIl_TEST(final String dateIl) {
+        return dateIl;
+    }
 
     public static List<TreeLayer> groupByLabels(final TestResult testResult,
                                                 final LabelName... labelNames) {

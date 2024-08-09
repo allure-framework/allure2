@@ -21,14 +21,26 @@ package io.qameta.allure.tree;
 public class DefaultTreeLeaf implements TreeLeaf {
 
     private final String name;
+    // #IL_add Добавим дату
+    private String dateIl;
 
-    public DefaultTreeLeaf(final String name) {
+    public DefaultTreeLeaf(final String name, final String dateIl) {
         this.name = name;
+        // #IL_add Добавим дату
+        this.dateIl = dateIl;
     }
 
     @Override
     public String getName() {
         return name;
     }
-
+    
+    // #IL_add Добавим дату
+    public String getDateIl() {
+        return dateIl;
+    }
+    // #IL_add Добавим дату
+    public void setDateIl(final String dateIl) {
+        this.dateIl = dateIl;
+    }
 }

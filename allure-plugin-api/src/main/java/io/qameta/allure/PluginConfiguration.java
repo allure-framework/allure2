@@ -34,6 +34,8 @@ public class PluginConfiguration implements Serializable {
     private String id;
     private String name;
     private String description;
+    // #IL_add Добавим дату
+    private String dateIl;
     private List<String> extensions = new ArrayList<>();
     private List<String> jsFiles = new ArrayList<>();
     private List<String> cssFiles = new ArrayList<>();

@@ -32,6 +32,8 @@ public class TreeWidgetItem implements Serializable {
 
     protected String uid;
     protected String name;
+    // #IL_add Добавим дату
+    protected String dateIl;
     protected Statistic statistic;
 
 }

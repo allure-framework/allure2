@@ -25,6 +25,8 @@ import java.io.Serializable;
 public enum LabelName implements Serializable {
 
     OWNER("owner"),
+    // #IL_add Добавим дату
+    DATEIL("dateIl"),
     SEVERITY("severity"),
     ISSUE("issue"),
     TAG("tag"),

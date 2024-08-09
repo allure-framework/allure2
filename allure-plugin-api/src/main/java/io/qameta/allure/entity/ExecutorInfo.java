@@ -30,6 +30,8 @@ public class ExecutorInfo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     protected String name;
+    // #IL_add Добавим дату
+    protected String dateIl;
     protected String type;
     protected String url;
     protected Long buildOrder;

@@ -18,7 +18,8 @@ package io.qameta.allure.tree;
 import io.qameta.allure.entity.TestResult;
 
 import static io.qameta.allure.tree.TreeUtils.createGroupUid;
-
+// #IL_add Добавим дату
+import static io.qameta.allure.tree.TreeUtils.dateIl_TEST;
 /**
  * @author charlie (Dmitry Baev).
  */
@@ -26,6 +27,8 @@ public class TestResultGroupFactory implements TreeGroupFactory<TestResult, Test
 
     @Override
     public TestResultTreeGroup create(final TestResultTreeGroup parent, final String name, final TestResult item) {
-        return new TestResultTreeGroup(createGroupUid(parent.getUid(), name), name);
+        return new TestResultTreeGroup(createGroupUid(parent.getUid(), name), name, 
+        // #IL_add Добавим дату
+        dateIl_TEST(parent.getDateIl()) );
     }
 }

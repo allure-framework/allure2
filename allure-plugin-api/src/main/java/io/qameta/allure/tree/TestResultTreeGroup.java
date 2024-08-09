@@ -21,17 +21,30 @@ package io.qameta.allure.tree;
 public class TestResultTreeGroup extends DefaultTreeGroup {
 
     private String uid;
+    // #IL_add Добавим дату
+    private String dateIl;
 
-    public TestResultTreeGroup(final String uid, final String name) {
+    public TestResultTreeGroup(final String uid, final String name, final String dateIl) {
         super(name);
         this.uid = uid;
+        // #IL_add Добавим дату
+        this.dateIl = dateIl;
     }
 
     public String getUid() {
         return uid;
     }
+    // #IL_add Добавим дату
+    public String getDateIl() {
+        return dateIl;
+    }
 
     public void setUid(final String uid) {
         this.uid = uid;
     }
+    // #IL_add Добавим дату
+    public void setDateIl(final String dateIl) {
+        this.dateIl = dateIl;
+    }
+
 }

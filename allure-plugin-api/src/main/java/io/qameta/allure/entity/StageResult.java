@@ -32,6 +32,8 @@ public class StageResult implements Serializable, Summarizable {
     private static final long serialVersionUID = 1L;
 
     protected String name;
+    // #IL_add Добавим дату
+    protected String dateIl;
     protected Time time;
 
     protected String description;

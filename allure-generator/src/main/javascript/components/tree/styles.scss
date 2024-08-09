@@ -20,6 +20,10 @@
   &__name {
     //flex: 0 0 30%;
   }
+  &__dateIl{
+    padding-left: 5px;
+    color: rgb(252, 114, 114);
+  }
   &__unknown {
     color: $text-muted-color;
   }

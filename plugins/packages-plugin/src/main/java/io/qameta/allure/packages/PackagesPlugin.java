@@ -116,9 +116,14 @@ public class PackagesPlugin extends CommonJsonAggregator2 {
                 .findOneLabel(LabelName.TEST_METHOD)
                 .filter(method -> !method.isEmpty())
                 .orElseGet(testResult::getName);
+        final String dateIl = testResult
+            .findOneLabel(LabelName.DATEIL)
+            .filter(method -> !method.isEmpty())
+            .orElseGet(testResult::getDateIl);
         return new TestResultTreeLeaf(
                 parent.getUid(),
                 name,
+                dateIl,
                 testResult
         );
     }

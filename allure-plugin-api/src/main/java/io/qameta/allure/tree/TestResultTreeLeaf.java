@@ -29,6 +29,8 @@ public class TestResultTreeLeaf extends DefaultTreeLeaf {
 
     private final String uid;
     private final String parentUid;
+    // #IL_add Добавим дату
+    // private final String dateIl;
     private final Status status;
     private final Time time;
     private final boolean flaky;
@@ -45,14 +47,20 @@ public class TestResultTreeLeaf extends DefaultTreeLeaf {
         this(
                 parentUid,
                 testResult.getName(),
+                // #IL_add Добавим дату
+                testResult.getDateIl(),
                 testResult
         );
     }
 
-    public TestResultTreeLeaf(final String parentUid, final String name, final TestResult testResult) {
-        super(name);
+    public TestResultTreeLeaf(final String parentUid, final String name, 
+    // #IL_add Добавим дату
+    final String dateIl, final TestResult testResult) {
+        super(name, dateIl);
         this.parentUid = parentUid;
         this.uid = testResult.getUid();
+         // #IL_add Добавим дату
+        // this.dateIl = dateIl;
         this.status = testResult.getStatus();
         this.time = testResult.getTime();
         this.flaky = testResult.isFlaky();
@@ -71,6 +79,10 @@ public class TestResultTreeLeaf extends DefaultTreeLeaf {
     public String getUid() {
         return uid;
     }
+    // #IL_add Добавим дату
+    // public String getDateIl() {
+    //     return dateIl;
+    // }
 
     public Status getStatus() {
         return status;
