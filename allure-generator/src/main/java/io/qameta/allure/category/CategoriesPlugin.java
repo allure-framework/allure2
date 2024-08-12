@@ -173,6 +173,8 @@ public class CategoriesPlugin extends CompositeAggregator2 implements Reader {
         return new TreeWidgetItem()
                 .setUid(group.getUid())
                 .setName(group.getName())
+                // #IL_add Добавим дату
+                .setDateIl(group.getDateIl())
                 .setStatistic(calculateStatisticByLeafs(group));
     }
 

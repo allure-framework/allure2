@@ -1,5 +1,16 @@
 # Allure Report-IL (Linux)
 
+## Structure
+```
+# Создаем страницу Login
+├── 📁 allure-commandline/          # build prod file
+├── 📁 allure-generator/            # generator web
+├── 📁 allure-jira-commons/         #
+├── 📁 allure-plugin-api/           # 
+├── 📁 plugins/                     #
+└──  ...                            #
+```
+
 ## BUILD ALLURE
 ### Prod build Allure project
 ```bash

@@ -24,6 +24,8 @@ import java.util.List;
 public class DefaultTreeGroup implements TreeGroup {
 
     private String name;
+    // #IL_add Добавим дату
+    private String dateIl;
 
     private List<TreeNode> children = new ArrayList<>();
 
@@ -48,6 +50,10 @@ public class DefaultTreeGroup implements TreeGroup {
 
     public void setName(final String name) {
         this.name = name;
+    }
+    // #IL_add Добавим дату
+    public void setDateIl(final String dateIl) {
+        this.dateIl = dateIl;
     }
 
     public void setChildren(final List<TreeNode> children) {

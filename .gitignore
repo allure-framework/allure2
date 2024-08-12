@@ -28,5 +28,5 @@ npm-debug.log
 .DS_Store
 
 # Test logs
-logs
+# logs
 allure-report
