@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite tests="1" failures="1" name="test.Attachment" time="2.055" errors="0" skipped="0">
+    <testcase classname="test.Attachment" name="shouldAddAttachment" time="1.051">
+        <system-out>Step 1
+Step 2
+Step 3
+[[ATTACHMENT|src/test/resources/junitdata/test.SampleTest.txt]]</system-out>
+        <failure message="some-message"><![CDATA[some-trace]]></failure>
+    </testcase>
+</testsuite>

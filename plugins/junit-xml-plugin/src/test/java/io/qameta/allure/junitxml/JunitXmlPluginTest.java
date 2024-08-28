@@ -127,9 +127,40 @@ class JunitXmlPluginTest {
         assertThat(testStage.getAttachments())
                 .describedAs("Should add an attachment")
                 .hasSize(1)
-                .describedAs("Attachment should has right uid and name")
+                .describedAs("Attachment should have right uid and name")
                 .extracting(Attachment::getName, Attachment::getUid)
                 .containsExactly(Tuple.tuple("System out", "some-uid"));
+    }
+
+    @Test
+    void shouldAddSystemOutAsAttachment() throws Exception {
+        final Attachment hey = new Attachment().setUid("some-uid");
+        when(visitor.visitAttachmentFile(any())).thenReturn(hey);
+        process(
+                "junitdata/TEST-test.Attachment.xml", "TEST-test.Attachment.xml"
+        );
+        
+        final ArgumentCaptor<Path> attachmentCaptor = ArgumentCaptor.captor();
+        verify(visitor, times(1)).visitAttachmentFile(attachmentCaptor.capture());
+
+        assertThat(attachmentCaptor.getValue())
+                .isRegularFile()
+                .hasContent("some-test-log");
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
+        verify(visitor, times(1)).visitTestResult(captor.capture());
+
+        final StageResult testStage = captor.getValue().getTestStage();
+        assertThat(testStage)
+                .describedAs("Should create a test stage")
+                .isNotNull();
+
+        assertThat(testStage.getAttachments())
+                .describedAs("Should add an attachment")
+                .hasSize(1)
+                .describedAs("Attachment should have right uid and name")
+                .extracting(Attachment::getName, Attachment::getUid)
+                .containsExactly(Tuple.tuple("test.SampleTest.txt", "some-uid"));
     }
 
     @Test
