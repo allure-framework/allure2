@@ -23,6 +23,7 @@ import io.qameta.allure.datetime.CompositeDateTimeParser;
 import io.qameta.allure.datetime.DateTimeParser;
 import io.qameta.allure.datetime.LocalDateTimeParser;
 import io.qameta.allure.datetime.ZonedDateTimeParser;
+import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.Parameter;
 import io.qameta.allure.entity.StageResult;
@@ -44,6 +45,7 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -54,12 +56,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
 import static java.nio.file.Files.newDirectoryStream;
-import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -99,6 +102,8 @@ public class JunitXmlPlugin implements Reader {
     private static final String PROPERTY_ELEMENT_NAME = "property";
 
     private static final String XML_GLOB = "*.xml";
+
+    private static final Pattern SYSTEM_OUTPUT_ATTACHMENT = Pattern.compile(" *\\[\\[ATTACHMENT\\|(?<path>.*)\\]\\]");
 
     private static final Map<String, Status> RETRIES;
 
@@ -185,19 +190,34 @@ public class JunitXmlPlugin implements Reader {
         result.setFlaky(isFlaky(testCaseElement));
         setStatusDetails(result, testCaseElement);
         final StageResult stageResult = new StageResult();
+        final List<Attachment> attachments = new ArrayList<>();
         getLogMessage(testCaseElement).ifPresent(logMessage -> {
             final List<String> lines = splitLines(logMessage);
             final List<Step> steps = lines
                     .stream()
+                    .filter(line -> !SYSTEM_OUTPUT_ATTACHMENT.matcher(line).matches())
                     .map(line -> new Step().setName(line))
                     .collect(Collectors.toList());
             stageResult.setSteps(steps);
+            lines
+                .stream()
+                .filter(line -> SYSTEM_OUTPUT_ATTACHMENT.matcher(line).matches())
+                .forEach(line -> {
+                    final Matcher m = SYSTEM_OUTPUT_ATTACHMENT.matcher(line);
+                    if (m.find()) {
+                        final Path attachmentPath = Paths.get(m.group("path")).toAbsolutePath();
+                        final Attachment attachment = visitor.visitAttachmentFile(attachmentPath);
+                        attachment.setName(attachmentPath.getFileName().toString());
+                        attachments.add(attachment);
+                    }
+                });
         });
         getLogFile(resultsDirectory, className)
                 .filter(Files::exists)
                 .map(visitor::visitAttachmentFile)
                 .map(attachment1 -> attachment1.setName("System out"))
-                .ifPresent(attachment -> stageResult.setAttachments(singletonList(attachment)));
+                .ifPresent(attachments::add);
+        stageResult.setAttachments(attachments);
         result.setTestStage(stageResult);
         visitor.visitTestResult(result);
 
