@@ -1,4 +1,8 @@
 {{#if owner}}
-    <h3 class="pane__section-title">{{t 'testResult.owner.name'}}</h3>
-    <div>{{owner}}</div>
+    {{t 'testResult.owner.name'}}:
+    {{#if owner.url}}
+        <a href="{{owner.url}}">{{owner.displayName}}</a>
+    {{else}}
+        {{owner.displayName}}
+    {{/if}}
 {{/if}}
