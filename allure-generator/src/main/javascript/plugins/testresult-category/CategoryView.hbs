@@ -1,6 +1,8 @@
 {{#if categories}}
-    {{t 'testResult.categories.name'}}:
-    {{#each categories}}
-        <span>{{name}} </span>
-    {{/each}}
+    <span class="pane__section-title">{{t 'testResult.categories.name'}}</span>
+    <span class="pane__section-content">
+        {{#each categories}}
+            <span>{{name}} </span>
+        {{/each}}
+    </span>
 {{/if}}
