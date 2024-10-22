@@ -72,7 +72,7 @@
   },
   "marks": {
     "flaky": "Instabile",
-    "newBroken": "Nuovo fallito",
+    "newBroken": "Nuovo rotto",
     "newFailed": "Nuovo fallito",
     "newPassed": "Nuovo passato",
     "retriesStatusChange": "Stato cambiato dopo un tentativo"
