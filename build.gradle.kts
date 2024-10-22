@@ -76,12 +76,12 @@ subprojects {
 
     dependencyManagement {
         imports {
-            mavenBom("com.fasterxml.jackson:jackson-bom:2.17.2")
+            mavenBom("com.fasterxml.jackson:jackson-bom:2.18.0")
             mavenBom("com.squareup.okhttp3:okhttp-bom:4.12.0")
             // latest version that supports java 8
             mavenBom("com.vladsch.flexmark:flexmark-all:0.62.2")
             mavenBom("io.qameta.allure:allure-bom:2.29.0")
-            mavenBom("org.junit:junit-bom:5.11.1")
+            mavenBom("org.junit:junit-bom:5.11.3")
         }
         dependencies {
             dependency("ch.qos.logback:logback-classic:1.3.14")
@@ -104,7 +104,7 @@ subprojects {
             dependency("org.assertj:assertj-core:3.26.3")
             dependency("org.eclipse.jetty:jetty-server:9.4.53.v20231009")
             dependency("org.freemarker:freemarker:2.3.33")
-            dependency("org.junit-pioneer:junit-pioneer:2.2.0")
+            dependency("org.junit-pioneer:junit-pioneer:2.3.0")
             dependency("org.mockito:mockito-core:5.14.2")
             dependency("org.projectlombok:lombok:1.18.34")
             dependency("org.slf4j:slf4j-api:${orgSlf4jVersion}")
