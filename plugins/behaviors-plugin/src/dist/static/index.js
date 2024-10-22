@@ -168,6 +168,20 @@ allure.api.addTranslation('pl', {
     }
 });
 
+allure.api.addTranslation('am', {
+    tab: {
+        behaviors: {
+            name: 'Վարքագծեր'
+        }
+    },
+    widget: {
+        behaviors: {
+            name: 'Ֆիչրները ըստ պատմությունների',
+            showAll: 'ցույց տալ բոլորը'
+        }
+    }
+});
+
 allure.api.addTranslation('az', {
     tab: {
         behaviors: {
