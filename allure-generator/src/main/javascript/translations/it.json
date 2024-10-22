@@ -27,7 +27,7 @@
       "download": "Scarica CSV",
       "empty": "Non ci sono elementi",
       "filter": "Stato",
-      "filter-marks": "Segnalazioni",
+      "filter-marks": "Marcature",
       "filtered": {
         "shown": "{{count}} mostrato",
         "total": "{{count}} risultato del test",
@@ -72,7 +72,7 @@
   },
   "marks": {
     "flaky": "Instabile",
-    "newBroken": "Nuovo rotto",
+    "newBroken": "Nuovo fallito",
     "newFailed": "Nuovo fallito",
     "newPassed": "Nuovo passato",
     "retriesStatusChange": "Stato cambiato dopo un tentativo"
@@ -126,7 +126,7 @@
       },
       "name": "Esecuzione",
       "setup": "Preparazione",
-      "teardown": "Smontaggio"
+      "teardown": "Chiusura"
     },
     "history": {
       "empty": "Nessuna informazione storica disponibile.",
@@ -166,8 +166,8 @@
         "attachments_plural": "{{count}} allegati",
         "parameters": "{{count}} parametro",
         "parameters_plural": "{{count}} parametri",
-        "steps": "{{count}} sotto-passaggio",
-        "steps_plural": "{{count}} sotto-passaggi"
+        "steps": "{{count}} sottofase",
+        "steps_plural": "{{count}} sottofasi"
       }
     },
     "status": {
