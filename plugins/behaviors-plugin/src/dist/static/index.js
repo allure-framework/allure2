@@ -210,7 +210,6 @@ allure.api.addTranslation('isv', {
     }
 });
 
-
 allure.api.addTranslation('ka', {
     tab: {
         behaviors: {
@@ -225,6 +224,19 @@ allure.api.addTranslation('ka', {
     }
 });
 
+allure.api.addTranslation('it', {
+    tab: {
+        behaviors: {
+            name: 'Comportamenti'
+        }
+    },
+    widget: {
+        behaviors: {
+            name: 'Funzionalità per storie',
+            showAll: 'Mostra tutto'
+        }
+    }
+});
 
 allure.api.addTab('behaviors', {
     title: 'tab.behaviors.name', icon: 'fa fa-list',
