@@ -127,6 +127,15 @@ allure.api.addTranslation('ka', {
         }
     }
 });
+
+allure.api.addTranslation('it', {
+    tab: {
+        packages: {
+            name: 'Pacchetti'
+        }
+    }
+});
+
 allure.api.addTab('packages', {
     title: 'tab.packages.name', icon: 'fa fa-align-left',
     route: 'packages(/)(:testGroup)(/)(:testResult)(/)(:testResultTab)(/)',
