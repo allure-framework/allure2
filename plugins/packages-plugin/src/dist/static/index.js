@@ -96,6 +96,14 @@ allure.api.addTranslation('pl', {
     }
 });
 
+allure.api.addTranslation('am', {
+    tab: {
+        packages: {
+            name: 'Փաթեթներ'
+        }
+    }
+});
+
 allure.api.addTranslation('az', {
     tab: {
         packages: {

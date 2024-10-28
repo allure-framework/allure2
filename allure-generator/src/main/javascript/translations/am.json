@@ -1,0 +1,222 @@
+{
+  "chart": {
+    "duration": {
+      "empty": "Տվյալներ չկան",
+      "name": "Ժամանակահատվածը"
+    },
+    "severity": {
+      "name": "Կարևորությունը"
+    },
+    "status": {
+      "name": "Կարգավիճակ"
+    },
+    "trend": {
+      "empty": "Տվյալներ չկան"
+    }
+  },
+  "component": {
+    "markToggle": {
+      "hideCases": "Թաքցնել {{mark}} թեստի արդյունքը",
+      "showCases": "Ցույց տալ {{mark}} թեստի արդյունքը"
+    },
+    "statusToggle": {
+      "hideCases": "Թաքցնել {{status}} կարգավիճակով թեստի արյունքը",
+      "showCases": "Ցույց տալ {{status}} կարգավիճակով թեստի արյունքը"
+    },
+    "tree": {
+      "download": "Բեռնել CSV",
+      "empty": "Տվյալներ չկան",
+      "filter": "Կարգիվիճակ",
+      "filter-marks": "Նշումներ",
+      "filtered": {
+        "shown": "Ցուցադրվում է {{count}}",
+        "total": "{{count}} թեստի արդյունքը",
+        "total_plural": "{{count}} թեստերի արդյունքը"
+      },
+      "groups": "Տեղեկություն խմբերի մասին",
+      "time": {
+        "max": {
+          "name": "Մաքսիմում",
+          "tooltip": "Ամենաերկար թեստը"
+        },
+        "sum": {
+          "name": "Գումարային",
+          "tooltip": "Բոլոր թեստերի գումարային տևողությունը"
+        },
+        "total": {
+          "name": "Ընդամենը",
+          "tooltip": "Թեստի տևողությունը՝ առաջին թեստից մինչև վերջինը"
+        }
+      },
+      "unknown": "<անհայտ>"
+    },
+    "widgetStatus": {
+      "showAll": "Ցույց տալ բոլորը",
+      "total": "Ընդհանուր {{count}} էլեմենտ",
+      "total_plural": "Ընդհանուր {{count}} էլեմենտներ"
+    }
+  },
+  "controls": {
+    "backto": "Հետ գնալ",
+    "clipboard": "Պատճենել clipboard-ում",
+    "clipboardError": "Հնարավոր չէ պատճենել clipboard-ում: Հնարավոր է, որ այս գործառույթը չի ապահովվում դիտարկիչում",
+    "clipboardSuccess": "Պատճենումն հաջողվեց",
+    "collapse": "Ծալել",
+    "expand": "Մեծացնել",
+    "fullscreen": "Ամբողջ էկրան",
+    "language": "Փոխեք լեզուն"
+  },
+  "errors": {
+    "missedAttachment": "Կցված ֆայլը չի գտնվել",
+    "notFound": "Չի գտնվել"
+  },
+  "marks": {
+    "flaky": "Անկայուն",
+    "newBroken": "Նոր փչացած",
+    "newFailed": "Նոր ձախողված",
+    "newPassed": "Նոր հաջողված",
+    "retriesStatusChange": "Կարգավիճակը փոխվեց կրկնելուց հետո"
+  },
+  "sorter": {
+    "duration": "տևողություն",
+    "name": "անուն",
+    "order": "հերթականություն",
+    "status": "կարգավիճակ"
+  },
+  "status": {
+    "broken": "Փչացած",
+    "failed": "Ձախողված",
+    "passed": "Հաջողված",
+    "skipped": "Բաց թողնված",
+    "unknown": "Անհայտ"
+  },
+  "tab": {
+    "categories": {
+      "name": "Կատեգորիաներ"
+    },
+    "graph": {
+      "name": "Գրաֆիկները"
+    },
+    "overview": {
+      "name": "Ընդհանուր"
+    },
+    "suites": {
+      "name": "Թեստի փաթեթներ"
+    },
+    "timeline": {
+      "name": "Ժամանակային աղյուսակ",
+      "selected": "Ընտրվել է {{count}} թեստ ({{percent}}%) {{տեւողությամբ}}-ից բարձր տևողությամբ",
+      "selected_plural": "Ընտրվել են {{count}} թեստեր ({{percent}}%) {{տեւողությամբ}}-ից բարձր տևողությամբ"
+    }
+  },
+  "testResult": {
+    "categories": {
+      "name": "Կատեգորիաներ"
+    },
+    "description": {
+      "name": "Նկարագրություն"
+    },
+    "duration": {
+      "name": "Տևողությունը"
+    },
+    "execution": {
+      "body": "Հիմնական մասը",
+      "downloadAttachment": {
+        "tooltip": "Բացել կցված ֆայլը նոր ներդիրում"
+      },
+      "name": "Կատարումը",
+      "setup": "Նախապատրաստում",
+      "teardown": "Ավարտը"
+    },
+    "history": {
+      "empty": "Պատմությունը հասանելի չէ։",
+      "name": "Պատմություն",
+      "statistic": "{{passed}}-ը {{total}}-ից",
+      "successRate": "Հաջողության ցուցանիշը",
+      "time": "{{date}} {{time}}-ին"
+    },
+    "links": {
+      "name": "Հղումներ"
+    },
+    "overview": {
+      "name": "Ընդհանուր"
+    },
+    "owner": {
+      "name": "Սեփականատեր"
+    },
+    "parameters": {
+      "name": "Պարամետրեր"
+    },
+    "retries": {
+      "empty": "Թեստերի կրկնության մասին տվյալները հասանելի չեն",
+      "name": "Կրկնությունների քանակ",
+      "time": "{{date}} {{time}}-ին"
+    },
+    "severity": {
+      "name": "Կարևորությունը",
+      "blocker": "Բլոկավարող",
+      "critical": "Կրիտիկական",
+      "normal": "Նորմալ",
+      "minor": "Մինոր",
+      "trivial": "Տրիվիալ"
+    },
+    "stats": {
+      "count": {
+        "attachments": "{{count}} կցված ֆայլեր",
+        "attachments_plural": "{{count}} կցված ֆայլեր",
+        "parameters": "{{count}} պարամետրեր",
+        "parameters_plural": "{{count}} պարամետրեր",
+        "steps": "{{count}} ենթաքայլ",
+        "steps_plural": "{{count}} ենթաքայլեր"
+      }
+    },
+    "status": {
+      "empty": "Կարգավիճակի մանրամասները հասանելի չեն",
+      "trace": "Ցույց տալ trace-ը"
+    },
+    "tags": {
+      "name": "Թեգեր"
+    }
+  },
+  "widget": {
+    "categories": {
+      "name": "Կատեգորիաներ"
+    },
+    "categoriesTrend": {
+      "name": "Կատեգորիաներ թրենդ"
+    },
+    "durationTrend": {
+      "name": "Տևողության թրենդ"
+    },
+    "environment": {
+      "empty": "Միջավայրի փոփոխականներ չկան",
+      "name": "Միջավայր",
+      "showAll": "Ցույց տալ բոլորը"
+    },
+    "executors": {
+      "empty": "Թեստերը կատարողների հանձնողի մասին տեղեկություն չկա",
+      "name": "Թեստերը կատարողներ",
+      "unknown": "Անհայտ"
+    },
+    "launches": {
+      "empty": "Գործարկիչների մասին տեղեկություններ չկան",
+      "name": "Գործարկիչներ"
+    },
+    "retryTrend": {
+      "name": "Կրկնությունների թրենդ"
+    },
+    "suites": {
+      "name": "Թեստի փաթեթներ"
+    },
+    "summary": {
+      "aggregatedName": "Հաշվետվությունների համախումբ",
+      "launches": "գործարկիչ",
+      "launches_plural": "գործարկիչներ",
+      "testResults": "թեստ քեյս",
+      "testResults_plural": "թեստ քեյսեր"
+    },
+    "trend": {
+      "name": "Թրենդ"
+    }
+  }
+}
