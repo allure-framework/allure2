@@ -223,6 +223,38 @@ class CategoriesPluginTest {
                 .containsKey("data/" + JSON_FILE_NAME);
     }
 
+    @Test
+    void flakyTestsShouldBeMatchedByDefault() {
+        final Configuration configuration = ConfigurationBuilder.bundled().build();
+
+        final Category category = new Category()
+                .setName(CATEGORY_NAME)
+                .setMatchedStatuses(singletonList(Status.FAILED));
+
+        final Map<String, Object> meta = new HashMap<>();
+        meta.put("categories", singletonList(category));
+
+        final List<LaunchResults> launchResultsList = createSingleLaunchResults(
+                meta, createTestResult("asd\n", Status.FAILED, true)
+        );
+
+        final CategoriesPlugin plugin = new CategoriesPlugin();
+
+        final InMemoryReportStorage storage = new InMemoryReportStorage();
+        plugin.aggregate(configuration, launchResultsList, storage);
+
+        final Set<TestResult> results = launchResultsList.get(0).getAllResults();
+        List<Category> categories = results.toArray(new TestResult[]{})[0]
+                .getExtraBlock("categories");
+
+        assertThat(categories).as("test categories")
+                .extracting(Category::getName)
+                .containsExactly(category.getName());
+
+        assertThat(storage.getReportDataFiles())
+                .containsKey("data/" + JSON_FILE_NAME);
+    }
+
     @Issue("587")
     @Issue("572")
     @Test

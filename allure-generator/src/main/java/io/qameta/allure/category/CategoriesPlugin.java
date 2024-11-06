@@ -48,6 +48,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -161,7 +162,8 @@ public class CategoriesPlugin extends CompositeAggregator2 implements Reader {
         final boolean matchesTrace = isNull(category.getTraceRegex())
                                      || nonNull(result.getStatusTrace())
                                         && matches(result.getStatusTrace(), category.getTraceRegex());
-        final boolean matchesFlaky = result.isFlaky() == category.isFlaky();
+        final boolean matchesFlaky = Objects.isNull(category.getFlaky())
+                                     || result.isFlaky() == category.getFlaky();
         return matchesStatus && matchesMessage && matchesTrace && matchesFlaky;
     }
 
