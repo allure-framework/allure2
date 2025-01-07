@@ -103,7 +103,7 @@ subprojects {
             dependency("org.apache.tika:tika-core:2.9.2")
             dependency("org.assertj:assertj-core:3.26.3")
             dependency("org.eclipse.jetty:jetty-server:9.4.53.v20231009")
-            dependency("org.freemarker:freemarker:2.3.33")
+            dependency("org.freemarker:freemarker:2.3.34")
             dependency("org.junit-pioneer:junit-pioneer:2.3.0")
             dependency("org.mockito:mockito-core:5.14.2")
             dependency("org.projectlombok:lombok:1.18.34")
