@@ -105,7 +105,7 @@ subprojects {
             dependency("org.eclipse.jetty:jetty-server:9.4.53.v20231009")
             dependency("org.freemarker:freemarker:2.3.34")
             dependency("org.junit-pioneer:junit-pioneer:2.3.0")
-            dependency("org.mockito:mockito-core:5.14.2")
+            dependency("org.mockito:mockito-core:5.15.2")
             dependency("org.projectlombok:lombok:1.18.34")
             dependency("org.slf4j:slf4j-api:${orgSlf4jVersion}")
             dependency("org.slf4j:slf4j-nop:${orgSlf4jVersion}")
