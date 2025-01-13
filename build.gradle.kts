@@ -95,7 +95,7 @@ subprojects {
             dependency("commons-beanutils:commons-beanutils:1.10.0")
             dependency("commons-io:commons-io:2.18.0")
             dependency("javax.xml.bind:jaxb-api:2.3.1")
-            dependency("net.sourceforge.pmd:pmd-java:7.1.0")
+            dependency("net.sourceforge.pmd:pmd-java:7.9.0")
             dependency("org.allurefw:allure1-model:1.0")
             dependency("org.apache.commons:commons-collections4:4.4")
             dependency("org.apache.commons:commons-lang3:3.17.0")
