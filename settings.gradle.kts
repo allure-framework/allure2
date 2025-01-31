@@ -52,7 +52,7 @@ pluginManagement {
     }
     plugins {
         id("com.bmuschko.docker-remote-api") version "9.4.0"
-        id("com.diffplug.spotless") version "7.0.1"
+        id("com.diffplug.spotless") version "7.0.2"
         id("com.github.node-gradle.node") version "7.1.0"
         id("com.gorylenko.gradle-git-properties") version "2.4.2"
         id("com.netflix.nebula.ospackage") version "11.10.1"
