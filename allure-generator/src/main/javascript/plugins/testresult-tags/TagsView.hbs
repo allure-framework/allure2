@@ -1,5 +1,8 @@
 {{#if tags}}
-    {{t 'testResult.tags.name'}}: {{#each tags}}
-        <span class="label label__info">{{#if this}}{{this}}{{else}}null{{/if}}</span>
-    {{/each}}
+    <span class="pane__section-title">{{t 'testResult.tags.name'}}</span>
+    <span class="pane__section-content">
+        {{#each tags}}
+            <span class="label label__info">{{#if this}}{{this}}{{else}}null{{/if}}</span>
+        {{/each}}
+    </span>
 {{/if}}
