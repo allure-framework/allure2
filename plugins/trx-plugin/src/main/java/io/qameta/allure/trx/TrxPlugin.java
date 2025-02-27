@@ -207,7 +207,7 @@ public class TrxPlugin implements Reader {
             result.setParameters(unitTest.getParameters());
             result.setDescription(unitTest.getDescription());
             result.setFullName(fullName);
-            result.setHistoryId(fullName);
+            result.setHistoryId(uid);
             result.addLabelIfNotExists(SUITE, className);
             result.addLabelIfNotExists(TEST_CLASS, className);
             result.addLabelIfNotExists(PACKAGE, className);

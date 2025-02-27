@@ -207,7 +207,7 @@ public class Allure1Plugin implements Reader {
         if (historyId.isPresent()) {
             dest.setHistoryId(historyId.get().getValue());
         } else {
-            dest.setHistoryId(getHistoryId(String.format("%s#%s", testClass, name), parameters));
+            dest.setHistoryId(randomUid.get());
         }
         dest.setUid(randomUid.get());
         dest.setName(name);
