@@ -182,7 +182,7 @@ public class Allure2Plugin implements Reader {
                          final Map<String, List<StageResult>> afters) {
         final io.qameta.allure.entity.TestResult dest = new io.qameta.allure.entity.TestResult();
         dest.setUid(uidGenerator.get());
-        dest.setHistoryId(result.getHistoryId());
+        dest.setHistoryId(dest.getUid());
         dest.setFullName(result.getFullName());
         dest.setName(firstNonNull(result.getName(), result.getFullName(), "Unknown test"));
         dest.setTime(Time.create(result.getStart(), result.getStop()));
