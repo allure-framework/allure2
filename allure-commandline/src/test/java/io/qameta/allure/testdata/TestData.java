@@ -29,7 +29,7 @@ public final class TestData {
     }
 
     public static String randomString() {
-        return RandomStringUtils.randomAlphabetic(10);
+        return RandomStringUtils.insecure().nextAlphabetic(10);
     }
 
     public static int randomPort() {
