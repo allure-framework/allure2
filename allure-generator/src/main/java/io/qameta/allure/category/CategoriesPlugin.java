@@ -151,6 +151,7 @@ public class CategoriesPlugin extends CompositeAggregator2 implements Reader {
         return Arrays.asList(categoriesLayer, messageLayer);
     }
 
+    @SuppressWarnings("CyclomaticComplexity")
     public static boolean matches(final TestResult result, final Category category) {
         final boolean matchesStatus = category.getMatchedStatuses().isEmpty()
                                       || nonNull(result.getStatus())
@@ -161,7 +162,8 @@ public class CategoriesPlugin extends CompositeAggregator2 implements Reader {
         final boolean matchesTrace = isNull(category.getTraceRegex())
                                      || nonNull(result.getStatusTrace())
                                         && matches(result.getStatusTrace(), category.getTraceRegex());
-        final boolean matchesFlaky = result.isFlaky() == category.isFlaky();
+        final boolean matchesFlaky = isNull(category.getFlaky())
+                                     || result.isFlaky() == category.getFlaky();
         return matchesStatus && matchesMessage && matchesTrace && matchesFlaky;
     }
 

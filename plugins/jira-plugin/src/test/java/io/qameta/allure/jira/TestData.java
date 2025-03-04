@@ -61,9 +61,9 @@ public final class TestData {
 
     public static TestResult createTestResult(final Status status) {
         return new TestResult()
-                .setUid(RandomStringUtils.random(10))
-                .setName(RandomStringUtils.random(10))
-                .setHistoryId(RandomStringUtils.random(9))
+                .setUid(RandomStringUtils.insecure().nextAlphanumeric(10))
+                .setName(RandomStringUtils.insecure().nextAlphanumeric(10))
+                .setHistoryId(RandomStringUtils.insecure().nextAlphanumeric(9))
                 .setStatus(status);
     }
 
