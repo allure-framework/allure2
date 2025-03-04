@@ -152,6 +152,7 @@ public class CategoriesPlugin extends CompositeAggregator2 implements Reader {
         return Arrays.asList(categoriesLayer, messageLayer);
     }
 
+    @SuppressWarnings("CyclomaticComplexity")
     public static boolean matches(final TestResult result, final Category category) {
         final boolean matchesStatus = category.getMatchedStatuses().isEmpty()
                                       || nonNull(result.getStatus())
