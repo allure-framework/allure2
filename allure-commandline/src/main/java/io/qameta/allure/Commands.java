@@ -22,10 +22,11 @@ import io.qameta.allure.option.ConfigOptions;
 import io.qameta.allure.option.ReportLanguageOptions;
 import io.qameta.allure.option.ReportNameOptions;
 import io.qameta.allure.plugin.DefaultPluginLoader;
+import io.qameta.allure.util.DeleteVisitor;
+import io.undertow.Handlers;
+import io.undertow.Undertow;
+import io.undertow.server.handlers.resource.PathResourceManager;
 import org.apache.commons.io.FileUtils;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.ResourceHandler;
-import org.eclipse.jetty.util.resource.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -194,7 +195,14 @@ public class Commands {
         try {
             final Path tmp = Files.createTempDirectory("");
             reportDirectory = tmp.resolve("allure-report");
-            tmp.toFile().deleteOnExit();
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                try {
+                    LOGGER.info("Shutting down...");
+                    Files.walkFileTree(tmp, new DeleteVisitor());
+                } catch (IOException ignored) {
+                    // do nothing
+                }
+            }));
         } catch (IOException e) {
             LOGGER.error("Could not create temp directory", e);
             return ExitCode.GENERIC_ERROR;
@@ -227,7 +235,7 @@ public class Commands {
      */
     public ExitCode open(final Path reportDirectory, final String host, final int port) {
         LOGGER.info("Starting web server...");
-        final Server server;
+        final Undertow server;
         try {
             server = setUpServer(host, port, reportDirectory);
             server.start();
@@ -236,18 +244,33 @@ public class Commands {
             return ExitCode.GENERIC_ERROR;
         }
 
+        final List<Undertow.ListenerInfo> listenerInfos = server.getListenerInfo();
+        if (listenerInfos.isEmpty()) {
+            LOGGER.error("Can't find any listener info");
+            return ExitCode.GENERIC_ERROR;
+        }
+        final Undertow.ListenerInfo listenerInfo = listenerInfos.get(0);
+        final InetSocketAddress socketAddress = (InetSocketAddress) listenerInfo.getAddress();
+        final URI uri = URI.create(
+                listenerInfo.getProtcol()
+                + "://"
+                + socketAddress.getHostString()
+                + ":"
+                + socketAddress.getPort()
+        );
+
         try {
-            openBrowser(server.getURI());
+            openBrowser(uri);
         } catch (IOException | AWTError e) {
             LOGGER.error(
                     "Could not open the report in browser, try to open it manually {}",
-                    server.getURI(),
+                    uri,
                     e
             );
         }
-        LOGGER.info("Server started at <{}>. Press <Ctrl+C> to exit", server.getURI());
+        LOGGER.info("Server started at <{}>. Press <Ctrl+C> to exit", uri);
         try {
-            server.join();
+            Thread.currentThread().join();
         } catch (InterruptedException e) {
             LOGGER.error("Report serve interrupted", e);
             return ExitCode.GENERIC_ERROR;
@@ -297,7 +320,7 @@ public class Commands {
     }
 
     /**
-     * Set up Jetty server to serve Allure Report.
+     * Set up Undertow server to serve Allure Report.
      *
      * @param host            the host
      * @param port            the port
@@ -305,18 +328,14 @@ public class Commands {
      * @return self for method chaining
      * @throws IOException the io exception
      */
-    protected Server setUpServer(final String host, final int port, final Path reportDirectory) throws IOException {
-        final Server server = Objects.isNull(host)
-                ? new Server(port)
-                : new Server(new InetSocketAddress(host, port));
-        final ResourceHandler handler = new ResourceHandler();
-        handler.setRedirectWelcome(true);
-        handler.setDirectoriesListed(true);
-        handler.setPathInfoOnly(true);
-        handler.setBaseResource(Resource.newResource(reportDirectory.toRealPath()));
-        server.setStopAtShutdown(true);
-        server.setHandler(handler);
-        return server;
+    protected Undertow setUpServer(final String host, final int port, final Path reportDirectory) throws IOException {
+        return Undertow.builder()
+                .addHttpListener(port, Objects.isNull(host) ? "localhost" : host)
+                .setHandler(Handlers
+                        .resource(new PathResourceManager(reportDirectory.toRealPath()))
+                        .setDirectoryListingEnabled(true)
+                )
+                .build();
     }
 
     /**
