@@ -39,11 +39,12 @@ jobs:
           path: allure-generator/test-data/demo2
   testcmd:
     name: "Test Allure Commandline"
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     needs: build
     strategy:
       fail-fast: false
       matrix:
+        os: [ubuntu-latest, windows-latest]
         java-version: [ '8', '11', '17', '20' ]
     steps:
       - name: Set up JRE ${{ matrix.java-version }}
