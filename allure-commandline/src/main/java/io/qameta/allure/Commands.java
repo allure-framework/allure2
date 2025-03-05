@@ -15,6 +15,8 @@
  */
 package io.qameta.allure;
 
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpServer;
 import io.qameta.allure.config.ConfigLoader;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.Plugin;
@@ -22,18 +24,18 @@ import io.qameta.allure.option.ConfigOptions;
 import io.qameta.allure.option.ReportLanguageOptions;
 import io.qameta.allure.option.ReportNameOptions;
 import io.qameta.allure.plugin.DefaultPluginLoader;
+import io.qameta.allure.util.DeleteVisitor;
 import org.apache.commons.io.FileUtils;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.ResourceHandler;
-import org.eclipse.jetty.util.resource.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.AWTError;
 import java.awt.Desktop;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,6 +45,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static io.qameta.allure.DefaultResultsVisitor.probeContentType;
 import static java.lang.String.format;
 
 /**
@@ -194,7 +197,14 @@ public class Commands {
         try {
             final Path tmp = Files.createTempDirectory("");
             reportDirectory = tmp.resolve("allure-report");
-            tmp.toFile().deleteOnExit();
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                try {
+                    LOGGER.info("Shutting down...");
+                    Files.walkFileTree(tmp, new DeleteVisitor());
+                } catch (IOException ignored) {
+                    // do nothing
+                }
+            }));
         } catch (IOException e) {
             LOGGER.error("Could not create temp directory", e);
             return ExitCode.GENERIC_ERROR;
@@ -227,7 +237,7 @@ public class Commands {
      */
     public ExitCode open(final Path reportDirectory, final String host, final int port) {
         LOGGER.info("Starting web server...");
-        final Server server;
+        final HttpServer server;
         try {
             server = setUpServer(host, port, reportDirectory);
             server.start();
@@ -236,18 +246,25 @@ public class Commands {
             return ExitCode.GENERIC_ERROR;
         }
 
+        final InetSocketAddress socketAddress = server.getAddress();
+        final URI uri = URI.create("http://"
+                                   + socketAddress.getHostString()
+                                   + ":"
+                                   + socketAddress.getPort()
+        );
+
         try {
-            openBrowser(server.getURI());
+            openBrowser(uri);
         } catch (IOException | AWTError e) {
             LOGGER.error(
                     "Could not open the report in browser, try to open it manually {}",
-                    server.getURI(),
+                    uri,
                     e
             );
         }
-        LOGGER.info("Server started at <{}>. Press <Ctrl+C> to exit", server.getURI());
+        LOGGER.info("Server started at <{}>. Press <Ctrl+C> to exit", uri);
         try {
-            server.join();
+            Thread.currentThread().join();
         } catch (InterruptedException e) {
             LOGGER.error("Report serve interrupted", e);
             return ExitCode.GENERIC_ERROR;
@@ -297,7 +314,7 @@ public class Commands {
     }
 
     /**
-     * Set up Jetty server to serve Allure Report.
+     * Set up HttpServer to serve Allure Report.
      *
      * @param host            the host
      * @param port            the port
@@ -305,18 +322,37 @@ public class Commands {
      * @return self for method chaining
      * @throws IOException the io exception
      */
-    protected Server setUpServer(final String host, final int port, final Path reportDirectory) throws IOException {
-        final Server server = Objects.isNull(host)
-                ? new Server(port)
-                : new Server(new InetSocketAddress(host, port));
-        final ResourceHandler handler = new ResourceHandler();
-        handler.setRedirectWelcome(true);
-        handler.setDirectoriesListed(true);
-        handler.setPathInfoOnly(true);
-        handler.setBaseResource(Resource.newResource(reportDirectory.toRealPath()));
-        server.setStopAtShutdown(true);
-        server.setHandler(handler);
+    protected HttpServer setUpServer(final String host, final int port, final Path reportDirectory) throws IOException {
+        final HttpServer server = HttpServer
+                .create(new InetSocketAddress(Objects.isNull(host) ? "localhost" : host, port), 0);
+
+        server.createContext("/", exchange -> {
+            final Path resolve = reportDirectory.resolve("." + exchange.getRequestURI().getPath());
+            if (Files.isDirectory(resolve)) {
+                serveFile(exchange, resolve.resolve("index.html"));
+            } else {
+                serveFile(exchange, resolve);
+            }
+        });
+
         return server;
+    }
+
+    private static void serveFile(final HttpExchange exchange, final Path resolve) throws IOException {
+        if (Files.isRegularFile(resolve)) {
+            final String contentType = probeContentType(resolve);
+            exchange.sendResponseHeaders(200, Files.size(resolve));
+            exchange.getResponseHeaders().add("Content-Type", contentType);
+            try (OutputStream os = exchange.getResponseBody()) {
+                Files.copy(resolve, os);
+            }
+        } else {
+            final String response = "404 Not Found";
+            exchange.sendResponseHeaders(404, response.length());
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(response.getBytes(StandardCharsets.UTF_8));
+            }
+        }
     }
 
     /**
