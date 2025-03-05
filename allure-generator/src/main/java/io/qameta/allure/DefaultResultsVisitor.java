@@ -50,7 +50,7 @@ public class DefaultResultsVisitor implements ResultsVisitor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultResultsVisitor.class);
 
-    public static final String WILDCARD = "*/*";
+    public static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
 
     private final Configuration configuration;
 
@@ -130,7 +130,7 @@ public class DefaultResultsVisitor implements ResultsVisitor {
             return probeContentType(stream, Objects.toString(path.getFileName()));
         } catch (IOException e) {
             LOGGER.warn("Couldn't detect the media type of attachment {}", path, e);
-            return WILDCARD;
+            return APPLICATION_OCTET_STREAM;
         }
     }
 
@@ -141,7 +141,7 @@ public class DefaultResultsVisitor implements ResultsVisitor {
             return getDefaultMimeTypes().detect(stream, metadata).toString();
         } catch (IOException e) {
             LOGGER.warn("Couldn't detect the media type of attachment {}", name, e);
-            return WILDCARD;
+            return APPLICATION_OCTET_STREAM;
         }
     }
 

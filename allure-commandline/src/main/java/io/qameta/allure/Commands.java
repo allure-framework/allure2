@@ -15,6 +15,8 @@
  */
 package io.qameta.allure;
 
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpServer;
 import io.qameta.allure.config.ConfigLoader;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.Plugin;
@@ -23,9 +25,6 @@ import io.qameta.allure.option.ReportLanguageOptions;
 import io.qameta.allure.option.ReportNameOptions;
 import io.qameta.allure.plugin.DefaultPluginLoader;
 import io.qameta.allure.util.DeleteVisitor;
-import io.undertow.Handlers;
-import io.undertow.Undertow;
-import io.undertow.server.handlers.resource.PathResourceManager;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,8 +32,10 @@ import org.slf4j.LoggerFactory;
 import java.awt.AWTError;
 import java.awt.Desktop;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -44,6 +45,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static io.qameta.allure.DefaultResultsVisitor.probeContentType;
 import static java.lang.String.format;
 
 /**
@@ -235,7 +237,7 @@ public class Commands {
      */
     public ExitCode open(final Path reportDirectory, final String host, final int port) {
         LOGGER.info("Starting web server...");
-        final Undertow server;
+        final HttpServer server;
         try {
             server = setUpServer(host, port, reportDirectory);
             server.start();
@@ -244,19 +246,11 @@ public class Commands {
             return ExitCode.GENERIC_ERROR;
         }
 
-        final List<Undertow.ListenerInfo> listenerInfos = server.getListenerInfo();
-        if (listenerInfos.isEmpty()) {
-            LOGGER.error("Can't find any listener info");
-            return ExitCode.GENERIC_ERROR;
-        }
-        final Undertow.ListenerInfo listenerInfo = listenerInfos.get(0);
-        final InetSocketAddress socketAddress = (InetSocketAddress) listenerInfo.getAddress();
-        final URI uri = URI.create(
-                listenerInfo.getProtcol()
-                + "://"
-                + socketAddress.getHostString()
-                + ":"
-                + socketAddress.getPort()
+        final InetSocketAddress socketAddress = server.getAddress();
+        final URI uri = URI.create("http://"
+                                   + socketAddress.getHostString()
+                                   + ":"
+                                   + socketAddress.getPort()
         );
 
         try {
@@ -320,7 +314,7 @@ public class Commands {
     }
 
     /**
-     * Set up Undertow server to serve Allure Report.
+     * Set up HttpServer to serve Allure Report.
      *
      * @param host            the host
      * @param port            the port
@@ -328,14 +322,37 @@ public class Commands {
      * @return self for method chaining
      * @throws IOException the io exception
      */
-    protected Undertow setUpServer(final String host, final int port, final Path reportDirectory) throws IOException {
-        return Undertow.builder()
-                .addHttpListener(port, Objects.isNull(host) ? "localhost" : host)
-                .setHandler(Handlers
-                        .resource(new PathResourceManager(reportDirectory.toRealPath()))
-                        .setDirectoryListingEnabled(true)
-                )
-                .build();
+    protected HttpServer setUpServer(final String host, final int port, final Path reportDirectory) throws IOException {
+        final HttpServer server = HttpServer
+                .create(new InetSocketAddress(Objects.isNull(host) ? "localhost" : host, port), 0);
+
+        server.createContext("/", exchange -> {
+            final Path resolve = reportDirectory.resolve("." + exchange.getRequestURI().getPath());
+            if (Files.isDirectory(resolve)) {
+                serveFile(exchange, resolve.resolve("index.html"));
+            } else {
+                serveFile(exchange, resolve);
+            }
+        });
+
+        return server;
+    }
+
+    private static void serveFile(final HttpExchange exchange, final Path resolve) throws IOException {
+        if (Files.isRegularFile(resolve)) {
+            final String contentType = probeContentType(resolve);
+            exchange.sendResponseHeaders(200, Files.size(resolve));
+            exchange.getResponseHeaders().add("Content-Type", contentType);
+            try (OutputStream os = exchange.getResponseBody()) {
+                Files.copy(resolve, os);
+            }
+        } else {
+            final String response = "404 Not Found";
+            exchange.sendResponseHeaders(404, response.length());
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(response.getBytes(StandardCharsets.UTF_8));
+            }
+        }
     }
 
     /**
