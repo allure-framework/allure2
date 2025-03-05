@@ -15,12 +15,8 @@
     <exclude name="AccessorMethodGeneration"/>
     <exclude name="ArrayIsStoredDirectly"/>
     <exclude name="GuardLogStatement"/>
-    <exclude name="JUnitAssertionsShouldIncludeMessage"/>
-    <exclude name="JUnit4SuitesShouldUseSuiteAnnotation"/>
-    <exclude name="JUnitTestsShouldIncludeAssert"/>
-    <exclude name="JUnit4TestShouldUseBeforeAnnotation"/>
-    <exclude name="JUnit4TestShouldUseAfterAnnotation"/>
-    <exclude name="JUnit4TestShouldUseTestAnnotation"/>
+    <!--  Doesn't work with Java 8 switch clause  -->
+    <exclude name="ExhaustiveSwitchHasDefault"/>
   </rule>
 
 

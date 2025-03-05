@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -121,7 +121,7 @@ public class BehaviorsPlugin extends CompositeAggregator2 {
         protected List<CsvExportBehavior> getData(final List<LaunchResults> launchesResults) {
             final List<CsvExportBehavior> exportBehaviors = new ArrayList<>();
             launchesResults.stream().flatMap(launch -> launch.getResults().stream()).forEach(result -> {
-                final Map<LabelName, List<String>> epicFeatureStoryMap = new HashMap<>();
+                final Map<LabelName, List<String>> epicFeatureStoryMap = new EnumMap<>(LabelName.class);
                 Arrays.asList(LABEL_NAMES).forEach(
                         label -> epicFeatureStoryMap.put(label, result.findAllLabels(label))
                 );
