@@ -33,9 +33,8 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -52,9 +51,7 @@ import java.util.stream.Stream;
  */
 public class HistoryPlugin extends CommonJsonAggregator2 implements Reader {
 
-    private static final Set<Status> MARK_STATUSES = new HashSet<>(Arrays.asList(
-            Status.FAILED, Status.BROKEN, Status.PASSED
-    ));
+    private static final Set<Status> MARK_STATUSES = EnumSet.of(Status.FAILED, Status.BROKEN, Status.PASSED);
 
     private static final String HISTORY_BLOCK_NAME = "history";
     private static final String HISTORY_FILE_NAME = "history.json";

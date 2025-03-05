@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -191,7 +192,7 @@ public class XrayTestRunExportPlugin implements Aggregator2 {
     }
 
     private static Map<Status, String> getEnvStatusesMap() {
-        final Map<Status, String> statues = new HashMap<>();
+        final Map<Status, String> statues = new EnumMap<>(Status.class);
         getProperty(ALLURE_XRAY_STATUS_PASSED).ifPresent(value -> statues.put(Status.PASSED, value));
         getProperty(ALLURE_XRAY_STATUS_FAILED).ifPresent(value -> statues.put(Status.FAILED, value));
         getProperty(ALLURE_XRAY_STATUS_BROKEN).ifPresent(value -> statues.put(Status.BROKEN, value));
@@ -201,7 +202,7 @@ public class XrayTestRunExportPlugin implements Aggregator2 {
     }
 
     private static Map<Status, String> getDefaultStatusesMap() {
-        final Map<Status, String> statues = new HashMap<>();
+        final Map<Status, String> statues = new EnumMap<>(Status.class);
         statues.put(Status.PASSED, XRAY_STATUS_PASS);
         statues.put(Status.FAILED, XRAY_STATUS_FAIL);
         statues.put(Status.BROKEN, XRAY_STATUS_FAIL);
