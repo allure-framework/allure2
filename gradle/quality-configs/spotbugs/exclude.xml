@@ -46,4 +46,8 @@
     <!-- finalizer methods are pretty much a dead pattern in Java -->
     <Bug pattern="CT_CONSTRUCTOR_THROW"/>
   </Match>
+
+  <Match class="io.qameta.allure.jira.retrofit.DefaultCallAdapterFactory$InstanceCallAdapter">
+    <Bug pattern="NP_NONNULL_RETURN_VIOLATION"/>
+  </Match>
 </FindBugsFilter>
