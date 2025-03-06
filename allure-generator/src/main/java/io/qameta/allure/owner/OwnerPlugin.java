@@ -44,6 +44,9 @@ public class OwnerPlugin implements Aggregator2 {
 
     private void setOwner(final TestResult result) {
         result.findOneLabel(LabelName.OWNER)
-                .ifPresent(owner -> result.addExtraBlock(OWNER_BLOCK_NAME, owner));
+                .map(OwnerAddressParser::parseAddress)
+                .ifPresent(ownerAddress ->
+                        result.addExtraBlock(OWNER_BLOCK_NAME, ownerAddress)
+                );
     }
 }
