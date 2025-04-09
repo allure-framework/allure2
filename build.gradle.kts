@@ -91,7 +91,7 @@ subprojects {
             dependency("com.puppycrawl.tools:checkstyle:10.21.4")
             dependency("com.squareup.retrofit2:converter-jackson:${comSquareupRetrofit2Version}")
             dependency("com.squareup.retrofit2:retrofit:${comSquareupRetrofit2Version}")
-            dependency("commons-beanutils:commons-beanutils:1.10.0")
+            dependency("commons-beanutils:commons-beanutils:1.10.1")
             dependency("commons-io:commons-io:2.18.0")
             dependency("javax.xml.bind:jaxb-api:2.3.1")
             dependency("net.sourceforge.pmd:pmd-java:7.11.0")
