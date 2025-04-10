@@ -16,6 +16,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
     "@babel/plugin-transform-runtime": "^7.24.3",
     "@babel/preset-env": "^7.24.4",
+    "ansi-to-html": "^0.7.2",
     "autoprefixer": "^10.4.19",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^9.1.3",
