@@ -38,6 +38,7 @@ import static io.qameta.allure.category.CategoriesPlugin.CATEGORIES;
 import static io.qameta.allure.category.CategoriesPlugin.CSV_FILE_NAME;
 import static io.qameta.allure.category.CategoriesPlugin.FAILED_TESTS;
 import static io.qameta.allure.category.CategoriesPlugin.JSON_FILE_NAME;
+import static io.qameta.allure.category.CategoriesPlugin.stripAnsi;
 import static io.qameta.allure.testdata.TestData.createSingleLaunchResults;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -298,5 +299,23 @@ class CategoriesPluginTest {
                 .setFlaky(flaky);
     }
 
+    @Test
+    void shouldRemoveSimpleAnsiCode() {
+        String input = "\u001B[31mAnsi text\u001B[0m";
+        String expected = "Ansi text";
+        assertThat(stripAnsi(input)).isEqualTo(expected);
+    }
 
+    @Test
+    void shouldRemoveMultipleAnsiCodes() {
+        String input = "[31mTimed out 5000ms waiting for [39m[2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m";
+        String expected = "Timed out 5000ms waiting for expect(locator).toBeVisible()";
+        assertThat(stripAnsi(input)).isEqualTo(expected);
+    }
+
+    @Test
+    void shouldReturnUnchangedIfNoAnsi() {
+        String input = "Clean text";
+        assertThat(stripAnsi(input)).isEqualTo("Clean text");
+    }
 }

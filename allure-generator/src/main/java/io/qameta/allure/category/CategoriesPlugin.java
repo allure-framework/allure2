@@ -151,7 +151,7 @@ public class CategoriesPlugin extends CompositeAggregator2 implements Reader {
         return Arrays.asList(categoriesLayer, messageLayer);
     }
 
-    private static String stripAnsi(final String input) {
+    static String stripAnsi(final String input) {
         return input == null ? null : input.replaceAll("\u001B\\[[0-9;]*[a-zA-Z]", "");
     }
 
