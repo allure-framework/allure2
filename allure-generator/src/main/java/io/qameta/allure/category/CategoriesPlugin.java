@@ -152,7 +152,7 @@ public class CategoriesPlugin extends CompositeAggregator2 implements Reader {
     }
 
     private static String stripAnsi(final String input) {
-        return input == null ? null : input.replaceAll("\\u001B\\[[;\\d]*m", "");
+        return input == null ? null : input.replaceAll("\u001B\\[[0-9;]*[a-zA-Z]", "");
     }
 
     @SuppressWarnings("CyclomaticComplexity")
