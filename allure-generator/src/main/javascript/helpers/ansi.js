@@ -2,7 +2,7 @@ import AnsiToHtml from "ansi-to-html";
 import {SafeString} from "handlebars/runtime";
 
 const ansiConverter = new AnsiToHtml({
-    fg: "white",
+    fg: "black",
     bg: "black",
     newline: true,
 });
