@@ -151,17 +151,23 @@ public class CategoriesPlugin extends CompositeAggregator2 implements Reader {
         return Arrays.asList(categoriesLayer, messageLayer);
     }
 
+    static String stripAnsi(final String input) {
+        return input == null ? null : input.replaceAll("\u001B\\[[0-9;]*[a-zA-Z]", "");
+    }
+
     @SuppressWarnings("CyclomaticComplexity")
     public static boolean matches(final TestResult result, final Category category) {
+        final String cleanMessage = stripAnsi(result.getStatusMessage());
+        final String cleanTrace = stripAnsi(result.getStatusTrace());
         final boolean matchesStatus = category.getMatchedStatuses().isEmpty()
                                       || nonNull(result.getStatus())
                                          && category.getMatchedStatuses().contains(result.getStatus());
         final boolean matchesMessage = isNull(category.getMessageRegex())
-                                       || nonNull(result.getStatusMessage())
-                                          && matches(result.getStatusMessage(), category.getMessageRegex());
+                                       || nonNull(cleanMessage)
+                                          && matches(cleanMessage, category.getMessageRegex());
         final boolean matchesTrace = isNull(category.getTraceRegex())
-                                     || nonNull(result.getStatusTrace())
-                                        && matches(result.getStatusTrace(), category.getTraceRegex());
+                                     || nonNull(cleanTrace)
+                                        && matches(cleanTrace, category.getTraceRegex());
         final boolean matchesFlaky = isNull(category.getFlaky())
                                      || result.isFlaky() == category.getFlaky();
         return matchesStatus && matchesMessage && matchesTrace && matchesFlaky;
