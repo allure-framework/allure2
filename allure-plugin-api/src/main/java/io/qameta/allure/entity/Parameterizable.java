@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 /**
  * @author charlie (Dmitry Baev).
  */
+@FunctionalInterface
 public interface Parameterizable {
 
     List<Parameter> getParameters();
