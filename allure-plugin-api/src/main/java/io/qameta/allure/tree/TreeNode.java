@@ -18,6 +18,7 @@ package io.qameta.allure.tree;
 /**
  * @author charlie (Dmitry Baev).
  */
+@FunctionalInterface
 public interface TreeNode {
 
     String getName();
