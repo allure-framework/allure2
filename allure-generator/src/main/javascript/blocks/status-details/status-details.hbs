@@ -4,10 +4,10 @@
             <div class="{{b 'status-details' 'trace-toggle' status=status}} clickable"
                  data-tooltip="{{t 'testResult.status.trace'}}"
                  data-ga4-event="stacktrace_expand_click">
-                <pre class="status-details__message"><code>{{#if statusMessage}}{{statusMessage}}{{else}}{{t 'testResult.status.empty'}}{{/if}}</code></pre>
+                <pre class="status-details__message"><code>{{#if statusMessage}}{{ansi statusMessage}}{{else}}{{t 'testResult.status.empty'}}{{/if}}</code></pre>
             </div>
 
-            <pre class="{{b 'status-details' 'trace'}}"><code>{{#if statusTrace}}{{statusTrace}}{{else}}{{t 'testResult.status.empty'}}{{/if}}</code></pre>
+            <pre class="{{b 'status-details' 'trace'}}"><code>{{#if statusTrace}}{{ansi statusTrace}}{{else}}{{t 'testResult.status.empty'}}{{/if}}</code></pre>
         {{/if}}
     </div>
 </div>
