@@ -70,4 +70,8 @@
       height: 85vh;
     }
   }
+  &__trace-container {
+    overflow: hidden;
+    height: calc(100vh - 96px); //48px header, 48px footer space
+  }
 }
