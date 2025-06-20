@@ -30,6 +30,7 @@ import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
+import io.qameta.allure.parser.ClasspathEntityResolver;
 import io.qameta.allure.parser.XmlElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -133,7 +134,9 @@ public class JunitXmlPlugin implements Reader {
         try {
             LOGGER.debug("Parsing file {}", parsedFile);
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setValidating(false);
             final DocumentBuilder builder = factory.newDocumentBuilder();
+            builder.setEntityResolver(new ClasspathEntityResolver());
 
             final XmlElement rootElement = new XmlElement(builder.parse(parsedFile.toFile()).getDocumentElement());
             final String elementName = rootElement.getName();

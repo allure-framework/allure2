@@ -25,6 +25,7 @@ import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
+import io.qameta.allure.parser.ClasspathEntityResolver;
 import io.qameta.allure.parser.XmlElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,7 +107,9 @@ public class TrxPlugin implements Reader {
             LOGGER.debug("Parsing file {}", parsedFile);
 
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setValidating(false);
             final DocumentBuilder builder = factory.newDocumentBuilder();
+            builder.setEntityResolver(new ClasspathEntityResolver());
             final Document document = builder.parse(parsedFile.toFile());
             final XmlElement testRunElement = new XmlElement(document.getDocumentElement());
             final String elementName = testRunElement.getName();

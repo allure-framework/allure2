@@ -35,6 +35,7 @@ import org.mockito.ArgumentCaptor;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.ZoneOffset;
@@ -347,6 +348,42 @@ class JunitXmlPluginTest {
                         tuple(1525592511000L, 1525592527211L, 16211L),
                         tuple(1525592511000L, 1525592519477L, 8477L)
                 );
+    }
+
+    @Test
+    void cveEntityReadTest(@TempDir final Path tmp) throws IOException {
+        final Path secretFile = tmp.resolve("secretfile.ini");
+        Files.writeString(secretFile,
+                "[owner]\n"
+                + "name = John Doe\n"
+                + "organization = Example Org.\n",
+                StandardCharsets.UTF_8
+        );
+
+        Files.writeString(
+                resultsDirectory.resolve("bad-test.xml"),
+                "<?xml version=\"1.0\"?>\n"
+                + "<!DOCTYPE foo [\n"
+                + "  <!ENTITY xxe SYSTEM \"" + secretFile.toUri() + "\">\n"
+                + "]>\n"
+                + "<testsuite tests=\"5\" failures=\"1\" name=\"org.allurefw.report.junit.JunitXmlPluginTest\" time=\"0.354\" errors=\"0\" skipped=\"1\">\n"
+                + "  <testcase classname=\"org.allurefw.report.junit.JunitXmlPluginTest\" name=\"shouldReadFailures\" time=\"0.012\">\n"
+                + "    <failure message=\"message\">&xxe;\n"
+                + "    </failure>\n"
+                + "  </testcase>\n"
+                + "</testsuite>",
+                StandardCharsets.UTF_8
+        );
+
+        JunitXmlPlugin reader = new JunitXmlPlugin();
+
+        reader.readResults(configuration, visitor, resultsDirectory);
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
+        verify(visitor, times(1)).visitTestResult(captor.capture());
+
+        final TestResult testResult = captor.getValue();
+        assertThat(testResult.getStatusTrace()).doesNotContain("John Doe").doesNotContain("Example Org");
     }
 
     private void process(String... strings) throws IOException {

@@ -34,6 +34,7 @@ import org.mockito.ArgumentCaptor;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -183,6 +184,49 @@ class XunitXmlPluginTest {
                 .containsExactlyInAnyOrder(
                         Tuple.tuple(message, trace)
                 );
+    }
+
+    @Test
+    void cveEntityReadTest(@TempDir final Path tmp) throws IOException {
+        final Path secretFile = tmp.resolve("secretfile.ini");
+        Files.writeString(secretFile,
+                "[owner]\n"
+                + "name = John Doe\n"
+                + "organization = Example Org.\n",
+                StandardCharsets.UTF_8
+        );
+
+        Files.writeString(
+                resultsDirectory.resolve("bad-test.xml"),
+                "<?xml version=\"1.0\"?>\n"
+                + "<!DOCTYPE foo [\n"
+                + "  <!ENTITY xxe SYSTEM \"" + secretFile.toUri() + "\">\n"
+                + "]>\n"
+                + "<assemblies>\n"
+                + "  <assembly test-framework=\"xunit\">\n"
+                + "    <collection>\n"
+                + "      <test name=\"Exploit Test\" method=\"testMethod\" type=\"TestClass\" result=\"Fail\">\n"
+                + "        <failure>\n"
+                + "          <message>&xxe;</message>\n"
+                + "          <stack-trace>Trace with &xxe;</stack-trace>\n"
+                + "        </failure>\n"
+                + "      </test>\n"
+                + "    </collection>\n"
+                + "  </assembly>\n"
+                + "</assemblies>",
+                StandardCharsets.UTF_8
+        );
+
+        XunitXmlPlugin reader = new XunitXmlPlugin();
+
+        reader.readResults(configuration, visitor, resultsDirectory);
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
+        verify(visitor, times(1)).visitTestResult(captor.capture());
+
+        final TestResult testResult = captor.getValue();
+        assertThat(testResult.getStatusMessage()).doesNotContain("John Doe");
+        assertThat(testResult.getStatusTrace()).doesNotContain("Example Org");
     }
 
     private void process(String... strings) throws IOException {
