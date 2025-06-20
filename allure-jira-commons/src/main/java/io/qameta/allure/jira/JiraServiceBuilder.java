@@ -28,7 +28,6 @@ import static io.qameta.allure.util.PropertyUtils.requireProperty;
 /**
  * Jira Service builder.
  */
-@SuppressWarnings("PMD.AvoidFieldNameMatchingMethodName")
 public class JiraServiceBuilder {
 
     private static final String JIRA_ENDPOINT = "ALLURE_JIRA_ENDPOINT";

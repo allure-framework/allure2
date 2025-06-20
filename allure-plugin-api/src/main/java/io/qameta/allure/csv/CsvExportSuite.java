@@ -27,7 +27,6 @@ import java.util.Map;
  * Class contains the information for the suites csv export.
  *
  */
-@SuppressWarnings("PMD.StringToString")
 public class CsvExportSuite implements Serializable {
 
     @CsvBindByName(column = "Status")

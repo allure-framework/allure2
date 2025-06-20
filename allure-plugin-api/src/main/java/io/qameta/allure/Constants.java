@@ -22,7 +22,6 @@ import java.util.stream.Stream;
  * @author charlie (Dmitry Baev).
  * @since 2.7
  */
-@SuppressWarnings("PMD.ClassNamingConventions")
 public final class Constants {
 
     /**

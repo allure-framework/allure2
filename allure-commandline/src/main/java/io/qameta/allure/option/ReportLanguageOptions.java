@@ -23,7 +23,6 @@ import io.qameta.allure.validator.LanguageValidator;
  *
  * @since 2.0
  */
-@SuppressWarnings("PMD.ImmutableField")
 public class ReportLanguageOptions {
 
     @Parameter(

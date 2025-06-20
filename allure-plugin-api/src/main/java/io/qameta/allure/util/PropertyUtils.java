@@ -35,7 +35,6 @@ public final class PropertyUtils {
         return Optional.ofNullable(properties.getProperty(key)).filter(StringUtils::isNotBlank);
     }
 
-    @SuppressWarnings("PMD.AvoidThrowingNullPointerException")
     public static String requireProperty(final String key) {
         return getProperty(key).orElseThrow(() -> new PropertyNotFoundException(key));
     }

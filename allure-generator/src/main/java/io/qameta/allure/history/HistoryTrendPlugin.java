@@ -60,7 +60,6 @@ public class HistoryTrendPlugin extends AbstractTrendPlugin<HistoryTrendItem> {
         return Optional.ofNullable(mapper.treeToValue(child, HistoryTrendItem.class));
     }
 
-    @SuppressWarnings("PMD.DefaultPackage")
     /* default */ static List<HistoryTrendItem> getData(final List<LaunchResults> launchesResults) {
         final HistoryTrendItem item = createCurrent(launchesResults);
         final List<HistoryTrendItem> data = getHistoryItems(launchesResults);

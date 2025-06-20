@@ -55,7 +55,6 @@ import static io.qameta.allure.Constants.NO_ANALYTICS;
 /**
  * @author charlie (Dmitry Baev).
  */
-@SuppressWarnings({"PMD.ExcessiveImports"})
 public class GaPlugin implements Aggregator2 {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GaPlugin.class);

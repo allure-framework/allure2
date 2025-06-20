@@ -55,7 +55,6 @@ import static java.util.Objects.nonNull;
 /**
  * @author charlie (Dmitry Baev).
  */
-@SuppressWarnings("PMD.ExcessiveImports")
 public class XunitXmlPlugin implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XunitXmlPlugin.class);

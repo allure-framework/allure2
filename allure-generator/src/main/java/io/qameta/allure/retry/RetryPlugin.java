@@ -43,7 +43,6 @@ public class RetryPlugin implements Aggregator2 {
 
     public static final String RETRY_BLOCK_NAME = "retries";
 
-    @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.AvoidInstantiatingObjectsInLoops"})
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
