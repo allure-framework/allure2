@@ -30,6 +30,7 @@ import org.mockito.ArgumentCaptor;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -181,6 +182,66 @@ class TrxPluginTest {
                         labels
                 );
 
+    }
+
+    @Test
+    void cveEntityReadTest(@TempDir final Path tmp) throws IOException {
+        final Path secretFile = tmp.resolve("secretfile.ini");
+        Files.writeString(secretFile,
+                "[owner]\n"
+                + "name = John Doe\n"
+                + "organization = Example Org.\n",
+                StandardCharsets.UTF_8
+        );
+
+        Files.writeString(
+                resultsDirectory.resolve("bad-test.trx"),
+                "<?xml version=\"1.0\"?>\n"
+                + "<!DOCTYPE foo [\n"
+                + "  <!ENTITY xxe SYSTEM \"" + secretFile.toUri() + "\">\n"
+                + "]>\n"
+                + "<TestRun id=\"37bd1bbc-784e-477a-8fe2-a116517ba93f\" name=\"@ip-10-0-12-95 2017-09-11 07:32:55\" xmlns=\"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\">\n"
+                + "    <Times creation=\"2017-09-11T07:32:55.5710479+00:00\" queuing=\"2017-09-11T07:32:55.5710493+00:00\" start=\"2017-09-11T07:31:47.7161493+00:00\" finish=\"2017-09-11T07:50:48.6048416+00:00\" />\n"
+                + "    <TestSettings name=\"default\" id=\"fec1d7e5-efa1-43b5-b261-7507a1de835f\">\n"
+                + "        <Deployment runDeploymentRoot=\"_ip-10-0-12-95 2017-09-11 07_32_55\" />\n"
+                + "    </TestSettings>\n"
+                + "    <Results>\n"
+                + "        <UnitTestResult executionId=\"a0c122ad-b99a-4e42-b42c-9f03a42e789d\" testId=\"6efcec51-ecd8-464a-afdf-a8f254074a1a\" testName=\"MyCompany.TestSuite.IntegrationTests.Retrieve.RetrieveTestCases.Test_BookingIdInResponse_Succeeds\" computerName=\"ip-10-0-12-95\" duration=\"00:00:00.0010000\" startTime=\"2017-09-11T07:32:55.4659624+00:00\" endTime=\"2017-09-11T07:32:55.4659679+00:00\" testType=\"13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b\" outcome=\"Failed\" testListId=\"8c84fa94-04c1-424b-9868-57a2d4851a1d\" relativeResultsDirectory=\"a0c122ad-b99a-4e42-b42c-9f03a42e789d\">\n"
+                + "            <Output>\n"
+                + "                <ErrorInfo>\n"
+                + "                    <Message>&xxe;</Message>\n"
+                + "                    <StackTrace>&xxe;</StackTrace>\n"
+                + "                </ErrorInfo>\n"
+                + "            </Output>\n"
+                + "        </UnitTestResult>\n"
+                + "    </Results>\n"
+                + "    <TestDefinitions>\n"
+                + "        <UnitTest name=\"MyCompany.TestSuite.IntegrationTests.Retrieve.RetrieveTestCases.Test_BookingIdInResponse_Succeeds\" storage=\"/var/lib/jenkins/workspace/Product/code/test/MyCompany.testsuite/bin/release/netcoreapp2.0/MyCompany.testsuite.dll\" id=\"6efcec51-ecd8-464a-afdf-a8f254074a1a\">\n"
+                + "            <Execution id=\"a0c122ad-b99a-4e42-b42c-9f03a42e789d\" />\n"
+                + "            <TestMethod codeBase=\"/var/lib/jenkins/workspace/Product/code/test/MyCompany.TestSuite/bin/Release/netcoreapp2.0/MyCompany.TestSuite.dll\" executorUriOfAdapter=\"executor://xunit/VsTestRunner2\" className=\"MyCompany.TestSuite.IntegrationTests.Retrieve.RetrieveTestCases\" name=\"MyCompany.TestSuite.IntegrationTests.Retrieve.RetrieveTestCases.Test_BookingIdInResponse_Succeeds\" />\n"
+                + "        </UnitTest>\n"
+                + "    </TestDefinitions>\n"
+                + "    <TestEntries>\n"
+                + "        <TestEntry testId=\"6efcec51-ecd8-464a-afdf-a8f254074a1a\" executionId=\"a0c122ad-b99a-4e42-b42c-9f03a42e789d\" testListId=\"8c84fa94-04c1-424b-9868-57a2d4851a1d\" />\n"
+                + "    </TestEntries>\n"
+                + "    <TestLists>\n"
+                + "        <TestList name=\"Results Not in a List\" id=\"8c84fa94-04c1-424b-9868-57a2d4851a1d\" />\n"
+                + "        <TestList name=\"All Loaded Results\" id=\"19431567-8539-422a-85d7-44ee4e166bda\" />\n"
+                + "    </TestLists>\n"
+                + "</TestRun>",
+                StandardCharsets.UTF_8
+        );
+
+        TrxPlugin reader = new TrxPlugin();
+
+        reader.readResults(configuration, visitor, resultsDirectory);
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
+        verify(visitor, times(1)).visitTestResult(captor.capture());
+
+        final TestResult testResult = captor.getValue();
+        assertThat(testResult.getStatusMessage()).doesNotContain("John Doe");
+        assertThat(testResult.getStatusTrace()).doesNotContain("Example Org");
     }
 
     private void process(String... strings) throws IOException {

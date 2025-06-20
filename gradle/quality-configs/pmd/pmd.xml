@@ -97,6 +97,7 @@
   <rule ref="category/java/errorprone.xml">
     <exclude name="AvoidCatchingThrowable"/>
     <exclude name="AvoidFieldNameMatchingMethodName"/>
+    <exclude name="AssignmentInOperand"/>  <!-- duplicate of checkstyle check AssignmentInOperand -->
     <exclude name="AvoidLiteralsInIfCondition"/>
     <exclude name="EmptyFinalizer"/>
     <exclude name="FinalizeDoesNotCallSuperFinalize"/>
