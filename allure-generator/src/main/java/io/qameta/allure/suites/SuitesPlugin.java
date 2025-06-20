@@ -47,7 +47,6 @@ import static io.qameta.allure.tree.TreeUtils.groupByLabels;
  *
  * @since 2.0
  */
-@SuppressWarnings("PMD.UseUtilityClass")
 public class SuitesPlugin extends CompositeAggregator2 {
 
     private static final String SUITES = "suites";
@@ -68,7 +67,6 @@ public class SuitesPlugin extends CompositeAggregator2 {
         ));
     }
 
-    @SuppressWarnings("PMD.DefaultPackage")
     static /* default */ Tree<TestResult> getData(final List<LaunchResults> launchResults) {
 
         // @formatter:off

@@ -50,7 +50,6 @@ public class RetryTrendPlugin extends AbstractTrendPlugin<RetryTrendItem> {
         return Optional.ofNullable(mapper.treeToValue(child, RetryTrendItem.class));
     }
 
-    @SuppressWarnings("PMD.DefaultPackage")
     /* default */ static List<RetryTrendItem> getData(final List<LaunchResults> launchesResults) {
         final RetryTrendItem item = createCurrent(launchesResults);
         final List<RetryTrendItem> data = getHistoryItems(launchesResults);

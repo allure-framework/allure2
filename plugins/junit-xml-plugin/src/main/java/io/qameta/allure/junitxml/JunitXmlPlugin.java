@@ -69,7 +69,7 @@ import static java.util.Objects.nonNull;
  *
  * @since 2.0
  */
-@SuppressWarnings({"PMD.ExcessiveImports", "ClassDataAbstractionCoupling", "ClassFanOutComplexity"})
+@SuppressWarnings({"ClassDataAbstractionCoupling", "ClassFanOutComplexity"})
 public class JunitXmlPlugin implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JunitXmlPlugin.class);
@@ -122,7 +122,6 @@ public class JunitXmlPlugin implements Reader {
         );
     }
 
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     @Override
     public void readResults(final Configuration configuration, final ResultsVisitor visitor, final Path directory) {
         final RandomUidContext context = configuration.requireContext(RandomUidContext.class);

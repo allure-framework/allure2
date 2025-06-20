@@ -60,7 +60,6 @@ import static java.nio.file.Files.newDirectoryStream;
 /**
  * @author charlie (Dmitry Baev).
  */
-@SuppressWarnings("PMD.ExcessiveImports")
 public class TrxPlugin implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TrxPlugin.class);

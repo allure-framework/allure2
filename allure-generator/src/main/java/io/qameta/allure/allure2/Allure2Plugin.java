@@ -77,7 +77,6 @@ import static java.util.Objects.nonNull;
 @SuppressWarnings({
         "ClassDataAbstractionCoupling",
         "ClassFanOutComplexity",
-        "PMD.ExcessiveImports",
         "PMD.TooManyMethods",
 })
 public class Allure2Plugin implements Reader {

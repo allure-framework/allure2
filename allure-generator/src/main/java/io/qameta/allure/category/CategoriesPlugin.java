@@ -63,7 +63,7 @@ import static java.util.Objects.nonNull;
  *
  * @since 2.0
  */
-@SuppressWarnings({"PMD.ExcessiveImports", "ClassDataAbstractionCoupling"})
+@SuppressWarnings({"ClassDataAbstractionCoupling"})
 public class CategoriesPlugin extends CompositeAggregator2 implements Reader {
 
     public static final String CATEGORIES = "categories";
@@ -104,7 +104,6 @@ public class CategoriesPlugin extends CompositeAggregator2 implements Reader {
         }
     }
 
-    @SuppressWarnings("PMD.DefaultPackage")
     /* default */ static Tree<TestResult> getData(final List<LaunchResults> launchResults) {
 
         // @formatter:off
@@ -119,7 +118,6 @@ public class CategoriesPlugin extends CompositeAggregator2 implements Reader {
         return categories;
     }
 
-    @SuppressWarnings("PMD.DefaultPackage")
     /* default */ static void addCategoriesForResults(final List<LaunchResults> launchesResults) {
         launchesResults.forEach(launch -> {
             final List<Category> categories = launch.getExtra(CATEGORIES, Collections::emptyList);
@@ -155,7 +153,7 @@ public class CategoriesPlugin extends CompositeAggregator2 implements Reader {
         return input == null ? null : input.replaceAll("\u001B\\[[0-9;]*[a-zA-Z]", "");
     }
 
-    @SuppressWarnings("CyclomaticComplexity")
+    @SuppressWarnings({"PMD.NPathComplexity", "CyclomaticComplexity"})
     public static boolean matches(final TestResult result, final Category category) {
         final String cleanMessage = stripAnsi(result.getStatusMessage());
         final String cleanTrace = stripAnsi(result.getStatusTrace());

@@ -22,7 +22,6 @@ import com.beust.jcommander.Parameter;
  *
  * @since 2.0
  */
-@SuppressWarnings("PMD.ImmutableField")
 public class ReportNameOptions {
 
     @Parameter(

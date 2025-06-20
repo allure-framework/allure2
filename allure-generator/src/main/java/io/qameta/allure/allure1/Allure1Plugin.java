@@ -92,7 +92,6 @@ import static java.util.stream.Collectors.toList;
  * @since 2.0
  */
 @SuppressWarnings({
-        "PMD.ExcessiveImports",
         "PMD.GodClass",
         "PMD.TooManyMethods",
         "ClassDataAbstractionCoupling",
@@ -176,7 +175,6 @@ public class Allure1Plugin implements Reader {
     }
 
     @SuppressWarnings({
-            "PMD.ExcessiveMethodLength",
             "JavaNCSS",
             "ExecutableStatementCount",
             "PMD.NcssCount"

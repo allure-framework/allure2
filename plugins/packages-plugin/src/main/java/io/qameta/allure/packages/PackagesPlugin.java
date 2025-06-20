@@ -83,7 +83,6 @@ public class PackagesPlugin extends CommonJsonAggregator2 {
         return packages;
     }
 
-    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     protected void collapseGroupsWithOnlyOneChild(final TestResultTreeGroup groupNode) {
         groupNode.getChildren().stream()
                 .filter(TestResultTreeGroup.class::isInstance)

@@ -50,7 +50,6 @@ public class DurationTrendPlugin extends AbstractTrendPlugin<DurationTrendItem> 
         return Optional.ofNullable(mapper.treeToValue(child, DurationTrendItem.class));
     }
 
-    @SuppressWarnings("PMD.DefaultPackage")
     /* default */ static List<DurationTrendItem> getData(final List<LaunchResults> launchesResults) {
         final DurationTrendItem item = createCurrent(launchesResults);
         final List<DurationTrendItem> data = getHistoryItems(launchesResults);

@@ -70,7 +70,6 @@ import java.util.UUID;
  * @since 2.0
  */
 @SuppressWarnings({
-        "PMD.ExcessiveImports",
         "ClassDataAbstractionCoupling",
         "ClassFanOutComplexity"
 })

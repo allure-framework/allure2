@@ -44,7 +44,6 @@ public class XmlElement implements Iterable<XmlElement> {
 
     private final String value;
 
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public XmlElement(final Element element) {
         this.name = element.getNodeName();
         final NamedNodeMap attributes = element.getAttributes();

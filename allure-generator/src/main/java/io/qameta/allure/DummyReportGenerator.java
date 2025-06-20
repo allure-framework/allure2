@@ -67,8 +67,6 @@ import java.util.stream.Collectors;
  * Date: 1/22/14
  */
 @SuppressWarnings({
-        "PMD.ExcessiveImports",
-        "PMD.ClassNamingConventions",
         "ClassFanOutComplexity",
         "ClassDataAbstractionCoupling"
 })

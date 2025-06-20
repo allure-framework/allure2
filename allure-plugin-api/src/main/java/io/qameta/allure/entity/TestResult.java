@@ -38,7 +38,6 @@ import static java.util.Comparator.nullsFirst;
  */
 @Data
 @Accessors(chain = true)
-@SuppressWarnings("PMD.TooManyFields")
 public class TestResult implements Serializable, Nameable, Parameterizable, Statusable, Timeable {
 
     private static final long serialVersionUID = 1L;

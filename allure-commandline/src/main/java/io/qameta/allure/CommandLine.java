@@ -39,7 +39,6 @@ import static org.slf4j.Logger.ROOT_LOGGER_NAME;
  */
 @SuppressWarnings({
         "DeclarationOrder",
-        "PMD.MoreThanOneLogger",
 })
 public class CommandLine {
 
@@ -93,7 +92,7 @@ public class CommandLine {
         System.exit(exitCode.getCode());
     }
 
-    @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "ReturnCount"})
+    @SuppressWarnings({"ReturnCount"})
     public Optional<ExitCode> parse(final String... args) {
         if (args.length == 0) {
             printUsage(commander);
@@ -122,9 +121,6 @@ public class CommandLine {
             "CyclomaticComplexity",
             "NPathComplexity",
             "ReturnCount",
-            "PMD.NPathComplexity",
-            "PMD.CyclomaticComplexity",
-            "PMD.ExcessiveMethodLength",
             "PMD.SystemPrintln",
     })
     public ExitCode run() {
