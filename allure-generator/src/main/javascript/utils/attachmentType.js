@@ -92,6 +92,11 @@ export default function typeByMime(type) {
         type: "archive",
         icon: "fa fa-file-archive-o",
       };
+    case "application/vnd.allure.playwright-trace":
+      return {
+        type: "playwright-trace",
+        icon: "fa fa-file-code-o",
+      };
     default:
       return {
         type: null,
