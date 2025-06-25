@@ -59,6 +59,6 @@ pluginManagement {
         id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
         id("io.spring.dependency-management") version "1.1.7"
         id("org.owasp.dependencycheck") version "12.1.3"
-        id("com.github.spotbugs") version "6.2.0"
+        id("com.github.spotbugs") version "6.2.1"
     }
 }
