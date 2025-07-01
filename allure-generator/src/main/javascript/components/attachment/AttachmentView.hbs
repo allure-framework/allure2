@@ -48,6 +48,15 @@
             </p>
         {{/each}}
     </div>
+{{else if (eq type "playwright-trace")}}
+    <div class="{{b 'attachment__trace-container' fullscreen=fullScreen}}">
+        <iframe
+            id="pw-trace-iframe"
+            width="100%"
+            height="100%"
+            src="https://trace.playwright.dev/next/"
+        ></iframe>
+    </div>
 {{else if (eq type "html")}}
         <iframe class="{{b 'attachment__iframe' fullscreen=fullScreen}}" frameborder="0" src="{{sourceUrl}}"></iframe>
 {{else}}

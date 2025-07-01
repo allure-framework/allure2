@@ -1,6 +1,8 @@
 <div>
-    <div class="attachment-row" data-uid="{{uid}}">
-        <span class="attachment-row__arrow block__arrow">{{angle}}</span>
+    <div class="attachment-row" data-uid="{{uid}}" data-type="{{type}}">
+        {{#unless (eq type "application/vnd.allure.playwright-trace")}}
+            <span class="attachment-row__arrow block__arrow">{{angle}}</span>
+        {{/unless}}
         <div class="attachment-row__icon">
             <span class="{{fileicon type}}" data-tooltip="{{type}}"></span>
         </div>

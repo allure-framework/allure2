@@ -53,6 +53,9 @@ class TestResultExecutionView extends View {
 
   @on("click .attachment-row")
   onAttachmentClick(e) {
+    if (e.currentTarget.attributes["data-type"].nodeValue=== "application/vnd.allure.playwright-trace") {
+        return
+    }
     const attachmentUid = $(e.currentTarget).data("uid");
     const name = `attachment__${attachmentUid}`;
 

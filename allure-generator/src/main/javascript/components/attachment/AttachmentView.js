@@ -23,7 +23,7 @@ class AttachmentView extends View {
   }
 
   onRender() {
-    if (!this.sourceUrl) {
+    if (!this.sourceUrl && this.attachmentInfo.type !== "playwright-trace") {
       reportDataUrl(`data/attachments/${this.attachment.source}`, this.attachment.type)
         .then((sourceUrl) => {
           this.sourceUrl = sourceUrl;
@@ -35,6 +35,29 @@ class AttachmentView extends View {
         })
         .then(this.render);
     }
+    if (this.attachmentInfo.type === "playwright-trace" && !this.content) {
+          reportDataUrl(`data/attachments/${this.attachment.source}`, this.attachment.type)
+              .then((url) => fetch(url))
+              .then((res) => res.blob())
+              .then((blob) => {
+                  this.content = blob;
+                  this.sourceUrl = URL.createObjectURL(blob);
+              })
+            .then(this.render);
+          return
+    }
+
+      if (this.attachmentInfo.type === "playwright-trace" && this.content instanceof Blob) {
+          const iframe = document.getElementById("pw-trace-iframe");
+          if (iframe && this.content instanceof Blob) {
+              iframe.onload = () => {
+                  iframe.contentWindow?.postMessage(
+                      {method: "load", params: {trace: this.content}},
+                      "https://trace.playwright.dev/next"
+                  );
+              };
+          }
+      }
 
     if (this.attachmentInfo.type === "custom") {
       this.showChildView(
