@@ -97,7 +97,7 @@ subprojects {
             dependency("net.sourceforge.pmd:pmd-java:7.15.0")
             dependency("org.allurefw:allure1-model:1.0")
             dependency("org.apache.commons:commons-collections4:4.5.0")
-            dependency("org.apache.commons:commons-lang3:3.17.0")
+            dependency("org.apache.commons:commons-lang3:3.18.0")
             dependency("org.apache.httpcomponents:httpclient:4.5.14")
             dependency("org.apache.tika:tika-core:2.9.4")
             dependency("org.assertj:assertj-core:3.27.3")
