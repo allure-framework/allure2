@@ -15,6 +15,7 @@ export default function typeByMime(type) {
     case "image/jpeg":
     case "image/jpg":
     case "image/png":
+    case "image/webp":
     case "image/*":
       return {
         type: "image",
