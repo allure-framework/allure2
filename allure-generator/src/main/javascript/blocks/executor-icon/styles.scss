@@ -4,7 +4,7 @@
   background: url(./default-icon.png) center no-repeat;
   background-size: contain;
   display: inline-block;
-
+  padding-right: 8px;
   &__jenkins {
     background-image: url(./jenkins.svg);
   }
@@ -32,8 +32,12 @@
   &__bitbucket {
     background-image: url(./bitbucket.svg);
   }
+
+  &__azure {
+    background-image: url(./azure.svg);
+  }
 }
 
 .executor {
-  line-height: 32px;
+  line-height: 32px !important;
 }
