@@ -92,7 +92,7 @@ subprojects {
             dependency("com.squareup.retrofit2:converter-jackson:${comSquareupRetrofit2Version}")
             dependency("com.squareup.retrofit2:retrofit:${comSquareupRetrofit2Version}")
             dependency("commons-beanutils:commons-beanutils:1.11.0")
-            dependency("commons-io:commons-io:2.19.0")
+            dependency("commons-io:commons-io:2.20.0")
             dependency("javax.xml.bind:jaxb-api:2.3.1")
             dependency("net.sourceforge.pmd:pmd-java:7.15.0")
             dependency("org.allurefw:allure1-model:1.0")
