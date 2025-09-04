@@ -33,7 +33,7 @@ jobs:
 
       - name: "Gradle Publish"
         run: |
-          ./gradlew publishToSonatype closeSonatypeStagingRepository -Pversion=${{ steps.release.outputs.version }} \
+          ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository -Pversion=${{ steps.release.outputs.version }} \
                     -Psigning.keyId=${GPG_KEY_ID} \
                     -Psigning.password=${GPG_PASSPHRASE} \
                     -Psigning.secretKeyRingFile=${GITHUB_WORKSPACE}/${GPG_KEY_ID}.gpg
