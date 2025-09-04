@@ -40,6 +40,9 @@ public final class ResultsUtils {
     private static final String STEP_START_TIME = "StartTimeInterval";
     private static final String STEP_STOP_TIME = "FinishTimeInterval";
 
+    // the absolute reference date of 1 Jan 2001 00:00:00 GMT.
+    private static final Long APPLE_ABSOLUTE_TIME_OFFSET = 978_307_200L;
+
     private ResultsUtils() {
     }
 
@@ -66,7 +69,8 @@ public final class ResultsUtils {
     }
 
     private static Time getTestTime(final Map<String, Object> props) {
-        return new Time().setDuration(parseTime(props.getOrDefault(TEST_DURATION, "0").toString()));
+        final double duration = (double) props.getOrDefault(TEST_DURATION, (double) 0);
+        return new Time().setDuration(Double.valueOf(duration * 1000).longValue());
     }
 
     private static Status getTestStatus(final Map<String, Object> props) {
@@ -87,7 +91,7 @@ public final class ResultsUtils {
     public static Step getStep(final Map<String, Object> props) {
         return new Step()
                 .setName(getStepName(props))
-                .setTime(getStepTime(props))
+                .setTime(getActivityTime(props))
                 .setStatus(Status.PASSED);
     }
 
@@ -95,15 +99,28 @@ public final class ResultsUtils {
         return (String) props.getOrDefault(STEP_NAME, "Unknown");
     }
 
-    private static Time getStepTime(final Map<String, Object> props) {
-        final long start = parseTime(props.getOrDefault(STEP_START_TIME, "0").toString());
-        final long stop = parseTime(props.getOrDefault(STEP_STOP_TIME, "0").toString());
-        return new Time().setStart(start).setStop(stop).setDuration(stop - start);
+    private static Time getActivityTime(final Map<String, Object> props) {
+        final Double startTimeInterval = (Double) props.get(STEP_START_TIME);
+        final Double finishTimeInterval = (Double) props.get(STEP_STOP_TIME);
+
+        if (Objects.isNull(startTimeInterval) && Objects.isNull(finishTimeInterval)) {
+            return null;
+        }
+
+        final Long start = convertAppleTime(startTimeInterval);
+        final Long stop = convertAppleTime(finishTimeInterval);
+        return Time.create(
+                start,
+                Objects.isNull(stop) ? start : stop
+        );
     }
 
-    private static long parseTime(final String time) {
-        final double doubleTime = Double.parseDouble(time);
-        final int seconds = (int) doubleTime;
-        return seconds * 1000L;
+
+    private static Long convertAppleTime(final Double startTimeInterval) {
+        if (Objects.isNull(startTimeInterval)) {
+            return null;
+        }
+
+        return APPLE_ABSOLUTE_TIME_OFFSET + startTimeInterval.longValue();
     }
 }

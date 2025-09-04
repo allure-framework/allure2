@@ -20,8 +20,11 @@ import com.opencsv.bean.CsvBindByPosition;
 import io.qameta.allure.entity.TestResult;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
 import java.util.Map;
+import java.util.Objects;
+
+import static java.time.ZoneId.systemDefault;
 
 /**
  * Class contains the information for the suites csv export.
@@ -77,8 +80,8 @@ public class CsvExportSuite implements Serializable {
         final Map<String, String> resultMap = result.toMap();
         this.status = result.getStatus() != null ? result.getStatus().value() : null;
         this.duration = result.getTime().getDuration() != null ? result.getTime().getDuration().toString() : null;
-        this.start = result.getTime().getStart() != null ? new Date(result.getTime().getStart()).toString() : null;
-        this.stop = result.getTime().getStop() != null ? new Date(result.getTime().getStop()).toString() : null;
+        this.start = result.getTime().getStart() != null ? asDate(result.getTime().getStart()) : null;
+        this.stop = result.getTime().getStop() != null ? asDate(result.getTime().getStop()) : null;
         this.parentSuite = resultMap.getOrDefault("parentSuite", null);
         this.suite = resultMap.getOrDefault("suite", null);
         this.subSuite = resultMap.getOrDefault("subSuite", null);
@@ -130,5 +133,14 @@ public class CsvExportSuite implements Serializable {
 
     public String getDescription() {
         return description;
+    }
+
+    private static String asDate(final Long epochMills) {
+        if (Objects.nonNull(epochMills)) {
+            return Instant.ofEpochMilli(epochMills)
+                    .atZone(systemDefault())
+                    .toLocalDate().toString();
+        }
+        return null;
     }
 }

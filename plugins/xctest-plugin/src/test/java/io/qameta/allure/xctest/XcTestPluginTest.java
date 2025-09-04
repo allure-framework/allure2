@@ -19,15 +19,19 @@ import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.entity.Time;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.mockito.ArgumentCaptor;
 
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -61,6 +65,38 @@ class XcTestPluginTest {
 
         verify(visitor, times(14))
                 .visitTestResult(any(TestResult.class));
+    }
+
+    @Test
+    void shouldSetTestStartAndStop() throws Exception {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("sample.plist")) {
+            Files.copy(Objects.requireNonNull(is), resultsDirectory.resolve("sample.plist"));
+        }
+
+        new XcTestPlugin().readResults(configuration, visitor, resultsDirectory);
+
+        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
+        verify(visitor, times(14))
+                .visitTestResult(captor.capture());
+
+        assertThat(captor.getAllValues())
+                .extracting(TestResult::getName, TestResult::getTime)
+                .contains(
+                        tuple("test_C1433()", Time.create(1494595000L, 1494626548L)),
+                        tuple("test_C1400()", Time.create(1494595031L, 1494621269L)),
+                        tuple("test_C1401()", Time.create(1494595057L, 1494623087L)),
+                        tuple("test_C1394()", Time.create(1494595085L, 1494623215L)),
+                        tuple("test_C7096()", Time.create(1494595114L, 1494619303L)),
+                        tuple("test_C1395()", Time.create(1494595138L, 1494626076L)),
+                        tuple("test_C1474()", Time.create(1494595169L, 1494625148L)),
+                        tuple("test_C1396()", Time.create(1494595199L, 1494626546L)),
+                        tuple("test_C6923()", Time.create(1494595262L, 1494624579L)),
+                        tuple("test_C1398()", Time.create(1494595292L, 1494629469L)),
+                        tuple("test_C6924()", Time.create(1494595326L, 1494619613L)),
+                        tuple("test_C1399()", Time.create(1494595350L, 1494642300L)),
+                        tuple("test_C1397()", Time.create(1494595230L, 1494627643L)),
+                        tuple("test_C6925()", Time.create(1494595397L, 1494624364L))
+                );
     }
 
     @Test
