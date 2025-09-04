@@ -21,7 +21,7 @@ import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
-import io.qameta.allure.entity.Timeable;
+import io.qameta.allure.entity.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xmlwise.Plist;
@@ -31,15 +31,10 @@ import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.DateTimeException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -59,14 +54,12 @@ public class XcTestPlugin implements Reader {
     private static final String TESTABLE_SUMMARIES = "TestableSummaries";
     private static final String TESTS = "Tests";
     private static final String SUB_TESTS = "Subtests";
-    private static final String TITLE = "Title";
     private static final String SUB_ACTIVITIES = "SubActivities";
     private static final String ACTIVITY_SUMMARIES = "ActivitySummaries";
     private static final String HAS_SCREENSHOT = "HasScreenshotData";
 
     private static final String ATTACHMENTS = "Attachments";
     private static final String ATTACHMENT_FILENAME = "Filename";
-
 
     @Override
     public void readResults(final Configuration configuration,
@@ -83,7 +76,7 @@ public class XcTestPlugin implements Reader {
             final List<?> summaries = asList(loaded.getOrDefault(TESTABLE_SUMMARIES, emptyList()));
             summaries.forEach(summary -> parseSummary(directory, summary, visitor));
         } catch (XmlParseException | IOException e) {
-            LOGGER.error("Could not parse file {}: {}", testSummariesPath, e);
+            LOGGER.error("Could not parse file {}", testSummariesPath, e);
         }
     }
 
@@ -94,7 +87,6 @@ public class XcTestPlugin implements Reader {
         tests.forEach(test -> parseTestSuite(name, test, directory, visitor));
     }
 
-    @SuppressWarnings("unchecked")
     private void parseTestSuite(final String parentName, final Object testSuite,
                                 final Path directory, final ResultsVisitor visitor) {
         final Map<String, Object> props = asMap(testSuite);
@@ -115,32 +107,32 @@ public class XcTestPlugin implements Reader {
         result.addLabelIfNotExists(SUITE, suiteName);
 
         asList(props.getOrDefault(ACTIVITY_SUMMARIES, emptyList()))
-                .forEach(activity -> parseStep(directory, result, activity, visitor));
+                .forEach(activity -> parseStep(directory, result, null, activity, visitor));
         final Optional<Step> lastFailedStep = result.getTestStage().getSteps().stream()
-                .filter(s -> !s.getStatus().equals(Status.PASSED)).sorted((a, b) -> -1).findFirst();
+                .filter(s -> !s.getStatus().equals(Status.PASSED))
+                .reduce((first, second) -> second);
         lastFailedStep.map(Step::getStatusMessage).ifPresent(result::setStatusMessage);
         lastFailedStep.map(Step::getStatusTrace).ifPresent(result::setStatusTrace);
         visitor.visitTestResult(result);
     }
 
-    private void parseStep(final Path directory, final Object parent,
+    private void parseStep(final Path directory, final TestResult testResult, final Step parent,
                            final Object activity, final ResultsVisitor visitor) {
 
         final Map<String, Object> props = asMap(activity);
-        final String activityTitle = (String) props.get(TITLE);
+        final Step step = ResultsUtils.getStep(props);
 
-        if (activityTitle.startsWith("Start Test at")) {
-            getStartTime(activityTitle).ifPresent(start -> {
-                final Timeable withTime = (Timeable) parent;
-                final long duration = withTime.getTime().getDuration();
-                withTime.getTime().setStart(start);
-                withTime.getTime().setStop(start + duration);
-            });
+        if (step.getName().startsWith("Start Test at")) {
+            final Time trTime = testResult.getTime();
+            final Long start = step.getTime().getStart();
+            trTime.setStart(start);
+            if (Objects.nonNull(trTime.getDuration()) && Objects.nonNull(start)) {
+                trTime.setStop(start + trTime.getDuration());
+            }
             return;
         }
-        final Step step = ResultsUtils.getStep(props);
-        if (activityTitle.startsWith("Assertion Failure:")) {
-            step.setStatusMessage(activityTitle);
+        if (step.getName().startsWith("Assertion Failure:")) {
+            step.setStatusMessage(step.getName());
             step.setStatus(Status.FAILED);
         }
 
@@ -152,19 +144,18 @@ public class XcTestPlugin implements Reader {
             addAttachments(directory, visitor, props, step);
         }
 
-        if (parent instanceof TestResult) {
-            ((TestResult) parent).getTestStage().getSteps().add(step);
-        }
-
-        if (parent instanceof Step) {
-            ((Step) parent).getSteps().add(step);
+        if (Objects.nonNull(parent)) {
+            parent.getSteps().add(step);
+        } else {
+            testResult.getTestStage().getSteps().add(step);
         }
 
         asList(props.getOrDefault(SUB_ACTIVITIES, emptyList()))
-                .forEach(subActivity -> parseStep(directory, step, subActivity, visitor));
+                .forEach(subActivity -> parseStep(directory, testResult, step, subActivity, visitor));
 
         final Optional<Step> lastFailedStep = step.getSteps().stream()
-                .filter(s -> !s.getStatus().equals(Status.PASSED)).sorted((a, b) -> -1).findFirst();
+                .filter(s -> !s.getStatus().equals(Status.PASSED))
+                .reduce((first, second) -> second);
         lastFailedStep.map(Step::getStatus).ifPresent(step::setStatus);
         lastFailedStep.map(Step::getStatusMessage).ifPresent(step::setStatusMessage);
         lastFailedStep.map(Step::getStatusTrace).ifPresent(step::setStatusTrace);
@@ -220,19 +211,9 @@ public class XcTestPlugin implements Reader {
                 }
             }
         } catch (IOException e) {
-            LOGGER.error("Could not read data from {}: {}", directory, e);
+            LOGGER.error("Could not read data from {}", directory, e);
         }
         return result;
-    }
-
-    private static Optional<Long> getStartTime(final String stepName) {
-        try {
-            final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSX", Locale.US);
-            final Date date = dateFormat.parse(stepName.substring(14));
-            return Optional.of(date.getTime());
-        } catch (DateTimeException | ParseException e) {
-            return Optional.empty();
-        }
     }
 
 }
