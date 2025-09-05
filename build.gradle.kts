@@ -108,7 +108,7 @@ subprojects {
             dependency("org.freemarker:freemarker:2.3.34")
             dependency("org.junit-pioneer:junit-pioneer:2.3.0")
             dependency("org.mockito:mockito-core:5.19.0")
-            dependency("org.projectlombok:lombok:1.18.38")
+            dependency("org.projectlombok:lombok:1.18.40")
             dependency("org.slf4j:slf4j-api:${orgSlf4jVersion}")
             dependency("org.slf4j:slf4j-nop:${orgSlf4jVersion}")
             dependency("org.slf4j:slf4j-simple:${orgSlf4jVersion}")
