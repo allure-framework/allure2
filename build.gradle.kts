@@ -90,7 +90,7 @@ subprojects {
             dependency("ch.qos.logback:logback-classic:1.3.15")
             dependency("com.beust:jcommander:1.82")
             dependency("com.github.spotbugs:spotbugs:4.9.4")
-            dependency("com.opencsv:opencsv:5.9")
+            dependency("com.opencsv:opencsv:5.12.0")
             dependency("com.puppycrawl.tools:checkstyle:11.0.1")
             dependency("com.squareup.retrofit2:converter-jackson:${comSquareupRetrofit2Version}")
             dependency("com.squareup.retrofit2:retrofit:${comSquareupRetrofit2Version}")
