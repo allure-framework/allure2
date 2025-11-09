@@ -41,6 +41,11 @@ You can use one of the following ways to get Allure:
     ```bash
     $ brew install allure
     ```
+* Using [mise](https://github.com/jdx/mise) software package manager:
+
+    ```bash
+    mise use -g allure
+    ```
 * For Windows, Allure is available from the [Scoop](http://scoop.sh/) commandline-installer.
 To install Allure, download and install Scoop and then execute in the Powershell:
 
