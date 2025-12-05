@@ -102,7 +102,7 @@ subprojects {
             dependency("org.apache.commons:commons-collections4:4.5.0")
             dependency("org.apache.commons:commons-lang3:3.18.0")
             dependency("org.apache.httpcomponents:httpclient:4.5.14")
-            dependency("org.apache.tika:tika-core:2.9.4")
+            dependency("org.apache.tika:tika-core:3.2.3")
             dependency("org.assertj:assertj-core:3.27.4")
             dependency("org.eclipse.jetty:jetty-server:12.0.16")
             dependency("org.freemarker:freemarker:2.3.34")
