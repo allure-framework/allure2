@@ -96,6 +96,7 @@
   <!-- Error prone (https://pmd.github.io/pmd-6.0.1/pmd_rules_java_errorprone.html) -->
   <rule ref="category/java/errorprone.xml">
     <exclude name="AvoidCatchingThrowable"/>
+    <exclude name="AvoidDuplicateLiterals"/>  <!-- duplicate of checkstyle check MultipleStringLiterals -->
     <exclude name="AvoidFieldNameMatchingMethodName"/>
     <exclude name="AssignmentInOperand"/>  <!-- duplicate of checkstyle check AssignmentInOperand -->
     <exclude name="AvoidLiteralsInIfCondition"/>
@@ -112,12 +113,6 @@
     <exclude name="UseLocaleWithCaseConversions"/>
     <exclude name="UseProperClassLoader"/> <!-- earlier j2ee group-->
   </rule>
-  <rule ref="category/java/errorprone.xml/AvoidDuplicateLiterals">
-    <properties>
-      <property name="skipAnnotations" value="true"/>
-    </properties>
-  </rule>
-
 
   <!-- Error prone (https://pmd.github.io/pmd-6.0.1/pmd_rules_java_multithreading.html) -->
   <rule ref="category/java/multithreading.xml">
