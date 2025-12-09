@@ -14,7 +14,7 @@ jobs:
       - name: "Set release version"
         id: release
         run: echo "::set-output name=version::${GITHUB_REF:10}"
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: "Set up JDK"
         uses: actions/setup-java@v5
