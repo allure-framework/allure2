@@ -50,4 +50,7 @@
   <Match class="io.qameta.allure.jira.retrofit.DefaultCallAdapterFactory$InstanceCallAdapter">
     <Bug pattern="NP_NONNULL_RETURN_VIOLATION"/>
   </Match>
+
+  <Match class="io.qameta.allure.detect.MagicBytesContentTypeDetector"/>
+  <Match class="io.qameta.allure.detect.WellKnownFileExtensionsUtils"/>
 </FindBugsFilter>

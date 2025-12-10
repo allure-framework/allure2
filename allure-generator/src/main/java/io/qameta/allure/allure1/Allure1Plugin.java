@@ -67,6 +67,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static io.qameta.allure.detect.WellKnownFileExtensionsUtils.getExtensionByMimeType;
 import static io.qameta.allure.entity.LabelName.ISSUE;
 import static io.qameta.allure.entity.LabelName.PACKAGE;
 import static io.qameta.allure.entity.LabelName.PARENT_SUITE;
@@ -332,6 +333,10 @@ public class Allure1Plugin implements Reader {
             final Attachment found = visitor.visitAttachmentFile(attachmentFile);
             if (Objects.nonNull(attachment.getType())) {
                 found.setType(attachment.getType());
+                final String ext = getExtensionByMimeType(attachment.getType());
+                if (!ext.isEmpty()) {
+                    found.setSource(found.getUid() + "." + ext);
+                }
             }
             if (Objects.nonNull(attachment.getTitle())) {
                 found.setName(attachment.getTitle());
