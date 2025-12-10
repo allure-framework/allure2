@@ -141,7 +141,7 @@ subprojects {
         systemProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug")
         systemProperty("allure.model.indentOutput", "true")
         systemProperty("junit.jupiter.execution.parallel.enabled", true)
-        systemProperty("junit.jupiter.execution.parallel.mode.default", true)
+        systemProperty("junit.jupiter.execution.parallel.mode.default", "concurrent")
         testLogging {
             listOf(org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED)
         }
