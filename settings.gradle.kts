@@ -51,7 +51,7 @@ pluginManagement {
         gradlePluginPortal()
     }
     plugins {
-        id("com.bmuschko.docker-remote-api") version "9.4.0"
+        id("com.bmuschko.docker-remote-api") version "10.0.0"
         id("com.diffplug.spotless") version "7.2.1"
         id("com.github.node-gradle.node") version "7.1.0"
         id("com.gorylenko.gradle-git-properties") version "2.5.3"
