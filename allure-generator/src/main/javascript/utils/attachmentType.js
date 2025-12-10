@@ -41,6 +41,7 @@ export default function typeByMime(type) {
         icon: "fa fa-file-text-o",
         parser: (d) => d,
       };
+    case "application/xhtml+xml":
     case "text/html":
       return {
         type: "html",
