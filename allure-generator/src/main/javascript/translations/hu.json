@@ -1,0 +1,222 @@
+{
+  "chart": {
+    "duration": {
+      "empty": "Üres",
+      "name": "Futásidő"
+    },
+    "severity": {
+      "name": "Súlyosság"
+    },
+    "status": {
+      "name": "Státusz"
+    },
+    "trend": {
+      "empty": "Üres"
+    }
+  },
+  "component": {
+    "markToggle": {
+      "hideCases": "{{mark}} eredmények elrejtése",
+      "showCases": "{{mark}} eredmények mutatása"
+    },
+    "statusToggle": {
+      "hideCases": "Tesztek elrejtése: {{status}} státusz",
+      "showCases": "Tesztek mutatása: {{status}} státusz"
+    },
+    "tree": {
+      "download": "CSV letöltése",
+      "empty": "Nincsenek elemek",
+      "filter": "Státusz",
+      "filter-marks": "Megjegyzések",
+      "filtered": {
+        "shown": "{{count}} mutatva",
+        "total": "{{count}} teszt eredmény",
+        "total_plural": "{{count}} tesztek eredménye"
+      },
+      "groups": "Csoportok extra információ",
+      "time": {
+        "max": {
+          "name": "Max",
+          "tooltip": "Leghosszabb ideig futó teszt"
+        },
+        "sum": {
+          "name": "Összegző",
+          "tooltip": "Az összes teszt teljes futásideje"
+        },
+        "total": {
+          "name": "Kummulált",
+          "tooltip": "Az első teszt kezdésétől az utolsó teszt befejeztéig eltelt idő."
+        }
+      },
+      "unknown": "<Üres>"
+    },
+    "widgetStatus": {
+      "showAll": "Összes mutatása",
+      "total": "{{count}} elem",
+      "total_plural": "{{count}} összesen elem"
+    }
+  },
+  "controls": {
+    "backto": "Vissza",
+    "clipboard": "Vágólapra másol",
+    "clipboardError": "Nem lehetséges vágólapra másolni. Ezt a funkciót valószínűleg nem támogatja a böngésző.",
+    "clipboardSuccess": "Másolás kész",
+    "collapse": "Bezár",
+    "expand": "Kinyit",
+    "fullscreen": "Teljes képernyő",
+    "language": "Másik nyelv választása"
+  },
+  "errors": {
+    "missedAttachment": "Nem található csatolmány",
+    "notFound": "Nincs találat"
+  },
+  "marks": {
+    "flaky": "Bizonytalan (flaky)",
+    "newBroken": "Új hibára futó",
+    "newFailed": "Új sikertelen",
+    "newPassed": "Új sikeres",
+    "retriesStatusChange": "Státusz változott ismétlés után"
+  },
+  "sorter": {
+    "duration": "futásidő",
+    "name": "név",
+    "order": "sorrend",
+    "status": "státusz"
+  },
+  "status": {
+    "broken": "Hiba a futás során",
+    "failed": "Sikertelen",
+    "passed": "Sikeres",
+    "skipped": "Kihagyott",
+    "unknown": "Ismeretlen"
+  },
+  "tab": {
+    "categories": {
+      "name": "Kategóriák"
+    },
+    "graph": {
+      "name": "Grafikonok"
+    },
+    "overview": {
+      "name": "Összesítő"
+    },
+    "suites": {
+      "name": "Tesztek"
+    },
+    "timeline": {
+      "name": "Idővonal",
+      "selected": "{{count}} darab teszt ({{percent}}%) futásideje {{duration}}",
+      "selected_plural": "{{count}} tesztek ({{percent}}%) futásideje {{duration}}"
+    }
+  },
+  "testResult": {
+    "categories": {
+      "name": "Kategóriák"
+    },
+    "description": {
+      "name": "Leírás"
+    },
+    "duration": {
+      "name": "Futásidő"
+    },
+    "execution": {
+      "body": "Teszt törzse",
+      "downloadAttachment": {
+        "tooltip": "Csatolmány megnyitása új fülön"
+      },
+      "name": "Futás",
+      "setup": "Megelőző lépések (Set up)",
+      "teardown": "Lezáró lépések (Tear down)"
+    },
+    "history": {
+      "empty": "Nem érhető el előzmény információ",
+      "name": "Előzmény",
+      "statistic": "Összesen {{total}} , sikeres {{passed}}",
+      "successRate": "Sikeres tesztek aránya",
+      "time": "{{date}} , {{time}}"
+    },
+    "links": {
+      "name": "Linkek"
+    },
+    "overview": {
+      "name": "Áttekintő"
+    },
+    "owner": {
+      "name": "Tulajdonos"
+    },
+    "parameters": {
+      "name": "Paraméterek"
+    },
+    "retries": {
+      "empty": "Nincs elérhető információ az ismétlésekről",
+      "name": "Ismétlések",
+      "time": "{{date}} , {{time}}"
+    },
+    "severity": {
+      "name": "Súlyosság",
+      "blocker": "blokkoló",
+      "critical": "kritikus",
+      "normal": "normál",
+      "minor": "gyenge",
+      "trivial": "elhanyagolható"
+    },
+    "stats": {
+      "count": {
+        "attachments": "{{count}} csatolmány",
+        "attachments_plural": "{{count}} csatolmány",
+        "parameters": "{{count}} paraméter",
+        "parameters_plural": "{{count}} paraméterek",
+        "steps": "{{count}} köztes lépés",
+        "steps_plural": "{{count}} köztes lépések"
+      }
+    },
+    "status": {
+      "empty": "Státusz részletek üres",
+      "trace": "Követés mutatása"
+    },
+    "tags": {
+      "name": "Tag-ek"
+    }
+  },
+  "widget": {
+    "categories": {
+      "name": "Kategáróiák"
+    },
+    "categoriesTrend": {
+      "name": "Kategória trend"
+    },
+    "durationTrend": {
+      "name": "Futásidő trend"
+    },
+    "environment": {
+      "empty": "Nem voltak környezeti változók",
+      "name": "Környezet",
+      "showAll": "Összes mutatása"
+    },
+    "executors": {
+      "empty": "Nem érhető el a tesztet lefuttató adatai",
+      "name": "Futtatók",
+      "unknown": "Ismeretlen"
+    },
+    "launches": {
+      "empty": "Nem érhető el a tesztet elindító adatai",
+      "name": "Elindítók"
+    },
+    "retryTrend": {
+      "name": "Ismétlések trend"
+    },
+    "suites": {
+      "name": "Tesztek"
+    },
+    "summary": {
+      "aggregatedName": "Összesített jelentés",
+      "launches": "indító",
+      "launches_plural": "indítók",
+      "testResults": "teszteset",
+      "testResults_plural": "tesztesetek"
+    },
+    "trend": {
+      "name": "Trend"
+    }
+  }
+}
