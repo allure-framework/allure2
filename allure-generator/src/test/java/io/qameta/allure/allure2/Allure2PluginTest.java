@@ -35,6 +35,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -317,6 +318,27 @@ class Allure2PluginTest {
                         tuple("not flaky test", false),
                         tuple("default not flaky test", false)
                 );
+    }
+
+    @Test
+    void shouldPreserveContentTypeFromAttachment() throws IOException {
+        final LaunchResults results = process(
+                "allure2/text-attachment-no-ext.json", generateTestResultName(),
+                "allure2/test-sample-attachment.txt", "test-sample-attachment"
+        );
+
+        assertThat(results.getResults())
+                .hasSize(1);
+
+        final TestResult tr = results.getResults().iterator().next();
+        final List<Attachment> attachments = tr.getTestStage().getAttachments();
+        assertThat(attachments)
+                .extracting(Attachment::getName, Attachment::getType, Attachment::getSize)
+                .containsExactlyInAnyOrder(
+                        tuple("String attachment in test", "text/plain", 24L)
+                );
+
+        assertThat(attachments.get(0).getSource()).endsWith(".txt");
     }
 
     private LaunchResults process(String... strings) throws IOException {

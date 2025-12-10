@@ -19,10 +19,10 @@ import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
+import io.qameta.allure.detect.MagicBytesContentTypeDetector;
+import io.qameta.allure.detect.WellKnownFileExtensionsUtils;
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.TestResult;
-import org.apache.tika.metadata.Metadata;
-import org.apache.tika.metadata.TikaCoreProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +40,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import static java.nio.file.Files.newInputStream;
 import static java.nio.file.Files.size;
 import static org.apache.commons.io.FilenameUtils.getExtension;
-import static org.apache.tika.mime.MimeTypes.getDefaultMimeTypes;
 
 /**
  * @author charlie (Dmitry Baev).
@@ -51,6 +50,9 @@ public class DefaultResultsVisitor implements ResultsVisitor {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultResultsVisitor.class);
 
     public static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
+
+    // so far maximum offset is 512 for supported files
+    private static final int MAGIC_HEADER_LENGTH = 1024;
 
     private final Configuration configuration;
 
@@ -76,7 +78,7 @@ public class DefaultResultsVisitor implements ResultsVisitor {
             final String extension = Optional.of(getExtension(file.toString()))
                     .filter(s -> !s.isEmpty())
                     .map(s -> "." + s)
-                    .orElseGet(() -> getExtensionByMimeType(realType));
+                    .orElseGet(() -> WellKnownFileExtensionsUtils.getExtensionByMimeType(realType));
             final String source = uid + (extension.isEmpty() ? "" : extension);
             final Long size = getFileSizeSafe(file);
             return new Attachment()
@@ -116,15 +118,6 @@ public class DefaultResultsVisitor implements ResultsVisitor {
         );
     }
 
-    private static String getExtensionByMimeType(final String type) {
-        try {
-            return getDefaultMimeTypes().forName(type).getExtension();
-        } catch (Exception e) {
-            LOGGER.warn("Can't detect extension for MIME-type {}", type, e);
-            return "";
-        }
-    }
-
     public static String probeContentType(final Path path) {
         try (InputStream stream = newInputStream(path)) {
             return probeContentType(stream, Objects.toString(path.getFileName()));
@@ -134,14 +127,21 @@ public class DefaultResultsVisitor implements ResultsVisitor {
         }
     }
 
-    public static String probeContentType(final InputStream is, final String name) {
+    private static String probeContentType(final InputStream is, final String name) throws IOException {
+        // first try to detect using name if provided
+        final String lookup = WellKnownFileExtensionsUtils.lookup(name);
+        if (Objects.nonNull(lookup)) {
+            return lookup;
+        }
+
+        // try to read file header bytes and detect using magic bytes detector
         try (InputStream stream = new BufferedInputStream(is)) {
-            final Metadata metadata = new Metadata();
-            metadata.set(TikaCoreProperties.RESOURCE_NAME_KEY, name);
-            return getDefaultMimeTypes().detect(stream, metadata).toString();
-        } catch (IOException e) {
-            LOGGER.warn("Couldn't detect the media type of attachment {}", name, e);
-            return APPLICATION_OCTET_STREAM;
+            final byte[] buffer = new byte[MAGIC_HEADER_LENGTH];
+            final int bytesRead = stream.read(buffer);
+            if (bytesRead <= 0) {
+                return APPLICATION_OCTET_STREAM;
+            }
+            return MagicBytesContentTypeDetector.detectContentType(buffer);
         }
     }
 

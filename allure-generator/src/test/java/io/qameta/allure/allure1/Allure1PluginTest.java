@@ -334,6 +334,27 @@ class Allure1PluginTest {
                 .hasSize(1);
     }
 
+    @Test
+    void shouldPreserveContentTypeFromAttachment() throws IOException {
+        final LaunchResults results = process(
+                "allure1/text-attachment-no-ext.xml", generateTestSuiteXmlName(),
+                "allure1/sample-attachment.txt", "test-sample-attachment"
+        );
+
+        assertThat(results.getResults())
+                .hasSize(1);
+
+        final TestResult tr = results.getResults().iterator().next();
+        final List<Attachment> attachments = tr.getTestStage().getAttachments();
+        assertThat(attachments)
+                .extracting(Attachment::getName, Attachment::getType, Attachment::getSize)
+                .containsExactlyInAnyOrder(
+                        tuple("String attachment in test", "text/plain", 25L)
+                );
+
+        assertThat(attachments.get(0).getSource()).endsWith(".txt");
+    }
+
     private LaunchResults process(String... strings) throws IOException {
         Iterator<String> iterator = Arrays.asList(strings).iterator();
         while (iterator.hasNext()) {

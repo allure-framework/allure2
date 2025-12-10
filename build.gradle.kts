@@ -14,7 +14,7 @@ val qualityConfigsDir by extra("$gradleScriptDir/quality-configs")
 val spotlessDtr by extra("$qualityConfigsDir/spotless")
 
 tasks.wrapper {
-    gradleVersion = "8.5"
+    gradleVersion = "9.2.1"
 }
 
 plugins {
@@ -79,36 +79,35 @@ subprojects {
 
     dependencyManagement {
         imports {
-            mavenBom("com.fasterxml.jackson:jackson-bom:2.20.0")
-            mavenBom("com.squareup.okhttp3:okhttp-bom:5.1.0")
+            mavenBom("com.fasterxml.jackson:jackson-bom:2.20.1")
+            mavenBom("com.squareup.okhttp3:okhttp-bom:5.3.2")
             // latest version that supports java 8
             mavenBom("com.vladsch.flexmark:flexmark-all:0.62.2")
-            mavenBom("io.qameta.allure:allure-bom:2.29.1")
+            mavenBom("io.qameta.allure:allure-bom:2.31.0")
             mavenBom("org.junit:junit-bom:5.13.4")
         }
         dependencies {
-            dependency("ch.qos.logback:logback-classic:1.3.15")
+            dependency("ch.qos.logback:logback-classic:1.3.16")
             dependency("com.beust:jcommander:1.82")
-            dependency("com.github.spotbugs:spotbugs:4.9.4")
+            dependency("com.github.spotbugs:spotbugs:4.9.8")
             dependency("com.opencsv:opencsv:5.12.0")
-            dependency("com.puppycrawl.tools:checkstyle:11.0.1")
+            dependency("com.puppycrawl.tools:checkstyle:12.2.0")
             dependency("com.squareup.retrofit2:converter-jackson:${comSquareupRetrofit2Version}")
             dependency("com.squareup.retrofit2:retrofit:${comSquareupRetrofit2Version}")
             dependency("commons-beanutils:commons-beanutils:1.11.0")
-            dependency("commons-io:commons-io:2.20.0")
+            dependency("commons-io:commons-io:2.21.0")
             dependency("javax.xml.bind:jaxb-api:2.3.1")
-            dependency("net.sourceforge.pmd:pmd-java:7.16.0")
+            dependency("net.sourceforge.pmd:pmd-java:7.19.0")
             dependency("org.allurefw:allure1-model:1.0")
             dependency("org.apache.commons:commons-collections4:4.5.0")
-            dependency("org.apache.commons:commons-lang3:3.18.0")
+            dependency("org.apache.commons:commons-lang3:3.20.0")
             dependency("org.apache.httpcomponents:httpclient:4.5.14")
-            dependency("org.apache.tika:tika-core:2.9.4")
-            dependency("org.assertj:assertj-core:3.27.4")
+            dependency("org.assertj:assertj-core:3.27.6")
             dependency("org.eclipse.jetty:jetty-server:12.0.16")
             dependency("org.freemarker:freemarker:2.3.34")
             dependency("org.junit-pioneer:junit-pioneer:2.3.0")
-            dependency("org.mockito:mockito-core:5.19.0")
-            dependency("org.projectlombok:lombok:1.18.38")
+            dependency("org.mockito:mockito-core:5.21.0")
+            dependency("org.projectlombok:lombok:1.18.42")
             dependency("org.slf4j:slf4j-api:${orgSlf4jVersion}")
             dependency("org.slf4j:slf4j-nop:${orgSlf4jVersion}")
             dependency("org.slf4j:slf4j-simple:${orgSlf4jVersion}")
