@@ -17,6 +17,7 @@
     <exclude name="GuardLogStatement"/>
     <!--  Doesn't work with Java 8 switch clause  -->
     <exclude name="ExhaustiveSwitchHasDefault"/>
+    <exclude name="EnumComparison"/>
   </rule>
 
 
@@ -96,6 +97,7 @@
   <!-- Error prone (https://pmd.github.io/pmd-6.0.1/pmd_rules_java_errorprone.html) -->
   <rule ref="category/java/errorprone.xml">
     <exclude name="AvoidCatchingThrowable"/>
+    <exclude name="AvoidCatchingGenericException"/>
     <exclude name="AvoidDuplicateLiterals"/>  <!-- duplicate of checkstyle check MultipleStringLiterals -->
     <exclude name="AvoidFieldNameMatchingMethodName"/>
     <exclude name="AssignmentInOperand"/>  <!-- duplicate of checkstyle check AssignmentInOperand -->
