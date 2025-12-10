@@ -78,7 +78,7 @@ public class DefaultResultsVisitor implements ResultsVisitor {
             final String extension = Optional.of(getExtension(file.toString()))
                     .filter(s -> !s.isEmpty())
                     .map(s -> "." + s)
-                    .orElseGet(() -> getExtensionByMimeType(realType));
+                    .orElseGet(() -> WellKnownFileExtensionsUtils.getExtensionByMimeType(realType));
             final String source = uid + (extension.isEmpty() ? "" : extension);
             final Long size = getFileSizeSafe(file);
             return new Attachment()
@@ -116,10 +116,6 @@ public class DefaultResultsVisitor implements ResultsVisitor {
                 Collections.unmodifiableMap(attachments),
                 Collections.unmodifiableMap(extra)
         );
-    }
-
-    private static String getExtensionByMimeType(final String type) {
-        return WellKnownFileExtensionsUtils.getExtensionByMimeType(type);
     }
 
     public static String probeContentType(final Path path) {
