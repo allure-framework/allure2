@@ -44,57 +44,112 @@ public class JiraExportPlugin implements Aggregator2 {
 
     private static final String ALLURE_JIRA_ENABLED = "ALLURE_JIRA_ENABLED";
     private static final String ALLURE_JIRA_LAUNCH_ISSUES = "ALLURE_JIRA_LAUNCH_ISSUES";
+    private static final String ALLURE_JIRA_MODE = "ALLURE_JIRA_MODE";
+    private static final String ALLURE_JIRA_REPORT_URL = "ALLURE_JIRA_REPORT_URL";
+
+    private static final String MODE_CLOUD = "cloud";
+    private static final String MODE_SERVER = "server";
 
     private final Supplier<JiraService> jiraServiceSupplier;
     private final boolean enabled;
     private final String issues;
+    private final String mode;
+    private final String reportUrl;
+
+    public JiraExportPlugin(final boolean enabled,
+        final String issues,
+        final Supplier<JiraService> jiraServiceSupplier) {
+        this(
+            enabled,
+            issues,
+            MODE_SERVER,
+            "",
+            jiraServiceSupplier
+        );
+    }
 
     public JiraExportPlugin() {
         this(
-                getProperty(ALLURE_JIRA_ENABLED).map(Boolean::parseBoolean).orElse(false),
-                getProperty(ALLURE_JIRA_LAUNCH_ISSUES).orElse(""),
-                () -> new JiraServiceBuilder().defaults().build()
+            getProperty(ALLURE_JIRA_ENABLED).map(Boolean::parseBoolean).orElse(false),
+            getProperty(ALLURE_JIRA_LAUNCH_ISSUES).orElse(""),
+            getProperty(ALLURE_JIRA_MODE).orElse(MODE_SERVER),
+            getProperty(ALLURE_JIRA_REPORT_URL).orElse(""),
+            () -> new JiraServiceBuilder().defaults().build()
         );
     }
 
     public JiraExportPlugin(final boolean enabled,
-                            final String issues,
-                            final Supplier<JiraService> jiraServiceSupplier) {
+        final String issues,
+        final String mode,
+        final String reportUrl,
+        final Supplier<JiraService> jiraServiceSupplier) {
         this.jiraServiceSupplier = jiraServiceSupplier;
         this.enabled = enabled;
         this.issues = issues;
+        this.mode = mode;
+        this.reportUrl = reportUrl;
     }
 
     @Override
     public void aggregate(final Configuration configuration,
-                          final List<LaunchResults> launchesResults,
-                          final ReportStorage reportStorage) {
-        if (enabled) {
-            final JiraService jiraService = jiraServiceSupplier.get();
+        final List<LaunchResults> launchesResults,
+        final ReportStorage reportStorage) {
+        if (!enabled) {
+            LOGGER.debug("Jira Export Plugin is disabled");
+            return;
+        }
 
-            final List<String> issues = JiraExportUtils.splitByComma(this.issues);
-            final ExecutorInfo executor = JiraExportUtils.getExecutor(launchesResults);
-            final Statistic statisticToConvert = JiraExportUtils.getStatistic(launchesResults);
-            final List<LaunchStatisticExport> statistic = JiraExportUtils.convertStatistics(statisticToConvert);
-            final JiraLaunch launch = JiraExportUtils.getJiraLaunch(executor, statistic);
-            exportLaunchToJira(jiraService, launch, issues);
+        LOGGER.info("Jira Export Plugin started in mode: {}", mode);
 
-            JiraExportUtils.getTestResults(launchesResults).stream()
-                    .map(testResult -> JiraExportUtils.getJiraTestResult(executor, testResult))
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .forEach(jiraTestResult -> {
-                        JiraExportUtils.getTestResults(launchesResults)
-                                .forEach(testResult ->
-                                        exportTestResultToJira(jiraService, jiraTestResult, testResult));
-                    });
+        try {
+            if (MODE_CLOUD.equalsIgnoreCase(mode)) {
+                aggregateCloudMode(launchesResults);
+            } else {
+                aggregateServerMode(launchesResults);
+            }
+        } catch (Throwable e) {
+            LOGGER.error("Jira export failed", e);
         }
     }
 
+    private void aggregateCloudMode(final List<LaunchResults> launchesResults) {
+        LOGGER.info("Using Jira Cloud export mode");
+
+        final JiraCloudService jiraCloudService = new JiraCloudServiceBuilder()
+                .defaults()
+                .build();
+
+        final JiraCloudExporter exporter = new JiraCloudExporter(jiraCloudService, reportUrl);
+
+        exporter.export(launchesResults);
+    }
+
+    private void aggregateServerMode(final List<LaunchResults> launchesResults) {
+        LOGGER.info("Using Jira Server export mode");
+
+        final JiraService jiraService = jiraServiceSupplier.get();
+
+        final List<String> issues = JiraExportUtils.splitByComma(this.issues);
+        final ExecutorInfo executor = JiraExportUtils.getExecutor(launchesResults);
+        final Statistic statisticToConvert = JiraExportUtils.getStatistic(launchesResults);
+        final List<LaunchStatisticExport> statistic = JiraExportUtils.convertStatistics(statisticToConvert);
+        final JiraLaunch launch = JiraExportUtils.getJiraLaunch(executor, statistic);
+        exportLaunchToJira(jiraService, launch, issues);
+
+        JiraExportUtils.getTestResults(launchesResults).stream()
+            .map(testResult -> JiraExportUtils.getJiraTestResult(executor, testResult))
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .forEach(jiraTestResult -> {
+                JiraExportUtils.getTestResults(launchesResults)
+                    .forEach(testResult ->
+                        exportTestResultToJira(jiraService, jiraTestResult, testResult));
+            });
+    }
 
     private List<JiraExportResult> exportLaunchToJira(final JiraService jiraService,
-                                                      final JiraLaunch launch,
-                                                      final List<String> issues) {
+        final JiraLaunch launch,
+        final List<String> issues) {
         try {
             final List<JiraExportResult> created = jiraService.createJiraLaunch(launch, issues);
 
@@ -104,7 +159,7 @@ public class JiraExportPlugin implements Aggregator2 {
                 logErrorResults(failedExports);
             } else {
                 LOGGER.info(String.format("Allure launch '%s' synced with issues  successfully%n",
-                        issues));
+                    issues));
                 LOGGER.info(String.format("Results of launch export %n %s", created));
             }
 
@@ -116,8 +171,8 @@ public class JiraExportPlugin implements Aggregator2 {
     }
 
     private void exportTestResultToJira(final JiraService jiraService,
-                                        final JiraTestResult jiraTestResult,
-                                        final TestResult testResult) {
+        final JiraTestResult jiraTestResult,
+        final TestResult testResult) {
 
         if (!Objects.equals(jiraTestResult.getTestCaseId(), testResult.getUid())) {
             return;
@@ -125,9 +180,9 @@ public class JiraExportPlugin implements Aggregator2 {
 
         try {
             final List<String> issues = testResult.getLinks().stream()
-                    .filter(JiraExportUtils::isIssueLink)
-                    .map(Link::getName)
-                    .collect(Collectors.toList());
+                .filter(JiraExportUtils::isIssueLink)
+                .map(Link::getName)
+                .collect(Collectors.toList());
 
             final List<JiraExportResult> created = jiraService.createTestResult(jiraTestResult, issues);
             final List<JiraExportResult> failedExports = findFailuresInExportResult(created);
@@ -140,7 +195,7 @@ public class JiraExportPlugin implements Aggregator2 {
 
         } catch (Throwable e) {
             LOGGER.error(String.format("Allure test result sync with issue '%s' failed",
-                    jiraTestResult.getExternalId()), e);
+                jiraTestResult.getExternalId()), e);
             throw e;
         }
     }
@@ -149,11 +204,9 @@ public class JiraExportPlugin implements Aggregator2 {
         LOGGER.error(String.format("There was an failure in response%n %s", failedExportResults));
     }
 
-
     private List<JiraExportResult> findFailuresInExportResult(final List<JiraExportResult> exportResults) {
         return exportResults.stream()
-                .filter(exportResult -> exportResult.getStatus().equals(Status.FAILED.value()))
-                .collect(Collectors.toList());
+            .filter(exportResult -> exportResult.getStatus().equals(Status.FAILED.value()))
+            .collect(Collectors.toList());
     }
-
 }
