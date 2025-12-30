@@ -31,6 +31,7 @@ public class JiraCloudExporter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JiraCloudExporter.class);
     private static final String PROPERTY_KEY = "allure.lastRun";
+    private static final String ERROR_MESSAGE_PREFIX = "Jira Cloud update failed for ";
 
     private final JiraCloudService jiraService;
     private final String reportUrl;
@@ -85,7 +86,7 @@ public class JiraCloudExporter {
 
                 for (String issueKey : issueKeys) {
                     summaryByIssue.computeIfAbsent(issueKey, k -> new JiraCloudTestSummary())
-                        .addTestResult(testResult.getStatus());
+                            .addTestResult(testResult.getStatus());
                 }
             });
         });
@@ -97,20 +98,20 @@ public class JiraCloudExporter {
 
     private List<String> extractIssueKeys(final io.qameta.allure.entity.TestResult testResult) {
         return testResult.getLinks().stream()
-            .filter(link -> "issue".equalsIgnoreCase(link.getType()))
-            .map(io.qameta.allure.entity.Link::getName)
-            .filter(Objects::nonNull)
-            .map(String::trim)
-            .filter(s -> !s.isEmpty())
-            .distinct()
-            .collect(Collectors.toList());
+                .filter(link -> "issue".equalsIgnoreCase(link.getType()))
+                .map(io.qameta.allure.entity.Link::getName)
+                .filter(Objects::nonNull)
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     private void exportToIssue(final String issueKey, final JiraCloudTestSummary summary) {
         final retrofit2.Response<Void> response = jiraService.updateIssueProperty(issueKey, PROPERTY_KEY, summary);
 
         if (response == null) {
-            throw new ServiceException("Jira Cloud update failed for " + issueKey + ": response is null");
+            throw new ServiceException(ERROR_MESSAGE_PREFIX + issueKey + ": response is null");
         }
         if (response.isSuccessful()) {
             return;
@@ -118,16 +119,17 @@ public class JiraCloudExporter {
 
         final String code = String.valueOf(response.code());
         String errorBodyText = "";
-        try {
-            final ResponseBody errorBody = response.errorBody();
-            if (errorBody != null) {
-                errorBodyText = errorBody.string();
+
+        final ResponseBody errorBody = response.errorBody();
+        if (errorBody != null) {
+            try (ResponseBody body = errorBody) {
+                errorBodyText = body.string();
+            } catch (Exception readErr) {
+                errorBodyText = "<failed to read error body: " + readErr.getMessage() + ">";
             }
-        } catch (Exception readErr) {
-            errorBodyText = "Failed to read error body: " + readErr.getMessage();
         }
 
-        throw new ServiceException("Jira Cloud update failed for " + issueKey
+        throw new ServiceException(ERROR_MESSAGE_PREFIX + issueKey
                 + ", http=" + code
                 + (errorBodyText.isEmpty() ? "" : ", body=" + errorBodyText));
     }

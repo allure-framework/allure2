@@ -37,7 +37,7 @@ public class JiraRetryInterceptor implements Interceptor {
 
     @Override
     public Response intercept(final Chain chain) throws IOException {
-        Request request = chain.request();
+        final Request request = chain.request();
         Response response = null;
 
         for (int attempt = 1; attempt <= maxAttempts; attempt++) {
@@ -47,9 +47,8 @@ public class JiraRetryInterceptor implements Interceptor {
                 return response;
             }
 
-
             if (attempt < maxAttempts) {
-                long sleepMs = computeSleepMillis(response, attempt);
+                final long sleepMs = computeSleepMillis(response, attempt);
                 LOGGER.warn("Jira request to {} failed with code {}. Retrying after {}ms (attempt {}/{})",
                         request.url(), response.code(), sleepMs, attempt, maxAttempts);
                 response.close();
@@ -57,22 +56,26 @@ public class JiraRetryInterceptor implements Interceptor {
             }
         }
 
+        if (response == null) {
+            throw new IOException("All retry attempts failed and response is null");
+        }
+
         LOGGER.error("Jira request to {} failed after {} attempts with code {}",
-                request.url(), maxAttempts, response != null ? response.code() : "unknown");
+                request.url(), maxAttempts, response.code());
         return response;
     }
 
     private static boolean shouldRetry(final Response response) {
-        int code = response.code();
+        final int code = response.code();
         return code == 429 || code == 502 || code == 503 || code == 504;
     }
 
     private long computeSleepMillis(final Response response, final int attempt) {
         if (response.code() == 429) {
-            String retryAfter = response.header("Retry-After");
-            Long retryAfterSeconds = parseLongOrNull(retryAfter);
+            final String retryAfter = response.header("Retry-After");
+            final Long retryAfterSeconds = parseLongOrNull(retryAfter);
             if (retryAfterSeconds != null && retryAfterSeconds >= 0) {
-                long retryMs = retryAfterSeconds * 1000L;
+                final long retryMs = retryAfterSeconds * 1000L;
                 return Math.min(retryMs, MAX_RETRY_AFTER_MILLIS);
             }
         }
@@ -81,7 +84,9 @@ public class JiraRetryInterceptor implements Interceptor {
     }
 
     private static Long parseLongOrNull(final String value) {
-        if (value == null) return null;
+        if (value == null) {
+            return null;
+        }
         try {
             return Long.parseLong(value.trim());
         } catch (Exception ignored) {
@@ -90,7 +95,9 @@ public class JiraRetryInterceptor implements Interceptor {
     }
 
     private static void sleepQuietly(final long millis) {
-        if (millis <= 0) return;
+        if (millis <= 0) {
+            return;
+        }
         try {
             Thread.sleep(millis);
         } catch (InterruptedException ie) {

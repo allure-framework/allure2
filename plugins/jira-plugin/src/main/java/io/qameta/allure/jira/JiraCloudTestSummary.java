@@ -81,27 +81,16 @@ public class JiraCloudTestSummary implements Serializable {
     private void updateOverallStatus() {
         if (failed > 0) {
             status = Status.FAILED.value();
-            return;
-        }
-
-        if (broken > 0) {
+        } else if (broken > 0) {
             status = Status.BROKEN.value();
-            return;
-        }
-
-        if (passed > 0) {
+        } else if (passed > 0) {
             status = Status.PASSED.value();
-            return;
-        }
-
-        if (skipped > 0) {
+        } else if (skipped > 0) {
             status = Status.SKIPPED.value();
-            return;
+        } else {
+            status = Status.UNKNOWN.value();
         }
-
-        status = Status.UNKNOWN.value();
     }
-
     public String getStatus() {
         return status;
     }
