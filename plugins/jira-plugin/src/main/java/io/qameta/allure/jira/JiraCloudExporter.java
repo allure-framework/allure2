@@ -17,6 +17,7 @@ package io.qameta.allure.jira;
 
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.jira.retrofit.ServiceException;
+import okhttp3.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,9 +59,9 @@ public class JiraCloudExporter {
         int successCount = 0;
         int failureCount = 0;
 
-        for (Map.Entry<String, JiraCloudTestSummary> entry : summaryByIssue.entrySet()) {
-            final String issueKey = entry.getKey();
-            final JiraCloudTestSummary summary = entry.getValue();
+        for (Map.Entry<String, JiraCloudTestSummary> issueEntry : summaryByIssue.entrySet()) {
+            final String issueKey = issueEntry.getKey();
+            final JiraCloudTestSummary summary = issueEntry.getValue();
 
             try {
                 exportToIssue(issueKey, summary);
@@ -68,7 +69,7 @@ public class JiraCloudExporter {
                 LOGGER.info("✓ Successfully exported to issue: {}", issueKey);
             } catch (Exception e) {
                 failureCount++;
-                LOGGER.warn("✗ Failed to export to issue: {} — {}", issueKey, e.getMessage());
+                LOGGER.warn("✗ Failed to export to issue: {} ", issueKey, e);
             }
         }
 
@@ -76,22 +77,22 @@ public class JiraCloudExporter {
     }
 
     private Map<String, JiraCloudTestSummary> aggregateByIssue(final List<LaunchResults> launchResults) {
-        final Map<String, JiraCloudTestSummary> summaryMap = new HashMap<>();
+        final Map<String, JiraCloudTestSummary> summaryByIssue = new HashMap<>();
 
         launchResults.forEach(launch -> {
             launch.getAllResults().forEach(testResult -> {
                 final List<String> issueKeys = extractIssueKeys(testResult);
 
                 for (String issueKey : issueKeys) {
-                    summaryMap.computeIfAbsent(issueKey, k -> new JiraCloudTestSummary())
+                    summaryByIssue.computeIfAbsent(issueKey, k -> new JiraCloudTestSummary())
                         .addTestResult(testResult.getStatus());
                 }
             });
         });
 
-        summaryMap.values().forEach(summary -> summary.setReportUrl(reportUrl));
+        summaryByIssue.values().forEach(summary -> summary.setReportUrl(reportUrl));
 
-        return summaryMap;
+        return summaryByIssue;
     }
 
     private List<String> extractIssueKeys(final io.qameta.allure.entity.TestResult testResult) {
@@ -106,11 +107,28 @@ public class JiraCloudExporter {
     }
 
     private void exportToIssue(final String issueKey, final JiraCloudTestSummary summary) {
-        final retrofit2.Response<Void> resp = jiraService.updateIssueProperty(issueKey, PROPERTY_KEY, summary);
+        final retrofit2.Response<Void> response = jiraService.updateIssueProperty(issueKey, PROPERTY_KEY, summary);
 
-        if (resp == null || !resp.isSuccessful()) {
-            final String code = (resp == null) ? "null" : String.valueOf(resp.code());
-            throw new ServiceException("Jira Cloud update failed for " + issueKey + ", http=" + code);
+        if (response == null) {
+            throw new ServiceException("Jira Cloud update failed for " + issueKey + ": response is null");
         }
+        if (response.isSuccessful()) {
+            return;
+        }
+
+        final String code = String.valueOf(response.code());
+        String errorBodyText = "";
+        try {
+            final ResponseBody errorBody = response.errorBody();
+            if (errorBody != null) {
+                errorBodyText = errorBody.string();
+            }
+        } catch (Exception readErr) {
+            errorBodyText = "Failed to read error body: " + readErr.getMessage();
+        }
+
+        throw new ServiceException("Jira Cloud update failed for " + issueKey
+                + ", http=" + code
+                + (errorBodyText.isEmpty() ? "" : ", body=" + errorBodyText));
     }
 }

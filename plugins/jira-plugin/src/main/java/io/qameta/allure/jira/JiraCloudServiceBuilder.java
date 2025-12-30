@@ -25,6 +25,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import static io.qameta.allure.util.PropertyUtils.getProperty;
 import static io.qameta.allure.util.PropertyUtils.requireProperty;
 
 public class JiraCloudServiceBuilder {
@@ -32,10 +33,14 @@ public class JiraCloudServiceBuilder {
     private static final String JIRA_CLOUD_URL = "ALLURE_JIRA_CLOUD_URL";
     private static final String JIRA_CLOUD_EMAIL = "ALLURE_JIRA_CLOUD_EMAIL";
     private static final String JIRA_CLOUD_API_TOKEN = "ALLURE_JIRA_CLOUD_API_TOKEN";
+    private static final String JIRA_CLOUD_MAX_RETRIES = "ALLURE_JIRA_CLOUD_MAX_RETRIES";
+    private static final String JIRA_CLOUD_RETRY_BACKOFF_MS = "ALLURE_JIRA_CLOUD_RETRY_BACKOFF_MS";
 
-    private static final int DEFAULT_CONNECT_TIMEOUT_SECONDS = 10;
-    private static final int DEFAULT_READ_TIMEOUT_SECONDS = 10;
-    private static final int DEFAULT_WRITE_TIMEOUT_SECONDS = 10;
+    private static final int DEFAULT_CONNECT_TIMEOUT_SECONDS = 15;
+    private static final int DEFAULT_READ_TIMEOUT_SECONDS = 60;
+    private static final int DEFAULT_WRITE_TIMEOUT_SECONDS = 60;
+    private static final int DEFAULT_MAX_RETRIES = 3;
+    private static final long DEFAULT_RETRY_BACKOFF_MILLIS = 500L;
 
     private String endpoint;
     private String email;
@@ -67,8 +72,17 @@ public class JiraCloudServiceBuilder {
     }
 
     public JiraCloudService build() {
-        final OkHttpClient client = new OkHttpClient.Builder()
+        final int maxRetries = getProperty(JIRA_CLOUD_MAX_RETRIES)
+                .map(Integer::parseInt)
+                .orElse(DEFAULT_MAX_RETRIES);
+
+        final long retryBackoffMs = getProperty(JIRA_CLOUD_RETRY_BACKOFF_MS)
+                .map(Long::parseLong)
+                .orElse(DEFAULT_RETRY_BACKOFF_MILLIS);
+
+        final OkHttpClient httpClient = new OkHttpClient.Builder()
             .addInterceptor(new BasicAuthInterceptor(email, apiToken))
+            .addInterceptor(new JiraRetryInterceptor(maxRetries, retryBackoffMs))
             .connectTimeout(DEFAULT_CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .readTimeout(DEFAULT_READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .writeTimeout(DEFAULT_WRITE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
@@ -78,7 +92,7 @@ public class JiraCloudServiceBuilder {
             .baseUrl(endpoint)
             .addConverterFactory(JacksonConverterFactory.create(new ObjectMapper()))
             .addCallAdapterFactory(new DefaultCallAdapterFactory<>())
-            .client(client)
+            .client(httpClient)
             .build();
 
         return retrofit.create(JiraCloudService.class);

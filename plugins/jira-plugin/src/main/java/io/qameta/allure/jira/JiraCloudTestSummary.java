@@ -53,6 +53,7 @@ public class JiraCloudTestSummary implements Serializable {
     public void addTestResult(final Status testStatus) {
         if (testStatus == null) {
             unknown++;
+            updateOverallStatus();
             return;
         }
 
@@ -79,16 +80,26 @@ public class JiraCloudTestSummary implements Serializable {
 
     private void updateOverallStatus() {
         if (failed > 0) {
-            status = "FAILED";
-        } else if (broken > 0) {
-            status = "BROKEN";
-        } else if (passed > 0) {
-            status = "PASSED";
-        } else if (skipped > 0) {
-            status = "SKIPPED";
-        } else {
-            status = STATUS_UNKNOWN;
+            status = Status.FAILED.value();
+            return;
         }
+
+        if (broken > 0) {
+            status = Status.BROKEN.value();
+            return;
+        }
+
+        if (passed > 0) {
+            status = Status.PASSED.value();
+            return;
+        }
+
+        if (skipped > 0) {
+            status = Status.SKIPPED.value();
+            return;
+        }
+
+        status = Status.UNKNOWN.value();
     }
 
     public String getStatus() {
