@@ -91,7 +91,7 @@ subprojects {
             dependency("com.beust:jcommander:1.82")
             dependency("com.github.spotbugs:spotbugs:4.9.8")
             dependency("com.opencsv:opencsv:5.12.0")
-            dependency("com.puppycrawl.tools:checkstyle:12.2.0")
+            dependency("com.puppycrawl.tools:checkstyle:12.3.1")
             dependency("com.squareup.retrofit2:converter-jackson:${comSquareupRetrofit2Version}")
             dependency("com.squareup.retrofit2:retrofit:${comSquareupRetrofit2Version}")
             dependency("commons-beanutils:commons-beanutils:1.11.0")
