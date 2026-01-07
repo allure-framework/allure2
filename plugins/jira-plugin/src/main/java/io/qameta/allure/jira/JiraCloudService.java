@@ -17,16 +17,19 @@ package io.qameta.allure.jira;
 
 import retrofit2.Response;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
-@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface JiraCloudService {
+
+    @GET("rest/api/3/myself")
+    Response<Void> getMyself();
 
     @PUT("rest/api/3/issue/{issueKey}/properties/{propertyKey}")
     Response<Void> updateIssueProperty(
-        @Path("issueKey") String issueKey,
-        @Path("propertyKey") String propertyKey,
-        @Body Object value
+            @Path("issueKey") String issueKey,
+            @Path("propertyKey") String propertyKey,
+            @Body Object value
     );
 }

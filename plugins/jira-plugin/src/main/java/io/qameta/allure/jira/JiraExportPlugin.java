@@ -44,16 +44,15 @@ public class JiraExportPlugin implements Aggregator2 {
 
     private static final String ALLURE_JIRA_ENABLED = "ALLURE_JIRA_ENABLED";
     private static final String ALLURE_JIRA_LAUNCH_ISSUES = "ALLURE_JIRA_LAUNCH_ISSUES";
-    private static final String ALLURE_JIRA_MODE = "ALLURE_JIRA_MODE";
     private static final String ALLURE_JIRA_REPORT_URL = "ALLURE_JIRA_REPORT_URL";
 
     private static final String MODE_CLOUD = "cloud";
     private static final String MODE_SERVER = "server";
 
     private final Supplier<JiraService> jiraServiceSupplier;
+    private final Supplier<JiraCloudService> jiraCloudServiceSupplier;
     private final boolean enabled;
     private final String issues;
-    private final String mode;
     private final String reportUrl;
 
     public JiraExportPlugin(final boolean enabled,
@@ -62,9 +61,9 @@ public class JiraExportPlugin implements Aggregator2 {
         this(
             enabled,
             issues,
-            MODE_SERVER,
             "",
-            jiraServiceSupplier
+            jiraServiceSupplier,
+            () -> new JiraCloudServiceBuilder().defaults().build()
         );
     }
 
@@ -72,21 +71,21 @@ public class JiraExportPlugin implements Aggregator2 {
         this(
             getProperty(ALLURE_JIRA_ENABLED).map(Boolean::parseBoolean).orElse(false),
             getProperty(ALLURE_JIRA_LAUNCH_ISSUES).orElse(""),
-            getProperty(ALLURE_JIRA_MODE).orElse(MODE_SERVER),
             getProperty(ALLURE_JIRA_REPORT_URL).orElse(""),
-            () -> new JiraServiceBuilder().defaults().build()
+            () -> new JiraServiceBuilder().defaults().build(),
+            () -> new JiraCloudServiceBuilder().defaults().build()
         );
     }
 
     public JiraExportPlugin(final boolean enabled,
         final String issues,
-        final String mode,
         final String reportUrl,
-        final Supplier<JiraService> jiraServiceSupplier) {
+        final Supplier<JiraService> jiraServiceSupplier,
+        final Supplier<JiraCloudService> jiraCloudServiceSupplier) {
         this.jiraServiceSupplier = jiraServiceSupplier;
+        this.jiraCloudServiceSupplier = jiraCloudServiceSupplier;
         this.enabled = enabled;
         this.issues = issues;
-        this.mode = mode;
         this.reportUrl = reportUrl;
     }
 
@@ -99,10 +98,13 @@ public class JiraExportPlugin implements Aggregator2 {
             return;
         }
 
-        LOGGER.info("Jira Export Plugin started in mode: {}", mode);
+        LOGGER.info("Jira Export Plugin started");
 
         try {
-            if (MODE_CLOUD.equalsIgnoreCase(mode)) {
+            final String detectedMode = detectJiraMode();
+            LOGGER.info("Using Jira mode: {}", detectedMode);
+
+            if (MODE_CLOUD.equalsIgnoreCase(detectedMode)) {
                 aggregateCloudMode(launchesResults);
             } else {
                 aggregateServerMode(launchesResults);
@@ -112,12 +114,19 @@ public class JiraExportPlugin implements Aggregator2 {
         }
     }
 
+    private String detectJiraMode() {
+        try {
+            return JiraModeDetector.detectMode(jiraCloudServiceSupplier, jiraServiceSupplier);
+        } catch (Exception e) {
+            LOGGER.warn("Jira mode detection failed, defaulting to SERVER mode", e);
+            return MODE_SERVER;
+        }
+    }
+
     private void aggregateCloudMode(final List<LaunchResults> launchesResults) {
         LOGGER.info("Using Jira Cloud export mode");
 
-        final JiraCloudService jiraCloudService = new JiraCloudServiceBuilder()
-                .defaults()
-                .build();
+        final JiraCloudService jiraCloudService = jiraCloudServiceSupplier.get();
 
         final JiraCloudExporter exporter = new JiraCloudExporter(jiraCloudService, reportUrl);
 
