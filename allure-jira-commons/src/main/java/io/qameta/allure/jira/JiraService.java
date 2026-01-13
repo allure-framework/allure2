@@ -31,6 +31,9 @@ import java.util.List;
  */
 public interface JiraService {
 
+    @GET("rest/api/2/serverInfo")
+    JiraServerInfo getServerInfo();
+
     @POST("api/2/issue/{issueKey}/comment")
     Response<ResponseBody> createIssueComment(@Path("issueKey") String issueKey, @Body JiraIssueComment comment);
 
