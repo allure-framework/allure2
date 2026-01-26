@@ -1,0 +1,68 @@
+.attachment__iframe {
+  /* Allow JS to set an explicit pixel height based on the attachment HTML content.*/
+  width: 100% !important;
+  border: none !important;
+  height: auto; /* inline height set by JS will apply */
+}
+
+.attachment__iframe_fullscreen {
+  height: 85vh !important;
+}
+
+.attachment__iframe-container {
+  overflow: visible !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Make the attachment panel use full available width and remove inner gutters */
+.test-result__content, .testcase__content, .details-content {
+  padding: 0 !important;
+}
+
+/* Presentation mode: only when body.presentation-mode is present */
+body.presentation-mode .side-nav,
+body.presentation-mode .app__header,
+body.presentation-mode .app__nav,
+body.presentation-mode .side-nav__head,
+body.presentation-mode .side-nav__menu {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+body.presentation-mode .app { display: block !important; }
+body.presentation-mode .app__content { margin-left: 0 !important; width: 100% !important; }
+
+/* Make the attachment iframe expand to fill the right-hand content panel (not fullscreen).
+   The JS will set an explicit height based on the attachment's HTML content*/
+body.presentation-mode .attachment__iframe {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  height: auto !important; /* explicit px height will be applied by JS */
+  max-height: calc(100vh - 120px) !important; /* leave space for header/toolbars */
+  z-index: 999 !important;
+  border: none !important;
+  background: #fff !important;
+}
+
+/* Hide other panels that might overlay the iframe */
+body.presentation-mode .popup, body.presentation-mode #popup, body.presentation-mode .modal__background, body.presentation-mode .modal__window { display: none !important; }
+
+/* Small injected button to manually expand/collapse HTML attachments in the panel */
+.copilot-expand-btn {
+  margin-left: 6px;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 3px;
+  background: #2b6cb0;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+.copilot-expand-btn:hover { background: #2c5282; }
+
