@@ -15,13 +15,18 @@
  */
 package io.qameta.allure.jira;
 
+import io.qameta.allure.PluginConfiguration;
+import io.qameta.allure.core.Configuration;
+import io.qameta.allure.core.Plugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import retrofit2.Response;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import static io.qameta.allure.jira.JiraExportPlugin.checkPluginConfiguration;
 import static io.qameta.allure.util.PropertyUtils.getProperty;
 
 public final class JiraModeDetector {
@@ -38,8 +43,14 @@ public final class JiraModeDetector {
     private JiraModeDetector() {
     }
 
-    public static String detectMode(final Supplier<JiraCloudService> cloudServiceSupplier,
+    public static String detectMode(final Configuration configuration,
+                                    final Supplier<JiraCloudService> cloudServiceSupplier,
                                     final Supplier<JiraService> serverServiceSupplier) {
+        if (!isJiraPluginInstalled(configuration)) {
+            LOGGER.warn("Jira plugin not found in Allure configuration; defaulting to SERVER mode");
+            return MODE_SERVER;
+        }
+
         LOGGER.info("Auto-detecting Jira deployment type...");
 
         if (hasCloudCredentials()) {
@@ -52,6 +63,10 @@ public final class JiraModeDetector {
 
         LOGGER.debug("Trying Server API for detection");
         return tryDetectServer(serverServiceSupplier);
+    }
+
+    private static boolean isJiraPluginInstalled(final Configuration configuration) {
+        return checkPluginConfiguration(configuration);
     }
 
     private static boolean hasCloudCredentials() {

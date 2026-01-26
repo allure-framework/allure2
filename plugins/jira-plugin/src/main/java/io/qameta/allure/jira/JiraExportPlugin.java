@@ -16,9 +16,11 @@
 package io.qameta.allure.jira;
 
 import io.qameta.allure.Aggregator2;
+import io.qameta.allure.PluginConfiguration;
 import io.qameta.allure.ReportStorage;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
+import io.qameta.allure.core.Plugin;
 import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.entity.Link;
 import io.qameta.allure.entity.Statistic;
@@ -29,7 +31,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -91,17 +92,30 @@ public class JiraExportPlugin implements Aggregator2 {
 
     @Override
     public void aggregate(final Configuration configuration,
-        final List<LaunchResults> launchesResults,
-        final ReportStorage reportStorage) {
+                          final List<LaunchResults> launchesResults,
+                          final ReportStorage reportStorage) {
         if (!enabled) {
             LOGGER.debug("Jira Export Plugin is disabled");
+            return;
+        }
+
+        if (!isJiraPluginInstalled(configuration)) {
+            LOGGER.error("=======================================================");
+            LOGGER.error("  Jira plugin is NOT installed!");
+            LOGGER.error("  Export to Jira will be SKIPPED.");
+            LOGGER.error("");
+            LOGGER.error("To enable Jira integration, install the plugin:");
+            LOGGER.error("  - jira-plugin (for Jira Server/Data Center/Cloud)");
+            LOGGER.error("");
+            LOGGER.error("Plugin location: <allure-home>/plugins/");
+            LOGGER.error("=======================================================");
             return;
         }
 
         LOGGER.info("Jira Export Plugin started");
 
         try {
-            final String detectedMode = detectJiraMode();
+            final String detectedMode = detectJiraMode(configuration);
             LOGGER.info("Using Jira mode: {}", detectedMode);
 
             if (MODE_CLOUD.equalsIgnoreCase(detectedMode)) {
@@ -114,9 +128,9 @@ public class JiraExportPlugin implements Aggregator2 {
         }
     }
 
-    private String detectJiraMode() {
+    private String detectJiraMode(final Configuration configuration) {
         try {
-            return JiraModeDetector.detectMode(jiraCloudServiceSupplier, jiraServiceSupplier);
+            return JiraModeDetector.detectMode(configuration, jiraCloudServiceSupplier, jiraServiceSupplier);
         } catch (Exception e) {
             LOGGER.warn("Jira mode detection failed, defaulting to SERVER mode", e);
             return MODE_SERVER;
@@ -145,14 +159,12 @@ public class JiraExportPlugin implements Aggregator2 {
         final JiraLaunch launch = JiraExportUtils.getJiraLaunch(executor, statistic);
         exportLaunchToJira(jiraService, launch, issues);
 
-        JiraExportUtils.getTestResults(launchesResults).stream()
-            .map(testResult -> JiraExportUtils.getJiraTestResult(executor, testResult))
-            .filter(Optional::isPresent)
-            .map(Optional::get)
-            .forEach(jiraTestResult -> {
-                JiraExportUtils.getTestResults(launchesResults)
-                    .forEach(testResult ->
-                        exportTestResultToJira(jiraService, jiraTestResult, testResult));
+        final List<TestResult> testResults = JiraExportUtils.getTestResults(launchesResults);
+        testResults.forEach(testResult -> {
+            JiraExportUtils.getJiraTestResult(executor, testResult)
+                    .ifPresent(jiraTestResult ->
+                            exportTestResultToJira(jiraService, jiraTestResult, testResult)
+                    );
             });
     }
 
@@ -217,5 +229,23 @@ public class JiraExportPlugin implements Aggregator2 {
         return exportResults.stream()
             .filter(exportResult -> exportResult.getStatus().equals(Status.FAILED.value()))
             .collect(Collectors.toList());
+    }
+
+    private boolean isJiraPluginInstalled(final Configuration configuration) {
+        return checkPluginConfiguration(configuration);
+    }
+
+    static boolean checkPluginConfiguration(Configuration configuration) {
+        if (configuration == null) {
+            return false;
+        }
+        final List<Plugin> plugins = configuration.getPlugins();
+        if (plugins == null) {
+            return false;
+        }
+        return plugins.stream()
+                .map(Plugin::getConfig)
+                .map(PluginConfiguration::getId)
+                .anyMatch(id -> id != null && id.toLowerCase().contains("jira"));
     }
 }
