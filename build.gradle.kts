@@ -83,7 +83,7 @@ subprojects {
             mavenBom("com.squareup.okhttp3:okhttp-bom:5.3.2")
             // latest version that supports java 8
             mavenBom("com.vladsch.flexmark:flexmark-all:0.62.2")
-            mavenBom("io.qameta.allure:allure-bom:2.31.0")
+            mavenBom("io.qameta.allure:allure-bom:2.32.0")
             mavenBom("org.junit:junit-bom:6.0.3")
         }
         dependencies {
