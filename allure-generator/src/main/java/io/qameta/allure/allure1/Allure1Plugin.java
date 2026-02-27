@@ -47,7 +47,12 @@ import ru.yandex.qatools.allure.model.TestSuiteResult;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PushbackReader;
 import java.math.BigInteger;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CodingErrorAction;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
@@ -522,20 +527,53 @@ public class Allure1Plugin implements Reader {
         return environment;
     }
 
+    private static Properties propertiesToMap(final Map<String, String> target) {
+        return new Properties() {
+            @Override
+            public Object put(final Object key, final Object value) {
+                return target.put((String) key, (String) value);
+            }
+        };
+    }
+
+    private Map<String, String> readEnvironmentPropertiesUtf8(final Path envPropsFile) throws IOException {
+        final Map<String, String> utf8Items = new LinkedHashMap<>();
+        final CharsetDecoder decoder = UTF_8.newDecoder()
+                .onMalformedInput(CodingErrorAction.REPORT)
+                .onUnmappableCharacter(CodingErrorAction.REPORT);
+
+        try (InputStream fis = Files.newInputStream(envPropsFile);
+             InputStreamReader isr = new InputStreamReader(fis, decoder);
+             PushbackReader reader = new PushbackReader(isr, 1)) {
+
+            final int ch = reader.read();
+            if (ch != -1 && ch != '\uFEFF') {
+                reader.unread(ch);
+            }
+
+            propertiesToMap(utf8Items).load(reader);
+        }
+        return utf8Items;
+    }
+
     private Map<String, String> processEnvironmentProperties(final Path directory) {
         final Path envPropsFile = directory.resolve("environment.properties");
+        if (!Files.exists(envPropsFile)) {
+            return new LinkedHashMap<>();
+        }
+        try {
+            return readEnvironmentPropertiesUtf8(envPropsFile);
+        } catch (CharacterCodingException e) {
+            LOGGER.debug("Failed to read {} as UTF-8, falling back to ISO-8859-1", envPropsFile, e);
+        } catch (IOException e) {
+            LOGGER.debug("Failed to read {} using UTF-8 path, falling back to ISO-8859-1", envPropsFile, e);
+        }
+
         final Map<String, String> items = new LinkedHashMap<>();
-        if (Files.exists(envPropsFile)) {
-            try (InputStream is = Files.newInputStream(envPropsFile)) {
-                new Properties() {
-                    @Override
-                    public Object put(final Object key, final Object value) {
-                        return items.put((String) key, (String) value);
-                    }
-                }.load(is);
-            } catch (IOException e) {
-                LOGGER.error("Could not read environments.properties file " + envPropsFile, e);
-            }
+        try (InputStream is = Files.newInputStream(envPropsFile)) {
+            propertiesToMap(items).load(is);
+        } catch (IOException e) {
+            LOGGER.error("Could not read environment.properties file " + envPropsFile, e);
         }
         return items;
     }
