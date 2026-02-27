@@ -36,28 +36,16 @@ class AttachmentView extends View {
         .then(this.render);
     }
     if (this.attachmentInfo.type === "playwright-trace" && !this.content) {
-          reportDataUrl(`data/attachments/${this.attachment.source}`, this.attachment.type)
-              .then((url) => fetch(url))
-              .then((res) => res.blob())
-              .then((blob) => {
-                  this.content = blob;
-                  this.sourceUrl = URL.createObjectURL(blob);
-              })
-            .then(this.render);
-          return
+      reportDataUrl(`data/attachments/${this.attachment.source}`, this.attachment.type)
+        .then((url) => fetch(url))
+        .then((res) => res.blob())
+        .then((blob) => {
+          this.content = blob;
+          this.sourceUrl = URL.createObjectURL(blob);
+        })
+        .then(this.render);
+      return;
     }
-
-      if (this.attachmentInfo.type === "playwright-trace" && this.content instanceof Blob) {
-          const iframe = document.getElementById("pw-trace-iframe");
-          if (iframe && this.content instanceof Blob) {
-              iframe.onload = () => {
-                  iframe.contentWindow?.postMessage(
-                      {method: "load", params: {trace: this.content}},
-                      "https://trace.playwright.dev/next"
-                  );
-              };
-          }
-      }
 
     if (this.attachmentInfo.type === "custom") {
       this.showChildView(
@@ -75,7 +63,28 @@ class AttachmentView extends View {
   }
 
   onDestroy() {
+    if (
+      this.attachmentInfo.type === "playwright-trace" &&
+      typeof this.sourceUrl === "string" &&
+      this.sourceUrl.startsWith("blob:")
+    ) {
+      try {
+        URL.revokeObjectURL(this.sourceUrl);
+      } catch (e) {
+        // ignore
+      }
+    }
     router.setSearch({ attachment: null });
+  }
+
+  @on("click .attachment__trace-open")
+  onTraceOpenClick(e) {
+    e.stopPropagation();
+  }
+
+  @on("click .attachment__trace-download")
+  onTraceDownloadClick(e) {
+    e.stopPropagation();
   }
 
   @on("click .attachment__media-container")
