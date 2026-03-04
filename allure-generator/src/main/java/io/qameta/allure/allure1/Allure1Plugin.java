@@ -473,8 +473,8 @@ public class Allure1Plugin implements Reader {
     }
 
     private Optional<TestSuiteResult> readXmlTestSuiteFile(final Path source) {
-        try (InputStream is = Files.newInputStream(source)) {
-            return Optional.of(xmlMapper.readValue(is, TestSuiteResult.class));
+        try (InputStream inputStream = Files.newInputStream(source)) {
+            return Optional.of(xmlMapper.readValue(inputStream, TestSuiteResult.class));
         } catch (IOException e) {
             LOGGER.error("Could not read xml result {}", source, e);
         }
@@ -482,8 +482,8 @@ public class Allure1Plugin implements Reader {
     }
 
     private Optional<TestSuiteResult> readJsonTestSuiteFile(final Path source) {
-        try (InputStream is = Files.newInputStream(source)) {
-            return Optional.of(jsonMapper.readValue(is, TestSuiteResult.class));
+        try (InputStream inputStream = Files.newInputStream(source)) {
+            return Optional.of(jsonMapper.readValue(inputStream, TestSuiteResult.class));
         } catch (IOException e) {
             LOGGER.error("Could not read json result {}", source, e);
             return Optional.empty();
@@ -542,16 +542,16 @@ public class Allure1Plugin implements Reader {
                 .onMalformedInput(CodingErrorAction.REPORT)
                 .onUnmappableCharacter(CodingErrorAction.REPORT);
 
-        try (InputStream fis = Files.newInputStream(envPropsFile);
-             InputStreamReader isr = new InputStreamReader(fis, decoder);
-             PushbackReader reader = new PushbackReader(isr, 1)) {
+        try (InputStream envPropsStream = Files.newInputStream(envPropsFile);
+             InputStreamReader envPropsReader = new InputStreamReader(envPropsStream, decoder);
+             PushbackReader pushbackReader = new PushbackReader(envPropsReader, 1)) {
 
-            final int ch = reader.read();
-            if (ch != -1 && ch != '\uFEFF') {
-                reader.unread(ch);
+            final int firstChar = pushbackReader.read();
+            if (firstChar != -1 && firstChar != '\uFEFF') {
+                pushbackReader.unread(firstChar);
             }
 
-            propertiesToMap(utf8Items).load(reader);
+            propertiesToMap(utf8Items).load(pushbackReader);
         }
         return utf8Items;
     }
@@ -564,14 +564,14 @@ public class Allure1Plugin implements Reader {
         try {
             return readEnvironmentPropertiesUtf8(envPropsFile);
         } catch (CharacterCodingException e) {
-            LOGGER.debug("Failed to read {} as UTF-8, falling back to ISO-8859-1", envPropsFile, e);
+            LOGGER.error("Failed to read {} as UTF-8, falling back to ISO-8859-1", envPropsFile, e);
         } catch (IOException e) {
-            LOGGER.debug("Failed to read {} using UTF-8 path, falling back to ISO-8859-1", envPropsFile, e);
+            LOGGER.error("Failed to read {} using UTF-8 path, falling back to ISO-8859-1", envPropsFile, e);
         }
 
         final Map<String, String> items = new LinkedHashMap<>();
-        try (InputStream is = Files.newInputStream(envPropsFile)) {
-            propertiesToMap(items).load(is);
+        try (InputStream inputStream = Files.newInputStream(envPropsFile)) {
+            propertiesToMap(items).load(inputStream);
         } catch (IOException e) {
             LOGGER.error("Could not read environment.properties file " + envPropsFile, e);
         }
@@ -582,8 +582,9 @@ public class Allure1Plugin implements Reader {
         final Path envXmlFile = directory.resolve("environment.xml");
         final Map<String, String> items = new LinkedHashMap<>();
         if (Files.exists(envXmlFile)) {
-            try (InputStream fis = Files.newInputStream(envXmlFile)) {
-                xmlMapper.readValue(fis, ru.yandex.qatools.commons.model.Environment.class).getParameter().forEach(p ->
+            try (InputStream envXmlInputStream = Files.newInputStream(envXmlFile)) {
+                xmlMapper.readValue(envXmlInputStream, ru.yandex.qatools.commons.model.Environment.class)
+                        .getParameter().forEach(p ->
                         items.put(p.getKey(), p.getValue())
                 );
             } catch (Exception e) {
