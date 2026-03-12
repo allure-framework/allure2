@@ -42,6 +42,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -54,6 +55,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -86,6 +88,8 @@ public class Allure2Plugin implements Reader {
     public static final String ALLURE2_RESULTS_FORMAT = "allure2";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Allure2Plugin.class);
+
+    private static final Pattern ATTACHMENT_SOURCE_PATTERN = Pattern.compile("^[a-zA-Z0-9._-]{1,100}$");
 
     private static final Comparator<StageResult> BY_START = comparing(
             StageResult::getTime,
@@ -264,8 +268,19 @@ public class Allure2Plugin implements Reader {
     private Attachment convert(final Path source,
                                final ResultsVisitor visitor,
                                final io.qameta.allure.model.Attachment attachment) {
-        final Path attachmentFile = source.resolve(attachment.getSource());
-        if (Files.isRegularFile(attachmentFile)) {
+        final String attachmentSource = attachment.getSource();
+        if (!isValidAttachmentFileName(attachmentSource)) {
+            visitor.error("Invalid attachment source is provided: " + attachmentSource);
+            return new Attachment()
+                    .setType(attachment.getType())
+                    .setName(attachment.getName())
+                    .setSize(0L);
+        }
+
+        final Path attachmentFile = source.resolve(attachmentSource).normalize();
+
+        if (attachmentFile.startsWith(source)
+            && Files.isRegularFile(attachmentFile, LinkOption.NOFOLLOW_LINKS)) {
             final Attachment found = visitor.visitAttachmentFile(attachmentFile);
             if (nonNull(attachment.getType())) {
                 found.setType(attachment.getType());
@@ -279,7 +294,7 @@ public class Allure2Plugin implements Reader {
             }
             return found;
         } else {
-            visitor.error("Could not find attachment " + attachment.getSource() + " in directory " + source);
+            visitor.error("Could not find attachment " + attachmentSource + " in directory " + source);
             return new Attachment()
                     .setType(attachment.getType())
                     .setName(attachment.getName())
@@ -419,5 +434,10 @@ public class Allure2Plugin implements Reader {
             LOGGER.error("Could not list files in directory {}", directory, e);
             return Stream.empty();
         }
+    }
+
+    private static boolean isValidAttachmentFileName(final String fileName) {
+        return nonNull(fileName) && ATTACHMENT_SOURCE_PATTERN.matcher(fileName).matches();
+
     }
 }

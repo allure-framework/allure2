@@ -119,6 +119,46 @@ class XcTestPluginTest {
     }
 
     @Test
+    public void shouldNotAllowPathTraversalForScreenshots() throws Exception {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("has-screenshot-data-path-traversal.plist")) {
+            Files.copy(Objects.requireNonNull(is), resultsDirectory.resolve("sample.plist"));
+        }
+        final Path attachments = resultsDirectory.resolve("Attachments");
+        Files.createDirectories(attachments);
+
+        Files.createDirectories(attachments.resolve("Screenshot_"));
+
+        final Path secretFile = resultsDirectory.resolve("secret-file.png");
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("screenshot.png")) {
+            Files.copy(Objects.requireNonNull(is), secretFile);
+        }
+
+        new XcTestPlugin().readResults(configuration, visitor, resultsDirectory);
+
+        verify(visitor, times(0))
+                .visitAttachmentFile(any());
+    }
+
+    @Test
+    public void shouldNotAllowPathTraversalForAttachments() throws Exception {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("attachments-data-path-traversal.plist")) {
+            Files.copy(Objects.requireNonNull(is), resultsDirectory.resolve("sample.plist"));
+        }
+        final Path attachments = resultsDirectory.resolve("Attachments");
+        Files.createDirectories(attachments);
+
+        final Path secretFile = resultsDirectory.resolve("secret-file.png");
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("screenshot.png")) {
+            Files.copy(Objects.requireNonNull(is), secretFile);
+        }
+
+        new XcTestPlugin().readResults(configuration, visitor, resultsDirectory);
+
+        verify(visitor, times(0))
+                .visitAttachmentFile(secretFile);
+    }
+
+    @Test
     public void shouldParseAttachmentsData() throws Exception {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("attachments-data.plist")) {
             Files.copy(Objects.requireNonNull(is), resultsDirectory.resolve("sample.plist"));
