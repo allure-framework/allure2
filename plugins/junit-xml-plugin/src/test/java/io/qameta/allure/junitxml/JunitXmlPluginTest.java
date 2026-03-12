@@ -134,6 +134,24 @@ class JunitXmlPluginTest {
     }
 
     @Test
+    void shouldNotAllowPathTraversal() throws Exception {
+        final Attachment hey = new Attachment().setUid("some-uid");
+        when(visitor.visitAttachmentFile(any())).thenReturn(hey);
+
+        final Path junitResults = resultsDirectory.resolve("junit-results");
+        Files.createDirectories(junitResults);
+
+        copyFile(junitResults, "junitdata/path-traversal.xml", "TEST-test.SampleTest.xml");
+        copyFile(resultsDirectory, "junitdata/secret-file.txt", "secret-file.txt");
+        JunitXmlPlugin reader = new JunitXmlPlugin(ZoneOffset.UTC);
+
+        reader.readResults(configuration, visitor, junitResults);
+
+        final ArgumentCaptor<Path> attachmentCaptor = ArgumentCaptor.captor();
+        verify(visitor, times(0)).visitAttachmentFile(attachmentCaptor.capture());
+    }
+
+    @Test
     void shouldAddLabels() throws Exception {
         process(
                 "junitdata/TEST-test.SampleTest.xml", "TEST-test.SampleTest.xml"
