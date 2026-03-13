@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Playwright Trace Viewer</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #0b0f19;
+        --fg: #e5e7eb;
+        --muted: #9ca3af;
+        --card: rgba(255, 255, 255, 0.06);
+        --border: rgba(255, 255, 255, 0.12);
+        --btn: #2563eb;
+        --btnText: #ffffff;
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #f6f7fb;
+          --fg: #111827;
+          --muted: #4b5563;
+          --card: rgba(17, 24, 39, 0.04);
+          --border: rgba(17, 24, 39, 0.12);
+        }
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          Helvetica,
+          Arial,
+          "Apple Color Emoji",
+          "Segoe UI Emoji";
+        background: var(--bg);
+        color: var(--fg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+      .card {
+        max-width: 860px;
+        width: 100%;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 18px 18px 14px;
+      }
+      h1 {
+        margin: 0 0 10px;
+        font-size: 16px;
+        font-weight: 700;
+      }
+      p {
+        margin: 0 0 12px;
+        color: var(--muted);
+        line-height: 1.4;
+        font-size: 13px;
+      }
+      .row {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .btn {
+        appearance: none;
+        border: 0;
+        background: var(--btn);
+        color: var(--btnText);
+        padding: 10px 12px;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 13px;
+        cursor: pointer;
+      }
+      .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      .link {
+        font-size: 12px;
+        color: var(--muted);
+        word-break: break-all;
+      }
+      .error {
+        margin-top: 10px;
+        font-size: 12px;
+        color: #fca5a5;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Playwright Trace Viewer</h1>
+      <p>
+        This report opens traces in the official Playwright Trace Viewer as a top-level page to avoid
+        cross-origin iframe restrictions (e.g., Firefox in Jenkins).
+      </p>
+      <div class="row">
+        <button id="open" class="btn" type="button">Open trace in Playwright Trace Viewer</button>
+        <span id="trace" class="link" aria-label="Trace URL"></span>
+      </div>
+      <div id="error" class="error" role="alert" hidden></div>
+    </div>
+    <script src="./viewer.js"></script>
+  </body>
+</html>
