@@ -50,7 +50,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PushbackReader;
 import java.math.BigInteger;
-import java.nio.charset.CharacterCodingException;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
 import java.nio.file.Files;
@@ -567,8 +566,8 @@ public class Allure1Plugin implements Reader {
             }
 
             propertiesToMap(utf8Items).load(pushbackReader);
+            return utf8Items;
         }
-        return utf8Items;
     }
 
     private Map<String, String> processEnvironmentProperties(final Path directory) {
@@ -578,15 +577,6 @@ public class Allure1Plugin implements Reader {
         }
         try {
             return readEnvironmentPropertiesUtf8(envPropsFile);
-        } catch (CharacterCodingException e) {
-            LOGGER.error("Failed to read {} as UTF-8, falling back to ISO-8859-1", envPropsFile, e);
-            final Map<String, String> items = new LinkedHashMap<>();
-            try (InputStream inputStream = Files.newInputStream(envPropsFile)) {
-                propertiesToMap(items).load(inputStream);
-            } catch (IOException ex) {
-                LOGGER.error("Could not read environment.properties file {}", envPropsFile, ex);
-            }
-            return items;
         } catch (IOException e) {
             LOGGER.error("Could not read environment.properties file {}", envPropsFile, e);
             return new LinkedHashMap<>();
