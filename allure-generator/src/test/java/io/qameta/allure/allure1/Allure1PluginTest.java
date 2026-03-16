@@ -396,7 +396,7 @@ class Allure1PluginTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    void shouldFallbackToIso88591WhenUtf8DecodingFails() throws Exception {
+    void shouldReturnEmptyMapWhenUtf8DecodingFails() throws Exception {
         writeBytes(
                 "name=café\n".getBytes(StandardCharsets.ISO_8859_1));
 
@@ -406,7 +406,7 @@ class Allure1PluginTest {
                 (Supplier<Map<String, String>>) LinkedHashMap::new
         );
 
-        assertThat(env).containsEntry("name", "café");
+        assertThat(env).isEmpty();
     }
 
     @Test
