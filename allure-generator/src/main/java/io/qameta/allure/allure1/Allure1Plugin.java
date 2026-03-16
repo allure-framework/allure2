@@ -316,7 +316,7 @@ public class Allure1Plugin implements Reader {
         //Copy test status details to each step set the same status
         if (Objects.equals(status, testStatus)) {
             current.setStatusMessage(message);
-            current.setStatusMessage(trace);
+            current.setStatusTrace(trace);
         }
         return current;
     }
@@ -580,30 +580,32 @@ public class Allure1Plugin implements Reader {
             return readEnvironmentPropertiesUtf8(envPropsFile);
         } catch (CharacterCodingException e) {
             LOGGER.error("Failed to read {} as UTF-8, falling back to ISO-8859-1", envPropsFile, e);
+            final Map<String, String> items = new LinkedHashMap<>();
+            try (InputStream inputStream = Files.newInputStream(envPropsFile)) {
+                propertiesToMap(items).load(inputStream);
+            } catch (IOException ex) {
+                LOGGER.error("Could not read environment.properties file {}", envPropsFile, ex);
+            }
+            return items;
         } catch (IOException e) {
-            LOGGER.error("Failed to read {} using UTF-8 path, falling back to ISO-8859-1", envPropsFile, e);
+            LOGGER.error("Could not read environment.properties file {}", envPropsFile, e);
+            return new LinkedHashMap<>();
         }
-
-        final Map<String, String> items = new LinkedHashMap<>();
-        try (InputStream inputStream = Files.newInputStream(envPropsFile)) {
-            propertiesToMap(items).load(inputStream);
-        } catch (IOException e) {
-            LOGGER.error("Could not read environment.properties file " + envPropsFile, e);
-        }
-        return items;
     }
 
     private Map<String, String> processEnvironmentXml(final Path directory) {
         final Path envXmlFile = directory.resolve("environment.xml");
         final Map<String, String> items = new LinkedHashMap<>();
         if (Files.exists(envXmlFile)) {
-            try (InputStream envXmlInputStream = Files.newInputStream(envXmlFile)) {
-                xmlMapper.readValue(envXmlInputStream, ru.yandex.qatools.commons.model.Environment.class)
-                        .getParameter().forEach(p ->
-                        items.put(p.getKey(), p.getValue())
+            try (InputStream envXmlInputStream = 
+                         Files.newInputStream(envXmlFile)) {
+                xmlMapper
+                        .readValue(envXmlInputStream, ru.yandex.qatools.commons.model.Environment.class)
+                        .getParameter()
+                        .forEach(p -> items.put(p.getKey(), p.getValue())
                 );
             } catch (Exception e) {
-                LOGGER.error("Could not read environment.xml file " + envXmlFile.toAbsolutePath(), e);
+                LOGGER.error("Could not read environment.xml file {}", envXmlFile.toAbsolutePath(), e);
             }
         }
         return items;

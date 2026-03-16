@@ -407,6 +407,7 @@ class Allure1PluginTest {
         );
 
         assertThat(env).containsEntry("name", "café");
+    }
 
     @Test
     void shouldNotAllowInvalidCharactersInAttachmentSource() throws IOException {
