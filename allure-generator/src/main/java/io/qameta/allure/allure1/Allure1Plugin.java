@@ -50,6 +50,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PushbackReader;
 import java.math.BigInteger;
+import java.nio.charset.CharacterCodingException;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
 import java.nio.file.Files;
@@ -550,15 +551,16 @@ public class Allure1Plugin implements Reader {
         };
     }
 
-    private Map<String, String> readEnvironmentPropertiesUtf8(final Path envPropsFile) throws IOException {
+    private Map<String, String> readEnvironmentPropertiesUtf8(final Path envPropsFile)
+        throws CharacterCodingException, IOException {
         final Map<String, String> utf8Items = new LinkedHashMap<>();
         final CharsetDecoder decoder = UTF_8.newDecoder()
-                .onMalformedInput(CodingErrorAction.REPORT)
-                .onUnmappableCharacter(CodingErrorAction.REPORT);
+            .onMalformedInput(CodingErrorAction.REPORT)
+            .onUnmappableCharacter(CodingErrorAction.REPORT);
 
         try (InputStream envPropsStream = Files.newInputStream(envPropsFile);
-             InputStreamReader envPropsReader = new InputStreamReader(envPropsStream, decoder);
-             PushbackReader pushbackReader = new PushbackReader(envPropsReader, 1)) {
+            InputStreamReader envPropsReader = new InputStreamReader(envPropsStream, decoder);
+            PushbackReader pushbackReader = new PushbackReader(envPropsReader, 1)) {
 
             final int firstChar = pushbackReader.read();
             if (firstChar != -1 && firstChar != '\uFEFF') {
@@ -577,10 +579,20 @@ public class Allure1Plugin implements Reader {
         }
         try {
             return readEnvironmentPropertiesUtf8(envPropsFile);
+        } catch (CharacterCodingException e) {
+            LOGGER.error("Failed to read {} as UTF-8, falling back to ISO-8859-1", envPropsFile, e);
         } catch (IOException e) {
             LOGGER.error("Could not read environment.properties file {}", envPropsFile, e);
             return new LinkedHashMap<>();
         }
+
+        final Map<String, String> items = new LinkedHashMap<>();
+        try (InputStream inputStream = Files.newInputStream(envPropsFile)) {
+            propertiesToMap(items).load(inputStream);
+        } catch (IOException e) {
+            LOGGER.error("Could not read environment.properties file {}", envPropsFile, e);
+        }
+        return items;
     }
 
     private Map<String, String> processEnvironmentXml(final Path directory) {
