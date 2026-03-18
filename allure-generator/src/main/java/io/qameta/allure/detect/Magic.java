@@ -31,15 +31,15 @@ final class Magic {
         this.extensions = extensions;
     }
 
-    public int getPriority() {
+    int getPriority() {
         return priority;
     }
 
-    public Clause getClause() {
+    Clause getClause() {
         return clause;
     }
 
-    public String getType() {
+    String getType() {
         return type;
     }
 
