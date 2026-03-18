@@ -341,6 +341,60 @@ class Allure2PluginTest {
         assertThat(attachments.get(0).getSource()).endsWith(".txt");
     }
 
+    @Test
+    void shouldNotAllowInvalidCharactersInAttachmentSource() throws IOException {
+        final LaunchResults results = process(
+                "allure2/text-attachment-bad-source.json", generateTestResultName(),
+                "allure2/secret-file.txt", "secret-file.txt"
+        );
+
+        assertThat(results.getAttachments())
+                .isEmpty();
+
+    }
+
+    @Test
+    void shouldNotAllowAttachmentSourcePathTraversal() throws IOException {
+        final Path allureResultsDir = directory.resolve("allure-results");
+        Files.createDirectory(allureResultsDir);
+
+        copyFile(allureResultsDir, "allure2/text-attachment-path-traversal.json", generateTestResultName());
+        copyFile(directory, "allure2/secret-file.txt", "secret-file.txt");
+
+        final Allure2Plugin reader = new Allure2Plugin();
+        final Configuration configuration = ConfigurationBuilder.bundled().build();
+        final DefaultResultsVisitor resultsVisitor = new DefaultResultsVisitor(configuration);
+        reader.readResults(configuration, resultsVisitor, allureResultsDir);
+
+        final LaunchResults results = resultsVisitor.getLaunchResults();
+
+        assertThat(results.getAttachments())
+                .isEmpty();
+
+    }
+
+    @Test
+    void shouldNotAllowAttachmentSourceSymbolicLink() throws IOException {
+        final Path allureResultsDir = directory.resolve("allure-results");
+        Files.createDirectory(allureResultsDir);
+
+        copyFile(allureResultsDir, "allure2/text-attachment-link.json", generateTestResultName());
+        copyFile(allureResultsDir, "allure2/secret-file.txt", "secret-file.txt");
+
+        Files.createSymbolicLink(allureResultsDir.resolve("link.txt"), allureResultsDir.resolve("secret-file.txt"));
+
+        final Allure2Plugin reader = new Allure2Plugin();
+        final Configuration configuration = ConfigurationBuilder.bundled().build();
+        final DefaultResultsVisitor resultsVisitor = new DefaultResultsVisitor(configuration);
+        reader.readResults(configuration, resultsVisitor, allureResultsDir);
+
+        final LaunchResults results = resultsVisitor.getLaunchResults();
+
+        assertThat(results.getAttachments())
+                .isEmpty();
+
+    }
+
     private LaunchResults process(String... strings) throws IOException {
         Iterator<String> iterator = Arrays.asList(strings).iterator();
         while (iterator.hasNext()) {

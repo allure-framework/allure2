@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "name": "shouldCreate",
+  "start": 1479552611395,
+  "stop": 1479552611399,
+  "attachments": [
+    {
+      "name": "Attachment 1",
+      "source": "./secret-file.txt",
+      "type": "text/plain"
+    },
+    {
+      "name": "Attachment 2",
+      "source": "nested/path/secret-file.txt",
+      "type": "text/plain"
+    },
+    {
+      "name": "Attachment 3",
+      "source": "     ",
+      "type": "text/plain"
+    },
+    {
+      "name": "Attachment 4",
+      "source": "#####.txt",
+      "type": "text/plain"
+    }
+  ]
+}
