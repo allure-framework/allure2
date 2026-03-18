@@ -395,6 +395,34 @@ class Allure2PluginTest {
 
     }
 
+    @Test
+    void shouldResolveAttachmentsWithRelativeResultsPath() throws IOException {
+        final Path allureResults = directory.resolve("allure-results");
+        Files.createDirectories(allureResults);
+        copyFile(allureResults, "allure2/text-attachment-link.json", generateTestResultName());
+        copyFile(allureResults, "allure2/test-sample-attachment.txt", "link.txt");
+
+        final Allure2Plugin reader = new Allure2Plugin();
+        final Configuration configuration = ConfigurationBuilder.bundled().build();
+        final DefaultResultsVisitor resultsVisitor = new DefaultResultsVisitor(configuration);
+        final Path relative = allureResults.resolve("..").resolve("allure-results");
+        reader.readResults(configuration, resultsVisitor, relative);
+        final LaunchResults results = resultsVisitor.getLaunchResults();
+
+        assertThat(results.getResults())
+                .hasSize(1);
+
+        final TestResult tr = results.getResults().iterator().next();
+        final List<Attachment> attachments = tr.getTestStage().getAttachments();
+        assertThat(attachments)
+                .extracting(Attachment::getName, Attachment::getType, Attachment::getSize)
+                .containsExactlyInAnyOrder(
+                        tuple("String attachment in test", "text/plain", 24L)
+                );
+
+        assertThat(attachments.get(0).getSource()).endsWith(".txt");
+    }
+
     private LaunchResults process(String... strings) throws IOException {
         Iterator<String> iterator = Arrays.asList(strings).iterator();
         while (iterator.hasNext()) {

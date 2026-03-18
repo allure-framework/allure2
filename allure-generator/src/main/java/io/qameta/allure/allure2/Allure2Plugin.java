@@ -276,10 +276,10 @@ public class Allure2Plugin implements Reader {
                     .setName(attachment.getName())
                     .setSize(0L);
         }
+        final Path normalizedSource = source.normalize();
+        final Path attachmentFile = normalizedSource.resolve(attachmentSource).normalize();
 
-        final Path attachmentFile = source.resolve(attachmentSource).normalize();
-
-        if (attachmentFile.startsWith(source)
+        if (attachmentFile.startsWith(normalizedSource)
             && Files.isRegularFile(attachmentFile, LinkOption.NOFOLLOW_LINKS)) {
             final Attachment found = visitor.visitAttachmentFile(attachmentFile);
             if (nonNull(attachment.getType())) {
@@ -294,7 +294,7 @@ public class Allure2Plugin implements Reader {
             }
             return found;
         } else {
-            visitor.error("Could not find attachment " + attachmentSource + " in directory " + source);
+            visitor.error("Could not find attachment " + attachmentSource + " in directory " + normalizedSource);
             return new Attachment()
                     .setType(attachment.getType())
                     .setName(attachment.getName())

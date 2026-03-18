@@ -235,10 +235,12 @@ public class JunitXmlPlugin implements Reader {
         }
 
         try {
-            final Path normalized = resultsDirectory.resolve(possibleLogFileName).normalize();
-            if (normalized.startsWith(resultsDirectory)
-                && Files.isRegularFile(normalized, LinkOption.NOFOLLOW_LINKS)) {
-                return Optional.of(normalized);
+            final Path normalizedResultsDir = resultsDirectory.normalize();
+            final Path normalizedSource = normalizedResultsDir
+                    .resolve(possibleLogFileName).normalize();
+            if (normalizedSource.startsWith(normalizedResultsDir)
+                && Files.isRegularFile(normalizedSource, LinkOption.NOFOLLOW_LINKS)) {
+                return Optional.of(normalizedSource);
             }
         } catch (InvalidPathException e) {
             LOGGER.debug("Can not find log file: invalid className {}", className, e);
