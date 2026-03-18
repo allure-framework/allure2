@@ -174,7 +174,7 @@ public class XcTestPlugin implements Reader {
             return;
         }
 
-        final Path attachments = directory.resolve(ATTACHMENTS);
+        final Path attachments = directory.resolve(ATTACHMENTS).normalize();
         for (String ext : ALLOWED_SCREENSHOT_EXT) {
             final Path resolved = attachments
                     .resolve(String.format("Screenshot_%s.%s", uuid, ext))
@@ -192,7 +192,7 @@ public class XcTestPlugin implements Reader {
                                 final ResultsVisitor visitor,
                                 final Map<String, Object> props,
                                 final Step step) {
-        final Path attachments = directory.resolve(ATTACHMENTS);
+        final Path attachments = directory.resolve(ATTACHMENTS).normalize();
         for (Object o : asList(props.get(ATTACHMENTS))) {
             final Map<String, Object> p = asMap(o);
             final String fileName = p.get(ATTACHMENT_FILENAME).toString();

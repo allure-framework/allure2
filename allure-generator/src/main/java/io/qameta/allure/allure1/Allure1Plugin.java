@@ -346,9 +346,10 @@ public class Allure1Plugin implements Reader {
                     .setSize(0L);
         }
 
-        final Path attachmentFile = source.resolve(attachmentSource).normalize();
+        final Path normalizedSource = source.normalize();
+        final Path attachmentFile = normalizedSource.resolve(attachmentSource).normalize();
 
-        if (attachmentFile.startsWith(source)
+        if (attachmentFile.startsWith(normalizedSource)
             && Files.isRegularFile(attachmentFile, LinkOption.NOFOLLOW_LINKS)) {
             final Attachment found = visitor.visitAttachmentFile(attachmentFile);
             if (Objects.nonNull(attachment.getType())) {
@@ -363,7 +364,7 @@ public class Allure1Plugin implements Reader {
             }
             return found;
         } else {
-            visitor.error("Could not find attachment " + attachmentSource + " in directory " + source);
+            visitor.error("Could not find attachment " + attachmentSource + " in directory " + normalizedSource);
             return new Attachment()
                     .setType(attachment.getType())
                     .setName(attachment.getTitle())
@@ -599,7 +600,7 @@ public class Allure1Plugin implements Reader {
         final Path envXmlFile = directory.resolve("environment.xml");
         final Map<String, String> items = new LinkedHashMap<>();
         if (Files.exists(envXmlFile)) {
-            try (InputStream envXmlInputStream = 
+            try (InputStream envXmlInputStream =
                          Files.newInputStream(envXmlFile)) {
                 xmlMapper
                         .readValue(envXmlInputStream, ru.yandex.qatools.commons.model.Environment.class)

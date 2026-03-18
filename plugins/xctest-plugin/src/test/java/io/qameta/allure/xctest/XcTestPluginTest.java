@@ -119,6 +119,28 @@ class XcTestPluginTest {
     }
 
     @Test
+    public void shouldAddScreenshotsWhenRelativeResultsDir() throws Exception {
+        final Path xctestResults = resultsDirectory.resolve("xctest-results");
+        Files.createDirectories(xctestResults);
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("has-screenshot-data.plist")) {
+            Files.copy(Objects.requireNonNull(is), xctestResults.resolve("sample.plist"));
+        }
+        final Path attachments = xctestResults.resolve("Attachments");
+        Files.createDirectories(attachments);
+
+        final Path screenshot = attachments.resolve("Screenshot_92D015E5-965D-4171-849C-35CC0945FEA2.png");
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("screenshot.png")) {
+            Files.copy(Objects.requireNonNull(is), screenshot);
+        }
+
+        final Path relative = xctestResults.resolve("..").resolve("xctest-results");
+        new XcTestPlugin().readResults(configuration, visitor, relative);
+
+        verify(visitor, times(1))
+                .visitAttachmentFile(screenshot);
+    }
+
+    @Test
     public void shouldNotAllowPathTraversalForScreenshots() throws Exception {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("has-screenshot-data-path-traversal.plist")) {
             Files.copy(Objects.requireNonNull(is), resultsDirectory.resolve("sample.plist"));
@@ -172,6 +194,27 @@ class XcTestPluginTest {
         }
 
         new XcTestPlugin().readResults(configuration, visitor, resultsDirectory);
+
+        verify(visitor, times(1))
+                .visitAttachmentFile(screenshot);
+    }
+
+    @Test
+    public void shouldAllureAttachmentsDataWithRelativeResultsDir() throws Exception {
+        final Path xctestResults = resultsDirectory.resolve("xctest-results");
+        Files.createDirectories(xctestResults);
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("attachments-data.plist")) {
+            Files.copy(Objects.requireNonNull(is), xctestResults.resolve("sample.plist"));
+        }
+        final Path attachments = xctestResults.resolve("Attachments");
+        Files.createDirectories(attachments);
+
+        final Path screenshot = attachments.resolve("Screenshot_1_1FBB627A-3D11-41E3-B4E6-5C717C75F175.jpeg");
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("screenshot.png")) {
+            Files.copy(Objects.requireNonNull(is), screenshot);
+        }
+        final Path relative = xctestResults.resolve("..").resolve("xctest-results");
+        new XcTestPlugin().readResults(configuration, visitor, relative);
 
         verify(visitor, times(1))
                 .visitAttachmentFile(screenshot);

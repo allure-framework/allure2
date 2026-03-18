@@ -134,6 +134,28 @@ class JunitXmlPluginTest {
     }
 
     @Test
+    void shouldResolveAttachmentsWithRelativeResultsPath() throws Exception {
+        final Attachment hey = new Attachment().setUid("some-uid");
+        when(visitor.visitAttachmentFile(any())).thenReturn(hey);
+        final Path junitResults = resultsDirectory.resolve("junit-results");
+        Files.createDirectories(junitResults);
+
+        copyFile(junitResults,     "junitdata/TEST-test.SampleTest.xml", "TEST-test.SampleTest.xml");
+        copyFile(junitResults, "junitdata/test.SampleTest.txt", "test.SampleTest.txt");
+        JunitXmlPlugin reader = new JunitXmlPlugin(ZoneOffset.UTC);
+        final Path relative = junitResults.resolve("..").resolve("junit-results");
+        reader.readResults(configuration, visitor, relative);
+
+        final ArgumentCaptor<Path> attachmentCaptor = ArgumentCaptor.captor();
+        verify(visitor, times(1)).visitAttachmentFile(attachmentCaptor.capture());
+
+        assertThat(attachmentCaptor.getValue())
+                .isRegularFile()
+                .hasContent("some-test-log");
+
+    }
+
+    @Test
     void shouldNotAllowPathTraversal() throws Exception {
         final Attachment hey = new Attachment().setUid("some-uid");
         when(visitor.visitAttachmentFile(any())).thenReturn(hey);
