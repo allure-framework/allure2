@@ -15,7 +15,6 @@
  */
 package io.qameta.allure;
 
-import ch.qos.logback.classic.Level;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import io.qameta.allure.command.GenerateCommand;
@@ -26,19 +25,26 @@ import io.qameta.allure.command.ServeCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
-import static org.slf4j.Logger.ROOT_LOGGER_NAME;
+import java.util.logging.Formatter;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.LogRecord;
+import java.util.logging.StreamHandler;
 
 /**
  * @author eroshenkoam Artem Eroshenko
  */
 @SuppressWarnings({
         "DeclarationOrder",
+        "ClassDataAbstractionCoupling"
 })
 public class CommandLine {
 
@@ -81,8 +87,8 @@ public class CommandLine {
         final String allureHome = System.getenv("APP_HOME");
         final CommandLine commandLine;
         if (Objects.isNull(allureHome)) {
-            LOGGER.info("APP_HOME is not set, using default configuration");
             commandLine = new CommandLine((Path) null);
+            LOGGER.info("APP_HOME is not set, using default configuration");
         } else {
             commandLine = new CommandLine(Paths.get(allureHome));
         }
@@ -124,15 +130,13 @@ public class CommandLine {
             "PMD.SystemPrintln",
     })
     public ExitCode run() {
-        final ch.qos.logback.classic.Logger rootLogger = (ch.qos.logback.classic.Logger)
-                LoggerFactory.getLogger(ROOT_LOGGER_NAME);
-
+        final java.util.logging.Logger rootLogger = initRootLogger();
         if (mainCommand.getVerboseOptions().isQuiet()) {
             rootLogger.setLevel(Level.OFF);
         }
 
         if (mainCommand.getVerboseOptions().isVerbose()) {
-            rootLogger.setLevel(Level.DEBUG);
+            rootLogger.setLevel(Level.FINE);
         }
 
         if (mainCommand.isVersion()) {
@@ -195,5 +199,64 @@ public class CommandLine {
 
     private void printUsage(final JCommander commander) {
         commander.usage();
+    }
+
+    private static java.util.logging.Logger initRootLogger() {
+        final java.util.logging.Logger rootLogger = LogManager.getLogManager().getLogger("");
+        for (Handler handler : rootLogger.getHandlers()) {
+            rootLogger.removeHandler(handler);
+        }
+
+        final Handler handler = new StdOutHandler();
+        handler.setLevel(Level.ALL);
+        rootLogger.addHandler(handler);
+        return rootLogger;
+    }
+
+    /**
+     * Print only a message from LogRecord.
+     */
+    private static final class MessageOnlyFormatter extends Formatter {
+
+        @Override
+        public String format(final LogRecord record) {
+            final StringBuilder builder = new StringBuilder();
+            builder.append(formatMessage(record))
+                    .append(System.lineSeparator());
+
+            final Throwable thrown = record.getThrown();
+            if (thrown != null) {
+                final StringWriter stringWriter = new StringWriter();
+                final PrintWriter printWriter = new PrintWriter(stringWriter);
+                thrown.printStackTrace(printWriter);
+                printWriter.flush();
+                builder.append(stringWriter);
+            }
+
+            return builder.toString();
+        }
+    }
+
+    /**
+     * This Handler publishes log records to System.out.
+     * By default the MessageOnlyFormatter is used to only print log messages.
+     */
+    @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
+    private static final class StdOutHandler extends StreamHandler {
+
+        StdOutHandler() {
+            super(System.out, new MessageOnlyFormatter());
+        }
+
+        @Override
+        public synchronized void publish(final LogRecord record) {
+            super.publish(record);
+            flush();
+        }
+
+        @Override
+        public synchronized void close() {
+            flush();
+        }
     }
 }
