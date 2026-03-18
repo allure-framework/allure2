@@ -87,7 +87,6 @@ subprojects {
             mavenBom("org.junit:junit-bom:6.0.3")
         }
         dependencies {
-            dependency("ch.qos.logback:logback-classic:1.3.16")
             dependency("com.beust:jcommander:1.82")
             dependency("com.github.spotbugs:spotbugs:4.9.8")
             dependency("com.opencsv:opencsv:5.12.0")
@@ -109,6 +108,7 @@ subprojects {
             dependency("org.mockito:mockito-core:5.23.0")
             dependency("org.projectlombok:lombok:1.18.44")
             dependency("org.slf4j:slf4j-api:${orgSlf4jVersion}")
+            dependency("org.slf4j:slf4j-jdk14:${orgSlf4jVersion}")
             dependency("org.slf4j:slf4j-nop:${orgSlf4jVersion}")
             dependency("org.slf4j:slf4j-simple:${orgSlf4jVersion}")
             dependency("org.zeroturnaround:zt-zip:1.17")

@@ -126,7 +126,7 @@ dependencies {
     allurePlugin(project(path = ":xunit-xml-plugin", configuration = "allurePlugin"))
     annotationProcessor("org.projectlombok:lombok")
     compileOnly("org.projectlombok:lombok")
-    implementation("ch.qos.logback:logback-classic")
+    implementation("org.slf4j:slf4j-jdk14")
     implementation("com.beust:jcommander")
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
