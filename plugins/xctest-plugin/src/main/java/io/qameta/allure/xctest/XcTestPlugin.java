@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2024 Qameta Software Inc
+ *  Copyright 2016-2026 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package io.qameta.allure.xctest;
 import io.qameta.allure.Reader;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
+import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
@@ -30,13 +31,15 @@ import xmlwise.XmlParseException;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Stream;
+import java.util.regex.Pattern;
 
 import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
 import static io.qameta.allure.entity.LabelName.SUITE;
@@ -60,6 +63,8 @@ public class XcTestPlugin implements Reader {
 
     private static final String ATTACHMENTS = "Attachments";
     private static final String ATTACHMENT_FILENAME = "Filename";
+    private static final List<String> ALLOWED_SCREENSHOT_EXT = Arrays.asList("jpg", "png");
+    private static final Pattern ATTACHMENT_SOURCE_PATTERN = Pattern.compile("^[a-zA-Z0-9._-]{1,100}$");
 
     @Override
     public void readResults(final Configuration configuration,
@@ -118,7 +123,6 @@ public class XcTestPlugin implements Reader {
 
     private void parseStep(final Path directory, final TestResult testResult, final Step parent,
                            final Object activity, final ResultsVisitor visitor) {
-
         final Map<String, Object> props = asMap(activity);
         final Step step = ResultsUtils.getStep(props);
 
@@ -166,26 +170,43 @@ public class XcTestPlugin implements Reader {
                                 final Map<String, Object> props,
                                 final Step step) {
         final String uuid = props.get("UUID").toString();
-        final Path attachments = directory.resolve(ATTACHMENTS);
-        Stream.of("jpg", "png")
-                .map(ext -> attachments.resolve(String.format("Screenshot_%s.%s", uuid, ext)))
-                .filter(Files::exists)
-                .map(visitor::visitAttachmentFile)
-                .forEach(step.getAttachments()::add);
+        if (!ATTACHMENT_SOURCE_PATTERN.matcher(uuid).matches()) {
+            return;
+        }
+
+        final Path attachments = directory.resolve(ATTACHMENTS).normalize();
+        for (String ext : ALLOWED_SCREENSHOT_EXT) {
+            final Path resolved = attachments
+                    .resolve(String.format("Screenshot_%s.%s", uuid, ext))
+                    .normalize();
+
+            if (resolved.startsWith(attachments)
+                && Files.isRegularFile(resolved, LinkOption.NOFOLLOW_LINKS)) {
+                final Attachment attachment = visitor.visitAttachmentFile(resolved);
+                step.getAttachments().add(attachment);
+            }
+        }
     }
 
     private void addAttachments(final Path directory,
                                 final ResultsVisitor visitor,
                                 final Map<String, Object> props,
                                 final Step step) {
-        final Path attachments = directory.resolve(ATTACHMENTS);
-        asList(props.get(ATTACHMENTS)).stream()
-                .map(this::asMap)
-                .map(p -> p.get(ATTACHMENT_FILENAME).toString())
-                .map(attachments::resolve)
-                .filter(Files::exists)
-                .map(visitor::visitAttachmentFile)
-                .forEach(step.getAttachments()::add);
+        final Path attachments = directory.resolve(ATTACHMENTS).normalize();
+        for (Object o : asList(props.get(ATTACHMENTS))) {
+            final Map<String, Object> p = asMap(o);
+            final String fileName = p.get(ATTACHMENT_FILENAME).toString();
+            if (!ATTACHMENT_SOURCE_PATTERN.matcher(fileName).matches()) {
+                return;
+            }
+
+            final Path resolved = attachments.resolve(fileName).normalize();
+            if (resolved.startsWith(attachments)
+                && Files.isRegularFile(resolved, LinkOption.NOFOLLOW_LINKS)) {
+                final Attachment attachment = visitor.visitAttachmentFile(resolved);
+                step.getAttachments().add(attachment);
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")

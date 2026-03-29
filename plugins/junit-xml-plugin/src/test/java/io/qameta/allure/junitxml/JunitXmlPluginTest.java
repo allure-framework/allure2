@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2024 Qameta Software Inc
+ *  Copyright 2016-2026 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -131,6 +131,46 @@ class JunitXmlPluginTest {
                 .describedAs("Attachment should has right uid and name")
                 .extracting(Attachment::getName, Attachment::getUid)
                 .containsExactly(Tuple.tuple("System out", "some-uid"));
+    }
+
+    @Test
+    void shouldResolveAttachmentsWithRelativeResultsPath() throws Exception {
+        final Attachment hey = new Attachment().setUid("some-uid");
+        when(visitor.visitAttachmentFile(any())).thenReturn(hey);
+        final Path junitResults = resultsDirectory.resolve("junit-results");
+        Files.createDirectories(junitResults);
+
+        copyFile(junitResults,     "junitdata/TEST-test.SampleTest.xml", "TEST-test.SampleTest.xml");
+        copyFile(junitResults, "junitdata/test.SampleTest.txt", "test.SampleTest.txt");
+        JunitXmlPlugin reader = new JunitXmlPlugin(ZoneOffset.UTC);
+        final Path relative = junitResults.resolve("..").resolve("junit-results");
+        reader.readResults(configuration, visitor, relative);
+
+        final ArgumentCaptor<Path> attachmentCaptor = ArgumentCaptor.captor();
+        verify(visitor, times(1)).visitAttachmentFile(attachmentCaptor.capture());
+
+        assertThat(attachmentCaptor.getValue())
+                .isRegularFile()
+                .hasContent("some-test-log");
+
+    }
+
+    @Test
+    void shouldNotAllowPathTraversal() throws Exception {
+        final Attachment hey = new Attachment().setUid("some-uid");
+        when(visitor.visitAttachmentFile(any())).thenReturn(hey);
+
+        final Path junitResults = resultsDirectory.resolve("junit-results");
+        Files.createDirectories(junitResults);
+
+        copyFile(junitResults, "junitdata/path-traversal.xml", "TEST-test.SampleTest.xml");
+        copyFile(resultsDirectory, "junitdata/secret-file.txt", "secret-file.txt");
+        JunitXmlPlugin reader = new JunitXmlPlugin(ZoneOffset.UTC);
+
+        reader.readResults(configuration, visitor, junitResults);
+
+        final ArgumentCaptor<Path> attachmentCaptor = ArgumentCaptor.captor();
+        verify(visitor, times(0)).visitAttachmentFile(attachmentCaptor.capture());
     }
 
     @Test

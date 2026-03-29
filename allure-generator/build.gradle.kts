@@ -110,7 +110,6 @@ dependencies {
     implementation("javax.xml.bind:jaxb-api")
     implementation("org.allurefw:allure1-model")
     implementation("org.apache.httpcomponents:httpclient")
-    implementation("org.apache.tika:tika-core")
     implementation("org.freemarker:freemarker")
     testImplementation("io.qameta.allure:allure-java-commons")
     testImplementation("io.qameta.allure:allure-junit-platform")

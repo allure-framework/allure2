@@ -1,22 +1,26 @@
-import { SafeString } from "handlebars/runtime";
+import { escapeExpression, SafeString } from "handlebars/runtime";
 
-const URL_REGEXP = /((?:(https?:\/\/|ftp:\/\/|mailto:)|www\.)\S+?)(\s|"|'|\)|]|}|&#62|$)/gm;
-
-const encodeHTMLEntities = (rawString) =>
-  rawString.replace(/[\u00A0-\u9999<>&]/gim, (i) => `&#${i.charCodeAt(0)};`);
+const URL_REGEXP =
+  /((?:(https?:\/\/|ftp:\/\/|mailto:)|www\.)\S+?)(\s|"|'|\)|]|}|&#62|$)/gm;
 
 export default function (text) {
   const hasUrl = text !== undefined && text.match(URL_REGEXP);
-  return hasUrl
-    ? new SafeString(
-        encodeHTMLEntities(text).replace(
-          URL_REGEXP,
-          (_, urlFullText, urlProtocol, terminalSymbol) => {
-            return `<a class="link" target="_blank" href="${
-              urlProtocol ? urlFullText : `https://${urlFullText}`
-            }">${urlFullText}</a>${terminalSymbol} `;
-          },
-        ),
-      )
-    : text;
+
+  if (!hasUrl) {
+    return text;
+  }
+
+  const escapedText = escapeExpression(text);
+
+  return new SafeString(
+    escapedText.replace(
+      URL_REGEXP,
+      (_, urlFullText, urlProtocol, terminalSymbol) => {
+        const href = urlProtocol ? urlFullText : `https://${urlFullText}`;
+
+        // eslint-disable-next-line max-len
+        return `<a class="link" target="_blank" href="${href}" rel="noopener noreferrer">${urlFullText}</a>${terminalSymbol} `;
+      },
+    ),
+  );
 }

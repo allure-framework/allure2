@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2024 Qameta Software Inc
+ *  Copyright 2016-2026 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -30,6 +30,9 @@ import java.util.List;
  * Jira Service declaration.
  */
 public interface JiraService {
+
+    @GET("rest/api/2/serverInfo")
+    JiraServerInfo getServerInfo();
 
     @POST("api/2/issue/{issueKey}/comment")
     Response<ResponseBody> createIssueComment(@Path("issueKey") String issueKey, @Body JiraIssueComment comment);

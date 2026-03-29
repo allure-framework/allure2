@@ -31,7 +31,7 @@
       "time": {
         "max": {
           "name": "最长",
-          "tooltip": "好使最长的用例"
+          "tooltip": "耗时最长的用例"
         },
         "sum": {
           "name": "合并",
@@ -92,10 +92,10 @@
       "name": "总览"
     },
     "suites": {
-      "name": "测试套"
+      "name": "测试套件"
     },
     "timeline": {
-      "name": "时间刻度",
+      "name": "时间线",
       "selected": "{{count}}个测试用例({{percent}}%)执行时间超过{{duration}}",
       "selected_plural": "{{count}}个测试用例({{percent}}%)执行时间超过{{duration}}"
     }

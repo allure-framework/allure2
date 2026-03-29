@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2024 Qameta Software Inc
+ *  Copyright 2016-2026 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -35,15 +35,18 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -334,6 +337,161 @@ class Allure1PluginTest {
                 .hasSize(1);
     }
 
+    @Test
+    void shouldPreserveContentTypeFromAttachment() throws IOException {
+        final LaunchResults results = process(
+                "allure1/text-attachment-no-ext.xml", generateTestSuiteXmlName(),
+                "allure1/sample-attachment.txt", "test-sample-attachment"
+        );
+
+        assertThat(results.getResults())
+                .hasSize(1);
+
+        final TestResult tr = results.getResults().iterator().next();
+        final List<Attachment> attachments = tr.getTestStage().getAttachments();
+        assertThat(attachments)
+                .extracting(Attachment::getName, Attachment::getType, Attachment::getSize)
+                .containsExactlyInAnyOrder(
+                        tuple("String attachment in test", "text/plain", 25L)
+                );
+
+        assertThat(attachments.get(0).getSource()).endsWith(".txt");
+    }
+
+    @Test
+    void shouldResolveAttachmentsWithRelativeResultsPath() throws IOException {
+        final Path allureResults = directory.resolve("allure-results");
+        Files.createDirectories(allureResults);
+
+        copyFile(allureResults, "allure1/text-attachment-link.xml", generateTestSuiteXmlName());
+        copyFile(allureResults, "allure1/sample-attachment.txt", "link.txt");
+        final Allure1Plugin reader = new Allure1Plugin();
+        final Configuration configuration = ConfigurationBuilder.bundled().build();
+        final DefaultResultsVisitor resultsVisitor = new DefaultResultsVisitor(configuration);
+        final Path relative = allureResults.resolve("..").resolve("allure-results");
+        reader.readResults(configuration, resultsVisitor, relative);
+        final LaunchResults results = resultsVisitor.getLaunchResults();
+
+        assertThat(results.getResults())
+                .hasSize(1);
+
+        final TestResult tr = results.getResults().iterator().next();
+        final List<Attachment> attachments = tr.getTestStage().getAttachments();
+        assertThat(attachments)
+                .extracting(Attachment::getName, Attachment::getType, Attachment::getSize)
+                .containsExactlyInAnyOrder(
+                        tuple("String attachment in test", "text/plain", 25L)
+                );
+
+        assertThat(attachments.get(0).getSource()).endsWith(".txt");
+    }
+
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void shouldReadEnvironmentPropertiesUtf8() throws Exception {
+        writeBytes(
+                "test_executor=测试人员 A\n".getBytes(StandardCharsets.UTF_8));
+
+        final LaunchResults launchResults = process();
+        final Map<String, String> env = launchResults.getExtra(
+                Allure1Plugin.ENVIRONMENT_BLOCK_NAME,
+                (Supplier<Map<String, String>>) LinkedHashMap::new
+        );
+
+        assertThat(env).containsEntry("test_executor", "测试人员 A");
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void shouldReadEnvironmentPropertiesUtf8WithBom() throws Exception {
+        final byte[] bom = new byte[] {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
+        final byte[] content = "executor=测试人员 A\n".getBytes(StandardCharsets.UTF_8);
+        final byte[] bytes = new byte[bom.length + content.length];
+        System.arraycopy(bom, 0, bytes, 0, bom.length);
+        System.arraycopy(content, 0, bytes, bom.length, content.length);
+
+        writeBytes(bytes);
+
+        final LaunchResults launchResults = process();
+        final Map<String, String> env = launchResults.getExtra(
+                Allure1Plugin.ENVIRONMENT_BLOCK_NAME,
+                (Supplier<Map<String, String>>) LinkedHashMap::new
+        );
+
+                assertThat(env).containsEntry("executor", "测试人员 A");
+                assertThat(env).doesNotContainKey("\uFEFFexecutor");
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void shouldFallbackToIso88591WhenUtf8DecodingFails() throws Exception {
+        writeBytes(
+                "name=café\n".getBytes(StandardCharsets.ISO_8859_1));
+
+        final LaunchResults launchResults = process();
+        final Map<String, String> env = launchResults.getExtra(
+                Allure1Plugin.ENVIRONMENT_BLOCK_NAME,
+                (Supplier<Map<String, String>>) LinkedHashMap::new
+        );
+
+        assertThat(env).containsEntry("name", "café");
+    }
+
+    @Test
+    void shouldNotAllowInvalidCharactersInAttachmentSource() throws IOException {
+        final LaunchResults results = process(
+                "allure1/text-attachment-bad-source.xml", generateTestSuiteXmlName(),
+                "allure1/secret-file.txt", "secret-file.txt"
+        );
+
+        assertThat(results.getAttachments())
+                .isEmpty();
+
+    }
+
+    @Test
+    void shouldNotAllowAttachmentSourcePathTraversal() throws IOException {
+        final Path allureResultsDir = directory.resolve("allure-results");
+        Files.createDirectory(allureResultsDir);
+
+        copyFile(allureResultsDir, "allure1/text-attachment-path-traversal.xml", generateTestSuiteXmlName());
+        copyFile(directory, "allure1/secret-file.txt", "secret-file.txt");
+
+        final Allure1Plugin reader = new Allure1Plugin();
+        final Configuration configuration = ConfigurationBuilder.bundled().build();
+        final DefaultResultsVisitor resultsVisitor = new DefaultResultsVisitor(configuration);
+        reader.readResults(configuration, resultsVisitor, allureResultsDir);
+
+        final LaunchResults results = resultsVisitor.getLaunchResults();
+
+        assertThat(results.getAttachments())
+                .isEmpty();
+
+    }
+
+    @Test
+    void shouldNotAllowAttachmentSourceSymbolicLink() throws IOException {
+        final Path allureResultsDir = directory.resolve("allure-results");
+        Files.createDirectory(allureResultsDir);
+
+        copyFile(allureResultsDir, "allure1/text-attachment-link.xml", generateTestSuiteXmlName());
+        copyFile(allureResultsDir, "allure1/secret-file.txt", "secret-file.txt");
+
+        Files.createSymbolicLink(allureResultsDir.resolve("link.txt"), allureResultsDir.resolve("secret-file.txt"));
+
+        final Allure1Plugin reader = new Allure1Plugin();
+        final Configuration configuration = ConfigurationBuilder.bundled().build();
+        final DefaultResultsVisitor resultsVisitor = new DefaultResultsVisitor(configuration);
+        reader.readResults(configuration, resultsVisitor, allureResultsDir);
+
+        final LaunchResults results = resultsVisitor.getLaunchResults();
+
+        assertThat(results.getAttachments())
+                .isEmpty();
+
+    }
+
     private LaunchResults process(String... strings) throws IOException {
         Iterator<String> iterator = Arrays.asList(strings).iterator();
         while (iterator.hasNext()) {
@@ -346,6 +504,10 @@ class Allure1PluginTest {
         final DefaultResultsVisitor resultsVisitor = new DefaultResultsVisitor(configuration);
         reader.readResults(configuration, resultsVisitor, directory);
         return resultsVisitor.getLaunchResults();
+    }
+
+    private void writeBytes(final byte[] bytes) throws IOException {
+        Files.write(directory.resolve("environment.properties"), bytes);
     }
 
     private void copyFile(Path dir, String resourceName, String fileName) throws IOException {

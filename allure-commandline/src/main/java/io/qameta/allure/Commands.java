@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2024 Qameta Software Inc
+ *  Copyright 2016-2026 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -38,12 +38,14 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static io.qameta.allure.DefaultResultsVisitor.probeContentType;
 import static java.lang.String.format;
@@ -57,8 +59,10 @@ import static java.lang.String.format;
 public class Commands {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Commands.class);
+    private static final String CURRENT_DIRECTORY = ".";
     private static final String DIRECTORY_EXISTS_MESSAGE = "Allure: Target directory {} for the report is already"
                                                            + " in use, add a '--clean' option to overwrite";
+    private static final String PATH_SEPARATOR = "/";
 
     private final Path allureHome;
 
@@ -325,33 +329,67 @@ public class Commands {
     protected HttpServer setUpServer(final String host, final int port, final Path reportDirectory) throws IOException {
         final HttpServer server = HttpServer
                 .create(new InetSocketAddress(Objects.isNull(host) ? "localhost" : host, port), 0);
+        final Path normalizedReportDirectory = reportDirectory.normalize();
 
-        server.createContext("/", exchange -> {
-            final Path resolve = reportDirectory.resolve("." + exchange.getRequestURI().getPath());
-            if (Files.isDirectory(resolve)) {
-                serveFile(exchange, resolve.resolve("index.html"));
-            } else {
-                serveFile(exchange, resolve);
+        server.createContext(PATH_SEPARATOR, exchange -> {
+            final String requestPath = exchange.getRequestURI().getPath();
+            if (!isValidRequestPath(requestPath)) {
+                serveNotFound(exchange);
+                return;
             }
+            final Path requestedPath = normalizedReportDirectory.resolve(CURRENT_DIRECTORY + requestPath).normalize();
+            if (!isWithinReportDirectory(normalizedReportDirectory, requestedPath)) {
+                serveNotFound(exchange);
+                return;
+            }
+            if (Files.isRegularFile(requestedPath, LinkOption.NOFOLLOW_LINKS)) {
+                serveFile(exchange, requestedPath);
+                return;
+            }
+            if (Files.isDirectory(requestedPath, LinkOption.NOFOLLOW_LINKS)) {
+                serveIndex(exchange, requestedPath.resolve("index.html"));
+                return;
+            }
+            serveNotFound(exchange);
         });
 
         return server;
     }
 
-    private static void serveFile(final HttpExchange exchange, final Path resolve) throws IOException {
-        if (Files.isRegularFile(resolve)) {
-            final String contentType = probeContentType(resolve);
-            exchange.sendResponseHeaders(200, Files.size(resolve));
-            exchange.getResponseHeaders().add("Content-Type", contentType);
-            try (OutputStream os = exchange.getResponseBody()) {
-                Files.copy(resolve, os);
-            }
-        } else {
-            final String response = "404 Not Found";
-            exchange.sendResponseHeaders(404, response.length());
-            try (OutputStream os = exchange.getResponseBody()) {
-                os.write(response.getBytes(StandardCharsets.UTF_8));
-            }
+    private static boolean isValidRequestPath(final String requestPath) {
+        return requestPath.indexOf('\\') < 0
+               && Stream.of(requestPath.split(PATH_SEPARATOR))
+                .noneMatch(segment -> CURRENT_DIRECTORY.equals(segment) || "..".equals(segment));
+    }
+
+    static boolean isWithinReportDirectory(final Path normalizedReportDirectory,
+                                           final Path requestedPath) {
+        return requestedPath.startsWith(normalizedReportDirectory);
+    }
+
+    private static void serveIndex(final HttpExchange exchange,
+                                   final Path indexFile) throws IOException {
+        if (Files.isRegularFile(indexFile, LinkOption.NOFOLLOW_LINKS)) {
+            serveFile(exchange, indexFile);
+            return;
+        }
+        serveNotFound(exchange);
+    }
+
+    private static void serveFile(final HttpExchange exchange, final Path file) throws IOException {
+        final String contentType = probeContentType(file);
+        exchange.sendResponseHeaders(200, Files.size(file));
+        exchange.getResponseHeaders().add("Content-Type", contentType);
+        try (OutputStream os = exchange.getResponseBody()) {
+            Files.copy(file, os);
+        }
+    }
+
+    private static void serveNotFound(final HttpExchange exchange) throws IOException {
+        final String response = "404 Not Found";
+        exchange.sendResponseHeaders(404, response.length());
+        try (OutputStream os = exchange.getResponseBody()) {
+            os.write(response.getBytes(StandardCharsets.UTF_8));
         }
     }
 

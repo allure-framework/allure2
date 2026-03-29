@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2024 Qameta Software Inc
+ *  Copyright 2016-2026 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -317,6 +318,109 @@ class Allure2PluginTest {
                         tuple("not flaky test", false),
                         tuple("default not flaky test", false)
                 );
+    }
+
+    @Test
+    void shouldPreserveContentTypeFromAttachment() throws IOException {
+        final LaunchResults results = process(
+                "allure2/text-attachment-no-ext.json", generateTestResultName(),
+                "allure2/test-sample-attachment.txt", "test-sample-attachment"
+        );
+
+        assertThat(results.getResults())
+                .hasSize(1);
+
+        final TestResult tr = results.getResults().iterator().next();
+        final List<Attachment> attachments = tr.getTestStage().getAttachments();
+        assertThat(attachments)
+                .extracting(Attachment::getName, Attachment::getType, Attachment::getSize)
+                .containsExactlyInAnyOrder(
+                        tuple("String attachment in test", "text/plain", 24L)
+                );
+
+        assertThat(attachments.get(0).getSource()).endsWith(".txt");
+    }
+
+    @Test
+    void shouldNotAllowInvalidCharactersInAttachmentSource() throws IOException {
+        final LaunchResults results = process(
+                "allure2/text-attachment-bad-source.json", generateTestResultName(),
+                "allure2/secret-file.txt", "secret-file.txt"
+        );
+
+        assertThat(results.getAttachments())
+                .isEmpty();
+
+    }
+
+    @Test
+    void shouldNotAllowAttachmentSourcePathTraversal() throws IOException {
+        final Path allureResultsDir = directory.resolve("allure-results");
+        Files.createDirectory(allureResultsDir);
+
+        copyFile(allureResultsDir, "allure2/text-attachment-path-traversal.json", generateTestResultName());
+        copyFile(directory, "allure2/secret-file.txt", "secret-file.txt");
+
+        final Allure2Plugin reader = new Allure2Plugin();
+        final Configuration configuration = ConfigurationBuilder.bundled().build();
+        final DefaultResultsVisitor resultsVisitor = new DefaultResultsVisitor(configuration);
+        reader.readResults(configuration, resultsVisitor, allureResultsDir);
+
+        final LaunchResults results = resultsVisitor.getLaunchResults();
+
+        assertThat(results.getAttachments())
+                .isEmpty();
+
+    }
+
+    @Test
+    void shouldNotAllowAttachmentSourceSymbolicLink() throws IOException {
+        final Path allureResultsDir = directory.resolve("allure-results");
+        Files.createDirectory(allureResultsDir);
+
+        copyFile(allureResultsDir, "allure2/text-attachment-link.json", generateTestResultName());
+        copyFile(allureResultsDir, "allure2/secret-file.txt", "secret-file.txt");
+
+        Files.createSymbolicLink(allureResultsDir.resolve("link.txt"), allureResultsDir.resolve("secret-file.txt"));
+
+        final Allure2Plugin reader = new Allure2Plugin();
+        final Configuration configuration = ConfigurationBuilder.bundled().build();
+        final DefaultResultsVisitor resultsVisitor = new DefaultResultsVisitor(configuration);
+        reader.readResults(configuration, resultsVisitor, allureResultsDir);
+
+        final LaunchResults results = resultsVisitor.getLaunchResults();
+
+        assertThat(results.getAttachments())
+                .isEmpty();
+
+    }
+
+    @Test
+    void shouldResolveAttachmentsWithRelativeResultsPath() throws IOException {
+        final Path allureResults = directory.resolve("allure-results");
+        Files.createDirectories(allureResults);
+        copyFile(allureResults, "allure2/text-attachment-link.json", generateTestResultName());
+        copyFile(allureResults, "allure2/test-sample-attachment.txt", "link.txt");
+
+        final Allure2Plugin reader = new Allure2Plugin();
+        final Configuration configuration = ConfigurationBuilder.bundled().build();
+        final DefaultResultsVisitor resultsVisitor = new DefaultResultsVisitor(configuration);
+        final Path relative = allureResults.resolve("..").resolve("allure-results");
+        reader.readResults(configuration, resultsVisitor, relative);
+        final LaunchResults results = resultsVisitor.getLaunchResults();
+
+        assertThat(results.getResults())
+                .hasSize(1);
+
+        final TestResult tr = results.getResults().iterator().next();
+        final List<Attachment> attachments = tr.getTestStage().getAttachments();
+        assertThat(attachments)
+                .extracting(Attachment::getName, Attachment::getType, Attachment::getSize)
+                .containsExactlyInAnyOrder(
+                        tuple("String attachment in test", "text/plain", 24L)
+                );
+
+        assertThat(attachments.get(0).getSource()).endsWith(".txt");
     }
 
     private LaunchResults process(String... strings) throws IOException {

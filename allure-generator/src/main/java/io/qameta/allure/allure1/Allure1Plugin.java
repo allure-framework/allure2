@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2024 Qameta Software Inc
+ *  Copyright 2016-2026 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -47,8 +47,14 @@ import ru.yandex.qatools.allure.model.TestSuiteResult;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PushbackReader;
 import java.math.BigInteger;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CodingErrorAction;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -64,9 +70,11 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static io.qameta.allure.detect.WellKnownFileExtensionsUtils.getExtensionByMimeType;
 import static io.qameta.allure.entity.LabelName.ISSUE;
 import static io.qameta.allure.entity.LabelName.PACKAGE;
 import static io.qameta.allure.entity.LabelName.PARENT_SUITE;
@@ -108,6 +116,7 @@ public class Allure1Plugin implements Reader {
     private static final Comparator<Parameter> PARAMETER_COMPARATOR =
             comparing(Parameter::getName, nullsFirst(naturalOrder()))
                     .thenComparing(Parameter::getValue, nullsFirst(naturalOrder()));
+    private static final Pattern ATTACHMENT_SOURCE_PATTERN = Pattern.compile("^[a-zA-Z0-9._-]{1,100}$");
 
     public static final String ENVIRONMENT_BLOCK_NAME = "environment";
     public static final String ALLURE1_RESULTS_FORMAT = "allure1";
@@ -307,7 +316,7 @@ public class Allure1Plugin implements Reader {
         //Copy test status details to each step set the same status
         if (Objects.equals(status, testStatus)) {
             current.setStatusMessage(message);
-            current.setStatusMessage(trace);
+            current.setStatusTrace(trace);
         }
         return current;
     }
@@ -327,18 +336,35 @@ public class Allure1Plugin implements Reader {
     private Attachment convert(final Path source,
                                final ResultsVisitor visitor,
                                final ru.yandex.qatools.allure.model.Attachment attachment) {
-        final Path attachmentFile = source.resolve(attachment.getSource());
-        if (Files.isRegularFile(attachmentFile)) {
+        final String attachmentSource = attachment.getSource();
+
+        if (!isValidAttachmentFileName(attachmentSource)) {
+            visitor.error("Invalid attachment source is provided: " + attachmentSource);
+            return new Attachment()
+                    .setType(attachment.getType())
+                    .setName(attachment.getTitle())
+                    .setSize(0L);
+        }
+
+        final Path normalizedSource = source.normalize();
+        final Path attachmentFile = normalizedSource.resolve(attachmentSource).normalize();
+
+        if (attachmentFile.startsWith(normalizedSource)
+            && Files.isRegularFile(attachmentFile, LinkOption.NOFOLLOW_LINKS)) {
             final Attachment found = visitor.visitAttachmentFile(attachmentFile);
             if (Objects.nonNull(attachment.getType())) {
                 found.setType(attachment.getType());
+                final String ext = getExtensionByMimeType(attachment.getType());
+                if (!ext.isEmpty()) {
+                    found.setSource(found.getUid() + "." + ext);
+                }
             }
             if (Objects.nonNull(attachment.getTitle())) {
                 found.setName(attachment.getTitle());
             }
             return found;
         } else {
-            visitor.error("Could not find attachment " + attachment.getSource() + " in directory " + source);
+            visitor.error("Could not find attachment " + attachmentSource + " in directory " + normalizedSource);
             return new Attachment()
                     .setType(attachment.getType())
                     .setName(attachment.getTitle())
@@ -463,8 +489,8 @@ public class Allure1Plugin implements Reader {
     }
 
     private Optional<TestSuiteResult> readXmlTestSuiteFile(final Path source) {
-        try (InputStream is = Files.newInputStream(source)) {
-            return Optional.of(xmlMapper.readValue(is, TestSuiteResult.class));
+        try (InputStream inputStream = Files.newInputStream(source)) {
+            return Optional.of(xmlMapper.readValue(inputStream, TestSuiteResult.class));
         } catch (IOException e) {
             LOGGER.error("Could not read xml result {}", source, e);
         }
@@ -472,8 +498,8 @@ public class Allure1Plugin implements Reader {
     }
 
     private Optional<TestSuiteResult> readJsonTestSuiteFile(final Path source) {
-        try (InputStream is = Files.newInputStream(source)) {
-            return Optional.of(jsonMapper.readValue(is, TestSuiteResult.class));
+        try (InputStream inputStream = Files.newInputStream(source)) {
+            return Optional.of(jsonMapper.readValue(inputStream, TestSuiteResult.class));
         } catch (IOException e) {
             LOGGER.error("Could not read json result {}", source, e);
             return Optional.empty();
@@ -517,20 +543,55 @@ public class Allure1Plugin implements Reader {
         return environment;
     }
 
+    private static Properties propertiesToMap(final Map<String, String> target) {
+        return new Properties() {
+            @Override
+            public Object put(final Object key, final Object value) {
+                return target.put((String) key, (String) value);
+            }
+        };
+    }
+
+    private Map<String, String> readEnvironmentPropertiesUtf8(final Path envPropsFile)
+        throws CharacterCodingException, IOException {
+        final Map<String, String> utf8Items = new LinkedHashMap<>();
+        final CharsetDecoder decoder = UTF_8.newDecoder()
+            .onMalformedInput(CodingErrorAction.REPORT)
+            .onUnmappableCharacter(CodingErrorAction.REPORT);
+
+        try (InputStream envPropsStream = Files.newInputStream(envPropsFile);
+            InputStreamReader envPropsReader = new InputStreamReader(envPropsStream, decoder);
+            PushbackReader pushbackReader = new PushbackReader(envPropsReader, 1)) {
+
+            final int firstChar = pushbackReader.read();
+            if (firstChar != -1 && firstChar != '\uFEFF') {
+                pushbackReader.unread(firstChar);
+            }
+
+            propertiesToMap(utf8Items).load(pushbackReader);
+            return utf8Items;
+        }
+    }
+
     private Map<String, String> processEnvironmentProperties(final Path directory) {
         final Path envPropsFile = directory.resolve("environment.properties");
+        if (!Files.exists(envPropsFile)) {
+            return new LinkedHashMap<>();
+        }
+        try {
+            return readEnvironmentPropertiesUtf8(envPropsFile);
+        } catch (CharacterCodingException e) {
+            LOGGER.error("Failed to read {} as UTF-8, falling back to ISO-8859-1", envPropsFile, e);
+        } catch (IOException e) {
+            LOGGER.error("Could not read environment.properties file {}", envPropsFile, e);
+            return new LinkedHashMap<>();
+        }
+
         final Map<String, String> items = new LinkedHashMap<>();
-        if (Files.exists(envPropsFile)) {
-            try (InputStream is = Files.newInputStream(envPropsFile)) {
-                new Properties() {
-                    @Override
-                    public Object put(final Object key, final Object value) {
-                        return items.put((String) key, (String) value);
-                    }
-                }.load(is);
-            } catch (IOException e) {
-                LOGGER.error("Could not read environments.properties file " + envPropsFile, e);
-            }
+        try (InputStream inputStream = Files.newInputStream(envPropsFile)) {
+            propertiesToMap(items).load(inputStream);
+        } catch (IOException e) {
+            LOGGER.error("Could not read environment.properties file {}", envPropsFile, e);
         }
         return items;
     }
@@ -539,14 +600,22 @@ public class Allure1Plugin implements Reader {
         final Path envXmlFile = directory.resolve("environment.xml");
         final Map<String, String> items = new LinkedHashMap<>();
         if (Files.exists(envXmlFile)) {
-            try (InputStream fis = Files.newInputStream(envXmlFile)) {
-                xmlMapper.readValue(fis, ru.yandex.qatools.commons.model.Environment.class).getParameter().forEach(p ->
-                        items.put(p.getKey(), p.getValue())
+            try (InputStream envXmlInputStream =
+                         Files.newInputStream(envXmlFile)) {
+                xmlMapper
+                        .readValue(envXmlInputStream, ru.yandex.qatools.commons.model.Environment.class)
+                        .getParameter()
+                        .forEach(p -> items.put(p.getKey(), p.getValue())
                 );
             } catch (Exception e) {
-                LOGGER.error("Could not read environment.xml file " + envXmlFile.toAbsolutePath(), e);
+                LOGGER.error("Could not read environment.xml file {}", envXmlFile.toAbsolutePath(), e);
             }
         }
         return items;
+    }
+
+    private static boolean isValidAttachmentFileName(final String fileName) {
+        return Objects.nonNull(fileName) && ATTACHMENT_SOURCE_PATTERN.matcher(fileName).matches();
+
     }
 }

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2024 Qameta Software Inc
+ *  Copyright 2016-2026 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -44,6 +44,7 @@ import java.math.BigDecimal;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -55,6 +56,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -69,7 +71,7 @@ import static java.util.Objects.nonNull;
  *
  * @since 2.0
  */
-@SuppressWarnings({"ClassDataAbstractionCoupling", "ClassFanOutComplexity"})
+@SuppressWarnings({"ClassDataAbstractionCoupling", "ClassFanOutComplexity", "GodClass"})
 public class JunitXmlPlugin implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JunitXmlPlugin.class);
@@ -102,6 +104,8 @@ public class JunitXmlPlugin implements Reader {
     private static final String XML_GLOB = "*.xml";
 
     private static final Map<String, Status> RETRIES;
+
+    private static final Pattern ATTACHMENT_SOURCE_PATTERN = Pattern.compile("^[a-zA-Z0-9._-]{1,100}$");
 
     static {
         RETRIES = new HashMap<>();
@@ -167,7 +171,7 @@ public class JunitXmlPlugin implements Reader {
                 .setTimestamp(getUnix(timestamp));
         testSuiteElement.get(TEST_CASE_ELEMENT_NAME)
                 .forEach(element -> parseTestCase(info, element,
-                                                  resultsDirectory, parsedFile, context, visitor));
+                        resultsDirectory, parsedFile, context, visitor));
     }
 
     private Long getUnix(final String timestamp) {
@@ -222,14 +226,27 @@ public class JunitXmlPlugin implements Reader {
     }
 
     private Optional<Path> getLogFile(final Path resultsDirectory, final String className) {
+        if (isNull(className)) {
+            return Optional.empty();
+        }
+        final String possibleLogFileName = className + ".txt";
+        if (!isValidAttachmentFileName(possibleLogFileName)) {
+            return Optional.empty();
+        }
+
         try {
-            return Optional.ofNullable(className)
-                    .map(name -> name + ".txt")
-                    .map(resultsDirectory::resolve);
+            final Path normalizedResultsDir = resultsDirectory.normalize();
+            final Path normalizedSource = normalizedResultsDir
+                    .resolve(possibleLogFileName).normalize();
+            if (normalizedSource.startsWith(normalizedResultsDir)
+                && Files.isRegularFile(normalizedSource, LinkOption.NOFOLLOW_LINKS)) {
+                return Optional.of(normalizedSource);
+            }
         } catch (InvalidPathException e) {
             LOGGER.debug("Can not find log file: invalid className {}", className, e);
             return Optional.empty();
         }
+        return Optional.empty();
     }
 
     private TestResult createStatuslessTestResult(final TestSuiteInfo info, final XmlElement testCaseElement,
@@ -271,7 +288,7 @@ public class JunitXmlPlugin implements Reader {
         }
 
         if ((testCaseElement.containsAttribute(STATUS_ATTRIBUTE_NAME))
-                && (SKIPPED_ATTRIBUTE_VALUE.equals(testCaseElement.getAttribute(STATUS_ATTRIBUTE_NAME)))) {
+            && (SKIPPED_ATTRIBUTE_VALUE.equals(testCaseElement.getAttribute(STATUS_ATTRIBUTE_NAME)))) {
             return Status.SKIPPED;
         }
 
@@ -331,7 +348,7 @@ public class JunitXmlPlugin implements Reader {
 
     private boolean isFlaky(final XmlElement testCaseElement) {
         return testCaseElement.contains(RERUN_ERROR_ELEMENT_NAME)
-                || testCaseElement.contains(RERUN_FAILURE_ELEMENT_NAME);
+               || testCaseElement.contains(RERUN_FAILURE_ELEMENT_NAME);
     }
 
     private static List<Path> listResults(final Path directory) {
@@ -347,7 +364,7 @@ public class JunitXmlPlugin implements Reader {
                 }
             }
         } catch (IOException e) {
-            LOGGER.error("Could not read data from {}: {}", directory, e);
+            LOGGER.error("Could not read data from {}", directory, e);
         }
         return result;
     }
@@ -356,5 +373,9 @@ public class JunitXmlPlugin implements Reader {
         return Stream.of(values)
                 .filter(Objects::nonNull)
                 .findFirst();
+    }
+
+    private static boolean isValidAttachmentFileName(final String fileName) {
+        return nonNull(fileName) && ATTACHMENT_SOURCE_PATTERN.matcher(fileName).matches();
     }
 }

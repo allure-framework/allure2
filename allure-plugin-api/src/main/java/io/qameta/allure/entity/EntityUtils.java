@@ -1,5 +1,5 @@
 /*
- *  Copyright 2016-2024 Qameta Software Inc
+ *  Copyright 2016-2026 Qameta Software Inc
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import java.util.stream.Stream;
     }
 
     @SafeVarargs
-    public static <T> T firstNonNull(final T... items) {
+    static <T> T firstNonNull(final T... items) {
         return Stream.of(items)
                 .filter(Objects::nonNull)
                 .findFirst()
