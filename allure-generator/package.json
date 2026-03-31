@@ -65,14 +65,14 @@
     "d3-shape": "^3.2.0",
     "filesize": "^10.1.1",
     "font-awesome": "^4.7.0",
-    "handlebars": "^4.7.8",
+    "handlebars": "^4.7.9",
     "highlight.js": "^10.4.1",
     "i18next": "^8.4.3",
     "jquery": "^3.7.1",
     "normalize-css": "^2.3.1",
     "sortablejs": "^1.15.2",
     "split.js": "^1.6.4",
-    "underscore": "^1.13.6",
+    "underscore": "^1.13.8",
     "url": "^0.11.3"
   },
   "browserslist": [
@@ -98,8 +98,8 @@
   },
   "overrides": {
     "backbone.marionette": {
-      "backbone": "^1.6.0",
-      "underscore": "^1.13.6"
+      "backbone": "^1.6.1",
+      "underscore": "^1.13.8"
     },
     "webpack-dev-server": {
       "http-proxy-middleware": "^2.0.9"
