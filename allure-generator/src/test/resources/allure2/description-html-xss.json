@@ -1,0 +1,15 @@
+{
+  "uuid": "poc-xss-001",
+  "historyId": "h1",
+  "name": "XSS PoC Test",
+  "fullName": "xss.poc.test",
+  "descriptionHtml": "<img src=x onerror=alert(1)><p>safe</p><a href=\"javascript:alert(2)\">link</a>",
+  "status": "passed",
+  "start": 1710000000000,
+  "stop": 1710000001000,
+  "steps": [],
+  "attachments": [],
+  "labels": [],
+  "links": [],
+  "parameters": []
+}

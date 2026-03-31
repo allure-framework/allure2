@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:test-suite xmlns:ns2="urn:model.allure.qatools.yandex.ru" start="1412949538848" stop="1412949560045" version="1.4.4-SNAPSHOT">
+    <name>my.company.XssSuite</name>
+    <test-cases>
+        <test-case start="1412949539363" stop="1412949539730" status="passed">
+            <name>testWithHtmlDescription</name>
+            <description type="html">&lt;script&gt;alert('xss')&lt;/script&gt;&lt;p&gt;safe&lt;/p&gt;</description>
+            <steps/>
+            <attachments/>
+            <labels/>
+        </test-case>
+    </test-cases>
+    <labels/>
+</ns2:test-suite>

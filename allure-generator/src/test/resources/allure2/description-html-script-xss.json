@@ -1,0 +1,15 @@
+{
+  "uuid": "poc-xss-script-001",
+  "historyId": "h-script-1",
+  "name": "Script XSS PoC Test",
+  "fullName": "xss.poc.script.test",
+  "descriptionHtml": "<script>alert('xss')</script><p>safe</p>",
+  "status": "passed",
+  "start": 1710000000000,
+  "stop": 1710000001000,
+  "steps": [],
+  "attachments": [],
+  "labels": [],
+  "links": [],
+  "parameters": []
+}

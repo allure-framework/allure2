@@ -111,6 +111,7 @@ dependencies {
     implementation("org.allurefw:allure1-model")
     implementation("org.apache.httpcomponents:httpclient")
     implementation("org.freemarker:freemarker")
+    implementation("org.jsoup:jsoup")
     testImplementation("io.qameta.allure:allure-java-commons")
     testImplementation("io.qameta.allure:allure-junit-platform")
     testImplementation("org.apache.commons:commons-lang3")

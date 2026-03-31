@@ -16,6 +16,7 @@
 package io.qameta.allure.category;
 
 import io.qameta.allure.ConfigurationBuilder;
+import io.qameta.allure.DefaultResultsVisitor;
 import io.qameta.allure.Issue;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.InMemoryReportStorage;
@@ -26,7 +27,11 @@ import io.qameta.allure.entity.Time;
 import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeNode;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -317,5 +322,24 @@ class CategoriesPluginTest {
     void shouldReturnUnchangedIfNoAnsi() {
         String input = "Clean text";
         assertThat(stripAnsi(input)).isEqualTo("Clean text");
+    }
+
+    @Test
+    void shouldSanitizeCategoryDescriptionHtml(@TempDir final Path directory) throws IOException {
+        final String categoriesJson = "[{\"name\":\"xss\",\"descriptionHtml\":\"<script>alert(1)</script><p>safe</p>\"}]";
+        Files.writeString(directory.resolve(JSON_FILE_NAME), categoriesJson);
+
+        final Configuration configuration = ConfigurationBuilder.bundled().build();
+        final DefaultResultsVisitor visitor = new DefaultResultsVisitor(configuration);
+        final CategoriesPlugin plugin = new CategoriesPlugin();
+        plugin.readResults(configuration, visitor, directory);
+
+        final LaunchResults launchResults = visitor.getLaunchResults();
+        final List<Category> categories = launchResults.getExtra(CATEGORIES, ArrayList::new);
+        assertThat(categories).hasSize(1);
+        assertThat(categories.get(0).getDescriptionHtml())
+                .contains("<p>safe</p>")
+                .doesNotContain("<script")
+                .doesNotContain("alert(");
     }
 }

@@ -35,6 +35,7 @@ import io.qameta.allure.model.FixtureResult;
 import io.qameta.allure.model.StepResult;
 import io.qameta.allure.model.TestResult;
 import io.qameta.allure.model.TestResultContainer;
+import io.qameta.allure.util.HtmlSanitizerUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -191,7 +192,7 @@ public class Allure2Plugin implements Reader {
         dest.setName(firstNonNull(result.getName(), result.getFullName(), "Unknown test"));
         dest.setTime(Time.create(result.getStart(), result.getStop()));
         dest.setDescription(result.getDescription());
-        dest.setDescriptionHtml(result.getDescriptionHtml());
+        dest.setDescriptionHtml(sanitizeDescriptionHtml(result.getDescriptionHtml()));
         dest.setStatus(convert(result.getStatus()));
         Optional.ofNullable(result.getStatusDetails()).ifPresent(details -> {
             dest.setStatusMessage(details.getMessage());
@@ -232,7 +233,7 @@ public class Allure2Plugin implements Reader {
                 .setStatus(convert(result.getStatus()))
                 .setSteps(convertList(result.getSteps(), step -> convert(source, visitor, step)))
                 .setDescription(result.getDescription())
-                .setDescriptionHtml(result.getDescriptionHtml())
+                .setDescriptionHtml(sanitizeDescriptionHtml(result.getDescriptionHtml()))
                 .setAttachments(convertList(result.getAttachments(), attach -> convert(source, visitor, attach)))
                 .setParameters(convertList(result.getParameters(), p -> !HIDDEN.equals(p.getMode()), this::convert));
         Optional.of(result)
@@ -366,7 +367,7 @@ public class Allure2Plugin implements Reader {
         ));
         testStage.setStatus(convert(result.getStatus()));
         testStage.setDescription(result.getDescription());
-        testStage.setDescriptionHtml(result.getDescriptionHtml());
+        testStage.setDescriptionHtml(sanitizeDescriptionHtml(result.getDescriptionHtml()));
         Optional.of(result)
                 .map(TestResult::getStatusDetails)
                 .ifPresent(statusDetails -> {
@@ -378,6 +379,10 @@ public class Allure2Plugin implements Reader {
 
     private boolean hasTestStage(final TestResult result) {
         return !result.getSteps().isEmpty() || !result.getAttachments().isEmpty();
+    }
+
+    private String sanitizeDescriptionHtml(final String source) {
+        return HtmlSanitizerUtils.sanitizeHtml(source);
     }
 
     @SafeVarargs
