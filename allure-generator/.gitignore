@@ -3,3 +3,5 @@ coverage
 etc
 node_modules
 node
+playwright-report
+test-results
