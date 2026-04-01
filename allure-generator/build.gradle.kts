@@ -59,6 +59,26 @@ val testWeb by tasks.creating(NpmTask::class) {
     args.set(listOf("run", "test", "--silent"))
 }
 
+val testE2E by tasks.creating(NpmTask::class) {
+    group = "Verification"
+    dependsOn(tasks.npmInstall, ":allure-commandline:build")
+    inputs.file("package-lock.json")
+    inputs.file("package.json")
+    inputs.file("playwright.config.mts")
+    inputs.files(fileTree("scripts"))
+    inputs.files(fileTree("test-data/new-demo"))
+    inputs.files(fileTree("test-data/allure2"))
+    inputs.files(fileTree("test-data/screen-diff"))
+    inputs.files(fileTree("test-data/playwright-trace"))
+    inputs.files(fileTree("tests/e2e"))
+
+    outputs.dir("build/e2e")
+    outputs.dir("playwright-report")
+    outputs.dir("test-results")
+
+    args.set(listOf("run", "e2e", "--silent"))
+}
+
 val cleanUpDemoReport by tasks.creating(Delete::class) {
     group = "Documentation"
     delete(file("build/demo-report"))

@@ -58,6 +58,23 @@ Also you can choose different demo data using `results` parameter:
 $ ./gradlew dev -Presults=allure2
 ```
 
+### Playwright e2e
+
+The generator smoke e2e suite runs against a single-file Allure report generated from
+`allure-generator/test-data/new-demo`.
+
+```bash
+$ cd allure-generator
+$ npx playwright install chromium
+$ npm run e2e
+```
+
+If you prefer Gradle for the test runner entrypoint, you can run:
+
+```bash
+$ ./gradlew :allure-generator:testE2E
+```
+
 ## Code review process
 
 The bigger the pull request, the longer it will take to review and merge. Try to break down large pull requests in smaller chunks that are easier to review and merge.

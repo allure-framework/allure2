@@ -30,6 +30,10 @@ jobs:
           cache: 'gradle'
       - name: Build with Gradle
         run: ./gradlew build buildDeb buildRpm
+      - name: Install Playwright browser
+        run: cd allure-generator && npx playwright install --with-deps chromium
+      - name: Run Playwright e2e
+        run: ./gradlew :allure-generator:testE2E
       - name: Upload allure-commandline artifact
         uses: actions/upload-artifact@v7
         with:
@@ -40,6 +44,13 @@ jobs:
         with:
           name: allure-results
           path: allure-generator/test-data/demo2
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: allure-generator/playwright-report
+          if-no-files-found: ignore
   testcmd:
     name: "Test Allure Commandline"
     runs-on: ${{ matrix.os }}
