@@ -5,6 +5,7 @@ const ansiConverter = new AnsiToHtml({
     fg: "black",
     bg: "black",
     newline: true,
+    escapeXML: true,
 });
 
 export default function (input) {

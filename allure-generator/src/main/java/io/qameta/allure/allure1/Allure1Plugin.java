@@ -36,6 +36,7 @@ import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
+import io.qameta.allure.util.HtmlSanitizerUtils;
 import org.allurefw.allure1.AllureUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -416,6 +417,7 @@ public class Allure1Plugin implements Reader {
                 .filter(Objects::nonNull)
                 .filter(isHtmlDescription())
                 .map(Description::getValue)
+                .map(HtmlSanitizerUtils::sanitizeHtml)
                 .collect(Collectors.joining("</br>"));
     }
 

@@ -92,6 +92,20 @@ class Allure1PluginTest {
                 .hasSize(4);
     }
 
+    @Test
+    void shouldSanitizeDescriptionHtml() throws Exception {
+        final Set<TestResult> testResults = process(
+                "allure1/description-html-xss.xml", generateTestSuiteXmlName()
+        ).getResults();
+
+        assertThat(testResults).hasSize(1);
+        final String descriptionHtml = testResults.iterator().next().getDescriptionHtml();
+        assertThat(descriptionHtml)
+                .contains("<p>safe</p>")
+                .doesNotContain("<script")
+                .doesNotContain("alert(");
+    }
+
     @SuppressWarnings("unchecked")
     @Test
     void shouldExcludeDuplicatedParams() throws Exception {

@@ -37,6 +37,7 @@ import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeLayer;
 import io.qameta.allure.tree.TreeWidgetData;
 import io.qameta.allure.tree.TreeWidgetItem;
+import io.qameta.allure.util.HtmlSanitizerUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -97,6 +98,9 @@ public class CategoriesPlugin extends CompositeAggregator2 implements Reader {
         if (Files.exists(categoriesFile)) {
             try (InputStream is = Files.newInputStream(categoriesFile)) {
                 final List<Category> categories = context.getValue().readValue(is, CATEGORIES_TYPE);
+                categories.forEach(category ->
+                        category.setDescriptionHtml(HtmlSanitizerUtils.sanitizeHtml(category.getDescriptionHtml()))
+                );
                 visitor.visitExtra(CATEGORIES, categories);
             } catch (IOException e) {
                 visitor.error("Could not read categories file " + categoriesFile, e);

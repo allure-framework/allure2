@@ -321,6 +321,41 @@ class Allure2PluginTest {
     }
 
     @Test
+    void shouldSanitizeDescriptionHtml() throws Exception {
+        final LaunchResults results = process(
+                "allure2/description-html-xss.json", generateTestResultName()
+        );
+
+        assertThat(results.getResults())
+                .hasSize(1);
+
+        final TestResult testResult = results.getResults().iterator().next();
+        final String descriptionHtml = testResult.getDescriptionHtml();
+        assertThat(descriptionHtml)
+                .contains("<p>safe</p>")
+                .doesNotContain("<img")
+                .doesNotContain("onerror")
+                .doesNotContain("javascript:");
+    }
+
+    @Test
+    void shouldStripScriptTagsFromDescriptionHtml() throws Exception {
+        final LaunchResults results = process(
+                "allure2/description-html-script-xss.json", generateTestResultName()
+        );
+
+        assertThat(results.getResults())
+                .hasSize(1);
+
+        final TestResult testResult = results.getResults().iterator().next();
+        final String descriptionHtml = testResult.getDescriptionHtml();
+        assertThat(descriptionHtml)
+                .contains("<p>safe</p>")
+                .doesNotContain("<script")
+                .doesNotContain("alert(");
+    }
+
+    @Test
     void shouldPreserveContentTypeFromAttachment() throws IOException {
         final LaunchResults results = process(
                 "allure2/text-attachment-no-ext.json", generateTestResultName(),
