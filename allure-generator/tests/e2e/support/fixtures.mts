@@ -94,4 +94,9 @@ export const fixtures = {
     attachmentName: "Playwright trace",
     stepName: "Record browser trace",
   },
+  statusDetailsHtmlTags: {
+    name: "status-details-html-tags",
+    caseName: "renders html-like status details as text",
+    expectedStatusDetails: "<input>, <textarea>, <select>",
+  },
 } as const;

@@ -4,6 +4,7 @@ import { openCaseFromTree } from "./support/report.mts";
 import { stepLocator } from "./support/ui.mts";
 
 const newDemo = fixtures.newDemo;
+const statusDetailsHtmlTags = fixtures.statusDetailsHtmlTags;
 const reportModes = [REPORT_MODES.SINGLE_FILE, REPORT_MODES.DIRECTORY] as const;
 
 for (const mode of reportModes) {
@@ -91,6 +92,32 @@ for (const mode of reportModes) {
       await expect(page.locator(".preformated-text code").first()).toContainText(
         "WebDriverException",
       );
+    });
+
+    test("renders html-like status details as plain text", async ({ page }) => {
+      await openCaseFromTree(page, {
+        fixture: statusDetailsHtmlTags.name,
+        mode,
+        tab: "suites",
+        caseName: statusDetailsHtmlTags.caseName,
+      });
+
+      const overview = page.locator(".test-result-overview");
+      const statusDetails = overview.locator(".status-details");
+
+      await expect(overview).toBeVisible();
+      await expect(overview.locator(".test-result-overview__execution")).toBeVisible();
+      await expect(statusDetails.locator(".status-details__message code")).toHaveText(
+        statusDetailsHtmlTags.expectedStatusDetails,
+      );
+      await expect(statusDetails.locator("input, textarea, select")).toHaveCount(0);
+
+      await statusDetails.locator(".status-details__trace-toggle").click();
+
+      await expect(statusDetails.locator(".status-details__trace code")).toHaveText(
+        statusDetailsHtmlTags.expectedStatusDetails,
+      );
+      await expect(statusDetails.locator("input, textarea, select")).toHaveCount(0);
     });
   });
 }
