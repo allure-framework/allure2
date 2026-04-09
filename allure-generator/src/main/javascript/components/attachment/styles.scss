@@ -73,5 +73,30 @@
   &__trace-container {
     overflow: hidden;
     height: calc(100vh - 96px); //48px header, 48px footer space
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+    gap: 10px;
+  }
+
+  &__trace-actions {
+    font-size: 18px;
+    line-height: 1.35;
+    font-weight: 600;
+  }
+
+  &__trace-sep {
+    margin: 0 10px;
+    color: $text-muted-color;
+    font-weight: 400;
+  }
+
+  &__trace-hint {
+    font-size: 14px;
+    color: $text-muted-color;
+    max-width: 900px;
   }
 }
