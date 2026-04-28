@@ -1,0 +1,22 @@
+@use "../../../variables.scss" as *;
+
+.test-result-overview {
+  &__trace {
+    border-top: 1px solid $border-color;
+    padding-top: space(1);
+    margin-top: space(1);
+    display: none;
+    &_expanded {
+      display: block;
+    }
+  }
+  &__trace-toggle {
+    margin-top: space(1);
+    text-align: center;
+    padding-top: space(1);
+    color: $text-muted-color;
+    &:hover {
+      background-color: $hover-color;
+    }
+  }
+}

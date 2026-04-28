@@ -1,20 +1,17 @@
-@import "../../../node_modules/normalize-css/normalize.css";
-@import "../../../node_modules/highlight.js/styles/github-gist.css";
-@import "./rtl.scss";
-@import "./blocks/alert/styles.scss";
-@import "./blocks/attachment-row/styles.scss";
-@import "./blocks/bar/styles.scss";
-@import "./blocks/button/styles.scss";
-@import "./blocks/island/styles.scss";
-@import "./blocks/label/styles.scss";
-@import "./blocks/link/styles.scss";
-@import "./blocks/spinner/styles.scss";
-@import "./blocks/splash/styles.scss";
-@import "./blocks/step-stats/styles.scss";
-@import "./blocks/text/styles.scss";
-@import "./blocks/widget/styles.scss";
-@import "./blocks/parameters-table/styles.scss";
-@import "./variables.scss";
+@use "./variables.scss" as *;
+@use "./rtl.scss" as *;
+@use "./shared/styles/primitives/alert/styles.scss" as *;
+@use "./shared/styles/primitives/attachment-row/styles.scss" as *;
+@use "./shared/styles/primitives/bar/styles.scss" as *;
+@use "./shared/styles/primitives/button/styles.scss" as *;
+@use "./shared/styles/primitives/island/styles.scss" as *;
+@use "./shared/styles/primitives/label/styles.scss" as *;
+@use "./shared/styles/primitives/link/styles.scss" as *;
+@use "./shared/styles/primitives/splash/styles.scss" as *;
+@use "./shared/styles/primitives/step-stats/styles.scss" as *;
+@use "./shared/styles/primitives/text/styles.scss" as *;
+@use "./shared/styles/primitives/widget/styles.scss" as *;
+@use "./shared/styles/primitives/parameters-table/styles.scss" as *;
 
 body {
   color: $text-color;
@@ -40,28 +37,22 @@ body {
   .app {
     flex: 1;
   }
-  & > .spinner {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
 }
 
 .view {
-  padding: 0 15px;
+  padding: 0 space(2);
   margin: 0 auto;
   &_narrow {
-    max-width: 1100px;
+    max-width: grid(138);
   }
   &-small {
-    max-width: 300px;
+    max-width: grid(38);
   }
   &-medium {
-    max-width: 600px;
+    max-width: grid(75);
   }
   &-large {
-    max-width: 1200px;
+    max-width: grid(150);
   }
 }
 

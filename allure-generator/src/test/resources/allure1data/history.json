@@ -195,7 +195,7 @@
     },
     "items" : [ {
       "status" : "failed",
-      "statusDetails" : "AssertionError: Text on current page should be correct\nExpected: element text is \"Yandex\"\n     but: <[[PhantomJSDriver: phantomjs on MAC (9e679b20-5085-11e4-ad6d-87edf8da84a7)] -> css selector: title]> text is \"\"",
+      "statusDetails" : "AssertionError: Text on current page should be correct\nExpected: element text is \"Example\"\n     but: <[[PhantomJSDriver: phantomjs on MAC (9e679b20-5085-11e4-ad6d-87edf8da84a7)] -> css selector: title]> text is \"\"",
       "testRunName" : "Demo Allure tests",
       "timestamp" : 1412949556298
     } ]

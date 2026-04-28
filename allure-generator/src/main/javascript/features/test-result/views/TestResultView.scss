@@ -1,0 +1,44 @@
+@use "../../../variables.scss" as *;
+@use "../../../mixins.scss" as *;
+
+.test-result {
+  &__marks {
+    display: inline-flex;
+    gap: space(1);
+    margin-inline-end: space(1);
+  }
+  &__name {
+    align-items: center;
+    display: flex;
+    gap: 0;
+    min-width: 0;
+    padding-inline-start: space(2);
+
+    > .long-line {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+  }
+  &__content {
+    margin-bottom: $tree-scroll-strut-size;
+  }
+}
+
+.app__content > .test-result {
+  position: absolute;
+  width: 100%;
+}
+
+.testresult__failure_expanded > .testresult__trace {
+  display: block;
+}
+
+.message {
+  border-bottom: 3px solid;
+  @include status-border();
+}
+
+.fullname__copy {
+  cursor: pointer;
+  margin-inline-end: space(1);
+}

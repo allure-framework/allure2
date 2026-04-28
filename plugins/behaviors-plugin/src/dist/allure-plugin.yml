@@ -3,5 +3,3 @@ name: Behaviors aggregator
 description: The aggregator adds behaviors tab to the report
 extensions:
   - io.qameta.allure.behaviors.BehaviorsPlugin
-jsFiles:
-  - index.js

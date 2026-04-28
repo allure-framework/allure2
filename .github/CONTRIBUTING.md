@@ -52,19 +52,17 @@ $ ./gradlew dev
 
 And then open `http://localhost:3000`
 
-Also you can choose different demo data using `results` parameter:
-
-```bash
-$ ./gradlew dev -Presults=allure2
-```
-
 ### Playwright e2e
 
-The generator smoke e2e suite runs against a single-file Allure report generated from
-`allure-generator/test-data/new-demo`.
+Dev mode always renders the canonical fixture from `allure-generator/test-data/demo`.
+The Playwright e2e suite prepares reports from the raw fixtures under
+`allure-generator/tests/fixtures/raw`, with the broad smoke coverage driven by
+`allure-generator/tests/fixtures/raw/ui-demo`.
 
 ```bash
 $ cd allure-generator
+$ npm test
+$ npm run e2e:typecheck
 $ npx playwright install chromium
 $ npm run e2e
 ```

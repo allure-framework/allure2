@@ -1,3 +1,5 @@
+@use "sass:map";
+
 $brand-blue: #0044bb;
 $brand-red: #ff0000;
 
@@ -35,16 +37,47 @@ $summary-color: #f6f5f3;
 $text-color: #000;
 $text-muted-color: #999;
 
-$gap-size: 16px;
-$footer-gap-size: 32px;
+$spacing-scale: (
+  0: 0,
+  1: 8px,
+  2: 16px,
+  3: 24px,
+  4: 32px,
+  5: 40px,
+  6: 48px,
+  7: 56px,
+  8: 64px,
+  40: 320px,
+);
 
-$small-screen: 1000px;
-$min-pane-size: 300px;
+$space-micro-1: 1px;
+$space-micro-2: 2px;
+$space-micro-3: 3px;
+$space-micro-4: 4px;
+
+@function grid($units) {
+  @return $units * 8px;
+}
+
+@function space($step) {
+  @if not map.has-key($spacing-scale, $step) {
+    @error "Unknown spacing token `#{$step}`.";
+  }
+
+  @return map.get($spacing-scale, $step);
+}
+
+$gap-size: space(2);
+$footer-gap-size: space(4);
+$tree-scroll-strut-size: space(40);
+
+$small-screen: grid(125);
+$min-pane-size: grid(38);
 
 /*  Sidebar  **/
 
-$sidebar-full-width: 180px;
-$sidebar-collapsed: 60px;
+$sidebar-full-width: grid(23);
+$sidebar-collapsed: grid(8);
 
 $sidebar-separator-color: #4d4d4d;
 $sidebar-active-accent-color: #64b5f6;

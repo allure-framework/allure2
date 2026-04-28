@@ -1,0 +1,45 @@
+@use "../../../variables.scss" as *;
+
+$popover-arrow-size: space(2);
+$popover-border-width: $space-micro-1;
+
+.popover {
+  position: absolute;
+  background: $pane-bg-color;
+  color: $text-color;
+  border: 1px solid $border-accent-color;
+  padding: space(1);
+  font-size: 14px;
+  &::before,
+  &::after {
+    content: " ";
+    position: absolute;
+    border: 8px solid transparent;
+    top: 50%;
+    margin-top: -(space(1));
+  }
+  &_position_right {
+    &::before {
+      left: -($popover-arrow-size);
+      border-right-color: $border-accent-color;
+    }
+    &::after {
+      left: calc(-#{$popover-arrow-size} + #{$popover-border-width});
+      border-right-color: $pane-bg-color;
+    }
+  }
+  &_position_left {
+    &::before {
+      left: 100%;
+      border-left-color: $border-accent-color;
+    }
+    &::after {
+      left: calc(100% - #{$popover-border-width});
+      border-left-color: $pane-bg-color;
+    }
+  }
+  &__list {
+    margin: 0.5em 0;
+    padding-inline-start: space(3);
+  }
+}

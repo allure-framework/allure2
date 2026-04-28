@@ -1,0 +1,100 @@
+{
+  "uuid": "160549c101caec3c74170b2e5c059d68",
+  "status": "passed",
+  "parameters": [],
+  "labels": [
+    {
+      "name": "class",
+      "value": "io.qameta.allure.ProjectServiceTest"
+    },
+    {
+      "name": "method",
+      "value": "shouldDelete"
+    },
+    {
+      "name": "suite",
+      "value": "My suite"
+    },
+    {
+      "name": "test",
+      "value": "All"
+    },
+    {
+      "name": "host",
+      "value": "charlie.local"
+    },
+    {
+      "name": "owner",
+      "value": "charlie@local.ts"
+    },
+    {
+      "name": "thread",
+      "value": "2208@charlie.local.main(1)"
+    },
+    {
+      "name": "epic",
+      "value": "Report UI"
+    },
+    {
+      "name": "feature",
+      "value": "Attachments"
+    },
+    {
+      "name": "story",
+      "value": "Project cleanup audit"
+    },
+    {
+      "name": "package",
+      "value": "io.qameta.allure.ProjectServiceTest"
+    }
+  ],
+  "name": "shouldDelete",
+  "start": 1710000202000,
+  "stop": 1710000215000,
+  "steps": [
+    {
+      "status": "passed",
+      "name": "createProject",
+      "start": 1710000202000,
+      "stop": 1710000207900,
+      "steps": [
+        {
+          "status": "passed",
+          "name": "more",
+          "start": 1710000202300,
+          "stop": 1710000203800
+        },
+        {
+          "status": "passed",
+          "name": "andMore",
+          "start": 1710000204200,
+          "stop": 1710000205700
+        },
+        {
+          "status": "passed",
+          "name": "andEvenMore",
+          "start": 1710000206100,
+          "stop": 1710000207600
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "validateExists",
+      "start": 1710000208300,
+      "stop": 1710000210266
+    },
+    {
+      "status": "passed",
+      "name": "deleteProject",
+      "start": 1710000210666,
+      "stop": 1710000212633
+    },
+    {
+      "status": "passed",
+      "name": "validateNotExists",
+      "start": 1710000213033,
+      "stop": 1710000215000
+    }
+  ]
+}

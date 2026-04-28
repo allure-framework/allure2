@@ -31,7 +31,8 @@
       "filtered": {
         "shown": "{{count}} mutatva",
         "total": "{{count}} teszt eredmény",
-        "total_plural": "{{count}} tesztek eredménye"
+        "total_one": "{{count}} teszt eredmény",
+        "total_other": "{{count}} tesztek eredménye"
       },
       "groups": "Csoportok extra információ",
       "time": {
@@ -48,12 +49,24 @@
           "tooltip": "Az első teszt kezdésétől az utolsó teszt befejeztéig eltelt idő."
         }
       },
-      "unknown": "<Üres>"
+      "unknown": "<Üres>",
+      "noItemSelected": "Nincs kijelölt elem"
     },
     "widgetStatus": {
       "showAll": "Összes mutatása",
       "total": "{{count}} elem",
-      "total_plural": "{{count}} összesen elem"
+      "total_one": "{{count}} elem",
+      "total_other": "{{count}} összesen elem"
+    },
+    "attachment": {
+      "download": "Click to download attachment",
+      "videoNotSupported": "Your browser does not support the video tag"
+    },
+    "screenDiff": {
+      "empty": "No diff data provided",
+      "name": "Screen Diff",
+      "showDiff": "Show diff",
+      "showOverlay": "Show overlay"
     }
   },
   "controls": {
@@ -64,11 +77,16 @@
     "collapse": "Bezár",
     "expand": "Kinyit",
     "fullscreen": "Teljes képernyő",
-    "language": "Másik nyelv választása"
+    "language": "Másik nyelv választása",
+    "loading": "Loading...",
+    "close": "Close"
   },
   "errors": {
     "missedAttachment": "Nem található csatolmány",
-    "notFound": "Nincs találat"
+    "notFound": "Nincs találat",
+    "loadingFailed": "Nem sikerült betölteni az adatokat",
+    "tabNotFound": "A(z) \"{{tab}}\" lap nem található",
+    "testResultNotFound": "A \"{{uid}}\" uid azonosítójú teszteredmény nem található"
   },
   "marks": {
     "flaky": "Bizonytalan (flaky)",
@@ -94,11 +112,17 @@
     "categories": {
       "name": "Kategóriák"
     },
+    "behaviors": {
+      "name": "Viselkedés"
+    },
     "graph": {
       "name": "Grafikonok"
     },
     "overview": {
       "name": "Összesítő"
+    },
+    "packages": {
+      "name": "Modulok"
     },
     "suites": {
       "name": "Tesztek"
@@ -106,7 +130,8 @@
     "timeline": {
       "name": "Idővonal",
       "selected": "{{count}} darab teszt ({{percent}}%) futásideje {{duration}}",
-      "selected_plural": "{{count}} tesztek ({{percent}}%) futásideje {{duration}}"
+      "selected_one": "{{count}} darab teszt ({{percent}}%) futásideje {{duration}}",
+      "selected_other": "{{count}} tesztek ({{percent}}%) futásideje {{duration}}"
     }
   },
   "testResult": {
@@ -126,7 +151,8 @@
       },
       "name": "Futás",
       "setup": "Megelőző lépések (Set up)",
-      "teardown": "Lezáró lépések (Tear down)"
+      "teardown": "Lezáró lépések (Tear down)",
+      "empty": "Nem áll rendelkezésre információ a teszt végrehajtásáról."
     },
     "history": {
       "empty": "Nem érhető el előzmény információ",
@@ -163,11 +189,14 @@
     "stats": {
       "count": {
         "attachments": "{{count}} csatolmány",
-        "attachments_plural": "{{count}} csatolmány",
         "parameters": "{{count}} paraméter",
-        "parameters_plural": "{{count}} paraméterek",
         "steps": "{{count}} köztes lépés",
-        "steps_plural": "{{count}} köztes lépések"
+        "attachments_one": "{{count}} csatolmány",
+        "attachments_other": "{{count}} csatolmány",
+        "parameters_one": "{{count}} paraméter",
+        "parameters_other": "{{count}} paraméterek",
+        "steps_one": "{{count}} köztes lépés",
+        "steps_other": "{{count}} köztes lépések"
       }
     },
     "status": {
@@ -181,6 +210,10 @@
   "widget": {
     "categories": {
       "name": "Kategáróiák"
+    },
+    "behaviors": {
+      "name": "Funkció rendezése sztorinként",
+      "showAll": "összes mutatása"
     },
     "categoriesTrend": {
       "name": "Kategória trend"
@@ -211,9 +244,11 @@
     "summary": {
       "aggregatedName": "Összesített jelentés",
       "launches": "indító",
-      "launches_plural": "indítók",
       "testResults": "teszteset",
-      "testResults_plural": "tesztesetek"
+      "launches_one": "indító",
+      "launches_other": "indítók",
+      "testResults_one": "teszteset",
+      "testResults_other": "tesztesetek"
     },
     "trend": {
       "name": "Trend"

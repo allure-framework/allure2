@@ -1,9 +1,0 @@
-<div class="{{b cls 'content'}}" data-uid="{{uid}}">
-    {{#if items}}
-        {{#each items}}
-            {{~> tree-group baseUrl=../baseUrl showGroupInfo=../showGroupInfo tabName=../tabName testResultTab=../testResultTab}}
-        {{/each}}
-    {{else}}
-           <div class="{{b cls 'empty'}}">{{t 'component.tree.empty'}}</div>
-    {{/if}}
-</div>

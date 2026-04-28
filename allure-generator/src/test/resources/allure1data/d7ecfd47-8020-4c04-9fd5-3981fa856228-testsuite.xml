@@ -6,7 +6,7 @@
 ### H3
 after this line we should collapse all of that
 
-вавыа
+sample markdown line
 #### H4
 This testsuite has tests what *always are passing*
 
@@ -23,7 +23,7 @@ This testsuite has tests what *always are passing*
 allure core ![https://img.shields.io/teamcity/http/teamcity.qatools.ru/s/allure_core_master_deploy.svg?style=flat](https://img.shields.io/teamcity/http/teamcity.qatools.ru/s/allure_core_master_deploy.svg?style=flat)
 [repository](https://github.com/allure-framework/allure-core)
 
-just http://yandex.ru
+just http://example.org
 
 * first
 * second
@@ -37,7 +37,7 @@ just http://yandex.ru
                     <steps/>
                 </step>
                 <step start="1412949555508" stop="1412949557726" status="passed">
-                    <name>search[qatools -yandex]</name>
+                    <name>search[qatools -example]</name>
                     <attachments/>
                     <steps/>
                 </step>
@@ -61,7 +61,7 @@ just http://yandex.ru
                     <steps/>
                 </step>
                 <step start="1412949555504" stop="1412949557724" status="passed">
-                    <name>search[yandex qatools]</name>
+                    <name>search[example qatools]</name>
                     <attachments/>
                     <steps/>
                 </step>
@@ -80,10 +80,10 @@ just http://yandex.ru
             <title>Page loading test</title>
             <failure>
                 <message>AssertionError: Text on current page should be correct
-Expected: element text is "Yandex"
+Expected: element text is "Example"
      but: &lt;[[PhantomJSDriver: phantomjs on MAC (9e679b20-5085-11e4-ad6d-87edf8da84a7)] -&gt; css selector: title]&gt; text is ""</message>
                 <stack-trace>java.lang.AssertionError: Text on current page should be correct
-Expected: element text is "Yandex"
+Expected: element text is "Example"
      but: &lt;[[PhantomJSDriver: phantomjs on MAC (9e679b20-5085-11e4-ad6d-87edf8da84a7)] -&gt; css selector: title]&gt; text is ""
 	at org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)
 	at org.junit.Assert.assertThat(Assert.java:865)
@@ -119,7 +119,7 @@ Expected: element text is "Yandex"
                     <name>findElement[title]</name>
                 </step>
                 <step start="1412949555680" stop="1412949555733" status="failed">
-                    <name>checkText[[[PhantomJSDriver: phantomjs on MAC (9e679b20-5085-11e4-ad6d-87edf8da84a7)] -&gt; css selector: title], Yandex]</name>
+                    <name>checkText[[[PhantomJSDriver: phantomjs on MAC (9e679b20-5085-11e4-ad6d-87edf8da84a7)] -&gt; css selector: title], Example]</name>
                     <title>Check text in element</title>
                 </step>
             </steps>
@@ -136,8 +136,8 @@ Expected: element text is "Yandex"
             </labels>
             <parameters>
                 <parameter name="BROWSER" value="Phantom JS" kind="environment-variable"/>
-                <parameter name="PROD_HOST" value="http://ya.ru" kind="environment-variable"/>
-                <parameter name="TEST_HOST" value="http://test.ya.ru" kind="environment-variable"/>
+                <parameter name="PROD_HOST" value="http://example.org" kind="environment-variable"/>
+                <parameter name="TEST_HOST" value="http://test.example.org" kind="environment-variable"/>
             </parameters>
         </test-case>
         <test-case start="1412949551164" stop="1412949558344" status="passed">

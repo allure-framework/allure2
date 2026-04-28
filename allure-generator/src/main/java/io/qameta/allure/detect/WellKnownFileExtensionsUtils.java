@@ -52,6 +52,7 @@ public final class WellKnownFileExtensionsUtils {
         m.put("webm", "video/webm");
         m.put("tar", "application/x-tar");
         m.put("gtar", "application/x-gtar");
+        m.put("imagediff", "application/vnd.allure.image.diff");
         m.put("urls", "text/uri-list");
         m.put("ogv", "video/ogg");
         m.put("tsv", "text/tab-separated-values");

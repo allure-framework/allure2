@@ -1,0 +1,21 @@
+@use "../../variables.scss" as *;
+
+.app {
+  background: $body-bg;
+  display: flex;
+  &__nav {
+    padding: 0 0;
+  }
+  &__content {
+    position: relative;
+    flex: 1;
+    overflow: auto;
+
+    &_no-scroll {
+      overflow: hidden;
+    }
+  }
+  &__header {
+    background: $header-bg;
+  }
+}

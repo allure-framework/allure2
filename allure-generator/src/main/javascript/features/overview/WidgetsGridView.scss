@@ -1,0 +1,39 @@
+@use "../../variables.scss" as *;
+
+.widgets-grid {
+  align-items: flex-start;
+  inset: 0;
+  position: absolute;
+  padding: $gap-size;
+  max-height: 100%;
+  overflow: auto;
+  display: flex;
+  &__col {
+    flex: 1 0 0%;
+    width: 50%;
+    min-width: $min-pane-size;
+    padding-bottom: $gap-size;
+
+    &::after {
+      content: "";
+      display: block;
+      height: $gap-size;
+    }
+  }
+  &__col + &__col {
+    flex: 1 0 0%;
+    padding-inline-start: $gap-size;
+  }
+}
+
+@media (max-width: $small-screen) {
+  .widgets-grid {
+    display: block;
+    &__col {
+      width: 100%;
+    }
+    &__col + &__col {
+      padding-inline-start: 0;
+    }
+  }
+}

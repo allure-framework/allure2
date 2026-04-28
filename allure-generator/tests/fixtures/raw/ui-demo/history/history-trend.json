@@ -1,0 +1,70 @@
+[
+  {
+    "statistic": {
+      "failed": 4,
+      "broken": 1,
+      "skipped": 1,
+      "passed": 12,
+      "unknown": 2,
+      "total": 21
+    },
+    "buildOrder": 12,
+    "reportUrl": "https://ci.qameta.io/job/allure2/job/master/Demo2_Report/index.html"
+  },
+  {
+    "statistic": {
+      "failed": 4,
+      "broken": 2,
+      "skipped": 3,
+      "passed": 11,
+      "unknown": 1,
+      "total": 21
+    },
+    "buildOrder": 11,
+    "reportUrl": "https://ci.qameta.io/job/allure2/job/master/Demo2_Report/index.html"
+  },
+  {
+    "statistic": {
+      "failed": 3,
+      "broken": 3,
+      "skipped": 2,
+      "passed": 12,
+      "unknown": 0,
+      "total": 20
+    },
+    "buildOrder": 10
+  },
+  {
+    "statistic": {
+      "failed": 1,
+      "broken": 10,
+      "skipped": 4,
+      "passed": 2,
+      "unknown": 2,
+      "total": 12
+    },
+    "buildOrder": 9
+  },
+  {
+    "statistic": {
+      "failed": 1,
+      "broken": 2,
+      "skipped": 6,
+      "passed": 10,
+      "unknown": 0,
+      "total": 12
+    },
+    "buildOrder": 8
+  },
+  {
+    "statistic": {
+      "failed": 6,
+      "broken": 1,
+      "skipped": 1,
+      "passed": 10,
+      "unknown": 1,
+      "total": 1
+    },
+    "buildOrder": 7
+  }
+]

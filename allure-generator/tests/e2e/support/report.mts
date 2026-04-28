@@ -63,7 +63,21 @@ export const openCaseFromTree = async (
   const searchInput = page.locator(".search__input");
   await expect(searchInput).toBeVisible();
   await searchInput.fill(search);
-  const leaf = page.locator(".node__leaf", { hasText: caseName }).first();
+  const leaf = page.locator(".node__leaf:visible").filter({ hasText: caseName }).first();
+  for (let index = 0; index < 10; index += 1) {
+    if (await leaf.isVisible().catch(() => false)) {
+      break;
+    }
+
+    const collapsedGroupTitle = page
+      .locator(".node[data-node-kind='group']:visible:not(.node__expanded) > .node__title")
+      .first();
+    if (!(await collapsedGroupTitle.isVisible().catch(() => false))) {
+      break;
+    }
+
+    await collapsedGroupTitle.click();
+  }
   await expect(leaf).toBeVisible();
   await leaf.click();
 };

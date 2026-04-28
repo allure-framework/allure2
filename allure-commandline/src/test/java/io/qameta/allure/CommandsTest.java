@@ -133,7 +133,57 @@ class CommandsTest {
 
             final HttpURLConnection fileRequest = openConnection(port, "/app.js");
             assertThat(fileRequest.getResponseCode()).isEqualTo(200);
+            assertThat(fileRequest.getHeaderField("Content-Type"))
+                    .isEqualTo("application/javascript");
             assertThat(readResponse(fileRequest)).isEqualTo("console.log('report');");
+        } finally {
+            server.stop(0);
+        }
+    }
+
+    @Test
+    void shouldServeImageDiffAttachment(@TempDir final Path temp) throws Exception {
+        final Path home = Files.createDirectories(temp.resolve("home"));
+        final Path reportDirectory = Files.createDirectories(temp.resolve("report"));
+        final String payload = "{\"expected\":\"data:image/png;base64,AAA=\"}";
+        Files.writeString(reportDirectory.resolve("step-diff.imagediff"), payload);
+
+        final Commands commands = new Commands(home);
+        final HttpServer server = commands.setUpServer("127.0.0.1", 0, reportDirectory);
+        server.start();
+
+        try {
+            final int port = server.getAddress().getPort();
+
+            final HttpURLConnection fileRequest = openConnection(port, "/step-diff.imagediff");
+            assertThat(fileRequest.getResponseCode()).isEqualTo(200);
+            assertThat(fileRequest.getHeaderField("Content-Type"))
+                    .isEqualTo("application/vnd.allure.image.diff");
+            assertThat(readResponse(fileRequest)).isEqualTo(payload);
+        } finally {
+            server.stop(0);
+        }
+    }
+
+    @Test
+    void shouldServeUnknownFileAsOctetStream(@TempDir final Path temp) throws Exception {
+        final Path home = Files.createDirectories(temp.resolve("home"));
+        final Path reportDirectory = Files.createDirectories(temp.resolve("report"));
+        final String payload = "raw attachment";
+        Files.writeString(reportDirectory.resolve("attachment.foobar"), payload);
+
+        final Commands commands = new Commands(home);
+        final HttpServer server = commands.setUpServer("127.0.0.1", 0, reportDirectory);
+        server.start();
+
+        try {
+            final int port = server.getAddress().getPort();
+
+            final HttpURLConnection fileRequest = openConnection(port, "/attachment.foobar");
+            assertThat(fileRequest.getResponseCode()).isEqualTo(200);
+            assertThat(fileRequest.getHeaderField("Content-Type"))
+                    .isEqualTo("application/octet-stream");
+            assertThat(readResponse(fileRequest)).isEqualTo(payload);
         } finally {
             server.stop(0);
         }

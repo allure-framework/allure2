@@ -1,0 +1,48 @@
+@use "../../../../variables.scss" as *;
+
+.executor-icon {
+  background: url(./default-icon.png) center no-repeat;
+  background-size: contain;
+  display: block;
+  flex: 0 0 space(4);
+  height: space(4);
+  width: space(4);
+  &__jenkins {
+    background-image: url(./jenkins.svg);
+  }
+
+  &__bamboo {
+    background-image: url(./bamboo.svg);
+  }
+
+  &__teamcity {
+    background-image: url(./teamcity.svg);
+  }
+
+  &__gitlab {
+    background-image: url(./gitlab.svg);
+  }
+
+  &__github {
+    background-image: url(./github.svg);
+  }
+
+  &__circleci {
+    background-image: url(./circleci.svg);
+  }
+
+  &__bitbucket {
+    background-image: url(./bitbucket.svg);
+  }
+
+  &__azure {
+    background-image: url(./azure.svg);
+  }
+}
+
+.executor {
+  align-items: center;
+  display: flex;
+  gap: space(1);
+  line-height: 1.5em !important;
+}

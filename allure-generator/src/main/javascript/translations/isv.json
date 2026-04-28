@@ -29,12 +29,16 @@
       "filter": "Statusy",
       "filter-marks": "Označenja",
       "filtered": {
-        "shown_0": "{{count}} pokazany",
-        "shown_1": "{{count}} pokazane",
-        "shown_2": "{{count}} pokazane",
-        "total_0": "{{count}} test vsego",
-        "total_1": "{{count}} testy vsego",
-        "total_2": "{{count}} testov vsego"
+        "shown": "{{count}} pokazany",
+        "total": "{{count}} test vsego",
+        "shown_one": "{{count}} pokazany",
+        "shown_few": "{{count}} pokazane",
+        "shown_many": "{{count}} pokazane",
+        "shown_other": "{{count}} pokazany",
+        "total_one": "{{count}} test vsego",
+        "total_few": "{{count}} testy vsego",
+        "total_many": "{{count}} testov vsego",
+        "total_other": "{{count}} testov vsego"
       },
       "groups": "Pokaži informaciju o grupah",
       "time": {
@@ -51,13 +55,26 @@
           "tooltip": "Čas od početka prvogo testa do konca poslědnogo"
         }
       },
-      "unknown": "<Nema>"
+      "unknown": "<Nema>",
+      "noItemSelected": "Ničto ne jest izbrano"
     },
     "widgetStatus": {
       "showAll": "Pokaži vsečto",
-      "total_0": "{{count}} element vsego",
-      "total_1": "{{count}} elementa vsego",
-      "total_2": "{{count}} elementov vsego"
+      "total": "{{count}} element vsego",
+      "total_one": "{{count}} element vsego",
+      "total_few": "{{count}} elementa vsego",
+      "total_many": "{{count}} elementov vsego",
+      "total_other": "{{count}} elementov vsego"
+    },
+    "attachment": {
+      "download": "Click to download attachment",
+      "videoNotSupported": "Your browser does not support the video tag"
+    },
+    "screenDiff": {
+      "empty": "No diff data provided",
+      "name": "Screen Diff",
+      "showDiff": "Show diff",
+      "showOverlay": "Show overlay"
     }
   },
   "controls": {
@@ -68,11 +85,16 @@
     "collapse": "Minimizuj",
     "expand": "Razširi",
     "fullscreen": "Na cěly ekran",
-    "language": "Izměni jezyk"
+    "language": "Izměni jezyk",
+    "loading": "Loading...",
+    "close": "Close"
   },
   "errors": {
     "missedAttachment": "Priloga ne najdena",
-    "notFound": "Ne najdeno"
+    "notFound": "Ne najdeno",
+    "loadingFailed": "Ne udało se zagruziti dannye",
+    "tabNotFound": "Vkladka \"{{tab}}\" ne najdena",
+    "testResultNotFound": "Rezultat testa s uid \"{{uid}}\" ne najden"
   },
   "marks": {
     "flaky": "Nestabilny",
@@ -98,20 +120,28 @@
     "categories": {
       "name": "Kategorije"
     },
+    "behaviors": {
+      "name": "Funkcionalnost"
+    },
     "graph": {
       "name": "Diagramy"
     },
     "overview": {
       "name": "Prěgled"
     },
+    "packages": {
+      "name": "Pakety"
+    },
     "suites": {
       "name": "Komplety testov"
     },
     "timeline": {
       "name": "Hronologija",
-      "selected_0": "Izbrany {{count}} test ({{percent}}%) s trvanjem vyše od {{duration}}",
-      "selected_1": "Izbrane {{count}} testy ({{percent}}%) s trvanjem vyše od {{duration}}",
-      "selected_2": "Izbrane {{count}} testov ({{percent}}%) s trvanjem vyše od {{duration}}"
+      "selected": "Izbrany {{count}} test ({{percent}}%) s trvanjem vyše od {{duration}}",
+      "selected_one": "Izbrany {{count}} test ({{percent}}%) s trvanjem vyše od {{duration}}",
+      "selected_few": "Izbrane {{count}} testy ({{percent}}%) s trvanjem vyše od {{duration}}",
+      "selected_many": "Izbrane {{count}} testov ({{percent}}%) s trvanjem vyše od {{duration}}",
+      "selected_other": "Izbrane {{count}} testov ({{percent}}%) s trvanjem vyše od {{duration}}"
     }
   },
   "testResult": {
@@ -126,13 +156,20 @@
     },
     "execution": {
       "body": "Tělo testa",
+      "downloadAttachment": {
+        "tooltip": "Otvori prilogu v novoj kartě"
+      },
       "name": "Izpolnjenje",
       "setup": "Prigotovjenje",
-      "teardown": "Zaključenje"
+      "teardown": "Zaključenje",
+      "empty": "Ne jest dostupna nikaka informacija o vykonanju testa."
     },
     "history": {
+      "empty": "Nema dostupnoj informacije o historiji.",
       "name": "Historija",
-      "successRate": "Procent uspěha"
+      "statistic": "{{passed}} iz {{total}}",
+      "successRate": "Procent uspěha",
+      "time": "{{date}} v {{time}}"
     },
     "links": {
       "name": "Linky"
@@ -148,7 +185,8 @@
     },
     "retries": {
       "empty": "Nema informacije o minulyh probah testa",
-      "name": "Minule proby"
+      "name": "Minule proby",
+      "time": "{{date}} v {{time}}"
     },
     "severity": {
       "name": "Važnost",
@@ -160,15 +198,21 @@
     },
     "stats": {
       "count": {
-        "attachments_0": "{{count}} priloga",
-        "attachments_1": "{{count}} prilogy",
-        "attachments_2": "{{count}} prilog",
-        "parameters_0": "{{count}} parametr",
-        "parameters_1": "{{count}} parametry",
-        "parameters_2": "{{count}} parametrov",
-        "steps_0": "{{count}} vloženy krok",
-        "steps_1": "{{count}} vložene kroky",
-        "steps_2": "{{count}} vloženyh krokov"
+        "attachments": "{{count}} priloga",
+        "parameters": "{{count}} parametr",
+        "steps": "{{count}} vloženy krok",
+        "attachments_one": "{{count}} priloga",
+        "attachments_few": "{{count}} prilogy",
+        "attachments_many": "{{count}} prilog",
+        "attachments_other": "{{count}} prilog",
+        "parameters_one": "{{count}} parametr",
+        "parameters_few": "{{count}} parametry",
+        "parameters_many": "{{count}} parametrov",
+        "parameters_other": "{{count}} parametrov",
+        "steps_one": "{{count}} vloženy krok",
+        "steps_few": "{{count}} vložene kroky",
+        "steps_many": "{{count}} vloženyh krokov",
+        "steps_other": "{{count}} vloženyh krokov"
       }
     },
     "status": {
@@ -182,6 +226,16 @@
   "widget": {
     "categories": {
       "name": "Kategorije"
+    },
+    "behaviors": {
+      "name": "Funkcionalnost",
+      "showAll": "pokaži vsěčto"
+    },
+    "categoriesTrend": {
+      "name": "Trend kategorij"
+    },
+    "durationTrend": {
+      "name": "Trend trvanja"
     },
     "environment": {
       "empty": "Nema informacije o obsrědině",
@@ -197,17 +251,24 @@
       "empty": "Nema informacije o puščenjah",
       "name": "Puščenja testov"
     },
+    "retryTrend": {
+      "name": "Trend povtornyh prob"
+    },
     "suites": {
       "name": "Komplety testov"
     },
     "summary": {
       "aggregatedName": "Agregovany raport",
-      "launches_0": "puščenje testov",
-      "launches_1": "puščenja testov",
-      "launches_2": "puščenij testov",
-      "testResults_0": "testovy scenarij",
-      "testResults_1": "testove scenarije",
-      "testResults_2": "testovyh scenarijev"
+      "launches": "puščenje testov",
+      "testResults": "testovy scenarij",
+      "launches_one": "puščenje testov",
+      "launches_few": "puščenja testov",
+      "launches_many": "puščenij testov",
+      "launches_other": "puščenij testov",
+      "testResults_one": "testovy scenarij",
+      "testResults_few": "testove scenarije",
+      "testResults_many": "testovyh scenarijev",
+      "testResults_other": "testovyh scenarijev"
     },
     "trend": {
       "name": "Trend"

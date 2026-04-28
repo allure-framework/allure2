@@ -1,0 +1,66 @@
+{
+  "uuid": "b1c94ca2fbc3e78fc30069c8d0f01680",
+  "name": "All",
+  "start": 1710000174800,
+  "stop": 1710000228200,
+  "children": [
+    "120625640d9b3ddbd6b47646e544e313",
+    "160549c101caec3c74170b2e5c059d68",
+    "93542b02b4f3b5c69033c3643e0428ed",
+    "93542b02b4f3b5c69033c3643e0428ef"
+  ],
+  "befores": [
+    {
+      "name": "mockAuthorization",
+      "start": 1710000174800,
+      "stop": 1710000175880,
+      "steps": [
+        {
+          "status": "passed",
+          "name": "generateRandomUsername",
+          "start": 1710000174935,
+          "stop": 1710000175151
+        },
+        {
+          "status": "passed",
+          "parameters": [
+            {
+              "name": "username",
+              "value": "some-user-123"
+            }
+          ],
+          "name": "createMockUser",
+          "start": 1710000175231,
+          "stop": 1710000175448
+        },
+        {
+          "status": "passed",
+          "parameters": [
+            {
+              "name": "username",
+              "value": "some-user-123"
+            }
+          ],
+          "name": "loginAs",
+          "start": 1710000175528,
+          "stop": 1710000175745
+        }
+      ]
+    }
+  ],
+  "afters": [
+    {
+      "name": "cleanUpContext",
+      "start": 1710000227120,
+      "stop": 1710000228200,
+      "steps": [
+        {
+          "status": "passed",
+          "name": "closeContext",
+          "start": 1710000227255,
+          "stop": 1710000228065
+        }
+      ]
+    }
+  ]
+}

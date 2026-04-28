@@ -1,0 +1,68 @@
+{
+  "uuid": "120625640d9b3ddbd6b47646e544e313",
+  "status": "passed",
+  "parameters": [],
+  "labels": [
+    {
+      "name": "class",
+      "value": "io.qameta.allure.MainTest"
+    },
+    {
+      "name": "method",
+      "value": "shouldMainTest"
+    },
+    {
+      "name": "suite",
+      "value": "My suite"
+    },
+    {
+      "name": "test",
+      "value": "All"
+    },
+    {
+      "name": "host",
+      "value": "charlie.local"
+    },
+    {
+      "name": "thread",
+      "value": "2208@charlie.local.main(1)"
+    },
+    {
+      "name": "epic",
+      "value": "Report UI"
+    },
+    {
+      "name": "feature",
+      "value": "Attachments"
+    },
+    {
+      "name": "story",
+      "value": "Nested step parameters"
+    },
+    {
+      "name": "package",
+      "value": "io.qameta.allure.MainTest"
+    }
+  ],
+  "name": "shouldMainTest",
+  "start": 1710000191000,
+  "stop": 1710000199000,
+  "steps": [
+    {
+      "status": "passed",
+      "parameters": [
+        {
+          "name": "firstParam",
+          "value": "fast"
+        },
+        {
+          "name": "secondParam",
+          "value": "and cool"
+        }
+      ],
+      "name": "myStep",
+      "start": 1710000191000,
+      "stop": 1710000199000
+    }
+  ]
+}

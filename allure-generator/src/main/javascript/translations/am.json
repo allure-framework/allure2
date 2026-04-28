@@ -31,7 +31,8 @@
       "filtered": {
         "shown": "Ցուցադրվում է {{count}}",
         "total": "{{count}} թեստի արդյունքը",
-        "total_plural": "{{count}} թեստերի արդյունքը"
+        "total_one": "{{count}} թեստի արդյունքը",
+        "total_other": "{{count}} թեստերի արդյունքը"
       },
       "groups": "Տեղեկություն խմբերի մասին",
       "time": {
@@ -48,12 +49,24 @@
           "tooltip": "Թեստի տևողությունը՝ առաջին թեստից մինչև վերջինը"
         }
       },
-      "unknown": "<անհայտ>"
+      "unknown": "<անհայտ>",
+      "noItemSelected": "Ոչ մի տարր ընտրված չէ"
     },
     "widgetStatus": {
       "showAll": "Ցույց տալ բոլորը",
       "total": "Ընդհանուր {{count}} էլեմենտ",
-      "total_plural": "Ընդհանուր {{count}} էլեմենտներ"
+      "total_one": "Ընդհանուր {{count}} էլեմենտ",
+      "total_other": "Ընդհանուր {{count}} էլեմենտներ"
+    },
+    "attachment": {
+      "download": "Click to download attachment",
+      "videoNotSupported": "Your browser does not support the video tag"
+    },
+    "screenDiff": {
+      "empty": "No diff data provided",
+      "name": "Screen Diff",
+      "showDiff": "Show diff",
+      "showOverlay": "Show overlay"
     }
   },
   "controls": {
@@ -64,11 +77,16 @@
     "collapse": "Ծալել",
     "expand": "Մեծացնել",
     "fullscreen": "Ամբողջ էկրան",
-    "language": "Փոխեք լեզուն"
+    "language": "Փոխեք լեզուն",
+    "loading": "Loading...",
+    "close": "Close"
   },
   "errors": {
     "missedAttachment": "Կցված ֆայլը չի գտնվել",
-    "notFound": "Չի գտնվել"
+    "notFound": "Չի գտնվել",
+    "loadingFailed": "Տվյալները բեռնելը ձախողվեց",
+    "tabNotFound": "«{{tab}}» ներդիրը չի գտնվել",
+    "testResultNotFound": "{{uid}} uid-ով թեստի արդյունքը չի գտնվել"
   },
   "marks": {
     "flaky": "Անկայուն",
@@ -94,19 +112,26 @@
     "categories": {
       "name": "Կատեգորիաներ"
     },
+    "behaviors": {
+      "name": "Վարքագծեր"
+    },
     "graph": {
       "name": "Գրաֆիկները"
     },
     "overview": {
       "name": "Ընդհանուր"
     },
+    "packages": {
+      "name": "Փաթեթներ"
+    },
     "suites": {
       "name": "Թեստի փաթեթներ"
     },
     "timeline": {
       "name": "Ժամանակային աղյուսակ",
-      "selected": "Ընտրվել է {{count}} թեստ ({{percent}}%) {{տեւողությամբ}}-ից բարձր տևողությամբ",
-      "selected_plural": "Ընտրվել են {{count}} թեստեր ({{percent}}%) {{տեւողությամբ}}-ից բարձր տևողությամբ"
+      "selected": "Ընտրվել է {{count}} թեստ ({{percent}}%) {{duration}}-ից բարձր տևողությամբ",
+      "selected_one": "Ընտրվել է {{count}} թեստ ({{percent}}%) {{duration}}-ից բարձր տևողությամբ",
+      "selected_other": "Ընտրվել են {{count}} թեստեր ({{percent}}%) {{duration}}-ից բարձր տևողությամբ"
     }
   },
   "testResult": {
@@ -126,7 +151,8 @@
       },
       "name": "Կատարումը",
       "setup": "Նախապատրաստում",
-      "teardown": "Ավարտը"
+      "teardown": "Ավարտը",
+      "empty": "Թեստի կատարման մասին տեղեկություն չկա։"
     },
     "history": {
       "empty": "Պատմությունը հասանելի չէ։",
@@ -163,11 +189,14 @@
     "stats": {
       "count": {
         "attachments": "{{count}} կցված ֆայլեր",
-        "attachments_plural": "{{count}} կցված ֆայլեր",
         "parameters": "{{count}} պարամետրեր",
-        "parameters_plural": "{{count}} պարամետրեր",
         "steps": "{{count}} ենթաքայլ",
-        "steps_plural": "{{count}} ենթաքայլեր"
+        "attachments_one": "{{count}} կցված ֆայլեր",
+        "attachments_other": "{{count}} կցված ֆայլեր",
+        "parameters_one": "{{count}} պարամետրեր",
+        "parameters_other": "{{count}} պարամետրեր",
+        "steps_one": "{{count}} ենթաքայլ",
+        "steps_other": "{{count}} ենթաքայլեր"
       }
     },
     "status": {
@@ -181,6 +210,10 @@
   "widget": {
     "categories": {
       "name": "Կատեգորիաներ"
+    },
+    "behaviors": {
+      "name": "Ֆիչրները ըստ պատմությունների",
+      "showAll": "ցույց տալ բոլորը"
     },
     "categoriesTrend": {
       "name": "Կատեգորիաներ թրենդ"
@@ -211,9 +244,11 @@
     "summary": {
       "aggregatedName": "Հաշվետվությունների համախումբ",
       "launches": "գործարկիչ",
-      "launches_plural": "գործարկիչներ",
       "testResults": "թեստ քեյս",
-      "testResults_plural": "թեստ քեյսեր"
+      "launches_one": "գործարկիչ",
+      "launches_other": "գործարկիչներ",
+      "testResults_one": "թեստ քեյս",
+      "testResults_other": "թեստ քեյսեր"
     },
     "trend": {
       "name": "Թրենդ"

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<environment name="staging" release="2026.04-demo">
+  <service name="report-ui" status="green"/>
+  <service name="history-sync" status="green"/>
+  <service name="attachment-gateway" status="degraded"/>
+</environment>

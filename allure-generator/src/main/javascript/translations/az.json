@@ -31,7 +31,8 @@
       "filtered": {
         "shown": "{{count}} göstərilir",
         "total": "{{count}} test nəticəsi",
-        "total_plural": "{{count}} test nəticəsi"
+        "total_one": "{{count}} test nəticəsi",
+        "total_other": "{{count}} test nəticəsi"
       },
       "groups": "Qruplar haqqında məlumatları göstərin",
       "time": {
@@ -48,12 +49,24 @@
           "tooltip": "İlk test başlayandan sonuncu bitənə qədər olan vaxt"
         }
       },
-      "unknown": "<Boş>"
+      "unknown": "<Boş>",
+      "noItemSelected": "Heç bir element seçilməyib"
     },
     "widgetStatus": {
       "showAll": "Hamısını göstər",
       "total": "Toplam {{count}} element",
-      "total_plural": "Toplam {{count}} element"
+      "total_one": "Toplam {{count}} element",
+      "total_other": "Toplam {{count}} element"
+    },
+    "attachment": {
+      "download": "Click to download attachment",
+      "videoNotSupported": "Your browser does not support the video tag"
+    },
+    "screenDiff": {
+      "empty": "No diff data provided",
+      "name": "Screen Diff",
+      "showDiff": "Show diff",
+      "showOverlay": "Show overlay"
     }
   },
   "controls": {
@@ -64,11 +77,16 @@
     "collapse": "Aç",
     "expand": "Genişlət",
     "fullscreen": "Tam ekran",
-    "language": "Dili dəyişin"
+    "language": "Dili dəyişin",
+    "loading": "Loading...",
+    "close": "Close"
   },
   "errors": {
     "missedAttachment": "Qoşma tapılmadı",
-    "notFound": "Tapılmadı"
+    "notFound": "Tapılmadı",
+    "loadingFailed": "Məlumatları yükləmək alınmadı",
+    "tabNotFound": "\"{{tab}}\" bölməsi tapılmadı",
+    "testResultNotFound": "uid \"{{uid}}\" olan test nəticəsi tapılmadı"
   },
   "marks": {
     "flaky": "Qeyri-sabit",
@@ -94,11 +112,17 @@
     "categories": {
       "name": "Kateqoriyalar"
     },
+    "behaviors": {
+      "name": "Davranışlar"
+    },
     "graph": {
       "name": "Qraflar"
     },
     "overview": {
       "name": "Ümumibaxış"
+    },
+    "packages": {
+      "name": "Paketlər"
     },
     "suites": {
       "name": "Test dəsti"
@@ -106,7 +130,8 @@
     "timeline": {
       "name": "Zaman şkalası",
       "selected": "Müddəti {{duration}} çox olan {{count}} test ({{percent}}%) seçildi",
-      "selected_plural": "Müddəti {{duration}} çox olan {{count}} test ({{percent}}%) seçildi"
+      "selected_one": "Müddəti {{duration}} çox olan {{count}} test ({{percent}}%) seçildi",
+      "selected_other": "Müddəti {{duration}} çox olan {{count}} test ({{percent}}%) seçildi"
     }
   },
   "testResult": {
@@ -126,7 +151,8 @@
       },
       "name": "İcra",
       "setup": "Hazırlanma",
-      "teardown": "Sonlandırma"
+      "teardown": "Sonlandırma",
+      "empty": "Testin icrası haqqında məlumat yoxdur."
     },
     "history": {
       "empty": "Tarix məlumatı tapılmadı.",
@@ -153,16 +179,24 @@
       "time": "{{date}} at {{time}}"
     },
     "severity": {
-      "name": "Əhəmiyyəti"
+      "name": "Əhəmiyyəti",
+      "blocker": "bloklayıcı",
+      "critical": "kritik",
+      "normal": "normal",
+      "minor": "kiçik",
+      "trivial": "əhəmiyyətsiz"
     },
     "stats": {
       "count": {
         "attachments": "{{count}} qoşma",
-        "attachments_plural": "{{count}} qoşma",
         "parameters": "{{count}} parameter",
-        "parameters_plural": "{{count}} parameter",
         "steps": "{{count}} alt addım",
-        "steps_plural": "{{count}} alt addım"
+        "attachments_one": "{{count}} qoşma",
+        "attachments_other": "{{count}} qoşma",
+        "parameters_one": "{{count}} parameter",
+        "parameters_other": "{{count}} parameter",
+        "steps_one": "{{count}} alt addım",
+        "steps_other": "{{count}} alt addım"
       }
     },
     "status": {
@@ -176,6 +210,10 @@
   "widget": {
     "categories": {
       "name": "Kateqoriyalar"
+    },
+    "behaviors": {
+      "name": "Hekayələr üzrə xüsusiyyətlər",
+      "showAll": "hamısını göstər"
     },
     "categoriesTrend": {
       "name": "Kateqoriyalar trendi"
@@ -206,9 +244,11 @@
     "summary": {
       "aggregatedName": "Ümumi hesabat",
       "launches": "Başlama",
-      "launches_plural": "Başlamalar",
       "testResults": "test nəticəsi",
-      "testResults_plural": "test nəticələri"
+      "launches_one": "Başlama",
+      "launches_other": "Başlamalar",
+      "testResults_one": "test nəticəsi",
+      "testResults_other": "test nəticələri"
     },
     "trend": {
       "name": "Trend"

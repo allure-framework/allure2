@@ -1,0 +1,145 @@
+{
+  "uuid": "demo-status-broken",
+  "historyId": "demo-status-broken-history",
+  "name": "Background sync resumes after service restart",
+  "fullName": "io.qameta.allure.platform.ReleaseReadinessTest.shouldResumeBackgroundSync",
+  "status": "broken",
+  "stage": "finished",
+  "description": "Shows a broken test with nested steps, links, parameters, and a plain-text attachment.",
+  "statusDetails": {
+    "known": false,
+    "muted": false,
+    "flaky": false,
+    "message": "RuntimeException: cache warmup stalled while replaying journal segments",
+    "trace": "java.lang.RuntimeException: cache warmup stalled while replaying journal segments\n\tat io.qameta.allure.platform.ReleaseReadinessTest.shouldResumeBackgroundSync(ReleaseReadinessTest.java:118)"
+  },
+  "steps": [
+    {
+      "name": "Restart background processors",
+      "status": "passed",
+      "stage": "finished",
+      "steps": [],
+      "attachments": [],
+      "parameters": [
+        {
+          "name": "cluster",
+          "value": "demo-eu-1"
+        }
+      ],
+      "start": 1710000232000,
+      "stop": 1710000239800
+    },
+    {
+      "name": "Rebuild cache journal",
+      "status": "broken",
+      "stage": "finished",
+      "statusDetails": {
+        "known": false,
+        "muted": false,
+        "flaky": false,
+        "message": "RuntimeException: cache warmup stalled while replaying journal segments",
+        "trace": "java.lang.RuntimeException: cache warmup stalled while replaying journal segments"
+      },
+      "steps": [],
+      "attachments": [
+        {
+          "name": "Warmup log",
+          "source": "background-sync-log.txt",
+          "type": "text/plain"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "segment",
+          "value": "billing-events-17"
+        }
+      ],
+      "start": 1710000240200,
+      "stop": 1710000248000
+    }
+  ],
+  "attachments": [],
+  "parameters": [
+    {
+      "name": "cluster",
+      "value": "demo-eu-1"
+    }
+  ],
+  "labels": [
+    {
+      "name": "epic",
+      "value": "Release readiness"
+    },
+    {
+      "name": "feature",
+      "value": "Background sync"
+    },
+    {
+      "name": "story",
+      "value": "Recover after restart"
+    },
+    {
+      "name": "suite",
+      "value": "io.qameta.allure.platform.ReleaseReadinessTest"
+    },
+    {
+      "name": "package",
+      "value": "io.qameta.allure.platform.ReleaseReadinessTest"
+    },
+    {
+      "name": "testClass",
+      "value": "io.qameta.allure.platform.ReleaseReadinessTest"
+    },
+    {
+      "name": "testMethod",
+      "value": "shouldResumeBackgroundSync"
+    },
+    {
+      "name": "owner",
+      "value": "platform-demo"
+    },
+    {
+      "name": "severity",
+      "value": "critical"
+    },
+    {
+      "name": "tag",
+      "value": "ops"
+    },
+    {
+      "name": "framework",
+      "value": "junit-platform"
+    },
+    {
+      "name": "language",
+      "value": "java"
+    },
+    {
+      "name": "host",
+      "value": "ops-runner-eu-1"
+    },
+    {
+      "name": "thread",
+      "value": "4102@ops-runner-eu-1.scheduler(2)"
+    }
+  ],
+  "links": [
+    {
+      "name": "Issue DEMO-102",
+      "type": "issue",
+      "url": "https://example.org/issues/DEMO-102"
+    },
+    {
+      "name": "TMS-420",
+      "type": "tms",
+      "url": "https://example.org/tms/TMS-420"
+    },
+    {
+      "name": "Runbook",
+      "type": "link",
+      "url": "https://example.org/runbooks/background-sync"
+    }
+  ],
+  "start": 1710000232000,
+  "stop": 1710000248000
+}

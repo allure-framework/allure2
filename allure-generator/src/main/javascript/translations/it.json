@@ -31,7 +31,9 @@
       "filtered": {
         "shown": "{{count}} mostrato",
         "total": "{{count}} risultato del test",
-        "total_plural": "{{count}} risultati dei test"
+        "total_one": "{{count}} risultato del test",
+        "total_many": "{{count}} risultati dei test",
+        "total_other": "{{count}} risultati dei test"
       },
       "groups": "Mostra/nascondi info gruppi",
       "time": {
@@ -48,12 +50,25 @@
           "tooltip": "Durata dal primo test iniziato all'ultimo test completato"
         }
       },
-      "unknown": "<Vuoto>"
+      "unknown": "<Vuoto>",
+      "noItemSelected": "Nessun elemento selezionato"
     },
     "widgetStatus": {
       "showAll": "Mostra tutto",
       "total": "{{count}} elemento totale",
-      "total_plural": "{{count}} elementi totali"
+      "total_one": "{{count}} elemento totale",
+      "total_many": "{{count}} elementi totali",
+      "total_other": "{{count}} elementi totali"
+    },
+    "attachment": {
+      "download": "Click to download attachment",
+      "videoNotSupported": "Your browser does not support the video tag"
+    },
+    "screenDiff": {
+      "empty": "No diff data provided",
+      "name": "Screen Diff",
+      "showDiff": "Show diff",
+      "showOverlay": "Show overlay"
     }
   },
   "controls": {
@@ -64,11 +79,16 @@
     "collapse": "Riduci",
     "expand": "Espandi",
     "fullscreen": "Schermo intero",
-    "language": "Cambia lingua"
+    "language": "Cambia lingua",
+    "loading": "Loading...",
+    "close": "Close"
   },
   "errors": {
     "missedAttachment": "Allegato non trovato",
-    "notFound": "Non trovato"
+    "notFound": "Non trovato",
+    "loadingFailed": "Impossibile caricare i dati",
+    "tabNotFound": "Scheda \"{{tab}}\" non trovata",
+    "testResultNotFound": "Risultato del test con uid \"{{uid}}\" non trovato"
   },
   "marks": {
     "flaky": "Instabile",
@@ -94,11 +114,17 @@
     "categories": {
       "name": "Categorie"
     },
+    "behaviors": {
+      "name": "Comportamenti"
+    },
     "graph": {
       "name": "Grafici"
     },
     "overview": {
       "name": "Panoramica"
+    },
+    "packages": {
+      "name": "Pacchetti"
     },
     "suites": {
       "name": "Suite"
@@ -106,7 +132,9 @@
     "timeline": {
       "name": "Cronologia",
       "selected": "{{count}} test selezionato ({{percent}}%) con durata superiore a {{duration}}",
-      "selected_plural": "{{count}} test selezionati ({{percent}}%) con durata superiore a {{duration}}"
+      "selected_one": "{{count}} test selezionato ({{percent}}%) con durata superiore a {{duration}}",
+      "selected_many": "{{count}} test selezionati ({{percent}}%) con durata superiore a {{duration}}",
+      "selected_other": "{{count}} test selezionati ({{percent}}%) con durata superiore a {{duration}}"
     }
   },
   "testResult": {
@@ -126,7 +154,8 @@
       },
       "name": "Esecuzione",
       "setup": "Preparazione",
-      "teardown": "Chiusura"
+      "teardown": "Chiusura",
+      "empty": "Non sono disponibili informazioni sull'esecuzione del test."
     },
     "history": {
       "empty": "Nessuna informazione storica disponibile.",
@@ -163,11 +192,17 @@
     "stats": {
       "count": {
         "attachments": "{{count}} allegato",
-        "attachments_plural": "{{count}} allegati",
         "parameters": "{{count}} parametro",
-        "parameters_plural": "{{count}} parametri",
         "steps": "{{count}} sottofase",
-        "steps_plural": "{{count}} sottofasi"
+        "attachments_one": "{{count}} allegato",
+        "attachments_many": "{{count}} allegati",
+        "attachments_other": "{{count}} allegati",
+        "parameters_one": "{{count}} parametro",
+        "parameters_many": "{{count}} parametri",
+        "parameters_other": "{{count}} parametri",
+        "steps_one": "{{count}} sottofase",
+        "steps_many": "{{count}} sottofasi",
+        "steps_other": "{{count}} sottofasi"
       }
     },
     "status": {
@@ -181,6 +216,10 @@
   "widget": {
     "categories": {
       "name": "Categorie"
+    },
+    "behaviors": {
+      "name": "Funzionalità per storie",
+      "showAll": "mostra tutto"
     },
     "categoriesTrend": {
       "name": "Tendenza delle categorie"
@@ -211,9 +250,13 @@
     "summary": {
       "aggregatedName": "Rapporto aggregato",
       "launches": "lancio",
-      "launches_plural": "lanci",
       "testResults": "caso di test",
-      "testResults_plural": "casi di test"
+      "launches_one": "lancio",
+      "launches_many": "lanci",
+      "launches_other": "lanci",
+      "testResults_one": "caso di test",
+      "testResults_many": "casi di test",
+      "testResults_other": "casi di test"
     },
     "trend": {
       "name": "Tendenza"

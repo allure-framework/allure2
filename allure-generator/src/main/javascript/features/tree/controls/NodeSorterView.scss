@@ -1,0 +1,38 @@
+@use "../../../variables.scss" as *;
+
+.sorter {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  overflow: hidden;
+  color: $text-muted-color;
+  user-select: none;
+
+  &_enabled {
+    color: $text-color;
+  }
+
+  &__item {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: space(1);
+    line-height: 1;
+    min-height: space(3);
+    padding-inline-end: $gap-size;
+  }
+
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: space(2);
+    height: space(2);
+    opacity: 0.7;
+  }
+
+  &__item:hover &__icon,
+  &_enabled &__icon {
+    opacity: 1;
+  }
+}

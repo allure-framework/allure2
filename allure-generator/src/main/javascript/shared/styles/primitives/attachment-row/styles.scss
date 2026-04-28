@@ -1,0 +1,76 @@
+@use "../../../../variables.scss" as *;
+
+.attachment-row {
+  align-items: flex-start;
+  cursor: pointer;
+  display: flex;
+  gap: space(1);
+  line-height: space(2);
+  min-block-size: space(4);
+  padding-block: space(1);
+  padding-inline-end: $gap-size;
+  padding-inline-start: space(4);
+  position: relative;
+  position: sticky;
+  top: 0;
+
+  &:hover {
+    background: $hover-color;
+  }
+  &_selected {
+    &,
+    &:hover {
+      background: $pane-bg-color;
+    }
+    &:hover {
+      background: $hover-color;
+    }
+  }
+  &_selected > &__arrow {
+    transform: rotate(90deg);
+  }
+  &__arrow {
+    inset-inline-start: space(1);
+    inset-block-start: space(1);
+    position: absolute;
+    top: auto;
+    width: space(2);
+    height: space(2);
+  }
+  &__name {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  &__control {
+    padding-inline-start: $gap-size;
+    display: inline-block;
+  }
+  &__icon {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    justify-content: center;
+    min-width: space(2);
+
+    .a-icon {
+      pointer-events: none;
+    }
+  }
+  &__preview {
+    display: none;
+  }
+  &_selected + &__preview {
+    display: block;
+    margin-bottom: space(1);
+  }
+  &__content {
+    background-color: $attachment-bg;
+  }
+  &__content > div {
+    padding: space(1);
+  }
+}
+
+.hljs {
+  background: inherit;
+}

@@ -14,6 +14,7 @@ const contentTypes: Record<string, string> = {
   ".gif": "image/gif",
   ".html": "text/html; charset=utf-8",
   ".ico": "image/x-icon",
+  ".imagediff": "application/vnd.allure.image.diff; charset=utf-8",
   ".jpeg": "image/jpeg",
   ".jpg": "image/jpeg",
   ".js": "application/javascript; charset=utf-8",

@@ -31,7 +31,8 @@
       "filtered": {
         "shown": "ნაჩვენებია {{count}}",
         "total": "{{count}} ტესტის შედეგი",
-        "total_plural": "{{count}} ტესტის შედეგი"
+        "total_one": "{{count}} ტესტის შედეგი",
+        "total_other": "{{count}} ტესტის შედეგი"
       },
       "groups": "ჯგუფის ინფორმაციის გადართვა",
       "time": {
@@ -48,12 +49,24 @@
           "tooltip": "ტესტის ხანგრძლივობა პირველი ტესტიდან ბოლოს ჩათვლით"
         }
       },
-      "unknown": "<ცარიელი>"
+      "unknown": "<ცარიელი>",
+      "noItemSelected": "არცერთი ელემენტი არ არის არჩეული"
     },
     "widgetStatus": {
       "showAll": "ყველას ჩვენება",
       "total": "სულ {{count}} ელემენტი",
-      "total_plural": "სულ {{count}} ელემენტი"
+      "total_one": "სულ {{count}} ელემენტი",
+      "total_other": "სულ {{count}} ელემენტი"
+    },
+    "attachment": {
+      "download": "Click to download attachment",
+      "videoNotSupported": "Your browser does not support the video tag"
+    },
+    "screenDiff": {
+      "empty": "No diff data provided",
+      "name": "Screen Diff",
+      "showDiff": "Show diff",
+      "showOverlay": "Show overlay"
     }
   },
   "controls": {
@@ -64,11 +77,16 @@
     "collapse": "ჩაკეცვა",
     "expand": "გაშლა",
     "fullscreen": "სრულ ეკრანზე",
-    "language": "ენის შეცვლა"
+    "language": "ენის შეცვლა",
+    "loading": "Loading...",
+    "close": "Close"
   },
   "errors": {
     "missedAttachment": "მიმაგრებული ფაილი არ მოიძებნა",
-    "notFound": "არ მოიძებნა"
+    "notFound": "არ მოიძებნა",
+    "loadingFailed": "მონაცემების ჩატვირთვა ვერ მოხერხდა",
+    "tabNotFound": "ჩანართი \"{{tab}}\" ვერ მოიძებნა",
+    "testResultNotFound": "ტესტის შედეგი uid \"{{uid}}\" ვერ მოიძებნა"
   },
   "marks": {
     "flaky": "არასტაბილური",
@@ -94,11 +112,17 @@
     "categories": {
       "name": "კატეგორიები"
     },
+    "behaviors": {
+      "name": "ქცევები"
+    },
     "graph": {
       "name": "გრაფიკები"
     },
     "overview": {
       "name": "მიმოხილვა"
+    },
+    "packages": {
+      "name": "პაკეტები"
     },
     "suites": {
       "name": "პაკეტები"
@@ -106,7 +130,8 @@
     "timeline": {
       "name": "დროის დიაგრამა",
       "selected": "მონიშნულია {{count}} ტესტი ({{percent}}%) {{duration}}-ზე მეტი ხანგრძლივობით",
-      "selected_plural": "მონიშნულია {{count}} ტესტი ({{percent}}%) {{duration}}-ზე მეტი ხანგრძლივობით"
+      "selected_one": "მონიშნულია {{count}} ტესტი ({{percent}}%) {{duration}}-ზე მეტი ხანგრძლივობით",
+      "selected_other": "მონიშნულია {{count}} ტესტი ({{percent}}%) {{duration}}-ზე მეტი ხანგრძლივობით"
     }
   },
   "testResult": {
@@ -126,7 +151,8 @@
       },
       "name": "შესრულება",
       "setup": "მომზადება",
-      "teardown": "დასრულება"
+      "teardown": "დასრულება",
+      "empty": "ტესტის შესრულების შესახებ ინფორმაცია არ არის ხელმისაწვდომი."
     },
     "history": {
       "empty": "ისტორია არაა ხელმისაწვდომი",
@@ -163,11 +189,14 @@
     "stats": {
       "count": {
         "attachments": "{{count}} მიმაგრებული ფაილი",
-        "attachments_plural": "{{count}} მიმაგრებული ფაილი",
         "parameters": "{{count}} პარამეტრი",
-        "parameters_plural": "{{count}} პარამეტრი",
         "steps": "{{count}} ქვე-ნაბიჯი",
-        "steps_plural": "{{count}} ქვე-ნაბიჯი"
+        "attachments_one": "{{count}} მიმაგრებული ფაილი",
+        "attachments_other": "{{count}} მიმაგრებული ფაილი",
+        "parameters_one": "{{count}} პარამეტრი",
+        "parameters_other": "{{count}} პარამეტრი",
+        "steps_one": "{{count}} ქვე-ნაბიჯი",
+        "steps_other": "{{count}} ქვე-ნაბიჯი"
       }
     },
     "status": {
@@ -181,6 +210,10 @@
   "widget": {
     "categories": {
       "name": "კატეგორიები"
+    },
+    "behaviors": {
+      "name": "ფუნქციები ისტორიების მიხედვით",
+      "showAll": "ყველას ჩვენება"
     },
     "categoriesTrend": {
       "name": "კატეგორიზებული ტენდენცია"
@@ -211,9 +244,11 @@
     "summary": {
       "aggregatedName": "საერთო ანგარიში",
       "launches": "გაშვება",
-      "launches_plural": "გაშვება",
       "testResults": "ტესტ ქეისი",
-      "testResults_plural": "ტესტ ქეისი"
+      "launches_one": "გაშვება",
+      "launches_other": "გაშვება",
+      "testResults_one": "ტესტ ქეისი",
+      "testResults_other": "ტესტ ქეისი"
     },
     "trend": {
       "name": "ტენდენცია"

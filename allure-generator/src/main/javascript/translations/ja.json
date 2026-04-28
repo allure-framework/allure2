@@ -31,7 +31,8 @@
       "filtered": {
         "shown": "{{count}} 件を表示",
         "total": "{{count}} 件のテスト結果",
-        "total_plural": "{{count}} 件のテスト結果"
+        "total_other": "{{count}} 件のテスト結果",
+        "total_one": "{{count}} 件のテスト結果"
       },
       "groups": "グループ情報を表示・非表示",
       "time": {
@@ -48,12 +49,24 @@
           "tooltip": "最初のテストが始まってから最後のテストが終わるまでの期間"
         }
       },
-      "unknown": "空ける"
+      "unknown": "空ける",
+      "noItemSelected": "項目が選択されていません"
     },
     "widgetStatus": {
       "showAll": "全て表示",
       "total": "計 {{count}} 件",
-      "total_plural": "計 {{count}} 件"
+      "total_other": "計 {{count}} 件",
+      "total_one": "計 {{count}} 件"
+    },
+    "attachment": {
+      "download": "Click to download attachment",
+      "videoNotSupported": "Your browser does not support the video tag"
+    },
+    "screenDiff": {
+      "empty": "No diff data provided",
+      "name": "Screen Diff",
+      "showDiff": "Show diff",
+      "showOverlay": "Show overlay"
     }
   },
   "controls": {
@@ -64,11 +77,16 @@
     "collapse": "折り畳む",
     "expand": "拡大",
     "fullscreen": "フルスクリーン",
-    "language": "言語を変更"
+    "language": "言語を変更",
+    "loading": "Loading...",
+    "close": "Close"
   },
   "errors": {
     "missedAttachment": "添付ファイルは見つかりませんでした",
-    "notFound": "見つかりませんでした"
+    "notFound": "見つかりませんでした",
+    "loadingFailed": "データを読み込めませんでした",
+    "tabNotFound": "タブ「{{tab}}」が見つかりません",
+    "testResultNotFound": "uid \"{{uid}}\" のテスト結果が見つかりません"
   },
   "marks": {
     "flaky": "不安定",
@@ -94,11 +112,17 @@
     "categories": {
       "name": "カテゴリー"
     },
+    "behaviors": {
+      "name": "振る舞い"
+    },
     "graph": {
       "name": "グラフ"
     },
     "overview": {
       "name": "概要"
+    },
+    "packages": {
+      "name": "パッケージ"
     },
     "suites": {
       "name": "スイート"
@@ -106,7 +130,8 @@
     "timeline": {
       "name": "タイムライン",
       "selected": "{{duration}} の期間で選択された {{count}} 件のテスト ({{percent}}%)",
-      "selected_plural": "{{duration}} の期間で選択された {{count}} 件のテスト ({{percent}}%)"
+      "selected_other": "{{duration}} の期間で選択された {{count}} 件のテスト ({{percent}}%)",
+      "selected_one": "{{duration}} の期間で選択された {{count}} 件のテスト ({{percent}}%)"
     }
   },
   "testResult": {
@@ -121,13 +146,20 @@
     },
     "execution": {
       "body": "テスト本体",
+      "downloadAttachment": {
+        "tooltip": "添付ファイルを新しいタブで開く"
+      },
       "name": "実行",
       "setup": "セットアップ作業",
-      "teardown": "仕上げ作業"
+      "teardown": "仕上げ作業",
+      "empty": "テスト実行に関する情報はありません。"
     },
     "history": {
+      "empty": "履歴情報はありません。",
       "name": "履歴",
-      "successRate": "成功率"
+      "statistic": "{{total}} 件中 {{passed}} 件",
+      "successRate": "成功率",
+      "time": "{{date}} {{time}}"
     },
     "links": {
       "name": "リンク"
@@ -143,19 +175,28 @@
     },
     "retries": {
       "empty": "テストの再実行に関する情報がありません",
-      "name": "再実行"
+      "name": "再実行",
+      "time": "{{date}} {{time}}"
     },
     "severity": {
-      "name": "重大度"
+      "name": "重大度",
+      "blocker": "阻害",
+      "critical": "重大",
+      "normal": "通常",
+      "minor": "軽微",
+      "trivial": "些細"
     },
     "stats": {
       "count": {
         "attachments": "{{count}} 添付ファイル",
-        "attachments_plural": "{{count}} 添付ファイル",
         "parameters": "{{count}} パラメータ",
-        "parameters_plural": "{{count}} パラメータ",
         "steps": "{{count}} サブステップ",
-        "steps_plural": "{{count}} サブステップ"
+        "attachments_other": "{{count}} 添付ファイル",
+        "parameters_other": "{{count}} パラメータ",
+        "steps_other": "{{count}} サブステップ",
+        "attachments_one": "{{count}} 添付ファイル",
+        "parameters_one": "{{count}} パラメータ",
+        "steps_one": "{{count}} サブステップ"
       }
     },
     "status": {
@@ -169,6 +210,10 @@
   "widget": {
     "categories": {
       "name": "カテゴリー"
+    },
+    "behaviors": {
+      "name": "ストーリー別の機能",
+      "showAll": "全て表示"
     },
     "categoriesTrend": {
       "name": "カテゴリーの傾向"
@@ -199,9 +244,11 @@
     "summary": {
       "aggregatedName": "集計レポート",
       "launches": "開始",
-      "launches_plural": "開始",
       "testResults": "テストケース",
-      "testResults_plural": "テストケース"
+      "launches_other": "開始",
+      "testResults_other": "テストケース",
+      "launches_one": "開始",
+      "testResults_one": "テストケース"
     },
     "trend": {
       "name": "傾向"

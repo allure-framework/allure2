@@ -13,23 +13,32 @@ export const groupLocator = (page: Page, groupName: string): Locator =>
 
 export const stepLocator = (page: Page, stepName: string): Locator =>
   page
-    .locator(".step__title_hasContent > .step__name")
+    .locator(".step__name")
     .filter({
-      hasText: new RegExp(`^\\s*${escapeRegExp(stepName)}\\s*$`),
+      hasText: new RegExp(`^\\s*${escapeRegExp(stepName)}`),
     })
     .first()
     .locator("xpath=ancestor::*[contains(concat(' ', normalize-space(@class), ' '), ' step ')][1]");
 
-export const previewContainerFor = (row: Locator): Locator => row.locator("xpath=..");
+export const previewContainerFor = (row: Locator): Locator =>
+  row.locator(
+    "xpath=following-sibling::*[contains(concat(' ', normalize-space(@class), ' '), ' attachment-row__preview ')][1]",
+  );
 
 export const readWidgetColumns = (page: Page): Promise<string[][]> =>
   page
     .locator(".widgets-grid__col")
     .evaluateAll((columns) =>
       columns.map((column) =>
-        Array.from(column.querySelectorAll<HTMLElement>(".widget__title")).map(
-          (title) => title.textContent?.replace(/\s+/g, " ").trim() ?? "",
-        ),
+        Array.from(column.querySelectorAll<HTMLElement>(".widget__title")).map((title) => {
+          const primaryText = Array.from(title.childNodes).find(
+            (node) => node.nodeType === Node.TEXT_NODE && node.textContent?.trim(),
+          );
+
+          return (primaryText?.textContent ?? title.textContent ?? "")
+            .replace(/\s+/g, " ")
+            .trim();
+        }),
       ),
     );
 
@@ -39,7 +48,8 @@ export const sortTreeBy = async (
   direction: "asc" | "desc" = "desc",
 ): Promise<void> => {
   const sorter = page.locator(`.sorter__item[data-name="${sorterName}"]`);
-  const targetIconSelector = direction === "asc" ? ".fa-sort-desc" : ".fa-sort-asc";
+  const targetIconSelector =
+    direction === "asc" ? ".sorter__icon.lineArrowsSortLineAsc" : ".sorter__icon.lineArrowsSortLineDesc";
 
   for (let index = 0; index < 3; index += 1) {
     const state = await sorter.evaluate((element, iconSelector) => {

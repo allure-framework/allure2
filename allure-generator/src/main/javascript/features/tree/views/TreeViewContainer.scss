@@ -1,0 +1,57 @@
+@use "../../../variables.scss" as *;
+
+.tree {
+  > .pane__title {
+    align-items: center;
+    margin: 0;
+    padding: space(2);
+  }
+
+  &__ctrl {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    min-height: space(5);
+    border-top: 1px solid $border-color;
+    background: $pane-overlay-bg-hover;
+  }
+  &__filter,
+  &__sorter,
+  &__filter-marks {
+    display: flex;
+    align-items: center;
+    padding: 0 $gap-size 0 $gap-size;
+    position: relative;
+    white-space: nowrap;
+  }
+  &__strut {
+    flex: 1;
+  }
+  &__empty {
+    border-top: 1px solid $border-color;
+    padding: space(1) 0 0 space(2);
+  }
+  .pane__controls {
+    display: flex;
+    align-items: center;
+    gap: space(1);
+  }
+  &__info,
+  &__download {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: space(1);
+    color: $text-color;
+    opacity: 0.7;
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &__info .a-icon,
+  &__download .a-icon {
+    display: block;
+  }
+}

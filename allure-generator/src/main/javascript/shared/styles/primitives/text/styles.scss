@@ -1,0 +1,5 @@
+@use "../../../../mixins.scss" as *;
+
+.text {
+  @include status-text();
+}

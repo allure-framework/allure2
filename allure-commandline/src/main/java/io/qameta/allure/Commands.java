@@ -377,9 +377,10 @@ public class Commands {
     }
 
     private static void serveFile(final HttpExchange exchange, final Path file) throws IOException {
-        final String contentType = probeContentType(file);
+        final String contentType = Optional.ofNullable(probeContentType(file))
+                .orElse(DefaultResultsVisitor.APPLICATION_OCTET_STREAM);
+        exchange.getResponseHeaders().set("Content-Type", contentType);
         exchange.sendResponseHeaders(200, Files.size(file));
-        exchange.getResponseHeaders().add("Content-Type", contentType);
         try (OutputStream os = exchange.getResponseBody()) {
             Files.copy(file, os);
         }

@@ -1,0 +1,50 @@
+@use "../../../variables.scss" as *;
+@use "../../../mixins.scss" as *;
+
+.status-toggle {
+  &__items {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: space(1);
+    user-select: none;
+    word-break: break-word;
+  }
+
+  &__label {
+    flex: 0 0 auto;
+  }
+
+  &__item {
+    cursor: pointer;
+    padding: space(1) 0;
+    display: inline-block;
+    white-space: nowrap;
+  }
+}
+
+.y-label {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  vertical-align: baseline;
+  letter-spacing: 1px;
+  color: #fff;
+  padding: $space-micro-2 $space-micro-4;
+  border-radius: $space-micro-4;
+  @include status-bg-bright();
+}
+
+.n-label {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  vertical-align: baseline;
+  letter-spacing: 1px;
+  padding: $space-micro-1 $space-micro-3 $space-micro-1 $space-micro-4;
+  border-radius: $space-micro-4;
+  border: 1px solid;
+  font-weight: bold;
+  @include status-text();
+  @include status-border();
+}

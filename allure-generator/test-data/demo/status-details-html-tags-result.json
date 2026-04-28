@@ -1,0 +1,76 @@
+{
+  "uuid": "da0f7f3e-4e7f-4b2e-8f27-d90f0a58c715",
+  "historyId": "2a0fd1f33cf5cbf75749af237d2b0b93",
+  "name": "renders html-like status details as text",
+  "fullName": "io.qameta.allure.HtmlTagsStatusDetailsTest.shouldRenderStatusDetailsAsText",
+  "status": "failed",
+  "statusDetails": {
+    "known": false,
+    "muted": false,
+    "flaky": false,
+    "message": "<input>, <textarea>, <select>",
+    "trace": "<input>, <textarea>, <select>"
+  },
+  "stage": "finished",
+  "description": "",
+  "start": 1710000240000,
+  "stop": 1710000244500,
+  "steps": [],
+  "attachments": [],
+  "parameters": [],
+  "labels": [
+    {
+      "name": "tag",
+      "value": "web"
+    },
+    {
+      "name": "layer",
+      "value": "web"
+    },
+    {
+      "name": "feature",
+      "value": "Execution details"
+    },
+    {
+      "name": "story",
+      "value": "Render HTML-like status details as text"
+    },
+    {
+      "name": "host",
+      "value": "ip-192-168-31-222.eu-central-1.compute.internal"
+    },
+    {
+      "name": "thread",
+      "value": "38312@ip-192-168-31-222.eu-central-1.compute.internal.ForkJoinPool-1-worker-19(24)"
+    },
+    {
+      "name": "framework",
+      "value": "junit-platform"
+    },
+    {
+      "name": "language",
+      "value": "java"
+    },
+    {
+      "name": "package",
+      "value": "io.qameta.allure.HtmlTagsStatusDetailsTest"
+    },
+    {
+      "name": "testClass",
+      "value": "io.qameta.allure.HtmlTagsStatusDetailsTest"
+    },
+    {
+      "name": "testMethod",
+      "value": "shouldRenderStatusDetailsAsText"
+    },
+    {
+      "name": "suite",
+      "value": "io.qameta.allure.HtmlTagsStatusDetailsTest"
+    },
+    {
+      "name": "epic",
+      "value": "Report rendering"
+    }
+  ],
+  "links": []
+}

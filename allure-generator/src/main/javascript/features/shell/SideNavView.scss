@@ -1,0 +1,164 @@
+@use "../../variables.scss" as *;
+
+$side-nav-icon-size: space(3);
+$side-nav-brand-size: space(5);
+
+.side-nav {
+  background: $app-nav-bg;
+  width: $sidebar-full-width;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+
+  &__head {
+    margin: $gap-size 0;
+    padding-bottom: space(1);
+    border-bottom: 1px solid $sidebar-separator-color;
+  }
+
+  &__brand {
+    color: $sidebar-brand-color;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    font-size: 26px;
+    font-weight: bold;
+    inline-size: 100%;
+    line-height: 1;
+    min-block-size: space(5);
+    margin-bottom: space(1);
+  }
+
+  &__brand-icon {
+    display: block;
+    inline-size: $side-nav-brand-size;
+    block-size: $side-nav-brand-size;
+    background: url("allure_logo.svg") no-repeat center;
+    background-size: $side-nav-brand-size;
+  }
+
+  &__menu {
+    margin: 0;
+    left: 0;
+    padding: 0;
+    list-style-type: none;
+  }
+
+  &__footer {
+    display: flex;
+    flex-direction: column;
+    gap: space(1);
+    margin-top: auto;
+    margin-bottom: $footer-gap-size;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  &__item {
+    display: block;
+    font-size: 14px;
+  }
+
+  &__link,
+  &__collapse {
+    align-items: center;
+    display: flex;
+    line-height: space(3);
+    color: $text-muted-color;
+    text-decoration: none;
+    inline-size: 100%;
+    padding-block: space(1);
+    min-block-size: space(5);
+
+    &_active {
+      color: $sidebar-active-text-color;
+      border-inline-end: $space-micro-4 solid $sidebar-active-accent-color;
+    }
+    &:hover {
+      color: $sidebar-hover-text-color;
+    }
+  }
+
+  &__icon-lane {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 $sidebar-collapsed;
+    inline-size: $sidebar-collapsed;
+    justify-content: center;
+    min-inline-size: $sidebar-collapsed;
+  }
+
+  &__icon {
+    block-size: $side-nav-icon-size;
+    inline-size: $side-nav-icon-size;
+  }
+
+  &__text {
+    display: block;
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    padding-inline-end: space(2);
+  }
+
+  &__brand-text {
+    color: inherit;
+  }
+
+  &__language-small {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    font-weight: 600;
+    height: space(4);
+    justify-content: center;
+    line-height: 1;
+    text-transform: capitalize;
+    margin: 0 auto;
+    padding: 0;
+    text-align: center;
+    width: space(4);
+  }
+  &__collapse {
+    cursor: pointer;
+  }
+
+  &__collapse-icon {
+    transition: transform 0.1s;
+    transform: rotate(180deg);
+  }
+
+  &_collapsed {
+    width: $sidebar-collapsed;
+
+    .side-nav__collapse-icon {
+      transform: none;
+    }
+
+    .side-nav__footer {
+      align-items: center;
+    }
+
+    .side-nav__text,
+    .side-nav__brand-text {
+      display: none;
+    }
+
+    .side-nav__brand {
+      block-size: space(5);
+      inline-size: 100%;
+      margin-bottom: space(1);
+    }
+
+    .side-nav__brand,
+    .side-nav__collapse,
+    .side-nav__link {
+      white-space: nowrap;
+    }
+
+    .side-nav__language-small {
+      inline-size: space(4);
+      min-inline-size: space(4);
+    }
+  }
+}

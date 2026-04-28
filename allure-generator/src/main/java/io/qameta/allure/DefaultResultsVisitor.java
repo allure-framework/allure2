@@ -120,7 +120,8 @@ public class DefaultResultsVisitor implements ResultsVisitor {
 
     public static String probeContentType(final Path path) {
         try (InputStream stream = newInputStream(path)) {
-            return probeContentType(stream, Objects.toString(path.getFileName()));
+            return Optional.ofNullable(probeContentType(stream, Objects.toString(path.getFileName())))
+                    .orElse(APPLICATION_OCTET_STREAM);
         } catch (IOException e) {
             LOGGER.warn("Couldn't detect the media type of attachment {}", path, e);
             return APPLICATION_OCTET_STREAM;

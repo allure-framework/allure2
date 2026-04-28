@@ -1,0 +1,87 @@
+@use "../../../variables.scss" as *;
+
+.test-result-execution {
+  &__title {
+    margin: $gap-size $gap-size space(1);
+  }
+  &__stage-title {
+    margin: $gap-size $gap-size space(1);
+  }
+}
+
+.step {
+  &__main {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  &__name {
+    display: inline;
+  }
+  &__status {
+    inset-inline-start: space(1);
+    inset-block-start: space(1);
+    position: absolute;
+    top: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: space(2);
+    height: space(2);
+  }
+  &__arrow {
+    inset-inline-start: space(1);
+    inset-block-start: space(1);
+    position: absolute;
+    top: auto;
+    width: space(2);
+    height: space(2);
+    display: none;
+  }
+  &__title {
+    align-items: flex-start;
+    display: flex;
+    gap: space(1);
+    line-height: space(2);
+    min-block-size: space(4);
+    position: relative;
+    padding-block: space(1);
+    padding-inline-end: $gap-size;
+    padding-inline-start: space(4);
+    &_hasContent {
+      cursor: pointer;
+    }
+    &_hasContent > .step__arrow {
+      display: block;
+    }
+    &:hover {
+      background-color: $hover-color;
+      &::before {
+        background-color: $hover-color;
+      }
+    }
+    &_stage {
+      font-weight: bold;
+    }
+  }
+  &__content {
+    margin-inline-start: space(3);
+    display: none;
+  }
+  &_expanded > &__title > &__arrow {
+    transform: rotate(90deg);
+  }
+  &_expanded > &__content {
+    display: block;
+  }
+}
+
+.parameters {
+  display: inline;
+  white-space: nowrap;
+  &_name {
+    font-style: italic;
+  }
+  &_separator:last-child {
+    display: none;
+  }
+}
