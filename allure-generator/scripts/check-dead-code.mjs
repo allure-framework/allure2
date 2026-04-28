@@ -8,11 +8,6 @@ const scriptDir = path.dirname(scriptFile);
 const projectRoot = path.resolve(scriptDir, "..");
 const sourceRoot = path.join(projectRoot, "src/main/javascript");
 const sourceEntry = path.join(sourceRoot, "index.mts");
-const consumerRoots = [
-  sourceRoot,
-  path.join(projectRoot, "tests"),
-  path.join(projectRoot, "scripts"),
-];
 const consumerFiles = new Set([path.join(projectRoot, "playwright.config.mts")]);
 const runtimeSourceFiles = new Set();
 const sourceRecords = new Map();
