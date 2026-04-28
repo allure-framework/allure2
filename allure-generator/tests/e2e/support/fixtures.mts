@@ -18,6 +18,7 @@ const sharedTopLevelTabs = [
 export const fixtures = {
   uiDemo: {
     name: "ui-demo",
+    totalTestCases: "20",
     topLevelTabs: sharedTopLevelTabs,
     cases: {
       failedPullRequest: "Creating new issue for authorized user",

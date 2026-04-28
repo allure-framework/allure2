@@ -21,7 +21,9 @@ test.describe("Dashboards", () => {
       mode: REPORT_MODES.SINGLE_FILE,
     });
 
-    await expect(page.locator(".summary-widget__stats .splash__title")).toHaveText("19");
+    await expect(page.locator(".summary-widget__stats .splash__title")).toHaveText(
+      uiDemo.totalTestCases,
+    );
     await expect(
       page.locator(".widget__title", { hasText: uiDemo.widgets.summary }),
     ).toBeVisible();
@@ -157,7 +159,9 @@ test.describe("Dashboards", () => {
     await expect(
       page.locator(".widget__title", { hasText: uiDemo.widgets.summary }),
     ).toBeVisible();
-    await expect(page.locator(".summary-widget__stats .splash__title")).toHaveText("19");
+    await expect(page.locator(".summary-widget__stats .splash__title")).toHaveText(
+      uiDemo.totalTestCases,
+    );
   });
 
   test("directory mode reuses the shell across client-side route changes", async ({ page }) => {
