@@ -70,7 +70,7 @@ val testE2E by tasks.creating(NpmTask::class) {
     inputs.files(fileTree("tests/e2e"))
 
     outputs.dir("build/e2e")
-    outputs.dir("playwright-report")
+    outputs.dir("build/allure-results")
     outputs.dir("test-results")
 
     args.set(listOf("run", "e2e", "--silent"))
