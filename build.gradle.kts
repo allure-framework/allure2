@@ -116,6 +116,10 @@ subprojects {
         }
     }
 
+    dependencies {
+        add("testAnnotationProcessor", "io.qameta.allure:allure-descriptions-javadoc")
+    }
+
     tasks.compileJava {
         if (JavaVersion.current().isJava8) {
             java.targetCompatibility = JavaVersion.VERSION_1_8

@@ -19,14 +19,21 @@ import io.qameta.allure.core.Configuration;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author charlie (Dmitry Baev).
  */
 class EmptyResultsTest {
 
+    /**
+     * Verifies allowing empty results directory for empty results handling.
+     */
+    @Description
     @Test
     void shouldAllowEmptyResultsDirectory(@TempDir final Path temp) throws Exception {
         final Path resultsDirectory = Files.createDirectories(temp.resolve("results"));
@@ -34,9 +41,13 @@ class EmptyResultsTest {
         final Configuration configuration = ConfigurationBuilder.bundled().build();
         final ReportGenerator generator = new ReportGenerator(configuration);
 
-        generator.generate(outputDirectory, resultsDirectory);
+        generateReport(generator, outputDirectory, resultsDirectory, "empty directory");
     }
 
+    /**
+     * Verifies allowing a missing results directory for empty results handling.
+     */
+    @Description
     @Test
     void shouldAllowNonExistsResultsDirectory(@TempDir final Path temp) throws Exception {
         final Path resultsDirectory = temp.resolve("results");
@@ -44,9 +55,13 @@ class EmptyResultsTest {
         final Configuration configuration = ConfigurationBuilder.bundled().build();
         final ReportGenerator generator = new ReportGenerator(configuration);
 
-        generator.generate(outputDirectory, resultsDirectory);
+        generateReport(generator, outputDirectory, resultsDirectory, "missing directory");
     }
 
+    /**
+     * Verifies allowing regular file as results directory for empty results handling.
+     */
+    @Description
     @Test
     void shouldAllowRegularFileAsResultsDirectory(@TempDir final Path temp) throws Exception {
         final Path resultsDirectory = Files.createTempFile(temp, "a", ".txt");
@@ -54,6 +69,30 @@ class EmptyResultsTest {
         final Configuration configuration = ConfigurationBuilder.bundled().build();
         final ReportGenerator generator = new ReportGenerator(configuration);
 
-        generator.generate(outputDirectory, resultsDirectory);
+        generateReport(generator, outputDirectory, resultsDirectory, "regular file");
+    }
+
+    private void generateReport(
+            final ReportGenerator generator,
+            final Path outputDirectory,
+            final Path resultsDirectory,
+            final String resultsDirectoryKind
+    ) {
+        Allure.parameter("resultsDirectoryKind", resultsDirectoryKind);
+        Allure.step("Generate report when results path is " + resultsDirectoryKind, () -> {
+            generator.generate(outputDirectory, resultsDirectory);
+            Allure.addAttachment("Generated report files", "text/plain", listRelativeFiles(outputDirectory));
+        });
+    }
+
+    private String listRelativeFiles(final Path directory) throws IOException {
+        try (Stream<Path> files = Files.walk(directory)) {
+            return files
+                    .filter(Files::isRegularFile)
+                    .map(directory::relativize)
+                    .map(Path::toString)
+                    .sorted()
+                    .collect(Collectors.joining(System.lineSeparator()));
+        }
     }
 }

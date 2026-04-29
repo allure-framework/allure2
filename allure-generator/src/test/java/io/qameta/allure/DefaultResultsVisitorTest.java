@@ -27,6 +27,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class DefaultResultsVisitorTest {
 
+    /**
+     * Verifies falling back to application/octet-stream for unknown attachment types.
+     */
+    @Description
     @Test
     void shouldFallbackToOctetStreamForUnknownAttachmentTypes(@TempDir final Path temp) throws Exception {
         final Path attachmentFile = temp.resolve("custom-attachment.foobar");
@@ -35,7 +39,18 @@ class DefaultResultsVisitorTest {
         final Configuration configuration = ConfigurationBuilder.empty().build();
         final DefaultResultsVisitor visitor = new DefaultResultsVisitor(configuration);
 
-        final Attachment attachment = visitor.visitAttachmentFile(attachmentFile);
+        final Attachment attachment = Allure.step(
+                "Visit attachment file with an unknown extension",
+                () -> visitor.visitAttachmentFile(attachmentFile)
+        );
+        Allure.addAttachment(attachment.getName(), "text/plain", Files.readString(attachmentFile));
+        Allure.addAttachment("Visited attachment metadata", "text/plain", String.format(
+                "name=%s%ntype=%s%nsource=%s%ncontent=%s%n",
+                attachment.getName(),
+                attachment.getType(),
+                attachment.getSource(),
+                Files.readString(attachmentFile)
+        ));
 
         assertThat(attachment.getName()).isEqualTo("custom-attachment.foobar");
         assertThat(attachment.getType()).isEqualTo(DefaultResultsVisitor.APPLICATION_OCTET_STREAM);

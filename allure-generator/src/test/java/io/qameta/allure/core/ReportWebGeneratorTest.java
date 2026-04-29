@@ -15,12 +15,16 @@
  */
 package io.qameta.allure.core;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.ConfigurationBuilder;
+import io.qameta.allure.Description;
+import io.qameta.allure.ReportStorage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junitpioneer.jupiter.SetEnvironmentVariable;
 
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,16 +34,15 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class ReportWebGeneratorTest {
 
+    /**
+     * Verifies referencing hashed directory assets for web report generation.
+     */
+    @Description
     @Test
     void shouldReferenceHashedDirectoryAssets(@TempDir final Path tempDirectory) {
         final Configuration configuration = ConfigurationBuilder.empty().build();
 
-        new ReportWebGenerator()
-                .generate(
-                        configuration,
-                        new FileSystemReportStorage(tempDirectory),
-                        tempDirectory
-                );
+        generateReport(configuration, new FileSystemReportStorage(tempDirectory), tempDirectory);
 
         final Path indexHtml = tempDirectory.resolve("index.html");
 
@@ -54,17 +57,16 @@ class ReportWebGeneratorTest {
                 .doesNotContain("styles.css");
     }
 
+    /**
+     * Verifies disabling analytics for web report generation.
+     */
+    @Description
     @SetEnvironmentVariable(key = "ALLURE_NO_ANALYTICS", value = "true")
     @Test
     void shouldDisableAnalytics(@TempDir final Path tempDirectory) {
         final Configuration configuration = ConfigurationBuilder.empty().build();
         final InMemoryReportStorage reportStorage = new InMemoryReportStorage();
-        new ReportWebGenerator()
-                .generate(
-                        configuration,
-                        reportStorage,
-                        tempDirectory
-                );
+        generateReport(configuration, reportStorage, tempDirectory);
 
         final Path indexHtml = tempDirectory.resolve("index.html");
 
@@ -74,18 +76,17 @@ class ReportWebGeneratorTest {
                 .doesNotContain("googletagmanager");
     }
 
+    /**
+     * Verifies setting language for web report generation.
+     */
+    @Description
     @Test
     void shouldSetLanguage(@TempDir final Path tempDirectory) {
         final Configuration configuration = ConfigurationBuilder.empty()
                 .withReportLanguage("xyz")
                 .build();
         final InMemoryReportStorage reportStorage = new InMemoryReportStorage();
-        new ReportWebGenerator()
-                .generate(
-                        configuration,
-                        reportStorage,
-                        tempDirectory
-                );
+        generateReport(configuration, reportStorage, tempDirectory);
 
         final Path indexHtml = tempDirectory.resolve("index.html");
 
@@ -95,17 +96,16 @@ class ReportWebGeneratorTest {
                 .contains("lang=\"xyz\"");
     }
 
+    /**
+     * Verifies setting default language if not provided for web report generation.
+     */
+    @Description
     @Test
     void shouldSetDefaultLanguageIfNotProvided(@TempDir final Path tempDirectory) {
         final Configuration configuration = ConfigurationBuilder.empty()
                 .build();
         final InMemoryReportStorage reportStorage = new InMemoryReportStorage();
-        new ReportWebGenerator()
-                .generate(
-                        configuration,
-                        reportStorage,
-                        tempDirectory
-                );
+        generateReport(configuration, reportStorage, tempDirectory);
 
         final Path indexHtml = tempDirectory.resolve("index.html");
 
@@ -115,17 +115,16 @@ class ReportWebGeneratorTest {
                 .contains("lang=\"en\"");
     }
 
+    /**
+     * Verifies inlining hashed scripts in single file mode for web report generation.
+     */
+    @Description
     @Test
     void shouldInlineHashedScriptsInSingleFileMode(@TempDir final Path tempDirectory) {
         final Configuration configuration = ConfigurationBuilder.empty().build();
         final InMemoryReportStorage reportStorage = new InMemoryReportStorage();
 
-        new ReportWebGenerator()
-                .generate(
-                        configuration,
-                        reportStorage,
-                        tempDirectory
-                );
+        generateReport(configuration, reportStorage, tempDirectory);
 
         final Path indexHtml = tempDirectory.resolve("index.html");
 
@@ -136,5 +135,21 @@ class ReportWebGeneratorTest {
                 .contains("data:text/javascript; charset=utf-8;base64,")
                 .doesNotContain("type=\"module\"")
                 .doesNotContain("type=\"importmap\"");
+    }
+
+    private void generateReport(
+            final Configuration configuration,
+            final ReportStorage reportStorage,
+            final Path outputDirectory
+    ) {
+        Allure.step("Generate report web assets into " + outputDirectory, () -> {
+            new ReportWebGenerator().generate(configuration, reportStorage, outputDirectory);
+            final Path indexHtml = outputDirectory.resolve("index.html");
+            Allure.addAttachment(
+                    "Generated index.html",
+                    "text/html",
+                    Files.readString(indexHtml, StandardCharsets.UTF_8)
+            );
+        });
     }
 }

@@ -15,7 +15,9 @@
  */
 package io.qameta.allure.suites;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.ConfigurationBuilder;
+import io.qameta.allure.Description;
 import io.qameta.allure.Issue;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.InMemoryReportStorage;
@@ -27,7 +29,10 @@ import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeNode;
 import org.junit.jupiter.api.Test;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 
 import static io.qameta.allure.testdata.TestData.createSingleLaunchResults;
 import static java.util.Collections.singletonList;
@@ -38,10 +43,17 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class SuitesPluginTest {
 
+    /**
+     * Verifies creating tree for suites aggregation.
+     */
+    @Description
     @Test
     void shouldCreateTree() {
 
-        final Tree<TestResult> tree = SuitesPlugin.getData(getSimpleLaunchResults());
+        final Tree<TestResult> tree = Allure.step(
+                "Build suites tree from simple launch results",
+                () -> SuitesPlugin.getData(getSimpleLaunchResults())
+        );
 
         assertThat(tree.getChildren())
                 .hasSize(2)
@@ -49,6 +61,10 @@ class SuitesPluginTest {
                 .containsExactlyInAnyOrder("s1", "s2");
     }
 
+    /**
+     * Verifies sorting suite results by ascending start time.
+     */
+    @Description
     @Issue("587")
     @Issue("572")
     @Test
@@ -62,8 +78,9 @@ class SuitesPluginTest {
         final TestResult timeless = new TestResult()
                 .setName("timeless");
 
-        final Tree<TestResult> tree = SuitesPlugin.getData(
-                createSingleLaunchResults(second, first, timeless)
+        final Tree<TestResult> tree = Allure.step(
+                "Build suites tree and sort by start time",
+                () -> SuitesPlugin.getData(createSingleLaunchResults(second, first, timeless))
         );
 
         assertThat(tree.getChildren())
@@ -71,6 +88,10 @@ class SuitesPluginTest {
                 .containsExactly("timeless", "first", "second");
     }
 
+    /**
+     * Verifies creating CSV file for suites aggregation.
+     */
+    @Description
     @Test
     void shouldCreateCsvFile() {
         final Configuration configuration = ConfigurationBuilder.bundled().build();
@@ -78,13 +99,29 @@ class SuitesPluginTest {
         final SuitesPlugin plugin = new SuitesPlugin();
 
         final InMemoryReportStorage storage = new InMemoryReportStorage();
-        plugin.aggregate(configuration, getSimpleLaunchResults(), storage);
+        Allure.step("Aggregate suites report files", () -> {
+            plugin.aggregate(configuration, getSimpleLaunchResults(), storage);
+            attachStorageFiles(storage);
+        });
 
         assertThat(storage.getReportDataFiles())
                 .containsKey("data/" + SuitesPlugin.JSON_FILE_NAME);
 
         assertThat(storage.getReportDataFiles())
                 .containsKey("data/" + SuitesPlugin.CSV_FILE_NAME);
+    }
+
+    private void attachStorageFiles(final InMemoryReportStorage storage) {
+        Allure.step("Attach in-memory storage contents", () -> storage.getReportDataFiles().entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
+                .forEach(entry -> Allure.addAttachment(
+                        entry.getKey(),
+                        "text/plain",
+                        new String(
+                                Base64.getDecoder().decode(entry.getValue()),
+                                StandardCharsets.UTF_8
+                        )
+                )));
     }
 
     private List<LaunchResults> getSimpleLaunchResults() {

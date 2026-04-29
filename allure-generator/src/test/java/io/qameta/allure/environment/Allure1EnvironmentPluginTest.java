@@ -15,8 +15,10 @@
  */
 package io.qameta.allure.environment;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.ConfigurationBuilder;
 import io.qameta.allure.DefaultResultsVisitor;
+import io.qameta.allure.Description;
 import io.qameta.allure.allure1.Allure1Plugin;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
@@ -36,6 +38,8 @@ import java.util.Objects;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static io.qameta.allure.testdata.TestData.attachFileContent;
+import static io.qameta.allure.testdata.TestData.attachLaunchResults;
 import static org.allurefw.allure1.AllureUtils.generateTestSuiteJsonName;
 import static org.allurefw.allure1.AllureUtils.generateTestSuiteXmlName;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,6 +49,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class Allure1EnvironmentPluginTest {
 
+    private static final String TEXT_PLAIN = "text/plain";
+
     private Path temp;
 
     @BeforeEach
@@ -52,6 +58,10 @@ class Allure1EnvironmentPluginTest {
         this.temp = temp;
     }
 
+    /**
+     * Verifies reading environment properties for Allure 1 environment aggregation.
+     */
+    @Description
     @Test
     void shouldReadEnvironmentProperties() throws Exception {
         EnvironmentItem[] expected = new EnvironmentItem[]{
@@ -72,6 +82,10 @@ class Allure1EnvironmentPluginTest {
                 .containsExactlyInAnyOrder(expected);
     }
 
+    /**
+     * Verifies reading environment XML for Allure 1 environment aggregation.
+     */
+    @Description
     @Test
     void shouldReadEnvironmentXml() throws Exception {
         EnvironmentItem[] expected = new EnvironmentItem[]{
@@ -92,6 +106,10 @@ class Allure1EnvironmentPluginTest {
                 .containsExactlyInAnyOrder(expected);
     }
 
+    /**
+     * Verifies stacking parameter values for Allure 1 environment aggregation.
+     */
+    @Description
     @Test
     void shouldStackParameterValues() throws Exception {
         EnvironmentItem[] expected = new EnvironmentItem[]{
@@ -122,28 +140,57 @@ class Allure1EnvironmentPluginTest {
 
     @SafeVarargs
     private List<EnvironmentItem> process(List<String>... results) throws IOException {
-        List<LaunchResults> launches = new ArrayList<>();
-        final Configuration configuration = ConfigurationBuilder.bundled().build();
-        Allure1Plugin reader = new Allure1Plugin();
-        for (List<String> result : results) {
-            Path resultsDirectory = Files.createTempDirectory(temp, "results");
-            Iterator<String> iterator = result.iterator();
-            while (iterator.hasNext()) {
-                String first = iterator.next();
-                String second = iterator.next();
-                copyFile(resultsDirectory, first, second);
+        return Allure.step("Read environment data from " + results.length + " Allure 1 launch(es)", () -> {
+            List<LaunchResults> launches = new ArrayList<>();
+            final Configuration configuration = ConfigurationBuilder.bundled().build();
+            Allure1Plugin reader = new Allure1Plugin();
+            for (List<String> result : results) {
+                Path resultsDirectory = Files.createTempDirectory(temp, "results");
+                Iterator<String> iterator = result.iterator();
+                while (iterator.hasNext()) {
+                    String first = iterator.next();
+                    String second = iterator.next();
+                    copyFile(resultsDirectory, first, second);
+                }
+                final LaunchResults launchResults = Allure.step("Parse Allure 1 launch at " + resultsDirectory, () -> {
+                    final DefaultResultsVisitor resultsVisitor = new DefaultResultsVisitor(configuration);
+                    reader.readResults(configuration, resultsVisitor, resultsDirectory);
+                    final LaunchResults parsed = resultsVisitor.getLaunchResults();
+                    attachLaunchResults("Attach parsed Allure 1 launch artifacts", parsed);
+                    return parsed;
+                });
+                launches.add(launchResults);
             }
-            final DefaultResultsVisitor resultsVisitor = new DefaultResultsVisitor(configuration);
-            reader.readResults(configuration, resultsVisitor, resultsDirectory);
-            launches.add(resultsVisitor.getLaunchResults());
-        }
-        Allure1EnvironmentPlugin envPlugin = new Allure1EnvironmentPlugin();
-        return envPlugin.getData(launches);
+            Allure1EnvironmentPlugin envPlugin = new Allure1EnvironmentPlugin();
+            final List<EnvironmentItem> environment = envPlugin.getData(launches);
+            Allure.addAttachment("Environment items", TEXT_PLAIN, describeEnvironment(environment));
+            return environment;
+        });
     }
 
     private void copyFile(Path dir, String resourceName, String fileName) throws IOException {
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourceName)) {
-            Files.copy(Objects.requireNonNull(is), dir.resolve(fileName));
+        Allure.step("Copy fixture " + resourceName + " as " + fileName, () -> {
+            final Path output = dir.resolve(fileName);
+            final byte[] content;
+            try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourceName)) {
+                content = Objects.requireNonNull(is).readAllBytes();
+                Files.write(output, content);
+            }
+            attachFileContent(fileName, content);
+        });
+    }
+
+    private String describeEnvironment(final List<EnvironmentItem> environment) {
+        final StringBuilder builder = new StringBuilder();
+        for (EnvironmentItem item : environment) {
+            if (builder.length() > 0) {
+                builder.append(System.lineSeparator());
+            }
+            builder
+                    .append(item.getName())
+                    .append('=')
+                    .append(item.getValues());
         }
+        return builder.toString();
     }
 }
