@@ -6,9 +6,10 @@ export default defineConfig({
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 2 : undefined,
-  reporter: process.env.CI
-    ? [["github"], ["html", { open: "never" }]]
-    : [["list"], ["html", { open: "never" }]],
+  reporter: [
+    [process.env.CI ? "github" : "list"],
+    ["allure-playwright", { resultsDir: "build/allure-results" }],
+  ],
   globalSetup: "./scripts/prepare-playwright-report.mts",
   webServer: {
     command: "tsx ./scripts/e2e-static-server.mts",
