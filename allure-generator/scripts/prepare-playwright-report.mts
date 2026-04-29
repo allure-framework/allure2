@@ -22,13 +22,12 @@ export interface ReportRequest {
 }
 
 export const DEFAULT_REPORTS: ReportRequest[] = [
-  { fixture: "new-demo", mode: REPORT_MODES.SINGLE_FILE },
-  { fixture: "new-demo", mode: REPORT_MODES.DIRECTORY },
-  { fixture: "allure2", mode: REPORT_MODES.DIRECTORY },
+  { fixture: "ui-demo", mode: REPORT_MODES.SINGLE_FILE },
+  { fixture: "ui-demo", mode: REPORT_MODES.DIRECTORY },
+  { fixture: "attachments", mode: REPORT_MODES.DIRECTORY },
   { fixture: "screen-diff", mode: REPORT_MODES.DIRECTORY },
+  { fixture: "playwright-trace", mode: REPORT_MODES.SINGLE_FILE },
   { fixture: "playwright-trace", mode: REPORT_MODES.DIRECTORY },
-  { fixture: "status-details-html-tags", mode: REPORT_MODES.SINGLE_FILE },
-  { fixture: "status-details-html-tags", mode: REPORT_MODES.DIRECTORY },
 ];
 
 const gradleWrapper = path.join(repoRoot, process.platform === "win32" ? "gradlew.bat" : "gradlew");
@@ -66,7 +65,7 @@ const ensureMode = (mode: string): ReportMode => {
 };
 
 export const getFixtureInputDir = (fixture: string): string =>
-  path.join(generatorRoot, "test-data", fixture);
+  path.join(generatorRoot, "tests", "fixtures", "raw", fixture);
 
 export const getReportOutputDir = ({ fixture, mode }: ReportRequest): string =>
   path.join(e2eRoot, fixture, mode);

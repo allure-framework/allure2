@@ -31,7 +31,8 @@
       "filtered": {
         "shown": "{{count}} getoond",
         "total": "{{count}} testresultaat",
-        "total_plural": "{{count}} testresultaten"
+        "total_one": "{{count}} testresultaat",
+        "total_other": "{{count}} testresultaten"
       },
       "groups": "Groepsinformatie tonen/verbergen",
       "time": {
@@ -48,12 +49,24 @@
           "tooltip": "Doorloop van eerste test gestart tot laatste test beëindigd"
         }
       },
-      "unknown": "<Leeg>"
+      "unknown": "<Leeg>",
+      "noItemSelected": "Geen item geselecteerd"
     },
     "widgetStatus": {
       "showAll": "Toon alle",
       "total": "{{count}} item in totaal",
-      "total_plural": "{{count}} items in totaal"
+      "total_one": "{{count}} item in totaal",
+      "total_other": "{{count}} items in totaal"
+    },
+    "attachment": {
+      "download": "Click to download attachment",
+      "videoNotSupported": "Your browser does not support the video tag"
+    },
+    "screenDiff": {
+      "empty": "No diff data provided",
+      "name": "Screen Diff",
+      "showDiff": "Show diff",
+      "showOverlay": "Show overlay"
     }
   },
   "controls": {
@@ -64,11 +77,16 @@
     "collapse": "Inklappen",
     "expand": "Uitklappen",
     "fullscreen": "Volledig scherm",
-    "language": "Taal wijzigen"
+    "language": "Taal wijzigen",
+    "loading": "Loading...",
+    "close": "Close"
   },
   "errors": {
     "missedAttachment": "Bijlage niet gevonden",
-    "notFound": "Niet gevonden"
+    "notFound": "Niet gevonden",
+    "loadingFailed": "Kan gegevens niet laden",
+    "tabNotFound": "Tab \"{{tab}}\" niet gevonden",
+    "testResultNotFound": "Testresultaat met uid \"{{uid}}\" niet gevonden"
   },
   "marks": {
     "flaky": "Instabiel",
@@ -94,11 +112,17 @@
     "categories": {
       "name": "Categorieën"
     },
+    "behaviors": {
+      "name": "Functionaliteit"
+    },
     "graph": {
       "name": "Grafieken"
     },
     "overview": {
       "name": "Overzicht"
+    },
+    "packages": {
+      "name": "Packages"
     },
     "suites": {
       "name": "Suites"
@@ -106,7 +130,8 @@
     "timeline": {
       "name": "Tijdlijn",
       "selected": "{{count}} test ({{percent}}%) geselecteerd met een duur van meer dan {{duration}}",
-      "selected_plural": "{{count}} tests ({{percent}}%) geselecteerd met een duur van meer dan {{duration}}"
+      "selected_one": "{{count}} test ({{percent}}%) geselecteerd met een duur van meer dan {{duration}}",
+      "selected_other": "{{count}} tests ({{percent}}%) geselecteerd met een duur van meer dan {{duration}}"
     }
   },
   "testResult": {
@@ -126,7 +151,8 @@
       },
       "name": "Uitvoering",
       "setup": "Set up",
-      "teardown": "Tear down"
+      "teardown": "Tear down",
+      "empty": "Geen informatie over de testuitvoering beschikbaar."
     },
     "history": {
       "empty": "Geen historische gegevens beschikbaar.",
@@ -153,16 +179,24 @@
       "time": "{{date}} om {{time}}"
     },
     "severity": {
-      "name": "Ernst"
+      "name": "Ernst",
+      "blocker": "blokkerend",
+      "critical": "kritiek",
+      "normal": "normaal",
+      "minor": "klein",
+      "trivial": "triviaal"
     },
     "stats": {
       "count": {
         "attachments": "{{count}} bijlage",
-        "attachments_plural": "{{count}} bijlagen",
         "parameters": "{{count}} parameter",
-        "parameters_plural": "{{count}} parameters",
         "steps": "{{count}} substap",
-        "steps_plural": "{{count}} substappen"
+        "attachments_one": "{{count}} bijlage",
+        "attachments_other": "{{count}} bijlagen",
+        "parameters_one": "{{count}} parameter",
+        "parameters_other": "{{count}} parameters",
+        "steps_one": "{{count}} substap",
+        "steps_other": "{{count}} substappen"
       }
     },
     "status": {
@@ -176,6 +210,10 @@
   "widget": {
     "categories": {
       "name": "Categorieën"
+    },
+    "behaviors": {
+      "name": "Features en story’s",
+      "showAll": "Toon alle"
     },
     "categoriesTrend": {
       "name": "Trend categorieën"
@@ -206,9 +244,11 @@
     "summary": {
       "aggregatedName": "Geaggregeerd rapport",
       "launches": "start",
-      "launches_plural": "starts",
       "testResults": "testgeval",
-      "testResults_plural": "testgevallen"
+      "launches_one": "start",
+      "launches_other": "starts",
+      "testResults_one": "testgeval",
+      "testResults_other": "testgevallen"
     },
     "trend": {
       "name": "Trend"

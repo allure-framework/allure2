@@ -1,0 +1,107 @@
+{
+  "uuid": "demo-status-unknown",
+  "historyId": "demo-status-unknown-history",
+  "name": "External monitor returns an indeterminate health signal",
+  "fullName": "io.qameta.allure.platform.ExternalMonitorTest.shouldSurfaceUnknownHealth",
+  "status": "unknown",
+  "stage": "finished",
+  "description": "Shows the unknown status alongside metadata-rich links and labels.",
+  "statusDetails": {
+    "known": false,
+    "muted": false,
+    "flaky": false,
+    "message": "Health state could not be determined from the external monitor payload",
+    "trace": "ExternalHealthUnknownException: no quorum reached while sampling provider metrics"
+  },
+  "steps": [
+    {
+      "name": "Poll external monitor",
+      "status": "unknown",
+      "stage": "finished",
+      "steps": [],
+      "attachments": [],
+      "parameters": [
+        {
+          "name": "provider",
+          "value": "synthetic-monitor"
+        }
+      ],
+      "start": 1710000258000,
+      "stop": 1710000268000
+    }
+  ],
+  "attachments": [],
+  "parameters": [
+    {
+      "name": "region",
+      "value": "global"
+    }
+  ],
+  "labels": [
+    {
+      "name": "epic",
+      "value": "Experience health"
+    },
+    {
+      "name": "feature",
+      "value": "External telemetry"
+    },
+    {
+      "name": "story",
+      "value": "Unknown status surfacing"
+    },
+    {
+      "name": "suite",
+      "value": "io.qameta.allure.platform.ExternalMonitorTest"
+    },
+    {
+      "name": "package",
+      "value": "io.qameta.allure.platform.ExternalMonitorTest"
+    },
+    {
+      "name": "testClass",
+      "value": "io.qameta.allure.platform.ExternalMonitorTest"
+    },
+    {
+      "name": "testMethod",
+      "value": "shouldSurfaceUnknownHealth"
+    },
+    {
+      "name": "owner",
+      "value": "observability-demo"
+    },
+    {
+      "name": "severity",
+      "value": "normal"
+    },
+    {
+      "name": "tag",
+      "value": "telemetry"
+    },
+    {
+      "name": "framework",
+      "value": "junit-platform"
+    },
+    {
+      "name": "language",
+      "value": "java"
+    },
+    {
+      "name": "host",
+      "value": "ops-runner-eu-1"
+    },
+    {
+      "name": "thread",
+      "value": "4104@ops-runner-eu-1.scheduler(4)"
+    }
+  ],
+  "links": [
+    {
+      "name": "Monitor dashboard",
+      "type": "link",
+      "url": "https://example.org/monitors/synthetic-monitor"
+    }
+  ],
+  "start": 1710000258000,
+  "stop": 1710000268000
+}

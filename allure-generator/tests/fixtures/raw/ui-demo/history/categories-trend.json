@@ -1,0 +1,70 @@
+[
+  {
+  "buildOrder": 12,
+  "reportUrl": "https://ci.qameta.io/job/allure2/job/master/Demo2_Report/index.html",
+  "reportName": "Demo allure report",
+  "data": {
+    "Product defects": 4,
+    "Outdated tests": 2,
+    "Infrastructure problems": 2,
+    "Test defects": 1,
+    "Ignored tests": 1
+  }
+},
+  {
+    "buildOrder": 11,
+    "reportUrl": "https://ci.qameta.io/job/allure2/job/master/Demo2_Report/index.html",
+    "reportName": "Demo report 1",
+    "data": {
+      "Product defects": 4,
+      "Outdated tests": 2,
+      "Infrastructure problems": 1,
+      "Test defects": 2,
+      "Ignored tests": 1
+    }
+  },
+  {
+    "buildOrder": 10,
+    "reportUrl": "https://ci.qameta.io/job/allure2/job/master/Demo2_Report/index.html",
+    "reportName": "Demo report",
+    "data": {
+      "Product defects": 3,
+      "Outdated tests": 1,
+      "Infrastructure problems": 1,
+      "Test defects": 3,
+      "Ignored tests": 1
+    }
+  },
+  {
+    "buildOrder": 9,
+    "reportName": "Demo allure report",
+    "data": {
+      "Product defects": 1,
+      "Outdated tests": 3,
+      "Infrastructure problems": 6,
+      "Ignored tests": 1
+    }
+  },
+  {
+    "buildOrder": 8,
+    "reportName": "Demo report 1",
+    "data": {
+      "Product defects": 1,
+      "Outdated tests": 5,
+      "Infrastructure problems": 1,
+      "Test defects": 2,
+      "Ignored tests": 1
+    }
+  },
+  {
+    "buildOrder": 7,
+    "reportName": "Demo report",
+    "data": {
+      "Product defects": 6,
+      "Outdated tests": 1,
+      "Infrastructure problems": 1,
+      "Test defects": 1,
+      "Ignored tests": 1
+    }
+  }
+]

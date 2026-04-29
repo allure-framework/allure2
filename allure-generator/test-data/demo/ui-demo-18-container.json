@@ -1,0 +1,56 @@
+{
+  "uuid": "96af06a5-5149-44f9-84e1-2203d6ccccfd",
+  "name": "Deleting existing issue for authorized user",
+  "children": [
+    "44802ea7-bd49-4902-b199-dccc82c8a01d"
+  ],
+  "befores": [
+    {
+      "name": "startDriver",
+      "status": "passed",
+      "stage": "finished",
+      "steps": [
+        {
+          "name": "Starting web driver",
+          "status": "passed",
+          "stage": "finished",
+          "steps": [],
+          "attachments": [],
+          "parameters": [],
+          "start": 1710000018935,
+          "stop": 1710000019745
+        }
+      ],
+      "attachments": [],
+      "parameters": [],
+      "start": 1710000018800,
+      "stop": 1710000019880
+    }
+  ],
+  "afters": [
+    {
+      "name": "stopDriver",
+      "status": "passed",
+      "stage": "finished",
+      "steps": [
+        {
+          "name": "Stopping web driver",
+          "status": "passed",
+          "stage": "finished",
+          "steps": [],
+          "attachments": [],
+          "parameters": [],
+          "start": 1710000066255,
+          "stop": 1710000067065
+        }
+      ],
+      "attachments": [],
+      "parameters": [],
+      "start": 1710000066120,
+      "stop": 1710000067200
+    }
+  ],
+  "links": [],
+  "start": 1710000018800,
+  "stop": 1710000077200
+}

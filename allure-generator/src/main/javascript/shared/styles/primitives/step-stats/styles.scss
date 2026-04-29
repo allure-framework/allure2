@@ -1,0 +1,20 @@
+@use "../../../../variables.scss" as *;
+
+.step-stats {
+  &__summary,
+  &__time {
+    color: $text-muted-color;
+    font-size: small;
+    white-space: nowrap;
+    vertical-align: bottom;
+  }
+
+  &__summary {
+    margin-inline-start: space(1);
+  }
+
+  &__time {
+    flex: 0 0 auto;
+    margin-inline-start: auto;
+  }
+}

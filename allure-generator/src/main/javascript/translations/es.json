@@ -27,11 +27,14 @@
       "download": "Descargar CSV",
       "empty": "No hay ítems",
       "filter": "Estado",
+      "filter-marks": "Marcas",
       "unknown": "<Vacío>",
       "filtered": {
         "shown": "{{count}} mostrados",
         "total": "{{count}} resultado",
-        "total_plural": "{{count}} resultados"
+        "total_one": "{{count}} resultado",
+        "total_many": "{{count}} resultados",
+        "total_other": "{{count}} resultados"
       },
       "groups": "Alternar información del grupo",
       "time": {
@@ -47,12 +50,25 @@
           "name": "Total",
           "tooltip": "Duración desde el primer test iniciado hasta el último finalizado"
         }
-      }
+      },
+      "noItemSelected": "Ningún elemento seleccionado"
     },
     "widgetStatus": {
       "showAll": "Mostrar todo",
       "total": "total de ítems {{count}}",
-      "total_plural": "total de ítems {{count}}"
+      "total_one": "total de ítems {{count}}",
+      "total_many": "total de ítems {{count}}",
+      "total_other": "total de ítems {{count}}"
+    },
+    "attachment": {
+      "download": "Click to download attachment",
+      "videoNotSupported": "Your browser does not support the video tag"
+    },
+    "screenDiff": {
+      "empty": "No diff data provided",
+      "name": "Screen Diff",
+      "showDiff": "Show diff",
+      "showOverlay": "Show overlay"
     }
   },
   "controls": {
@@ -63,11 +79,16 @@
     "collapse": "Colapsar",
     "expand": "Expandir",
     "fullscreen": "Pantalla completa",
-    "language": "Cambiar lenguaje"
+    "language": "Cambiar lenguaje",
+    "loading": "Loading...",
+    "close": "Close"
   },
   "errors": {
     "missedAttachment": "Adjunto no encontrado",
-    "notFound": "No encontrado"
+    "notFound": "No encontrado",
+    "loadingFailed": "No se pudieron cargar los datos",
+    "tabNotFound": "No se encontró la pestaña \"{{tab}}\"",
+    "testResultNotFound": "No se encontró el resultado de prueba con uid \"{{uid}}\""
   },
   "marks": {
     "flaky": "Inestable",
@@ -93,11 +114,17 @@
     "categories": {
       "name": "Categorías"
     },
+    "behaviors": {
+      "name": "Funcionalidades"
+    },
     "graph": {
       "name": "Gráficos"
     },
     "overview": {
       "name": "Visión General"
+    },
+    "packages": {
+      "name": "Paquetes"
     },
     "suites": {
       "name": "Suites"
@@ -105,7 +132,9 @@
     "timeline": {
       "name": "Línea de Tiempo",
       "selected": "Selecionada {{count}} prueba ({{percent}}%) con duración arriba de {{duration}}",
-      "selected_plural": "Selecionadas {{count}} pruebas ({{percent}}%) con duración arriba de {{duration}}"
+      "selected_one": "Selecionada {{count}} prueba ({{percent}}%) con duración arriba de {{duration}}",
+      "selected_many": "Selecionadas {{count}} pruebas ({{percent}}%) con duración arriba de {{duration}}",
+      "selected_other": "Selecionadas {{count}} pruebas ({{percent}}%) con duración arriba de {{duration}}"
     }
   },
   "testResult": {
@@ -120,13 +149,20 @@
     },
     "execution": {
       "body": "Contenido de la prueba",
+      "downloadAttachment": {
+        "tooltip": "Abrir el adjunto en una pestaña nueva"
+      },
       "name": "Ejecución",
       "setup": "Pre-ejecución",
-      "teardown": "Post-ejecución"
+      "teardown": "Post-ejecución",
+      "empty": "No hay información disponible sobre la ejecución de la prueba."
     },
     "history": {
+      "empty": "No hay información de historial disponible.",
       "name": "Histórico",
-      "successRate": "Tasa de éxito"
+      "statistic": "{{passed}} de {{total}}",
+      "successRate": "Tasa de éxito",
+      "time": "{{date}} a las {{time}}"
     },
     "links": {
       "name": "Links"
@@ -142,19 +178,31 @@
     },
     "retries": {
       "empty": "No hay información disponible sobre los reintentos de la prueba",
-      "name": "Reintentos"
+      "name": "Reintentos",
+      "time": "{{date}} a las {{time}}"
     },
     "severity": {
-      "name": "Severidad"
+      "name": "Severidad",
+      "blocker": "bloqueante",
+      "critical": "crítica",
+      "normal": "normal",
+      "minor": "menor",
+      "trivial": "trivial"
     },
     "stats": {
       "count": {
         "attachments": "{{count}} adjunto",
-        "attachments_plural": "{{count}} adjuntos",
         "parameters": "{{count}} parámetro",
-        "parameters_plural": "{{count}} parámetros",
         "steps": "{{count}} sub-paso",
-        "steps_plural": "{{count}} sub-pasos"
+        "attachments_one": "{{count}} adjunto",
+        "attachments_many": "{{count}} adjuntos",
+        "attachments_other": "{{count}} adjuntos",
+        "parameters_one": "{{count}} parámetro",
+        "parameters_many": "{{count}} parámetros",
+        "parameters_other": "{{count}} parámetros",
+        "steps_one": "{{count}} sub-paso",
+        "steps_many": "{{count}} sub-pasos",
+        "steps_other": "{{count}} sub-pasos"
       }
     },
     "status": {
@@ -168,6 +216,10 @@
   "widget": {
     "categories": {
       "name": "Categorías"
+    },
+    "behaviors": {
+      "name": "Funcionalidades por Historias de Usuario",
+      "showAll": "mostrar todo"
     },
     "categoriesTrend": {
       "name": "Tendencia de categorías"
@@ -198,9 +250,13 @@
     "summary": {
       "aggregatedName": "Reporte agregado",
       "launches": "ejecución",
-      "launches_plural": "ejecuciones",
       "testResults": "caso de prueba",
-      "testResults_plural": "casos de prueba"
+      "launches_one": "ejecución",
+      "launches_many": "ejecuciones",
+      "launches_other": "ejecuciones",
+      "testResults_one": "caso de prueba",
+      "testResults_many": "casos de prueba",
+      "testResults_other": "casos de prueba"
     },
     "trend": {
       "name": "Tendencia"

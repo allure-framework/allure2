@@ -1,0 +1,161 @@
+@use "../../../variables.scss" as *;
+
+.node {
+  margin-left: 0;
+  position: relative;
+  display: block;
+  text-decoration: none;
+  color: $text-color;
+
+  .node {
+    margin-inline-start: space(3);
+  }
+  &:last-child {
+    padding-bottom: space(1);
+  }
+  &__arrow {
+    inset-inline-start: space(1);
+    inset-block-start: space(1);
+    position: absolute;
+    top: auto;
+    width: space(2);
+    height: space(2);
+
+    .angle {
+      width: space(2);
+      height: space(2);
+    }
+  }
+  &__name {
+    min-width: 0;
+  }
+  &__unknown {
+    color: $text-muted-color;
+  }
+  &__marks {
+    display: flex;
+    flex: 0 0 auto;
+    float: none;
+    white-space: nowrap;
+  }
+  &__mark {
+    padding-inline: space(1);
+    opacity: 0;
+    &_shown {
+      opacity: 1;
+    }
+  }
+  &__order {
+    color: $text-muted-color;
+    padding-inline: 0;
+  }
+  &__anchor {
+    inset-inline-start: space(1);
+    inset-block-start: space(1);
+    position: absolute;
+    top: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: space(2);
+    height: space(2);
+  }
+  &__stats {
+    display: block;
+    flex: 0 0 auto;
+    float: none;
+    white-space: nowrap;
+  }
+  &__title {
+    overflow: hidden;
+    align-items: center;
+    gap: space(1);
+    line-height: space(2);
+    min-block-size: space(4);
+    padding-block: 0;
+    padding-inline-end: $gap-size;
+    padding-inline-start: space(4);
+    flex: 1;
+    display: flex;
+    cursor: pointer;
+    border-top: 1px solid $border-color;
+    position: relative;
+    &_active {
+      background-color: $selected-color;
+      &::before {
+        background-color: $selected-color;
+      }
+    }
+    &:hover {
+      background-color: $hover-color;
+      &::before {
+        background-color: $hover-color;
+      }
+    }
+  }
+  & > .node__title.long-line {
+    align-items: flex-start;
+    padding-block: space(1);
+  }
+  & > .node__title.long-line > .node__arrow {
+    inset-block-start: space(1);
+  }
+  &__leaf > &__title {
+    align-items: flex-start;
+    padding-block: space(1);
+  }
+  &__leaf > &__title > &__anchor {
+    inset-block-start: space(1);
+  }
+  &__leaf > &__title > &__stats {
+    color: $text-muted-color;
+  }
+  &__time {
+    padding: space(1);
+  }
+  &__parameters {
+    padding: 0;
+    color: $text-muted-color;
+    min-width: 2ch;
+    font-size: smaller;
+    &_separator:last-child {
+      display: none;
+    }
+  }
+  &__children {
+    display: none;
+    .node__expanded > & {
+      display: block;
+    }
+  }
+  &:focus {
+    outline: 0;
+  }
+
+  .tree__strut {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+}
+
+[dir="rtl"] .attachment-row.attachment-row_selected > .attachment-row__arrow > .angle {
+  transform: rotate(180deg);
+}
+
+[dir="rtl"] .step_expanded > .step__title > .step__arrow {
+  transform: rotate(90deg);
+}
+
+[dir="rtl"] .node__expanded > .node__title > .node__arrow {
+  transform: rotate(90deg);
+}
+
+[dir="ltr"] .node__expanded > .node__title > .node__arrow {
+  transform: rotate(90deg);
+}
+
+allure-tree-view > .tree__content::after {
+  content: "";
+  display: block;
+  height: $tree-scroll-strut-size;
+}

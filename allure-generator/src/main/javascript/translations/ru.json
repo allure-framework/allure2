@@ -24,16 +24,21 @@
       "showCases": "Показать результаты со статусом \"{{status}}\""
     },
     "tree": {
+      "download": "Скачать CSV",
       "empty": "Нет данных",
       "filter": "Статусы",
       "filter-marks": "Метки",
       "filtered": {
-        "shown_0": "{{count}} показан",
-        "shown_1": "{{count}} показано",
-        "shown_2": "{{count}} показано",
-        "total_0": "всего {{count}} тест",
-        "total_1": "всего {{count}} теста",
-        "total_2": "всего {{count}} тестов"
+        "shown": "{{count}} показан",
+        "total": "всего {{count}} тест",
+        "shown_one": "{{count}} показан",
+        "shown_few": "{{count}} показано",
+        "shown_many": "{{count}} показано",
+        "shown_other": "{{count}} показан",
+        "total_one": "всего {{count}} тест",
+        "total_few": "всего {{count}} теста",
+        "total_many": "всего {{count}} тестов",
+        "total_other": "всего {{count}} тестов"
       },
       "groups": "Показывать информацию о группах",
       "time": {
@@ -50,13 +55,26 @@
           "tooltip": "Время с начала первого теста до конца последнего"
         }
       },
-      "unknown": "<Пусто>"
+      "unknown": "<Пусто>",
+      "noItemSelected": "Ничего не выбрано"
     },
     "widgetStatus": {
       "showAll": "Показать все",
-      "total_0": "Всего {{count}} элемент",
-      "total_1": "Всего {{count}} элемента",
-      "total_2": "Всего {{count}} элементов"
+      "total": "Всего {{count}} элемент",
+      "total_one": "Всего {{count}} элемент",
+      "total_few": "Всего {{count}} элемента",
+      "total_many": "Всего {{count}} элементов",
+      "total_other": "Всего {{count}} элементов"
+    },
+    "attachment": {
+      "download": "Click to download attachment",
+      "videoNotSupported": "Your browser does not support the video tag"
+    },
+    "screenDiff": {
+      "empty": "No diff data provided",
+      "name": "Screen Diff",
+      "showDiff": "Show diff",
+      "showOverlay": "Show overlay"
     }
   },
   "controls": {
@@ -67,11 +85,16 @@
     "collapse": "Свернуть",
     "expand": "Развернуть",
     "fullscreen": "На весь экран",
-    "language": "Сменить язык"
+    "language": "Сменить язык",
+    "loading": "Loading...",
+    "close": "Close"
   },
   "errors": {
     "missedAttachment": "Вложение не найдено",
-    "notFound": "Не найдено"
+    "notFound": "Не найдено",
+    "loadingFailed": "Не удалось загрузить данные",
+    "tabNotFound": "Вкладка \"{{tab}}\" не найдена",
+    "testResultNotFound": "Результат теста с uid \"{{uid}}\" не найден"
   },
   "marks": {
     "flaky": "Нестабильный",
@@ -97,20 +120,28 @@
     "categories": {
       "name": "Категории"
     },
+    "behaviors": {
+      "name": "Функциональность"
+    },
     "graph": {
       "name": "Графики"
     },
     "overview": {
       "name": "Обзор"
     },
+    "packages": {
+      "name": "Пакеты"
+    },
     "suites": {
       "name": "Тест сюиты"
     },
     "timeline": {
       "name": "Временная шкала",
-      "selected_0": "Выбран {{count}} тест ({{percent}}%) с длительностью выше {{duration}}",
-      "selected_1": "Выбрано {{count}} теста ({{percent}}%) с длительностью выше {{duration}}",
-      "selected_2": "Выбрано {{count}} тестов ({{percent}}%) с длительностью выше {{duration}}"
+      "selected": "Выбран {{count}} тест ({{percent}}%) с длительностью выше {{duration}}",
+      "selected_one": "Выбран {{count}} тест ({{percent}}%) с длительностью выше {{duration}}",
+      "selected_few": "Выбрано {{count}} теста ({{percent}}%) с длительностью выше {{duration}}",
+      "selected_many": "Выбрано {{count}} тестов ({{percent}}%) с длительностью выше {{duration}}",
+      "selected_other": "Выбрано {{count}} тестов ({{percent}}%) с длительностью выше {{duration}}"
     }
   },
   "testResult": {
@@ -125,13 +156,20 @@
     },
     "execution": {
       "body": "Тело теста",
+      "downloadAttachment": {
+        "tooltip": "Открыть вложение в новой вкладке"
+      },
       "name": "Выполнение",
       "setup": "Подготовка",
-      "teardown": "Завершение"
+      "teardown": "Завершение",
+      "empty": "Нет информации о выполнении теста."
     },
     "history": {
+      "empty": "История недоступна.",
       "name": "История",
-      "successRate": "Success rate"
+      "statistic": "{{passed}} из {{total}}",
+      "successRate": "Success rate",
+      "time": "{{date}} в {{time}}"
     },
     "links": {
       "name": "Ссылки"
@@ -147,7 +185,8 @@
     },
     "retries": {
       "empty": "Нет информации о перезапусках теста",
-      "name": "Перезапуски"
+      "name": "Перезапуски",
+      "time": "{{date}} в {{time}}"
     },
     "severity": {
       "name": "Важность",
@@ -159,15 +198,21 @@
     },
     "stats": {
       "count": {
-        "attachments_0": "{{count}} вложение",
-        "attachments_1": "{{count}} вложения",
-        "attachments_2": "{{count}} вложений",
-        "parameters_0": "{{count}} параметр",
-        "parameters_1": "{{count}} параметра",
-        "parameters_2": "{{count}} параметров",
-        "steps_0": "{{count}} вложенный шаг",
-        "steps_1": "{{count}} вложенных шага",
-        "steps_2": "{{count}} вложенных шагов"
+        "attachments": "{{count}} вложение",
+        "parameters": "{{count}} параметр",
+        "steps": "{{count}} вложенный шаг",
+        "attachments_one": "{{count}} вложение",
+        "attachments_few": "{{count}} вложения",
+        "attachments_many": "{{count}} вложений",
+        "attachments_other": "{{count}} вложений",
+        "parameters_one": "{{count}} параметр",
+        "parameters_few": "{{count}} параметра",
+        "parameters_many": "{{count}} параметров",
+        "parameters_other": "{{count}} параметров",
+        "steps_one": "{{count}} вложенный шаг",
+        "steps_few": "{{count}} вложенных шага",
+        "steps_many": "{{count}} вложенных шагов",
+        "steps_other": "{{count}} вложенных шагов"
       }
     },
     "status": {
@@ -181,6 +226,16 @@
   "widget": {
     "categories": {
       "name": "Категории"
+    },
+    "behaviors": {
+      "name": "Функциональность",
+      "showAll": "показать все"
+    },
+    "categoriesTrend": {
+      "name": "Тренд категорий"
+    },
+    "durationTrend": {
+      "name": "Тренд длительности"
     },
     "environment": {
       "empty": "Отсутствует информация про окружение",
@@ -196,17 +251,24 @@
       "empty": "Отсутствует информация про запуски",
       "name": "Запуски тестов"
     },
+    "retryTrend": {
+      "name": "Тренд перезапусков"
+    },
     "suites": {
       "name": "Тест сюиты"
     },
     "summary": {
       "aggregatedName": "Агрегированый отчет",
-      "launches_0": "запуск тестов",
-      "launches_1": "запуска тестов",
-      "launches_2": "запусков тестов",
-      "testResults_0": "тестовый сценарий",
-      "testResults_1": "тестовых сценария",
-      "testResults_2": "тестовых сценариев"
+      "launches": "запуск тестов",
+      "testResults": "тестовый сценарий",
+      "launches_one": "запуск тестов",
+      "launches_few": "запуска тестов",
+      "launches_many": "запусков тестов",
+      "launches_other": "запусков тестов",
+      "testResults_one": "тестовый сценарий",
+      "testResults_few": "тестовых сценария",
+      "testResults_many": "тестовых сценариев",
+      "testResults_other": "тестовых сценариев"
     },
     "trend": {
       "name": "Тренд"

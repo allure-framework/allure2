@@ -1,0 +1,86 @@
+{
+  "uuid": "7d1f5d86-b675-4d70-b88e-2b735c0c0d5b",
+  "historyId": "playwright-trace-history",
+  "name": "opens playwright trace attachment",
+  "fullName": "io.qameta.allure.PlaywrightTraceTest.shouldOpenTraceAttachment",
+  "status": "passed",
+  "stage": "finished",
+  "steps": [
+    {
+      "name": "Record browser trace",
+      "status": "passed",
+      "stage": "finished",
+      "steps": [],
+      "attachments": [
+        {
+          "name": "Playwright trace",
+          "source": "playwright-trace-archive.zip",
+          "type": "application/vnd.allure.playwright-trace",
+          "size": 4562
+        }
+      ],
+      "parameters": [],
+      "start": 1710000000000,
+      "stop": 1710000014000
+    }
+  ],
+  "attachments": [],
+  "parameters": [],
+  "labels": [
+    {
+      "name": "feature",
+      "value": "Attachments"
+    },
+    {
+      "name": "story",
+      "value": "Playwright trace"
+    },
+    {
+      "name": "owner",
+      "value": "codex"
+    },
+    {
+      "name": "tag",
+      "value": "trace"
+    },
+    {
+      "name": "language",
+      "value": "javascript"
+    },
+    {
+      "name": "framework",
+      "value": "playwright"
+    },
+    {
+      "name": "package",
+      "value": "io.qameta.allure.PlaywrightTraceTest"
+    },
+    {
+      "name": "testClass",
+      "value": "io.qameta.allure.PlaywrightTraceTest"
+    },
+    {
+      "name": "testMethod",
+      "value": "shouldOpenTraceAttachment"
+    },
+    {
+      "name": "suite",
+      "value": "io.qameta.allure.PlaywrightTraceTest"
+    },
+    {
+      "name": "epic",
+      "value": "Report UI"
+    },
+    {
+      "name": "host",
+      "value": "trace-runner.local"
+    },
+    {
+      "name": "thread",
+      "value": "8942@trace-runner.local.playwright-worker(7)"
+    }
+  ],
+  "links": [],
+  "start": 1710000000000,
+  "stop": 1710000014000
+}

@@ -1,0 +1,160 @@
+{
+  "name": "Deleting existing issue for authorized user",
+  "status": "passed",
+  "stage": "finished",
+  "description": "",
+  "steps": [
+    {
+      "name": "Open pull requests page `allure-framework/allure2`",
+      "status": "passed",
+      "stage": "finished",
+      "steps": [],
+      "attachments": [
+        {
+          "name": "Page",
+          "source": "workspace-snapshot-06.html",
+          "type": "text/html"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "owner",
+          "value": "allure-framework"
+        },
+        {
+          "name": "repo",
+          "value": "allure2"
+        }
+      ],
+      "start": 1710000020000,
+      "stop": 1710000031200
+    },
+    {
+      "name": "Create pull request from branch `new-feature`",
+      "status": "passed",
+      "stage": "finished",
+      "steps": [],
+      "attachments": [],
+      "parameters": [
+        {
+          "name": "branch",
+          "value": "new-feature"
+        }
+      ],
+      "start": 1710000031600,
+      "stop": 1710000042800
+    },
+    {
+      "name": "Close pull request for branch `new-feature`",
+      "status": "passed",
+      "stage": "finished",
+      "steps": [],
+      "attachments": [],
+      "parameters": [
+        {
+          "name": "branch",
+          "value": "new-feature"
+        }
+      ],
+      "start": 1710000043200,
+      "stop": 1710000054400
+    },
+    {
+      "name": "Check pull request for branch `new-feature` not exists",
+      "status": "passed",
+      "stage": "finished",
+      "steps": [],
+      "attachments": [],
+      "parameters": [
+        {
+          "name": "branch",
+          "value": "new-feature"
+        }
+      ],
+      "start": 1710000054800,
+      "stop": 1710000076000
+    }
+  ],
+  "attachments": [],
+  "parameters": [],
+  "start": 1710000020000,
+  "stop": 1710000076000,
+  "uuid": "44802ea7-bd49-4902-b199-dccc82c8a01d",
+  "historyId": "4313f5ccf5d254c3940e26924ce28935",
+  "fullName": "io.qameta.allure.PullRequestsWebTest.shouldClosePullRequest",
+  "labels": [
+    {
+      "name": "tag",
+      "value": "web"
+    },
+    {
+      "name": "tag",
+      "value": "regress"
+    },
+    {
+      "name": "feature",
+      "value": "Pull Requests"
+    },
+    {
+      "name": "owner",
+      "value": "eroshenkoam"
+    },
+    {
+      "name": "layer",
+      "value": "web"
+    },
+    {
+      "name": "jira",
+      "value": "AE-2"
+    },
+    {
+      "name": "tm4j",
+      "value": "AE-T7"
+    },
+    {
+      "name": "story",
+      "value": "Close existing pull request"
+    },
+    {
+      "name": "msrv",
+      "value": "Repository"
+    },
+    {
+      "name": "host",
+      "value": "ip-192-168-31-222.eu-central-1.compute.internal"
+    },
+    {
+      "name": "thread",
+      "value": "38312@ip-192-168-31-222.eu-central-1.compute.internal.ForkJoinPool-1-worker-19(24)"
+    },
+    {
+      "name": "framework",
+      "value": "junit-platform"
+    },
+    {
+      "name": "language",
+      "value": "java"
+    },
+    {
+      "name": "package",
+      "value": "io.qameta.allure.PullRequestsWebTest"
+    },
+    {
+      "name": "testClass",
+      "value": "io.qameta.allure.PullRequestsWebTest"
+    },
+    {
+      "name": "testMethod",
+      "value": "shouldClosePullRequest"
+    },
+    {
+      "name": "suite",
+      "value": "io.qameta.allure.PullRequestsWebTest"
+    },
+    {
+      "name": "epic",
+      "value": "Repository collaboration"
+    }
+  ],
+  "links": []
+}

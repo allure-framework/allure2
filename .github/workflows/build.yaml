@@ -43,7 +43,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: allure-results
-          path: allure-generator/test-data/demo2
+          path: allure-generator/tests/fixtures/raw/commandline-smoke
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v7

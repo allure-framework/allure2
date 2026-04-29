@@ -20,8 +20,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static io.qameta.allure.testdata.TestData.allure1data;
 import static io.qameta.allure.testdata.TestData.unpackFile;
@@ -51,11 +55,14 @@ class ReportGeneratorTest {
     }
 
     @Test
-    void shouldWriteReportStatic() {
-        assertThat(output.resolve("app.js"))
-                .isRegularFile();
-        assertThat(output.resolve("styles.css"))
-                .isRegularFile();
+    void shouldWriteReportStatic() throws Exception {
+        final Path assetsDirectory = output.resolve("assets");
+
+        assertThat(assetsDirectory)
+                .isDirectory();
+        assertThat(listRelativeFiles(assetsDirectory))
+                .anySatisfy(file -> assertThat(file).endsWith(".js"))
+                .anySatisfy(file -> assertThat(file).endsWith(".ico"));
     }
 
     @Test
@@ -182,5 +189,15 @@ class ReportGeneratorTest {
     void shouldGenerateMail() {
         assertThat(output.resolve("export/mail.html"))
                 .isRegularFile();
+    }
+
+    private static List<String> listRelativeFiles(final Path directory) throws IOException {
+        try (Stream<Path> files = Files.walk(directory)) {
+            return files
+                    .filter(Files::isRegularFile)
+                    .map(directory::relativize)
+                    .map(Path::toString)
+                    .collect(Collectors.toList());
+        }
     }
 }

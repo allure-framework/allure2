@@ -1,0 +1,180 @@
+{
+  "uuid": "screen-diff-banner-case",
+  "historyId": "screen-diff-banner-case-history",
+  "name": "buttons",
+  "fullName": "io.qameta.allure.visual.ScreenDiffDemoTest.shouldRenderBannerDiff",
+  "status": "failed",
+  "stage": "finished",
+  "description": "Visual regression example that demonstrates the dedicated Screen Diff block together with multiple image diff attachments in a single test.",
+  "statusDetails": {
+    "known": false,
+    "muted": false,
+    "flaky": false,
+    "message": "Visual baselines for the onboarding surfaces do not match the latest capture.",
+    "trace": "java.lang.AssertionError: Expected onboarding surface screenshots to match baseline\n\tat io.qameta.allure.visual.ScreenDiffDemoTest.shouldRenderBannerDiff(ScreenDiffDemoTest.java:87)"
+  },
+  "steps": [
+    {
+      "name": "Capture onboarding banner diff payload",
+      "status": "passed",
+      "stage": "finished",
+      "steps": [],
+      "attachments": [
+        {
+          "name": "Onboarding banner diff",
+          "source": "screen-diff-banner.imagediff",
+          "type": "application/vnd.allure.image.diff"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "component",
+          "value": "onboarding-banner"
+        }
+      ],
+      "start": 1710000008000,
+      "stop": 1710000012400
+    },
+    {
+      "name": "Capture checkout summary diff payload",
+      "status": "passed",
+      "stage": "finished",
+      "steps": [],
+      "attachments": [
+        {
+          "name": "Checkout summary diff",
+          "source": "screen-diff-checkout.imagediff",
+          "type": "application/vnd.allure.image.diff"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "component",
+          "value": "checkout-summary"
+        }
+      ],
+      "start": 1710000013200,
+      "stop": 1710000017600
+    },
+    {
+      "name": "Capture release metrics diff payload",
+      "status": "passed",
+      "stage": "finished",
+      "steps": [],
+      "attachments": [
+        {
+          "name": "Release metrics diff",
+          "source": "screen-diff-metrics.imagediff",
+          "type": "application/vnd.allure.image.diff"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "component",
+          "value": "release-metrics"
+        }
+      ],
+      "start": 1710000018400,
+      "stop": 1710000022800
+    }
+  ],
+  "attachments": [
+    {
+      "name": "actual",
+      "source": "screen-diff-banner-actual.png",
+      "type": "image/png"
+    },
+    {
+      "name": "expected",
+      "source": "screen-diff-banner-expected.png",
+      "type": "image/png"
+    },
+    {
+      "name": "diff",
+      "source": "screen-diff-banner-diff.png",
+      "type": "image/png"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "viewport",
+      "value": "desktop"
+    }
+  ],
+  "labels": [
+    {
+      "name": "epic",
+      "value": "Experience health"
+    },
+    {
+      "name": "feature",
+      "value": "Visual regression"
+    },
+    {
+      "name": "story",
+      "value": "Screen diff block"
+    },
+    {
+      "name": "suite",
+      "value": "io.qameta.allure.visual.ScreenDiffDemoTest"
+    },
+    {
+      "name": "package",
+      "value": "io.qameta.allure.visual.ScreenDiffDemoTest"
+    },
+    {
+      "name": "testClass",
+      "value": "io.qameta.allure.visual.ScreenDiffDemoTest"
+    },
+    {
+      "name": "testMethod",
+      "value": "shouldRenderBannerDiff"
+    },
+    {
+      "name": "owner",
+      "value": "visual-demo"
+    },
+    {
+      "name": "severity",
+      "value": "normal"
+    },
+    {
+      "name": "tag",
+      "value": "visual"
+    },
+    {
+      "name": "framework",
+      "value": "junit-platform"
+    },
+    {
+      "name": "language",
+      "value": "java"
+    },
+    {
+      "name": "testType",
+      "value": "screenshotDiff"
+    },
+    {
+      "name": "host",
+      "value": "visual-runner.local"
+    },
+    {
+      "name": "thread",
+      "value": "5511@visual-runner.local.screenshot-worker(1)"
+    }
+  ],
+  "links": [
+    {
+      "name": "Design ticket",
+      "type": "issue",
+      "url": "https://example.org/issues/VIS-12"
+    },
+    {
+      "name": "Visual baseline",
+      "type": "link",
+      "url": "https://example.org/design/onboarding-banner"
+    }
+  ],
+  "start": 1710000008000,
+  "stop": 1710000022800
+}

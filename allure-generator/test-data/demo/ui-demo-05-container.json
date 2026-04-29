@@ -1,0 +1,56 @@
+{
+  "uuid": "1c7c589b-ec1d-4a26-baef-a9aef1b19e40",
+  "name": "Creating new issue authorized user",
+  "children": [
+    "c77757b3-e038-49e7-9744-816c9542ee43"
+  ],
+  "befores": [
+    {
+      "name": "startDriver",
+      "status": "passed",
+      "stage": "finished",
+      "steps": [
+        {
+          "name": "Starting web driver",
+          "status": "passed",
+          "stage": "finished",
+          "steps": [],
+          "attachments": [],
+          "parameters": [],
+          "start": 1710000072935,
+          "stop": 1710000073745
+        }
+      ],
+      "attachments": [],
+      "parameters": [],
+      "start": 1710000072800,
+      "stop": 1710000073880
+    }
+  ],
+  "afters": [
+    {
+      "name": "stopDriver",
+      "status": "passed",
+      "stage": "finished",
+      "steps": [
+        {
+          "name": "Stopping web driver",
+          "status": "passed",
+          "stage": "finished",
+          "steps": [],
+          "attachments": [],
+          "parameters": [],
+          "start": 1710000109255,
+          "stop": 1710000110065
+        }
+      ],
+      "attachments": [],
+      "parameters": [],
+      "start": 1710000109120,
+      "stop": 1710000110200
+    }
+  ],
+  "links": [],
+  "start": 1710000072800,
+  "stop": 1710000110200
+}

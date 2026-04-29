@@ -9,7 +9,7 @@
     <parameter>
         <name>Test stand</name>
         <key>my.properties.url</key>
-        <value>http://yandex.ru</value>
+        <value>http://example.org</value>
     </parameter>
     <parameter>
         <name>Stacking parameter</name>

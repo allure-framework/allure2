@@ -1,0 +1,11 @@
+@use "../../../variables.scss" as *;
+
+.test-result-retries {
+  &__row {
+    padding: space(1) space(2) space(1) $gap-size;
+    &:hover {
+      background-color: $hover-color;
+    }
+    cursor: pointer;
+  }
+}

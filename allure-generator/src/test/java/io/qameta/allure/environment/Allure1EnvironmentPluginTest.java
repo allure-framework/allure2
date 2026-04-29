@@ -76,7 +76,7 @@ class Allure1EnvironmentPluginTest {
     void shouldReadEnvironmentXml() throws Exception {
         EnvironmentItem[] expected = new EnvironmentItem[]{
                 new EnvironmentItem().setName("my.properties.browser").setValues(singletonList("Firefox")),
-                new EnvironmentItem().setName("my.properties.url").setValues(singletonList("http://yandex.ru")),
+                new EnvironmentItem().setName("my.properties.url").setValues(singletonList("http://example.org")),
                 new EnvironmentItem().setName("allure.test.property").setValues(singletonList("3")),
         };
 
@@ -96,7 +96,7 @@ class Allure1EnvironmentPluginTest {
     void shouldStackParameterValues() throws Exception {
         EnvironmentItem[] expected = new EnvironmentItem[]{
                 new EnvironmentItem().setName("my.properties.browser").setValues(singletonList("Firefox")),
-                new EnvironmentItem().setName("my.properties.url").setValues(singletonList("http://yandex.ru")),
+                new EnvironmentItem().setName("my.properties.url").setValues(singletonList("http://example.org")),
                 new EnvironmentItem().setName("allure.test.run.id").setValues(singletonList("some-id")),
                 new EnvironmentItem().setName("allure.test.run.name").setValues(singletonList("some-name")),
                 new EnvironmentItem().setName("allure.test.property").setValues(asList("2", "3")),

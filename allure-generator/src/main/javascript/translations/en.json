@@ -31,7 +31,8 @@
       "filtered": {
         "shown": "{{count}} shown",
         "total": "{{count}} test result",
-        "total_plural": "{{count}} test results"
+        "total_one": "{{count}} test result",
+        "total_other": "{{count}} test results"
       },
       "groups": "Toggle groups info",
       "time": {
@@ -48,12 +49,24 @@
           "tooltip": "Duration from first test started to last test finished"
         }
       },
-      "unknown": "<Empty>"
+      "unknown": "<Empty>",
+      "noItemSelected": "No item selected"
     },
     "widgetStatus": {
       "showAll": "Show all",
       "total": "{{count}} item total",
-      "total_plural": "{{count}} items total"
+      "total_one": "{{count}} item total",
+      "total_other": "{{count}} items total"
+    },
+    "attachment": {
+      "download": "Click to download attachment",
+      "videoNotSupported": "Your browser does not support the video tag"
+    },
+    "screenDiff": {
+      "empty": "No diff data provided",
+      "name": "Screen Diff",
+      "showDiff": "Show diff",
+      "showOverlay": "Show overlay"
     }
   },
   "controls": {
@@ -64,11 +77,16 @@
     "collapse": "Collapse",
     "expand": "Expand",
     "fullscreen": "Full screen",
-    "language": "Change language"
+    "language": "Change language",
+    "loading": "Loading...",
+    "close": "Close"
   },
   "errors": {
+    "loadingFailed": "Failed to load data",
     "missedAttachment": "Attachment not found",
-    "notFound": "Not found"
+    "notFound": "Not found",
+    "tabNotFound": "Tab \"{{tab}}\" not found",
+    "testResultNotFound": "Test result with uid \"{{uid}}\" not found"
   },
   "marks": {
     "flaky": "Flaky",
@@ -94,11 +112,17 @@
     "categories": {
       "name": "Categories"
     },
+    "behaviors": {
+      "name": "Behaviors"
+    },
     "graph": {
       "name": "Graphs"
     },
     "overview": {
       "name": "Overview"
+    },
+    "packages": {
+      "name": "Packages"
     },
     "suites": {
       "name": "Suites"
@@ -106,7 +130,8 @@
     "timeline": {
       "name": "Timeline",
       "selected": "Selected {{count}} test ({{percent}}%) with duration above {{duration}}",
-      "selected_plural": "Selected {{count}} tests ({{percent}}%) with duration above {{duration}}"
+      "selected_one": "Selected {{count}} test ({{percent}}%) with duration above {{duration}}",
+      "selected_other": "Selected {{count}} tests ({{percent}}%) with duration above {{duration}}"
     }
   },
   "testResult": {
@@ -126,7 +151,8 @@
       },
       "name": "Execution",
       "setup": "Set up",
-      "teardown": "Tear down"
+      "teardown": "Tear down",
+      "empty": "No information about test execution is available."
     },
     "history": {
       "empty": "No history information available.",
@@ -163,11 +189,14 @@
     "stats": {
       "count": {
         "attachments": "{{count}} attachment",
-        "attachments_plural": "{{count}} attachments",
         "parameters": "{{count}} parameter",
-        "parameters_plural": "{{count}} parameters",
         "steps": "{{count}} sub-step",
-        "steps_plural": "{{count}} sub-steps"
+        "attachments_one": "{{count}} attachment",
+        "attachments_other": "{{count}} attachments",
+        "parameters_one": "{{count}} parameter",
+        "parameters_other": "{{count}} parameters",
+        "steps_one": "{{count}} sub-step",
+        "steps_other": "{{count}} sub-steps"
       }
     },
     "status": {
@@ -181,6 +210,10 @@
   "widget": {
     "categories": {
       "name": "Categories"
+    },
+    "behaviors": {
+      "name": "Features by stories",
+      "showAll": "show all"
     },
     "categoriesTrend": {
       "name": "Categories trend"
@@ -211,9 +244,11 @@
     "summary": {
       "aggregatedName": "Aggregated report",
       "launches": "launch",
-      "launches_plural": "launches",
       "testResults": "test case",
-      "testResults_plural": "test cases"
+      "launches_one": "launch",
+      "launches_other": "launches",
+      "testResults_one": "test case",
+      "testResults_other": "test cases"
     },
     "trend": {
       "name": "Trend"

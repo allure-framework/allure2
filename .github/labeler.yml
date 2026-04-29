@@ -7,10 +7,9 @@ theme:build:
   - "**/build.gradle.kts"
   - "gradle.properties"
   - ".gitignore"
-  - "allure-generator/webpack/*"
   - "allure-generator/tsconfig.json"
-  - "allure-generator/tslint.json"
-  - "allure-generator/.prettierrc"
+  - "allure-generator/.oxfmtrc.json"
+  - "allure-generator/.oxlintrc.json"
 
 theme:ui:
   - "allure-generator/src/main/javascript/**"

@@ -1,0 +1,4 @@
+suite,passed,failed,broken,flaky
+pull-requests,4,1,0,1
+issues,3,1,1,0
+report-ui,4,1,0,0

@@ -30,6 +30,30 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class ReportWebGeneratorTest {
 
+    @Test
+    void shouldReferenceHashedDirectoryAssets(@TempDir final Path tempDirectory) {
+        final Configuration configuration = ConfigurationBuilder.empty().build();
+
+        new ReportWebGenerator()
+                .generate(
+                        configuration,
+                        new FileSystemReportStorage(tempDirectory),
+                        tempDirectory
+                );
+
+        final Path indexHtml = tempDirectory.resolve("index.html");
+
+        assertThat(indexHtml)
+                .isRegularFile()
+                .content(StandardCharsets.UTF_8)
+                .contains("<script src=\"assets/")
+                .contains("assets/")
+                .doesNotContain("type=\"module\"")
+                .doesNotContain("type=\"importmap\"")
+                .doesNotContain("app.js")
+                .doesNotContain("styles.css");
+    }
+
     @SetEnvironmentVariable(key = "ALLURE_NO_ANALYTICS", value = "true")
     @Test
     void shouldDisableAnalytics(@TempDir final Path tempDirectory) {
@@ -89,5 +113,28 @@ class ReportWebGeneratorTest {
                 .isRegularFile()
                 .content(StandardCharsets.UTF_8)
                 .contains("lang=\"en\"");
+    }
+
+    @Test
+    void shouldInlineHashedScriptsInSingleFileMode(@TempDir final Path tempDirectory) {
+        final Configuration configuration = ConfigurationBuilder.empty().build();
+        final InMemoryReportStorage reportStorage = new InMemoryReportStorage();
+
+        new ReportWebGenerator()
+                .generate(
+                        configuration,
+                        reportStorage,
+                        tempDirectory
+                );
+
+        final Path indexHtml = tempDirectory.resolve("index.html");
+
+        assertThat(indexHtml)
+                .isRegularFile()
+                .content(StandardCharsets.UTF_8)
+                .contains("window.__allureCoreLoaded")
+                .contains("data:text/javascript; charset=utf-8;base64,")
+                .doesNotContain("type=\"module\"")
+                .doesNotContain("type=\"importmap\"");
     }
 }

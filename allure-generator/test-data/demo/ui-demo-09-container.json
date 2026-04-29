@@ -1,0 +1,56 @@
+{
+  "uuid": "3a0a83ab-9765-41ef-86f1-ba41d685c5e9",
+  "name": "Adding note to advertisement",
+  "children": [
+    "27a3ba4a-82dd-4534-8196-02bc5e49e3ea"
+  ],
+  "befores": [
+    {
+      "name": "startDriver",
+      "status": "passed",
+      "stage": "finished",
+      "steps": [
+        {
+          "name": "Starting web driver",
+          "status": "passed",
+          "stage": "finished",
+          "steps": [],
+          "attachments": [],
+          "parameters": [],
+          "start": 1710000200935,
+          "stop": 1710000201745
+        }
+      ],
+      "attachments": [],
+      "parameters": [],
+      "start": 1710000200800,
+      "stop": 1710000201880
+    }
+  ],
+  "afters": [
+    {
+      "name": "stopDriver",
+      "status": "passed",
+      "stage": "finished",
+      "steps": [
+        {
+          "name": "Stopping web driver",
+          "status": "passed",
+          "stage": "finished",
+          "steps": [],
+          "attachments": [],
+          "parameters": [],
+          "start": 1710000239255,
+          "stop": 1710000240065
+        }
+      ],
+      "attachments": [],
+      "parameters": [],
+      "start": 1710000239120,
+      "stop": 1710000240200
+    }
+  ],
+  "links": [],
+  "start": 1710000200800,
+  "stop": 1710000240200
+}

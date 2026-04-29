@@ -1,0 +1,39 @@
+@use "../../variables.scss" as *;
+
+.a-icon {
+  display: inline-block;
+  width: space(2);
+  height: space(2);
+  flex: 0 0 auto;
+  vertical-align: middle;
+  color: inherit;
+}
+
+.a-icon_inline {
+  vertical-align: middle;
+}
+
+.a-icon_size_xs {
+  width: space(1);
+  height: space(1);
+}
+
+.a-icon_size_s {
+  width: space(2);
+  height: space(2);
+}
+
+.a-icon_size_m {
+  width: space(3);
+  height: space(3);
+}
+
+.a-icon_size_l {
+  width: space(4);
+  height: space(4);
+}
+
+.a-icon_size_xl {
+  width: space(5);
+  height: space(5);
+}

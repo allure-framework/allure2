@@ -1,51 +1,69 @@
 import { expect, test, type Locator, type Page } from "playwright/test";
 import { fixtures, REPORT_MODES } from "./support/fixtures.mts";
 import { openCaseFromTree } from "./support/report.mts";
-import { stepLocator } from "./support/ui.mts";
+import { previewContainerFor, stepLocator } from "./support/ui.mts";
 
 const playwrightTrace = fixtures.playwrightTrace;
+const reportModes = [REPORT_MODES.SINGLE_FILE, REPORT_MODES.DIRECTORY] as const;
 
 const expandStep = async (page: Page, title: string): Promise<Locator> => {
   const step = stepLocator(page, title);
 
-  await step.locator(":scope > .step__title_hasContent").click();
+  await step.locator(".step__name").first().click();
   await expect(step).toHaveClass(/step_expanded/);
   return step;
 };
 
-test.describe("Playwright Trace", () => {
-  test("uses the trace-specific attachment flow and mounts the trace viewer iframe", async ({
-    page,
-  }) => {
-    await openCaseFromTree(page, {
-      fixture: playwrightTrace.name,
-      mode: REPORT_MODES.DIRECTORY,
-      tab: "suites",
-      caseName: playwrightTrace.caseName,
+for (const mode of reportModes) {
+  test.describe(`Playwright Trace (${mode})`, () => {
+    test("opens the trace in the modal and keeps a download fallback visible", async ({
+      page,
+    }) => {
+      await openCaseFromTree(page, {
+        fixture: playwrightTrace.name,
+        mode,
+        tab: "suites",
+        caseName: playwrightTrace.caseName,
+      });
+
+      const traceRow = (await expandStep(page, playwrightTrace.stepName)).locator(".attachment-row", {
+        hasText: playwrightTrace.attachmentName,
+      });
+      await expect(traceRow).toBeVisible();
+      await expect(traceRow).toHaveAttribute(
+        "data-type",
+        "application/vnd.allure.playwright-trace",
+      );
+
+      await traceRow.click();
+      await expect(page).toHaveURL(/attachment=/);
+      await expect(traceRow).not.toHaveClass(/attachment-row_selected/);
+      await expect(previewContainerFor(traceRow).locator("#pw-trace-iframe")).toHaveCount(0);
+
+      const traceFrame = page.locator(".modal__content #pw-trace-iframe");
+      const downloadLink = page.locator(".modal__content .attachment__trace-download");
+      await expect(traceFrame).toBeVisible();
+      await expect(traceFrame).toHaveAttribute("src", "https://trace.playwright.dev/");
+      await expect(downloadLink).toBeVisible();
+      await expect(downloadLink).toHaveAttribute("download", /\.zip$/);
+      await expect(downloadLink).toHaveAttribute("href", /^blob:/);
     });
 
-    const traceRow = (await expandStep(page, playwrightTrace.stepName)).locator(".attachment-row", {
-      hasText: playwrightTrace.attachmentName,
+    test("loads the trace content on the first modal open", async ({ page }) => {
+      await openCaseFromTree(page, {
+        fixture: playwrightTrace.name,
+        mode,
+        tab: "suites",
+        caseName: playwrightTrace.caseName,
+      });
+
+      const traceRow = (await expandStep(page, playwrightTrace.stepName)).locator(".attachment-row", {
+        hasText: playwrightTrace.attachmentName,
+      });
+      await traceRow.click();
+
+      const traceFrame = page.frameLocator(".modal__content #pw-trace-iframe");
+      await expect(traceFrame.getByRole("tab", { name: "Action", exact: true })).toBeVisible();
     });
-    await expect(traceRow).toBeVisible();
-    await expect(traceRow).toHaveAttribute("data-type", "application/vnd.allure.playwright-trace");
-
-    await traceRow.click();
-    await expect(page.locator(".attachment__trace-container")).toHaveCount(0);
-
-    await traceRow.locator(".attachment-row__fullscreen").click();
-    await expect(page).toHaveURL(/attachment=/);
-
-    const traceFrame = page.locator("#pw-trace-iframe");
-    await expect(traceFrame).toBeVisible();
-    await expect(traceFrame).toHaveAttribute("src", /trace\.playwright\.dev\/next/);
-    await expect
-      .poll(() =>
-        page.evaluate(() => {
-          const iframe = document.getElementById("pw-trace-iframe");
-          return typeof iframe?.onload === "function";
-        }),
-      )
-      .toBe(true);
   });
-});
+}

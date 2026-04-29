@@ -1,0 +1,17 @@
+{
+  "widget": "summary",
+  "generatedAt": "2026-04-26T15:00:12Z",
+  "launchName": "Allure Demo Report",
+  "totals": {
+    "passed": 11,
+    "failed": 3,
+    "broken": 1,
+    "skipped": 2
+  },
+  "links": [
+    {
+      "name": "Release notes",
+      "url": "https://example.org/releases/2026.04-demo"
+    }
+  ]
+}

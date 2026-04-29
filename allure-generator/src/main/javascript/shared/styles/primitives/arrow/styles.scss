@@ -1,0 +1,30 @@
+@use "../../../../variables.scss" as *;
+
+.block__arrow {
+  position: absolute;
+  visibility: visible;
+  transition: transform 0.16s ease-out;
+  font-weight: initial;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: space(2);
+  height: space(2);
+  line-height: 1;
+  transform-origin: center;
+  &__expanded {
+    transform: rotate(90deg);
+  }
+}
+
+[dir="rtl"] .block__arrow {
+  transform: scaleX(-1);
+  filter: FlipH;
+}
+
+.angle {
+  width: space(2);
+  height: space(2);
+  transform-origin: center;
+  transition: transform 0.16s ease-out;
+}

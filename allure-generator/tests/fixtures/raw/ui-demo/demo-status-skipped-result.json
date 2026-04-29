@@ -1,0 +1,85 @@
+{
+  "uuid": "demo-status-skipped",
+  "historyId": "demo-status-skipped-history",
+  "name": "Legacy browser flow is ignored in smoke mode",
+  "fullName": "io.qameta.allure.platform.LegacyCompatibilityTest.shouldSkipLegacyBrowserFlow",
+  "status": "skipped",
+  "stage": "finished",
+  "description": "Shows a skipped test that is routed into the ignored category.",
+  "statusDetails": {
+    "known": false,
+    "muted": false,
+    "flaky": false,
+    "message": "ignored because the legacy-browser feature flag is disabled in smoke mode",
+    "trace": "org.junit.AssumptionViolatedException: ignored because the legacy-browser feature flag is disabled in smoke mode"
+  },
+  "steps": [],
+  "attachments": [],
+  "parameters": [
+    {
+      "name": "browser",
+      "value": "ie11"
+    }
+  ],
+  "labels": [
+    {
+      "name": "epic",
+      "value": "Release readiness"
+    },
+    {
+      "name": "feature",
+      "value": "Legacy compatibility"
+    },
+    {
+      "name": "story",
+      "value": "Smoke mode exclusions"
+    },
+    {
+      "name": "suite",
+      "value": "io.qameta.allure.platform.LegacyCompatibilityTest"
+    },
+    {
+      "name": "package",
+      "value": "io.qameta.allure.platform.LegacyCompatibilityTest"
+    },
+    {
+      "name": "testClass",
+      "value": "io.qameta.allure.platform.LegacyCompatibilityTest"
+    },
+    {
+      "name": "testMethod",
+      "value": "shouldSkipLegacyBrowserFlow"
+    },
+    {
+      "name": "owner",
+      "value": "release-demo"
+    },
+    {
+      "name": "severity",
+      "value": "minor"
+    },
+    {
+      "name": "tag",
+      "value": "compatibility"
+    },
+    {
+      "name": "framework",
+      "value": "junit-platform"
+    },
+    {
+      "name": "language",
+      "value": "java"
+    },
+    {
+      "name": "host",
+      "value": "ops-runner-eu-1"
+    },
+    {
+      "name": "thread",
+      "value": "4103@ops-runner-eu-1.scheduler(3)"
+    }
+  ],
+  "links": [],
+  "start": 1710000251000,
+  "stop": 1710000255000
+}

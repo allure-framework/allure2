@@ -15,17 +15,24 @@
     }
   },
   "component": {
+    "markToggle": {
+      "hideCases": "隐藏带有 {{mark}} 标记的测试结果",
+      "showCases": "显示带有 {{mark}} 标记的测试结果"
+    },
     "statusToggle": {
       "hideCases": "隐藏{{status}}状态的用例",
       "showCases": "显示{{status}}状态的用例"
     },
     "tree": {
+      "download": "下载 CSV",
       "empty": "没有记录",
       "filter": "通过用例状态过滤",
+      "filter-marks": "标记",
       "filtered": {
         "shown": "显示{{count}}个",
         "total": "共{{count}}个用例",
-        "total_plural": "共{{count}}个用例"
+        "total_other": "共{{count}}个用例",
+        "total_one": "共{{count}}个用例"
       },
       "groups": "开关测试套信息",
       "time": {
@@ -42,25 +49,44 @@
           "tooltip": "从首个用例的开始时间到最后一个用例的结束时间"
         }
       },
-      "unknown": "空小组"
+      "unknown": "空小组",
+      "noItemSelected": "未选择任何项"
     },
     "widgetStatus": {
       "showAll": "显示所有",
       "total": "总共{{count}}项",
-      "total_plural": "总共{{count}}项"
+      "total_other": "总共{{count}}项",
+      "total_one": "总共{{count}}项"
+    },
+    "attachment": {
+      "download": "Click to download attachment",
+      "videoNotSupported": "Your browser does not support the video tag"
+    },
+    "screenDiff": {
+      "empty": "No diff data provided",
+      "name": "Screen Diff",
+      "showDiff": "Show diff",
+      "showOverlay": "Show overlay"
     }
   },
   "controls": {
     "backto": "返回",
     "clipboard": "复制到剪贴板",
+    "clipboardError": "无法复制到剪贴板。看起来当前浏览器不支持此功能",
+    "clipboardSuccess": "复制成功",
     "collapse": "折叠",
     "expand": "展开",
     "fullscreen": "全屏",
-    "language": "切换地区语言"
+    "language": "切换地区语言",
+    "loading": "Loading...",
+    "close": "Close"
   },
   "errors": {
     "missedAttachment": "没有找到附件",
-    "notFound": "没有找到"
+    "notFound": "没有找到",
+    "loadingFailed": "无法加载数据",
+    "tabNotFound": "未找到“{{tab}}”标签页",
+    "testResultNotFound": "未找到 uid 为“{{uid}}”的测试结果"
   },
   "marks": {
     "flaky": "不稳定",
@@ -72,6 +98,7 @@
   "sorter": {
     "duration": "用时",
     "name": "名称",
+    "order": "顺序",
     "status": "状态"
   },
   "status": {
@@ -85,11 +112,17 @@
     "categories": {
       "name": "类别"
     },
+    "behaviors": {
+      "name": "功能"
+    },
     "graph": {
       "name": "图表"
     },
     "overview": {
       "name": "总览"
+    },
+    "packages": {
+      "name": "包"
     },
     "suites": {
       "name": "测试套件"
@@ -97,7 +130,8 @@
     "timeline": {
       "name": "时间线",
       "selected": "{{count}}个测试用例({{percent}}%)执行时间超过{{duration}}",
-      "selected_plural": "{{count}}个测试用例({{percent}}%)执行时间超过{{duration}}"
+      "selected_other": "{{count}}个测试用例({{percent}}%)执行时间超过{{duration}}",
+      "selected_one": "{{count}}个测试用例({{percent}}%)执行时间超过{{duration}}"
     }
   },
   "testResult": {
@@ -112,13 +146,20 @@
     },
     "execution": {
       "body": "测试步骤",
+      "downloadAttachment": {
+        "tooltip": "在新标签页中打开附件"
+      },
       "name": "执行",
       "setup": "前置",
-      "teardown": "后置"
+      "teardown": "后置",
+      "empty": "没有可用的测试执行信息。"
     },
     "history": {
+      "empty": "没有可用的历史信息。",
       "name": "历史",
-      "successRate": "成功率"
+      "statistic": "{{total}} 中的 {{passed}}",
+      "successRate": "成功率",
+      "time": "{{date}} {{time}}"
     },
     "links": {
       "name": "链接"
@@ -133,19 +174,29 @@
       "name": "参数"
     },
     "retries": {
-      "name": "重试次数"
+      "empty": "没有关于测试重试的信息",
+      "name": "重试次数",
+      "time": "{{date}} {{time}}"
     },
     "severity": {
-      "name": "优先级"
+      "name": "优先级",
+      "blocker": "阻塞",
+      "critical": "严重",
+      "normal": "普通",
+      "minor": "轻微",
+      "trivial": "琐碎"
     },
     "stats": {
       "count": {
         "attachments": "{{count}}个附件",
-        "attachments_plural": "{{count}}个附件",
         "parameters": "{{count}}个参数",
-        "parameters_plural": "{{count}}个参数",
         "steps": "{{count}}个步骤",
-        "steps_plural": "{{count}}个步骤"
+        "attachments_other": "{{count}}个附件",
+        "parameters_other": "{{count}}个参数",
+        "steps_other": "{{count}}个步骤",
+        "attachments_one": "{{count}}个附件",
+        "parameters_one": "{{count}}个参数",
+        "steps_one": "{{count}}个步骤"
       }
     },
     "status": {
@@ -159,6 +210,16 @@
   "widget": {
     "categories": {
       "name": "类别"
+    },
+    "behaviors": {
+      "name": "特性场景",
+      "showAll": "显示所有"
+    },
+    "categoriesTrend": {
+      "name": "类别趋势"
+    },
+    "durationTrend": {
+      "name": "时长趋势"
     },
     "environment": {
       "empty": "没有环境变量",
@@ -174,15 +235,20 @@
       "empty": "没有用例启动执行的信息",
       "name": "启动"
     },
+    "retryTrend": {
+      "name": "重试趋势"
+    },
     "suites": {
       "name": "测试套"
     },
     "summary": {
       "aggregatedName": "汇总报告",
       "launches": "启动",
-      "launches_plural": "启动",
       "testResults": "测试用例",
-      "testResults_plural": "测试用例"
+      "launches_other": "启动",
+      "testResults_other": "测试用例",
+      "launches_one": "启动",
+      "testResults_one": "测试用例"
     },
     "trend": {
       "name": "趋势"

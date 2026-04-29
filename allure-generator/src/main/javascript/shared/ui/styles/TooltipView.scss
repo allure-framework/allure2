@@ -1,0 +1,43 @@
+@use "../../../variables.scss" as *;
+
+.tooltip {
+  position: absolute;
+  background: $tooltip-bg;
+  color: $tooltip-color;
+  text-align: center;
+  padding: 0 space(1);
+  line-height: space(3);
+  font-size: 12px;
+  pointer-events: none;
+  z-index: 5;
+  &:before {
+    content: "";
+    position: absolute;
+    border: 8px solid transparent;
+  }
+  &_position_top:before {
+    border-top-color: $tooltip-bg;
+    top: 100%;
+    left: 50%;
+    margin-left: -(space(1));
+  }
+  &_position_right:before {
+    border-right-color: $tooltip-bg;
+    top: $space-micro-4;
+    left: -(space(2));
+  }
+  &_position_left:before {
+    border-left-color: $tooltip-bg;
+    top: $space-micro-4;
+    left: 100%;
+  }
+  &_position_bottom:before {
+    border-bottom-color: $tooltip-bg;
+    top: -(space(2));
+    left: 50%;
+    margin-left: -(space(1));
+  }
+  &_position_center {
+    pointer-events: none;
+  }
+}

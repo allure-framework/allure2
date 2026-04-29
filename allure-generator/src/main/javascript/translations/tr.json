@@ -31,7 +31,8 @@
       "filtered": {
         "shown": "{{count}} gösteriliyor",
         "total": "{{count}} test sonucu",
-        "total_plural": "{{count}} test sonucu"
+        "total_one": "{{count}} test sonucu",
+        "total_other": "{{count}} test sonucu"
       },
       "groups": "Grup bilgisini aç/kapat",
       "time": {
@@ -48,12 +49,24 @@
           "tooltip": "İlk testin başlangıcından son testin bitişine kadar geçen süre"
         }
       },
-      "unknown": "<Boş>"
+      "unknown": "<Boş>",
+      "noItemSelected": "Hiçbir öğe seçilmedi"
     },
     "widgetStatus": {
       "showAll": "Hepsini Göster",
       "total": "{{count}} öğe toplam",
-      "total_plural": "{{count}} öğe toplam"
+      "total_one": "{{count}} öğe toplam",
+      "total_other": "{{count}} öğe toplam"
+    },
+    "attachment": {
+      "download": "Click to download attachment",
+      "videoNotSupported": "Your browser does not support the video tag"
+    },
+    "screenDiff": {
+      "empty": "No diff data provided",
+      "name": "Screen Diff",
+      "showDiff": "Show diff",
+      "showOverlay": "Show overlay"
     }
   },
   "controls": {
@@ -64,11 +77,16 @@
     "collapse": "Daralt",
     "expand": "Genişlet",
     "fullscreen": "Tam Ekran",
-    "language": "Dili Değiştir"
+    "language": "Dili Değiştir",
+    "loading": "Loading...",
+    "close": "Close"
   },
   "errors": {
     "missedAttachment": "Ek dosya bulunamadı",
-    "notFound": "Bulunamadı"
+    "notFound": "Bulunamadı",
+    "loadingFailed": "Veriler yüklenemedi",
+    "tabNotFound": "\"{{tab}}\" sekmesi bulunamadı",
+    "testResultNotFound": "uid \"{{uid}}\" olan test sonucu bulunamadı"
   },
   "marks": {
     "flaky": "Kararsız",
@@ -94,11 +112,17 @@
     "categories": {
       "name": "Kategoriler"
     },
+    "behaviors": {
+      "name": "Davranışlar"
+    },
     "graph": {
       "name": "Grafikler"
     },
     "overview": {
       "name": "Genel Bakış"
+    },
+    "packages": {
+      "name": "Paketler"
     },
     "suites": {
       "name": "Test Suitleri"
@@ -106,7 +130,8 @@
     "timeline": {
       "name": "Zaman Çizelgesi",
       "selected": "{{duration}} süreden fazla süren {{count}} test (%{{percent}}) seçildi",
-      "selected_plural": "{{duration}} süreden fazla süren {{count}} test (%{{percent}}) seçildi"
+      "selected_one": "{{duration}} süreden fazla süren {{count}} test (%{{percent}}) seçildi",
+      "selected_other": "{{duration}} süreden fazla süren {{count}} test (%{{percent}}) seçildi"
     }
   },
   "testResult": {
@@ -126,7 +151,8 @@
       },
       "name": "Çalıştırma",
       "setup": "Kurulum",
-      "teardown": "Kaldırma"
+      "teardown": "Kaldırma",
+      "empty": "Test yürütmesi hakkında bilgi yok."
     },
     "history": {
       "empty": "Geçmiş bilgisi yok.",
@@ -153,16 +179,24 @@
       "time": "{{time}} tarihinde, {{date}}"
     },
     "severity": {
-      "name": "Önem"
+      "name": "Önem",
+      "blocker": "engelleyici",
+      "critical": "kritik",
+      "normal": "normal",
+      "minor": "küçük",
+      "trivial": "önemsiz"
     },
     "stats": {
       "count": {
         "attachments": "{{count}} eklenti",
-        "attachments_plural": "{{count}} eklenti",
         "parameters": "{{count}} parametre",
-        "parameters_plural": "{{count}} parametre",
         "steps": "{{count}} alt adım",
-        "steps_plural": "{{count}} alt adım"
+        "attachments_one": "{{count}} eklenti",
+        "attachments_other": "{{count}} eklenti",
+        "parameters_one": "{{count}} parametre",
+        "parameters_other": "{{count}} parametre",
+        "steps_one": "{{count}} alt adım",
+        "steps_other": "{{count}} alt adım"
       }
     },
     "status": {
@@ -176,6 +210,10 @@
   "widget": {
     "categories": {
       "name": "Kategoriler"
+    },
+    "behaviors": {
+      "name": "Hikayelere göre özellikler",
+      "showAll": "Hepsini göster"
     },
     "categoriesTrend": {
       "name": "Kategoriler trendi"
@@ -206,9 +244,11 @@
     "summary": {
       "aggregatedName": "Toplu rapor",
       "launches": "başlatma",
-      "launches_plural": "başlatmalar",
       "testResults": "test durumu",
-      "testResults_plural": "test durumları"
+      "launches_one": "başlatma",
+      "launches_other": "başlatmalar",
+      "testResults_one": "test durumu",
+      "testResults_other": "test durumları"
     },
     "trend": {
       "name": "Trend"

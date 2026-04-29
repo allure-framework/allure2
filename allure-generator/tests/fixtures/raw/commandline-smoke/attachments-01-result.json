@@ -1,0 +1,194 @@
+{
+  "name": "attachmentsInStep",
+  "status": "passed",
+  "uuid": "553eced7847bf99b73c7e41ad1b89369",
+  "start": 1710000172000,
+  "stop": 1710000191840,
+  "labels": [
+    {
+      "name": "severity",
+      "value": "normal"
+    },
+    {
+      "name": "testClass",
+      "value": "test.labels.module_severity_test"
+    },
+    {
+      "name": "package",
+      "value": "test.labels.module_severity_test"
+    },
+    {
+      "name": "epic",
+      "value": "Report UI"
+    },
+    {
+      "name": "feature",
+      "value": "Attachments"
+    },
+    {
+      "name": "story",
+      "value": "Inline attachment gallery"
+    },
+    {
+      "name": "host",
+      "value": "charlie.local"
+    },
+    {
+      "name": "thread",
+      "value": "2208@charlie.local.main(1)"
+    }
+  ],
+  "steps": [
+    {
+      "status": "passed",
+      "name": "application/xml",
+      "start": 1710000172000,
+      "stop": 1710000173440,
+      "attachments": [
+        {
+          "name": "application/xml",
+          "type": "application/xml",
+          "source": "attachment-report.xml"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "text/csv",
+      "start": 1710000173840,
+      "stop": 1710000175280,
+      "attachments": [
+        {
+          "name": "text/csv",
+          "type": "text/csv",
+          "source": "attachment-data.csv"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "text/tab-separated-values",
+      "start": 1710000175680,
+      "stop": 1710000177120,
+      "attachments": [
+        {
+          "name": "text/tab-separated-values",
+          "type": "text/tab-separated-values",
+          "source": "attachment-table.tsv"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "text/css",
+      "start": 1710000177520,
+      "stop": 1710000178960,
+      "attachments": [
+        {
+          "name": "text/css",
+          "type": "text/css",
+          "source": "attachment-styles.css"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "text/uri-list",
+      "start": 1710000179360,
+      "stop": 1710000180800,
+      "attachments": [
+        {
+          "name": "text/uri-list",
+          "type": "text/uri-list",
+          "source": "attachment-links.uri"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "image/svg+xml",
+      "start": 1710000181200,
+      "stop": 1710000182640,
+      "attachments": [
+        {
+          "name": "image/svg+xml",
+          "type": "image/svg+xml",
+          "source": "attachment-diagram.svg"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "image/png",
+      "start": 1710000183040,
+      "stop": 1710000184480,
+      "attachments": [
+        {
+          "name": "image/png",
+          "type": "image/png",
+          "source": "attachment-screenshot.png"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "application/json",
+      "start": 1710000184880,
+      "stop": 1710000186320,
+      "attachments": [
+        {
+          "name": "application/json",
+          "type": "application/json",
+          "source": "attachment-request.json"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "application/vnd.allure.image.diff",
+      "start": 1710000186720,
+      "stop": 1710000188160,
+      "steps": [],
+      "attachments": [
+        {
+          "name": "application/vnd.allure.image.diff",
+          "type": "application/vnd.allure.image.diff",
+          "source": "attachment-banner.imagediff"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "component",
+          "value": "onboarding-banner"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "video/webm",
+      "start": 1710000188560,
+      "stop": 1710000190000,
+      "attachments": [
+        {
+          "name": "video/webm",
+          "type": "video/webm",
+          "source": "attachment-session.webm"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "image/jpeg",
+      "start": 1710000190400,
+      "stop": 1710000191840,
+      "attachments": [
+        {
+          "name": "image/jpeg",
+          "type": "image/jpeg",
+          "source": "attachment-thumbnail.jpeg"
+        }
+      ]
+    }
+  ],
+  "fullName": "test.labels.module_severity_test.TestDecorated#test_method_of_decorated_class"
+}

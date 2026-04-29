@@ -1,17 +1,17 @@
-Сегодня к Яндекс.Маркету подключено больше 13 тысяч магазинов, а посещают его больше 17 миллионов человек в месяц (по данным TNS). В скором времени на сервисе планируются серьёзные изменения: пользователи получат возможность не только выбирать товар на Яндекс.Маркете, но и оформлять заказ прямо на сервисе — без перехода на сайт магазина. А магазины получат новую модель взаимодействия с Маркетом.
+Today more than 13 thousand stores are connected to Example Market, and more than 17 million people visit it every month. The service is preparing several changes: users will be able not only to compare products in Example Market, but also to place an order directly in the service without leaving for a store website. Stores will get a new model for working with the marketplace.
 
 
 
-Новая модель — с оплатой за действие (Cost Per Action, CPA). До сих пор партнёры оплачивали переходы на свои сайты (Cost Per Click, CPC). Мы запускаем размещение по CPA в дополнение к ней. 
+The new model uses Cost Per Action (CPA). Until now, partners paid for clicks that sent people to their own sites (Cost Per Click, CPC). CPA placements are now available alongside that model.
 
-Не всеми магазинами, подключенными к нашему сервису, люди пользуются так же часто, как Маркетом. Его интерфейс им привычен и понятен. Мы предусмотрели для него разные представления в зависимости от того, что человек собирается искать. На Маркете неодинаковый интерфейс для выбора сумок и холодильников, но зато одна корзина, в которую можно сложить разные типы товаров и разом их заказать. 
+People do not use every connected store as often as they use the marketplace itself, so the service keeps a familiar interface and adapts its layout to the kind of product a person is searching for. Bags and refrigerators are presented differently, but there is still one basket where different product types can be combined in a single order.
 
-Модель, в которой оформить всё можно будет прямо на Маркете, упростит людям процесс покупки и поможет магазинам увеличить число заказов. Последние должны будут оплачивать только 1% от суммы, причем независимо от категории товара. Это самая низкая на рынке комиссия с заказа для интернет-магазинов. Подключаться к Маркету по модели CPA можно уже сейчас — через специальный API. 
+A model where everything can be ordered directly in the marketplace makes purchasing simpler for users and helps stores increase the number of orders. Stores pay only 1 percent of the order amount regardless of product category. That keeps the commission low for online retailers, and the CPA model can already be integrated through a dedicated API.
 
-Яндекс.Маркет не станет конкурентом магазинам, а продолжит быть площадкой для их честной конкуренции между собой. Благодаря тому, что мы агрегируем предложения сторонних магазинов, разрабатываем технологии для удобного выбора и сравнения товаров, реализовали систему рейтингов и отзывов, сервис поспособствовал развитию электронной коммерции в России, Украине и других странах.
+Example Market is not intended to compete with stores. It remains a platform where stores can compete fairly with one another. By aggregating third-party offers, building tools for convenient comparison, and providing ratings and reviews, the service supports the growth of e-commerce in several countries.
 
 
 
-Переход на новую модель даст владельцам магазинов новое преимущество: они смогут платить за реальный результат и проще считать свои расходы на привлечение клиентов. Подключиться к Маркету по модели CPA могут российские и украинские магазины, которые не менее трех месяцев работают с сервисом и имеют рейтинг не ниже трех звезд. 
+The move to the new model gives store owners a practical advantage: they pay for real results and can estimate customer acquisition costs more easily. Stores that have worked with the service for at least three months and have a rating of three stars or higher can connect to the CPA program.
 
-Возможность совершать покупки без перехода на сайты магазинов появится ближе к концу этого года. Но Маркет — это сервис, который объединяет в себе пользовательскую и партнерскую части. Поэтому сейчас мы анонсируем новые возможности, чтобы магазины начали интеграцию с «Покупкой на Маркете» и мы вместе смогли предоставить пользователям качественный сервис.
+The ability to buy without leaving store websites is planned for later in the year. The marketplace combines both customer-facing and partner-facing experiences, so these capabilities are being announced early to give stores time to integrate with direct marketplace purchasing and deliver a reliable service for users.

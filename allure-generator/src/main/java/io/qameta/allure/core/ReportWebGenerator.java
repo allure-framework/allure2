@@ -15,6 +15,8 @@
  */
 package io.qameta.allure.core;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import freemarker.template.Template;
 import io.qameta.allure.Constants;
 import io.qameta.allure.PluginConfiguration;
@@ -34,23 +36,28 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author charlie (Dmitry Baev).
  */
-@SuppressWarnings("PMD.CognitiveComplexity")
 public class ReportWebGenerator {
 
-    private static final String FAVICON_ICO = "favicon.ico";
-    private static final String STYLES_CSS = "styles.css";
-    private static final String APP_JS = "app.js";
+    private static final String VITE_MANIFEST_JSON = "vite-manifest.json";
 
-    private static final String TEXT_JAVASCRIPT = "text/javascript";
-    private static final String TEXT_CSS = "text/css";
+    private static final String IMAGE_X_ICON = "image/x-icon";
+    private static final String TEXT_JAVASCRIPT = "text/javascript; charset=utf-8";
+    private static final String TEXT_CSS = "text/css; charset=utf-8";
+
+    private static final JsonMapper JSON_MAPPER = JsonMapper.builder().build();
+    private static final TypeReference<Map<String, ViteManifestEntry>> VITE_MANIFEST_TYPE =
+            new TypeReference<Map<String, ViteManifestEntry>>() {
+            };
 
     @SuppressWarnings({"ExecutableStatementCount", "PMD.NcssCount"})
     public void generate(final Configuration configuration,
@@ -59,22 +66,24 @@ public class ReportWebGenerator {
 
         final boolean inline = reportStorage instanceof InMemoryReportStorage;
 
-        final List<String> jsFiles = new ArrayList<>();
-        if (inline) {
-            jsFiles.add(dataBase64(TEXT_JAVASCRIPT, APP_JS));
-        } else {
-            jsFiles.add(APP_JS);
-            write(outputDirectory, APP_JS, readResource(APP_JS));
-        }
+        final Map<String, ViteManifestEntry> viteManifest = loadViteManifest();
+        final List<String> entryFiles = getEntryFiles(viteManifest);
+        final List<String> styleFiles = getStyleFiles(viteManifest);
+        final List<String> producedFiles = getProducedFiles(viteManifest);
+        final String faviconFile = requireFaviconFile(viteManifest);
 
-        final List<String> cssFiles = new ArrayList<>();
-        if (inline) {
-            cssFiles.add(dataBase64(TEXT_CSS, STYLES_CSS));
-        } else {
-            cssFiles.add(STYLES_CSS);
-            write(outputDirectory, STYLES_CSS, readResource(STYLES_CSS));
+        final List<String> coreStyleUrls = inline
+                ? inlineWebStyles(styleFiles)
+                : new ArrayList<>(styleFiles);
+        if (!inline) {
+            copyWebResources(outputDirectory, producedFiles);
         }
+        final List<String> coreJsUrls = inline
+                ? inlineWebScripts(entryFiles)
+                : new ArrayList<>(entryFiles);
 
+        final List<String> pluginJsUrls = new ArrayList<>();
+        final List<String> pluginStyleUrls = new ArrayList<>();
         configuration.getPlugins().forEach(plugin -> {
             final Map<String, Path> pluginFiles = new HashMap<>(plugin.getPluginFiles());
 
@@ -82,13 +91,13 @@ public class ReportWebGenerator {
             config.getJsFiles().forEach(jsFile -> {
                 final Path jsFilePath = pluginFiles.remove(jsFile);
                 if (inline) {
-                    jsFiles.add(dataBase64(
+                    pluginJsUrls.add(dataBase64(
                             TEXT_JAVASCRIPT,
                             jsFilePath
                     ));
                 } else {
                     final String key = pluginFileKey(config, jsFile);
-                    jsFiles.add(key);
+                    pluginJsUrls.add(key);
                     write(outputDirectory, key, jsFilePath);
                 }
             });
@@ -96,13 +105,13 @@ public class ReportWebGenerator {
             config.getCssFiles().forEach(cssFile -> {
                 final Path cssFilePath = pluginFiles.remove(cssFile);
                 if (inline) {
-                    cssFiles.add(dataBase64(
+                    pluginStyleUrls.add(dataBase64(
                             TEXT_CSS,
                             cssFilePath
                     ));
                 } else {
                     final String key = pluginFileKey(config, cssFile);
-                    cssFiles.add(key);
+                    pluginStyleUrls.add(key);
                     write(outputDirectory, key, cssFilePath);
                 }
             });
@@ -126,15 +135,13 @@ public class ReportWebGenerator {
             final Template template = context.getValue().getTemplate("index.html.ftl");
             final Map<String, Object> dataModel = new HashMap<>();
 
-
-            final String faviconUrl = inline ? dataBase64("image/x-icon", FAVICON_ICO) : FAVICON_ICO;
-            if (!inline) {
-                write(outputDirectory, FAVICON_ICO, readResource(FAVICON_ICO));
-            }
+            final String faviconUrl = inline ? dataBase64(IMAGE_X_ICON, faviconFile) : faviconFile;
 
             dataModel.put("faviconUrl", faviconUrl);
-            dataModel.put("stylesUrls", cssFiles);
-            dataModel.put("jsUrls", jsFiles);
+            dataModel.put("coreStyleUrls", coreStyleUrls);
+            dataModel.put("pluginStyleUrls", pluginStyleUrls);
+            dataModel.put("coreJsUrls", coreJsUrls);
+            dataModel.put("pluginJsUrls", pluginJsUrls);
 
             if (inline) {
                 final Map<String, String> reportDataFiles = new HashMap<>(((InMemoryReportStorage) reportStorage)
@@ -159,8 +166,131 @@ public class ReportWebGenerator {
         }
     }
 
+    private static Map<String, ViteManifestEntry> loadViteManifest() {
+        try {
+            return JSON_MAPPER.readValue(readResource(VITE_MANIFEST_JSON), VITE_MANIFEST_TYPE);
+        } catch (IOException e) {
+            throw new ReportGenerationException("Can't read Vite manifest", e);
+        }
+    }
+
+    private static void copyWebResources(final Path outputDirectory,
+                                         final List<String> producedFiles) {
+        producedFiles.forEach(file -> write(outputDirectory, file, readResource(file)));
+    }
+
+    private static List<String> getEntryFiles(final Map<String, ViteManifestEntry> viteManifest) {
+        final List<String> entryFiles = new ArrayList<>();
+
+        viteManifest.forEach((key, entry) -> {
+            if (entry.isEntry()) {
+                entryFiles.add(requireManifestFile(entry, key));
+            }
+        });
+
+        if (entryFiles.isEmpty()) {
+            throw new ReportGenerationException("Vite manifest does not contain entry chunks");
+        }
+
+        return entryFiles;
+    }
+
+    private static List<String> getStyleFiles(final Map<String, ViteManifestEntry> viteManifest) {
+        final Set<String> styleFiles = new LinkedHashSet<>();
+
+        getReachableManifestKeys(viteManifest).forEach(key ->
+                styleFiles.addAll(requireManifestEntry(viteManifest, key).getCss())
+        );
+
+        return new ArrayList<>(styleFiles);
+    }
+
+    private static List<String> getProducedFiles(final Map<String, ViteManifestEntry> viteManifest) {
+        final Set<String> producedFiles = new LinkedHashSet<>();
+
+        viteManifest.values().forEach(entry -> {
+            addIfPresent(producedFiles, entry.getFile());
+            producedFiles.addAll(entry.getCss());
+            producedFiles.addAll(entry.getAssets());
+        });
+
+        return new ArrayList<>(producedFiles);
+    }
+
+    private static List<String> inlineWebStyles(final List<String> styleFiles) {
+        final List<String> inlineStyles = new ArrayList<>();
+
+        styleFiles.forEach(styleFile -> inlineStyles.add(dataBase64(TEXT_CSS, styleFile)));
+
+        return inlineStyles;
+    }
+
+    private static List<String> inlineWebScripts(final List<String> entryFiles) {
+        final List<String> scriptUrls = new ArrayList<>();
+
+        entryFiles.forEach(entryFile -> scriptUrls.add(dataBase64(TEXT_JAVASCRIPT, entryFile)));
+
+        return scriptUrls;
+    }
+
     private static String pluginFileKey(final PluginConfiguration config, final String cssFile) {
         return "plugin/" + config.getId() + "/" + cssFile;
+    }
+
+    private static List<String> getReachableManifestKeys(final Map<String, ViteManifestEntry> viteManifest) {
+        final List<String> queue = new ArrayList<>();
+        final Set<String> visited = new LinkedHashSet<>();
+
+        viteManifest.forEach((key, entry) -> {
+            if (entry.isEntry()) {
+                queue.add(key);
+            }
+        });
+
+        while (!queue.isEmpty()) {
+            final String key = queue.remove(0);
+            if (!visited.add(key)) {
+                continue;
+            }
+
+            final ViteManifestEntry entry = requireManifestEntry(viteManifest, key);
+            queue.addAll(entry.getImports());
+            queue.addAll(entry.getDynamicImports());
+        }
+
+        return new ArrayList<>(visited);
+    }
+
+    private static String requireFaviconFile(final Map<String, ViteManifestEntry> viteManifest) {
+        return viteManifest.values().stream()
+                .map(ViteManifestEntry::getFile)
+                .filter(Objects::nonNull)
+                .filter(file -> file.endsWith(".ico"))
+                .findFirst()
+                .orElseThrow(() -> new ReportGenerationException("Web favicon is not present in the Vite manifest"));
+    }
+
+    private static ViteManifestEntry requireManifestEntry(final Map<String, ViteManifestEntry> viteManifest,
+                                                          final String key) {
+        return Optional.ofNullable(viteManifest.get(key))
+                .orElseThrow(() -> new ReportGenerationException(
+                        String.format("Vite manifest entry %s is not present", key)
+                ));
+    }
+
+    private static String requireManifestFile(final ViteManifestEntry entry,
+                                              final String key) {
+        return Optional.ofNullable(entry.getFile())
+                .filter(file -> !file.isEmpty())
+                .orElseThrow(() -> new ReportGenerationException(
+                        String.format("Vite manifest entry %s does not define a file", key)
+                ));
+    }
+
+    private static void addIfPresent(final Set<String> values, final String value) {
+        if (value != null && !value.isEmpty()) {
+            values.add(value);
+        }
     }
 
     private static byte[] readResource(final String resourceName) {

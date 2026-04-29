@@ -1,0 +1,2 @@
+Background sync stalled during warmup on demo-eu-1.
+Retrying after cache bootstrap.

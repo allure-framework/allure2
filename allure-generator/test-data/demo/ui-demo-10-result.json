@@ -1,0 +1,181 @@
+{
+  "name": "Close issue via api",
+  "status": "passed",
+  "stage": "finished",
+  "description": "",
+  "steps": [
+    {
+      "name": "Create issue with title `First Note`",
+      "status": "passed",
+      "stage": "finished",
+      "steps": [
+        {
+          "name": "POST /repos/allure-framework/allure2/issues",
+          "status": "passed",
+          "stage": "finished",
+          "steps": [],
+          "attachments": [],
+          "parameters": [],
+          "start": 1710000054275,
+          "stop": 1710000055925
+        }
+      ],
+      "attachments": [],
+      "parameters": [
+        {
+          "name": "owner",
+          "value": "allure-framework"
+        },
+        {
+          "name": "repo",
+          "value": "allure2"
+        },
+        {
+          "name": "title",
+          "value": "First Note"
+        }
+      ],
+      "start": 1710000054000,
+      "stop": 1710000056200
+    },
+    {
+      "name": "Close issue with title `First Note`",
+      "status": "passed",
+      "stage": "finished",
+      "steps": [
+        {
+          "name": "GET /repos/allure-framework/allure2/issues?text=First Note",
+          "status": "passed",
+          "stage": "finished",
+          "steps": [],
+          "attachments": [],
+          "parameters": [],
+          "start": 1710000056900,
+          "stop": 1710000058600
+        },
+        {
+          "name": "PATCH /repos/allure-framework/allure2/issues/10",
+          "status": "passed",
+          "stage": "finished",
+          "steps": [],
+          "attachments": [],
+          "parameters": [],
+          "start": 1710000059000,
+          "stop": 1710000060700
+        }
+      ],
+      "attachments": [],
+      "parameters": [
+        {
+          "name": "owner",
+          "value": "allure-framework"
+        },
+        {
+          "name": "repo",
+          "value": "allure2"
+        },
+        {
+          "name": "title",
+          "value": "First Note"
+        }
+      ],
+      "start": 1710000056600,
+      "stop": 1710000061000
+    }
+  ],
+  "attachments": [],
+  "parameters": [
+    {
+      "name": "owner",
+      "value": "allure-framework"
+    },
+    {
+      "name": "repo",
+      "value": "allure2"
+    },
+    {
+      "name": "title",
+      "value": "First Note"
+    }
+  ],
+  "start": 1710000054000,
+  "stop": 1710000061000,
+  "uuid": "c0b7563c-07a8-4803-beac-efc9ed45a554",
+  "historyId": "b198d36a585bdff2dc4ac9210b80da6",
+  "fullName": "io.qameta.allure.IssuesRestTest.shouldDeleteUserNote",
+  "labels": [
+    {
+      "name": "tag",
+      "value": "web"
+    },
+    {
+      "name": "tag",
+      "value": "regress"
+    },
+    {
+      "name": "owner",
+      "value": "baev"
+    },
+    {
+      "name": "feature",
+      "value": "Issues"
+    },
+    {
+      "name": "layer",
+      "value": "rest"
+    },
+    {
+      "name": "msrv",
+      "value": "Repository"
+    },
+    {
+      "name": "jira",
+      "value": "AE-1"
+    },
+    {
+      "name": "story",
+      "value": "Close existing issue"
+    },
+    {
+      "name": "tm4j",
+      "value": "AE-T2"
+    },
+    {
+      "name": "host",
+      "value": "ip-192-168-31-222.eu-central-1.compute.internal"
+    },
+    {
+      "name": "thread",
+      "value": "38312@ip-192-168-31-222.eu-central-1.compute.internal.ForkJoinPool-1-worker-19(24)"
+    },
+    {
+      "name": "framework",
+      "value": "junit-platform"
+    },
+    {
+      "name": "language",
+      "value": "java"
+    },
+    {
+      "name": "package",
+      "value": "io.qameta.allure.IssuesRestTest"
+    },
+    {
+      "name": "testClass",
+      "value": "io.qameta.allure.IssuesRestTest"
+    },
+    {
+      "name": "testMethod",
+      "value": "shouldDeleteUserNote"
+    },
+    {
+      "name": "suite",
+      "value": "io.qameta.allure.IssuesRestTest"
+    },
+    {
+      "name": "epic",
+      "value": "Repository collaboration"
+    }
+  ],
+  "links": []
+}

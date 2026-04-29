@@ -31,7 +31,8 @@
       "filtered": {
         "shown": "{{count}} 개 표시",
         "total": "{{count}} 개의 테스트 결과",
-        "total_plural": "{{count}} 개의 테스트 결과"
+        "total_one": "{{count}} 개의 테스트 결과",
+        "total_other": "{{count}} 개의 테스트 결과"
       },
       "groups": "그룹 정보 표시",
       "time": {
@@ -48,12 +49,24 @@
           "tooltip": "첫번째 테스트부터 마지막 테스트까지의 소요시간"
         }
       },
-      "unknown": "없는"
+      "unknown": "없는",
+      "noItemSelected": "선택된 항목이 없습니다"
     },
     "widgetStatus": {
       "showAll": "전체보기",
       "total": "총 {{count}} 개",
-      "total_plural": "총 {{count}} 개"
+      "total_one": "총 {{count}} 개",
+      "total_other": "총 {{count}} 개"
+    },
+    "attachment": {
+      "download": "Click to download attachment",
+      "videoNotSupported": "Your browser does not support the video tag"
+    },
+    "screenDiff": {
+      "empty": "No diff data provided",
+      "name": "Screen Diff",
+      "showDiff": "Show diff",
+      "showOverlay": "Show overlay"
     }
   },
   "controls": {
@@ -64,11 +77,16 @@
     "collapse": "접기",
     "expand": "펼치기",
     "fullscreen": "전체화면",
-    "language": "언어 변경"
+    "language": "언어 변경",
+    "loading": "Loading...",
+    "close": "Close"
   },
   "errors": {
     "missedAttachment": "첨부파일을 찾을 수 없습니다.",
-    "notFound": "찾을 수 없음"
+    "notFound": "찾을 수 없음",
+    "loadingFailed": "데이터를 불러오지 못했습니다",
+    "tabNotFound": "\"{{tab}}\" 탭을 찾을 수 없습니다",
+    "testResultNotFound": "uid \"{{uid}}\"인 테스트 결과를 찾을 수 없습니다"
   },
   "marks": {
     "flaky": "불안정함",
@@ -94,11 +112,17 @@
     "categories": {
       "name": "카테고리"
     },
+    "behaviors": {
+      "name": "동작"
+    },
     "graph": {
       "name": "그래프"
     },
     "overview": {
       "name": "요약"
+    },
+    "packages": {
+      "name": "패키지"
     },
     "suites": {
       "name": "스위트"
@@ -106,7 +130,8 @@
     "timeline": {
       "name": "타임라인",
       "selected": "{{duration}} 이상의 시간이 소요된 {{count}} 개 테스트 ({{percent}}%)",
-      "selected_plural": "{{duration}} 이상의 시간이 소요된 {{count}} 개 테스트 ({{percent}}%)"
+      "selected_one": "{{duration}} 이상의 시간이 소요된 {{count}} 개 테스트 ({{percent}}%)",
+      "selected_other": "{{duration}} 이상의 시간이 소요된 {{count}} 개 테스트 ({{percent}}%)"
     }
   },
   "testResult": {
@@ -121,13 +146,20 @@
     },
     "execution": {
       "body": "테스트 내용",
+      "downloadAttachment": {
+        "tooltip": "첨부 파일을 새 탭에서 열기"
+      },
       "name": "실행",
       "setup": "준비 작업",
-      "teardown": "종료 작업"
+      "teardown": "종료 작업",
+      "empty": "테스트 실행 정보가 없습니다."
     },
     "history": {
+      "empty": "사용 가능한 이력 정보가 없습니다.",
       "name": "히스토리",
-      "successRate": "성공률"
+      "statistic": "{{total}}건 중 {{passed}}건",
+      "successRate": "성공률",
+      "time": "{{date}} {{time}}"
     },
     "links": {
       "name": "링크"
@@ -143,19 +175,28 @@
     },
     "retries": {
       "empty": "테스트 재시도에 대한 정보가 없습니다.",
-      "name": "재시도"
+      "name": "재시도",
+      "time": "{{date}} {{time}}"
     },
     "severity": {
-      "name": "중요도"
+      "name": "중요도",
+      "blocker": "차단",
+      "critical": "치명적",
+      "normal": "보통",
+      "minor": "경미",
+      "trivial": "사소함"
     },
     "stats": {
       "count": {
         "attachments": "첨부파일 {{count}} 개",
-        "attachments_plural": "첨부파일 {{count}} 개",
         "parameters": "패러미터 {{count}} 개",
-        "parameters_plural": "패러미터 {{count}} 개",
         "steps": "하위 스텝 {{count}} 개",
-        "steps_plural": "하위 스텝 {{count}} 개"
+        "attachments_one": "첨부파일 {{count}} 개",
+        "attachments_other": "첨부파일 {{count}} 개",
+        "parameters_one": "패러미터 {{count}} 개",
+        "parameters_other": "패러미터 {{count}} 개",
+        "steps_one": "하위 스텝 {{count}} 개",
+        "steps_other": "하위 스텝 {{count}} 개"
       }
     },
     "status": {
@@ -169,6 +210,10 @@
   "widget": {
     "categories": {
       "name": "카테고리"
+    },
+    "behaviors": {
+      "name": "스토리별 기능",
+      "showAll": "전체 보기"
     },
     "categoriesTrend": {
       "name": "카테고리 트렌드"
@@ -199,9 +244,11 @@
     "summary": {
       "aggregatedName": "전체 리포트",
       "launches": "시작",
-      "launches_plural": "시작",
       "testResults": "테스트 케이스",
-      "testResults_plural": "테스트 케이스"
+      "launches_one": "시작",
+      "launches_other": "시작",
+      "testResults_one": "테스트 케이스",
+      "testResults_other": "테스트 케이스"
     },
     "trend": {
       "name": "트렌드"

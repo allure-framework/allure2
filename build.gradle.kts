@@ -349,8 +349,8 @@ val deleteDemoReport by tasks.creating(Delete::class) {
 val generateDemoReport by tasks.creating(Exec::class) {
     group = "Build"
     dependsOn("deleteDemoReport", "allure-commandline:build")
-    executable = "$root/allure-commandline/build/install/allure/bin/allure"
-    args("generate", "$root/allure-web/test-data/demo", "-o", "$root/build/docker/report")
+    executable = "$root/allure-commandline/build/install/allure-commandline/bin/allure"
+    args("generate", "$root/allure-generator/test-data/demo", "-o", "$root/build/docker/report")
 }
 
 val generateDemoDockerfile by tasks.creating(Dockerfile::class) {
