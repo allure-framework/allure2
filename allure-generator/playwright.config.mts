@@ -8,7 +8,15 @@ export default defineConfig({
   workers: process.env.CI ? 2 : undefined,
   reporter: [
     [process.env.CI ? "github" : "list"],
-    ["allure-playwright", { resultsDir: "build/allure-results" }],
+    [
+      "allure-playwright",
+      {
+        resultsDir: "build/allure-results",
+        globalLabels: [
+          { name: "module", value: "e2e" },
+        ],
+      },
+    ],
   ],
   globalSetup: "./scripts/prepare-playwright-report.mts",
   webServer: {

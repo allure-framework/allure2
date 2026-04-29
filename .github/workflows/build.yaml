@@ -52,7 +52,7 @@ jobs:
       - name: Install Playwright browser
         run: cd allure-generator && npx playwright install --with-deps chromium
       - name: Run Playwright e2e with Allure
-        run: npx -y allure@3 run --config ./allurerc.mjs --rerun 2 --environment="${{ env.ALLURE_MATRIX_ENV }}-e2e" --dump="${{ env.ALLURE_E2E_DUMP_NAME }}" -- ./gradlew :allure-generator:testE2E
+        run: npx -y allure@3 run --config ./allurerc.mjs --rerun 2 --environment="${{ env.ALLURE_MATRIX_ENV }}" --dump="${{ env.ALLURE_E2E_DUMP_NAME }}" -- ./gradlew :allure-generator:testE2E
       - name: Upload allure-commandline artifact
         uses: actions/upload-artifact@v7
         with:
