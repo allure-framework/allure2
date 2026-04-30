@@ -107,7 +107,7 @@ subprojects {
             dependency("org.jsoup:jsoup:1.22.1")
             dependency("org.junit-pioneer:junit-pioneer:2.3.0")
             dependency("org.mockito:mockito-core:5.23.0")
-            dependency("org.projectlombok:lombok:1.18.44")
+            dependency("org.projectlombok:lombok:1.18.46")
             dependency("org.slf4j:slf4j-api:${orgSlf4jVersion}")
             dependency("org.slf4j:slf4j-jdk14:${orgSlf4jVersion}")
             dependency("org.slf4j:slf4j-nop:${orgSlf4jVersion}")
