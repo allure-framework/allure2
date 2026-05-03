@@ -15,6 +15,8 @@
  */
 package io.qameta.allure.history;
 
+import io.qameta.allure.Allure;
+import io.qameta.allure.Description;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
@@ -37,6 +39,10 @@ class HistoryPluginTest {
 
     private static final String HISTORY_BLOCK_NAME = "history";
 
+    /**
+     * Verifies detecting the new failed mark for history aggregation.
+     */
+    @Description
     @Test
     void shouldHasNewFailedMark() {
         String historyId = UUID.randomUUID().toString();
@@ -48,15 +54,17 @@ class HistoryPluginTest {
 
         extra.put(HISTORY_BLOCK_NAME, historyDataMap);
         TestResult testResult = createTestResult(FAILED, historyId, 100, 101);
-        new HistoryPlugin().getData(singletonList(
-                createLaunchResults(extra, testResult)
-        ));
+        getHistoryData(extra, testResult);
         assertThat(testResult.isNewFailed()).isTrue();
         assertThat(testResult.isFlaky()).isFalse();
         assertThat(testResult.isNewPassed()).isFalse();
         assertThat(testResult.isNewBroken()).isFalse();
     }
 
+    /**
+     * Verifies detecting the new broken mark for history aggregation.
+     */
+    @Description
     @Test
     void shouldHasNewBrokenMark() {
         String historyId = UUID.randomUUID().toString();
@@ -68,15 +76,17 @@ class HistoryPluginTest {
 
         extra.put(HISTORY_BLOCK_NAME, historyDataMap);
         TestResult testResult = createTestResult(Status.BROKEN, historyId, 100, 101);
-        new HistoryPlugin().getData(singletonList(
-                createLaunchResults(extra, testResult)
-        ));
+        getHistoryData(extra, testResult);
         assertThat(testResult.isNewFailed()).isFalse();
         assertThat(testResult.isFlaky()).isFalse();
         assertThat(testResult.isNewPassed()).isFalse();
         assertThat(testResult.isNewBroken()).isTrue();
     }
 
+    /**
+     * Verifies detecting the flaky mark for history aggregation.
+     */
+    @Description
     @Test
     void shouldHasFlakyMark() {
         String historyId = UUID.randomUUID().toString();
@@ -89,15 +99,17 @@ class HistoryPluginTest {
 
         extra.put(HISTORY_BLOCK_NAME, historyDataMap);
         TestResult testResult = createTestResult(FAILED, historyId, 100, 101);
-        new HistoryPlugin().getData(singletonList(
-                createLaunchResults(extra, testResult)
-        ));
+        getHistoryData(extra, testResult);
         assertThat(testResult.isNewFailed()).isTrue();
         assertThat(testResult.isFlaky()).isTrue();
         assertThat(testResult.isNewPassed()).isFalse();
         assertThat(testResult.isNewBroken()).isFalse();
     }
 
+    /**
+     * Verifies detecting the new passed mark for history aggregation.
+     */
+    @Description
     @Test
     void shouldHasNewPassedMark() {
         String historyId = UUID.randomUUID().toString();
@@ -109,15 +121,17 @@ class HistoryPluginTest {
 
         extra.put(HISTORY_BLOCK_NAME, historyDataMap);
         TestResult testResult = createTestResult(Status.PASSED, historyId, 100, 101);
-        new HistoryPlugin().getData(singletonList(
-            createLaunchResults(extra, testResult)
-        ));
+        getHistoryData(extra, testResult);
         assertThat(testResult.isNewFailed()).isFalse();
         assertThat(testResult.isFlaky()).isFalse();
         assertThat(testResult.isNewPassed()).isTrue();
         assertThat(testResult.isNewBroken()).isFalse();
     }
 
+    /**
+     * Verifies reducing history data across multiple launches for history aggregation.
+     */
+    @Description
     @Test
     void shouldReduceHistoryResults() {
         String historyId1 = UUID.randomUUID().toString();
@@ -132,10 +146,13 @@ class HistoryPluginTest {
         extra2.put(HISTORY_BLOCK_NAME, copyHistoryData(historyDataMap));
 
 
-        Map<String, HistoryData> data = new HistoryPlugin().getData(asList(
-                createLaunchResults(extra1, createTestResult(PASSED, historyId1, 3, 4)),
-                createLaunchResults(extra2, createTestResult(PASSED, historyId2, 5, 6))
-        ));
+        Map<String, HistoryData> data = Allure.step(
+                "Reduce history entries across two launches",
+                () -> new HistoryPlugin().getData(asList(
+                        createLaunchResults(extra1, createTestResult(PASSED, historyId1, 3, 4)),
+                        createLaunchResults(extra2, createTestResult(PASSED, historyId2, 5, 6))
+                ))
+        );
 
         assertThat(data).containsKeys(historyId1, historyId2);
         assertThat(data.get(historyId1).getItems()).hasSize(2);
@@ -164,6 +181,13 @@ class HistoryPluginTest {
         return new HistoryItem()
                 .setStatus(status)
                 .setTime(new Time().setStart(start).setStop(stop));
+    }
+
+    private Map<String, HistoryData> getHistoryData(final Map<String, Object> extra, final TestResult testResult) {
+        return Allure.step(
+                "Calculate history marks for result " + testResult.getName(),
+                () -> new HistoryPlugin().getData(singletonList(createLaunchResults(extra, testResult)))
+        );
     }
 
 }

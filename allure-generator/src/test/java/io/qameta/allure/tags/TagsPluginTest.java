@@ -15,8 +15,10 @@
  */
 package io.qameta.allure.tags;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.ConfigurationBuilder;
 import io.qameta.allure.DefaultLaunchResults;
+import io.qameta.allure.Description;
 import io.qameta.allure.ReportStorage;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
@@ -38,6 +40,10 @@ import static org.mockito.Mockito.mock;
  */
 class TagsPluginTest {
 
+    /**
+     * Verifies adding tags from labels for tag aggregation.
+     */
+    @Description
     @Test
     void shouldAddTagsFromLabels() {
         final TestResult testResult = new TestResult()
@@ -67,11 +73,7 @@ class TagsPluginTest {
 
         final ReportStorage storage = mock();
 
-        new TagsPlugin().aggregate(
-                configuration,
-                launchResults,
-                storage
-        );
+        aggregateTags(configuration, launchResults, storage);
 
         assertThat(testResult.<Set<String>>getExtraBlock(TagsPlugin.TAGS_BLOCK_NAME))
                 .containsExactlyInAnyOrder(
@@ -81,6 +83,10 @@ class TagsPluginTest {
                 );
     }
 
+    /**
+     * Verifies removing duplicate tags for tag aggregation.
+     */
+    @Description
     @Test
     void shouldRemoveDuplicateTags() {
         final TestResult testResult = new TestResult()
@@ -116,11 +122,7 @@ class TagsPluginTest {
 
         final ReportStorage storage = mock();
 
-        new TagsPlugin().aggregate(
-                configuration,
-                launchResults,
-                storage
-        );
+        aggregateTags(configuration, launchResults, storage);
 
         assertThat(testResult.<Set<String>>getExtraBlock(TagsPlugin.TAGS_BLOCK_NAME))
                 .containsExactlyInAnyOrder(
@@ -130,6 +132,10 @@ class TagsPluginTest {
                 );
     }
 
+    /**
+     * Verifies trimming tag names for tag aggregation.
+     */
+    @Description
     @Test
     void shouldTrimTagNames() {
         final TestResult testResult = new TestResult()
@@ -159,11 +165,7 @@ class TagsPluginTest {
 
         final ReportStorage storage = mock();
 
-        new TagsPlugin().aggregate(
-                configuration,
-                launchResults,
-                storage
-        );
+        aggregateTags(configuration, launchResults, storage);
 
         assertThat(testResult.<Set<String>>getExtraBlock(TagsPlugin.TAGS_BLOCK_NAME))
                 .containsExactlyInAnyOrder(
@@ -173,6 +175,10 @@ class TagsPluginTest {
                 );
     }
 
+    /**
+     * Verifies parsing labels without name for tag aggregation.
+     */
+    @Description
     @Test
     void shouldParseLabelsWithoutName() {
         final TestResult testResult = new TestResult()
@@ -201,11 +207,7 @@ class TagsPluginTest {
 
         final ReportStorage storage = mock();
 
-        new TagsPlugin().aggregate(
-                configuration,
-                launchResults,
-                storage
-        );
+        aggregateTags(configuration, launchResults, storage);
 
         assertThat(testResult.<Set<String>>getExtraBlock(TagsPlugin.TAGS_BLOCK_NAME))
                 .containsExactlyInAnyOrder(
@@ -215,6 +217,10 @@ class TagsPluginTest {
                 );
     }
 
+    /**
+     * Verifies parsing labels without value for tag aggregation.
+     */
+    @Description
     @Test
     void shouldParseLabelsWithoutValue() {
         final TestResult testResult = new TestResult()
@@ -239,11 +245,7 @@ class TagsPluginTest {
 
         final ReportStorage storage = mock();
 
-        new TagsPlugin().aggregate(
-                configuration,
-                launchResults,
-                storage
-        );
+        aggregateTags(configuration, launchResults, storage);
 
         assertThat(testResult.<Set<String>>getExtraBlock(TagsPlugin.TAGS_BLOCK_NAME))
                 .containsExactlyInAnyOrder(
@@ -252,6 +254,10 @@ class TagsPluginTest {
                 );
     }
 
+    /**
+     * Verifies adding meta tags for tag aggregation.
+     */
+    @Description
     @Test
     void shouldAddMetaTags() {
         final TestResult testResult = new TestResult()
@@ -290,11 +296,7 @@ class TagsPluginTest {
 
         final ReportStorage storage = mock();
 
-        new TagsPlugin().aggregate(
-                configuration,
-                launchResults,
-                storage
-        );
+        aggregateTags(configuration, launchResults, storage);
 
         assertThat(testResult.getLabels())
                 .extracting(Label::getName, Label::getValue)
@@ -312,5 +314,16 @@ class TagsPluginTest {
                         tuple("suite", "Search Articles"),
                         tuple("subSuite", "Mobile")
                 );
+    }
+
+    private void aggregateTags(
+            final Configuration configuration,
+            final List<LaunchResults> launchResults,
+            final ReportStorage storage
+    ) {
+        Allure.step(
+                "Aggregate tags for " + launchResults.get(0).getAllResults().size() + " test result(s)",
+                () -> new TagsPlugin().aggregate(configuration, launchResults, storage)
+        );
     }
 }

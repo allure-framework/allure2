@@ -15,28 +15,40 @@
  */
 package io.qameta.allure.markdown;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.ConfigurationBuilder;
 import io.qameta.allure.DefaultLaunchResults;
+import io.qameta.allure.Description;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.InMemoryReportStorage;
+import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.MarkdownDescriptionsPlugin;
 import io.qameta.allure.entity.TestResult;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MarkdownAggregatorTest {
 
+    /**
+     * Verifies markdown aggregation with an empty launch list.
+     */
+    @Description
     @Test
     void shouldNotFailIfEmptyResults() {
         final Configuration configuration = ConfigurationBuilder.bundled().build();
 
         final MarkdownDescriptionsPlugin aggregator = new MarkdownDescriptionsPlugin();
-        aggregator.aggregate(configuration, Collections.emptyList(), new InMemoryReportStorage());
+        aggregateMarkdownDescriptions(aggregator, configuration, Collections.emptyList());
     }
 
+    /**
+     * Verifies markdown aggregation leaves empty descriptions unchanged.
+     */
+    @Description
     @Test
     void shouldSkipResultsWithEmptyDescription() {
         final Configuration configuration = ConfigurationBuilder.bundled().build();
@@ -49,12 +61,16 @@ class MarkdownAggregatorTest {
                 Collections.emptyMap(),
                 Collections.emptyMap()
         );
-        aggregator.aggregate(configuration, Collections.singletonList(launchResults), new InMemoryReportStorage());
+        aggregateMarkdownDescriptions(aggregator, configuration, Collections.singletonList(launchResults));
         assertThat(result)
                 .extracting(TestResult::getDescription, TestResult::getDescriptionHtml)
                 .containsExactly(null, null);
     }
 
+    /**
+     * Verifies markdown aggregation keeps existing HTML descriptions unchanged.
+     */
+    @Description
     @Test
     void shouldSkipResultsWithNonEmptyDescriptionHtml() {
         final Configuration configuration = ConfigurationBuilder.bundled().build();
@@ -70,12 +86,16 @@ class MarkdownAggregatorTest {
                 Collections.emptyMap(),
                 Collections.emptyMap()
         );
-        aggregator.aggregate(configuration, Collections.singletonList(launchResults), new InMemoryReportStorage());
+        aggregateMarkdownDescriptions(aggregator, configuration, Collections.singletonList(launchResults));
         assertThat(result)
                 .extracting(TestResult::getDescription, TestResult::getDescriptionHtml)
                 .containsExactly("desc", "descHtml");
     }
 
+    /**
+     * Verifies processing description for markdown description aggregation.
+     */
+    @Description
     @Test
     void shouldProcessDescription() {
         final Configuration configuration = ConfigurationBuilder.bundled().build();
@@ -90,9 +110,20 @@ class MarkdownAggregatorTest {
                 Collections.emptyMap(),
                 Collections.emptyMap()
         );
-        aggregator.aggregate(configuration, Collections.singletonList(launchResults), new InMemoryReportStorage());
+        aggregateMarkdownDescriptions(aggregator, configuration, Collections.singletonList(launchResults));
         assertThat(result)
                 .extracting(TestResult::getDescription, TestResult::getDescriptionHtml)
                 .containsExactly("desc", "<p>desc</p>\n");
+    }
+
+    private void aggregateMarkdownDescriptions(
+            final MarkdownDescriptionsPlugin aggregator,
+            final Configuration configuration,
+            final List<LaunchResults> launchResults
+    ) {
+        Allure.step(
+                "Render markdown descriptions for " + launchResults.size() + " launch(es)",
+                () -> aggregator.aggregate(configuration, launchResults, new InMemoryReportStorage())
+        );
     }
 }

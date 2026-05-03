@@ -15,6 +15,8 @@
  */
 package io.qameta.allure.prometheus;
 
+import io.qameta.allure.Allure;
+import io.qameta.allure.Description;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -39,10 +41,17 @@ class PrometheusMetricLineTest {
         );
     }
 
+    /**
+     * Verifies returning metric for Prometheus metric formatting.
+     */
+    @Description
     @ParameterizedTest
     @MethodSource(value = "data")
     void shouldReturnMetric(final String labels, final String expectedMetric) {
+        Allure.parameter("labels", labels);
+        Allure.parameter("expectedMetric", expectedMetric);
         PrometheusMetricLine prometheusMetric = new PrometheusMetricLine(METRIC_NAME, METRIC_KEY, METRIC_VALUE, labels);
-        assertThat(prometheusMetric.asString()).isEqualTo(expectedMetric);
+        final String metric = Allure.step("Render Prometheus metric line", prometheusMetric::asString);
+        assertThat(metric).isEqualTo(expectedMetric);
     }
 }

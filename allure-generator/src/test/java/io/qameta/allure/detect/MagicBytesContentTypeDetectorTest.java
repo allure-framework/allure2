@@ -15,6 +15,8 @@
  */
 package io.qameta.allure.detect;
 
+import io.qameta.allure.Allure;
+import io.qameta.allure.Description;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -45,21 +47,60 @@ class MagicBytesContentTypeDetectorTest {
         );
     }
 
+    /**
+     * Verifies detecting content type for magic byte content detection.
+     */
+    @Description
     @ParameterizedTest
     @MethodSource("data")
     void shouldDetectContentType(final String resourceName, final String expectedContentType) throws IOException {
-        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        Allure.parameter("resourceName", resourceName);
+        Allure.parameter("expectedContentType", expectedContentType);
         final String resource = "sample-files-to-detect/" + resourceName;
-        try (InputStream stream = getClass().getClassLoader()
-                .getResourceAsStream(resource)) {
-            IOUtils.copy(Objects.requireNonNull(stream, "no resource found:" + resource), bos);
-        }
-        byte[] bytes = bos.toByteArray();
-        final String detectedContentType = MagicBytesContentTypeDetector.detectContentType(bytes);
+        byte[] bytes = Allure.step("Read sample file " + resource, () -> {
+            final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            try (InputStream stream = getClass().getClassLoader()
+                    .getResourceAsStream(resource)) {
+                IOUtils.copy(Objects.requireNonNull(stream, "no resource found:" + resource), bos);
+            }
+            final byte[] content = bos.toByteArray();
+            Allure.addAttachment(resourceName, "text/plain", describeMagicBytes(content));
+            return content;
+        });
+        final String detectedContentType = Allure.step(
+                "Detect content type from magic bytes",
+                () -> MagicBytesContentTypeDetector.detectContentType(bytes)
+        );
 
         assertThat(detectedContentType)
                 .isEqualTo(expectedContentType);
     }
 
+    private String describeMagicBytes(final byte[] content) {
+        return String.format(
+                "length=%d%nhexPreview=%s%n",
+                content.length,
+                toHex(content, 32)
+        );
+    }
+
+    private String toHex(final byte[] bytes, final int limit) {
+        final StringBuilder builder = new StringBuilder();
+        final int length = Math.min(bytes.length, limit);
+        for (int i = 0; i < length; i++) {
+            if (i > 0) {
+                builder.append(' ');
+            }
+            final String hex = Integer.toHexString(Byte.toUnsignedInt(bytes[i]));
+            if (hex.length() == 1) {
+                builder.append('0');
+            }
+            builder.append(hex);
+        }
+        if (bytes.length > limit) {
+            builder.append(" ...");
+        }
+        return builder.toString();
+    }
 
 }

@@ -15,6 +15,8 @@
  */
 package io.qameta.allure.idea;
 
+import io.qameta.allure.Allure;
+import io.qameta.allure.Description;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.InMemoryReportStorage;
 import io.qameta.allure.core.LaunchResults;
@@ -35,6 +37,10 @@ class IdeaLinksPluginTest {
 
     private static final String TEST_CLASS = "io.qameta.allure.AllureTest";
 
+    /**
+     * Verifies exporting test result to Jira for IDEA link aggregation.
+     */
+    @Description
     @Test
     void shouldExportTestResultToJira() {
         final LaunchResults launchResults = mock(LaunchResults.class);
@@ -46,10 +52,13 @@ class IdeaLinksPluginTest {
 
         final IdeaLinksPlugin jiraTestResultExportPlugin = new IdeaLinksPlugin(true, 63342);
 
-        jiraTestResultExportPlugin.aggregate(
-                mock(Configuration.class),
-                Collections.singletonList(launchResults),
-                new InMemoryReportStorage()
+        Allure.step(
+                "Aggregate IDEA links for one test result",
+                () -> jiraTestResultExportPlugin.aggregate(
+                        mock(Configuration.class),
+                        Collections.singletonList(launchResults),
+                        new InMemoryReportStorage()
+                )
         );
 
         assertThat(testResult.getLinks()).hasSize(1);

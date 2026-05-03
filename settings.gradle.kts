@@ -57,6 +57,7 @@ pluginManagement {
         id("com.gorylenko.gradle-git-properties") version "2.5.7"
         id("com.netflix.nebula.ospackage") version "12.3.0"
         id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
+        id("io.qameta.allure") version "4.0.0"
         id("io.spring.dependency-management") version "1.1.7"
         id("org.owasp.dependencycheck") version "12.2.0"
         id("com.github.spotbugs") version "6.5.0"

@@ -15,6 +15,7 @@
  */
 package io.qameta.allure.retry;
 
+import io.qameta.allure.Description;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.TestResult;
@@ -43,6 +44,10 @@ class RetryPluginTest {
 
     private RetryPlugin retryPlugin = new RetryPlugin();
 
+    /**
+     * Verifies merging retries test results for retry aggregation.
+     */
+    @Description
     @Test
     void shouldMergeRetriesTestResults() {
         String historyId = UUID.randomUUID().toString();
@@ -84,6 +89,10 @@ class RetryPluginTest {
                 .hasSize(2);
     }
 
+    /**
+     * Verifies retry aggregation keeps unrelated history ids separate.
+     */
+    @Description
     @Test
     void shouldNotMergeOtherTestResults() {
         String firstHistoryId = UUID.randomUUID().toString();
@@ -107,6 +116,10 @@ class RetryPluginTest {
                 .hasSize(0);
     }
 
+    /**
+     * Verifies retry aggregation keeps hidden results out of latest-result selection.
+     */
+    @Description
     @Test
     void shouldSkipHiddenResults() {
         String historyId = UUID.randomUUID().toString();
@@ -131,6 +144,10 @@ class RetryPluginTest {
                 );
     }
 
+    /**
+     * Verifies passed retries do not mark the latest retry result as flaky.
+     */
+    @Description
     @Test
     void shouldNotMarkLatestAsFlakyIfRetriesArePassed() {
         String historyId = UUID.randomUUID().toString();
@@ -152,6 +169,10 @@ class RetryPluginTest {
                 .containsExactlyInAnyOrder(tuple(SECOND_RESULT, false));
     }
 
+    /**
+     * Verifies skipped retries do not mark the latest retry result as flaky.
+     */
+    @Description
     @Test
     void shouldNotMarkLatestAsFlakyIfRetriesSkipped() {
         String historyId = UUID.randomUUID().toString();
