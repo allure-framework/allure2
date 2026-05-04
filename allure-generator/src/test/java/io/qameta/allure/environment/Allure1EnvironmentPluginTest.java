@@ -36,10 +36,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
 import static io.qameta.allure.testdata.TestData.attachFileContent;
 import static io.qameta.allure.testdata.TestData.attachLaunchResults;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.allurefw.allure1.AllureUtils.generateTestSuiteJsonName;
 import static org.allurefw.allure1.AllureUtils.generateTestSuiteXmlName;
 import static org.assertj.core.api.Assertions.assertThat;
