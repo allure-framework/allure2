@@ -15,6 +15,8 @@
  */
 package io.qameta.allure.jira;
 
+import io.qameta.allure.Allure;
+import io.qameta.allure.Description;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.InMemoryReportStorage;
 import io.qameta.allure.core.LaunchResults;
@@ -25,6 +27,7 @@ import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -36,8 +39,7 @@ import java.util.stream.Collectors;
 import static io.qameta.allure.jira.TestData.ISSUES;
 import static io.qameta.allure.jira.TestData.createTestResult;
 import static io.qameta.allure.jira.TestData.mockJiraService;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -46,7 +48,11 @@ import static org.mockito.Mockito.when;
 
 class JiraTestResultExportPluginTest {
 
-
+    /**
+     * Verifies individual Allure test results are exported to Jira.
+     * The test checks the outgoing Jira test-result payload and linked issue list.
+     */
+    @Description
     @Test
     void shouldExportTestResultToJira() {
         final LaunchResults launchResults = mock(LaunchResults.class);
@@ -72,6 +78,7 @@ class JiraTestResultExportPluginTest {
                 "ALLURE-1,ALLURE-2",
                 () -> service
         );
+        attachTestResultInput(testResult, executorInfo);
 
         jiraExportPlugin.aggregate(
                 mock(Configuration.class),
@@ -80,19 +87,73 @@ class JiraTestResultExportPluginTest {
         );
 
 
-        verify(service, times(1)).createTestResult(any(JiraTestResult.class), eq(ISSUES));
-        verify(service).createTestResult(argThat(result -> result.getExternalId().equals(testResult.getUid())), eq(ISSUES));
-        verify(service).createTestResult(argThat(result -> result.getTestCaseId().equals(testResult.getUid())), eq(ISSUES));
-        verify(service).createTestResult(argThat(result -> result.getHistoryKey().equals(testResult.getHistoryId())), eq(ISSUES));
-        verify(service).createTestResult(argThat(result -> result.getUrl().contains(testResult.getUid())), eq(ISSUES));
-        verify(service).createTestResult(argThat(result -> result.getName().equals(testResult.getName())), eq(ISSUES));
-        verify(service).createTestResult(argThat(result -> result.getStatus().equals(testResult.getStatus().toString())), eq(ISSUES));
-        verify(service).createTestResult(argThat(result -> result.getColor().equals(ResultStatus.PASSED.color())), eq(ISSUES));
-        verify(service).createTestResult(argThat(result -> result.getDate() == testResult.getTime().getStop().longValue()), eq(ISSUES));
-        verify(service).createTestResult(argThat(result -> result.getLaunchUrl().equals(executorInfo.getReportUrl())), eq(ISSUES));
-        verify(service).createTestResult(argThat(result -> result.getLaunchName().equals(executorInfo.getBuildName())), eq(ISSUES));
-        verify(service).createTestResult(argThat(result -> result.getLaunchExternalId().equals(executorInfo.getBuildName())), eq(ISSUES));
+        final JiraTestResult exported = captureTestResultExport(service);
+
+        assertThat(exported.getExternalId()).isEqualTo(testResult.getUid());
+        assertThat(exported.getTestCaseId()).isEqualTo(testResult.getUid());
+        assertThat(exported.getHistoryKey()).isEqualTo(testResult.getHistoryId());
+        assertThat(exported.getUrl()).contains(testResult.getUid());
+        assertThat(exported.getName()).isEqualTo(testResult.getName());
+        assertThat(exported.getStatus()).isEqualTo(testResult.getStatus().toString());
+        assertThat(exported.getColor()).isEqualTo(ResultStatus.PASSED.color());
+        assertThat(exported.getDate()).isEqualTo(testResult.getTime().getStop());
+        assertThat(exported.getLaunchUrl()).isEqualTo(executorInfo.getReportUrl());
+        assertThat(exported.getLaunchName()).isEqualTo(executorInfo.getBuildName());
+        assertThat(exported.getLaunchExternalId()).isEqualTo(executorInfo.getBuildName());
 
     }
 
+    private void attachTestResultInput(final TestResult testResult, final ExecutorInfo executorInfo) {
+        Allure.step("Attach Jira test-result input", () -> Allure.addAttachment(
+                "jira-test-result-input.txt",
+                "text/plain",
+                String.format(
+                        "uid=%s%nname=%s%nhistoryId=%s%nstatus=%s%nstop=%s%nlinks=%s%n"
+                                + "executorBuildName=%s%nexecutorReportUrl=%s",
+                        testResult.getUid(),
+                        testResult.getName(),
+                        testResult.getHistoryId(),
+                        testResult.getStatus(),
+                        testResult.getTime().getStop(),
+                        describeLinks(testResult.getLinks()),
+                        executorInfo.getBuildName(),
+                        executorInfo.getReportUrl()
+                )
+        ));
+    }
+
+    private JiraTestResult captureTestResultExport(final JiraService service) {
+        return Allure.step("Capture Jira test-result export payload", () -> {
+            final ArgumentCaptor<JiraTestResult> resultCaptor = ArgumentCaptor.forClass(JiraTestResult.class);
+            verify(service, times(1)).createTestResult(resultCaptor.capture(), eq(ISSUES));
+            final JiraTestResult result = resultCaptor.getValue();
+            Allure.addAttachment("jira-test-result-payload.txt", "text/plain", describeTestResultExport(result));
+            return result;
+        });
+    }
+
+    private String describeLinks(final List<Link> links) {
+        return links.stream()
+                .map(link -> link.getType() + ":" + link.getName())
+                .sorted()
+                .collect(Collectors.joining(", "));
+    }
+
+    private String describeTestResultExport(final JiraTestResult result) {
+        return String.format(
+                "externalId=%s%ntestCaseId=%s%nhistoryKey=%s%nname=%s%nurl=%s%nstatus=%s%ncolor=%s%n"
+                        + "date=%s%nlaunchExternalId=%s%nlaunchName=%s%nlaunchUrl=%s",
+                result.getExternalId(),
+                result.getTestCaseId(),
+                result.getHistoryKey(),
+                result.getName(),
+                result.getUrl(),
+                result.getStatus(),
+                result.getColor(),
+                result.getDate(),
+                result.getLaunchExternalId(),
+                result.getLaunchName(),
+                result.getLaunchUrl()
+        );
+    }
 }

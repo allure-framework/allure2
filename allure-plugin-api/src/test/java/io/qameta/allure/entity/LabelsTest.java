@@ -15,6 +15,7 @@
  */
 package io.qameta.allure.entity;
 
+import io.qameta.allure.Description;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -27,6 +28,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class LabelsTest {
 
+    /**
+     * Verifies single-label lookup on a result without labels.
+     * The test checks that a missing label returns an empty optional.
+     */
+    @Description
     @Test
     void shouldFindLabelsInEmptyArray() {
         final Optional<String> found = new TestResult().findOneLabel("hey");
@@ -34,6 +40,11 @@ class LabelsTest {
                 .isEmpty();
     }
 
+    /**
+     * Verifies single-label lookup ignores a matching label whose value is null.
+     * The test checks that the lookup returns an empty optional instead of a null value.
+     */
+    @Description
     @Test
     void shouldFindOneWithNullValue() {
         final TestResult result = new TestResult();
@@ -43,6 +54,11 @@ class LabelsTest {
                 .isEmpty();
     }
 
+    /**
+     * Verifies multi-label lookup preserves all matching values, including null.
+     * The test checks that null and non-null values are all returned for the requested label name.
+     */
+    @Description
     @Test
     void shouldFindAllWithNullValue() {
         final TestResult result = new TestResult();

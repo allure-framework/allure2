@@ -15,18 +15,24 @@
  */
 package io.qameta.allure.packages;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.DefaultLaunchResults;
+import io.qameta.allure.Description;
 import io.qameta.allure.Issue;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import io.qameta.allure.tree.Tree;
+import io.qameta.allure.tree.TreeGroup;
+import io.qameta.allure.tree.TreeNode;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static io.qameta.allure.entity.LabelName.PACKAGE;
 import static io.qameta.allure.entity.LabelName.TEST_METHOD;
@@ -39,6 +45,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class PackagesPluginTest {
 
+    /**
+     * Verifies package labels are converted into a package tree.
+     * The test checks root, package, and leaf node names for labeled results.
+     */
+    @Description
     @Test
     void shouldCreateTree() {
         final Set<TestResult> testResults = new HashSet<>();
@@ -52,14 +63,8 @@ class PackagesPluginTest {
         testResults.add(first);
         testResults.add(second);
 
-        final LaunchResults results = new DefaultLaunchResults(
-                testResults,
-                Collections.emptyMap(),
-                Collections.emptyMap()
-        );
-
-        final PackagesPlugin packagesPlugin = new PackagesPlugin();
-        final Tree<TestResult> tree = packagesPlugin.getData(singletonList(results));
+        final LaunchResults results = createLaunchResults(testResults);
+        final Tree<TestResult> tree = aggregatePackages(results);
 
         assertThat(tree.getChildren())
                 .hasSize(1)
@@ -78,6 +83,11 @@ class PackagesPluginTest {
                 .containsExactlyInAnyOrder("firstMethod", "second");
     }
 
+    /**
+     * Verifies package tree nodes with a single child are collapsed.
+     * The test checks collapsed package names and leaf result names.
+     */
+    @Description
     @Test
     void shouldCollapseNodesWithOneChild() {
         final Set<TestResult> testResults = new HashSet<>();
@@ -91,14 +101,8 @@ class PackagesPluginTest {
         testResults.add(first);
         testResults.add(second);
 
-        final LaunchResults results = new DefaultLaunchResults(
-                testResults,
-                Collections.emptyMap(),
-                Collections.emptyMap()
-        );
-
-        final PackagesPlugin packagesPlugin = new PackagesPlugin();
-        final Tree<TestResult> tree = packagesPlugin.getData(singletonList(results));
+        final LaunchResults results = createLaunchResults(testResults);
+        final Tree<TestResult> tree = aggregatePackages(results);
 
         assertThat(tree.getChildren())
                 .hasSize(1)
@@ -117,7 +121,12 @@ class PackagesPluginTest {
                 .containsExactlyInAnyOrder("first", "second");
     }
 
+    /**
+     * Verifies tests can appear directly under a package that also has nested packages.
+     * The test checks the nested package shape for a mixed package fixture.
+     */
     @Issue("531")
+    @Description
     @Test
     void shouldProcessTestsInNestedPackages() {
         final Set<TestResult> testResults = new HashSet<>();
@@ -131,14 +140,8 @@ class PackagesPluginTest {
         testResults.add(first);
         testResults.add(second);
 
-        final LaunchResults results = new DefaultLaunchResults(
-                testResults,
-                Collections.emptyMap(),
-                Collections.emptyMap()
-        );
-
-        final PackagesPlugin packagesPlugin = new PackagesPlugin();
-        final Tree<TestResult> tree = packagesPlugin.getData(singletonList(results));
+        final LaunchResults results = createLaunchResults(testResults);
+        final Tree<TestResult> tree = aggregatePackages(results);
 
         assertThat(tree.getChildren())
                 .hasSize(1)
@@ -158,8 +161,13 @@ class PackagesPluginTest {
                 .containsExactlyInAnyOrder("second");
     }
 
+    /**
+     * Verifies package tree nodes are sorted by result start time.
+     * The test checks timeless results appear first, followed by ascending start times.
+     */
     @Issue("587")
     @Issue("572")
+    @Description
     @Test
     void shouldSortByStartTimeAsc() {
         final TestResult first = new TestResult()
@@ -174,17 +182,60 @@ class PackagesPluginTest {
         final TestResult timeless = new TestResult()
                 .setName("timeless");
 
-        final LaunchResults results = new DefaultLaunchResults(
-                new HashSet<>(Arrays.asList(first, second, third, timeless)),
-                Collections.emptyMap(),
-                Collections.emptyMap()
-        );
-
-        final PackagesPlugin packagesPlugin = new PackagesPlugin();
-        final Tree<TestResult> tree = packagesPlugin.getData(singletonList(results));
+        final LaunchResults results = createLaunchResults(new HashSet<>(Arrays.asList(first, second, third, timeless)));
+        final Tree<TestResult> tree = aggregatePackages(results);
 
         assertThat(tree.getChildren())
                 .extracting("name")
                 .containsExactly("timeless", "first", "third", "second");
+    }
+
+    private LaunchResults createLaunchResults(final Set<TestResult> testResults) {
+        return Allure.step("Create launch results", () -> {
+            Allure.addAttachment("input-test-results.txt", "text/plain", describeTestResults(testResults));
+            return new DefaultLaunchResults(testResults, Collections.emptyMap(), Collections.emptyMap());
+        });
+    }
+
+    private Tree<TestResult> aggregatePackages(final LaunchResults results) {
+        return Allure.step("Aggregate packages tree", () -> {
+            final PackagesPlugin packagesPlugin = new PackagesPlugin();
+            final Tree<TestResult> tree = packagesPlugin.getData(singletonList(results));
+            Allure.addAttachment("packages-tree.txt", "text/plain", describeTree(tree.getChildren(), 0));
+            return tree;
+        });
+    }
+
+    private String describeTestResults(final Set<TestResult> testResults) {
+        return testResults.stream()
+                .map(result -> String.format(
+                        "name=%s, start=%s, labels=%s",
+                        result.getName(),
+                        result.getTime() == null ? null : result.getTime().getStart(),
+                        describeLabels(result)
+                ))
+                .sorted()
+                .collect(Collectors.joining(System.lineSeparator()));
+    }
+
+    private String describeLabels(final TestResult result) {
+        return result.getLabels().stream()
+                .map(label -> label.getName() + "=" + label.getValue())
+                .sorted()
+                .collect(Collectors.joining(", "));
+    }
+
+    private String describeTree(final List<TreeNode> nodes, final int depth) {
+        final StringBuilder builder = new StringBuilder();
+        for (TreeNode node : nodes) {
+            builder
+                    .append("  ".repeat(depth))
+                    .append(node.getName())
+                    .append(System.lineSeparator());
+            if (node instanceof TreeGroup) {
+                builder.append(describeTree(((TreeGroup) node).getChildren(), depth + 1));
+            }
+        }
+        return builder.toString();
     }
 }

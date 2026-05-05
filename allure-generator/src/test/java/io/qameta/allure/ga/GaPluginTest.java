@@ -15,7 +15,9 @@
  */
 package io.qameta.allure.ga;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.DefaultLaunchResults;
+import io.qameta.allure.Description;
 import io.qameta.allure.entity.ExecutorInfo;
 import io.qameta.allure.executor.ExecutorPlugin;
 import org.junit.jupiter.api.Test;
@@ -31,46 +33,56 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class GaPluginTest {
 
+    /**
+     * Verifies resolving default executor for analytics executor detection.
+     */
+    @Description
     @Test
     void shouldGetDefaultExecutor() {
-        final String executorType = GaPlugin.getExecutorType(
-                List.of(
-                        new DefaultLaunchResults(Set.of(), Map.of(), Map.of())
-                )
-        );
+        Allure.parameter("executorMetadata", "missing");
+        final String executorType = getExecutorType(new DefaultLaunchResults(Set.of(), Map.of(), Map.of()));
 
         assertThat(executorType)
                 .isEqualTo("local");
     }
 
+    /**
+     * Verifies processing null executor for analytics executor detection.
+     */
+    @Description
     @Test
     void shouldProcessNullExecutor() {
-        final String executorType = GaPlugin.getExecutorType(
-                List.of(
-                        new DefaultLaunchResults(Set.of(), Map.of(), Map.of(
-                                ExecutorPlugin.EXECUTORS_BLOCK_NAME,
-                                new ExecutorInfo()
-                        ))
-                )
-        );
+        Allure.parameter("executorMetadata", "present without type");
+        final String executorType = getExecutorType(new DefaultLaunchResults(Set.of(), Map.of(), Map.of(
+                ExecutorPlugin.EXECUTORS_BLOCK_NAME,
+                new ExecutorInfo()
+        )));
 
         assertThat(executorType)
                 .isEqualTo("local");
     }
 
+    /**
+     * Verifies processing executor for analytics executor detection.
+     */
+    @Description
     @Test
     void shouldProcessExecutor() {
-        final String executorType = GaPlugin.getExecutorType(
-                List.of(
-                        new DefaultLaunchResults(Set.of(), Map.of(), Map.of(
-                                ExecutorPlugin.EXECUTORS_BLOCK_NAME,
-                                new ExecutorInfo()
-                                        .setType("some executor type")
-                        ))
-                )
-        );
+        Allure.parameter("executorMetadata", "present with type");
+        final String executorType = getExecutorType(new DefaultLaunchResults(Set.of(), Map.of(), Map.of(
+                ExecutorPlugin.EXECUTORS_BLOCK_NAME,
+                new ExecutorInfo()
+                        .setType("some executor type")
+        )));
 
         assertThat(executorType)
                 .isEqualTo("some executor type");
+    }
+
+    private String getExecutorType(final DefaultLaunchResults launchResults) {
+        return Allure.step(
+                "Resolve Google Analytics executor type",
+                () -> GaPlugin.getExecutorType(List.of(launchResults))
+        );
     }
 }

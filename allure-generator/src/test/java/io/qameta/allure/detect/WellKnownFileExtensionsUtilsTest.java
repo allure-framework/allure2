@@ -15,6 +15,8 @@
  */
 package io.qameta.allure.detect;
 
+import io.qameta.allure.Allure;
+import io.qameta.allure.Description;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -43,10 +45,19 @@ class WellKnownFileExtensionsUtilsTest {
         );
     }
 
+    /**
+     * Verifies detecting content type for extension-based content detection.
+     */
+    @Description
     @ParameterizedTest
     @MethodSource("expectedContentTypes")
     void shouldDetectContentType(final String resourceName, final String expectedContentType) {
-        final String detectedContentType = WellKnownFileExtensionsUtils.lookup(resourceName);
+        Allure.parameter("resourceName", resourceName);
+        Allure.parameter("expectedContentType", expectedContentType);
+        final String detectedContentType = Allure.step(
+                "Resolve content type from file name",
+                () -> WellKnownFileExtensionsUtils.lookup(resourceName)
+        );
 
         assertThat(detectedContentType)
                 .isEqualTo(expectedContentType);
@@ -68,10 +79,19 @@ class WellKnownFileExtensionsUtilsTest {
         );
     }
 
+    /**
+     * Verifies returning extension by content type for extension-based content detection.
+     */
+    @Description
     @ParameterizedTest
     @MethodSource("expectedExtensions")
     void shouldReturnExtensionByContentType(final String contentType, final String expectedExtension) {
-        final String detectedContentType = WellKnownFileExtensionsUtils.getExtensionByMimeType(contentType);
+        Allure.parameter("contentType", contentType);
+        Allure.parameter("expectedExtension", expectedExtension);
+        final String detectedContentType = Allure.step(
+                "Resolve file extension from content type",
+                () -> WellKnownFileExtensionsUtils.getExtensionByMimeType(contentType)
+        );
 
         assertThat(detectedContentType)
                 .isEqualTo(expectedExtension);

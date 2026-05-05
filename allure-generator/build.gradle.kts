@@ -3,6 +3,7 @@ import com.github.gradle.node.npm.task.NpmTask
 plugins {
     `java-library`
     id("com.github.node-gradle.node")
+    id("io.qameta.allure")
 }
 
 description = "Allure Report Generator"
@@ -110,6 +111,16 @@ tasks.test {
     dependsOn(testWeb)
 }
 
+allure {
+    version.set("2.34.0")
+    adapter {
+        allureJavaVersion.set("2.34.0")
+        aspectjVersion.set("1.9.25.1")
+        autoconfigure.set(false)
+        aspectjWeaver.set(true)
+    }
+}
+
 val allurePlugin by configurations.existing
 
 dependencies {
@@ -129,6 +140,7 @@ dependencies {
     implementation("org.apache.httpcomponents:httpclient")
     implementation("org.freemarker:freemarker")
     implementation("org.jsoup:jsoup")
+    testImplementation("io.qameta.allure:allure-assertj")
     testImplementation("io.qameta.allure:allure-java-commons")
     testImplementation("io.qameta.allure:allure-junit-platform")
     testImplementation("org.apache.commons:commons-lang3")

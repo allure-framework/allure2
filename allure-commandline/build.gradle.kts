@@ -5,9 +5,20 @@ import org.gradle.kotlin.dsl.support.unzipTo
 plugins {
     application
     id("com.netflix.nebula.ospackage")
+    id("io.qameta.allure")
 }
 
 description = "Allure Commandline"
+
+allure {
+    version.set("2.34.0")
+    adapter {
+        allureJavaVersion.set("2.34.0")
+        aspectjVersion.set("1.9.25.1")
+        autoconfigure.set(false)
+        aspectjWeaver.set(true)
+    }
+}
 
 application {
     mainClass.set("io.qameta.allure.CommandLine")
@@ -132,6 +143,7 @@ dependencies {
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
     implementation("commons-io:commons-io")
     implementation(project(":allure-generator"))
+    testImplementation("io.qameta.allure:allure-assertj")
     testImplementation("io.qameta.allure:allure-junit-platform")
     testImplementation("org.apache.commons:commons-lang3")
     testImplementation("org.assertj:assertj-core")

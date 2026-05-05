@@ -15,6 +15,8 @@
  */
 package io.qameta.allure.detect;
 
+import io.qameta.allure.Allure;
+import io.qameta.allure.Description;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -26,6 +28,7 @@ import java.io.InputStream;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+import static io.qameta.allure.testdata.TestData.toHex;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -45,21 +48,40 @@ class MagicBytesContentTypeDetectorTest {
         );
     }
 
+    /**
+     * Verifies detecting content type for magic byte content detection.
+     */
+    @Description
     @ParameterizedTest
     @MethodSource("data")
     void shouldDetectContentType(final String resourceName, final String expectedContentType) throws IOException {
-        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        Allure.parameter("resourceName", resourceName);
+        Allure.parameter("expectedContentType", expectedContentType);
         final String resource = "sample-files-to-detect/" + resourceName;
-        try (InputStream stream = getClass().getClassLoader()
-                .getResourceAsStream(resource)) {
-            IOUtils.copy(Objects.requireNonNull(stream, "no resource found:" + resource), bos);
-        }
-        byte[] bytes = bos.toByteArray();
-        final String detectedContentType = MagicBytesContentTypeDetector.detectContentType(bytes);
+        byte[] bytes = Allure.step("Read sample file " + resource, () -> {
+            final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            try (InputStream stream = getClass().getClassLoader()
+                    .getResourceAsStream(resource)) {
+                IOUtils.copy(Objects.requireNonNull(stream, "no resource found:" + resource), bos);
+            }
+            final byte[] content = bos.toByteArray();
+            Allure.addAttachment(resourceName, "text/plain", describeMagicBytes(content));
+            return content;
+        });
+        final String detectedContentType = Allure.step(
+                "Detect content type from magic bytes",
+                () -> MagicBytesContentTypeDetector.detectContentType(bytes)
+        );
 
         assertThat(detectedContentType)
                 .isEqualTo(expectedContentType);
     }
 
-
+    private String describeMagicBytes(final byte[] content) {
+        return String.format(
+                "length=%d%nhexPreview=%s%n",
+                content.length,
+                toHex(content, 32)
+        );
+    }
 }

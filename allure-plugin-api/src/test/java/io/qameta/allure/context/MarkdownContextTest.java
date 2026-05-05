@@ -15,12 +15,18 @@
  */
 package io.qameta.allure.context;
 
+import io.qameta.allure.Description;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MarkdownContextTest {
 
+    /**
+     * Verifies that the Markdown context creates a usable renderer.
+     * The test checks that consumers receive a non-null context value.
+     */
+    @Description
     @Test
     void shouldCreateMarkdownContext() {
         final MarkdownContext context = new MarkdownContext();

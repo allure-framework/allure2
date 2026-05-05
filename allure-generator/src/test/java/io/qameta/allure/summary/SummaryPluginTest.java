@@ -15,8 +15,10 @@
  */
 package io.qameta.allure.summary;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.ConfigurationBuilder;
 import io.qameta.allure.DefaultLaunchResults;
+import io.qameta.allure.Description;
 import io.qameta.allure.ReportStorage;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
@@ -40,6 +42,10 @@ import static org.mockito.Mockito.verify;
  */
 class SummaryPluginTest {
 
+    /**
+     * Verifies resolving report name from configuration for summary aggregation.
+     */
+    @Description
     @Test
     void shouldGetReportNameFromConfiguration() {
         final List<LaunchResults> launchResults = List.of(
@@ -52,7 +58,7 @@ class SummaryPluginTest {
                 .build();
 
         final ReportStorage storage = mock();
-        new SummaryPlugin().aggregate(configuration, launchResults, storage);
+        aggregateSummary(configuration, launchResults, storage);
 
         final ArgumentCaptor<Object> dataCaptor = ArgumentCaptor.captor();
 
@@ -68,6 +74,10 @@ class SummaryPluginTest {
                 .isEqualTo(reportName);
     }
 
+    /**
+     * Verifies resolving report name from executor JSON for summary aggregation.
+     */
+    @Description
     @Test
     void shouldGetReportNameFromExecutorJson() {
         final String reportName = "other report name";
@@ -89,7 +99,7 @@ class SummaryPluginTest {
                 .build();
 
         final ReportStorage storage = mock();
-        new SummaryPlugin().aggregate(configuration, launchResults, storage);
+        aggregateSummary(configuration, launchResults, storage);
 
         final ArgumentCaptor<Object> dataCaptor = ArgumentCaptor.captor();
 
@@ -105,6 +115,10 @@ class SummaryPluginTest {
                 .isEqualTo(reportName);
     }
 
+    /**
+     * Verifies that configured report name overrides executor metadata for summary aggregation.
+     */
+    @Description
     @Test
     void shouldReportNameFromConfigurationShouldOverride() {
         final String reportName = "other report name";
@@ -126,7 +140,7 @@ class SummaryPluginTest {
                 .build();
 
         final ReportStorage storage = mock();
-        new SummaryPlugin().aggregate(configuration, launchResults, storage);
+        aggregateSummary(configuration, launchResults, storage);
 
         final ArgumentCaptor<Object> dataCaptor = ArgumentCaptor.captor();
 
@@ -142,6 +156,10 @@ class SummaryPluginTest {
                 .isEqualTo(reportName);
     }
 
+    /**
+     * Verifies using default report name if not specified for summary aggregation.
+     */
+    @Description
     @Test
     void shouldUseDefaultReportNameIfNotSpecified() {
         final List<LaunchResults> launchResults = List.of(
@@ -156,7 +174,7 @@ class SummaryPluginTest {
                 .build();
 
         final ReportStorage storage = mock();
-        new SummaryPlugin().aggregate(configuration, launchResults, storage);
+        aggregateSummary(configuration, launchResults, storage);
 
         final ArgumentCaptor<Object> dataCaptor = ArgumentCaptor.captor();
 
@@ -170,5 +188,16 @@ class SummaryPluginTest {
 
         assertThat(data.getReportName())
                 .isEqualTo("Allure Report");
+    }
+
+    private void aggregateSummary(
+            final Configuration configuration,
+            final List<LaunchResults> launchResults,
+            final ReportStorage storage
+    ) {
+        Allure.step(
+                "Aggregate summary widget for " + launchResults.size() + " launch(es)",
+                () -> new SummaryPlugin().aggregate(configuration, launchResults, storage)
+        );
     }
 }

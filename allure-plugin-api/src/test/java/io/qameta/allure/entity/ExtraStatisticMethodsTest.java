@@ -15,6 +15,7 @@
  */
 package io.qameta.allure.entity;
 
+import io.qameta.allure.Description;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -26,6 +27,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class ExtraStatisticMethodsTest {
 
+    /**
+     * Verifies statistic status selection follows the highest-priority non-zero counter.
+     * The test checks failed, broken, and passed statistics resolve to the expected statuses.
+     */
+    @Description
     @Test
     void shouldGetStatusForStatistic() {
         final Statistic first = new Statistic().setFailed(2L).setPassed(1L);
@@ -38,6 +44,11 @@ class ExtraStatisticMethodsTest {
                 );
     }
 
+    /**
+     * Verifies retrieving statistic counts by status.
+     * The test checks configured counters are returned and missing statuses resolve to zero.
+     */
+    @Description
     @Test
     void shouldGetByStatus() {
         final Statistic statistic = new Statistic().setFailed(2L).setPassed(1L).setBroken(4L);

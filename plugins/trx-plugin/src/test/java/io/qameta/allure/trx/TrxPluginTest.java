@@ -15,6 +15,8 @@
  */
 package io.qameta.allure.trx;
 
+import io.qameta.allure.Allure;
+import io.qameta.allure.Description;
 import io.qameta.allure.Issue;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
@@ -39,6 +41,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static io.qameta.allure.entity.LabelName.PACKAGE;
 import static io.qameta.allure.entity.LabelName.RESULT_FORMAT;
@@ -68,6 +71,11 @@ class TrxPluginTest {
         this.resultsDirectory = resultsDirectory;
     }
 
+    /**
+     * Verifies a TRX file is converted into Allure test results.
+     * The test checks parsed names, statuses, descriptions, and result format labels.
+     */
+    @Description
     @Test
     void shouldParseResults() throws Exception {
         process(
@@ -75,10 +83,9 @@ class TrxPluginTest {
                 "sample.trx"
         );
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
-        verify(visitor, times(5)).visitTestResult(captor.capture());
+        final List<TestResult> results = captureTestResults(5);
 
-        assertThat(captor.getAllValues())
+        assertThat(results)
                 .extracting(TestResult::getName, TestResult::getStatus, TestResult::getDescription)
                 .containsExactlyInAnyOrder(
                         tuple("AddingSeveralNumbers_40", Status.PASSED, "Adding several numbers"),
@@ -88,14 +95,19 @@ class TrxPluginTest {
                         tuple("SkippedTest", Status.SKIPPED, "Should Skip this test")
                 );
 
-        assertThat(captor.getAllValues())
+        assertThat(results)
                 .extracting(result -> result.findOneLabel(LabelName.RESULT_FORMAT))
                 .extracting(Optional::get)
                 .containsOnly(TrxPlugin.TRX_RESULTS_FORMAT);
 
     }
 
+    /**
+     * Verifies TRX error information is mapped into Allure status details.
+     * The test checks the exact parsed message and stack trace values.
+     */
     @Issue("596")
+    @Description
     @Test
     void shouldParseErrorInfo() throws Exception {
         process(
@@ -103,15 +115,19 @@ class TrxPluginTest {
                 "sample.trx"
         );
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
-        verify(visitor, times(1)).visitTestResult(captor.capture());
+        final List<TestResult> results = captureTestResults(1);
 
-        assertThat(captor.getAllValues())
+        assertThat(results)
                 .extracting(TestResult::getStatusMessage, TestResult::getStatusTrace)
                 .containsExactly(tuple("Some message", "Some trace"));
     }
 
+    /**
+     * Verifies a TRX class name is used as the Allure suite label when expected.
+     * The test checks the focused suite label parsed from the regression fixture.
+     */
     @Issue("749")
+    @Description
     @Test
     void shouldParseClassNameAsSuite() throws Exception {
         process(
@@ -119,15 +135,19 @@ class TrxPluginTest {
                 "sample.trx"
         );
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
-        verify(visitor, times(1)).visitTestResult(captor.capture());
+        final List<TestResult> results = captureTestResults(1);
 
-        assertThat(captor.getAllValues())
+        assertThat(results)
                 .extracting(result -> result.findOneLabel(LabelName.SUITE))
                 .extracting(Optional::get)
                 .containsOnly("TestClass");
     }
 
+    /**
+     * Verifies failed TRX stdout is converted into Allure steps.
+     * The test checks the failed result contains the expected BDD step text from stdout.
+     */
+    @Description
     @Test
     void shouldParseStdOutOnFail() throws Exception {
         process(
@@ -135,10 +155,9 @@ class TrxPluginTest {
                 "sample.trx"
         );
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
-        verify(visitor, times(5)).visitTestResult(captor.capture());
+        final List<TestResult> results = captureTestResults(5);
 
-        assertThat(captor.getAllValues())
+        assertThat(results)
                 .filteredOn(result -> result.getStatus() == Status.FAILED)
                 .filteredOn(result -> result.getTestStage().getSteps().size() == 10)
                 .filteredOn(result -> result.getTestStage().getSteps().get(1).getName().contains("Given I have entered 50 into the calculator"))
@@ -146,6 +165,11 @@ class TrxPluginTest {
                 .hasSize(1);
     }
 
+    /**
+     * Verifies nested TRX result children are flattened into Allure results.
+     * The test checks child names, statuses, and inherited labels for nested failures.
+     */
+    @Description
     @Test
     void shouldParseTestResultChildren() throws Exception {
         process(
@@ -153,10 +177,9 @@ class TrxPluginTest {
                 "sample.trx"
         );
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
-        verify(visitor, times(7)).visitTestResult(captor.capture());
+        final List<TestResult> results = captureTestResults(7);
 
-        assertThat(captor.getAllValues())
+        assertThat(results)
                 .hasSize(7)
                 .extracting(TestResult::getName, TestResult::getStatus)
                 .containsExactlyInAnyOrder(
@@ -175,7 +198,7 @@ class TrxPluginTest {
         labels.add(new Label().setName(PACKAGE.value()).setValue("Test"));
         labels.add(new Label().setName(RESULT_FORMAT.value()).setValue("trx"));
 
-        assertThat(captor.getAllValues())
+        assertThat(results)
                 .filteredOn(result -> result.getName().contains("UnitTest_Three"))
                 .extracting(TestResult::getLabels)
                 .containsOnly(
@@ -184,6 +207,11 @@ class TrxPluginTest {
 
     }
 
+    /**
+     * Verifies external XML entities are not resolved while parsing TRX files.
+     * The test checks parsed status details do not expose content from a local secret file.
+     */
+    @Description
     @Test
     void cveEntityReadTest(@TempDir final Path tmp) throws IOException {
         final Path secretFile = tmp.resolve("secretfile.ini");
@@ -194,9 +222,7 @@ class TrxPluginTest {
                 StandardCharsets.UTF_8
         );
 
-        Files.writeString(
-                resultsDirectory.resolve("bad-test.trx"),
-                "<?xml version=\"1.0\"?>\n"
+        final String maliciousTrx = "<?xml version=\"1.0\"?>\n"
                 + "<!DOCTYPE foo [\n"
                 + "  <!ENTITY xxe SYSTEM \"" + secretFile.toUri() + "\">\n"
                 + "]>\n"
@@ -228,36 +254,96 @@ class TrxPluginTest {
                 + "        <TestList name=\"Results Not in a List\" id=\"8c84fa94-04c1-424b-9868-57a2d4851a1d\" />\n"
                 + "        <TestList name=\"All Loaded Results\" id=\"19431567-8539-422a-85d7-44ee4e166bda\" />\n"
                 + "    </TestLists>\n"
-                + "</TestRun>",
-                StandardCharsets.UTF_8
-        );
+                + "</TestRun>";
+        writeTextFile(resultsDirectory.resolve("bad-test.trx"), "bad-test.trx", maliciousTrx);
 
-        TrxPlugin reader = new TrxPlugin();
+        readResults(resultsDirectory);
 
-        reader.readResults(configuration, visitor, resultsDirectory);
+        final List<TestResult> results = captureTestResults(1);
 
-        final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
-        verify(visitor, times(1)).visitTestResult(captor.capture());
-
-        final TestResult testResult = captor.getValue();
+        final TestResult testResult = results.get(0);
         assertThat(testResult.getStatusMessage()).doesNotContain("John Doe");
         assertThat(testResult.getStatusTrace()).doesNotContain("Example Org");
     }
 
-    private void process(String... strings) throws IOException {
-        Iterator<String> iterator = Arrays.asList(strings).iterator();
-        while (iterator.hasNext()) {
-            String first = iterator.next();
-            String second = iterator.next();
-            copyFile(resultsDirectory, first, second);
-        }
-        TrxPlugin reader = new TrxPlugin();
-        reader.readResults(configuration, visitor, resultsDirectory);
+    private void process(final String... strings) throws IOException {
+        Allure.step("Parse TRX results", () -> {
+            final Iterator<String> iterator = Arrays.asList(strings).iterator();
+            while (iterator.hasNext()) {
+                final String first = iterator.next();
+                final String second = iterator.next();
+                copyFile(resultsDirectory, first, second);
+            }
+            readResults(resultsDirectory);
+        });
     }
 
-    private void copyFile(Path dir, String resourceName, String fileName) throws IOException {
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourceName)) {
-            Files.copy(Objects.requireNonNull(is), dir.resolve(fileName));
+    private void readResults(final Path directory) {
+        Allure.step("Read TRX results", () -> {
+            final TrxPlugin reader = new TrxPlugin();
+            reader.readResults(configuration, visitor, directory);
+        });
+    }
+
+    private void copyFile(final Path dir, final String resourceName, final String fileName) throws IOException {
+        Allure.step("Copy fixture resource " + resourceName + " as " + fileName, () -> {
+            final byte[] content;
+            try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourceName)) {
+                content = Objects.requireNonNull(is).readAllBytes();
+            }
+            final Path destination = dir.resolve(fileName);
+            Files.createDirectories(destination.getParent());
+            Files.write(destination, content);
+            Allure.addAttachment(fileName, "application/xml", new String(content, StandardCharsets.UTF_8), ".trx");
+        });
+    }
+
+    private void writeTextFile(final Path path, final String fileName, final String content) throws IOException {
+        Allure.step("Write text fixture " + fileName, () -> {
+            Files.writeString(path, content, StandardCharsets.UTF_8);
+            Allure.addAttachment(fileName, "application/xml", content, ".trx");
+        });
+    }
+
+    private List<TestResult> captureTestResults(final int expectedCount) {
+        return Allure.step("Capture parsed TRX test results", () -> {
+            final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
+            verify(visitor, times(expectedCount)).visitTestResult(captor.capture());
+            final List<TestResult> results = captor.getAllValues();
+            Allure.addAttachment("parsed-test-results.txt", "text/plain", describeTestResults(results));
+            return results;
+        });
+    }
+
+    private String describeTestResults(final List<TestResult> results) {
+        final StringBuilder builder = new StringBuilder();
+        builder.append("results=").append(results.size()).append(System.lineSeparator());
+        results.forEach(result -> builder
+                .append(System.lineSeparator())
+                .append("name=").append(result.getName()).append(System.lineSeparator())
+                .append("status=").append(result.getStatus()).append(System.lineSeparator())
+                .append("description=").append(result.getDescription()).append(System.lineSeparator())
+                .append("statusMessage=").append(result.getStatusMessage()).append(System.lineSeparator())
+                .append("statusTrace=").append(result.getStatusTrace()).append(System.lineSeparator())
+                .append("labels=").append(describeLabels(result)).append(System.lineSeparator())
+                .append("steps=").append(describeSteps(result)).append(System.lineSeparator())
+        );
+        return builder.toString();
+    }
+
+    private String describeLabels(final TestResult result) {
+        return result.getLabels().stream()
+                .map(label -> label.getName() + "=" + label.getValue())
+                .sorted()
+                .collect(Collectors.joining(", "));
+    }
+
+    private String describeSteps(final TestResult result) {
+        if (result.getTestStage() == null || result.getTestStage().getSteps() == null) {
+            return "";
         }
+        return result.getTestStage().getSteps().stream()
+                .map(step -> step.getName())
+                .collect(Collectors.joining(" | "));
     }
 }

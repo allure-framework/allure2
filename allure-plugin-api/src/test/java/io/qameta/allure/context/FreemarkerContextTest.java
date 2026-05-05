@@ -15,12 +15,18 @@
  */
 package io.qameta.allure.context;
 
+import io.qameta.allure.Description;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class FreemarkerContextTest {
 
+    /**
+     * Verifies that the FreeMarker context creates a usable template configuration.
+     * The test checks that consumers receive a non-null context value.
+     */
+    @Description
     @Test
     void shouldCreateFreemarkerContext() {
         final FreemarkerContext context = new FreemarkerContext();

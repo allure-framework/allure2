@@ -15,6 +15,7 @@
  */
 package io.qameta.allure.datetime;
 
+import io.qameta.allure.Description;
 import org.junit.jupiter.api.Test;
 
 import java.time.ZoneOffset;
@@ -27,6 +28,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class CompositeDateTimeParserTest {
 
+    /**
+     * Verifies that the composite parser delegates to the first parser that can parse an input.
+     * The test checks local and zoned ISO timestamps are converted to the expected epoch milliseconds.
+     */
+    @Description
     @Test
     void shouldReturnFirstParsed() {
         final CompositeDateTimeParser parser = new CompositeDateTimeParser(
@@ -45,6 +51,11 @@ class CompositeDateTimeParserTest {
                 .hasValue(1527775525155L);
     }
 
+    /**
+     * Verifies that the composite parser reports no value when every parser rejects the input.
+     * The test checks an unsupported timestamp format returns an empty optional.
+     */
+    @Description
     @Test
     void shouldReturnEmptyOptionalIfNoMatchedFormat() {
         final CompositeDateTimeParser parser = new CompositeDateTimeParser(

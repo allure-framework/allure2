@@ -17,12 +17,18 @@ package io.qameta.allure.context;
 
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import io.qameta.allure.Description;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class JacksonContextTest {
 
+    /**
+     * Verifies that the Jackson context creates an object mapper.
+     * The test checks that consumers receive a non-null mapper instance.
+     */
+    @Description
     @Test
     void shouldCreateJacksonContext() {
         final JacksonContext context = new JacksonContext();
@@ -30,6 +36,11 @@ class JacksonContextTest {
                 .isNotNull();
     }
 
+    /**
+     * Verifies that the Jackson context uses compact JSON output by default.
+     * The test checks that indentation is disabled in the mapper serialization config.
+     */
+    @Description
     @Test
     void shouldUseMinified() {
         final JacksonContext context = new JacksonContext();

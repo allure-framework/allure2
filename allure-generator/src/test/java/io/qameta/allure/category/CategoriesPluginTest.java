@@ -15,8 +15,10 @@
  */
 package io.qameta.allure.category;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.ConfigurationBuilder;
 import io.qameta.allure.DefaultResultsVisitor;
+import io.qameta.allure.Description;
 import io.qameta.allure.Issue;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.InMemoryReportStorage;
@@ -30,9 +32,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +60,10 @@ class CategoriesPluginTest {
 
     private static final String CATEGORY_NAME = "Category";
 
+    /**
+     * Verifies defaulting categories to results for category aggregation.
+     */
+    @Description
     @Test
     void shouldDefaultCategoriesToResults() {
         final TestResult first = new TestResult()
@@ -81,6 +89,10 @@ class CategoriesPluginTest {
 
     }
 
+    /**
+     * Verifies setting custom categories to results for category aggregation.
+     */
+    @Description
     @Test
     void shouldSetCustomCategoriesToResults() {
         final String categoryName = "Some category";
@@ -114,6 +126,10 @@ class CategoriesPluginTest {
                 .containsExactlyInAnyOrder(categoryName);
     }
 
+    /**
+     * Verifies creating tree for category aggregation.
+     */
+    @Description
     @Test
     void shouldCreateTree() {
         final TestResult first = new TestResult()
@@ -160,6 +176,10 @@ class CategoriesPluginTest {
                 .containsExactlyInAnyOrder("first", "third");
     }
 
+    /**
+     * Verifies the main category aggregation workflow.
+     */
+    @Description
     @Test
     void shouldWork() {
         final Configuration configuration = ConfigurationBuilder.bundled().build();
@@ -179,7 +199,7 @@ class CategoriesPluginTest {
         CategoriesPlugin plugin = new CategoriesPlugin();
 
         final InMemoryReportStorage storage = new InMemoryReportStorage();
-        plugin.aggregate(configuration, launchResultsList, storage);
+        aggregateCategories(plugin, configuration, launchResultsList, storage);
 
         Set<TestResult> results = launchResultsList.get(0).getAllResults();
         List<Category> categories = results.toArray(new TestResult[]{})[0]
@@ -196,6 +216,10 @@ class CategoriesPluginTest {
                 .containsKey("data/" + CSV_FILE_NAME);
     }
 
+    /**
+     * Verifies custom categories can match flaky test results.
+     */
+    @Description
     @Test
     void flakyTestsCanBeAddedToCategory() {
         final Configuration configuration = ConfigurationBuilder.bundled().build();
@@ -215,7 +239,7 @@ class CategoriesPluginTest {
         CategoriesPlugin plugin = new CategoriesPlugin();
 
         final InMemoryReportStorage storage = new InMemoryReportStorage();
-        plugin.aggregate(configuration, launchResultsList, storage);
+        aggregateCategories(plugin, configuration, launchResultsList, storage);
 
         Set<TestResult> results = launchResultsList.get(0).getAllResults();
         List<Category> categories = results.toArray(new TestResult[]{})[0]
@@ -229,6 +253,10 @@ class CategoriesPluginTest {
                 .containsKey("data/" + JSON_FILE_NAME);
     }
 
+    /**
+     * Verifies default category matching includes flaky test results.
+     */
+    @Description
     @Test
     void flakyTestsShouldBeMatchedByDefault() {
         final Configuration configuration = ConfigurationBuilder.bundled().build();
@@ -247,7 +275,7 @@ class CategoriesPluginTest {
         final CategoriesPlugin plugin = new CategoriesPlugin();
 
         final InMemoryReportStorage storage = new InMemoryReportStorage();
-        plugin.aggregate(configuration, launchResultsList, storage);
+        aggregateCategories(plugin, configuration, launchResultsList, storage);
 
         final Set<TestResult> results = launchResultsList.get(0).getAllResults();
         List<Category> categories = results.toArray(new TestResult[]{})[0]
@@ -261,6 +289,10 @@ class CategoriesPluginTest {
                 .containsKey("data/" + JSON_FILE_NAME);
     }
 
+    /**
+     * Verifies sorting category results by ascending start time.
+     */
+    @Description
     @Issue("587")
     @Issue("572")
     @Test
@@ -304,26 +336,42 @@ class CategoriesPluginTest {
                 .setFlaky(flaky);
     }
 
+    /**
+     * Verifies removing simple ANSI code for category aggregation.
+     */
+    @Description
     @Test
     void shouldRemoveSimpleAnsiCode() {
         String input = "\u001B[31mAnsi text\u001B[0m";
         String expected = "Ansi text";
-        assertThat(stripAnsi(input)).isEqualTo(expected);
+        assertAnsiStripped(input, expected);
     }
 
+    /**
+     * Verifies removing multiple ANSI codes for category aggregation.
+     */
+    @Description
     @Test
     void shouldRemoveMultipleAnsiCodes() {
         String input = "[31mTimed out 5000ms waiting for [39m[2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m";
         String expected = "Timed out 5000ms waiting for expect(locator).toBeVisible()";
-        assertThat(stripAnsi(input)).isEqualTo(expected);
+        assertAnsiStripped(input, expected);
     }
 
+    /**
+     * Verifies leaving clean category text unchanged when no ANSI codes are present.
+     */
+    @Description
     @Test
     void shouldReturnUnchangedIfNoAnsi() {
         String input = "Clean text";
-        assertThat(stripAnsi(input)).isEqualTo("Clean text");
+        assertAnsiStripped(input, "Clean text");
     }
 
+    /**
+     * Verifies sanitizing category description HTML for category aggregation.
+     */
+    @Description
     @Test
     void shouldSanitizeCategoryDescriptionHtml(@TempDir final Path directory) throws IOException {
         final String categoriesJson = "[{\"name\":\"xss\",\"descriptionHtml\":\"<script>alert(1)</script><p>safe</p>\"}]";
@@ -332,7 +380,10 @@ class CategoriesPluginTest {
         final Configuration configuration = ConfigurationBuilder.bundled().build();
         final DefaultResultsVisitor visitor = new DefaultResultsVisitor(configuration);
         final CategoriesPlugin plugin = new CategoriesPlugin();
-        plugin.readResults(configuration, visitor, directory);
+        Allure.step(
+                "Read category definitions from " + directory,
+                () -> plugin.readResults(configuration, visitor, directory)
+        );
 
         final LaunchResults launchResults = visitor.getLaunchResults();
         final List<Category> categories = launchResults.getExtra(CATEGORIES, ArrayList::new);
@@ -341,5 +392,42 @@ class CategoriesPluginTest {
                 .contains("<p>safe</p>")
                 .doesNotContain("<script")
                 .doesNotContain("alert(");
+    }
+
+    private void aggregateCategories(
+            final CategoriesPlugin plugin,
+            final Configuration configuration,
+            final List<LaunchResults> launchResults,
+            final InMemoryReportStorage storage
+    ) {
+        Allure.step("Aggregate categories for " + launchResults.size() + " launch(es)", () -> {
+            plugin.aggregate(configuration, launchResults, storage);
+            attachStorageFiles(storage);
+        });
+    }
+
+    private void assertAnsiStripped(final String input, final String expected) {
+        Allure.step("Strip ANSI escapes from category text", () -> {
+            final String actual = stripAnsi(input);
+            Allure.addAttachment(
+                    "ANSI stripping sample",
+                    "text/plain",
+                    String.format("input=%s%nexpected=%s%nactual=%s%n", input, expected, actual)
+            );
+            assertThat(actual).isEqualTo(expected);
+        });
+    }
+
+    private void attachStorageFiles(final InMemoryReportStorage storage) {
+        Allure.step("Attach in-memory storage contents", () -> storage.getReportDataFiles().entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
+                .forEach(entry -> Allure.addAttachment(
+                        entry.getKey(),
+                        "text/plain",
+                        new String(
+                                Base64.getDecoder().decode(entry.getValue()),
+                                StandardCharsets.UTF_8
+                        )
+                )));
     }
 }
