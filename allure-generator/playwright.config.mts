@@ -27,8 +27,8 @@ export default defineConfig({
   },
   use: {
     viewport: { width: 1440, height: 960 },
-    screenshot: "only-on-failure",
-    trace: "on-first-retry",
+    screenshot: "on",
+    trace: "on",
     video: "retain-on-failure",
     ...(process.env.PLAYWRIGHT_EXECUTABLE_PATH
       ? { launchOptions: { executablePath: process.env.PLAYWRIGHT_EXECUTABLE_PATH } }
