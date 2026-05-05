@@ -16,6 +16,7 @@
 package io.qameta.allure.plugin;
 
 import io.qameta.allure.Aggregator;
+import io.qameta.allure.Description;
 import io.qameta.allure.Extension;
 import io.qameta.allure.core.Plugin;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,6 +42,11 @@ class DirectoryPluginLoaderTest {
         pluginLoader = new DefaultPluginLoader();
     }
 
+    /**
+     * Verifies loading a plugin from a missing directory is treated as absent.
+     * The test checks the loader returns an empty optional instead of failing.
+     */
+    @Description
     @Test
     void shouldNotFailWhenPluginDirectoryNotExists(@TempDir final Path temp) {
         final Path pluginFolder = temp.resolve("plugin");
@@ -50,6 +56,11 @@ class DirectoryPluginLoaderTest {
                 .isEmpty();
     }
 
+    /**
+     * Verifies an empty plugin directory does not produce a plugin.
+     * The test checks the loader returns an empty optional when no descriptor is present.
+     */
+    @Description
     @Test
     void shouldLoadEmptyPlugin(@TempDir final Path pluginDirectory) {
         final Optional<Plugin> plugin = pluginLoader.loadPlugin(getClass().getClassLoader(), pluginDirectory);
@@ -58,7 +69,12 @@ class DirectoryPluginLoaderTest {
                 .isEmpty();
     }
 
+    /**
+     * Verifies loading a plugin descriptor and extension jar from the plugin root.
+     * The test checks plugin metadata and the aggregator extension class are discovered.
+     */
     @SuppressWarnings("deprecation")
+    @Description
     @Test
     void shouldLoadPluginExtensions(@TempDir final Path pluginFolder) throws Exception {
         add(pluginFolder, "plugin.jar", "plugin.jar");
@@ -90,6 +106,11 @@ class DirectoryPluginLoaderTest {
 
     }
 
+    /**
+     * Verifies a plugin with only static files is loaded without extensions.
+     * The test checks metadata and copied static file content are available from the plugin model.
+     */
+    @Description
     @Test
     void shouldLoadStaticOnlyPlugin(@TempDir final Path temp) throws Exception {
         final Path pluginFolder = Files.createDirectories(temp.resolve("plugins"));
@@ -119,7 +140,12 @@ class DirectoryPluginLoaderTest {
                 .hasContent("ho-ho-ho");
     }
 
+    /**
+     * Verifies extension jars are discovered from a plugin lib directory.
+     * The test checks plugin metadata and the aggregator extension class are loaded from lib.
+     */
     @SuppressWarnings("deprecation")
+    @Description
     @Test
     void shouldLoadJarsInLibDirectory(@TempDir final Path pluginFolder) throws Exception {
         add(pluginFolder, "plugin.jar", "lib/plugin.jar");
@@ -150,6 +176,11 @@ class DirectoryPluginLoaderTest {
                 .isEqualTo("io.qameta.allure.packages.PackagesPlugin");
     }
 
+    /**
+     * Verifies invalid plugin descriptors are ignored.
+     * The test checks a malformed descriptor yields an empty plugin result.
+     */
+    @Description
     @Test
     void shouldProcessInvalidConfigFile(@TempDir final Path pluginFolder) throws Exception {
         add(pluginFolder, "static-file.txt", "allure-plugin.yml");

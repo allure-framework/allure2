@@ -140,6 +140,29 @@ public final class TestData {
         return RandomStringUtils.randomAlphabetic(10);
     }
 
+    public static String toHex(final byte[] bytes) {
+        return toHex(bytes, bytes.length);
+    }
+
+    public static String toHex(final byte[] bytes, final int limit) {
+        final StringBuilder builder = new StringBuilder();
+        final int length = Math.min(bytes.length, limit);
+        for (int i = 0; i < length; i++) {
+            if (i > 0) {
+                builder.append(' ');
+            }
+            final String hex = Integer.toHexString(Byte.toUnsignedInt(bytes[i]));
+            if (hex.length() == 1) {
+                builder.append('0');
+            }
+            builder.append(hex);
+        }
+        if (bytes.length > limit) {
+            builder.append(" ...");
+        }
+        return builder.toString();
+    }
+
     public static void attachFileContent(final String fileName, final byte[] content) {
         final String body = formatFileContent(fileName, content);
         Allure.addAttachment(fileName, getContentType(fileName), body, getFileExtension(fileName));

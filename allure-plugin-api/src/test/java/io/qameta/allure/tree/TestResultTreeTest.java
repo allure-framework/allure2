@@ -15,6 +15,8 @@
  */
 package io.qameta.allure.tree;
 
+import io.qameta.allure.Allure;
+import io.qameta.allure.Description;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.TestResult;
 import org.junit.jupiter.api.Test;
@@ -32,6 +34,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class TestResultTreeTest {
 
+    /**
+     * Verifies a tree with no grouping labels starts empty.
+     * The test checks the created tree exposes no children before results are added.
+     */
+    @Description
     @Test
     void shouldCreateEmptyTree() {
         final Tree<TestResult> tree = new TestResultTree(
@@ -39,10 +46,17 @@ class TestResultTreeTest {
                 item -> Collections.emptyList()
         );
 
+        attachTree("empty-tree.txt", tree);
+
         assertThat(tree.getChildren())
                 .hasSize(0);
     }
 
+    /**
+     * Verifies repeated labels with the same value create only one grouping leaf.
+     * The test checks the result appears once under the deduplicated feature node.
+     */
+    @Description
     @Test
     void shouldNotDuplicateLeavesOnSameValues() {
         final Tree<TestResult> behaviors = new TestResultTree(
@@ -56,6 +70,8 @@ class TestResultTreeTest {
 
         behaviors.add(first);
 
+        attachTree("deduplicated-feature-tree.txt", behaviors);
+
         assertThat(behaviors.getChildren())
                 .extracting(TreeNode::getName)
                 .containsExactlyInAnyOrder("f1");
@@ -67,6 +83,11 @@ class TestResultTreeTest {
                 .containsExactlyInAnyOrder("first");
     }
 
+    /**
+     * Verifies results are cross-grouped by every feature and story label combination.
+     * The test checks feature nodes, story nodes, and result leaves for overlapping label values.
+     */
+    @Description
     @Test
     void shouldCrossGroup() {
         final Tree<TestResult> behaviors = new TestResultTree(
@@ -82,6 +103,8 @@ class TestResultTreeTest {
                 .setLabels(asList(feature("f2"), feature("f3"), story("s2"), story("s3")));
         behaviors.add(first);
         behaviors.add(second);
+
+        attachTree("cross-group-tree.txt", behaviors);
 
         assertThat(behaviors.getChildren())
                 .extracting(TreeNode::getName)
@@ -129,6 +152,32 @@ class TestResultTreeTest {
 
     private Label story(final String value) {
         return new Label().setName("story").setValue(value);
+    }
+
+    private void attachTree(final String fileName, final Tree<?> tree) {
+        Allure.step("Attach tree structure as " + fileName, () -> Allure.addAttachment(
+                fileName,
+                "text/plain",
+                describeTree(tree),
+                ".txt"
+        ));
+    }
+
+    private String describeTree(final Tree<?> tree) {
+        final StringBuilder builder = new StringBuilder();
+        appendTree(builder, tree, 0);
+        return builder.toString();
+    }
+
+    private void appendTree(final StringBuilder builder, final TreeNode node, final int level) {
+        for (int i = 0; i < level; i++) {
+            builder.append("  ");
+        }
+        builder.append(node.getName()).append(System.lineSeparator());
+        if (node instanceof TreeGroup) {
+            ((TreeGroup) node).getChildren()
+                    .forEach(child -> appendTree(builder, child, level + 1));
+        }
     }
 
 }

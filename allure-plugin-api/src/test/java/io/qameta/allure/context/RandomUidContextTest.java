@@ -15,6 +15,8 @@
  */
 package io.qameta.allure.context;
 
+import io.qameta.allure.Allure;
+import io.qameta.allure.Description;
 import org.junit.jupiter.api.Test;
 
 import java.util.function.Supplier;
@@ -23,6 +25,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class RandomUidContextTest {
 
+    /**
+     * Verifies that the random UID context creates a generator.
+     * The test checks that consumers receive a non-null supplier.
+     */
+    @Description
     @Test
     void shouldCreateRandomUidContext() {
         final RandomUidContext context = new RandomUidContext();
@@ -30,6 +37,11 @@ class RandomUidContextTest {
                 .isNotNull();
     }
 
+    /**
+     * Verifies that the random UID supplier returns usable unique values.
+     * The test checks two generated values are non-blank and different.
+     */
+    @Description
     @Test
     void shouldGenerateRandomValues() {
         final RandomUidContext context = new RandomUidContext();
@@ -37,6 +49,21 @@ class RandomUidContextTest {
 
         final String first = generator.get();
         final String second = generator.get();
+
+        Allure.step("Record generated UID values", () -> Allure.addAttachment(
+                "generated-uids.txt",
+                "text/plain",
+                String.format(
+                        "first=%s%nsecond=%s%nfirstBlank=%s%nsecondBlank=%s%nsame=%s%n",
+                        first,
+                        second,
+                        first.trim().isEmpty(),
+                        second.trim().isEmpty(),
+                        first.equals(second)
+                ),
+                ".txt"
+        ));
+
         assertThat(first)
                 .isNotBlank()
                 .isNotEqualTo(second);

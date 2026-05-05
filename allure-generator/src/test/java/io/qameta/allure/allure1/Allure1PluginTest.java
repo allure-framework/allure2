@@ -57,6 +57,7 @@ import static io.qameta.allure.entity.Status.PASSED;
 import static io.qameta.allure.entity.Status.UNKNOWN;
 import static io.qameta.allure.testdata.TestData.attachFileContent;
 import static io.qameta.allure.testdata.TestData.attachLaunchResults;
+import static io.qameta.allure.testdata.TestData.toHex;
 import static org.allurefw.allure1.AllureUtils.generateTestSuiteJsonName;
 import static org.allurefw.allure1.AllureUtils.generateTestSuiteXmlName;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -668,20 +669,5 @@ class Allure1PluginTest {
                 new String(bytes, StandardCharsets.ISO_8859_1),
                 toHex(bytes)
         );
-    }
-
-    private String toHex(final byte[] bytes) {
-        final StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < bytes.length; i++) {
-            if (i > 0) {
-                builder.append(' ');
-            }
-            final String hex = Integer.toHexString(Byte.toUnsignedInt(bytes[i]));
-            if (hex.length() == 1) {
-                builder.append('0');
-            }
-            builder.append(hex);
-        }
-        return builder.toString();
     }
 }

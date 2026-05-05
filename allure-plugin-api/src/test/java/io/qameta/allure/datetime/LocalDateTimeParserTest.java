@@ -15,6 +15,7 @@
  */
 package io.qameta.allure.datetime;
 
+import io.qameta.allure.Description;
 import org.junit.jupiter.api.Test;
 
 import java.time.ZoneId;
@@ -29,6 +30,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class LocalDateTimeParserTest {
 
+    /**
+     * Verifies parsing a local ISO timestamp in the configured UTC zone.
+     * The test checks the parsed value equals the expected epoch milliseconds.
+     */
+    @Description
     @Test
     void shouldParseLocalDateTime() {
         final Optional<Long> parsed = new LocalDateTimeParser(ZoneOffset.UTC)
@@ -38,12 +44,25 @@ class LocalDateTimeParserTest {
                 .hasValue(1507199782000L);
     }
 
-    @Test 
-    void shouldParseLocalDateTimeWithNanoseconds() { 
-        final Optional<Long> parsed = new LocalDateTimeParser(ZoneOffset.UTC).getEpochMilli("2019-09-24T01:19:42.578340"); 
-        assertThat(parsed).hasValue(1569287982578L); 
-    } 
- 
+    /**
+     * Verifies parsing a local ISO timestamp that contains fractional seconds.
+     * The test checks nanosecond precision is truncated to the expected epoch milliseconds.
+     */
+    @Description
+    @Test
+    void shouldParseLocalDateTimeWithNanoseconds() {
+        final Optional<Long> parsed = new LocalDateTimeParser(ZoneOffset.UTC)
+                .getEpochMilli("2019-09-24T01:19:42.578340");
+
+        assertThat(parsed)
+                .hasValue(1569287982578L);
+    }
+
+    /**
+     * Verifies that the local timestamp parser honors its configured zone.
+     * The test checks the same local time shifts by the PST offset when converted to epoch milliseconds.
+     */
+    @Description
     @Test
     void shouldChangeZone() {
         final ZoneId pst = ZoneId.of(ZoneId.SHORT_IDS.get("PST"));

@@ -42,6 +42,11 @@ import static org.mockito.Mockito.when;
  */
 class CommandsTest {
 
+    /**
+     * Verifies listing plugins succeeds even when the selected profile has no config file.
+     * The test checks the command returns the no-error exit code.
+     */
+    @Description
     @Test
     void shouldNotFailWhenListPluginsWithoutConfig(@TempDir final Path home) {
         final Commands commands = new Commands(home);
@@ -53,6 +58,11 @@ class CommandsTest {
                 .isEqualTo(ExitCode.NO_ERROR);
     }
 
+    /**
+     * Verifies report generation refuses to overwrite a non-empty report directory by default.
+     * The test checks the command returns a generic error when the output directory already has content.
+     */
+    @Description
     @Test
     void shouldFailIfDirectoryExists(@TempDir final Path temp) throws Exception {
         final Path home = Files.createDirectories(temp.resolve("home"));
@@ -68,6 +78,11 @@ class CommandsTest {
                 .isEqualTo(ExitCode.GENERIC_ERROR);
     }
 
+    /**
+     * Verifies plugin listing reads the selected commandline config profile.
+     * The test checks a valid profile-backed config lets the command finish successfully.
+     */
+    @Description
     @Test
     void shouldListPlugins(@TempDir final Path home) throws Exception {
         createConfig(home, "allure-test.yml");
@@ -81,6 +96,11 @@ class CommandsTest {
                 .isEqualTo(ExitCode.NO_ERROR);
     }
 
+    /**
+     * Verifies commandline configuration loading from the selected profile.
+     * The test checks the expected plugin list is parsed from the profile config file.
+     */
+    @Description
     @Test
     void shouldLoadConfig(@TempDir final Path home) throws Exception {
         createConfig(home, "allure-test.yml");
@@ -90,6 +110,12 @@ class CommandsTest {
 
         final Commands commands = new Commands(home);
         final CommandlineConfig config = commands.getConfig(options);
+        Allure.addAttachment(
+                "loaded-config.txt",
+                "text/plain",
+                String.format("profile=test%nplugins=%s%n", config.getPlugins()),
+                ".txt"
+        );
         assertThat(config)
                 .isNotNull();
 
@@ -98,6 +124,11 @@ class CommandsTest {
                 .containsExactly("a", "b", "c");
     }
 
+    /**
+     * Verifies report generation allows an empty existing output directory.
+     * The test checks generation exits successfully when there are no input results and no existing report files.
+     */
+    @Description
     @Test
     void shouldAllowEmptyReportDirectory(@TempDir final Path temp) throws Exception {
         final Path home = Files.createDirectories(temp.resolve("home"));
@@ -118,6 +149,11 @@ class CommandsTest {
                 .isEqualTo(ExitCode.NO_ERROR);
     }
 
+    /**
+     * Verifies the report server normalizes report-directory paths before serving files.
+     * The test checks a regular JavaScript file is served with the expected content type and body.
+     */
+    @Description
     @Test
     void shouldServeRegularFileWhenReportDirectoryIsNotNormalized(@TempDir final Path temp) throws Exception {
         final Path home = Files.createDirectories(temp.resolve("home"));
@@ -141,6 +177,11 @@ class CommandsTest {
         }
     }
 
+    /**
+     * Verifies the report server preserves the Allure image-diff attachment content type.
+     * The test checks an imagediff file is served with the expected media type and body.
+     */
+    @Description
     @Test
     void shouldServeImageDiffAttachment(@TempDir final Path temp) throws Exception {
         final Path home = Files.createDirectories(temp.resolve("home"));
@@ -165,6 +206,11 @@ class CommandsTest {
         }
     }
 
+    /**
+     * Verifies unknown report files are served as generic binary attachments.
+     * The test checks an unrecognized extension receives octet-stream content type and the original body.
+     */
+    @Description
     @Test
     void shouldServeUnknownFileAsOctetStream(@TempDir final Path temp) throws Exception {
         final Path home = Files.createDirectories(temp.resolve("home"));
@@ -189,6 +235,11 @@ class CommandsTest {
         }
     }
 
+    /**
+     * Verifies directory requests serve nested index files from inside the report directory.
+     * The test checks the nested index response has a success status and expected body.
+     */
+    @Description
     @Test
     void shouldServeDirectoryIndexWhenServingReport(@TempDir final Path temp) throws Exception {
         final Path home = Files.createDirectories(temp.resolve("home"));
@@ -211,6 +262,11 @@ class CommandsTest {
         }
     }
 
+    /**
+     * Verifies encoded traversal attempts are rejected by the report server.
+     * The test checks a normalized outside path returns a 404 response.
+     */
+    @Description
     @Test
     void shouldReturnNotFoundForInvalidRequestPathWhenServingReport(@TempDir final Path temp) throws Exception {
         final Path home = Files.createDirectories(temp.resolve("home"));
@@ -234,6 +290,11 @@ class CommandsTest {
         }
     }
 
+    /**
+     * Verifies explicit path-boundary checks reject paths outside the normalized report directory.
+     * The test checks a normalized parent traversal target is not considered inside the report directory.
+     */
+    @Description
     @Test
     void shouldDetectResolvedPathOutsideNormalizedReportDirectory(@TempDir final Path temp) throws Exception {
         final Path normalizedReportDirectory = Files.createDirectories(temp.resolve("report")).normalize();
@@ -243,6 +304,11 @@ class CommandsTest {
                 .isFalse();
     }
 
+    /**
+     * Verifies missing report files return a not-found response.
+     * The test checks the server returns both 404 status and the standard not-found body.
+     */
+    @Description
     @Test
     void shouldReturnNotFoundForMissingFileWhenServingReport(@TempDir final Path temp) throws Exception {
         final Path home = Files.createDirectories(temp.resolve("home"));
@@ -263,6 +329,11 @@ class CommandsTest {
         }
     }
 
+    /**
+     * Verifies directory indexes that resolve through symbolic links are not served.
+     * The test checks a symlinked nested index returns a not-found response.
+     */
+    @Description
     @Test
     void shouldReturnNotFoundForDirectoryWithoutServableIndexWhenServingReport(@TempDir final Path temp) throws Exception {
         final Path home = Files.createDirectories(temp.resolve("home"));
@@ -286,6 +357,11 @@ class CommandsTest {
         }
     }
 
+    /**
+     * Verifies symlinked files inside the report directory are not served.
+     * The test checks a symlinked attachment path returns a not-found response.
+     */
+    @Description
     @Test
     void shouldReturnNotFoundForSymbolicLinkFilesWhenServingReport(@TempDir final Path temp) throws Exception {
         final Path home = Files.createDirectories(temp.resolve("home"));
@@ -328,11 +404,25 @@ class CommandsTest {
         return (HttpURLConnection) new URL("http://127.0.0.1:" + port + path).openConnection();
     }
 
+    @Step("Read HTTP response")
     private String readResponse(final HttpURLConnection connection) throws IOException {
         try (InputStream response = Objects.nonNull(connection.getErrorStream())
                 ? connection.getErrorStream()
                 : connection.getInputStream()) {
-            return new String(response.readAllBytes(), StandardCharsets.UTF_8);
+            final String body = new String(response.readAllBytes(), StandardCharsets.UTF_8);
+            Allure.addAttachment(
+                    "http-response.txt",
+                    "text/plain",
+                    String.format(
+                            "url=%s%nstatus=%s%ncontentType=%s%nbody=%s%n",
+                            connection.getURL(),
+                            connection.getResponseCode(),
+                            connection.getHeaderField("Content-Type"),
+                            body
+                    ),
+                    ".txt"
+            );
+            return body;
         }
     }
 }

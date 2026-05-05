@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+import static io.qameta.allure.testdata.TestData.toHex;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -83,24 +84,4 @@ class MagicBytesContentTypeDetectorTest {
                 toHex(content, 32)
         );
     }
-
-    private String toHex(final byte[] bytes, final int limit) {
-        final StringBuilder builder = new StringBuilder();
-        final int length = Math.min(bytes.length, limit);
-        for (int i = 0; i < length; i++) {
-            if (i > 0) {
-                builder.append(' ');
-            }
-            final String hex = Integer.toHexString(Byte.toUnsignedInt(bytes[i]));
-            if (hex.length() == 1) {
-                builder.append('0');
-            }
-            builder.append(hex);
-        }
-        if (bytes.length > limit) {
-            builder.append(" ...");
-        }
-        return builder.toString();
-    }
-
 }
