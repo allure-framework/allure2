@@ -49,11 +49,9 @@ tasks.distTar {
     compression = Compression.GZIP
 }
 
-val main = sourceSets.getByName("main")
-
 val startScripts by tasks.existing(CreateStartScripts::class) {
     applicationName = "allure"
-    classpath = files("src/lib/*", "src/lib/config")
+    classpath = files(tasks.jar) + configurations.runtimeClasspath.get() + files("src/lib/config")
     doLast {
         unixScript.writeText(unixScript.readText()
                 .replace(Regex("(?m)^APP_HOME="), "export APP_HOME=")
