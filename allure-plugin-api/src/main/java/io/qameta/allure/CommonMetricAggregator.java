@@ -53,7 +53,8 @@ public abstract class CommonMetricAggregator implements Aggregator {
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
-                          final Path outputDirectory) throws IOException {
+                          final Path outputDirectory)
+            throws IOException {
         final Path dataFolder = Files.createDirectories(outputDirectory.resolve(location));
         final Path dataFile = dataFolder.resolve(fileName);
         try (Writer writer = Files.newBufferedWriter(dataFile, StandardCharsets.UTF_8)) {

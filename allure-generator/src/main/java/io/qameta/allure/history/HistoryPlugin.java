@@ -56,12 +56,8 @@ public class HistoryPlugin extends CommonJsonAggregator2 implements Reader {
     private static final String HISTORY_BLOCK_NAME = "history";
     private static final String HISTORY_FILE_NAME = "history.json";
 
-    //@formatter:off
-    private static final TypeReference<Map<String, HistoryData>> HISTORY_TYPE =
-            new TypeReference<Map<String, HistoryData>>() {
-            };
-    //@formatter:on
-
+    private static final TypeReference<Map<String, HistoryData>> HISTORY_TYPE = new TypeReference<Map<String, HistoryData>>() {
+    };
 
     public HistoryPlugin() {
         super(HISTORY_BLOCK_NAME, HISTORY_FILE_NAME);
@@ -106,8 +102,8 @@ public class HistoryPlugin extends CommonJsonAggregator2 implements Reader {
                 .findFirst();
 
         return prevItem.isPresent()
-               && target.equals(current.getStatus())
-               && !target.equals(prevItem.get().getStatus());
+                && target.equals(current.getStatus())
+                && !target.equals(prevItem.get().getStatus());
     }
 
     private boolean isFlaky(final HistoryItem current,
@@ -125,7 +121,7 @@ public class HistoryPlugin extends CommonJsonAggregator2 implements Reader {
                 .collect(Collectors.toList());
 
         return statuses.contains(Status.PASSED)
-               && statuses.indexOf(Status.PASSED) < statuses.lastIndexOf(Status.FAILED);
+                && statuses.indexOf(Status.PASSED) < statuses.lastIndexOf(Status.FAILED);
     }
 
     @Override
@@ -151,12 +147,10 @@ public class HistoryPlugin extends CommonJsonAggregator2 implements Reader {
     private void updateHistory(final Map<String, HistoryData> history,
                                final TestResult result,
                                final ExecutorInfo info) {
-        //@formatter:off
         final HistoryData data = history.computeIfAbsent(
                 result.getHistoryId(),
                 id -> new HistoryData().setStatistic(new Statistic())
         );
-        //@formatter:on
 
         data.getStatistic().update(result);
         if (!data.getItems().isEmpty()) {

@@ -181,7 +181,7 @@ public class XcTestPlugin implements Reader {
                     .normalize();
 
             if (resolved.startsWith(attachments)
-                && Files.isRegularFile(resolved, LinkOption.NOFOLLOW_LINKS)) {
+                    && Files.isRegularFile(resolved, LinkOption.NOFOLLOW_LINKS)) {
                 final Attachment attachment = visitor.visitAttachmentFile(resolved);
                 step.getAttachments().add(attachment);
             }
@@ -202,7 +202,7 @@ public class XcTestPlugin implements Reader {
 
             final Path resolved = attachments.resolve(fileName).normalize();
             if (resolved.startsWith(attachments)
-                && Files.isRegularFile(resolved, LinkOption.NOFOLLOW_LINKS)) {
+                    && Files.isRegularFile(resolved, LinkOption.NOFOLLOW_LINKS)) {
                 final Attachment attachment = visitor.visitAttachmentFile(resolved);
                 step.getAttachments().add(attachment);
             }

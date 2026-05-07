@@ -34,6 +34,4 @@ public class JiraLaunch {
     private String url;
     private Long date;
 
-
-
 }

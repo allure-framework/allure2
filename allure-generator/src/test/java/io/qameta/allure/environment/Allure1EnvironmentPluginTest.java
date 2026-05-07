@@ -132,7 +132,6 @@ class Allure1EnvironmentPluginTest {
                 )
         );
 
-
         assertThat(environment)
                 .as("Unexpected environment properties have been read from test results and properties file")
                 .containsExactlyInAnyOrder(expected);

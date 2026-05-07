@@ -153,7 +153,7 @@ class JunitXmlPluginTest {
         final Path junitResults = resultsDirectory.resolve("junit-results");
         Files.createDirectories(junitResults);
 
-        copyFile(junitResults,     "junitdata/TEST-test.SampleTest.xml", "TEST-test.SampleTest.xml");
+        copyFile(junitResults, "junitdata/TEST-test.SampleTest.xml", "TEST-test.SampleTest.xml");
         copyFile(junitResults, "junitdata/test.SampleTest.txt", "test.SampleTest.txt");
         final Path relative = junitResults.resolve("..").resolve("junit-results");
         readResults(relative);
@@ -458,10 +458,11 @@ class JunitXmlPluginTest {
     @Test
     void cveEntityReadTest(@TempDir final Path tmp) throws IOException {
         final Path secretFile = tmp.resolve("secretfile.ini");
-        Files.writeString(secretFile,
+        Files.writeString(
+                secretFile,
                 "[owner]\n"
-                + "name = John Doe\n"
-                + "organization = Example Org.\n",
+                        + "name = John Doe\n"
+                        + "organization = Example Org.\n",
                 StandardCharsets.UTF_8
         );
 
@@ -564,27 +565,30 @@ class JunitXmlPluginTest {
     }
 
     private List<TestResult> filterByStatus(final List<TestResult> testCases, final Status status) {
-        return Allure.step("Filter parsed results by " + status, () -> testCases.stream()
-                .filter(item -> status.equals(item.getStatus()))
-                .collect(Collectors.toList()));
+        return Allure.step(
+                "Filter parsed results by " + status, () -> testCases.stream()
+                        .filter(item -> status.equals(item.getStatus()))
+                        .collect(Collectors.toList())
+        );
     }
 
     private String describeTestResults(final List<TestResult> results) {
         final StringBuilder builder = new StringBuilder();
         builder.append("results=").append(results.size()).append(System.lineSeparator());
-        results.forEach(result -> builder
-                .append(System.lineSeparator())
-                .append("name=").append(result.getName()).append(System.lineSeparator())
-                .append("status=").append(result.getStatus()).append(System.lineSeparator())
-                .append("hidden=").append(result.isHidden()).append(System.lineSeparator())
-                .append("historyId=").append(result.getHistoryId()).append(System.lineSeparator())
-                .append("statusMessage=").append(result.getStatusMessage()).append(System.lineSeparator())
-                .append("statusTrace=").append(result.getStatusTrace()).append(System.lineSeparator())
-                .append("time=").append(describeTime(result.getTime())).append(System.lineSeparator())
-                .append("labels=").append(describeLabels(result)).append(System.lineSeparator())
-                .append("parameters=").append(describeParameters(result)).append(System.lineSeparator())
-                .append("steps=").append(describeSteps(result)).append(System.lineSeparator())
-                .append("attachments=").append(describeStageAttachments(result)).append(System.lineSeparator())
+        results.forEach(
+                result -> builder
+                        .append(System.lineSeparator())
+                        .append("name=").append(result.getName()).append(System.lineSeparator())
+                        .append("status=").append(result.getStatus()).append(System.lineSeparator())
+                        .append("hidden=").append(result.isHidden()).append(System.lineSeparator())
+                        .append("historyId=").append(result.getHistoryId()).append(System.lineSeparator())
+                        .append("statusMessage=").append(result.getStatusMessage()).append(System.lineSeparator())
+                        .append("statusTrace=").append(result.getStatusTrace()).append(System.lineSeparator())
+                        .append("time=").append(describeTime(result.getTime())).append(System.lineSeparator())
+                        .append("labels=").append(describeLabels(result)).append(System.lineSeparator())
+                        .append("parameters=").append(describeParameters(result)).append(System.lineSeparator())
+                        .append("steps=").append(describeSteps(result)).append(System.lineSeparator())
+                        .append("attachments=").append(describeStageAttachments(result)).append(System.lineSeparator())
         );
         return builder.toString();
     }

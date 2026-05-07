@@ -117,11 +117,15 @@ class JiraModeDetectorTest {
     }
 
     private void attachServerInfo(final String fileName, final JiraServerInfo serverInfo) {
-        Allure.step("Attach Jira server info", () -> Allure.addAttachment(fileName, "text/plain", String.format(
-                "deploymentType=%s%nversion=%s%nserverTitle=%s",
-                serverInfo.getDeploymentType(),
-                serverInfo.getVersion(),
-                serverInfo.getServerTitle()
-        )));
+        Allure.step(
+                "Attach Jira server info", () -> Allure.addAttachment(
+                        fileName, "text/plain", String.format(
+                                "deploymentType=%s%nversion=%s%nserverTitle=%s",
+                                serverInfo.getDeploymentType(),
+                                serverInfo.getVersion(),
+                                serverInfo.getServerTitle()
+                        )
+                )
+        );
     }
 }

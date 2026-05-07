@@ -46,8 +46,7 @@ public class ExecutorPlugin extends CommonJsonAggregator2 implements Reader {
 
     protected static final String JSON_FILE_NAME = "executor.json";
 
-    private static final Comparator<ExecutorInfo> COMPARATOR
-            = comparing(ExecutorInfo::getBuildOrder, nullsFirst(naturalOrder()));
+    private static final Comparator<ExecutorInfo> COMPARATOR = comparing(ExecutorInfo::getBuildOrder, nullsFirst(naturalOrder()));
 
     public ExecutorPlugin() {
         super(Constants.WIDGETS_DIR, "executors.json");

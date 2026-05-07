@@ -87,7 +87,6 @@ public final class ResultsUtils {
         return Status.UNKNOWN;
     }
 
-
     public static Step getStep(final Map<String, Object> props) {
         return new Step()
                 .setName(getStepName(props))
@@ -114,7 +113,6 @@ public final class ResultsUtils {
                 Objects.isNull(stop) ? start : stop
         );
     }
-
 
     private static Long convertAppleTime(final Double startTimeInterval) {
         if (Objects.isNull(startTimeInterval)) {

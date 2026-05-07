@@ -168,7 +168,9 @@ subprojects {
         }
     }
 
-    fun excludeGeneratedSources(source: FileTree): FileTree = (source - fileTree("build/generated-sources")).asFileTree
+    fun mainJavaSources(): FileTree = fileTree("src/main/java") {
+        include("**/*.java")
+    }
 
     checkstyle {
         toolVersion = dependencyManagement.managedVersions["com.puppycrawl.tools:checkstyle"]!!
@@ -188,15 +190,18 @@ subprojects {
         excludeFilter = rootProject.file("gradle/quality-configs/spotbugs/exclude.xml")
     }
 
-    tasks.withType(Checkstyle::class) {
-        source = excludeGeneratedSources(source)
+    tasks.checkstyleMain {
+        source = mainJavaSources()
+        classpath = files()
     }
 
-    tasks.withType(Pmd::class) {
-        source = excludeGeneratedSources(source)
+    tasks.pmdMain {
+        source = mainJavaSources()
+        classpath = files()
     }
 
-    tasks.withType(SpotBugsTask::class) {
+    tasks.withType<SpotBugsTask>().configureEach {
+        auxClassPaths.from(configurations.named("runtimeClasspath"))
     }
 
     tasks.checkstyleTest {
@@ -217,6 +222,7 @@ subprojects {
             removeUnusedImports()
             importOrder("", "jakarta", "javax", "java", "\\#")
             licenseHeader(file("$spotlessDtr/allure.java.license").readText(UTF_8))
+            eclipse().configFile("$spotlessDtr/eclipse-jdt.prefs")
             endWithNewline()
             replaceRegex("one blank line after package line", "(package .+;)\n+import", "$1\n\nimport")
             replaceRegex("one blank line after import lists", "(import .+;\n\n)\n+", "$1")

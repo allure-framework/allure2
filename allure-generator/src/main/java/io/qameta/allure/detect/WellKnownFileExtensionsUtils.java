@@ -28,7 +28,7 @@ import java.util.Objects;
  *
  * @author charlie (Dmitry Baev).
  */
-@SuppressWarnings("all")
+@SuppressWarnings("MultipleStringLiterals")
 public final class WellKnownFileExtensionsUtils {
 
     public static final Map<String, String> EXT_TO_MIME_TYPE;

@@ -155,12 +155,14 @@ class TestResultTreeTest {
     }
 
     private void attachTree(final String fileName, final Tree<?> tree) {
-        Allure.step("Attach tree structure as " + fileName, () -> Allure.addAttachment(
-                fileName,
-                "text/plain",
-                describeTree(tree),
-                ".txt"
-        ));
+        Allure.step(
+                "Attach tree structure as " + fileName, () -> Allure.addAttachment(
+                        fileName,
+                        "text/plain",
+                        describeTree(tree),
+                        ".txt"
+                )
+        );
     }
 
     private String describeTree(final Tree<?> tree) {

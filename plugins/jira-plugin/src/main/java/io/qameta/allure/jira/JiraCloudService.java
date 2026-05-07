@@ -28,8 +28,7 @@ public interface JiraCloudService {
 
     @PUT("rest/api/3/issue/{issueKey}/properties/{propertyKey}")
     Response<Void> updateIssueProperty(
-            @Path("issueKey") String issueKey,
-            @Path("propertyKey") String propertyKey,
-            @Body Object value
-    );
+                                       @Path("issueKey") String issueKey,
+                                       @Path("propertyKey") String propertyKey,
+                                       @Body Object value);
 }

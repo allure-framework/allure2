@@ -40,7 +40,8 @@ public class CompositeAggregator implements Aggregator {
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
-                          final Path outputDirectory) throws IOException {
+                          final Path outputDirectory)
+            throws IOException {
         for (Aggregator aggregator : aggregators) {
             aggregator.aggregate(configuration, launchesResults, outputDirectory);
         }

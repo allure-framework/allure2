@@ -55,13 +55,12 @@ import static java.lang.String.format;
  *
  * @author charlie (Dmitry Baev).
  */
-@SuppressWarnings({"ClassDataAbstractionCoupling", "ClassFanOutComplexity", "ReturnCount"})
 public class Commands {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Commands.class);
     private static final String CURRENT_DIRECTORY = ".";
     private static final String DIRECTORY_EXISTS_MESSAGE = "Allure: Target directory {} for the report is already"
-                                                           + " in use, add a '--clean' option to overwrite";
+            + " in use, add a '--clean' option to overwrite";
     private static final String PATH_SEPARATOR = "/";
 
     private final Path allureHome;
@@ -99,12 +98,16 @@ public class Commands {
             return Optional.of(Paths.get(configOptions.getConfigPath()));
         }
         if (Objects.nonNull(configOptions.getConfigDirectory())) {
-            return Optional.of(Paths.get(configOptions.getConfigDirectory())
-                    .resolve(getConfigFileName(configOptions.getProfile())));
+            return Optional.of(
+                    Paths.get(configOptions.getConfigDirectory())
+                            .resolve(getConfigFileName(configOptions.getProfile()))
+            );
         }
         if (Objects.nonNull(allureHome)) {
-            return Optional.of(allureHome.resolve("config")
-                    .resolve(getConfigFileName(configOptions.getProfile())));
+            return Optional.of(
+                    allureHome.resolve("config")
+                            .resolve(getConfigFileName(configOptions.getProfile()))
+            );
         }
         return Optional.empty();
     }
@@ -251,10 +254,11 @@ public class Commands {
         }
 
         final InetSocketAddress socketAddress = server.getAddress();
-        final URI uri = URI.create("http://"
-                                   + socketAddress.getHostString()
-                                   + ":"
-                                   + socketAddress.getPort()
+        final URI uri = URI.create(
+                "http://"
+                        + socketAddress.getHostString()
+                        + ":"
+                        + socketAddress.getPort()
         );
 
         try {
@@ -297,9 +301,9 @@ public class Commands {
      * @return created report configuration.
      */
     protected Configuration createReportConfiguration(
-            final ConfigOptions profile,
-            final ReportNameOptions reportNameOptions,
-            final ReportLanguageOptions reportLanguageOptions) {
+                                                      final ConfigOptions profile,
+                                                      final ReportNameOptions reportNameOptions,
+                                                      final ReportLanguageOptions reportLanguageOptions) {
         final DefaultPluginLoader loader = new DefaultPluginLoader();
         final CommandlineConfig commandlineConfig = getConfig(profile);
         final ClassLoader classLoader = getClass().getClassLoader();
@@ -358,8 +362,8 @@ public class Commands {
 
     private static boolean isValidRequestPath(final String requestPath) {
         return requestPath.indexOf('\\') < 0
-               && Stream.of(requestPath.split(PATH_SEPARATOR))
-                .noneMatch(segment -> CURRENT_DIRECTORY.equals(segment) || "..".equals(segment));
+                && Stream.of(requestPath.split(PATH_SEPARATOR))
+                        .noneMatch(segment -> CURRENT_DIRECTORY.equals(segment) || "..".equals(segment));
     }
 
     static boolean isWithinReportDirectory(final Path normalizedReportDirectory,
@@ -368,7 +372,8 @@ public class Commands {
     }
 
     private static void serveIndex(final HttpExchange exchange,
-                                   final Path indexFile) throws IOException {
+                                   final Path indexFile)
+            throws IOException {
         if (Files.isRegularFile(indexFile, LinkOption.NOFOLLOW_LINKS)) {
             serveFile(exchange, indexFile);
             return;
@@ -405,12 +410,17 @@ public class Commands {
             try {
                 Desktop.getDesktop().browse(url);
             } catch (UnsupportedOperationException e) {
-                LOGGER.error("Browse operation is not supported on your platform."
-                             + "You can use the link below to open the report manually.", e);
+                LOGGER.error(
+                        "Browse operation is not supported on your platform. "
+                                + "You can use the link below to open the report manually.",
+                        e
+                );
             }
         } else {
-            LOGGER.error("Can not open browser because this capability is not supported on "
-                         + "your platform. You can use the link below to open the report manually.");
+            LOGGER.error(
+                    "Can not open browser because this capability is not supported on "
+                            + "your platform. You can use the link below to open the report manually."
+            );
         }
     }
 
@@ -422,6 +432,5 @@ public class Commands {
             return false;
         }
     }
-
 
 }

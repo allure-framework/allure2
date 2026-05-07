@@ -112,16 +112,20 @@ class SuitesPluginTest {
     }
 
     private void attachStorageFiles(final InMemoryReportStorage storage) {
-        Allure.step("Attach in-memory storage contents", () -> storage.getReportDataFiles().entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .forEach(entry -> Allure.addAttachment(
-                        entry.getKey(),
-                        "text/plain",
-                        new String(
-                                Base64.getDecoder().decode(entry.getValue()),
-                                StandardCharsets.UTF_8
+        Allure.step(
+                "Attach in-memory storage contents", () -> storage.getReportDataFiles().entrySet().stream()
+                        .sorted(Map.Entry.comparingByKey())
+                        .forEach(
+                                entry -> Allure.addAttachment(
+                                        entry.getKey(),
+                                        "text/plain",
+                                        new String(
+                                                Base64.getDecoder().decode(entry.getValue()),
+                                                StandardCharsets.UTF_8
+                                        )
+                                )
                         )
-                )));
+        );
     }
 
     private List<LaunchResults> getSimpleLaunchResults() {

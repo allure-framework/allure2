@@ -32,11 +32,15 @@ public class AttachmentsPlugin implements Aggregator2 {
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
                           final ReportStorage storage) {
-        launchesResults.forEach(launch -> launch.getAttachments().entrySet()
-                .parallelStream()
-                .forEach(entry -> storage.addDataFile(
-                        Constants.dataPath("attachments", entry.getValue().getSource()),
-                        entry.getKey()
-                )));
+        launchesResults.forEach(
+                launch -> launch.getAttachments().entrySet()
+                        .parallelStream()
+                        .forEach(
+                                entry -> storage.addDataFile(
+                                        Constants.dataPath("attachments", entry.getValue().getSource()),
+                                        entry.getKey()
+                                )
+                        )
+        );
     }
 }

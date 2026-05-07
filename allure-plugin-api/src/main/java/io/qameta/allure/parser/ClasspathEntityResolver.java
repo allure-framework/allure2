@@ -74,7 +74,6 @@ public class ClasspathEntityResolver implements EntityResolver {
         return inputSource;
     }
 
-    @SuppressWarnings("AssignmentInOperand")
     private static byte[] getBytes(final String resourceName) {
         try (InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceName)) {
             if (Objects.isNull(is)) {
@@ -83,8 +82,7 @@ public class ClasspathEntityResolver implements EntityResolver {
             }
             final byte[] buffer = new byte[1000];
 
-            final ByteArrayOutputStream byteArrayOutputStream
-                    = new ByteArrayOutputStream();
+            final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
             int temp;
 

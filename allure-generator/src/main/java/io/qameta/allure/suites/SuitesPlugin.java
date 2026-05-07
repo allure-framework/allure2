@@ -62,19 +62,19 @@ public class SuitesPlugin extends CompositeAggregator2 {
     protected static final String CSV_FILE_NAME = "suites.csv";
 
     public SuitesPlugin() {
-        super(Arrays.asList(
-                new JsonAggregator(), new CsvExportAggregator(), new WidgetAggregator()
-        ));
+        super(
+                Arrays.asList(
+                        new JsonAggregator(), new CsvExportAggregator(), new WidgetAggregator()
+                )
+        );
     }
 
     static /* default */ Tree<TestResult> getData(final List<LaunchResults> launchResults) {
 
-        // @formatter:off
         final Tree<TestResult> xunit = new TestResultTree(
                 SUITES,
-            testResult -> groupByLabels(testResult, PARENT_SUITE, SUITE, SUB_SUITE)
+                testResult -> groupByLabels(testResult, PARENT_SUITE, SUITE, SUB_SUITE)
         );
-        // @formatter:on
 
         launchResults.stream()
                 .map(LaunchResults::getResults)

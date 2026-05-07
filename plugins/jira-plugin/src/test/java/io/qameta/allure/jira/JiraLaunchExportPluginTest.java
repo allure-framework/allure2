@@ -95,13 +95,17 @@ class JiraLaunchExportPluginTest {
     private void attachLaunchInput(final Set<TestResult> results,
                                    final ExecutorInfo executorInfo,
                                    final List<LaunchStatisticExport> expectedStatistic) {
-        Allure.step("Attach Jira launch input", () -> Allure.addAttachment("jira-launch-input.txt", "text/plain", String.format(
-                "executorBuildName=%s%nexecutorReportUrl=%s%nresults:%n%s%nexpectedStatistic:%n%s",
-                executorInfo.getBuildName(),
-                executorInfo.getReportUrl(),
-                describeResults(results),
-                describeStatistic(expectedStatistic)
-        )));
+        Allure.step(
+                "Attach Jira launch input", () -> Allure.addAttachment(
+                        "jira-launch-input.txt", "text/plain", String.format(
+                                "executorBuildName=%s%nexecutorReportUrl=%s%nresults:%n%s%nexpectedStatistic:%n%s",
+                                executorInfo.getBuildName(),
+                                executorInfo.getReportUrl(),
+                                describeResults(results),
+                                describeStatistic(expectedStatistic)
+                        )
+                )
+        );
     }
 
     private CapturedLaunchExport captureLaunchExport(final JiraService service) {
@@ -118,12 +122,14 @@ class JiraLaunchExportPluginTest {
 
     private String describeResults(final Set<TestResult> results) {
         return results.stream()
-                .map(result -> String.format(
-                        "uid=%s, name=%s, status=%s",
-                        result.getUid(),
-                        result.getName(),
-                        result.getStatus()
-                ))
+                .map(
+                        result -> String.format(
+                                "uid=%s, name=%s, status=%s",
+                                result.getUid(),
+                                result.getName(),
+                                result.getStatus()
+                        )
+                )
                 .sorted()
                 .collect(Collectors.joining(System.lineSeparator()));
     }
@@ -141,12 +147,14 @@ class JiraLaunchExportPluginTest {
 
     private String describeStatistic(final List<LaunchStatisticExport> statistic) {
         return statistic.stream()
-                .map(item -> String.format(
-                        "status=%s, color=%s, count=%s",
-                        item.getStatus(),
-                        item.getColor(),
-                        item.getCount()
-                ))
+                .map(
+                        item -> String.format(
+                                "status=%s, color=%s, count=%s",
+                                item.getStatus(),
+                                item.getColor(),
+                                item.getCount()
+                        )
+                )
                 .sorted()
                 .collect(Collectors.joining(System.lineSeparator()));
     }

@@ -77,8 +77,10 @@ class XrayTestRunExportPluginTest {
         when(service.getTestRunsForTestExecution(EXECUTION_ISSUES, DEFAULT_PAGE)).thenReturn(
                 Collections.singletonList(new XrayTestRun().setId(TESTRUN_ID).setKey(TESTRUN_KEY).setStatus("TODO"))
         );
-        attachXrayInput(EXECUTION_ISSUES, results, executorInfo,
-                Collections.singletonList(new XrayTestRun().setId(TESTRUN_ID).setKey(TESTRUN_KEY).setStatus("TODO")));
+        attachXrayInput(
+                EXECUTION_ISSUES, results, executorInfo,
+                Collections.singletonList(new XrayTestRun().setId(TESTRUN_ID).setKey(TESTRUN_KEY).setStatus("TODO"))
+        );
 
         final XrayTestRunExportPlugin xrayTestRunExportPlugin = new XrayTestRunExportPlugin(
                 true,
@@ -140,7 +142,6 @@ class XrayTestRunExportPluginTest {
 
         results.add(testResultPass2);
 
-
         when(launchResults.getAllResults()).thenReturn(results);
 
         final ExecutorInfo executorInfo = new ExecutorInfo()
@@ -152,8 +153,10 @@ class XrayTestRunExportPluginTest {
         when(service.getTestRunsForTestExecution(EXECUTION_ISSUES, DEFAULT_PAGE)).thenReturn(
                 Collections.singletonList(new XrayTestRun().setId(TESTRUN_ID).setKey(TESTRUN_KEY).setStatus("TODO"))
         );
-        attachXrayInput(EXECUTION_ISSUES, results, executorInfo,
-                Collections.singletonList(new XrayTestRun().setId(TESTRUN_ID).setKey(TESTRUN_KEY).setStatus("TODO")));
+        attachXrayInput(
+                EXECUTION_ISSUES, results, executorInfo,
+                Collections.singletonList(new XrayTestRun().setId(TESTRUN_ID).setKey(TESTRUN_KEY).setStatus("TODO"))
+        );
 
         final XrayTestRunExportPlugin xrayTestRunExportPlugin = new XrayTestRunExportPlugin(
                 true,
@@ -249,14 +252,18 @@ class XrayTestRunExportPluginTest {
                                  final Set<TestResult> results,
                                  final ExecutorInfo executorInfo,
                                  final List<XrayTestRun> testRuns) {
-        Allure.step("Attach Xray export input", () -> Allure.addAttachment("xray-export-input.txt", "text/plain", String.format(
-                "executionIssues=%s%nexecutorBuildName=%s%nexecutorReportUrl=%s%nresults:%n%s%ntestRuns:%n%s",
-                executionIssues,
-                executorInfo.getBuildName(),
-                executorInfo.getReportUrl(),
-                describeResults(results),
-                describeTestRuns(testRuns)
-        )));
+        Allure.step(
+                "Attach Xray export input", () -> Allure.addAttachment(
+                        "xray-export-input.txt", "text/plain", String.format(
+                                "executionIssues=%s%nexecutorBuildName=%s%nexecutorReportUrl=%s%nresults:%n%s%ntestRuns:%n%s",
+                                executionIssues,
+                                executorInfo.getBuildName(),
+                                executorInfo.getReportUrl(),
+                                describeResults(results),
+                                describeTestRuns(testRuns)
+                        )
+                )
+        );
     }
 
     private List<CapturedComment> captureComments(final JiraService service, final int expectedCount) {
@@ -266,10 +273,12 @@ class XrayTestRunExportPluginTest {
             verify(service, times(expectedCount)).createIssueComment(issueCaptor.capture(), commentCaptor.capture());
             final List<CapturedComment> comments = new ArrayList<>();
             for (int i = 0; i < issueCaptor.getAllValues().size(); i++) {
-                comments.add(new CapturedComment(
-                        issueCaptor.getAllValues().get(i),
-                        commentCaptor.getAllValues().get(i).getBody()
-                ));
+                comments.add(
+                        new CapturedComment(
+                                issueCaptor.getAllValues().get(i),
+                                commentCaptor.getAllValues().get(i).getBody()
+                        )
+                );
             }
             Allure.addAttachment("xray-comments.txt", "text/plain", describeComments(comments));
             return comments;
@@ -292,13 +301,15 @@ class XrayTestRunExportPluginTest {
 
     private String describeResults(final Set<TestResult> results) {
         return results.stream()
-                .map(result -> String.format(
-                        "uid=%s, name=%s, status=%s, links=%s",
-                        result.getUid(),
-                        result.getName(),
-                        result.getStatus(),
-                        describeLinks(result.getLinks())
-                ))
+                .map(
+                        result -> String.format(
+                                "uid=%s, name=%s, status=%s, links=%s",
+                                result.getUid(),
+                                result.getName(),
+                                result.getStatus(),
+                                describeLinks(result.getLinks())
+                        )
+                )
                 .sorted()
                 .collect(Collectors.joining(System.lineSeparator()));
     }
@@ -312,12 +323,14 @@ class XrayTestRunExportPluginTest {
 
     private String describeTestRuns(final List<XrayTestRun> testRuns) {
         return testRuns.stream()
-                .map(testRun -> String.format(
-                        "id=%s, key=%s, status=%s",
-                        testRun.getId(),
-                        testRun.getKey(),
-                        testRun.getStatus()
-                ))
+                .map(
+                        testRun -> String.format(
+                                "id=%s, key=%s, status=%s",
+                                testRun.getId(),
+                                testRun.getKey(),
+                                testRun.getStatus()
+                        )
+                )
                 .collect(Collectors.joining(System.lineSeparator()));
     }
 

@@ -100,13 +100,13 @@ import static java.util.stream.Collectors.toList;
  *
  * @since 2.0
  */
-@SuppressWarnings({
-        "PMD.GodClass",
-        "PMD.TooManyMethods",
-        "ClassDataAbstractionCoupling",
-        "ClassFanOutComplexity",
-        "MultipleStringLiterals"
-})
+@SuppressWarnings(
+    {
+            "PMD.GodClass",
+            "PMD.TooManyMethods",
+            "MultipleStringLiterals"
+    }
+)
 public class Allure1Plugin implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Allure1Plugin.class);
@@ -114,9 +114,8 @@ public class Allure1Plugin implements Reader {
     private static final String MD_5 = "md5";
     private static final String ISSUE_URL_PROPERTY = "allure.issues.tracker.pattern";
     private static final String TMS_LINK_PROPERTY = "allure.tests.management.pattern";
-    private static final Comparator<Parameter> PARAMETER_COMPARATOR =
-            comparing(Parameter::getName, nullsFirst(naturalOrder()))
-                    .thenComparing(Parameter::getValue, nullsFirst(naturalOrder()));
+    private static final Comparator<Parameter> PARAMETER_COMPARATOR = comparing(Parameter::getName, nullsFirst(naturalOrder()))
+            .thenComparing(Parameter::getValue, nullsFirst(naturalOrder()));
     private static final Pattern ATTACHMENT_SOURCE_PATTERN = Pattern.compile("^[a-zA-Z0-9._-]{1,100}$");
 
     public static final String ENVIRONMENT_BLOCK_NAME = "environment";
@@ -154,13 +153,14 @@ public class Allure1Plugin implements Reader {
         final RandomUidContext context = configuration.requireContext(RandomUidContext.class);
 
         final Map<String, String> environment = processEnvironment(resultsDirectory);
-        getStreamOfAllure1Results(resultsDirectory).forEach(testSuite -> testSuite.getTestCases()
-                .forEach(testCase -> {
-                    convert(context.getValue(), resultsDirectory, visitor, testSuite, testCase, allureProperties);
-                    getEnvironmentParameters(testCase).forEach(param ->
-                            environment.put(param.getName(), param.getValue())
-                    );
-                })
+        getStreamOfAllure1Results(resultsDirectory).forEach(
+                testSuite -> testSuite.getTestCases()
+                        .forEach(testCase -> {
+                            convert(context.getValue(), resultsDirectory, visitor, testSuite, testCase, allureProperties);
+                            getEnvironmentParameters(testCase).forEach(
+                                    param -> environment.put(param.getName(), param.getValue())
+                            );
+                        })
         );
 
         visitor.visitExtra(ENVIRONMENT_BLOCK_NAME, environment);
@@ -184,11 +184,6 @@ public class Allure1Plugin implements Reader {
         return properties;
     }
 
-    @SuppressWarnings({
-            "JavaNCSS",
-            "ExecutableStatementCount",
-            "PMD.NcssCount"
-    })
     private void convert(final Supplier<String> randomUid,
                          final Path directory,
                          final ResultsVisitor visitor,
@@ -235,18 +230,20 @@ public class Allure1Plugin implements Reader {
         if (!source.getSteps().isEmpty() || !source.getAttachments().isEmpty()) {
             final StageResult testStage = new StageResult();
             if (!source.getSteps().isEmpty()) {
-                //@formatter:off
-                testStage.setSteps(convertList(
-                    source.getSteps(),
-                    step -> convert(directory, visitor, step, status, dest.getStatusMessage(), dest.getStatusTrace()))
+                testStage.setSteps(
+                        convertList(
+                                source.getSteps(),
+                                step -> convert(directory, visitor, step, status, dest.getStatusMessage(), dest.getStatusTrace())
+                        )
                 );
-                //@formatter:on
             }
             if (!source.getAttachments().isEmpty()) {
-                testStage.setAttachments(convertList(
-                        source.getAttachments(),
-                        at -> convert(directory, visitor, at)
-                ));
+                testStage.setAttachments(
+                        convertList(
+                                source.getAttachments(),
+                                at -> convert(directory, visitor, at)
+                        )
+                );
             }
             testStage.setStatus(status);
             testStage.setStatusMessage(dest.getStatusMessage());
@@ -261,12 +258,14 @@ public class Allure1Plugin implements Reader {
         set.addAll(convertList(testSuite.getLabels(), this::convert));
         set.addAll(convertList(source.getLabels(), this::convert));
         dest.setLabels(new ArrayList<>(set));
-        dest.findAllLabels(ISSUE).forEach(issue ->
-                dest.getLinks().add(getLink(ISSUE, issue, getIssueUrl(issue, properties)))
+        dest.findAllLabels(ISSUE).forEach(
+                issue -> dest.getLinks().add(getLink(ISSUE, issue, getIssueUrl(issue, properties)))
         );
-        dest.findOneLabel("testId").ifPresent(testId ->
-                dest.getLinks().add(new Link().setName(testId).setType("tms")
-                        .setUrl(getTestCaseIdUrl(testId, properties)))
+        dest.findOneLabel("testId").ifPresent(
+                testId -> dest.getLinks().add(
+                        new Link().setName(testId).setType("tms")
+                                .setUrl(getTestCaseIdUrl(testId, properties))
+                )
         );
 
         //TestNG nested suite
@@ -301,18 +300,24 @@ public class Allure1Plugin implements Reader {
         final Status status = convert(s.getStatus());
         final Step current = new Step()
                 .setName(s.getTitle() == null ? s.getName() : s.getTitle())
-                .setTime(new Time()
-                        .setStart(s.getStart())
-                        .setStop(s.getStop())
-                        .setDuration(s.getStop() - s.getStart()))
+                .setTime(
+                        new Time()
+                                .setStart(s.getStart())
+                                .setStop(s.getStop())
+                                .setDuration(s.getStop() - s.getStart())
+                )
                 .setStatus(status)
-                .setSteps(convertList(
-                        s.getSteps(),
-                        step -> convert(source, visitor, step, testStatus, message, trace)
-                ))
-                .setAttachments(convertList(
-                        s.getAttachments(),
-                        attach -> convert(source, visitor, attach))
+                .setSteps(
+                        convertList(
+                                s.getSteps(),
+                                step -> convert(source, visitor, step, testStatus, message, trace)
+                        )
+                )
+                .setAttachments(
+                        convertList(
+                                s.getAttachments(),
+                                attach -> convert(source, visitor, attach)
+                        )
                 );
         //Copy test status details to each step set the same status
         if (Objects.equals(status, testStatus)) {
@@ -351,7 +356,7 @@ public class Allure1Plugin implements Reader {
         final Path attachmentFile = normalizedSource.resolve(attachmentSource).normalize();
 
         if (attachmentFile.startsWith(normalizedSource)
-            && Files.isRegularFile(attachmentFile, LinkOption.NOFOLLOW_LINKS)) {
+                && Files.isRegularFile(attachmentFile, LinkOption.NOFOLLOW_LINKS)) {
             final Attachment found = visitor.visitAttachmentFile(attachmentFile);
             if (Objects.nonNull(attachment.getType())) {
                 found.setType(attachment.getType());
@@ -373,7 +378,6 @@ public class Allure1Plugin implements Reader {
         }
     }
 
-    @SuppressWarnings("ReturnCount")
     public static Status convert(final ru.yandex.qatools.allure.model.Status status) {
         if (Objects.isNull(status)) {
             return Status.UNKNOWN;
@@ -434,7 +438,7 @@ public class Allure1Plugin implements Reader {
     }
 
     private Optional<ru.yandex.qatools.allure.model.Label> findLabel(
-            final List<ru.yandex.qatools.allure.model.Label> labels, final String labelName) {
+                                                                     final List<ru.yandex.qatools.allure.model.Label> labels, final String labelName) {
         return labels.stream()
                 .filter(label -> labelName.equals(label.getName()))
                 .findAny();
@@ -513,9 +517,11 @@ public class Allure1Plugin implements Reader {
         return Stream.of(items)
                 .filter(Objects::nonNull)
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException(
-                        "firstNonNull method should have at least one non null parameter"
-                ));
+                .orElseThrow(
+                        () -> new IllegalStateException(
+                                "firstNonNull method should have at least one non null parameter"
+                        )
+                );
     }
 
     private static String getHistoryId(final String name, final List<Parameter> parameters) {
@@ -555,15 +561,15 @@ public class Allure1Plugin implements Reader {
     }
 
     private Map<String, String> readEnvironmentPropertiesUtf8(final Path envPropsFile)
-        throws CharacterCodingException, IOException {
+            throws CharacterCodingException, IOException {
         final Map<String, String> utf8Items = new LinkedHashMap<>();
         final CharsetDecoder decoder = UTF_8.newDecoder()
-            .onMalformedInput(CodingErrorAction.REPORT)
-            .onUnmappableCharacter(CodingErrorAction.REPORT);
+                .onMalformedInput(CodingErrorAction.REPORT)
+                .onUnmappableCharacter(CodingErrorAction.REPORT);
 
         try (InputStream envPropsStream = Files.newInputStream(envPropsFile);
-            InputStreamReader envPropsReader = new InputStreamReader(envPropsStream, decoder);
-            PushbackReader pushbackReader = new PushbackReader(envPropsReader, 1)) {
+                InputStreamReader envPropsReader = new InputStreamReader(envPropsStream, decoder);
+                PushbackReader pushbackReader = new PushbackReader(envPropsReader, 1)) {
 
             final int firstChar = pushbackReader.read();
             if (firstChar != -1 && firstChar != '\uFEFF') {
@@ -602,13 +608,13 @@ public class Allure1Plugin implements Reader {
         final Path envXmlFile = directory.resolve("environment.xml");
         final Map<String, String> items = new LinkedHashMap<>();
         if (Files.exists(envXmlFile)) {
-            try (InputStream envXmlInputStream =
-                         Files.newInputStream(envXmlFile)) {
+            try (InputStream envXmlInputStream = Files.newInputStream(envXmlFile)) {
                 xmlMapper
                         .readValue(envXmlInputStream, ru.yandex.qatools.commons.model.Environment.class)
                         .getParameter()
-                        .forEach(p -> items.put(p.getKey(), p.getValue())
-                );
+                        .forEach(
+                                p -> items.put(p.getKey(), p.getValue())
+                        );
             } catch (Exception e) {
                 LOGGER.error("Could not read environment.xml file {}", envXmlFile.toAbsolutePath(), e);
             }

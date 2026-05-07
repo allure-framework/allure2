@@ -150,14 +150,14 @@ public class JiraCloudTestSummary implements Serializable {
     @Override
     public String toString() {
         return new StringBuilder("JiraCloudTestSummary{")
-            .append("status='").append(status).append('\'')
-            .append(", passed=").append(passed)
-            .append(", failed=").append(failed)
-            .append(", broken=").append(broken)
-            .append(", skipped=").append(skipped)
-            .append(", unknown=").append(unknown)
-            .append(", reportUrl='").append(reportUrl).append('\'')
-            .append('}')
-            .toString();
+                .append("status='").append(status).append('\'')
+                .append(", passed=").append(passed)
+                .append(", failed=").append(failed)
+                .append(", broken=").append(broken)
+                .append(", skipped=").append(skipped)
+                .append(", unknown=").append(unknown)
+                .append(", reportUrl='").append(reportUrl).append('\'')
+                .append('}')
+                .toString();
     }
 }

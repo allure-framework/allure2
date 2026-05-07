@@ -29,24 +29,26 @@ import java.util.Set;
 public class LanguageValidator implements IParameterValidator {
 
     private static final Set<String> SUPPORTED_LANGUAGES = Collections.unmodifiableSet(
-            new HashSet<>(Arrays.asList(
-                    "en",
-                    "ru",
-                    "zh",
-                    "de",
-                    "nl",
-                    "he",
-                    "br",
-                    "pl",
-                    "ja",
-                    "es",
-                    "kr",
-                    "fr",
-                    "az",
-                    "tr",
-                    "sv",
-                    "isv"
-            ))
+            new HashSet<>(
+                    Arrays.asList(
+                            "en",
+                            "ru",
+                            "zh",
+                            "de",
+                            "nl",
+                            "he",
+                            "br",
+                            "pl",
+                            "ja",
+                            "es",
+                            "kr",
+                            "fr",
+                            "az",
+                            "tr",
+                            "sv",
+                            "isv"
+                    )
+            )
     );
 
     @Override
@@ -54,7 +56,7 @@ public class LanguageValidator implements IParameterValidator {
         if (!SUPPORTED_LANGUAGES.contains(value)) {
             throw new ParameterException(
                     "invalid language value. Supported values are: "
-                    + String.join(", ", SUPPORTED_LANGUAGES)
+                            + String.join(", ", SUPPORTED_LANGUAGES)
             );
         }
     }

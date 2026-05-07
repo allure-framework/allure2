@@ -61,8 +61,7 @@ public class GaPlugin implements Aggregator2 {
 
     private static final String LOCAL = "local";
 
-    private static final String GA_ENDPOINT_FORMAT
-            = "https://www.google-analytics.com/mp/collect?measurement_id=%s&api_secret=%s";
+    private static final String GA_ENDPOINT_FORMAT = "https://www.google-analytics.com/mp/collect?measurement_id=%s&api_secret=%s";
 
     private static final String MEASUREMENT_ID = "G-FVWC4GKEYS";
     private static final String GA_SECRET = "rboZz0HySdmCVIvtydmSTQ";
@@ -110,10 +109,13 @@ public class GaPlugin implements Aggregator2 {
             final String stringBody = new JsonMapper().writeValueAsString(
                     new GaRequest()
                             .setClientId(clientId)
-                            .setEvents(Collections.singletonList(new GaEvent()
-                                    .setName(GA_EVENT_NAME)
-                                    .setParams(parameters)
-                            ))
+                            .setEvents(
+                                    Collections.singletonList(
+                                            new GaEvent()
+                                                    .setName(GA_EVENT_NAME)
+                                                    .setParams(parameters)
+                                    )
+                            )
             );
             final StringEntity entity = new StringEntity(
                     stringBody,
@@ -132,9 +134,10 @@ public class GaPlugin implements Aggregator2 {
                 .map(ExecutorInfo::getBuildUrl)
                 .flatMap(GaPlugin::getHostSafe)
                 .map(DigestUtils::sha256Hex)
-                .orElseGet(() -> getLocalHostName()
-                        .map(DigestUtils::sha256Hex)
-                        .orElse(UUID.randomUUID().toString())
+                .orElseGet(
+                        () -> getLocalHostName()
+                                .map(DigestUtils::sha256Hex)
+                                .orElse(UUID.randomUUID().toString())
                 );
     }
 

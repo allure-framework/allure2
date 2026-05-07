@@ -57,8 +57,7 @@ public abstract class CommonCsvExportAggregator2<T> implements Aggregator2 {
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         try (Writer writer = new OutputStreamWriter(bos, StandardCharsets.UTF_8)) {
             final StatefulBeanToCsvBuilder<T> builder = new StatefulBeanToCsvBuilder<>(writer);
-            final HeaderColumnNameMappingStrategy<T> mappingStrategy =
-                    new HeaderColumnNameMappingStrategyBuilder<T>().build();
+            final HeaderColumnNameMappingStrategy<T> mappingStrategy = new HeaderColumnNameMappingStrategyBuilder<T>().build();
             mappingStrategy.setType(type);
             final StatefulBeanToCsv<T> beanWriter = builder.withMappingStrategy(mappingStrategy).build();
             try {

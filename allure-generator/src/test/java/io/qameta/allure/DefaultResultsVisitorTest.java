@@ -44,13 +44,15 @@ class DefaultResultsVisitorTest {
                 () -> visitor.visitAttachmentFile(attachmentFile)
         );
         Allure.addAttachment(attachment.getName(), "text/plain", Files.readString(attachmentFile));
-        Allure.addAttachment("Visited attachment metadata", "text/plain", String.format(
-                "name=%s%ntype=%s%nsource=%s%ncontent=%s%n",
-                attachment.getName(),
-                attachment.getType(),
-                attachment.getSource(),
-                Files.readString(attachmentFile)
-        ));
+        Allure.addAttachment(
+                "Visited attachment metadata", "text/plain", String.format(
+                        "name=%s%ntype=%s%nsource=%s%ncontent=%s%n",
+                        attachment.getName(),
+                        attachment.getType(),
+                        attachment.getSource(),
+                        Files.readString(attachmentFile)
+                )
+        );
 
         assertThat(attachment.getName()).isEqualTo("custom-attachment.foobar");
         assertThat(attachment.getType()).isEqualTo(DefaultResultsVisitor.APPLICATION_OCTET_STREAM);

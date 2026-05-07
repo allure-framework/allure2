@@ -34,10 +34,12 @@ class WithSummaryTest {
     @Description
     @Test
     void shouldCountSteps() {
-        final Step step = new Step().setSteps(asList(
-                new Step(),
-                new Step().setSteps(singletonList(new Step()))
-        ));
+        final Step step = new Step().setSteps(
+                asList(
+                        new Step(),
+                        new Step().setSteps(singletonList(new Step()))
+                )
+        );
         assertThat(step.getStepsCount())
                 .isEqualTo(3L);
     }
@@ -49,10 +51,12 @@ class WithSummaryTest {
     @Description
     @Test
     void shouldCountAttachments() {
-        final Step step = new Step().setSteps(asList(
-                new Step().setAttachments(asList(new Attachment(), new Attachment())),
-                new Step().setAttachments(singletonList(new Attachment())).setSteps(singletonList(new Step()))
-        )).setAttachments(singletonList(new Attachment()));
+        final Step step = new Step().setSteps(
+                asList(
+                        new Step().setAttachments(asList(new Attachment(), new Attachment())),
+                        new Step().setAttachments(singletonList(new Attachment())).setSteps(singletonList(new Step()))
+                )
+        ).setAttachments(singletonList(new Attachment()));
         assertThat(step.getAttachmentsCount())
                 .isEqualTo(4L);
     }
@@ -151,11 +155,13 @@ class WithSummaryTest {
     @Test
     void shouldCalculateShouldMessageFlagIfChildHasTheSameMessage() {
         final Step step = createStep("hey")
-                .setSteps(asList(
-                        createStep("hey"),
-                        createStep("oy"),
-                        new Step()
-                ));
+                .setSteps(
+                        asList(
+                                createStep("hey"),
+                                createStep("oy"),
+                                new Step()
+                        )
+                );
 
         assertThat(step.shouldDisplayMessage())
                 .isFalse();
@@ -169,10 +175,12 @@ class WithSummaryTest {
     @Test
     void shouldCalculateDisplayMessageFlagIfChildrenHasDifferentMessages() {
         final Step step = createStep("hey")
-                .setSteps(asList(
-                        createStep("ay"),
-                        createStep("oy"),
-                        new Step())
+                .setSteps(
+                        asList(
+                                createStep("ay"),
+                                createStep("oy"),
+                                new Step()
+                        )
                 );
 
         assertThat(step.shouldDisplayMessage())
@@ -187,9 +195,12 @@ class WithSummaryTest {
     @Test
     void shouldCalculateDisplayMessageFlagInSubChild() {
         final Step step = createStep("hey")
-                .setSteps(asList(createStep("ay").setSteps(singletonList(createStep("hey"))),
-                        createStep("oy"),
-                        new Step())
+                .setSteps(
+                        asList(
+                                createStep("ay").setSteps(singletonList(createStep("hey"))),
+                                createStep("oy"),
+                                new Step()
+                        )
                 );
 
         assertThat(step.shouldDisplayMessage())

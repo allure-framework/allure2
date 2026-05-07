@@ -61,7 +61,10 @@ class ReportWebGeneratorTest {
      * Verifies disabling analytics for web report generation.
      */
     @Description
-    @SetEnvironmentVariable(key = "ALLURE_NO_ANALYTICS", value = "true")
+    @SetEnvironmentVariable(
+            key = "ALLURE_NO_ANALYTICS",
+            value = "true"
+    )
     @Test
     void shouldDisableAnalytics(@TempDir final Path tempDirectory) {
         final Configuration configuration = ConfigurationBuilder.empty().build();
@@ -138,10 +141,9 @@ class ReportWebGeneratorTest {
     }
 
     private void generateReport(
-            final Configuration configuration,
-            final ReportStorage reportStorage,
-            final Path outputDirectory
-    ) {
+                                final Configuration configuration,
+                                final ReportStorage reportStorage,
+                                final Path outputDirectory) {
         Allure.step("Generate report web assets into " + outputDirectory, () -> {
             new ReportWebGenerator().generate(configuration, reportStorage, outputDirectory);
             final Path indexHtml = outputDirectory.resolve("index.html");

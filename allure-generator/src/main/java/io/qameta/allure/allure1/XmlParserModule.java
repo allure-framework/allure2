@@ -43,8 +43,10 @@ public class XmlParserModule extends SimpleModule {
                 if (deserializer instanceof CollectionDeserializer) {
                     return new ListDeserializer((CollectionDeserializer) deserializer);
                 } else {
-                    return super.modifyCollectionDeserializer(config, type, beanDesc,
-                            deserializer);
+                    return super.modifyCollectionDeserializer(
+                            config, type, beanDesc,
+                            deserializer
+                    );
                 }
             }
         });

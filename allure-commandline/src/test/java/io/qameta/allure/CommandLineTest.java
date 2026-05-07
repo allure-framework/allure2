@@ -362,9 +362,11 @@ class CommandLineTest {
 
         final ArgumentCaptor<ConfigOptions> captor = ArgumentCaptor.captor();
 
-        when(commands.serve(
-                eq(Arrays.asList(first, second)), eq(host), eq(port),
-                captor.capture(), any(ReportNameOptions.class), any(ReportLanguageOptions.class))
+        when(
+                commands.serve(
+                        eq(Arrays.asList(first, second)), eq(host), eq(port),
+                        captor.capture(), any(ReportNameOptions.class), any(ReportLanguageOptions.class)
+                )
         )
                 .thenReturn(NO_ERROR);
         final ExitCode run = runCommand();
@@ -405,10 +407,12 @@ class CommandLineTest {
         final ArgumentCaptor<ConfigOptions> captorConfig = ArgumentCaptor.captor();
         final ArgumentCaptor<ReportNameOptions> captorReportName = ArgumentCaptor.captor();
 
-        when(commands.serve(
-                eq(Arrays.asList(first, second)), eq(host), eq(port),
-                captorConfig.capture(), captorReportName.capture(), any(ReportLanguageOptions.class)
-        ))
+        when(
+                commands.serve(
+                        eq(Arrays.asList(first, second)), eq(host), eq(port),
+                        captorConfig.capture(), captorReportName.capture(), any(ReportLanguageOptions.class)
+                )
+        )
                 .thenReturn(NO_ERROR);
         final ExitCode run = runCommand();
         assertThat(run)
@@ -452,10 +456,12 @@ class CommandLineTest {
         final ArgumentCaptor<ConfigOptions> captorConfig = ArgumentCaptor.captor();
         final ArgumentCaptor<ReportLanguageOptions> captorReportLang = ArgumentCaptor.captor();
 
-        when(commands.serve(
-                eq(Arrays.asList(first, second)), eq(host), eq(port),
-                captorConfig.capture(), any(ReportNameOptions.class), captorReportLang.capture()
-        ))
+        when(
+                commands.serve(
+                        eq(Arrays.asList(first, second)), eq(host), eq(port),
+                        captorConfig.capture(), any(ReportNameOptions.class), captorReportLang.capture()
+                )
+        )
                 .thenReturn(NO_ERROR);
         final ExitCode run = runCommand();
         assertThat(run)

@@ -176,10 +176,12 @@ public final class TestData {
 
             results.getAttachments().entrySet().stream()
                     .sorted(Map.Entry.comparingByKey())
-                    .forEach(entry -> attachFileContent(
-                            entry.getKey().getFileName().toString(),
-                            readAttachment(entry.getKey())
-                    ));
+                    .forEach(
+                            entry -> attachFileContent(
+                                    entry.getKey().getFileName().toString(),
+                                    readAttachment(entry.getKey())
+                            )
+                    );
         });
     }
 

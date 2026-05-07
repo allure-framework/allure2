@@ -129,8 +129,10 @@ public class JiraCloudExporter {
             }
         }
 
-        throw new ServiceException(ERROR_MESSAGE_PREFIX + issueKey
-                + ", http=" + code
-                + (errorBodyText.isEmpty() ? "" : ", body=" + errorBodyText));
+        throw new ServiceException(
+                ERROR_MESSAGE_PREFIX + issueKey
+                        + ", http=" + code
+                        + (errorBodyText.isEmpty() ? "" : ", body=" + errorBodyText)
+        );
     }
 }

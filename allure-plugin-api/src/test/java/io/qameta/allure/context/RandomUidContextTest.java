@@ -50,19 +50,21 @@ class RandomUidContextTest {
         final String first = generator.get();
         final String second = generator.get();
 
-        Allure.step("Record generated UID values", () -> Allure.addAttachment(
-                "generated-uids.txt",
-                "text/plain",
-                String.format(
-                        "first=%s%nsecond=%s%nfirstBlank=%s%nsecondBlank=%s%nsame=%s%n",
-                        first,
-                        second,
-                        first.trim().isEmpty(),
-                        second.trim().isEmpty(),
-                        first.equals(second)
-                ),
-                ".txt"
-        ));
+        Allure.step(
+                "Record generated UID values", () -> Allure.addAttachment(
+                        "generated-uids.txt",
+                        "text/plain",
+                        String.format(
+                                "first=%s%nsecond=%s%nfirstBlank=%s%nsecondBlank=%s%nsame=%s%n",
+                                first,
+                                second,
+                                first.trim().isEmpty(),
+                                second.trim().isEmpty(),
+                                first.equals(second)
+                        ),
+                        ".txt"
+                )
+        );
 
         assertThat(first)
                 .isNotBlank()

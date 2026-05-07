@@ -395,11 +395,10 @@ class CategoriesPluginTest {
     }
 
     private void aggregateCategories(
-            final CategoriesPlugin plugin,
-            final Configuration configuration,
-            final List<LaunchResults> launchResults,
-            final InMemoryReportStorage storage
-    ) {
+                                     final CategoriesPlugin plugin,
+                                     final Configuration configuration,
+                                     final List<LaunchResults> launchResults,
+                                     final InMemoryReportStorage storage) {
         Allure.step("Aggregate categories for " + launchResults.size() + " launch(es)", () -> {
             plugin.aggregate(configuration, launchResults, storage);
             attachStorageFiles(storage);
@@ -419,15 +418,19 @@ class CategoriesPluginTest {
     }
 
     private void attachStorageFiles(final InMemoryReportStorage storage) {
-        Allure.step("Attach in-memory storage contents", () -> storage.getReportDataFiles().entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .forEach(entry -> Allure.addAttachment(
-                        entry.getKey(),
-                        "text/plain",
-                        new String(
-                                Base64.getDecoder().decode(entry.getValue()),
-                                StandardCharsets.UTF_8
+        Allure.step(
+                "Attach in-memory storage contents", () -> storage.getReportDataFiles().entrySet().stream()
+                        .sorted(Map.Entry.comparingByKey())
+                        .forEach(
+                                entry -> Allure.addAttachment(
+                                        entry.getKey(),
+                                        "text/plain",
+                                        new String(
+                                                Base64.getDecoder().decode(entry.getValue()),
+                                                StandardCharsets.UTF_8
+                                        )
+                                )
                         )
-                )));
+        );
     }
 }

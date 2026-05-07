@@ -86,7 +86,6 @@ class JiraTestResultExportPluginTest {
                 new InMemoryReportStorage()
         );
 
-
         final JiraTestResult exported = captureTestResultExport(service);
 
         assertThat(exported.getExternalId()).isEqualTo(testResult.getUid());
@@ -104,22 +103,24 @@ class JiraTestResultExportPluginTest {
     }
 
     private void attachTestResultInput(final TestResult testResult, final ExecutorInfo executorInfo) {
-        Allure.step("Attach Jira test-result input", () -> Allure.addAttachment(
-                "jira-test-result-input.txt",
-                "text/plain",
-                String.format(
-                        "uid=%s%nname=%s%nhistoryId=%s%nstatus=%s%nstop=%s%nlinks=%s%n"
-                                + "executorBuildName=%s%nexecutorReportUrl=%s",
-                        testResult.getUid(),
-                        testResult.getName(),
-                        testResult.getHistoryId(),
-                        testResult.getStatus(),
-                        testResult.getTime().getStop(),
-                        describeLinks(testResult.getLinks()),
-                        executorInfo.getBuildName(),
-                        executorInfo.getReportUrl()
+        Allure.step(
+                "Attach Jira test-result input", () -> Allure.addAttachment(
+                        "jira-test-result-input.txt",
+                        "text/plain",
+                        String.format(
+                                "uid=%s%nname=%s%nhistoryId=%s%nstatus=%s%nstop=%s%nlinks=%s%n"
+                                        + "executorBuildName=%s%nexecutorReportUrl=%s",
+                                testResult.getUid(),
+                                testResult.getName(),
+                                testResult.getHistoryId(),
+                                testResult.getStatus(),
+                                testResult.getTime().getStop(),
+                                describeLinks(testResult.getLinks()),
+                                executorInfo.getBuildName(),
+                                executorInfo.getReportUrl()
+                        )
                 )
-        ));
+        );
     }
 
     private JiraTestResult captureTestResultExport(final JiraService service) {

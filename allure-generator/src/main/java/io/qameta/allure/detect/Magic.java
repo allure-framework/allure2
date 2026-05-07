@@ -43,8 +43,8 @@ final class Magic {
         return type;
     }
 
-    @SuppressWarnings("all")
-    public String[] getExtensions() {
+    @SuppressWarnings("PMD.MethodReturnsInternalArray")
+    String[] getExtensions() {
         return extensions;
     }
 }

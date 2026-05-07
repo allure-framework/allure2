@@ -78,11 +78,11 @@ import static java.util.Objects.nonNull;
  *
  * @since 2.0
  */
-@SuppressWarnings({
-        "ClassDataAbstractionCoupling",
-        "ClassFanOutComplexity",
-        "PMD.TooManyMethods",
-})
+@SuppressWarnings(
+    {
+            "PMD.TooManyMethods",
+    }
+)
 public class Allure2Plugin implements Reader {
 
     @SuppressWarnings("WeakerAccess")
@@ -97,9 +97,8 @@ public class Allure2Plugin implements Reader {
             nullsLast(comparing(Time::getStart, nullsLast(naturalOrder())))
     );
 
-    private static final Comparator<Parameter> PARAMETER_COMPARATOR =
-            comparing(Parameter::getName, nullsFirst(naturalOrder()))
-                    .thenComparing(Parameter::getValue, nullsFirst(naturalOrder()));
+    private static final Comparator<Parameter> PARAMETER_COMPARATOR = comparing(Parameter::getName, nullsFirst(naturalOrder()))
+            .thenComparing(Parameter::getValue, nullsFirst(naturalOrder()));
 
     private final ObjectMapper mapper = JsonMapper.builder()
             .enable(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME)
@@ -132,12 +131,14 @@ public class Allure2Plugin implements Reader {
         sortByStart(afters);
 
         readTestResults(resultsDirectory)
-                .forEach(result -> convert(
-                        context.getValue(),
-                        resultsDirectory, visitor,
-                        result,
-                        befores, afters
-                ));
+                .forEach(
+                        result -> convert(
+                                context.getValue(),
+                                resultsDirectory, visitor,
+                                result,
+                                befores, afters
+                        )
+                );
     }
 
     private static void sortByStart(final Map<String, List<StageResult>> befores) {
@@ -281,7 +282,7 @@ public class Allure2Plugin implements Reader {
         final Path attachmentFile = normalizedSource.resolve(attachmentSource).normalize();
 
         if (attachmentFile.startsWith(normalizedSource)
-            && Files.isRegularFile(attachmentFile, LinkOption.NOFOLLOW_LINKS)) {
+                && Files.isRegularFile(attachmentFile, LinkOption.NOFOLLOW_LINKS)) {
             final Attachment found = visitor.visitAttachmentFile(attachmentFile);
             if (nonNull(attachment.getType())) {
                 found.setType(attachment.getType());
@@ -357,14 +358,18 @@ public class Allure2Plugin implements Reader {
                                      final ResultsVisitor visitor,
                                      final TestResult result) {
         final StageResult testStage = new StageResult();
-        testStage.setSteps(convertList(
-                result.getSteps(),
-                step -> convert(source, visitor, step)
-        ));
-        testStage.setAttachments(convertList(
-                result.getAttachments(),
-                attachment -> convert(source, visitor, attachment)
-        ));
+        testStage.setSteps(
+                convertList(
+                        result.getSteps(),
+                        step -> convert(source, visitor, step)
+                )
+        );
+        testStage.setAttachments(
+                convertList(
+                        result.getAttachments(),
+                        attachment -> convert(source, visitor, attachment)
+                )
+        );
         testStage.setStatus(convert(result.getStatus()));
         testStage.setDescription(result.getDescription());
         testStage.setDescriptionHtml(sanitizeDescriptionHtml(result.getDescriptionHtml()));
@@ -390,9 +395,11 @@ public class Allure2Plugin implements Reader {
         return Stream.of(items)
                 .filter(Objects::nonNull)
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException(
-                        "firstNonNull method should have at least one non null parameter"
-                ));
+                .orElseThrow(
+                        () -> new IllegalStateException(
+                                "firstNonNull method should have at least one non null parameter"
+                        )
+                );
     }
 
     private Stream<TestResultContainer> readTestResultsContainers(final Path resultsDirectory) {

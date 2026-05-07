@@ -208,12 +208,14 @@ class PackagesPluginTest {
 
     private String describeTestResults(final Set<TestResult> testResults) {
         return testResults.stream()
-                .map(result -> String.format(
-                        "name=%s, start=%s, labels=%s",
-                        result.getName(),
-                        result.getTime() == null ? null : result.getTime().getStart(),
-                        describeLabels(result)
-                ))
+                .map(
+                        result -> String.format(
+                                "name=%s, start=%s, labels=%s",
+                                result.getName(),
+                                result.getTime() == null ? null : result.getTime().getStart(),
+                                describeLabels(result)
+                        )
+                )
                 .sorted()
                 .collect(Collectors.joining(System.lineSeparator()));
     }

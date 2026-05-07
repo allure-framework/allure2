@@ -42,10 +42,6 @@ import java.util.logging.StreamHandler;
 /**
  * @author eroshenkoam Artem Eroshenko
  */
-@SuppressWarnings({
-        "DeclarationOrder",
-        "ClassDataAbstractionCoupling"
-})
 public class CommandLine {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommandLine.class);
@@ -98,7 +94,6 @@ public class CommandLine {
         System.exit(exitCode.getCode());
     }
 
-    @SuppressWarnings({"ReturnCount"})
     public Optional<ExitCode> parse(final String... args) {
         if (args.length == 0) {
             printUsage(commander);
@@ -123,12 +118,7 @@ public class CommandLine {
         return Optional.empty();
     }
 
-    @SuppressWarnings({
-            "CyclomaticComplexity",
-            "NPathComplexity",
-            "ReturnCount",
-            "PMD.SystemPrintln",
-    })
+    @SuppressWarnings("PMD.SystemPrintln")
     public ExitCode run() {
         final java.util.logging.Logger rootLogger = initRootLogger();
         if (mainCommand.getVerboseOptions().isQuiet()) {

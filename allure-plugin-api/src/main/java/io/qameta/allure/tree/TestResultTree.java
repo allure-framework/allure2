@@ -31,8 +31,10 @@ public class TestResultTree extends AbstractTree<TestResult, TestResultTreeGroup
     public TestResultTree(final String name, final TreeClassifier<TestResult> treeClassifier,
                           final TreeGroupFactory<TestResult, TestResultTreeGroup> groupFactory,
                           final TreeLeafFactory<TestResult, TestResultTreeGroup, TestResultTreeLeaf> leafFactory) {
-        super(new TestResultTreeGroup(createGroupUid(null, name), name),
-                treeClassifier, groupFactory, leafFactory);
+        super(
+                new TestResultTreeGroup(createGroupUid(null, name), name),
+                treeClassifier, groupFactory, leafFactory
+        );
     }
 
     public String getUid() {

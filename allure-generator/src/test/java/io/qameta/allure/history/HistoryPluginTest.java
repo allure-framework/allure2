@@ -115,8 +115,8 @@ class HistoryPluginTest {
         String historyId = UUID.randomUUID().toString();
         final Map<String, Object> extra = new HashMap<>();
         final Map<String, HistoryData> historyDataMap = createHistoryDataMap(
-            historyId,
-            createHistoryItem(FAILED, 1, 2)
+                historyId,
+                createHistoryItem(FAILED, 1, 2)
         );
 
         extra.put(HISTORY_BLOCK_NAME, historyDataMap);
@@ -145,13 +145,14 @@ class HistoryPluginTest {
         extra1.put(HISTORY_BLOCK_NAME, historyDataMap);
         extra2.put(HISTORY_BLOCK_NAME, copyHistoryData(historyDataMap));
 
-
         Map<String, HistoryData> data = Allure.step(
                 "Reduce history entries across two launches",
-                () -> new HistoryPlugin().getData(asList(
-                        createLaunchResults(extra1, createTestResult(PASSED, historyId1, 3, 4)),
-                        createLaunchResults(extra2, createTestResult(PASSED, historyId2, 5, 6))
-                ))
+                () -> new HistoryPlugin().getData(
+                        asList(
+                                createLaunchResults(extra1, createTestResult(PASSED, historyId1, 3, 4)),
+                                createLaunchResults(extra2, createTestResult(PASSED, historyId2, 5, 6))
+                        )
+                )
         );
 
         assertThat(data).containsKeys(historyId1, historyId2);

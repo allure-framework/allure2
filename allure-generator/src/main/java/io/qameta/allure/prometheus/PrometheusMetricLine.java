@@ -35,7 +35,8 @@ public class PrometheusMetricLine implements MetricLine {
 
     @Override
     public String asString() {
-        return String.format("%s_%s%s %s",
+        return String.format(
+                "%s_%s%s %s",
                 getName(),
                 normalize(getKey()),
                 normalizeLabels(getLabels()),

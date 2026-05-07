@@ -134,7 +134,6 @@ class DirectoryPluginLoaderTest {
                 .isNotNull()
                 .isEmpty();
 
-
         final Map<String, Path> pluginFiles = plugin.getPluginFiles();
 
         assertThat(pluginFiles).containsKey("some-file");

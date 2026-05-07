@@ -51,5 +51,4 @@ public interface Plugin {
 
     List<Extension> getExtensions();
 
-
 }

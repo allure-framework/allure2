@@ -53,10 +53,14 @@ class GaPluginTest {
     @Test
     void shouldProcessNullExecutor() {
         Allure.parameter("executorMetadata", "present without type");
-        final String executorType = getExecutorType(new DefaultLaunchResults(Set.of(), Map.of(), Map.of(
-                ExecutorPlugin.EXECUTORS_BLOCK_NAME,
-                new ExecutorInfo()
-        )));
+        final String executorType = getExecutorType(
+                new DefaultLaunchResults(
+                        Set.of(), Map.of(), Map.of(
+                                ExecutorPlugin.EXECUTORS_BLOCK_NAME,
+                                new ExecutorInfo()
+                        )
+                )
+        );
 
         assertThat(executorType)
                 .isEqualTo("local");
@@ -69,11 +73,15 @@ class GaPluginTest {
     @Test
     void shouldProcessExecutor() {
         Allure.parameter("executorMetadata", "present with type");
-        final String executorType = getExecutorType(new DefaultLaunchResults(Set.of(), Map.of(), Map.of(
-                ExecutorPlugin.EXECUTORS_BLOCK_NAME,
-                new ExecutorInfo()
-                        .setType("some executor type")
-        )));
+        final String executorType = getExecutorType(
+                new DefaultLaunchResults(
+                        Set.of(), Map.of(), Map.of(
+                                ExecutorPlugin.EXECUTORS_BLOCK_NAME,
+                                new ExecutorInfo()
+                                        .setType("some executor type")
+                        )
+                )
+        );
 
         assertThat(executorType)
                 .isEqualTo("some executor type");

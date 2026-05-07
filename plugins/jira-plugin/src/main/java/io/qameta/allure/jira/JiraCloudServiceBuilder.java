@@ -81,19 +81,19 @@ public class JiraCloudServiceBuilder {
                 .orElse(DEFAULT_RETRY_BACKOFF_MILLIS);
 
         final OkHttpClient httpClient = new OkHttpClient.Builder()
-            .addInterceptor(new BasicAuthInterceptor(email, apiToken))
-            .addInterceptor(new JiraRetryInterceptor(maxRetries, retryBackoffMs))
-            .connectTimeout(DEFAULT_CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-            .readTimeout(DEFAULT_READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-            .writeTimeout(DEFAULT_WRITE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-            .build();
+                .addInterceptor(new BasicAuthInterceptor(email, apiToken))
+                .addInterceptor(new JiraRetryInterceptor(maxRetries, retryBackoffMs))
+                .connectTimeout(DEFAULT_CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                .readTimeout(DEFAULT_READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                .writeTimeout(DEFAULT_WRITE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                .build();
 
         final Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl(endpoint)
-            .addConverterFactory(JacksonConverterFactory.create(new ObjectMapper()))
-            .addCallAdapterFactory(new DefaultCallAdapterFactory<>())
-            .client(httpClient)
-            .build();
+                .baseUrl(endpoint)
+                .addConverterFactory(JacksonConverterFactory.create(new ObjectMapper()))
+                .addCallAdapterFactory(new DefaultCallAdapterFactory<>())
+                .client(httpClient)
+                .build();
 
         return retrofit.create(JiraCloudService.class);
     }
