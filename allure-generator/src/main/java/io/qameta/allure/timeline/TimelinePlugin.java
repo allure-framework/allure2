@@ -41,12 +41,10 @@ public class TimelinePlugin extends CommonJsonAggregator2 {
     @Override
     protected Tree<TestResult> getData(final List<LaunchResults> launchResults) {
 
-        // @formatter:off
         final Tree<TestResult> timeline = new TestResultTree(
-            "timeline",
-            testResult -> groupByLabels(testResult, LabelName.HOST, LabelName.THREAD)
+                "timeline",
+                testResult -> groupByLabels(testResult, LabelName.HOST, LabelName.THREAD)
         );
-        // @formatter:on
 
         launchResults.stream()
                 .map(LaunchResults::getAllResults)

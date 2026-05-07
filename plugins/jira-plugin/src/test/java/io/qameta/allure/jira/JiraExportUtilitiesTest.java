@@ -36,7 +36,6 @@ import static org.mockito.Mockito.when;
 
 public class JiraExportUtilitiesTest {
 
-
     /**
      * Verifies all non-empty status counts are converted to Jira launch statistics.
      * The test checks status, color, and count values for each Allure status.
@@ -60,18 +59,22 @@ public class JiraExportUtilitiesTest {
         assertThat(launchStatisticExports).isNotEmpty().hasSize(5);
 
         assertThat(launchStatisticExports).extracting(LaunchStatisticExport::getStatus)
-                .contains(Status.PASSED.value(),
+                .contains(
+                        Status.PASSED.value(),
                         Status.FAILED.value(),
                         Status.SKIPPED.value(),
                         Status.BROKEN.value(),
-                        Status.UNKNOWN.value());
+                        Status.UNKNOWN.value()
+                );
 
         assertThat(launchStatisticExports).extracting(LaunchStatisticExport::getColor)
-                .contains(ResultStatus.FAILED.color(),
+                .contains(
+                        ResultStatus.FAILED.color(),
                         ResultStatus.PASSED.color(),
                         ResultStatus.SKIPPED.color(),
                         ResultStatus.BROKEN.color(),
-                        ResultStatus.UNKNOWN.color());
+                        ResultStatus.UNKNOWN.color()
+                );
         launchStatisticExports.forEach(launchStatisticExport -> assertThat(launchStatisticExport.getCount()).isEqualTo(resultCount));
 
     }
@@ -96,15 +99,19 @@ public class JiraExportUtilitiesTest {
 
         assertThat(launchStatisticExports).isNotEmpty().hasSize(3);
         assertThat(launchStatisticExports).extracting(LaunchStatisticExport::getStatus)
-                .contains(Status.PASSED.value(),
+                .contains(
+                        Status.PASSED.value(),
                         Status.FAILED.value(),
-                        Status.UNKNOWN.value())
+                        Status.UNKNOWN.value()
+                )
                 .doesNotContain(Status.SKIPPED.value(), Status.BROKEN.value());
 
         assertThat(launchStatisticExports).extracting(LaunchStatisticExport::getColor)
-                .contains(ResultStatus.FAILED.color(),
+                .contains(
+                        ResultStatus.FAILED.color(),
                         ResultStatus.PASSED.color(),
-                        ResultStatus.UNKNOWN.color())
+                        ResultStatus.UNKNOWN.color()
+                )
                 .doesNotContain(ResultStatus.SKIPPED.color(), ResultStatus.BROKEN.color());
 
         launchStatisticExports.forEach(launchStatisticExport -> assertThat(launchStatisticExport.getCount()).isEqualTo(resultCount));
@@ -135,12 +142,14 @@ public class JiraExportUtilitiesTest {
 
     private String describeStatistic(final List<LaunchStatisticExport> statistic) {
         return statistic.stream()
-                .map(item -> String.format(
-                        "status=%s, color=%s, count=%s",
-                        item.getStatus(),
-                        item.getColor(),
-                        item.getCount()
-                ))
+                .map(
+                        item -> String.format(
+                                "status=%s, color=%s, count=%s",
+                                item.getStatus(),
+                                item.getColor(),
+                                item.getCount()
+                        )
+                )
                 .sorted()
                 .collect(Collectors.joining(System.lineSeparator()));
     }

@@ -514,7 +514,7 @@ class Allure1PluginTest {
     @SuppressWarnings("unchecked")
     @Test
     void shouldReadEnvironmentPropertiesUtf8WithBom() throws Exception {
-        final byte[] bom = new byte[] {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
+        final byte[] bom = new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
         final byte[] content = "executor=测试人员 A\n".getBytes(StandardCharsets.UTF_8);
         final byte[] bytes = new byte[bom.length + content.length];
         System.arraycopy(bom, 0, bytes, 0, bom.length);
@@ -528,8 +528,8 @@ class Allure1PluginTest {
                 (Supplier<Map<String, String>>) LinkedHashMap::new
         );
 
-                assertThat(env).containsEntry("executor", "测试人员 A");
-                assertThat(env).doesNotContainKey("\uFEFFexecutor");
+        assertThat(env).containsEntry("executor", "测试人员 A");
+        assertThat(env).doesNotContainKey("\uFEFFexecutor");
     }
 
     /**
@@ -540,7 +540,8 @@ class Allure1PluginTest {
     @Test
     void shouldFallbackToIso88591WhenUtf8DecodingFails() throws Exception {
         writeBytes(
-                "name=café\n".getBytes(StandardCharsets.ISO_8859_1));
+                "name=café\n".getBytes(StandardCharsets.ISO_8859_1)
+        );
 
         final LaunchResults launchResults = process();
         final Map<String, String> env = launchResults.getExtra(
@@ -649,10 +650,9 @@ class Allure1PluginTest {
     }
 
     private LaunchResults readResults(
-            final Allure1Plugin reader,
-            final Configuration configuration,
-            final Path resultsDirectory
-    ) {
+                                      final Allure1Plugin reader,
+                                      final Configuration configuration,
+                                      final Path resultsDirectory) {
         return Allure.step("Parse Allure 1 results from " + resultsDirectory, () -> {
             final DefaultResultsVisitor resultsVisitor = new DefaultResultsVisitor(configuration);
             reader.readResults(configuration, resultsVisitor, resultsDirectory);

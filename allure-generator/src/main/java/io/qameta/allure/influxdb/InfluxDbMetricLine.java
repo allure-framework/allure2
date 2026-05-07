@@ -37,7 +37,8 @@ public class InfluxDbMetricLine implements MetricLine, Serializable {
 
     @Override
     public String asString() {
-        return String.format("%s %s=%s %d",
+        return String.format(
+                "%s %s=%s %d",
                 getName(),
                 normalize(getKey()),
                 getValue(),

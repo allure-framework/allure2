@@ -47,23 +47,25 @@ class TagsPluginTest {
     @Test
     void shouldAddTagsFromLabels() {
         final TestResult testResult = new TestResult()
-                .setLabels(Arrays.asList(
-                        new Label()
-                                .setName("not a tag")
-                                .setValue("some value"),
-                        new Label()
-                                .setName("tag")
-                                .setValue("first"),
-                        new Label()
-                                .setName("feature")
-                                .setValue("Auth"),
-                        new Label()
-                                .setName("tag")
-                                .setValue("second"),
-                        new Label()
-                                .setName("tag")
-                                .setValue("third")
-                ));
+                .setLabels(
+                        Arrays.asList(
+                                new Label()
+                                        .setName("not a tag")
+                                        .setValue("some value"),
+                                new Label()
+                                        .setName("tag")
+                                        .setValue("first"),
+                                new Label()
+                                        .setName("feature")
+                                        .setValue("Auth"),
+                                new Label()
+                                        .setName("tag")
+                                        .setValue("second"),
+                                new Label()
+                                        .setName("tag")
+                                        .setValue("third")
+                        )
+                );
 
         final List<LaunchResults> launchResults = List.of(
                 new DefaultLaunchResults(Set.of(testResult), Map.of(), Map.of())
@@ -90,29 +92,31 @@ class TagsPluginTest {
     @Test
     void shouldRemoveDuplicateTags() {
         final TestResult testResult = new TestResult()
-                .setLabels(Arrays.asList(
-                        new Label()
-                                .setName("not a tag")
-                                .setValue("some value"),
-                        new Label()
-                                .setName("tag")
-                                .setValue("first"),
-                        new Label()
-                                .setName("feature")
-                                .setValue("Auth"),
-                        new Label()
-                                .setName("tag")
-                                .setValue("first"),
-                        new Label()
-                                .setName("tag")
-                                .setValue("second"),
-                        new Label()
-                                .setName("tag")
-                                .setValue("    first    "),
-                        new Label()
-                                .setName("tag")
-                                .setValue("third")
-                ));
+                .setLabels(
+                        Arrays.asList(
+                                new Label()
+                                        .setName("not a tag")
+                                        .setValue("some value"),
+                                new Label()
+                                        .setName("tag")
+                                        .setValue("first"),
+                                new Label()
+                                        .setName("feature")
+                                        .setValue("Auth"),
+                                new Label()
+                                        .setName("tag")
+                                        .setValue("first"),
+                                new Label()
+                                        .setName("tag")
+                                        .setValue("second"),
+                                new Label()
+                                        .setName("tag")
+                                        .setValue("    first    "),
+                                new Label()
+                                        .setName("tag")
+                                        .setValue("third")
+                        )
+                );
 
         final List<LaunchResults> launchResults = List.of(
                 new DefaultLaunchResults(Set.of(testResult), Map.of(), Map.of())
@@ -139,23 +143,25 @@ class TagsPluginTest {
     @Test
     void shouldTrimTagNames() {
         final TestResult testResult = new TestResult()
-                .setLabels(Arrays.asList(
-                        new Label()
-                                .setName("not a tag")
-                                .setValue("some value"),
-                        new Label()
-                                .setName("tag")
-                                .setValue(" first  \n "),
-                        new Label()
-                                .setName("feature")
-                                .setValue("Auth"),
-                        new Label()
-                                .setName("tag")
-                                .setValue("  second"),
-                        new Label()
-                                .setName("tag")
-                                .setValue("third")
-                ));
+                .setLabels(
+                        Arrays.asList(
+                                new Label()
+                                        .setName("not a tag")
+                                        .setValue("some value"),
+                                new Label()
+                                        .setName("tag")
+                                        .setValue(" first  \n "),
+                                new Label()
+                                        .setName("feature")
+                                        .setValue("Auth"),
+                                new Label()
+                                        .setName("tag")
+                                        .setValue("  second"),
+                                new Label()
+                                        .setName("tag")
+                                        .setValue("third")
+                        )
+                );
 
         final List<LaunchResults> launchResults = List.of(
                 new DefaultLaunchResults(Set.of(testResult), Map.of(), Map.of())
@@ -182,22 +188,24 @@ class TagsPluginTest {
     @Test
     void shouldParseLabelsWithoutName() {
         final TestResult testResult = new TestResult()
-                .setLabels(Arrays.asList(
-                        new Label()
-                                .setValue("some value"),
-                        new Label()
-                                .setName("tag")
-                                .setValue("first"),
-                        new Label()
-                                .setName("feature")
-                                .setValue("Auth"),
-                        new Label()
-                                .setName("tag")
-                                .setValue("second"),
-                        new Label()
-                                .setName("tag")
-                                .setValue("third")
-                ));
+                .setLabels(
+                        Arrays.asList(
+                                new Label()
+                                        .setValue("some value"),
+                                new Label()
+                                        .setName("tag")
+                                        .setValue("first"),
+                                new Label()
+                                        .setName("feature")
+                                        .setValue("Auth"),
+                                new Label()
+                                        .setName("tag")
+                                        .setValue("second"),
+                                new Label()
+                                        .setName("tag")
+                                        .setValue("third")
+                        )
+                );
 
         final List<LaunchResults> launchResults = List.of(
                 new DefaultLaunchResults(Set.of(testResult), Map.of(), Map.of())
@@ -224,18 +232,20 @@ class TagsPluginTest {
     @Test
     void shouldParseLabelsWithoutValue() {
         final TestResult testResult = new TestResult()
-                .setLabels(Arrays.asList(
-                        new Label()
-                                .setName("tag"),
-                        new Label()
-                                .setName("feature"),
-                        new Label()
-                                .setName("tag")
-                                .setValue("second"),
-                        new Label()
-                                .setName("tag")
-                                .setValue("third")
-                ));
+                .setLabels(
+                        Arrays.asList(
+                                new Label()
+                                        .setName("tag"),
+                                new Label()
+                                        .setName("feature"),
+                                new Label()
+                                        .setName("tag")
+                                        .setValue("second"),
+                                new Label()
+                                        .setName("tag")
+                                        .setValue("third")
+                        )
+                );
 
         final List<LaunchResults> launchResults = List.of(
                 new DefaultLaunchResults(Set.of(testResult), Map.of(), Map.of())
@@ -261,32 +271,34 @@ class TagsPluginTest {
     @Test
     void shouldAddMetaTags() {
         final TestResult testResult = new TestResult()
-                .setLabels(Arrays.asList(
-                        new Label()
-                                .setName("not a tag")
-                                .setValue("some value"),
-                        new Label()
-                                .setName("tag")
-                                .setValue("first"),
-                        new Label()
-                                .setName("feature")
-                                .setValue("Auth"),
-                        new Label()
-                                .setName("tag")
-                                .setValue("second"),
-                        new Label()
-                                .setName("tag")
-                                .setValue("@allure.label.story=Some_story"),
-                        new Label()
-                                .setName("tag")
-                                .setValue("@allure.label.parentSuite:Regression"),
-                        new Label()
-                                .setName("tag")
-                                .setValue("@allure.label.suite:Search_Articles"),
-                        new Label()
-                                .setName("tag")
-                                .setValue("allure.label.subSuite=Mobile")
-                ));
+                .setLabels(
+                        Arrays.asList(
+                                new Label()
+                                        .setName("not a tag")
+                                        .setValue("some value"),
+                                new Label()
+                                        .setName("tag")
+                                        .setValue("first"),
+                                new Label()
+                                        .setName("feature")
+                                        .setValue("Auth"),
+                                new Label()
+                                        .setName("tag")
+                                        .setValue("second"),
+                                new Label()
+                                        .setName("tag")
+                                        .setValue("@allure.label.story=Some_story"),
+                                new Label()
+                                        .setName("tag")
+                                        .setValue("@allure.label.parentSuite:Regression"),
+                                new Label()
+                                        .setName("tag")
+                                        .setValue("@allure.label.suite:Search_Articles"),
+                                new Label()
+                                        .setName("tag")
+                                        .setValue("allure.label.subSuite=Mobile")
+                        )
+                );
 
         final List<LaunchResults> launchResults = List.of(
                 new DefaultLaunchResults(Set.of(testResult), Map.of(), Map.of())
@@ -317,10 +329,9 @@ class TagsPluginTest {
     }
 
     private void aggregateTags(
-            final Configuration configuration,
-            final List<LaunchResults> launchResults,
-            final ReportStorage storage
-    ) {
+                               final Configuration configuration,
+                               final List<LaunchResults> launchResults,
+                               final ReportStorage storage) {
         Allure.step(
                 "Aggregate tags for " + launchResults.get(0).getAllResults().size() + " test result(s)",
                 () -> new TagsPlugin().aggregate(configuration, launchResults, storage)

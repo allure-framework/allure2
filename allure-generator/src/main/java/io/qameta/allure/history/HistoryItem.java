@@ -47,7 +47,8 @@ public class HistoryItem implements Serializable {
     }
 
     public static Comparator<HistoryItem> comparingByTimeAsc() {
-        return comparing(HistoryItem::getTime,
+        return comparing(
+                HistoryItem::getTime,
                 nullsFirst(comparing(Time::getStart, nullsFirst(naturalOrder())))
         );
     }

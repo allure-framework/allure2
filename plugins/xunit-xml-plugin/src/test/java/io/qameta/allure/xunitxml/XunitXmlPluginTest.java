@@ -184,9 +184,12 @@ class XunitXmlPluginTest {
 
     static Stream<Arguments> data() {
         return Stream.of(
-                Arguments.of("xunitdata/failed-test.xml", "failed-test.xml",
+                Arguments.of(
+                        "xunitdata/failed-test.xml", "failed-test.xml",
                         String.format("%s%n", "Assert.True() Failure\\r\\nExpected: True\\r\\nActual:   False") +
-                        "test output\\n", "FAILED-TRACE"),
+                                "test output\\n",
+                        "FAILED-TRACE"
+                ),
                 Arguments.of("xunitdata/passed-test.xml", "passed-test.xml", "test output\\n", null)
         );
     }
@@ -201,7 +204,8 @@ class XunitXmlPluginTest {
     void shouldSetStatusDetails(final String resource,
                                 final String fileName,
                                 final String message,
-                                final String trace) throws Exception {
+                                final String trace)
+            throws Exception {
         process(resource, fileName);
 
         final List<TestResult> results = captureTestResults(1);
@@ -222,10 +226,11 @@ class XunitXmlPluginTest {
     @Test
     void cveEntityReadTest(@TempDir final Path tmp) throws IOException {
         final Path secretFile = tmp.resolve("secretfile.ini");
-        Files.writeString(secretFile,
+        Files.writeString(
+                secretFile,
                 "[owner]\n"
-                + "name = John Doe\n"
-                + "organization = Example Org.\n",
+                        + "name = John Doe\n"
+                        + "organization = Example Org.\n",
                 StandardCharsets.UTF_8
         );
 
@@ -308,19 +313,20 @@ class XunitXmlPluginTest {
     private String describeTestResults(final List<TestResult> results) {
         final StringBuilder builder = new StringBuilder();
         builder.append("results=").append(results.size()).append(System.lineSeparator());
-        results.forEach(result -> builder
-                .append(System.lineSeparator())
-                .append("name=").append(result.getName()).append(System.lineSeparator())
-                .append("fullName=").append(result.getFullName()).append(System.lineSeparator())
-                .append("historyId=").append(result.getHistoryId()).append(System.lineSeparator())
-                .append("status=").append(result.getStatus()).append(System.lineSeparator())
-                .append("duration=")
-                .append(result.getTime() == null ? null : result.getTime().getDuration())
-                .append(System.lineSeparator())
-                .append("statusMessage=").append(result.getStatusMessage()).append(System.lineSeparator())
-                .append("statusTrace=").append(result.getStatusTrace()).append(System.lineSeparator())
-                .append("labels=").append(describeLabels(result))
-                .append(System.lineSeparator())
+        results.forEach(
+                result -> builder
+                        .append(System.lineSeparator())
+                        .append("name=").append(result.getName()).append(System.lineSeparator())
+                        .append("fullName=").append(result.getFullName()).append(System.lineSeparator())
+                        .append("historyId=").append(result.getHistoryId()).append(System.lineSeparator())
+                        .append("status=").append(result.getStatus()).append(System.lineSeparator())
+                        .append("duration=")
+                        .append(result.getTime() == null ? null : result.getTime().getDuration())
+                        .append(System.lineSeparator())
+                        .append("statusMessage=").append(result.getStatusMessage()).append(System.lineSeparator())
+                        .append("statusTrace=").append(result.getStatusTrace()).append(System.lineSeparator())
+                        .append("labels=").append(describeLabels(result))
+                        .append(System.lineSeparator())
         );
         return builder.toString();
     }

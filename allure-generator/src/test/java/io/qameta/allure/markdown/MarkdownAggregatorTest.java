@@ -117,10 +117,9 @@ class MarkdownAggregatorTest {
     }
 
     private void aggregateMarkdownDescriptions(
-            final MarkdownDescriptionsPlugin aggregator,
-            final Configuration configuration,
-            final List<LaunchResults> launchResults
-    ) {
+                                               final MarkdownDescriptionsPlugin aggregator,
+                                               final Configuration configuration,
+                                               final List<LaunchResults> launchResults) {
         Allure.step(
                 "Render markdown descriptions for " + launchResults.size() + " launch(es)",
                 () -> aggregator.aggregate(configuration, launchResults, new InMemoryReportStorage())

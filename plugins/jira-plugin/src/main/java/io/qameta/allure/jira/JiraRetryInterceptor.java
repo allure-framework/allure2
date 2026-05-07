@@ -49,8 +49,10 @@ public class JiraRetryInterceptor implements Interceptor {
 
             if (attempt < maxAttempts) {
                 final long sleepMs = computeSleepMillis(response, attempt);
-                LOGGER.warn("Jira request to {} failed with code {}. Retrying after {}ms (attempt {}/{})",
-                        request.url(), response.code(), sleepMs, attempt, maxAttempts);
+                LOGGER.warn(
+                        "Jira request to {} failed with code {}. Retrying after {}ms (attempt {}/{})",
+                        request.url(), response.code(), sleepMs, attempt, maxAttempts
+                );
                 response.close();
                 sleepQuietly(sleepMs);
             }
@@ -60,8 +62,10 @@ public class JiraRetryInterceptor implements Interceptor {
             throw new IOException("All retry attempts failed and response is null");
         }
 
-        LOGGER.error("Jira request to {} failed after {} attempts with code {}",
-                request.url(), maxAttempts, response.code());
+        LOGGER.error(
+                "Jira request to {} failed after {} attempts with code {}",
+                request.url(), maxAttempts, response.code()
+        );
         return response;
     }
 

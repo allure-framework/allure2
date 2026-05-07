@@ -44,9 +44,11 @@ public class SeverityPlugin extends CompositeAggregator2 {
     protected static final String JSON_FILE_NAME = "severity.json";
 
     public SeverityPlugin() {
-        super(Arrays.asList(
-                new SeverityAggregator(), new WidgetAggregator()
-        ));
+        super(
+                Arrays.asList(
+                        new SeverityAggregator(), new WidgetAggregator()
+                )
+        );
     }
 
     /**

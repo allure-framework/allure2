@@ -28,7 +28,7 @@ import java.util.List;
  *
  * @author charlie (Dmitry Baev).
  */
-@SuppressWarnings("all")
+@SuppressWarnings("MultipleStringLiterals")
 public final class MagicBytesContentTypeDetector {
 
     private static final List<Magic> MAGICS;
@@ -37,175 +37,235 @@ public final class MagicBytesContentTypeDetector {
         final List<Magic> list = new ArrayList<>();
 
         // priority 60
-        list.add(new Magic(
-                60, "video/mp4",
-                createMagicMatch("ftypmp42", null, "4", "string"),
-                ".mp4", ".mp4v", ".mpg4"
-        ));
-        list.add(new Magic(
-                60, "video/mp4",
-                createMagicMatch("ftypmp41", null, "4", "string"),
-                ".mp4", ".mp4v", ".mpg4"
-        ));
+        list.add(
+                new Magic(
+                        60, "video/mp4",
+                        createMagicMatch("ftypmp42", null, "4", "string"),
+                        ".mp4", ".mp4v", ".mpg4"
+                )
+        );
+        list.add(
+                new Magic(
+                        60, "video/mp4",
+                        createMagicMatch("ftypmp41", null, "4", "string"),
+                        ".mp4", ".mp4v", ".mpg4"
+                )
+        );
 
         // priority 50
-        list.add(new Magic(
-                50, "image/svg+xml",
-                new AndClause(Arrays.asList(
-                        createMagicMatch("<svg", null, "0", "string"),
-                        createMagicMatch("http://www.w3.org/2000/svg", null, "5:256", "string")
-                )),
-                ".svg", ".svgz"
-        ));
+        list.add(
+                new Magic(
+                        50, "image/svg+xml",
+                        new AndClause(
+                                Arrays.asList(
+                                        createMagicMatch("<svg", null, "0", "string"),
+                                        createMagicMatch("http://www.w3.org/2000/svg", null, "5:256", "string")
+                                )
+                        ),
+                        ".svg", ".svgz"
+                )
+        );
 
-        list.add(new Magic(
-                50, "image/png",
-                createMagicMatch("\\x89PNG\\x0d\\x0a\\x1a\\x0a", null, "0", "string"),
-                ".png"
-        ));
+        list.add(
+                new Magic(
+                        50, "image/png",
+                        createMagicMatch("\\x89PNG\\x0d\\x0a\\x1a\\x0a", null, "0", "string"),
+                        ".png"
+                )
+        );
 
-        list.add(new Magic(
-                50, "application/x-gtar",
-                createMagicMatch("ustar  \\0", null, "257", "string"),
-                ".gtar"
-        ));
+        list.add(
+                new Magic(
+                        50, "application/x-gtar",
+                        createMagicMatch("ustar  \\0", null, "257", "string"),
+                        ".gtar"
+                )
+        );
 
-        list.add(new Magic(
-                50, "application/pdf",
-                createMagicMatch("\\xef\\xbb\\xbf%PDF-", null, "0", "string"),
-                ".pdf"
-        ));
+        list.add(
+                new Magic(
+                        50, "application/pdf",
+                        createMagicMatch("\\xef\\xbb\\xbf%PDF-", null, "0", "string"),
+                        ".pdf"
+                )
+        );
 
-        list.add(new Magic(
-                50, "image/gif",
-                createMagicMatch("GIF89a", null, "0", "string"),
-                ".gif"
-        ));
+        list.add(
+                new Magic(
+                        50, "image/gif",
+                        createMagicMatch("GIF89a", null, "0", "string"),
+                        ".gif"
+                )
+        );
 
-        list.add(new Magic(
-                50, "image/gif",
-                createMagicMatch("GIF87a", null, "0", "string"),
-                ".gif"
-        ));
+        list.add(
+                new Magic(
+                        50, "image/gif",
+                        createMagicMatch("GIF87a", null, "0", "string"),
+                        ".gif"
+                )
+        );
 
-        list.add(new Magic(
-                50, "image/bmp",
-                new AndClause(Arrays.asList(
-                        createMagicMatch("BM", null, "0", "string"),
-                        new AndClause(Arrays.asList(
-                                createMagicMatch("0x0100", null, "26", "string"),
-                                new OrClause(Arrays.asList(
-                                        createMagicMatch("0x0000", null, "28", "string"),
-                                        createMagicMatch("0x0100", null, "28", "string"),
-                                        createMagicMatch("0x0400", null, "28", "string"),
-                                        createMagicMatch("0x0800", null, "28", "string"),
-                                        createMagicMatch("0x1000", null, "28", "string"),
-                                        createMagicMatch("0x1800", null, "28", "string"),
-                                        createMagicMatch("0x2000", null, "28", "string")
-                                ))
-                        ))
-                )),
-                ".bmp", ".dib"
-        ));
+        list.add(
+                new Magic(
+                        50, "image/bmp",
+                        new AndClause(
+                                Arrays.asList(
+                                        createMagicMatch("BM", null, "0", "string"),
+                                        new AndClause(
+                                                Arrays.asList(
+                                                        createMagicMatch("0x0100", null, "26", "string"),
+                                                        new OrClause(
+                                                                Arrays.asList(
+                                                                        createMagicMatch("0x0000", null, "28", "string"),
+                                                                        createMagicMatch("0x0100", null, "28", "string"),
+                                                                        createMagicMatch("0x0400", null, "28", "string"),
+                                                                        createMagicMatch("0x0800", null, "28", "string"),
+                                                                        createMagicMatch("0x1000", null, "28", "string"),
+                                                                        createMagicMatch("0x1800", null, "28", "string"),
+                                                                        createMagicMatch("0x2000", null, "28", "string")
+                                                                )
+                                                        )
+                                                )
+                                        )
+                                )
+                        ),
+                        ".bmp", ".dib"
+                )
+        );
 
-        list.add(new Magic(
-                50, "application/pdf",
-                createMagicMatch("%PDF-", null, "0", "string"),
-                ".pdf"
-        ));
+        list.add(
+                new Magic(
+                        50, "application/pdf",
+                        createMagicMatch("%PDF-", null, "0", "string"),
+                        ".pdf"
+                )
+        );
 
-        list.add(new Magic(
-                50, "image/tiff",
-                createMagicMatch("MM\\x00\\x2b", null, "0", "string"),
-                ".tiff", ".tif"
-        ));
+        list.add(
+                new Magic(
+                        50, "image/tiff",
+                        createMagicMatch("MM\\x00\\x2b", null, "0", "string"),
+                        ".tiff", ".tif"
+                )
+        );
 
-        list.add(new Magic(
-                50, "image/tiff",
-                createMagicMatch("MM\\x00\\x2a", null, "0", "string"),
-                ".tiff", ".tif"
-        ));
+        list.add(
+                new Magic(
+                        50, "image/tiff",
+                        createMagicMatch("MM\\x00\\x2a", null, "0", "string"),
+                        ".tiff", ".tif"
+                )
+        );
 
-        list.add(new Magic(
-                50, "image/tiff",
-                createMagicMatch("II\\x2a\\x00", null, "0", "string"),
-                ".tiff", ".tif"
-        ));
+        list.add(
+                new Magic(
+                        50, "image/tiff",
+                        createMagicMatch("II\\x2a\\x00", null, "0", "string"),
+                        ".tiff", ".tif"
+                )
+        );
 
-        list.add(new Magic(
-                50, "application/zip",
-                createMagicMatch("PK\\x07\\x08", null, "0", "string"),
-                ".zip"
-        ));
+        list.add(
+                new Magic(
+                        50, "application/zip",
+                        createMagicMatch("PK\\x07\\x08", null, "0", "string"),
+                        ".zip"
+                )
+        );
 
-        list.add(new Magic(
-                50, "application/zip",
-                createMagicMatch("PK\\005\\006", null, "0", "string"),
-                ".zip"
-        ));
+        list.add(
+                new Magic(
+                        50, "application/zip",
+                        createMagicMatch("PK\\005\\006", null, "0", "string"),
+                        ".zip"
+                )
+        );
 
-        list.add(new Magic(
-                50, "application/zip",
-                createMagicMatch("PK\\003\\004", null, "0", "string"),
-                ".zip"
-        ));
+        list.add(
+                new Magic(
+                        50, "application/zip",
+                        createMagicMatch("PK\\003\\004", null, "0", "string"),
+                        ".zip"
+                )
+        );
 
-        list.add(new Magic(
-                50, "image/jpeg",
-                createMagicMatch("0xffd8ff", null, "0", "string"),
-                ".jpg", ".jpeg", ".jpe", ".jif", ".jfif", ".jfi"
-        ));
+        list.add(
+                new Magic(
+                        50, "image/jpeg",
+                        createMagicMatch("0xffd8ff", null, "0", "string"),
+                        ".jpg", ".jpeg", ".jpe", ".jif", ".jfif", ".jfi"
+                )
+        );
 
         // priority 45
-        list.add(new Magic(
-                45, "application/gzip",
-                createMagicMatch("\\x1f\\x8b", null, "0", "string"),
-                ".gz", ".tgz", "-gz"
-        ));
+        list.add(
+                new Magic(
+                        45, "application/gzip",
+                        createMagicMatch("\\x1f\\x8b", null, "0", "string"),
+                        ".gz", ".tgz", "-gz"
+                )
+        );
 
-        list.add(new Magic(
-                45, "application/gzip",
-                createMagicMatch("\\037\\213", null, "0", "string"),
-                ".gz", ".tgz", "-gz"
-        ));
+        list.add(
+                new Magic(
+                        45, "application/gzip",
+                        createMagicMatch("\\037\\213", null, "0", "string"),
+                        ".gz", ".tgz", "-gz"
+                )
+        );
 
         // priority 40
-        list.add(new Magic(
-                40, "application/pdf",
-                new AndClause(Arrays.asList(
-                        createMagicMatch("%%", null, "0:128", "string"),
-                        createMagicMatch("%PDF-2.", null, "1:512", "string")
-                )),
-                ".pdf"
-        ));
+        list.add(
+                new Magic(
+                        40, "application/pdf",
+                        new AndClause(
+                                Arrays.asList(
+                                        createMagicMatch("%%", null, "0:128", "string"),
+                                        createMagicMatch("%PDF-2.", null, "1:512", "string")
+                                )
+                        ),
+                        ".pdf"
+                )
+        );
 
-        list.add(new Magic(
-                40, "application/pdf",
-                new AndClause(Arrays.asList(
-                        createMagicMatch("%%", null, "0:128", "string"),
-                        createMagicMatch("%PDF-1.", null, "1:512", "string")
-                )),
-                ".pdf"
-        ));
+        list.add(
+                new Magic(
+                        40, "application/pdf",
+                        new AndClause(
+                                Arrays.asList(
+                                        createMagicMatch("%%", null, "0:128", "string"),
+                                        createMagicMatch("%PDF-1.", null, "1:512", "string")
+                                )
+                        ),
+                        ".pdf"
+                )
+        );
 
-        list.add(new Magic(
-                40, "application/x-tar",
-                createMagicMatch("ustar\\0", null, "257", "string"),
-                ".tar"
-        ));
+        list.add(
+                new Magic(
+                        40, "application/x-tar",
+                        createMagicMatch("ustar\\0", null, "257", "string"),
+                        ".tar"
+                )
+        );
 
         // priority 20
-        list.add(new Magic(
-                20, "application/pdf",
-                createMagicMatch("%PDF-2.", null, "1:512", "string"),
-                ".pdf"
-        ));
+        list.add(
+                new Magic(
+                        20, "application/pdf",
+                        createMagicMatch("%PDF-2.", null, "1:512", "string"),
+                        ".pdf"
+                )
+        );
 
-        list.add(new Magic(
-                20, "application/pdf",
-                createMagicMatch("%PDF-1.", null, "1:512", "string"),
-                ".pdf"
-        ));
+        list.add(
+                new Magic(
+                        20, "application/pdf",
+                        createMagicMatch("%PDF-1.", null, "1:512", "string"),
+                        ".pdf"
+                )
+        );
 
         MAGICS = list;
     }
@@ -216,7 +276,8 @@ public final class MagicBytesContentTypeDetector {
 
     // Copy of https://github.com/apache/tika/blob/main/tika-core/
     // src/main/java/org/apache/tika/detect/MagicDetector.java#L274
-    private static byte[] decodeString(String value, String type) {
+    @SuppressWarnings("PMD.CognitiveComplexity")
+    private static byte[] decodeString(final String value, final String type) {
         if (value.startsWith("0x")) {
             byte[] vals = new byte[(value.length() - 2) / 2];
             for (int i = 0; i < vals.length; i++) {
@@ -227,31 +288,33 @@ public final class MagicBytesContentTypeDetector {
 
         CharArrayWriter decoded = new CharArrayWriter();
 
-        for (int i = 0; i < value.length(); i++) {
-            if (value.charAt(i) == '\\') {
-                if (value.charAt(i + 1) == '\\') {
+        int index = 0;
+        while (index < value.length()) {
+            if (value.charAt(index) == '\\') {
+                if (value.charAt(index + 1) == '\\') {
                     decoded.write('\\');
-                    i++;
-                } else if (value.charAt(i + 1) == 'x') {
-                    decoded.write(Integer.parseInt(value.substring(i + 2, i + 4), 16));
-                    i += 3;
-                } else if (value.charAt(i + 1) == 'r') {
+                    index += 2;
+                } else if (value.charAt(index + 1) == 'x') {
+                    decoded.write(Integer.parseInt(value.substring(index + 2, index + 4), 16));
+                    index += 4;
+                } else if (value.charAt(index + 1) == 'r') {
                     decoded.write('\r');
-                    i++;
-                } else if (value.charAt(i + 1) == 'n') {
+                    index += 2;
+                } else if (value.charAt(index + 1) == 'n') {
                     decoded.write('\n');
-                    i++;
+                    index += 2;
                 } else {
-                    int j = i + 1;
-                    while ((j < i + 4) && (j < value.length()) &&
-                           (Character.isDigit(value.charAt(j)))) {
+                    int j = index + 1;
+                    while (j < index + 4 && j < value.length() &&
+                            Character.isDigit(value.charAt(j))) {
                         j++;
                     }
-                    decoded.write(Short.decode("0" + value.substring(i + 1, j)).byteValue());
-                    i = j - 1;
+                    decoded.write(Short.decode("0" + value.substring(index + 1, j)).byteValue());
+                    index = j;
                 }
             } else {
-                decoded.write(value.charAt(i));
+                decoded.write(value.charAt(index));
+                index++;
             }
         }
 
@@ -295,14 +358,12 @@ public final class MagicBytesContentTypeDetector {
 
         final byte[] resPattern = new byte[patternLength];
         final byte[] resMask = new byte[patternLength];
+        Arrays.fill(resMask, (byte) 0xFF);
+        if (decodedMask != null) {
+            System.arraycopy(decodedMask, 0, resMask, 0, Math.min(decodedMask.length, patternLength));
+        }
 
         for (int i = 0; i < patternLength; i++) {
-            if (decodedMask != null && i < decodedMask.length) {
-                resMask[i] = decodedMask[i];
-            } else {
-                resMask[i] = (byte) 0xFF; // -1 in byte
-            }
-
             if (i < decodedValue.length) {
                 final int v = decodedValue[i] & 0xFF;
                 final int m = resMask[i] & 0xFF;

@@ -55,11 +55,9 @@ public class ReportWebGenerator {
     private static final String TEXT_CSS = "text/css; charset=utf-8";
 
     private static final JsonMapper JSON_MAPPER = JsonMapper.builder().build();
-    private static final TypeReference<Map<String, ViteManifestEntry>> VITE_MANIFEST_TYPE =
-            new TypeReference<Map<String, ViteManifestEntry>>() {
-            };
+    private static final TypeReference<Map<String, ViteManifestEntry>> VITE_MANIFEST_TYPE = new TypeReference<Map<String, ViteManifestEntry>>() {
+    };
 
-    @SuppressWarnings({"ExecutableStatementCount", "PMD.NcssCount"})
     public void generate(final Configuration configuration,
                          final ReportStorage reportStorage,
                          final Path outputDirectory) {
@@ -91,10 +89,12 @@ public class ReportWebGenerator {
             config.getJsFiles().forEach(jsFile -> {
                 final Path jsFilePath = pluginFiles.remove(jsFile);
                 if (inline) {
-                    pluginJsUrls.add(dataBase64(
-                            TEXT_JAVASCRIPT,
-                            jsFilePath
-                    ));
+                    pluginJsUrls.add(
+                            dataBase64(
+                                    TEXT_JAVASCRIPT,
+                                    jsFilePath
+                            )
+                    );
                 } else {
                     final String key = pluginFileKey(config, jsFile);
                     pluginJsUrls.add(key);
@@ -105,10 +105,12 @@ public class ReportWebGenerator {
             config.getCssFiles().forEach(cssFile -> {
                 final Path cssFilePath = pluginFiles.remove(cssFile);
                 if (inline) {
-                    pluginStyleUrls.add(dataBase64(
-                            TEXT_CSS,
-                            cssFilePath
-                    ));
+                    pluginStyleUrls.add(
+                            dataBase64(
+                                    TEXT_CSS,
+                                    cssFilePath
+                            )
+                    );
                 } else {
                     final String key = pluginFileKey(config, cssFile);
                     pluginStyleUrls.add(key);
@@ -118,7 +120,8 @@ public class ReportWebGenerator {
 
             pluginFiles.forEach((key, path) -> {
                 final String pluginFileKey = pluginFileKey(config, key);
-                write(outputDirectory,
+                write(
+                        outputDirectory,
                         pluginFileKey,
                         path
                 );
@@ -144,8 +147,10 @@ public class ReportWebGenerator {
             dataModel.put("pluginJsUrls", pluginJsUrls);
 
             if (inline) {
-                final Map<String, String> reportDataFiles = new HashMap<>(((InMemoryReportStorage) reportStorage)
-                        .getReportDataFiles());
+                final Map<String, String> reportDataFiles = new HashMap<>(
+                        ((InMemoryReportStorage) reportStorage)
+                                .getReportDataFiles()
+                );
 
                 dataModel.put("reportDataFiles", reportDataFiles);
             }
@@ -198,8 +203,8 @@ public class ReportWebGenerator {
     private static List<String> getStyleFiles(final Map<String, ViteManifestEntry> viteManifest) {
         final Set<String> styleFiles = new LinkedHashSet<>();
 
-        getReachableManifestKeys(viteManifest).forEach(key ->
-                styleFiles.addAll(requireManifestEntry(viteManifest, key).getCss())
+        getReachableManifestKeys(viteManifest).forEach(
+                key -> styleFiles.addAll(requireManifestEntry(viteManifest, key).getCss())
         );
 
         return new ArrayList<>(styleFiles);
@@ -273,18 +278,22 @@ public class ReportWebGenerator {
     private static ViteManifestEntry requireManifestEntry(final Map<String, ViteManifestEntry> viteManifest,
                                                           final String key) {
         return Optional.ofNullable(viteManifest.get(key))
-                .orElseThrow(() -> new ReportGenerationException(
-                        String.format("Vite manifest entry %s is not present", key)
-                ));
+                .orElseThrow(
+                        () -> new ReportGenerationException(
+                                String.format("Vite manifest entry %s is not present", key)
+                        )
+                );
     }
 
     private static String requireManifestFile(final ViteManifestEntry entry,
                                               final String key) {
         return Optional.ofNullable(entry.getFile())
                 .filter(file -> !file.isEmpty())
-                .orElseThrow(() -> new ReportGenerationException(
-                        String.format("Vite manifest entry %s does not define a file", key)
-                ));
+                .orElseThrow(
+                        () -> new ReportGenerationException(
+                                String.format("Vite manifest entry %s does not define a file", key)
+                        )
+                );
     }
 
     private static void addIfPresent(final Set<String> values, final String value) {
@@ -293,12 +302,14 @@ public class ReportWebGenerator {
         }
     }
 
+    @SuppressWarnings("PMD.ExceptionAsFlowControl")
     private static byte[] readResource(final String resourceName) {
         try (InputStream is = Thread.currentThread()
                 .getContextClassLoader().getResourceAsStream(resourceName)) {
             if (Objects.isNull(is)) {
                 throw new ReportGenerationException(
-                        String.format("Resource %s not found", resourceName));
+                        String.format("Resource %s not found", resourceName)
+                );
             }
             return IOUtils.toByteArray(is);
         } catch (IOException e) {

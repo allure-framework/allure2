@@ -215,10 +215,11 @@ class TrxPluginTest {
     @Test
     void cveEntityReadTest(@TempDir final Path tmp) throws IOException {
         final Path secretFile = tmp.resolve("secretfile.ini");
-        Files.writeString(secretFile,
+        Files.writeString(
+                secretFile,
                 "[owner]\n"
-                + "name = John Doe\n"
-                + "organization = Example Org.\n",
+                        + "name = John Doe\n"
+                        + "organization = Example Org.\n",
                 StandardCharsets.UTF_8
         );
 
@@ -318,15 +319,16 @@ class TrxPluginTest {
     private String describeTestResults(final List<TestResult> results) {
         final StringBuilder builder = new StringBuilder();
         builder.append("results=").append(results.size()).append(System.lineSeparator());
-        results.forEach(result -> builder
-                .append(System.lineSeparator())
-                .append("name=").append(result.getName()).append(System.lineSeparator())
-                .append("status=").append(result.getStatus()).append(System.lineSeparator())
-                .append("description=").append(result.getDescription()).append(System.lineSeparator())
-                .append("statusMessage=").append(result.getStatusMessage()).append(System.lineSeparator())
-                .append("statusTrace=").append(result.getStatusTrace()).append(System.lineSeparator())
-                .append("labels=").append(describeLabels(result)).append(System.lineSeparator())
-                .append("steps=").append(describeSteps(result)).append(System.lineSeparator())
+        results.forEach(
+                result -> builder
+                        .append(System.lineSeparator())
+                        .append("name=").append(result.getName()).append(System.lineSeparator())
+                        .append("status=").append(result.getStatus()).append(System.lineSeparator())
+                        .append("description=").append(result.getDescription()).append(System.lineSeparator())
+                        .append("statusMessage=").append(result.getStatusMessage()).append(System.lineSeparator())
+                        .append("statusTrace=").append(result.getStatusTrace()).append(System.lineSeparator())
+                        .append("labels=").append(describeLabels(result)).append(System.lineSeparator())
+                        .append("steps=").append(describeSteps(result)).append(System.lineSeparator())
         );
         return builder.toString();
     }

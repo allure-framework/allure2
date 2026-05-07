@@ -190,12 +190,14 @@ class Allure2PluginTest {
                 .describedAs("Test cases is not found")
                 .hasSize(2);
 
-        testResults.forEach(testResult -> assertThat(testResult.getAfterStages())
-                .hasSize(1)
-                .flatExtracting(StageResult::getAttachments)
-                .hasSize(1)
-                .extracting(Attachment::getName)
-                .containsExactly("String attachment in after"));
+        testResults.forEach(
+                testResult -> assertThat(testResult.getAfterStages())
+                        .hasSize(1)
+                        .flatExtracting(StageResult::getAttachments)
+                        .hasSize(1)
+                        .extracting(Attachment::getName)
+                        .containsExactly("String attachment in after")
+        );
 
     }
 
@@ -572,10 +574,9 @@ class Allure2PluginTest {
     }
 
     private LaunchResults readResults(
-            final Allure2Plugin reader,
-            final Configuration configuration,
-            final Path resultsDirectory
-    ) {
+                                      final Allure2Plugin reader,
+                                      final Configuration configuration,
+                                      final Path resultsDirectory) {
         return Allure.step("Parse Allure 2 results from " + resultsDirectory, () -> {
             final DefaultResultsVisitor resultsVisitor = new DefaultResultsVisitor(configuration);
             reader.readResults(configuration, resultsVisitor, resultsDirectory);

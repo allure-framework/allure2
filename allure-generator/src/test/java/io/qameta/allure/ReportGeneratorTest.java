@@ -42,17 +42,21 @@ class ReportGeneratorTest {
         output = temp.resolve("report");
         final Path resultsDirectory = Files.createDirectories(temp.resolve("results"));
         Allure.step("Prepare Allure 1 fixture dataset", () -> {
-            allure1data().forEach(resource -> unpackFile(
-                    "allure1data/" + resource,
-                    resultsDirectory.resolve(resource)
-            ));
+            allure1data().forEach(
+                    resource -> unpackFile(
+                            "allure1data/" + resource,
+                            resultsDirectory.resolve(resource)
+                    )
+            );
         });
         Allure.step("Generate report from Allure 1 fixture dataset", () -> {
             generator.generate(output, resultsDirectory);
-            Allure.addAttachment("Generated report files", "text/plain", String.join(
-                    System.lineSeparator(),
-                    listRelativeFiles(output)
-            ));
+            Allure.addAttachment(
+                    "Generated report files", "text/plain", String.join(
+                            System.lineSeparator(),
+                            listRelativeFiles(output)
+                    )
+            );
         });
     }
 

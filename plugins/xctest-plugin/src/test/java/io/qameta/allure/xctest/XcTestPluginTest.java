@@ -122,8 +122,10 @@ class XcTestPluginTest {
         final Path attachments = resultsDirectory.resolve("Attachments");
         Files.createDirectories(attachments);
 
-        final Path screenshot = copyResource(attachments, "screenshot.png",
-                "Screenshot_92D015E5-965D-4171-849C-35CC0945FEA2.png");
+        final Path screenshot = copyResource(
+                attachments, "screenshot.png",
+                "Screenshot_92D015E5-965D-4171-849C-35CC0945FEA2.png"
+        );
 
         readResults(resultsDirectory);
 
@@ -144,8 +146,10 @@ class XcTestPluginTest {
         final Path attachments = xctestResults.resolve("Attachments");
         Files.createDirectories(attachments);
 
-        final Path screenshot = copyResource(attachments, "screenshot.png",
-                "Screenshot_92D015E5-965D-4171-849C-35CC0945FEA2.png");
+        final Path screenshot = copyResource(
+                attachments, "screenshot.png",
+                "Screenshot_92D015E5-965D-4171-849C-35CC0945FEA2.png"
+        );
 
         final Path relative = xctestResults.resolve("..").resolve("xctest-results");
         readResults(relative);
@@ -203,8 +207,10 @@ class XcTestPluginTest {
         final Path attachments = resultsDirectory.resolve("Attachments");
         Files.createDirectories(attachments);
 
-        final Path screenshot = copyResource(attachments, "screenshot.png",
-                "Screenshot_1_1FBB627A-3D11-41E3-B4E6-5C717C75F175.jpeg");
+        final Path screenshot = copyResource(
+                attachments, "screenshot.png",
+                "Screenshot_1_1FBB627A-3D11-41E3-B4E6-5C717C75F175.jpeg"
+        );
 
         readResults(resultsDirectory);
 
@@ -225,8 +231,10 @@ class XcTestPluginTest {
         final Path attachments = xctestResults.resolve("Attachments");
         Files.createDirectories(attachments);
 
-        final Path screenshot = copyResource(attachments, "screenshot.png",
-                "Screenshot_1_1FBB627A-3D11-41E3-B4E6-5C717C75F175.jpeg");
+        final Path screenshot = copyResource(
+                attachments, "screenshot.png",
+                "Screenshot_1_1FBB627A-3D11-41E3-B4E6-5C717C75F175.jpeg"
+        );
         final Path relative = xctestResults.resolve("..").resolve("xctest-results");
         readResults(relative);
 
@@ -282,8 +290,10 @@ class XcTestPluginTest {
     private void verifyAttachmentFileWasNotVisited(final Path attachment) {
         Allure.step("Verify XCTest attachment file was not visited", () -> {
             verify(visitor, times(0)).visitAttachmentFile(attachment);
-            Allure.addAttachment("visited-attachments.txt", "text/plain",
-                    "attachments=0" + System.lineSeparator() + "blockedFile=" + attachment.getFileName());
+            Allure.addAttachment(
+                    "visited-attachments.txt", "text/plain",
+                    "attachments=0" + System.lineSeparator() + "blockedFile=" + attachment.getFileName()
+            );
         });
     }
 
@@ -300,10 +310,11 @@ class XcTestPluginTest {
     private String describeTestResults(final List<TestResult> results) {
         final StringBuilder builder = new StringBuilder();
         builder.append("results=").append(results.size()).append(System.lineSeparator());
-        results.forEach(result -> builder
-                .append(System.lineSeparator())
-                .append("name=").append(result.getName()).append(System.lineSeparator())
-                .append("time=").append(describeTime(result.getTime())).append(System.lineSeparator())
+        results.forEach(
+                result -> builder
+                        .append(System.lineSeparator())
+                        .append("name=").append(result.getName()).append(System.lineSeparator())
+                        .append("time=").append(describeTime(result.getTime())).append(System.lineSeparator())
         );
         return builder.toString();
     }
@@ -311,10 +322,11 @@ class XcTestPluginTest {
     private String describeAttachments(final List<Path> attachments) {
         final StringBuilder builder = new StringBuilder();
         builder.append("attachments=").append(attachments.size()).append(System.lineSeparator());
-        attachments.forEach(attachment -> builder
-                .append(System.lineSeparator())
-                .append("file=").append(attachment.getFileName()).append(System.lineSeparator())
-                .append("size=").append(sizeOf(attachment)).append(System.lineSeparator())
+        attachments.forEach(
+                attachment -> builder
+                        .append(System.lineSeparator())
+                        .append("file=").append(attachment.getFileName()).append(System.lineSeparator())
+                        .append("size=").append(sizeOf(attachment)).append(System.lineSeparator())
         );
         return builder.toString();
     }

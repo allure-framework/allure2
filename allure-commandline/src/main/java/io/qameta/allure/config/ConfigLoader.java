@@ -39,7 +39,6 @@ public class ConfigLoader {
         this.configFile = configFile;
     }
 
-    @SuppressWarnings("ReturnCount")
     public CommandlineConfig load() {
         if (Files.notExists(configFile)) {
             LOGGER.error("Could not find config file {}. Using the empty configuration", configFile);

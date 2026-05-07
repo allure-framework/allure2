@@ -71,7 +71,6 @@ import static java.util.Objects.nonNull;
  *
  * @since 2.0
  */
-@SuppressWarnings({"ClassDataAbstractionCoupling", "ClassFanOutComplexity", "GodClass"})
 public class JunitXmlPlugin implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JunitXmlPlugin.class);
@@ -170,8 +169,12 @@ public class JunitXmlPlugin implements Reader {
                 .setHostname(hostname)
                 .setTimestamp(getUnix(timestamp));
         testSuiteElement.get(TEST_CASE_ELEMENT_NAME)
-                .forEach(element -> parseTestCase(info, element,
-                        resultsDirectory, parsedFile, context, visitor));
+                .forEach(
+                        element -> parseTestCase(
+                                info, element,
+                                resultsDirectory, parsedFile, context, visitor
+                        )
+                );
     }
 
     private Long getUnix(final String timestamp) {
@@ -239,7 +242,7 @@ public class JunitXmlPlugin implements Reader {
             final Path normalizedSource = normalizedResultsDir
                     .resolve(possibleLogFileName).normalize();
             if (normalizedSource.startsWith(normalizedResultsDir)
-                && Files.isRegularFile(normalizedSource, LinkOption.NOFOLLOW_LINKS)) {
+                    && Files.isRegularFile(normalizedSource, LinkOption.NOFOLLOW_LINKS)) {
                 return Optional.of(normalizedSource);
             }
         } catch (InvalidPathException e) {
@@ -288,7 +291,7 @@ public class JunitXmlPlugin implements Reader {
         }
 
         if ((testCaseElement.containsAttribute(STATUS_ATTRIBUTE_NAME))
-            && (SKIPPED_ATTRIBUTE_VALUE.equals(testCaseElement.getAttribute(STATUS_ATTRIBUTE_NAME)))) {
+                && (SKIPPED_ATTRIBUTE_VALUE.equals(testCaseElement.getAttribute(STATUS_ATTRIBUTE_NAME)))) {
             return Status.SKIPPED;
         }
 
@@ -303,10 +306,8 @@ public class JunitXmlPlugin implements Reader {
                 .flatMap(Collection::stream)
                 .findFirst()
                 .ifPresent(element -> {
-                    //@formatter:off
                     result.setStatusMessage(element.getAttribute(MESSAGE_ATTRIBUTE_NAME));
                     result.setStatusTrace(element.getValue());
-                    //@formatter:on
                 });
     }
 
@@ -348,7 +349,7 @@ public class JunitXmlPlugin implements Reader {
 
     private boolean isFlaky(final XmlElement testCaseElement) {
         return testCaseElement.contains(RERUN_ERROR_ELEMENT_NAME)
-               || testCaseElement.contains(RERUN_FAILURE_ELEMENT_NAME);
+                || testCaseElement.contains(RERUN_FAILURE_ELEMENT_NAME);
     }
 
     private static List<Path> listResults(final Path directory) {

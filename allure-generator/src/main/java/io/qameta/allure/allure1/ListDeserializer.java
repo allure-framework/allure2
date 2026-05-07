@@ -36,7 +36,7 @@ import java.util.Collection;
  *
  * @author charlie (Dmitry Baev).
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"InnerAssignment", "PMD.CognitiveComplexity"})
 public class ListDeserializer extends CollectionDeserializer {
 
     protected ListDeserializer(final CollectionDeserializer src) {
@@ -44,8 +44,8 @@ public class ListDeserializer extends CollectionDeserializer {
     }
 
     @Override
-    public Collection<Object> deserialize(JsonParser p, DeserializationContext ctxt,
-                                          Collection<Object> result)
+    public Collection<Object> deserialize(final JsonParser p, final DeserializationContext ctxt,
+                                          final Collection<Object> result)
             throws IOException {
         // Ok: must point to START_ARRAY (or equivalent)
         if (!p.isExpectedStartArrayToken()) {
@@ -56,9 +56,9 @@ public class ListDeserializer extends CollectionDeserializer {
 
         JsonDeserializer<Object> valueDes = _valueDeserializer;
         final TypeDeserializer typeDeser = _valueTypeDeserializer;
-        CollectionReferringAccumulator referringAccumulator =
-                (valueDes.getObjectIdReader() == null) ? null :
-                        new CollectionReferringAccumulator(_containerType.getContentType().getRawClass(), result);
+        CollectionReferringAccumulator referringAccumulator = (valueDes.getObjectIdReader() == null)
+                ? null
+                : new CollectionReferringAccumulator(_containerType.getContentType().getRawClass(), result);
 
         JsonToken t;
         while ((t = p.nextToken()) != JsonToken.END_ARRAY) {
@@ -87,7 +87,7 @@ public class ListDeserializer extends CollectionDeserializer {
                 ReadableObjectId.Referring ref = referringAccumulator.handleUnresolvedReference(reference);
                 reference.getRoid().appendReferring(ref);
             } catch (Exception e) {
-                boolean wrap = (ctxt == null) || ctxt.isEnabled(DeserializationFeature.WRAP_EXCEPTIONS);
+                boolean wrap = ctxt == null || ctxt.isEnabled(DeserializationFeature.WRAP_EXCEPTIONS);
                 if (!wrap) {
                     ClassUtil.throwIfRTE(e);
                 }
@@ -99,7 +99,8 @@ public class ListDeserializer extends CollectionDeserializer {
 
     @Override
     public CollectionDeserializer createContextual(final DeserializationContext ctxt,
-                                                   final BeanProperty property) throws JsonMappingException {
+                                                   final BeanProperty property)
+            throws JsonMappingException {
         return new ListDeserializer(super.createContextual(ctxt, property));
     }
 }

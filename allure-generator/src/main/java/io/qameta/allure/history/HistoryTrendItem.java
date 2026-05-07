@@ -37,7 +37,11 @@ public class HistoryTrendItem implements Serializable {
     @JsonProperty("data")
     @XmlElement(required = true)
     protected Statistic data;
-    @XmlElement(required = true, type = Long.class, nillable = true)
+    @XmlElement(
+            required = true,
+            type = Long.class,
+            nillable = true
+    )
     protected Long buildOrder;
     @XmlElement(required = true)
     protected String reportUrl;

@@ -83,7 +83,7 @@ public interface Summarizable {
     @JsonProperty
     default boolean isAttachmentStep() {
         return getStepsCount() == 0
-               && getAttachmentsCount() == 1
-               && Objects.equals(getName(), getAttachments().get(0).getName());
+                && getAttachmentsCount() == 1
+                && Objects.equals(getName(), getAttachments().get(0).getName());
     }
 }

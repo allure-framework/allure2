@@ -85,7 +85,6 @@ public final class JiraModeDetector {
         }
     }
 
-
     private static String tryDetectServer(final Supplier<JiraService> serverServiceSupplier) {
         try {
             LOGGER.debug("Attempting Server API detection via /rest/api/2/serverInfo");
@@ -98,13 +97,17 @@ public final class JiraModeDetector {
             }
 
             if (serverInfo.isCloud()) {
-                LOGGER.info("Detected Jira Cloud via Server API (deploymentType: Cloud, version: {})",
-                        serverInfo.getVersion());
+                LOGGER.info(
+                        "Detected Jira Cloud via Server API (deploymentType: Cloud, version: {})",
+                        serverInfo.getVersion()
+                );
                 return MODE_CLOUD;
             }
 
-            LOGGER.info("Detected Jira Server (version: {}, title: {})",
-                    serverInfo.getVersion(), serverInfo.getServerTitle());
+            LOGGER.info(
+                    "Detected Jira Server (version: {}, title: {})",
+                    serverInfo.getVersion(), serverInfo.getServerTitle()
+            );
             return MODE_SERVER;
 
         } catch (Exception e) {

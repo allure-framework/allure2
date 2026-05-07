@@ -35,8 +35,8 @@ public final class TestData {
 
     public static JiraService mockJiraService() {
         final JiraService service = mock(JiraService.class);
-        when(service.createJiraLaunch(any(JiraLaunch.class), anyList())).thenAnswer(invocation ->
-                Arrays.asList(
+        when(service.createJiraLaunch(any(JiraLaunch.class), anyList())).thenAnswer(
+                invocation -> Arrays.asList(
                         new JiraExportResult().setExternalId("ALLURE-1")
                                 .setIssueKey("ALLURE-1")
                                 .setStatus("ok"),
@@ -45,19 +45,18 @@ public final class TestData {
                                 .setStatus("ok")
                 )
         );
-        when(service.createTestResult(any(JiraTestResult.class), anyList())).thenAnswer(i ->
-            Arrays.asList(
-                    new JiraExportResult().setExternalId("ALLURE-1")
-                            .setIssueKey("ALLURE-1")
-                            .setStatus("ok"),
-                    new JiraExportResult().setExternalId("ALLURE-2")
-                            .setIssueKey("ALLURE-2")
-                            .setStatus("ok")
-            ));
+        when(service.createTestResult(any(JiraTestResult.class), anyList())).thenAnswer(
+                i -> Arrays.asList(
+                        new JiraExportResult().setExternalId("ALLURE-1")
+                                .setIssueKey("ALLURE-1")
+                                .setStatus("ok"),
+                        new JiraExportResult().setExternalId("ALLURE-2")
+                                .setIssueKey("ALLURE-2")
+                                .setStatus("ok")
+                )
+        );
         return service;
     }
-
-
 
     public static TestResult createTestResult(final Status status) {
         return new TestResult()
@@ -66,6 +65,5 @@ public final class TestData {
                 .setHistoryId(RandomStringUtils.insecure().nextAlphanumeric(9))
                 .setStatus(status);
     }
-
 
 }

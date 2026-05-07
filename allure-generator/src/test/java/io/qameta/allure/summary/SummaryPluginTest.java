@@ -191,10 +191,9 @@ class SummaryPluginTest {
     }
 
     private void aggregateSummary(
-            final Configuration configuration,
-            final List<LaunchResults> launchResults,
-            final ReportStorage storage
-    ) {
+                                  final Configuration configuration,
+                                  final List<LaunchResults> launchResults,
+                                  final ReportStorage storage) {
         Allure.step(
                 "Aggregate summary widget for " + launchResults.size() + " launch(es)",
                 () -> new SummaryPlugin().aggregate(configuration, launchResults, storage)

@@ -77,11 +77,13 @@ class HistoryTrendPluginTest {
         final ResultsVisitor visitor = mock(ResultsVisitor.class);
 
         final HistoryTrendPlugin plugin = new HistoryTrendPlugin();
-        Allure.step("Read old history trend data from " + trend, () -> plugin.readResults(
-                configuration,
-                visitor,
-                resultsDirectory
-        ));
+        Allure.step(
+                "Read old history trend data from " + trend, () -> plugin.readResults(
+                        configuration,
+                        visitor,
+                        resultsDirectory
+                )
+        );
 
         final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.captor();
         verify(visitor, times(1))
@@ -112,11 +114,13 @@ class HistoryTrendPluginTest {
         final ResultsVisitor visitor = mock(ResultsVisitor.class);
 
         final HistoryTrendPlugin plugin = new HistoryTrendPlugin();
-        Allure.step("Read current history trend data from " + trend, () -> plugin.readResults(
-                configuration,
-                visitor,
-                resultsDirectory
-        ));
+        Allure.step(
+                "Read current history trend data from " + trend, () -> plugin.readResults(
+                        configuration,
+                        visitor,
+                        resultsDirectory
+                )
+        );
 
         final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.captor();
         verify(visitor, times(1))
@@ -130,8 +134,10 @@ class HistoryTrendPluginTest {
 
         assertThat(captor.getValue())
                 .hasSize(4)
-                .extracting(HistoryTrendItem::getBuildOrder,
-                        HistoryTrendItem::getReportName, HistoryTrendItem::getReportUrl)
+                .extracting(
+                        HistoryTrendItem::getBuildOrder,
+                        HistoryTrendItem::getReportName, HistoryTrendItem::getReportUrl
+                )
                 .containsExactly(
                         Tuple.tuple(7L, "some", "some/report#7"),
                         Tuple.tuple(6L, "some", "some/report#6"),
@@ -158,11 +164,13 @@ class HistoryTrendPluginTest {
         final ResultsVisitor visitor = mock(ResultsVisitor.class);
 
         final HistoryTrendPlugin plugin = new HistoryTrendPlugin();
-        Allure.step("Read corrupted history trend data from " + trend, () -> plugin.readResults(
-                configuration,
-                visitor,
-                resultsDirectory
-        ));
+        Allure.step(
+                "Read corrupted history trend data from " + trend, () -> plugin.readResults(
+                        configuration,
+                        visitor,
+                        resultsDirectory
+                )
+        );
 
         final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.captor();
         verify(visitor, times(1))
@@ -186,7 +194,6 @@ class HistoryTrendPluginTest {
                 () -> aggregator.aggregate(configuration, Collections.emptyList(), reportStorage)
         );
 
-
         final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.captor();
         verify(reportStorage, times(1)).addDataJson(eq("history/history-trend.json"), captor.capture());
 
@@ -198,8 +205,10 @@ class HistoryTrendPluginTest {
 
         assertThat(captor.getValue())
                 .hasSize(1)
-                .extracting(HistoryTrendItem::getBuildOrder,
-                        HistoryTrendItem::getReportName, HistoryTrendItem::getReportUrl)
+                .extracting(
+                        HistoryTrendItem::getBuildOrder,
+                        HistoryTrendItem::getReportName, HistoryTrendItem::getReportUrl
+                )
                 .containsExactly(Tuple.tuple(null, null, null));
 
     }
@@ -213,12 +222,14 @@ class HistoryTrendPluginTest {
         final List<HistoryTrendItem> history = randomHistoryTrendItems();
         final List<HistoryTrendItem> data = Allure.step(
                 "Build history trend data with previous trend entries and three current results",
-                () -> HistoryTrendPlugin.getData(createSingleLaunchResults(
-                        singletonMap(HISTORY_TREND_BLOCK_NAME, history),
-                        randomTestResult().setStatus(Status.PASSED),
-                        randomTestResult().setStatus(Status.FAILED),
-                        randomTestResult().setStatus(Status.FAILED)
-                ))
+                () -> HistoryTrendPlugin.getData(
+                        createSingleLaunchResults(
+                                singletonMap(HISTORY_TREND_BLOCK_NAME, history),
+                                randomTestResult().setStatus(Status.PASSED),
+                                randomTestResult().setStatus(Status.FAILED),
+                                randomTestResult().setStatus(Status.FAILED)
+                        )
+                )
         );
 
         assertThat(data)
@@ -251,12 +262,14 @@ class HistoryTrendPluginTest {
         extra2.put(EXECUTORS_BLOCK_NAME, new ExecutorInfo().setBuildOrder(7L));
 
         final List<LaunchResults> launchResults = Arrays.asList(
-                createLaunchResults(extra1,
+                createLaunchResults(
+                        extra1,
                         randomTestResult().setStatus(Status.PASSED),
                         randomTestResult().setStatus(Status.FAILED),
                         randomTestResult().setStatus(Status.FAILED)
                 ),
-                createLaunchResults(extra2,
+                createLaunchResults(
+                        extra2,
                         randomTestResult().setStatus(Status.PASSED),
                         randomTestResult().setStatus(Status.FAILED),
                         randomTestResult().setStatus(Status.FAILED)
@@ -289,12 +302,14 @@ class HistoryTrendPluginTest {
         extra.put(EXECUTORS_BLOCK_NAME, new ExecutorInfo().setBuildOrder(null));
 
         final List<LaunchResults> launchResults = Arrays.asList(
-                createLaunchResults(extra,
+                createLaunchResults(
+                        extra,
                         randomTestResult().setStatus(Status.PASSED),
                         randomTestResult().setStatus(Status.FAILED),
                         randomTestResult().setStatus(Status.FAILED)
                 ),
-                createLaunchResults(extra,
+                createLaunchResults(
+                        extra,
                         randomTestResult().setStatus(Status.PASSED),
                         randomTestResult().setStatus(Status.FAILED),
                         randomTestResult().setStatus(Status.FAILED)

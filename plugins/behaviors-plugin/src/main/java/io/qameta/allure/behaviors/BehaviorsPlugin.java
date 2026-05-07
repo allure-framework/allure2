@@ -64,19 +64,19 @@ public class BehaviorsPlugin extends CompositeAggregator2 {
     /* default */ static final LabelName[] LABEL_NAMES = {EPIC, FEATURE, STORY};
 
     public BehaviorsPlugin() {
-        super(Arrays.asList(
-                new JsonAggregator(), new CsvExportAggregator(), new WidgetAggregator()
-        ));
+        super(
+                Arrays.asList(
+                        new JsonAggregator(), new CsvExportAggregator(), new WidgetAggregator()
+                )
+        );
     }
 
     /* default */ static Tree<TestResult> getData(final List<LaunchResults> launchResults) {
 
-        // @formatter:off
         final Tree<TestResult> behaviors = new TestResultTree(
-            BEHAVIORS,
-            testResult -> groupByLabels(testResult, LABEL_NAMES)
+                BEHAVIORS,
+                testResult -> groupByLabels(testResult, LABEL_NAMES)
         );
-        // @formatter:on
 
         launchResults.stream()
                 .map(LaunchResults::getResults)

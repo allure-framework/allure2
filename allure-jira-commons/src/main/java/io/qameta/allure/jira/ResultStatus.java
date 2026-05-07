@@ -34,9 +34,7 @@ public enum ResultStatus {
     SKIPPED(Status.SKIPPED, "888888"),
     UNKNOWN(Status.UNKNOWN, "bf34a6");
 
-
     private final Status statusName;
     private final String color;
-
 
 }

@@ -50,14 +50,14 @@ public abstract class CommonCsvExportAggregator<T> implements Aggregator {
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
-                          final Path outputDirectory) throws IOException {
+                          final Path outputDirectory)
+            throws IOException {
         final Path dataFolder = Files.createDirectories(outputDirectory.resolve(Constants.DATA_DIR));
         final Path csv = dataFolder.resolve(fileName);
 
         try (Writer writer = Files.newBufferedWriter(csv)) {
             final StatefulBeanToCsvBuilder<T> builder = new StatefulBeanToCsvBuilder<>(writer);
-            final HeaderColumnNameMappingStrategy<T> mappingStrategy =
-                    new HeaderColumnNameMappingStrategyBuilder<T>().build();
+            final HeaderColumnNameMappingStrategy<T> mappingStrategy = new HeaderColumnNameMappingStrategyBuilder<T>().build();
             mappingStrategy.setType(type);
             final StatefulBeanToCsv<T> beanWriter = builder.withMappingStrategy(mappingStrategy).build();
             try {

@@ -55,14 +55,16 @@ public class ReportWebPlugin implements Aggregator {
     @Override
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
-                          final Path outputDirectory) throws IOException {
+                          final Path outputDirectory)
+            throws IOException {
         writePluginsStatic(configuration, outputDirectory);
         writeIndexHtml(configuration, outputDirectory);
         writeStatic(outputDirectory);
     }
 
     protected void writePluginsStatic(final Configuration configuration,
-                                      final Path outputDirectory) throws IOException {
+                                      final Path outputDirectory)
+            throws IOException {
         final Path pluginsFolder = outputDirectory.resolve(Constants.PLUGINS_DIR);
         for (Plugin plugin : configuration.getPlugins()) {
             final Path pluginDirectory = Files.createDirectories(pluginsFolder.resolve(plugin.getConfig().getId()));
@@ -71,7 +73,8 @@ public class ReportWebPlugin implements Aggregator {
     }
 
     protected void writeIndexHtml(final Configuration configuration,
-                                  final Path outputDirectory) throws IOException {
+                                  final Path outputDirectory)
+            throws IOException {
         final FreemarkerContext context = configuration.requireContext(FreemarkerContext.class);
         final Path indexHtml = outputDirectory.resolve("index.html");
         final List<PluginConfiguration> pluginConfigurations = configuration.getPlugins().stream()
@@ -96,10 +99,11 @@ public class ReportWebPlugin implements Aggregator {
 
     protected void writeStatic(final Path outputDirectory) {
         staticFiles.forEach(resourceName -> {
-            try (InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceName)) {
-                if (Objects.isNull(is)) {
-                    throw new ReportGenerationException(String.format("Resource %s not found", resourceName));
-                }
+            final InputStream resourceStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceName);
+            if (Objects.isNull(resourceStream)) {
+                throw new ReportGenerationException(String.format("Resource %s not found", resourceName));
+            }
+            try (InputStream is = resourceStream) {
                 Files.copy(is, outputDirectory.resolve(resourceName), StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
                 LOGGER.error("Couldn't unpack report static");

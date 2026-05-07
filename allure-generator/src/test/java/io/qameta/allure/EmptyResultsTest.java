@@ -73,11 +73,10 @@ class EmptyResultsTest {
     }
 
     private void generateReport(
-            final ReportGenerator generator,
-            final Path outputDirectory,
-            final Path resultsDirectory,
-            final String resultsDirectoryKind
-    ) {
+                                final ReportGenerator generator,
+                                final Path outputDirectory,
+                                final Path resultsDirectory,
+                                final String resultsDirectoryKind) {
         Allure.parameter("resultsDirectoryKind", resultsDirectoryKind);
         Allure.step("Generate report when results path is " + resultsDirectoryKind, () -> {
             generator.generate(outputDirectory, resultsDirectory);

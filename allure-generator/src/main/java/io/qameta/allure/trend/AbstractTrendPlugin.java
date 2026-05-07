@@ -96,7 +96,8 @@ public abstract class AbstractTrendPlugin<T> extends CompositeAggregator2 implem
     private Stream<JsonNode> getStream(final JsonNode jsonNode) {
         return stream(
                 spliteratorUnknownSize(jsonNode.elements(), Spliterator.ORDERED),
-                false);
+                false
+        );
     }
 
     private Optional<T> parseItem(final Path historyFile, final ObjectMapper mapper, final JsonNode child) {

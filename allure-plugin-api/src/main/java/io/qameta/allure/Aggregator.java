@@ -43,6 +43,7 @@ public interface Aggregator extends Extension {
      */
     void aggregate(Configuration configuration,
                    List<LaunchResults> launchesResults,
-                   Path outputDirectory) throws IOException;
+                   Path outputDirectory)
+            throws IOException;
 
 }

@@ -26,7 +26,10 @@ import io.qameta.allure.option.VerboseOptions;
  * @since 2.0
  */
 @SuppressWarnings("PMD.ImmutableField")
-@Parameters(commandNames = "allure", commandDescription = "Allure Commandline")
+@Parameters(
+        commandNames = "allure",
+        commandDescription = "Allure Commandline"
+)
 public class MainCommand {
 
     @Parameter(

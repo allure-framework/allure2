@@ -66,10 +66,6 @@ import java.util.stream.Collectors;
  * @author Artem Eroshenko eroshenkoam@qameta.io
  * Date: 1/22/14
  */
-@SuppressWarnings({
-        "ClassFanOutComplexity",
-        "ClassDataAbstractionCoupling"
-})
 public final class DummyReportGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DummyReportGenerator.class);

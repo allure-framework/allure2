@@ -59,12 +59,16 @@ class BehaviorsPluginTest {
     @Test
     void storiesPerFeatureResultsAggregation() {
         final Set<TestResult> testResults = new HashSet<>();
-        testResults.add(new TestResult()
-                .setStatus(Status.PASSED)
-                .setLabels(asList(FEATURE.label("feature1"), FEATURE.label("feature2"), STORY.label("story1"), STORY.label("story2"))));
-        testResults.add(new TestResult()
-                .setStatus(Status.FAILED)
-                .setLabels(asList(FEATURE.label("feature2"), FEATURE.label("feature3"), STORY.label("story2"), STORY.label("story3"))));
+        testResults.add(
+                new TestResult()
+                        .setStatus(Status.PASSED)
+                        .setLabels(asList(FEATURE.label("feature1"), FEATURE.label("feature2"), STORY.label("story1"), STORY.label("story2")))
+        );
+        testResults.add(
+                new TestResult()
+                        .setStatus(Status.FAILED)
+                        .setLabels(asList(FEATURE.label("feature2"), FEATURE.label("feature3"), STORY.label("story2"), STORY.label("story3")))
+        );
 
         final LaunchResults results = createLaunchResults(testResults);
         final TreeWidgetData behaviorsData = aggregateBehaviorWidget(results);
@@ -96,12 +100,16 @@ class BehaviorsPluginTest {
     @Test
     void shouldGroupByEpic() {
         final Set<TestResult> testResults = new HashSet<>();
-        testResults.add(new TestResult()
-                .setStatus(Status.PASSED)
-                .setLabels(asList(EPIC.label("e1"), FEATURE.label("f1"), STORY.label("s1"))));
-        testResults.add(new TestResult()
-                .setStatus(Status.FAILED)
-                .setLabels(asList(EPIC.label("e2"), FEATURE.label("f2"), STORY.label("s2"))));
+        testResults.add(
+                new TestResult()
+                        .setStatus(Status.PASSED)
+                        .setLabels(asList(EPIC.label("e1"), FEATURE.label("f1"), STORY.label("s1")))
+        );
+        testResults.add(
+                new TestResult()
+                        .setStatus(Status.FAILED)
+                        .setLabels(asList(EPIC.label("e2"), FEATURE.label("f2"), STORY.label("s2")))
+        );
 
         final LaunchResults results = createLaunchResults(testResults);
         final TreeWidgetData behaviorsData = aggregateBehaviorWidget(results);
@@ -162,13 +170,15 @@ class BehaviorsPluginTest {
 
     private String describeTestResults(final Set<TestResult> testResults) {
         return testResults.stream()
-                .map(result -> String.format(
-                        "name=%s, status=%s, start=%s, labels=%s",
-                        result.getName(),
-                        result.getStatus(),
-                        result.getTime() == null ? null : result.getTime().getStart(),
-                        describeLabels(result)
-                ))
+                .map(
+                        result -> String.format(
+                                "name=%s, status=%s, start=%s, labels=%s",
+                                result.getName(),
+                                result.getStatus(),
+                                result.getTime() == null ? null : result.getTime().getStart(),
+                                describeLabels(result)
+                        )
+                )
                 .sorted()
                 .collect(Collectors.joining(System.lineSeparator()));
     }
@@ -182,12 +192,14 @@ class BehaviorsPluginTest {
 
     private String describeWidgetItems(final List<TreeWidgetItem> items) {
         return items.stream()
-                .map(item -> String.format(
-                        "name=%s, failed=%s, passed=%s",
-                        item.getName(),
-                        item.getStatistic().getFailed(),
-                        item.getStatistic().getPassed()
-                ))
+                .map(
+                        item -> String.format(
+                                "name=%s, failed=%s, passed=%s",
+                                item.getName(),
+                                item.getStatistic().getFailed(),
+                                item.getStatistic().getPassed()
+                        )
+                )
                 .sorted()
                 .collect(Collectors.joining(System.lineSeparator()));
     }

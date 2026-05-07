@@ -35,8 +35,10 @@ class PrometheusMetricLineTest {
 
     static Stream<Arguments> data() {
         return Stream.of(
-                Arguments.of("evn=\"test\",suite=\"regression\"", "launch_status_passed{evn=\"test\",suite=\"regression\"} 300",
-                        "with labels"),
+                Arguments.of(
+                        "evn=\"test\",suite=\"regression\"", "launch_status_passed{evn=\"test\",suite=\"regression\"} 300",
+                        "with labels"
+                ),
                 Arguments.of(null, "launch_status_passed 300", "without labels")
         );
     }
