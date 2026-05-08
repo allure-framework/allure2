@@ -124,11 +124,12 @@ public class CategoriesPlugin extends CompositeAggregator2 implements Reader {
             final List<Category> categories = launch.getExtra(CATEGORIES, Collections::emptyList);
             launch.getResults().forEach(result -> {
                 final List<Category> resultCategories = result.getExtraBlock(CATEGORIES, new ArrayList<>());
-                categories.forEach(category -> {
+                for (Category category : categories) {
                     if (matches(result, category)) {
                         resultCategories.add(category);
+                        break;
                     }
-                });
+                }
                 if (resultCategories.isEmpty() && Status.FAILED.equals(result.getStatus())) {
                     result.getExtraBlock(CATEGORIES, new ArrayList<Category>()).add(FAILED_TESTS);
                 }

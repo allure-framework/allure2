@@ -36,6 +36,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
@@ -124,6 +125,61 @@ class CategoriesPluginTest {
                 .hasSize(1)
                 .extracting(Category::getName)
                 .containsExactlyInAnyOrder(categoryName);
+    }
+
+    /**
+     * Verifies that category rules use first-match-wins semantics.
+     */
+    @Description
+    @Issue("3225")
+    @Test
+    void shouldSetOnlyFirstMatchingCustomCategory() {
+        final String message = "System.Reflection.TargetInvocationException : "
+                + "Exception has been thrown by the target of an invocation.\n"
+                + " ----> Altom.AltDriver.WaitTimeOutException : "
+                + "Element //Title_Ovser not loaded after 20 seconds";
+
+        final Category first = new Category()
+                .setName("Product defects")
+                .setMessageRegex(
+                        "System\\.Reflection\\.TargetInvocationException : "
+                                + "Exception has been thrown by the target of an invocation\\.\n"
+                                + " ----> Altom\\.AltDriver\\.WaitTimeOutException.*"
+                );
+        final Category second = new Category()
+                .setName("Test defects")
+                .setMessageRegex("System.*");
+
+        final Map<String, Object> meta = new HashMap<>();
+        meta.put(CATEGORIES, Arrays.asList(first, second));
+
+        final TestResult result = new TestResult()
+                .setName("target invocation failure")
+                .setStatus(Status.FAILED)
+                .setStatusMessage(message);
+
+        Allure.step("Classify a failed result that matches two category rules", () -> {
+            CategoriesPlugin.addCategoriesForResults(createSingleLaunchResults(meta, result));
+            final List<Category> matchedCategories = result.getExtraBlock(CATEGORIES, new ArrayList<>());
+            Allure.addAttachment(
+                    "Category matching result",
+                    "text/plain",
+                    String.format(
+                            "message=%s%nrule[0]=%s%nrule[1]=%s%nmatched=%s%n",
+                            message,
+                            first.getName(),
+                            second.getName(),
+                            matchedCategories.stream()
+                                    .map(Category::getName)
+                                    .collect(java.util.stream.Collectors.joining(", "))
+                    )
+            );
+
+            assertThat(matchedCategories)
+                    .as("matched categories")
+                    .extracting(Category::getName)
+                    .containsExactly(first.getName());
+        });
     }
 
     /**
@@ -388,7 +444,17 @@ class CategoriesPluginTest {
         final LaunchResults launchResults = visitor.getLaunchResults();
         final List<Category> categories = launchResults.getExtra(CATEGORIES, ArrayList::new);
         assertThat(categories).hasSize(1);
-        assertThat(categories.get(0).getDescriptionHtml())
+        final String sanitizedDescriptionHtml = categories.get(0).getDescriptionHtml();
+        Allure.addAttachment(
+                "Sanitized category description HTML",
+                "text/plain",
+                String.format(
+                        "input=%s%nactual=%s%n",
+                        categoriesJson,
+                        sanitizedDescriptionHtml
+                )
+        );
+        assertThat(sanitizedDescriptionHtml)
                 .contains("<p>safe</p>")
                 .doesNotContain("<script")
                 .doesNotContain("alert(");
