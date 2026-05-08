@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "start": 1710000186820,
+  "stop": 1710000191820,
+  "request": {
+    "method": "GET",
+    "url": "https://api.example.com/v1/orders/42/slow",
+    "httpVersion": "HTTP/2",
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ]
+  },
+  "error": {
+    "name": "TimeoutError",
+    "message": "Request timed out after 5000 ms",
+    "stack": "TimeoutError: Request timed out after 5000 ms\n    at DemoHttpClient.send (demo-client.ts:42:13)"
+  }
+}

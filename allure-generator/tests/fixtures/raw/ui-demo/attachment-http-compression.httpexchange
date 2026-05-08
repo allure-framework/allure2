@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "start": 1710000186900,
+  "stop": 1710000186926,
+  "request": {
+    "method": "GET",
+    "url": "https://api.example.com/v1/orders/42/report",
+    "httpVersion": "HTTP/2",
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
+        "name": "accept-encoding",
+        "value": "gzip, br"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "statusText": "OK",
+    "httpVersion": "HTTP/2",
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "content-encoding",
+        "value": "gzip"
+      }
+    ],
+    "body": {
+      "contentType": "application/json",
+      "encoding": "utf8",
+      "value": "{\"compressed\":true,\"decodedByClient\":true}",
+      "size": 42,
+      "truncated": false
+    }
+  }
+}

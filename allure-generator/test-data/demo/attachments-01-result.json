@@ -145,8 +145,203 @@
     },
     {
       "status": "passed",
-      "name": "application/vnd.allure.image.diff",
+      "name": "HTTP Exchange",
+      "start": 1710000186400,
+      "stop": 1710000186680,
+      "attachments": [
+        {
+          "name": "HTTP Exchange",
+          "type": "application/vnd.allure.http+json",
+          "source": "attachment-http.httpexchange"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "HTTP Exchange image",
+      "start": 1710000186680,
+      "stop": 1710000186700,
+      "attachments": [
+        {
+          "name": "HTTP Exchange image",
+          "type": "application/vnd.allure.http+json",
+          "source": "attachment-http-image.httpexchange"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "HTTP Exchange form",
+      "start": 1710000186700,
+      "stop": 1710000186720,
+      "attachments": [
+        {
+          "name": "HTTP Exchange form",
+          "type": "application/vnd.allure.http+json",
+          "source": "attachment-http-form.httpexchange"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "HTTP Exchange multipart",
       "start": 1710000186720,
+      "stop": 1710000186740,
+      "attachments": [
+        {
+          "name": "HTTP Exchange multipart",
+          "type": "application/vnd.allure.http+json",
+          "source": "attachment-http-multipart.httpexchange"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "HTTP Exchange stream",
+      "start": 1710000186740,
+      "stop": 1710000186760,
+      "attachments": [
+        {
+          "name": "HTTP Exchange stream",
+          "type": "application/vnd.allure.http+json",
+          "source": "attachment-http-stream.httpexchange"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "HTTP Exchange request only",
+      "start": 1710000186760,
+      "stop": 1710000186780,
+      "attachments": [
+        {
+          "name": "HTTP Exchange request only",
+          "type": "application/vnd.allure.http+json",
+          "source": "attachment-http-request-only.httpexchange"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "HTTP Exchange HTML",
+      "start": 1710000186780,
+      "stop": 1710000186800,
+      "attachments": [
+        {
+          "name": "HTTP Exchange HTML",
+          "type": "application/vnd.allure.http+json",
+          "source": "attachment-http-html.httpexchange"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "HTTP Exchange video",
+      "start": 1710000186800,
+      "stop": 1710000186820,
+      "attachments": [
+        {
+          "name": "HTTP Exchange video",
+          "type": "application/vnd.allure.http+json",
+          "source": "attachment-http-video.httpexchange"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "HTTP Exchange error",
+      "start": 1710000186820,
+      "stop": 1710000186840,
+      "attachments": [
+        {
+          "name": "HTTP Exchange error",
+          "type": "application/vnd.allure.http+json",
+          "source": "attachment-http-error.httpexchange"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "HTTP Exchange gRPC trailers",
+      "start": 1710000186840,
+      "stop": 1710000186860,
+      "attachments": [
+        {
+          "name": "HTTP Exchange gRPC trailers",
+          "type": "application/vnd.allure.http+json",
+          "source": "attachment-http-grpc-trailers.httpexchange"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "HTTP Exchange informational response",
+      "start": 1710000186860,
+      "stop": 1710000186880,
+      "attachments": [
+        {
+          "name": "HTTP Exchange informational response",
+          "type": "application/vnd.allure.http+json",
+          "source": "attachment-http-informational.httpexchange"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "HTTP Exchange redirect",
+      "start": 1710000186880,
+      "stop": 1710000186900,
+      "attachments": [
+        {
+          "name": "HTTP Exchange redirect",
+          "type": "application/vnd.allure.http+json",
+          "source": "attachment-http-redirect.httpexchange"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "HTTP Exchange compression",
+      "start": 1710000186900,
+      "stop": 1710000186920,
+      "attachments": [
+        {
+          "name": "HTTP Exchange compression",
+          "type": "application/vnd.allure.http+json",
+          "source": "attachment-http-compression.httpexchange"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "HTTP Exchange binary",
+      "start": 1710000186920,
+      "stop": 1710000186940,
+      "attachments": [
+        {
+          "name": "HTTP Exchange binary",
+          "type": "application/vnd.allure.http+json",
+          "source": "attachment-http-binary.httpexchange"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "HTTP Exchange upgrade",
+      "start": 1710000186940,
+      "stop": 1710000186960,
+      "attachments": [
+        {
+          "name": "HTTP Exchange upgrade",
+          "type": "application/vnd.allure.http+json",
+          "source": "attachment-http-upgrade.httpexchange"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "application/vnd.allure.image.diff",
+      "start": 1710000187000,
       "stop": 1710000188160,
       "steps": [],
       "attachments": [

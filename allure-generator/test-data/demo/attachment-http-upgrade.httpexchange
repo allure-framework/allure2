@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "start": 1710000186940,
+  "stop": 1710000186955,
+  "request": {
+    "method": "GET",
+    "url": "https://api.example.com/socket",
+    "httpVersion": "HTTP/1.1",
+    "headers": [
+      {
+        "name": "connection",
+        "value": "Upgrade"
+      },
+      {
+        "name": "upgrade",
+        "value": "websocket"
+      },
+      {
+        "name": "sec-websocket-key",
+        "value": "__ALLURE_REDACTED__"
+      }
+    ]
+  },
+  "response": {
+    "status": 101,
+    "statusText": "Switching Protocols",
+    "httpVersion": "HTTP/1.1",
+    "headers": [
+      {
+        "name": "connection",
+        "value": "Upgrade"
+      },
+      {
+        "name": "upgrade",
+        "value": "websocket"
+      },
+      {
+        "name": "sec-websocket-accept",
+        "value": "__ALLURE_REDACTED__"
+      }
+    ]
+  }
+}
