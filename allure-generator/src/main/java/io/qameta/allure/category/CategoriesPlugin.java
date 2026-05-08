@@ -124,19 +124,24 @@ public class CategoriesPlugin extends CompositeAggregator2 implements Reader {
             final List<Category> categories = launch.getExtra(CATEGORIES, Collections::emptyList);
             launch.getResults().forEach(result -> {
                 final List<Category> resultCategories = result.getExtraBlock(CATEGORIES, new ArrayList<>());
-                categories.forEach(category -> {
-                    if (matches(result, category)) {
-                        resultCategories.add(category);
-                    }
-                });
-                if (resultCategories.isEmpty() && Status.FAILED.equals(result.getStatus())) {
-                    result.getExtraBlock(CATEGORIES, new ArrayList<Category>()).add(FAILED_TESTS);
-                }
-                if (resultCategories.isEmpty() && Status.BROKEN.equals(result.getStatus())) {
-                    result.getExtraBlock(CATEGORIES, new ArrayList<Category>()).add(BROKEN_TESTS);
+                categories.stream()
+                        .filter(category -> matches(result, category))
+                        .findFirst()
+                        .ifPresent(resultCategories::add);
+                if (resultCategories.isEmpty()) {
+                    addDefaultCategory(result, resultCategories);
                 }
             });
         });
+    }
+
+    private static void addDefaultCategory(final TestResult result, final List<Category> categories) {
+        if (Status.FAILED.equals(result.getStatus())) {
+            categories.add(FAILED_TESTS);
+        }
+        if (Status.BROKEN.equals(result.getStatus())) {
+            categories.add(BROKEN_TESTS);
+        }
     }
 
     protected static List<TreeLayer> groupByCategories(final TestResult testResult) {
