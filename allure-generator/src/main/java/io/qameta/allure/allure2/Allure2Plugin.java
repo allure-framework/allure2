@@ -205,6 +205,14 @@ public class Allure2Plugin implements Reader {
         dest.setLabels(convertList(result.getLabels(), this::convert));
         dest.setParameters(getParameters(result));
 
+        // Preserve titlePath from the on-disk schema so it stays reachable on the entity
+        // (e.g., for hierarchical group rendering, parity with Allure 3 readers).
+        // Only stored when non-empty to avoid noise on results that don't set the field.
+        final List<String> titlePath = result.getTitlePath();
+        if (titlePath != null && !titlePath.isEmpty()) {
+            dest.addExtraBlock("titlePath", new ArrayList<>(titlePath));
+        }
+
         dest.addLabelIfNotExists(RESULT_FORMAT, ALLURE2_RESULTS_FORMAT);
 
         if (hasTestStage(result)) {

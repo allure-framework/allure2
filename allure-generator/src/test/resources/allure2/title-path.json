@@ -1,0 +1,10 @@
+{
+  "uuid": "8c7e3a91-a4d2-4f0c-9b3a-1f63bd2a4f88",
+  "name": "shouldPreserveTitlePath",
+  "fullName": "io.qameta.allure.RedTest#shouldPreserveTitlePath",
+  "historyId": "history-titlepath-001",
+  "titlePath": ["Suite", "Subsuite", "Group"],
+  "status": "passed",
+  "start": 1700000000000,
+  "stop": 1700000000050
+}
