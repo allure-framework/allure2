@@ -76,7 +76,9 @@ class ReportWebGeneratorTest {
         assertThat(indexHtml)
                 .isRegularFile()
                 .content(StandardCharsets.UTF_8)
-                .doesNotContain("googletagmanager");
+                .doesNotContain("googletagmanager")
+                .doesNotContain("G-FVWC4GKEYS")
+                .doesNotContain("dataLayer");
     }
 
     /**
