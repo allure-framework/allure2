@@ -250,6 +250,33 @@ class Allure2PluginTest {
     }
 
     /**
+     * Verifies that {@code known} and {@code muted} markers from the on-disk
+     * statusDetails are preserved on the entity through the extra-block
+     * channel, matching Allure 3 reader behaviour.
+     */
+    @Description
+    @Test
+    void shouldPreserveKnownAndMutedFromStatusDetails() throws Exception {
+        Set<TestResult> testResults = process(
+                "allure2/status-details-known-muted.json", generateTestResultName()
+        ).getResults();
+
+        assertThat(testResults)
+                .hasSize(1)
+                .first()
+                .satisfies(
+                        result -> {
+                            assertThat(result.<Boolean>getExtraBlock("statusDetailsKnown"))
+                                    .as("known marker from on-disk statusDetails should be preserved")
+                                    .isTrue();
+                            assertThat(result.<Boolean>getExtraBlock("statusDetailsMuted"))
+                                    .as("muted marker from on-disk statusDetails should be preserved")
+                                    .isTrue();
+                        }
+                );
+    }
+
+    /**
      * Verifies processing null stage time for Allure 2 parsing.
      */
     @Description

@@ -1,0 +1,15 @@
+{
+  "uuid": "9f0a2c43-5e21-4b8a-a312-9c4e8b1d2030",
+  "name": "shouldPreserveKnownAndMuted",
+  "fullName": "io.qameta.allure.RedTest#shouldPreserveKnownAndMuted",
+  "historyId": "history-known-muted-001",
+  "status": "failed",
+  "statusDetails": {
+    "message": "expected something else",
+    "trace": "stacktrace-omitted",
+    "known": true,
+    "muted": true
+  },
+  "start": 1700000000000,
+  "stop": 1700000000050
+}

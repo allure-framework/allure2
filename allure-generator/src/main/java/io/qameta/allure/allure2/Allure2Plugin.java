@@ -199,6 +199,15 @@ public class Allure2Plugin implements Reader {
             dest.setStatusMessage(details.getMessage());
             dest.setStatusTrace(details.getTrace());
             dest.setFlaky(details.isFlaky());
+            // Preserve known / muted markers from the on-disk schema so triage state
+            // stays reachable on the entity (Allure 3 readers consume these fields).
+            // Stored only when set to keep the extra-block free of default-valued noise.
+            if (details.isKnown()) {
+                dest.addExtraBlock("statusDetailsKnown", true);
+            }
+            if (details.isMuted()) {
+                dest.addExtraBlock("statusDetailsMuted", true);
+            }
         });
 
         dest.setLinks(convertList(result.getLinks(), this::convert));
