@@ -10,7 +10,7 @@
 <#-- @ftlvariable name="reportName" type="java.lang.String" -->
 <#-- @ftlvariable name="reportLanguage" type="java.lang.String" -->
 <!DOCTYPE html>
-<html dir="ltr" lang="${reportLanguage!"en"}">
+<html dir="ltr" lang="${(reportLanguage!"en")?html}">
 <head>
     <meta charset="utf-8">
     <meta name="allure-report-uuid" content="${reportUuid}">

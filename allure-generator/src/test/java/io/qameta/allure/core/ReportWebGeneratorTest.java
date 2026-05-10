@@ -105,6 +105,29 @@ class ReportWebGeneratorTest {
     }
 
     /**
+     * Verifies that a hostile {@code reportLanguage} containing live HTML
+     * cannot escape the {@code lang} attribute on the root {@code <html>} tag.
+     */
+    @Description
+    @Test
+    void shouldEscapeHtmlInReportLanguage(@TempDir final Path tempDirectory) {
+        final String hostile = "en\"><script>alert('xss')</script>";
+        final Configuration configuration = ConfigurationBuilder.empty()
+                .withReportLanguage(hostile)
+                .build();
+        final InMemoryReportStorage reportStorage = new InMemoryReportStorage();
+        generateReport(configuration, reportStorage, tempDirectory);
+
+        final Path indexHtml = tempDirectory.resolve("index.html");
+
+        assertThat(indexHtml)
+                .isRegularFile()
+                .content(StandardCharsets.UTF_8)
+                .as("hostile reportLanguage must not break out of the lang attribute")
+                .doesNotContain(hostile);
+    }
+
+    /**
      * Verifies setting language for web report generation.
      */
     @Description
