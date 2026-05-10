@@ -250,6 +250,26 @@ class Allure2PluginTest {
     }
 
     /**
+     * Verifies that {@code testCaseId} from the on-disk Allure 2 schema is
+     * propagated to the entity's {@code testId} slot, keeping stable test
+     * identity available downstream and matching Allure 3 reader behaviour.
+     */
+    @Description
+    @Test
+    void shouldPropagateTestCaseIdToTestId() throws Exception {
+        Set<TestResult> testResults = process(
+                "allure2/test-case-id.json", generateTestResultName()
+        ).getResults();
+
+        assertThat(testResults)
+                .hasSize(1)
+                .first()
+                .extracting(TestResult::getTestId)
+                .as("on-disk testCaseId should populate entity.TestResult#testId")
+                .isEqualTo("TC-42");
+    }
+
+    /**
      * Verifies processing null stage time for Allure 2 parsing.
      */
     @Description

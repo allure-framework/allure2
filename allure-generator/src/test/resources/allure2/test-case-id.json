@@ -1,0 +1,10 @@
+{
+  "uuid": "5b1f8a72-5d54-4d3a-b94e-1dceaf5c1a01",
+  "name": "shouldRouteTestCaseIdIntoTestId",
+  "fullName": "io.qameta.allure.RedTest#shouldRouteTestCaseIdIntoTestId",
+  "historyId": "history-tc-id-001",
+  "testCaseId": "TC-42",
+  "status": "passed",
+  "start": 1700000000000,
+  "stop": 1700000000050
+}
