@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "start": 1710000186700,
+  "stop": 1710000186714,
+  "request": {
+    "method": "POST",
+    "url": "https://api.example.com/login",
+    "httpVersion": "HTTP/1.1",
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/x-www-form-urlencoded"
+      }
+    ],
+    "body": {
+      "contentType": "application/x-www-form-urlencoded",
+      "encoding": "utf8",
+      "value": "username=demo&password=__ALLURE_REDACTED__&remember=true",
+      "size": 59,
+      "truncated": false,
+      "form": [
+        {
+          "name": "username",
+          "value": "demo"
+        },
+        {
+          "name": "password",
+          "value": "__ALLURE_REDACTED__"
+        },
+        {
+          "name": "remember",
+          "value": "true"
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 204,
+    "statusText": "No Content",
+    "httpVersion": "HTTP/1.1",
+    "headers": []
+  }
+}

@@ -1,0 +1,199 @@
+@use "../../../variables.scss" as *;
+
+$http-label-column: grid(16);
+.http-attachment {
+  color: $text-color;
+  font-size: 14px;
+  line-height: 24px;
+
+  &__summary {
+    align-items: center;
+    border-bottom: 1px solid $border-color;
+    display: grid;
+    gap: space(2);
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    min-height: grid(5);
+    padding: space(1) space(2);
+  }
+
+  &__method {
+    align-items: center;
+    display: inline-flex;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 24px;
+  }
+
+  &__url {
+    flex: 1 1 grid(32);
+    font-size: 15px;
+    line-height: 24px;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  &__status,
+  &__duration {
+    color: $text-muted-color;
+    line-height: 24px;
+  }
+
+  &__download {
+    align-items: center;
+    color: $text-color;
+    cursor: pointer;
+    display: inline-flex;
+    gap: space(1);
+    font: inherit;
+    justify-content: center;
+    line-height: 24px;
+    text-decoration: none;
+    white-space: nowrap;
+
+    &:hover {
+      color: $brand-blue;
+    }
+  }
+
+  &__section {
+    padding: space(2);
+
+    + .http-attachment__section {
+      border-top: 1px solid $border-color;
+    }
+  }
+
+  &__section-header {
+    align-items: center;
+    display: flex;
+    gap: space(2);
+    justify-content: space-between;
+    margin-bottom: space(1);
+  }
+
+  &__section-title {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    margin: 0;
+  }
+
+  &__meta {
+    display: grid;
+    gap: space(1);
+    margin-bottom: space(2);
+  }
+
+  &__meta-row {
+    align-items: start;
+    display: grid;
+    gap: space(2);
+    grid-template-columns: $http-label-column minmax(0, 1fr);
+    min-height: space(3);
+  }
+
+  &__label {
+    color: $text-muted-color;
+    line-height: 24px;
+  }
+
+  &__value {
+    line-height: 24px;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  &__subsection {
+    margin-top: space(1);
+  }
+
+  &__subsection-title {
+    color: $text-muted-color;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 16px;
+    margin: 0 0 space(1);
+  }
+
+  &__table {
+    border-collapse: collapse;
+    font-size: 14px;
+    line-height: 24px;
+    table-layout: fixed;
+    width: 100%;
+
+    tr {
+      border-bottom: 1px solid $border-color;
+    }
+
+    td {
+      overflow-wrap: anywhere;
+      padding: space(1);
+      vertical-align: top;
+    }
+  }
+
+  &__pair-name {
+    color: $text-muted-color;
+    width: $http-label-column;
+  }
+
+  &__pair-value_masked {
+    color: $text-muted-color;
+  }
+
+  &__masked-value {
+    background: $summary-color;
+    border: 1px solid $border-color;
+    color: $text-muted-color;
+    cursor: help;
+    display: inline-block;
+    font: 14px normal "Courier New" monospace;
+    line-height: 16px;
+    padding: 0 space(1);
+  }
+
+  &__part-value {
+    font: 14px normal "Courier New" monospace;
+    margin: space(1) 0 0;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+  }
+
+  &__body-toolbar {
+    align-items: center;
+    display: flex;
+    margin-bottom: space(1);
+  }
+
+  &__body-meta {
+    color: $text-muted-color;
+    font-size: 13px;
+    line-height: 16px;
+  }
+
+  &__body-content {
+    .attachment__text-container,
+    .attachment__table-container {
+      background: $heading-bg;
+      padding: space(2);
+    }
+
+    .attachment__code,
+    .attachment__text {
+      font: 14px normal "Courier New" monospace;
+    }
+
+    .attachment__media-container {
+      background: $heading-bg;
+      cursor: default;
+      padding: space(2);
+    }
+  }
+
+  &__empty,
+  &__body-message {
+    color: $text-muted-color;
+    padding: space(2);
+  }
+}
