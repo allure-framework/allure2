@@ -227,6 +227,21 @@ test.describe("Generic Attachments", () => {
         .toBe(false);
       await expect(preview.getByRole("button", { name: "Copy as curl" })).toHaveCount(0);
       await expect(preview.locator("[data-body-mode]")).toHaveCount(0);
+
+      const httpAliasRow = attachmentRow(page, attachmentsFixture.attachments.httpAlias);
+      await expect(httpAliasRow).toBeVisible();
+      await expect(httpAliasRow).toHaveAttribute("data-type", "application/vnd.allure.http");
+      await httpAliasRow.click();
+
+      const aliasPreview = previewContainerFor(httpAliasRow);
+      await expect(aliasPreview.locator(".http-attachment__summary")).toBeVisible();
+      await expect(aliasPreview.locator(".http-attachment__method")).toHaveText("GET");
+      await expect(aliasPreview.locator(".http-attachment__url")).toHaveText(
+        "https://api.example.com/v1/mime-alias",
+      );
+      await expect(aliasPreview.locator(".http-attachment__status")).toHaveText(
+        "204 No Content",
+      );
     });
 
     test(`renders rich HTTP Exchange response bodies with attachment viewers (${mode})`, async ({

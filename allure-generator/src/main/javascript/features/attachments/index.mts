@@ -1,4 +1,4 @@
-import { HTTP_EXCHANGE_ATTACHMENT_MIME } from "./model/httpAttachment.mts";
+import { HTTP_EXCHANGE_ATTACHMENT_MIME_TYPES } from "./model/httpAttachment.mts";
 import { HttpAttachmentView } from "./views/HttpAttachmentView.mts";
 import { ScreenDiffAttachmentView, ScreenDiffTestResultView } from "./views/ScreenDiffView.mts";
 
@@ -7,10 +7,15 @@ type TestResultBlockFactory = import("../../core/registry/types.mts").TestResult
 type TestResultBlocks = import("../../core/registry/types.mts").TestResultBlocks;
 
 export const attachmentViewers: AttachmentViewers = {
-  [HTTP_EXCHANGE_ATTACHMENT_MIME]: {
-    create: HttpAttachmentView,
-    icon: "lineDevDataflow3",
-  },
+  ...Object.fromEntries(
+    HTTP_EXCHANGE_ATTACHMENT_MIME_TYPES.map((type) => [
+      type,
+      {
+        create: HttpAttachmentView,
+        icon: "lineDevDataflow3",
+      },
+    ]),
+  ),
   "application/vnd.allure.image.diff": {
     create: ScreenDiffAttachmentView,
     icon: "lineLayoutsColumns2",

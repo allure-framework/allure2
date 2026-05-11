@@ -74,6 +74,7 @@ class WellKnownFileExtensionsUtilsTest {
                 Arguments.of("application/gzip", "tgz"),
                 Arguments.of("application/vnd.allure.image.diff", "imagediff"),
                 Arguments.of("application/vnd.allure.http+json", "httpexchange"),
+                Arguments.of("application/vnd.allure.http", "httpexchange"),
                 Arguments.of("text/plain", "txt"),
                 Arguments.of("application/octet-stream", ""),
                 Arguments.of("", ""),

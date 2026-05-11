@@ -1356,6 +1356,7 @@ public final class WellKnownFileExtensionsUtils {
         for (Map.Entry<String, String> stringStringEntry : EXT_TO_MIME_TYPE.entrySet()) {
             extToMimeType.putIfAbsent(stringStringEntry.getValue(), stringStringEntry.getKey());
         }
+        extToMimeType.put("application/vnd.allure.http", "httpexchange");
         MIME_TYPE_TO_EXT = Collections.unmodifiableMap(extToMimeType);
     }
 
