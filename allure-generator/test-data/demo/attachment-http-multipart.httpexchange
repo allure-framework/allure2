@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "start": 1710000186720,
+  "stop": 1710000186738,
+  "request": {
+    "method": "POST",
+    "url": "https://api.example.com/profile",
+    "httpVersion": "HTTP/1.1",
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "multipart/form-data; boundary=----allure-boundary"
+      }
+    ],
+    "body": {
+      "contentType": "multipart/form-data; boundary=----allure-boundary",
+      "size": 24588,
+      "truncated": false,
+      "parts": [
+        {
+          "name": "metadata",
+          "headers": [
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ],
+          "contentType": "application/json",
+          "encoding": "utf8",
+          "value": "{\"displayName\":\"Demo User\"}",
+          "size": 27,
+          "truncated": false
+        },
+        {
+          "name": "avatar",
+          "fileName": "avatar.png",
+          "headers": [
+            {
+              "name": "content-type",
+              "value": "image/png"
+            }
+          ],
+          "contentType": "image/png",
+          "encoding": "base64",
+          "value": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAAB",
+          "size": 24512,
+          "truncated": true
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 200,
+    "statusText": "OK",
+    "httpVersion": "HTTP/1.1",
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
+    "body": {
+      "contentType": "application/json",
+      "encoding": "utf8",
+      "value": "{\"uploaded\":true}",
+      "size": 17,
+      "truncated": false
+    }
+  }
+}

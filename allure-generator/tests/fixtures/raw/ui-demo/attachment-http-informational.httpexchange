@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "start": 1710000186860,
+  "stop": 1710000186912,
+  "request": {
+    "method": "POST",
+    "url": "https://api.example.com/upload",
+    "httpVersion": "HTTP/1.1",
+    "headers": [
+      {
+        "name": "expect",
+        "value": "100-continue"
+      },
+      {
+        "name": "content-type",
+        "value": "application/octet-stream"
+      }
+    ],
+    "body": {
+      "contentType": "application/octet-stream",
+      "encoding": "base64",
+      "value": "AAECAwQFBgc=",
+      "size": 8,
+      "truncated": false
+    }
+  },
+  "response": {
+    "status": 201,
+    "statusText": "Created",
+    "httpVersion": "HTTP/1.1",
+    "headers": [
+      {
+        "name": "location",
+        "value": "/upload/abc123"
+      }
+    ],
+    "informationalResponses": [
+      {
+        "status": 100,
+        "statusText": "Continue",
+        "headers": []
+      },
+      {
+        "status": 103,
+        "statusText": "Early Hints",
+        "headers": [
+          {
+            "name": "link",
+            "value": "</upload.css>; rel=preload; as=style"
+          }
+        ]
+      }
+    ],
+    "body": {
+      "contentType": "application/json",
+      "encoding": "utf8",
+      "value": "{\"id\":\"abc123\",\"stored\":true}",
+      "size": 29,
+      "truncated": false
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "start": 1710000186760,
+  "stop": 1710000186780,
+  "request": {
+    "method": "GET",
+    "url": "https://api.example.com/v1/reports/archive",
+    "httpVersion": "HTTP/1.1",
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/octet-stream"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "statusText": "OK",
+    "httpVersion": "HTTP/1.1",
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/octet-stream"
+      }
+    ],
+    "body": {
+      "contentType": "application/octet-stream",
+      "encoding": "base64",
+      "value": "AAECAwQF",
+      "size": 6,
+      "truncated": false
+    }
+  }
+}
