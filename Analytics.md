@@ -24,5 +24,5 @@ Allure analytics helps us maintainers and leaving it on is appreciated. However,
 Allure's analytics, you can set this variable in your environment:
 
 ```$xslt
-export ALLURE_NO_ANALYTICS=1
+export ALLURE_NO_ANALYTICS=true
 ``` 
