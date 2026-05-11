@@ -82,6 +82,29 @@ class ReportWebGeneratorTest {
     }
 
     /**
+     * Verifies that a hostile {@code reportName} containing live HTML / JS
+     * is HTML-escaped rather than rendered raw into the {@code <title>} tag.
+     */
+    @Description
+    @Test
+    void shouldEscapeHtmlInReportName(@TempDir final Path tempDirectory) {
+        final String hostile = "<script>alert('xss')</script>";
+        final Configuration configuration = ConfigurationBuilder.empty()
+                .withReportName(hostile)
+                .build();
+        final InMemoryReportStorage reportStorage = new InMemoryReportStorage();
+        generateReport(configuration, reportStorage, tempDirectory);
+
+        final Path indexHtml = tempDirectory.resolve("index.html");
+
+        assertThat(indexHtml)
+                .isRegularFile()
+                .content(StandardCharsets.UTF_8)
+                .as("hostile reportName must not appear as live HTML in the generated report")
+                .doesNotContain(hostile);
+    }
+
+    /**
      * Verifies setting language for web report generation.
      */
     @Description

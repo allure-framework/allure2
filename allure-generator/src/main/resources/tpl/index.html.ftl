@@ -14,7 +14,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="allure-report-uuid" content="${reportUuid}">
-    <title>${reportName!"Allure Report"}</title>
+    <title>${(reportName!"Allure Report")?html}</title>
     <link rel="icon" href="${faviconUrl}">
     <!-- allure-core-head:start -->
     <#list coreStyleUrls as styleUrl>
