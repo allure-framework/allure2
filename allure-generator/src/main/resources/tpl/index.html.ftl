@@ -89,7 +89,6 @@
     </#if>
     <#if analyticsDisable == false>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FVWC4GKEYS"></script>
-    </#if>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -100,6 +99,7 @@
           'single_file': ${reportDataFiles?has_content?string}
         });
     </script>
+    </#if>
     <#if reportDataFiles?has_content>
     <script async>
         window.reportDataReady = false;
