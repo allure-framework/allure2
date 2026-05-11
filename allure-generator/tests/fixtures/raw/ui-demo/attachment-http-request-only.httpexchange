@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "start": 1710000186760,
+  "stop": 1710000186766,
+  "request": {
+    "method": "DELETE",
+    "url": "https://api.example.com/v1/orders/42?force=true",
+    "httpVersion": "HTTP/1.1",
+    "headers": [
+      {
+        "name": "authorization",
+        "value": "__ALLURE_REDACTED__"
+      },
+      {
+        "name": "x-request-id",
+        "value": "demo-request-only"
+      }
+    ],
+    "query": [
+      {
+        "name": "force",
+        "value": "true"
+      }
+    ]
+  }
+}

@@ -207,6 +207,36 @@ class CommandsTest {
     }
 
     /**
+     * Verifies the report server preserves the Allure HTTP Exchange content type.
+     * The test checks a .httpexchange file is served with the expected media type and body.
+     */
+    @Description
+    @Test
+    void shouldServeHttpAttachment(@TempDir final Path temp) throws Exception {
+        final Path home = Files.createDirectories(temp.resolve("home"));
+        final Path reportDirectory = Files.createDirectories(temp.resolve("report"));
+        final String payload = "{\"schemaVersion\":1,"
+                + "\"request\":{\"method\":\"GET\",\"url\":\"https://example.org\"}}";
+        Files.writeString(reportDirectory.resolve("api-call.httpexchange"), payload);
+
+        final Commands commands = new Commands(home);
+        final HttpServer server = commands.setUpServer("127.0.0.1", 0, reportDirectory);
+        server.start();
+
+        try {
+            final int port = server.getAddress().getPort();
+
+            final HttpURLConnection fileRequest = openConnection(port, "/api-call.httpexchange");
+            assertThat(fileRequest.getResponseCode()).isEqualTo(200);
+            assertThat(fileRequest.getHeaderField("Content-Type"))
+                    .isEqualTo("application/vnd.allure.http+json");
+            assertThat(readResponse(fileRequest)).isEqualTo(payload);
+        } finally {
+            server.stop(0);
+        }
+    }
+
+    /**
      * Verifies unknown report files are served as generic binary attachments.
      * The test checks an unrecognized extension receives octet-stream content type and the original body.
      */

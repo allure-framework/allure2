@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "start": 1710000186400,
+  "stop": 1710000186487,
+  "request": {
+    "method": "POST",
+    "url": "https://api.example.com/v1/orders/42?dryRun=true",
+    "httpVersion": "HTTP/1.1",
+    "cookies": [
+      {
+        "name": "sid",
+        "value": "__ALLURE_REDACTED__",
+        "path": "/",
+        "httpOnly": true,
+        "secure": true
+      },
+      {
+        "name": "theme",
+        "value": "dark"
+      }
+    ],
+    "headers": [
+      {
+        "name": "Authorization",
+        "value": "__ALLURE_REDACTED__"
+      },
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "cookie",
+        "value": "__ALLURE_REDACTED__"
+      }
+    ],
+    "query": [
+      {
+        "name": "dryRun",
+        "value": "true"
+      }
+    ],
+    "body": {
+      "contentType": "application/json",
+      "encoding": "utf8",
+      "value": "{\"name\":\"demo\",\"quantity\":1}",
+      "size": 28,
+      "truncated": false
+    }
+  },
+  "response": {
+    "status": 201,
+    "statusText": "Created",
+    "httpVersion": "HTTP/1.1",
+    "cookies": [
+      {
+        "name": "sid",
+        "value": "__ALLURE_REDACTED__",
+        "path": "/",
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "Lax"
+      }
+    ],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "set-cookie",
+        "value": "__ALLURE_REDACTED__"
+      }
+    ],
+    "body": {
+      "contentType": "application/json",
+      "encoding": "utf8",
+      "value": "{\"id\":42,\"echo\":\"<script>window.__httpAttachmentXss = true</script>\"}",
+      "size": 69,
+      "truncated": false
+    }
+  }
+}

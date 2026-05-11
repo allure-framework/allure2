@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "start": 1710000186880,
+  "stop": 1710000186891,
+  "request": {
+    "method": "GET",
+    "url": "http://api.example.com/v1/orders/42",
+    "httpVersion": "HTTP/1.1",
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ]
+  },
+  "response": {
+    "status": 301,
+    "statusText": "Moved Permanently",
+    "httpVersion": "HTTP/1.1",
+    "headers": [
+      {
+        "name": "location",
+        "value": "https://api.example.com/v1/orders/42"
+      },
+      {
+        "name": "cache-control",
+        "value": "max-age=3600"
+      }
+    ]
+  }
+}
