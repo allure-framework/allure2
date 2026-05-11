@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "start": 1710000186840,
+  "stop": 1710000186874,
+  "request": {
+    "method": "POST",
+    "url": "https://api.example.com/checkout.CheckoutService/CreateOrder",
+    "httpVersion": "HTTP/2",
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/grpc"
+      },
+      {
+        "name": "te",
+        "value": "trailers"
+      }
+    ],
+    "body": {
+      "contentType": "application/grpc",
+      "encoding": "base64",
+      "value": "AAAAABMKBGRlbW8QKg==",
+      "size": 18,
+      "truncated": false
+    }
+  },
+  "response": {
+    "status": 200,
+    "httpVersion": "HTTP/2",
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/grpc"
+      }
+    ],
+    "body": {
+      "contentType": "application/grpc",
+      "encoding": "base64",
+      "value": "AAAAAAUIKg==",
+      "size": 10,
+      "truncated": false
+    },
+    "trailers": [
+      {
+        "name": "grpc-status",
+        "value": "0"
+      },
+      {
+        "name": "grpc-message",
+        "value": ""
+      }
+    ]
+  }
+}

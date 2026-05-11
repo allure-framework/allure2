@@ -17,6 +17,7 @@ const mimeTypes = new Map([
   [".html", "text/html; charset=utf-8"],
   [".ico", "image/x-icon"],
   [".imagediff", "application/vnd.allure.image.diff; charset=utf-8"],
+  [".httpexchange", "application/vnd.allure.http+json; charset=utf-8"],
   [".js", "text/javascript; charset=utf-8"],
   [".json", "application/json; charset=utf-8"],
   [".png", "image/png"],
