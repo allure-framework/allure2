@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "start": 1710000186680,
+  "stop": 1710000186700,
+  "request": {
+    "method": "GET",
+    "url": "https://api.example.com/v1/mime-alias",
+    "httpVersion": "HTTP/1.1",
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ]
+  },
+  "response": {
+    "status": 204,
+    "statusText": "No Content",
+    "httpVersion": "HTTP/1.1"
+  }
+}

@@ -158,6 +158,19 @@
     },
     {
       "status": "passed",
+      "name": "HTTP Exchange MIME alias",
+      "start": 1710000186680,
+      "stop": 1710000186700,
+      "attachments": [
+        {
+          "name": "HTTP Exchange MIME alias",
+          "type": "application/vnd.allure.http",
+          "source": "attachment-http-alias.httpexchange"
+        }
+      ]
+    },
+    {
+      "status": "passed",
       "name": "HTTP Exchange image",
       "start": 1710000186680,
       "stop": 1710000186700,
