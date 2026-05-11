@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "start": 1710000186740,
+  "stop": 1710000186759,
+  "request": {
+    "method": "GET",
+    "url": "https://api.example.com/events",
+    "httpVersion": "HTTP/2",
+    "headers": [
+      {
+        "name": "accept",
+        "value": "text/event-stream"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "statusText": "OK",
+    "httpVersion": "HTTP/2",
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "text/event-stream"
+      }
+    ],
+    "body": {
+      "contentType": "text/event-stream",
+      "encoding": "utf8",
+      "value": "event: ready\ndata: {\"ok\":true}\n\n",
+      "size": 34,
+      "truncated": true,
+      "stream": {
+        "type": "server-sent-events",
+        "complete": false,
+        "chunkCount": 1
+      }
+    }
+  }
+}

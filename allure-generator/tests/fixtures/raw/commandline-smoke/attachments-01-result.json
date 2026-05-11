@@ -145,6 +145,84 @@
     },
     {
       "status": "passed",
+      "name": "HTTP Exchange",
+      "start": 1710000186400,
+      "stop": 1710000186680,
+      "attachments": [
+        {
+          "name": "HTTP Exchange",
+          "type": "application/vnd.allure.http+json",
+          "source": "attachment-http.httpexchange"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "HTTP Exchange image",
+      "start": 1710000186680,
+      "stop": 1710000186700,
+      "attachments": [
+        {
+          "name": "HTTP Exchange image",
+          "type": "application/vnd.allure.http+json",
+          "source": "attachment-http-image.httpexchange"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "HTTP Exchange form",
+      "start": 1710000186700,
+      "stop": 1710000186720,
+      "attachments": [
+        {
+          "name": "HTTP Exchange form",
+          "type": "application/vnd.allure.http+json",
+          "source": "attachment-http-form.httpexchange"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "HTTP Exchange multipart",
+      "start": 1710000186720,
+      "stop": 1710000186740,
+      "attachments": [
+        {
+          "name": "HTTP Exchange multipart",
+          "type": "application/vnd.allure.http+json",
+          "source": "attachment-http-multipart.httpexchange"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "HTTP Exchange stream",
+      "start": 1710000186740,
+      "stop": 1710000186760,
+      "attachments": [
+        {
+          "name": "HTTP Exchange stream",
+          "type": "application/vnd.allure.http+json",
+          "source": "attachment-http-stream.httpexchange"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "HTTP Exchange binary",
+      "start": 1710000186760,
+      "stop": 1710000186780,
+      "attachments": [
+        {
+          "name": "HTTP Exchange binary",
+          "type": "application/vnd.allure.http+json",
+          "source": "attachment-http-binary.httpexchange"
+        }
+      ]
+    },
+    {
+      "status": "passed",
       "name": "application/vnd.allure.image.diff",
       "start": 1710000186720,
       "stop": 1710000188160,
