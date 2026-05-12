@@ -1,5 +1,5 @@
 import { createRequire } from "node:module";
-import { attachment } from "allure-js-commons";
+import { attachment, step } from "allure-js-commons";
 import { expect, test, type Page } from "playwright/test";
 import { fixtures, REPORT_MODES } from "./support/fixtures.mts";
 import { openCaseFromTree, openReport } from "./support/report.mts";
@@ -18,34 +18,13 @@ const AXE_OPTIONS = {
   resultTypes: ["violations"],
 };
 
-const ACCESSIBILITY_BASELINE = {
-  "attachment-modal": {
-    "frame-title": 1,
-    label: 1,
-  },
-  categories: {
-    "color-contrast": 11,
-    label: 1,
-  },
-  graph: {
-    "color-contrast": 8,
-    "link-name": 13,
-  },
-  overview: {
-    "color-contrast": 12,
-    "link-name": 3,
-  },
-  "suites-selected-test": {
-    "color-contrast": 22,
-    label: 1,
-  },
-  timeline: {
-    "color-contrast": 8,
-    "link-name": 29,
-  },
-} satisfies Record<string, Record<string, number>>;
-
-type AccessibilityTargetName = keyof typeof ACCESSIBILITY_BASELINE;
+type AccessibilityTargetName =
+  | "attachment-modal"
+  | "categories"
+  | "graph"
+  | "overview"
+  | "suites-selected-test"
+  | "timeline";
 
 interface AccessibilityTarget {
   name: AccessibilityTargetName;
@@ -186,30 +165,10 @@ const formatViolation = (violation: AxeViolation): string => {
   } nodes, ${targets}`;
 };
 
-const assertAgainstBaseline = (target: AccessibilityTargetName, violations: AxeViolation[]) => {
-  const baseline: Record<string, number> = ACCESSIBILITY_BASELINE[target];
-  const unexpected = violations.flatMap((violation) => {
-    const allowedCount = baseline[violation.id] ?? 0;
-
-    if (violation.nodes.length <= allowedCount) {
-      return [];
-    }
-
-    return [
-      `${formatViolation(violation)}; baseline allows ${allowedCount} node${
-        allowedCount === 1 ? "" : "s"
-      }`,
-    ];
-  });
-
-  expect(unexpected, `Unexpected accessibility violations on ${target}`).toEqual([]);
-};
-
 const attachAxeResults = async (target: AccessibilityTargetName, results: AxeResults) => {
   const body = JSON.stringify(
     {
       target,
-      baseline: ACCESSIBILITY_BASELINE[target],
       summary: summarizeViolations(results.violations),
       violations: results.violations,
     },
@@ -220,17 +179,59 @@ const attachAxeResults = async (target: AccessibilityTargetName, results: AxeRes
   await attachment(`axe-${target}.json`, body, "application/json");
 };
 
+const attachViolationSteps = async (
+  target: AccessibilityTargetName,
+  violations: AxeViolation[],
+) => {
+  for (const violation of violations) {
+    await step(
+      `axe ${violation.id}: ${violation.nodes.length} affected node${
+        violation.nodes.length === 1 ? "" : "s"
+      }`,
+      async (context) => {
+        await context.parameter("target", target);
+        await context.parameter("impact", violation.impact ?? "unknown");
+        await context.parameter("help", violation.help);
+        await context.parameter("helpUrl", violation.helpUrl);
+        await context.parameter("nodeCount", violation.nodes.length.toString());
+        await context.parameter(
+          "targets",
+          violation.nodes.map((node) => node.target.join(" ")).join("\n"),
+        );
+
+        await attachment(
+          `axe-${target}-${violation.id}.json`,
+          JSON.stringify(
+            {
+              target,
+              violation,
+            },
+            null,
+            2,
+          ),
+          "application/json",
+        );
+      },
+    );
+  }
+};
+
+const assertNoViolations = (target: AccessibilityTargetName, violations: AxeViolation[]) => {
+  const summary = violations.map(formatViolation);
+
+  expect(summary, `Accessibility violations found on ${target}`).toEqual([]);
+};
+
 test.describe("Accessibility Smoke", () => {
   for (const target of scanTargets) {
-    test(`${target.name} stays within the current accessibility baseline`, async ({
-      page,
-    }) => {
+    test(`${target.name} has no automated accessibility violations`, async ({ page }) => {
       await target.open(page);
 
       const results = await runAxe(page);
       await attachAxeResults(target.name, results);
+      await attachViolationSteps(target.name, results.violations);
 
-      assertAgainstBaseline(target.name, results.violations);
+      assertNoViolations(target.name, results.violations);
     });
   }
 });
