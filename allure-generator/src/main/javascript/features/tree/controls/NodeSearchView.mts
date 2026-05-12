@@ -1,6 +1,7 @@
 import "./NodeSearchView.scss";
 import { bindDelegatedEvents } from "../../../core/view/domEvents.mts";
 import { defineMountableElement } from "../../../core/view/elementView.mts";
+import translate from "../../../helpers/t.mts";
 import { createElement } from "../../../shared/dom.mts";
 import gtag from "../../../utils/gtag.mts";
 import { SEARCH_QUERY_KEY } from "../model/searchState.mts";
@@ -31,7 +32,7 @@ const createNodeSearchView = (options: NodeSearchOptions) => {
         createElement("div", {
           className: "search__container",
           children: createElement("input", {
-            attrs: { type: "text" },
+            attrs: { "aria-label": translate("component.tree.search"), type: "text" },
             className: "search__input",
           }),
         }),

@@ -1,8 +1,6 @@
-@use "../../../variables.scss" as *;
-
 .environment {
   margin-bottom: 0.5em;
   &__key {
-    color: $text-muted-color;
+    color: var(--color-text-muted);
   }
 }

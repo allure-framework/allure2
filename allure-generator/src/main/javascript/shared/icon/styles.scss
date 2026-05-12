@@ -1,9 +1,8 @@
-@use "../../variables.scss" as *;
-
+@use "../../theme/spacing.scss" as *;
 .a-icon {
   display: inline-block;
-  width: space(2);
-  height: space(2);
+  width: gap(2);
+  height: gap(2);
   flex: 0 0 auto;
   vertical-align: middle;
   color: inherit;
@@ -14,26 +13,46 @@
 }
 
 .a-icon_size_xs {
-  width: space(1);
-  height: space(1);
+  width: gap(1);
+  height: gap(1);
 }
 
 .a-icon_size_s {
-  width: space(2);
-  height: space(2);
+  width: gap(2);
+  height: gap(2);
 }
 
 .a-icon_size_m {
-  width: space(3);
-  height: space(3);
+  width: gap(3);
+  height: gap(3);
 }
 
 .a-icon_size_l {
-  width: space(4);
-  height: space(4);
+  width: gap(4);
+  height: gap(4);
 }
 
 .a-icon_size_xl {
-  width: space(5);
-  height: space(5);
+  width: gap(5);
+  height: gap(5);
+}
+
+.status-icon_status_failed {
+  color: var(--color-status-failed-bg);
+}
+
+.status-icon_status_broken {
+  color: var(--color-status-broken-bg);
+}
+
+.status-icon_status_passed {
+  color: var(--color-status-passed-bg);
+}
+
+.status-icon_status_skipped {
+  color: var(--color-status-skipped-bg);
+}
+
+.status-icon_status_unknown {
+  color: var(--color-status-unknown-bg);
 }

@@ -1,20 +1,22 @@
-@use "../../../variables.scss" as *;
-
+@use "../../../theme/spacing.scss" as *;
 .timeline {
+  background: var(--color-bg-primary);
   bottom: 0;
   left: 0;
   overflow: auto;
-  padding: $gap-size;
+  padding: gap(2);
   position: absolute;
   right: 0;
   top: 0;
 
   &__body {
+    background: var(--color-bg-primary);
+    padding: gap(2);
     position: relative;
   }
 
   &__chart {
-    padding-bottom: space(2);
+    padding-bottom: gap(2);
   }
 
   &__chart_svg,
@@ -36,33 +38,57 @@
     opacity: 0.7;
   }
 
+  &__item {
+    fill: var(--color-status-unknown-chart-fill);
+
+    &_status_failed {
+      fill: var(--color-status-failed-chart-fill);
+    }
+
+    &_status_broken {
+      fill: var(--color-status-broken-chart-fill);
+    }
+
+    &_status_passed {
+      fill: var(--color-status-passed-chart-fill);
+    }
+
+    &_status_skipped {
+      fill: var(--color-status-skipped-chart-fill);
+    }
+
+    &_status_unknown {
+      fill: var(--color-status-unknown-chart-fill);
+    }
+  }
+
   &__group_title {
-    font-size: 12px;
-    fill: #838383;
+    font-size: var(--font-size-s);
+    fill: var(--color-text-muted);
     dominant-baseline: central;
   }
 
   &__host-bg {
-    fill: #eee;
-    stroke: #e0e0e0;
+    fill: var(--color-control-bg);
+    stroke: var(--color-border-default);
     rx: 3;
     ry: 9;
   }
 
   &__brush {
-    background: $body-bg;
+    background: var(--color-bg-primary);
     width: 100%;
 
     .selection {
-      fill: #000;
+      fill: var(--color-bg-overlay);
       fill-opacity: 0.3;
     }
     &__axis_bg {
-      fill: white;
+      fill: var(--color-bg-primary);
     }
     .handle {
-      fill: #fff;
-      stroke: #000;
+      fill: var(--color-bg-raised);
+      stroke: var(--color-border-strong);
       stroke-opacity: 0.5;
       stroke-width: 1px;
     }
@@ -71,13 +97,13 @@
   &__slider {
     &_track {
       stroke-linecap: round;
-      stroke: #000;
+      stroke: var(--color-border-strong);
       stroke-opacity: 0.3;
       stroke-width: 10px;
     }
     &_handle {
-      fill: #fff;
-      stroke: #000;
+      fill: var(--color-bg-raised);
+      stroke: var(--color-border-strong);
       stroke-opacity: 0.5;
       stroke-width: 1px;
       cursor: pointer;

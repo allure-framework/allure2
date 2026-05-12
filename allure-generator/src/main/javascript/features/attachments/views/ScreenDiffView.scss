@@ -1,4 +1,5 @@
 .screen-diff__switchers {
+  color: var(--color-text-secondary);
   margin-bottom: 1em;
 }
 
@@ -19,12 +20,12 @@
   top: 0;
   left: 0;
   bottom: 0;
-  background: #fff;
+  background: var(--color-bg-primary);
   position: absolute;
   overflow: hidden;
-  box-shadow: 2px 0 1px -1px #aaa;
+  border-inline-end: 1px solid var(--color-border-medium);
 }
 
 .screen-diff-error {
-  color: #fd5a3e;
+  color: var(--color-intent-danger-text);
 }

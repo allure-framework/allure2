@@ -1,0 +1,17 @@
+:root {
+  --motion-duration-0: 0ms;
+  --motion-duration-100: 100ms;
+  --motion-duration-150: 150ms;
+  --motion-duration-200: 200ms;
+  --motion-duration-300: 300ms;
+  --motion-duration-500: 500ms;
+  --motion-duration-750: 750ms;
+
+  --motion-easing-linear: linear;
+  --motion-easing-in: ease-in;
+  --motion-easing-out: ease-out;
+  --motion-easing-in-out: ease-in-out;
+
+  --interaction-transition-duration: var(--motion-duration-100);
+  --color-change-transition-duration: var(--motion-duration-150);
+}

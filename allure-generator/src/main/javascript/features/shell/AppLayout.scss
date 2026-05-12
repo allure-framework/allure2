@@ -1,12 +1,12 @@
-@use "../../variables.scss" as *;
-
 .app {
-  background: $body-bg;
+  background: var(--color-bg-canvas);
+  color: var(--color-text-primary);
   display: flex;
   &__nav {
     padding: 0 0;
   }
   &__content {
+    background: var(--color-bg-primary);
     position: relative;
     flex: 1;
     overflow: auto;
@@ -16,6 +16,6 @@
     }
   }
   &__header {
-    background: $header-bg;
+    background: var(--color-bg-primary);
   }
 }

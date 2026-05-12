@@ -145,6 +145,35 @@ test.describe("Dashboards", () => {
     await expect(page.locator(".side-nav__language-small")).toContainText("fr");
   });
 
+  test("directory mode toggles and persists theme selection", async ({ page }) => {
+    await page.addInitScript(() => {
+      if (!window.localStorage.getItem("allure-theme")) {
+        window.localStorage.setItem("allure-theme", "light");
+      }
+    });
+
+    await openReport(page, {
+      fixture: uiDemo.name,
+      mode: REPORT_MODES.DIRECTORY,
+    });
+
+    const root = page.locator("html");
+    const themeSwitch = page.locator(".side-nav__theme");
+
+    await expect(root).not.toHaveAttribute("data-theme", "dark");
+    await expect(themeSwitch).toHaveAttribute("aria-pressed", "false");
+
+    await themeSwitch.click();
+
+    await expect(root).toHaveAttribute("data-theme", "dark");
+    await expect(page.locator(".side-nav__theme")).toHaveAttribute("aria-pressed", "true");
+
+    await page.reload();
+    await expect(page.locator(".side-nav__menu")).toBeVisible();
+    await expect(root).toHaveAttribute("data-theme", "dark");
+    await expect(page.locator(".side-nav__theme")).toHaveAttribute("aria-pressed", "true");
+  });
+
   test("directory mode boots with persisted isv translations", async ({ page }) => {
     await page.addInitScript(() => {
       window.localStorage.setItem("ALLURE_REPORT_SETTINGS", JSON.stringify({ language: "isv" }));

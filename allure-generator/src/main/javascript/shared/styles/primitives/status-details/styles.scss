@@ -1,11 +1,11 @@
-@use "../../../../variables.scss" as *;
 @use "../../../../mixins.scss" as *;
 
+@use "../../../../theme/spacing.scss" as *;
 .status-details {
+  border-radius: var(--radius-0-5);
   overflow: auto;
-  @include status-border();
   @include status-bg-light();
-  margin-bottom: space(1);
+  margin-bottom: gap(1);
   &__expanded > &__content > &__trace {
     display: block;
   }
@@ -13,21 +13,29 @@
     display: inline-block;
   }
   &__message {
-    padding: $gap-size;
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-m-code);
+    font-weight: var(--font-weight-normal);
+    line-height: var(--line-height-s);
+    padding: gap(2);
   }
   &__trace {
     float: left;
     display: none;
-    padding: $gap-size;
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-m-code);
+    font-weight: var(--font-weight-normal);
+    line-height: var(--line-height-m);
+    padding: gap(2);
     white-space: pre;
-    border-top: 1px solid $pane-bg-color;
+    border-top: 1px solid var(--color-bg-raised);
   }
   &__content {
     display: block;
   }
   &__trace-toggle {
     &:hover {
-      background-color: $hover-color;
+      background-color: var(--color-control-bg-hover);
     }
   }
 }
