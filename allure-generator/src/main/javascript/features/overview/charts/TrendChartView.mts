@@ -23,6 +23,9 @@ type TrendChartOptions = {
   hidePoints?: boolean;
 };
 
+const getTrendReportLinkLabel = (point: TrendPoint) =>
+  translate("chart.trend.reportLink", { hash: { name: point.name } });
+
 class TrendChartView extends BaseChartView {
   PAD_BOTTOM = 50;
 
@@ -189,7 +192,8 @@ class TrendChartView extends BaseChartView {
       .append("a")
       .attr("class", "edge")
       .filter((d) => Boolean(d.reportUrl))
-      .attr("xlink:href", (d) => (typeof d.reportUrl === "string" ? d.reportUrl : ""));
+      .attr("xlink:href", (d) => (typeof d.reportUrl === "string" ? d.reportUrl : ""))
+      .attr("aria-label", getTrendReportLinkLabel);
 
     slices
       .filter((d) => !d.reportUrl)

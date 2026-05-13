@@ -26,6 +26,13 @@ type TimelineOptions = {
   treeData: LoadedTreeData;
 };
 
+const getTimelineResultLinkLabel = (result: TimelineTreeNode) => {
+  const name = result.name || result.uid || translate("component.tree.unknown");
+  const status = translate(`status.${result.status || "unknown"}`);
+
+  return translate("tab.timeline.resultLink", { hash: { name, status } });
+};
+
 class TimelineView extends BaseChartView {
   rootClassName = "timeline";
 
@@ -287,6 +294,7 @@ class TimelineView extends BaseChartView {
         .enter()
         .append("a")
         .attr("xlink:href", (d: TimelineTreeNode) => `#testresult/${d.uid}`)
+        .attr("aria-label", getTimelineResultLinkLabel)
         .append("rect")
         .attr(
           "class",

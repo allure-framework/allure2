@@ -11,7 +11,8 @@
       "name": "Status"
     },
     "trend": {
-      "empty": "There is nothing to show"
+      "empty": "There is nothing to show",
+      "reportLink": "Open report for {{name}}"
     }
   },
   "component": {
@@ -50,7 +51,8 @@
         }
       },
       "unknown": "<Empty>",
-      "noItemSelected": "No item selected"
+      "noItemSelected": "No item selected",
+      "search": "Search test results"
     },
     "widgetStatus": {
       "showAll": "Show all",
@@ -60,7 +62,8 @@
     },
     "attachment": {
       "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag"
+      "videoNotSupported": "Your browser does not support the video tag",
+      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
     },
     "screenDiff": {
       "empty": "No diff data provided",
@@ -131,7 +134,8 @@
       "name": "Timeline",
       "selected": "Selected {{count}} test ({{percent}}%) with duration above {{duration}}",
       "selected_one": "Selected {{count}} test ({{percent}}%) with duration above {{duration}}",
-      "selected_other": "Selected {{count}} tests ({{percent}}%) with duration above {{duration}}"
+      "selected_other": "Selected {{count}} tests ({{percent}}%) with duration above {{duration}}",
+      "resultLink": "Open test result {{name}}, status {{status}}"
     }
   },
   "testResult": {

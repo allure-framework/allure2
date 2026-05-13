@@ -11,7 +11,8 @@
       "name": "ステータス"
     },
     "trend": {
-      "empty": "何も表示するものがありません"
+      "empty": "何も表示するものがありません",
+      "reportLink": "Open report for {{name}}"
     }
   },
   "component": {
@@ -50,7 +51,8 @@
         }
       },
       "unknown": "空ける",
-      "noItemSelected": "項目が選択されていません"
+      "noItemSelected": "項目が選択されていません",
+      "search": "Search test results"
     },
     "widgetStatus": {
       "showAll": "全て表示",
@@ -60,7 +62,8 @@
     },
     "attachment": {
       "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag"
+      "videoNotSupported": "Your browser does not support the video tag",
+      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
     },
     "screenDiff": {
       "empty": "No diff data provided",
@@ -131,7 +134,8 @@
       "name": "タイムライン",
       "selected": "{{duration}} の期間で選択された {{count}} 件のテスト ({{percent}}%)",
       "selected_other": "{{duration}} の期間で選択された {{count}} 件のテスト ({{percent}}%)",
-      "selected_one": "{{duration}} の期間で選択された {{count}} 件のテスト ({{percent}}%)"
+      "selected_one": "{{duration}} の期間で選択された {{count}} 件のテスト ({{percent}}%)",
+      "resultLink": "Open test result {{name}}, status {{status}}"
     }
   },
   "testResult": {

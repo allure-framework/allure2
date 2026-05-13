@@ -11,7 +11,8 @@
       "name": "Status"
     },
     "trend": {
-      "empty": "Er is niets te tonen"
+      "empty": "Er is niets te tonen",
+      "reportLink": "Open report for {{name}}"
     }
   },
   "component": {
@@ -50,7 +51,8 @@
         }
       },
       "unknown": "<Leeg>",
-      "noItemSelected": "Geen item geselecteerd"
+      "noItemSelected": "Geen item geselecteerd",
+      "search": "Search test results"
     },
     "widgetStatus": {
       "showAll": "Toon alle",
@@ -60,7 +62,8 @@
     },
     "attachment": {
       "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag"
+      "videoNotSupported": "Your browser does not support the video tag",
+      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
     },
     "screenDiff": {
       "empty": "No diff data provided",
@@ -131,7 +134,8 @@
       "name": "Tijdlijn",
       "selected": "{{count}} test ({{percent}}%) geselecteerd met een duur van meer dan {{duration}}",
       "selected_one": "{{count}} test ({{percent}}%) geselecteerd met een duur van meer dan {{duration}}",
-      "selected_other": "{{count}} tests ({{percent}}%) geselecteerd met een duur van meer dan {{duration}}"
+      "selected_other": "{{count}} tests ({{percent}}%) geselecteerd met een duur van meer dan {{duration}}",
+      "resultLink": "Open test result {{name}}, status {{status}}"
     }
   },
   "testResult": {

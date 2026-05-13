@@ -11,7 +11,8 @@
       "name": "Status"
     },
     "trend": {
-      "empty": "Hier gibt es nichts zu zeigen"
+      "empty": "Hier gibt es nichts zu zeigen",
+      "reportLink": "Open report for {{name}}"
     }
   },
   "component": {
@@ -50,7 +51,8 @@
         }
       },
       "unknown": "<Leer>",
-      "noItemSelected": "Kein Eintrag ausgewählt"
+      "noItemSelected": "Kein Eintrag ausgewählt",
+      "search": "Search test results"
     },
     "widgetStatus": {
       "showAll": "Zeige alle",
@@ -60,7 +62,8 @@
     },
     "attachment": {
       "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag"
+      "videoNotSupported": "Your browser does not support the video tag",
+      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
     },
     "screenDiff": {
       "empty": "No diff data provided",
@@ -131,7 +134,8 @@
       "name": "Zeitstrahl",
       "selected": "{{count}} Test ausgewählt ({{percent}}%) mit einer Dauer von über {{duration}}",
       "selected_one": "{{count}} Test ausgewählt ({{percent}}%) mit einer Dauer von über {{duration}}",
-      "selected_other": "{{count}} Tests ausgewählt ({{percent}}%) mit einer Dauer von über {{duration}}"
+      "selected_other": "{{count}} Tests ausgewählt ({{percent}}%) mit einer Dauer von über {{duration}}",
+      "resultLink": "Open test result {{name}}, status {{status}}"
     }
   },
   "testResult": {

@@ -11,7 +11,8 @@
       "name": "სტატუსი"
     },
     "trend": {
-      "empty": "მონაცემები არაა ხელმისაწვდომი"
+      "empty": "მონაცემები არაა ხელმისაწვდომი",
+      "reportLink": "Open report for {{name}}"
     }
   },
   "component": {
@@ -50,7 +51,8 @@
         }
       },
       "unknown": "<ცარიელი>",
-      "noItemSelected": "არცერთი ელემენტი არ არის არჩეული"
+      "noItemSelected": "არცერთი ელემენტი არ არის არჩეული",
+      "search": "Search test results"
     },
     "widgetStatus": {
       "showAll": "ყველას ჩვენება",
@@ -60,7 +62,8 @@
     },
     "attachment": {
       "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag"
+      "videoNotSupported": "Your browser does not support the video tag",
+      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
     },
     "screenDiff": {
       "empty": "No diff data provided",
@@ -131,7 +134,8 @@
       "name": "დროის დიაგრამა",
       "selected": "მონიშნულია {{count}} ტესტი ({{percent}}%) {{duration}}-ზე მეტი ხანგრძლივობით",
       "selected_one": "მონიშნულია {{count}} ტესტი ({{percent}}%) {{duration}}-ზე მეტი ხანგრძლივობით",
-      "selected_other": "მონიშნულია {{count}} ტესტი ({{percent}}%) {{duration}}-ზე მეტი ხანგრძლივობით"
+      "selected_other": "მონიშნულია {{count}} ტესტი ({{percent}}%) {{duration}}-ზე მეტი ხანგრძლივობით",
+      "resultLink": "Open test result {{name}}, status {{status}}"
     }
   },
   "testResult": {

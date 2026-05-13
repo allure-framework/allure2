@@ -11,7 +11,8 @@
       "name": "Testlərin statusu"
     },
     "trend": {
-      "empty": "Göstəriləcək heç nə yoxdur"
+      "empty": "Göstəriləcək heç nə yoxdur",
+      "reportLink": "Open report for {{name}}"
     }
   },
   "component": {
@@ -50,7 +51,8 @@
         }
       },
       "unknown": "<Boş>",
-      "noItemSelected": "Heç bir element seçilməyib"
+      "noItemSelected": "Heç bir element seçilməyib",
+      "search": "Search test results"
     },
     "widgetStatus": {
       "showAll": "Hamısını göstər",
@@ -60,7 +62,8 @@
     },
     "attachment": {
       "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag"
+      "videoNotSupported": "Your browser does not support the video tag",
+      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
     },
     "screenDiff": {
       "empty": "No diff data provided",
@@ -131,7 +134,8 @@
       "name": "Zaman şkalası",
       "selected": "Müddəti {{duration}} çox olan {{count}} test ({{percent}}%) seçildi",
       "selected_one": "Müddəti {{duration}} çox olan {{count}} test ({{percent}}%) seçildi",
-      "selected_other": "Müddəti {{duration}} çox olan {{count}} test ({{percent}}%) seçildi"
+      "selected_other": "Müddəti {{duration}} çox olan {{count}} test ({{percent}}%) seçildi",
+      "resultLink": "Open test result {{name}}, status {{status}}"
     }
   },
   "testResult": {
