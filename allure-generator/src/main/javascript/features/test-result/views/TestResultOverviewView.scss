@@ -1,22 +1,21 @@
-@use "../../../variables.scss" as *;
-
+@use "../../../theme/spacing.scss" as *;
 .test-result-overview {
   &__trace {
-    border-top: 1px solid $border-color;
-    padding-top: space(1);
-    margin-top: space(1);
+    border-top: 1px solid var(--color-border-subtle);
+    padding-top: gap(1);
+    margin-top: gap(1);
     display: none;
     &_expanded {
       display: block;
     }
   }
   &__trace-toggle {
-    margin-top: space(1);
+    margin-top: gap(1);
     text-align: center;
-    padding-top: space(1);
-    color: $text-muted-color;
+    padding-top: gap(1);
+    color: var(--color-text-muted);
     &:hover {
-      background-color: $hover-color;
+      background-color: var(--color-row-bg-hover);
     }
   }
 }

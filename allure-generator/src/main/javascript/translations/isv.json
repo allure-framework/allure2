@@ -89,6 +89,9 @@
     "expand": "Razširi",
     "fullscreen": "Na cěly ekran",
     "language": "Izměni jezyk",
+    "languageShort": "Jezyk",
+    "lightTheme": "Světla tema",
+    "darkTheme": "Temna tema",
     "loading": "Loading...",
     "close": "Close"
   },

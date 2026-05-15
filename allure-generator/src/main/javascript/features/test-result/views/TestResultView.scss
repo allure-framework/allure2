@@ -1,18 +1,33 @@
-@use "../../../variables.scss" as *;
 @use "../../../mixins.scss" as *;
 
+@use "../../../theme/spacing.scss" as *;
+$test-result-header-inline-padding: gap(2);
+$test-result-header-column-gap: gap(2);
+
 .test-result {
+  > .pane__subtitle {
+    margin: 0;
+    padding: gap(2) $test-result-header-inline-padding 0;
+  }
+
+  > .pane__title {
+    gap: $test-result-header-column-gap;
+    min-height: gap(5);
+    padding-block: gap(1);
+    padding-inline: $test-result-header-inline-padding;
+  }
+
   &__marks {
     display: inline-flex;
-    gap: space(1);
-    margin-inline-end: space(1);
+    gap: gap(1);
+    margin-inline-end: gap(1);
   }
   &__name {
     align-items: center;
     display: flex;
     gap: 0;
     min-width: 0;
-    padding-inline-start: space(2);
+    padding-inline-start: 0;
 
     > .long-line {
       flex: 1 1 auto;
@@ -20,7 +35,7 @@
     }
   }
   &__content {
-    margin-bottom: $tree-scroll-strut-size;
+    margin-bottom: var(--layout-scroll-end-padding);
   }
 }
 
@@ -34,11 +49,11 @@
 }
 
 .message {
-  border-bottom: 3px solid;
+  border-bottom: 2px solid;
   @include status-border();
 }
 
 .fullname__copy {
   cursor: pointer;
-  margin-inline-end: space(1);
+  margin-inline-end: gap(1);
 }

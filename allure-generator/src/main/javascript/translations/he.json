@@ -83,6 +83,9 @@
     "expand": "הרחב",
     "fullscreen": "מסך מלא",
     "language": "שנה שפה",
+    "languageShort": "שפה",
+    "lightTheme": "ערכת נושא בהירה",
+    "darkTheme": "ערכת נושא כהה",
     "loading": "Loading...",
     "close": "Close"
   },

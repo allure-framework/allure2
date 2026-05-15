@@ -81,6 +81,9 @@
     "expand": "Uitklappen",
     "fullscreen": "Volledig scherm",
     "language": "Taal wijzigen",
+    "languageShort": "Taal",
+    "lightTheme": "Licht thema",
+    "darkTheme": "Donker thema",
     "loading": "Loading...",
     "close": "Close"
   },

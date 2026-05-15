@@ -1,12 +1,11 @@
-@use "../../../../variables.scss" as *;
-
+@use "../../../../theme/spacing.scss" as *;
 .executor-icon {
   background: url(./default-icon.png) center no-repeat;
   background-size: contain;
   display: block;
-  flex: 0 0 space(4);
-  height: space(4);
-  width: space(4);
+  flex: 0 0 gap(4);
+  height: gap(4);
+  width: gap(4);
   &__jenkins {
     background-image: url(./jenkins.svg);
   }
@@ -43,6 +42,6 @@
 .executor {
   align-items: center;
   display: flex;
-  gap: space(1);
-  line-height: 1.5em !important;
+  gap: gap(1);
+  line-height: var(--line-height-m) !important;
 }

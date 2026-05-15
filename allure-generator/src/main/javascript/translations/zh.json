@@ -81,6 +81,9 @@
     "expand": "展开",
     "fullscreen": "全屏",
     "language": "切换地区语言",
+    "languageShort": "语言",
+    "lightTheme": "浅色主题",
+    "darkTheme": "深色主题",
     "loading": "Loading...",
     "close": "Close"
   },

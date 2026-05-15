@@ -1,29 +1,52 @@
-@use "../../../../variables.scss" as *;
-
+@use "../../../../theme/spacing.scss" as *;
 .tabs {
+  display: flex;
+  gap: gap(1);
   list-style-type: none;
   position: relative;
-  //  top: -1px;
-  background: #fff;
-  border-bottom: 1px solid $border-accent-color;
-  padding: 0;
+  border-bottom: 1px solid var(--color-border-subtle);
+  padding: gap(1) gap(2) 0;
   margin: 0;
 }
 .tab {
   display: inline-block;
-  font-size: 16px;
+  font-size: var(--font-size-m);
+  line-height: var(--line-height-s);
   & > a {
+    border: 0;
+    border-radius: var(--radius-0-5) var(--radius-0-5) 0 0;
+    color: var(--color-text-secondary);
     display: inline-block;
-    padding: space(1) $gap-size;
-    border-bottom: 3px solid transparent;
+    padding: gap(1);
+    position: relative;
+    transition:
+      background-color var(--color-change-transition-duration),
+      color var(--color-change-transition-duration);
+    &::after {
+      background: transparent;
+      border-radius: var(--radius-pill);
+      bottom: 0;
+      content: "";
+      height: 2px;
+      inset-inline: gap(1);
+      position: absolute;
+    }
     &:hover {
-      border-bottom-color: $border-color;
+      background: var(--color-nav-item-bg-hover);
+      color: var(--color-text-primary);
     }
   }
   &_active > a {
-    &,
+    background: var(--color-nav-item-bg-active);
+    border-bottom-color: transparent;
+    color: var(--color-nav-item-text-active);
+
     &:hover {
-      border-bottom-color: $text-color;
+      background: var(--color-nav-item-bg-active-hover);
+      color: var(--color-nav-item-text-active);
+    }
+    &::after {
+      background: var(--color-nav-item-text-active);
     }
   }
 }

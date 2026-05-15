@@ -89,6 +89,9 @@
     "expand": "Rozwiń",
     "fullscreen": "Pełny ekran",
     "language": "Zmień język",
+    "languageShort": "Język",
+    "lightTheme": "Jasny motyw",
+    "darkTheme": "Ciemny motyw",
     "loading": "Loading...",
     "close": "Close"
   },

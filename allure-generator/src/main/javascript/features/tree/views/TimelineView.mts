@@ -215,36 +215,6 @@ class TimelineView extends BaseChartView {
       .attr("class", "brush")
       .call(this.brush)
       .call(this.brush.move, this.chartX.range() as [number, number]);
-    if (this.firstRender) {
-      const brushMove = this.brush.move as unknown as (...args: unknown[]) => unknown;
-      (
-        this.svgBrush.select(".brush") as unknown as {
-          transition: () => {
-            duration: (value: number) => {
-              call: (
-                handler: (...args: unknown[]) => unknown,
-                value: [number, number],
-              ) => {
-                transition: () => {
-                  duration: (durationValue: number) => {
-                    call: (
-                      handler: (...args: unknown[]) => unknown,
-                      value: [number, number],
-                    ) => void;
-                  };
-                };
-              };
-            };
-          };
-        }
-      )
-        .transition()
-        .duration(300)
-        .call(brushMove, [(1 / 16) * this.width, (15 / 16) * this.width] as [number, number])
-        .transition()
-        .duration(500)
-        .call(brushMove, this.chartX.range() as [number, number]);
-    }
     this.svgChart.attr("height", () => {
       return PADDING + height;
     });
@@ -298,7 +268,7 @@ class TimelineView extends BaseChartView {
         .append("rect")
         .attr(
           "class",
-          (d: TimelineTreeNode) => `timeline__item chart__fill_status_${d.status || "unknown"}`,
+          (d: TimelineTreeNode) => `timeline__item timeline__item_status_${d.status || "unknown"}`,
         )
         .attr("x", (d: TimelineTreeNode) => this.chartX(d.time?.start || 0))
         .attr("width", (d: TimelineTreeNode) =>

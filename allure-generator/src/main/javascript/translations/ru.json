@@ -89,6 +89,9 @@
     "expand": "Развернуть",
     "fullscreen": "На весь экран",
     "language": "Сменить язык",
+    "languageShort": "Язык",
+    "lightTheme": "Светлая тема",
+    "darkTheme": "Тёмная тема",
     "loading": "Loading...",
     "close": "Close"
   },

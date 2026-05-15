@@ -1,33 +1,42 @@
-@use "../../../../variables.scss" as *;
+@use "../../../../theme/spacing.scss" as *;
+$button-border-radius: var(--radius-0-5);
+$button-border-color: var(--color-border-control);
+$button-border-hover: var(--color-border-control);
 
-$button-border-radius: $space-micro-4;
-$button-border-color: rgba(0, 0, 0, 0.2);
-$button-border-hover: rgba(0, 0, 0, 0.3);
+$button-bg-pressed: var(--color-control-bg-active);
+$button-bg-checked: var(--color-control-bg-active);
 
-$button-bg-pressed: rgba(0, 0, 0, 0.05);
-$button-bg-checked: #e8e8e8;
-
-$button-inverse-border-color: #666666;
-$button-inverse-color: #737373;
-$button-inverse-border-hover: #737373;
+$button-inverse-border-color: var(--color-border-inverse-strong);
+$button-inverse-color: var(--color-text-inverse-secondary);
+$button-inverse-border-hover: var(--color-text-inverse);
 
 .button {
-  padding: 0 space(2);
-  font-size: 13px;
-  line-height: space(4);
+  min-height: gap(4);
+  padding: 0 gap(1);
+  font-family: var(--font-family);
+  font-size: var(--font-size-m);
+  line-height: var(--line-height-s);
   overflow: hidden;
-  background: transparent;
+  background: var(--color-control-bg);
   border: 1px solid $button-border-color;
   border-radius: $button-border-radius;
+  color: var(--color-text-primary);
   outline: none;
+  transition:
+    background-color var(--color-change-transition-duration),
+    border-color var(--color-change-transition-duration),
+    transform var(--interaction-transition-duration);
   &:hover {
+    background: var(--color-control-bg-hover);
     border-color: $button-border-hover;
   }
   &:active {
     background: $button-bg-pressed;
+    transform: scale(0.96);
   }
   &_active {
     background: $button-bg-checked;
+    border-color: var(--color-border-medium);
   }
   &_inverse {
     color: $button-inverse-color;

@@ -81,6 +81,9 @@
     "expand": "Utöka",
     "fullscreen": "Helskärmsläge",
     "language": "Ändra språk",
+    "languageShort": "Språk",
+    "lightTheme": "Ljust tema",
+    "darkTheme": "Mörkt tema",
     "loading": "Loading...",
     "close": "Close"
   },

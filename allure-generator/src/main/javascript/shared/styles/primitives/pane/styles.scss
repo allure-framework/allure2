@@ -1,23 +1,26 @@
-@use "../../../../variables.scss" as *;
-
+@use "../../../../theme/spacing.scss" as *;
 .pane {
   &__subtitle {
-    color: $text-muted-color;
-    padding-inline-start: space(1);
-    margin: space(1) 0;
-    font-weight: initial;
-    font-size: 16px;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-m);
+    font-weight: var(--font-weight-bold);
+    padding-inline-start: gap(1);
+    margin: gap(1) 0;
   }
 
   &__title {
-    padding: 0 space(2) space(1);
+    align-items: center;
+    color: var(--color-text-primary);
+    min-height: gap(7);
+    padding: gap(2) gap(3);
     width: 100%;
     display: flex;
     position: relative;
-    margin: space(1) 0 0;
-    border-bottom: 1px solid $border-color;
-    font-size: 20px;
-    font-weight: bold;
+    margin: 0;
+    border-bottom: 1px solid var(--color-border-subtle);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-extra-bold);
+    line-height: var(--line-height-l);
     &_borderless {
       border: none;
     }
@@ -33,7 +36,7 @@
   &__controls {
     & > a {
       text-decoration: none;
-      color: $text-color;
+      color: var(--color-text-primary);
       opacity: 0.7;
       &:hover {
         opacity: 1;
@@ -42,11 +45,11 @@
   }
 
   &__section {
-    margin: $gap-size 0;
-    padding: 0 $gap-size;
+    margin: gap(2) 0;
+    padding: 0 gap(2);
   }
 
   &__section-title {
-    margin: 0 0 $gap-size;
+    margin: 0 0 gap(2);
   }
 }

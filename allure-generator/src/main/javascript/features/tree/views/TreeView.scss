@@ -1,36 +1,35 @@
-@use "../../../variables.scss" as *;
-
+@use "../../../theme/spacing.scss" as *;
 .node {
   margin-left: 0;
   position: relative;
   display: block;
   text-decoration: none;
-  color: $text-color;
+  color: var(--color-text-primary);
 
   .node {
-    margin-inline-start: space(3);
+    margin-inline-start: gap(3);
   }
   &:last-child {
-    padding-bottom: space(1);
+    padding-bottom: gap(1);
   }
   &__arrow {
-    inset-inline-start: space(1);
-    inset-block-start: space(1);
+    inset-inline-start: gap(1);
+    inset-block-start: gap(1);
     position: absolute;
     top: auto;
-    width: space(2);
-    height: space(2);
+    width: gap(2);
+    height: gap(2);
 
     .angle {
-      width: space(2);
-      height: space(2);
+      width: gap(2);
+      height: gap(2);
     }
   }
   &__name {
     min-width: 0;
   }
   &__unknown {
-    color: $text-muted-color;
+    color: var(--color-text-muted);
   }
   &__marks {
     display: flex;
@@ -39,26 +38,26 @@
     white-space: nowrap;
   }
   &__mark {
-    padding-inline: space(1);
+    padding-inline: gap(1);
     opacity: 0;
     &_shown {
       opacity: 1;
     }
   }
   &__order {
-    color: $text-muted-color;
+    color: var(--color-text-muted);
     padding-inline: 0;
   }
   &__anchor {
-    inset-inline-start: space(1);
-    inset-block-start: space(1);
+    inset-inline-start: gap(1);
+    inset-block-start: gap(1);
     position: absolute;
     top: auto;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: space(2);
-    height: space(2);
+    width: gap(2);
+    height: gap(2);
   }
   &__stats {
     display: block;
@@ -69,55 +68,66 @@
   &__title {
     overflow: hidden;
     align-items: center;
-    gap: space(1);
-    line-height: space(2);
-    min-block-size: space(4);
+    gap: gap(1);
+    line-height: var(--line-height-s);
+    min-block-size: gap(4);
+    margin-block: gap(0.25);
     padding-block: 0;
-    padding-inline-end: $gap-size;
-    padding-inline-start: space(4);
+    padding-inline-end: gap(2);
+    padding-inline-start: gap(4);
     flex: 1;
     display: flex;
     cursor: pointer;
-    border-top: 1px solid $border-color;
+    border-radius: var(--radius-0-5);
+    border-top: 0;
     position: relative;
-    &_active {
-      background-color: $selected-color;
+    transition:
+      background-color var(--color-change-transition-duration),
+      color var(--color-change-transition-duration);
+    &:hover {
+      background-color: var(--color-row-bg-hover);
       &::before {
-        background-color: $selected-color;
+        background-color: var(--color-row-bg-hover);
       }
     }
-    &:hover {
-      background-color: $hover-color;
+    &_active {
+      background-color: var(--color-row-bg-selected);
       &::before {
-        background-color: $hover-color;
+        background-color: var(--color-row-bg-selected);
+      }
+    }
+    &_active:hover {
+      background-color: var(--color-row-bg-selected-hover);
+      &::before {
+        background-color: var(--color-row-bg-selected-hover);
       }
     }
   }
   & > .node__title.long-line {
     align-items: flex-start;
-    padding-block: space(1);
+    padding-block: gap(1);
   }
   & > .node__title.long-line > .node__arrow {
-    inset-block-start: space(1);
+    inset-block-start: gap(1);
   }
   &__leaf > &__title {
     align-items: flex-start;
-    padding-block: space(1);
+    padding-block: gap(1);
   }
   &__leaf > &__title > &__anchor {
-    inset-block-start: space(1);
+    inset-block-start: gap(1);
   }
   &__leaf > &__title > &__stats {
-    color: $text-muted-color;
+    color: var(--color-text-muted);
   }
   &__time {
-    padding: space(1);
+    padding: gap(1);
   }
   &__parameters {
     padding: 0;
-    color: $text-muted-color;
+    color: var(--color-text-muted);
     min-width: 2ch;
-    font-size: smaller;
+    font-size: var(--font-size-s);
     &_separator:last-child {
       display: none;
     }
@@ -157,5 +167,5 @@
 allure-tree-view > .tree__content::after {
   content: "";
   display: block;
-  height: $tree-scroll-strut-size;
+  height: var(--layout-scroll-end-padding);
 }

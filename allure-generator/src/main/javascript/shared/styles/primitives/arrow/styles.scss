@@ -1,16 +1,15 @@
-@use "../../../../variables.scss" as *;
-
+@use "../../../../theme/spacing.scss" as *;
 .block__arrow {
   position: absolute;
   visibility: visible;
   transition: transform 0.16s ease-out;
-  font-weight: initial;
+  font-weight: var(--font-weight-normal);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: space(2);
-  height: space(2);
-  line-height: 1;
+  width: gap(2);
+  height: gap(2);
+  line-height: var(--line-height-s);
   transform-origin: center;
   &__expanded {
     transform: rotate(90deg);
@@ -23,8 +22,8 @@
 }
 
 .angle {
-  width: space(2);
-  height: space(2);
+  width: gap(2);
+  height: gap(2);
   transform-origin: center;
   transition: transform 0.16s ease-out;
 }

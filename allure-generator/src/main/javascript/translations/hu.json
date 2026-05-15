@@ -81,6 +81,9 @@
     "expand": "Kinyit",
     "fullscreen": "Teljes képernyő",
     "language": "Másik nyelv választása",
+    "languageShort": "Nyelv",
+    "lightTheme": "Világos téma",
+    "darkTheme": "Sötét téma",
     "loading": "Loading...",
     "close": "Close"
   },

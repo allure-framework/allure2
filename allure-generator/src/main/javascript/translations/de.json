@@ -81,6 +81,9 @@
     "expand": "Vergrößern",
     "fullscreen": "Vollbild",
     "language": "Sprache ändern",
+    "languageShort": "Sprache",
+    "lightTheme": "Helles Design",
+    "darkTheme": "Dunkles Design",
     "loading": "Loading...",
     "close": "Close"
   },

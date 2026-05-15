@@ -81,6 +81,9 @@
     "expand": "拡大",
     "fullscreen": "フルスクリーン",
     "language": "言語を変更",
+    "languageShort": "言語",
+    "lightTheme": "ライトテーマ",
+    "darkTheme": "ダークテーマ",
     "loading": "Loading...",
     "close": "Close"
   },

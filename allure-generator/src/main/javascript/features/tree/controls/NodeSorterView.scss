@@ -1,38 +1,47 @@
-@use "../../../variables.scss" as *;
-
+@use "../../../theme/spacing.scss" as *;
 .sorter {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   overflow: hidden;
-  color: $text-muted-color;
+  color: var(--color-text-muted);
   user-select: none;
 
   &_enabled {
-    color: $text-color;
+    color: var(--color-text-primary);
   }
 
   &__item {
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: space(1);
-    line-height: 1;
-    min-height: space(3);
-    padding-inline-end: $gap-size;
+    gap: gap(1);
+    line-height: var(--line-height-s);
+    min-height: gap(3);
+    border-radius: var(--radius-0-5);
+    padding-inline: gap(0.5) gap(1);
+
+    &:hover {
+      background: var(--color-row-bg-hover);
+      color: var(--color-text-primary);
+    }
   }
 
   &__icon {
+    color: var(--color-sorter-fg);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: space(2);
-    height: space(2);
-    opacity: 0.7;
+    width: gap(2);
+    height: gap(2);
   }
 
-  &__item:hover &__icon,
-  &_enabled &__icon {
-    opacity: 1;
+  &__item:hover &__icon {
+    color: var(--color-sorter-fg-hover);
+  }
+
+  &__icon#{&}_enabled,
+  &__item:hover &__icon#{&}_enabled {
+    color: var(--color-sorter-fg-active);
   }
 }

@@ -1,18 +1,27 @@
-@use "../../../variables.scss" as *;
 @use "../../../mixins.scss" as *;
 
+@use "../../../theme/spacing.scss" as *;
 .chart {
-  margin-right: $gap-size;
-  margin-bottom: $gap-size;
-  margin-top: $gap-size;
+  margin-right: gap(2);
+  margin-bottom: gap(2);
+  margin-top: gap(2);
   position: relative;
   flex: 1;
   &__title {
+    color: var(--color-text-secondary);
+    fill: var(--color-text-secondary);
+    font-family: var(--font-family);
     margin-top: 0;
-    margin-bottom: $gap-size;
-    font-size: 18px;
+    margin-bottom: gap(2);
+    font-size: var(--font-size-xl);
   }
   &__caption {
+    color: var(--color-text-secondary);
+    fill: var(--color-text-secondary);
+    font-family: var(--font-family);
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-xxl);
     text-anchor: middle;
   }
   &__body > div {
@@ -27,6 +36,8 @@
     height: 100%;
   }
   &__legend {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-s);
     position: absolute;
     height: 50%;
     top: 10%;
@@ -42,16 +53,18 @@
     width: 20px;
     height: 16px;
     margin-right: 5px;
-    @include status-bg-bright();
+    @include status-chart-bg();
   }
 
   &__bar {
     shape-rendering: crispEdges;
-    fill: steelblue;
+    fill: var(--color-chart-categorical-3);
+    @include status-chart-fill();
   }
   &__arc {
-    stroke: #fff;
+    stroke: var(--color-bg-primary);
     stop-opacity: 0;
+    @include status-chart-fill();
   }
   &__fill {
     @include status-fill();
@@ -60,8 +73,13 @@
     path,
     line {
       shape-rendering: crispEdges;
-      stroke: #000;
+      stroke: var(--color-border-subtle);
       fill: none;
     }
+  }
+
+  text {
+    fill: var(--color-text-secondary);
+    font-family: var(--font-family);
   }
 }

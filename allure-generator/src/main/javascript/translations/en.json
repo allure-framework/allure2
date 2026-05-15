@@ -81,6 +81,9 @@
     "expand": "Expand",
     "fullscreen": "Full screen",
     "language": "Change language",
+    "languageShort": "Language",
+    "lightTheme": "Light theme",
+    "darkTheme": "Dark theme",
     "loading": "Loading...",
     "close": "Close"
   },

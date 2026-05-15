@@ -81,6 +81,9 @@
     "expand": "გაშლა",
     "fullscreen": "სრულ ეკრანზე",
     "language": "ენის შეცვლა",
+    "languageShort": "ენა",
+    "lightTheme": "ღია თემა",
+    "darkTheme": "მუქი თემა",
     "loading": "Loading...",
     "close": "Close"
   },

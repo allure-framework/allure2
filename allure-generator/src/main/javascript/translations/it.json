@@ -83,6 +83,9 @@
     "expand": "Espandi",
     "fullscreen": "Schermo intero",
     "language": "Cambia lingua",
+    "languageShort": "Lingua",
+    "lightTheme": "Tema chiaro",
+    "darkTheme": "Tema scuro",
     "loading": "Loading...",
     "close": "Close"
   },

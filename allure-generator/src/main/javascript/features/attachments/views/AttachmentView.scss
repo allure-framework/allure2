@@ -1,25 +1,34 @@
-@use "../../../variables.scss" as *;
-
-$attachment-trace-fullscreen-offset: grid(12);
+@use "../../../theme/spacing.scss" as *;
+$attachment-iframe-fullscreen-height: 85vh;
+$attachment-iframe-fullscreen-height-dynamic: 85dvh;
+$attachment-trace-fullscreen-offset: gap(12);
 
 .attachment {
   &_trace {
     display: flex;
     flex-direction: column;
-    gap: space(1);
+    gap: gap(1);
   }
   &__filename {
-    background: $heading-bg;
-    padding: $gap-size;
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-0-5);
+    padding: gap(2);
   }
   &__text {
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-m-code);
+    font-weight: var(--font-weight-normal);
+    line-height: var(--line-height-m);
     white-space: pre-wrap;
     word-break: break-word;
     margin: 0;
     padding: 0;
   }
   &__code {
-    font: 14px normal "Courier New" monospace;
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-m-code);
+    font-weight: var(--font-weight-normal);
+    line-height: var(--line-height-m);
     white-space: pre-wrap;
     word-break: break-word;
     margin: 0;
@@ -28,17 +37,17 @@ $attachment-trace-fullscreen-offset: grid(12);
   &__table {
     width: 100%;
     tr {
-      border-bottom: 1px solid $border-color;
+      border-bottom: 1px solid var(--color-border-subtle);
     }
     td {
-      padding: space(1) space(2);
+      padding: gap(1) gap(2);
     }
   }
   &__url {
-    padding: 0 $gap-size;
-    margin: space(1) 0;
+    padding: 0 gap(2);
+    margin: gap(1) 0;
     &_comment {
-      color: $text-muted-color;
+      color: var(--color-text-muted);
     }
   }
   &__table-container {
@@ -46,12 +55,16 @@ $attachment-trace-fullscreen-offset: grid(12);
   }
   &__text-container,
   &__table-container {
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-0-5);
+    padding: gap(2);
     &_fullscreen {
-      padding: $gap-size;
-      background-color: $pane-bg-color;
+      background-color: var(--color-bg-raised);
     }
   }
   &__media-container {
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-0-5);
     text-align: center;
     cursor: zoom-in;
     &_fullscreen {
@@ -73,24 +86,26 @@ $attachment-trace-fullscreen-offset: grid(12);
   &__iframe {
     width: 100%;
     &_fullscreen {
-      background-color: $pane-bg-color;
-      height: 85vh;
+      background-color: var(--color-bg-raised);
+      height: $attachment-iframe-fullscreen-height;
+      height: $attachment-iframe-fullscreen-height-dynamic;
     }
   }
   &__trace-container {
     overflow: hidden;
     height: calc(100vh - #{$attachment-trace-fullscreen-offset});
+    height: calc(100dvh - #{$attachment-trace-fullscreen-offset});
   }
   &__trace-actions {
     align-items: center;
     display: flex;
-    gap: space(1);
+    gap: gap(1);
     justify-content: flex-end;
-    padding: 0 0 space(1);
+    padding: 0 0 gap(1);
   }
   &__trace-body {
     position: relative;
-    min-height: grid(12);
+    min-height: gap(12);
     &_loading {
       .attachment__trace-frame {
         visibility: hidden;
@@ -101,17 +116,18 @@ $attachment-trace-fullscreen-offset: grid(12);
     }
   }
   &__trace-frame-host {
-    min-height: grid(12);
+    min-height: gap(12);
   }
   &__trace-frame {
     border: 0;
     display: block;
     height: calc(100vh - #{$attachment-trace-fullscreen-offset});
+    height: calc(100dvh - #{$attachment-trace-fullscreen-offset});
     width: 100%;
   }
   &__trace-overlay {
     align-items: center;
-    background: rgba($pane-bg-color, 0.9);
+    background: color-mix(in srgb, var(--color-bg-raised) 90%, transparent);
     display: none;
     inset: 0;
     justify-content: center;

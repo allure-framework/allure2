@@ -95,14 +95,13 @@ class PieChartView extends BaseChartView {
       .data(this.pie(data))
       .enter()
       .append("path")
-      .attr("class", (d) => `chart__arc chart__fill_status_${d.data.name.toLowerCase()}`);
+      .attr("class", (d) => `chart__arc chart__arc_status_${d.data.name.toLowerCase()}`);
     this.bindTooltip(sectors);
     this.svg
       .select(".chart__plot")
       .append("text")
       .classed("chart__caption", true)
       .attr("dy", "0.4em")
-      .style("font-size", `${radius / 3}px`)
       .text(this.getChartTitle());
     if (this.firstRender) {
       (
@@ -181,7 +180,7 @@ class PieChartView extends BaseChartView {
   }
   onLegendHover(e: MouseEvent) {
     const status = (e.currentTarget as HTMLElement | null)?.dataset.status;
-    const sector = this.el.querySelector(`.chart__fill_status_${status}`);
+    const sector = this.el.querySelector(`.chart__arc_status_${status}`);
     if (sector) {
       const data = select<SVGPathElement, import("d3-shape").PieArcDatum<PieChartDatum>>(
         sector as SVGPathElement,

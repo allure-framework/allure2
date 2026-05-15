@@ -27,6 +27,10 @@ const ICONS = defineIcons({
     viewBox: "0 0 24 24",
     body: '<path vector-effect="non-scaling-stroke" d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>',
   },
+  lineArrowsChevronRightStatus: {
+    viewBox: "0 0 24 24",
+    body: '<path vector-effect="non-scaling-stroke" d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+  },
   lineArrowsRefreshCcw1: {
     viewBox: "0 0 24 24",
     body: '<path vector-effect="non-scaling-stroke" d="M8.54636 19.7675C10.9455 20.8319 13.803 20.7741 16.2499 19.3613C20.3154 17.0141 21.7084 11.8156 19.3612 7.75008L19.1112 7.31706M4.63826 16.2502C2.29105 12.1847 3.68399 6.98619 7.74948 4.63898C10.1965 3.22621 13.0539 3.16841 15.4531 4.23277M2.49316 16.3338L5.22521 17.0659L5.95727 14.3338M18.0424 9.6659L18.7744 6.93385L21.5065 7.6659" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>',
@@ -138,6 +142,14 @@ const ICONS = defineIcons({
   lineTimeClockStopwatch: {
     viewBox: "0 0 24 24",
     body: '<path vector-effect="non-scaling-stroke" d="M12 9.5V13.5L14.5 15M12 5C7.30558 5 3.5 8.80558 3.5 13.5C3.5 18.1944 7.30558 22 12 22C16.6944 22 20.5 18.1944 20.5 13.5C20.5 8.80558 16.6944 5 12 5ZM12 5V2M10 2H14M20.329 5.59204L18.829 4.09204L19.579 4.84204M3.67102 5.59204L5.17102 4.09204L4.42102 4.84204" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>',
+  },
+  lineWeatherMoon: {
+    viewBox: "0 0 24 24",
+    body: '<path vector-effect="non-scaling-stroke" d="M21 12.79A9 9 0 1 1 11.21 3C10.56 4.11 10.25 5.39 10.34 6.68C10.43 7.97 10.91 9.2 11.72 10.21C12.53 11.22 13.62 11.96 14.86 12.33C16.1 12.7 17.42 12.68 18.65 12.26C19.49 11.97 20.29 12.18 21 12.79Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>',
+  },
+  lineWeatherSun: {
+    viewBox: "0 0 24 24",
+    body: '<path vector-effect="non-scaling-stroke" d="M12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path vector-effect="non-scaling-stroke" d="M12 2V4M12 20V22M4.92993 4.92993L6.33993 6.33993M17.6599 17.6599L19.0699 19.0699M2 12H4M20 12H22M4.92993 19.0699L6.33993 17.6599M17.6599 6.33993L19.0699 4.92993" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>',
   },
   solidAlertCircle: {
     viewBox: "0 0 24 24",

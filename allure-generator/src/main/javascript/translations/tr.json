@@ -81,6 +81,9 @@
     "expand": "Genişlet",
     "fullscreen": "Tam Ekran",
     "language": "Dili Değiştir",
+    "languageShort": "Dil",
+    "lightTheme": "Açık tema",
+    "darkTheme": "Koyu tema",
     "loading": "Loading...",
     "close": "Close"
   },

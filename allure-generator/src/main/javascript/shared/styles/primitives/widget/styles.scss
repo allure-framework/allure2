@@ -1,36 +1,43 @@
-@use "../../../../variables.scss" as *;
-
+@use "../../../../theme/spacing.scss" as *;
 .widget {
-  margin-bottom: $gap-size;
+  margin-bottom: gap(3);
   position: relative;
 
   &_ghost {
-    border: 1px dashed $border-accent-color;
+    border: 1px dashed var(--color-border-default);
     box-shadow: none;
-    min-height: space(6);
+    min-height: gap(6);
     & > * {
       display: none;
     }
   }
 
   &__title {
-    margin-top: 0;
-    margin-bottom: space(2);
-    font-weight: lighter;
-    text-transform: uppercase;
+    color: var(--color-text-primary);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-extra-bold);
+    letter-spacing: 0;
+    line-height: var(--line-height-l);
+    margin: 0 0 gap(2);
   }
 
   &__subtitle {
-    color: $text-muted-color;
-    font-size: 16px;
-    text-transform: none;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-m);
+    line-height: var(--line-height-m);
+  }
+
+  &__title > &__subtitle {
+    display: inline-block;
+    margin-inline-start: gap(1);
   }
 
   &__noitems {
-    font-size: 16px;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-m);
+    line-height: var(--line-height-m);
     text-align: center;
-    padding: space(1) space(2);
-    line-height: 1.5em;
+    padding: gap(1) gap(2);
   }
 
   &__flex-line {
@@ -44,9 +51,9 @@
   &__handle {
     display: none;
     position: absolute;
-    inset-block-start: $gap-size;
-    inset-inline-end: $gap-size;
-    color: $text-muted-color;
+    inset-block-start: gap(2);
+    inset-inline-end: gap(2);
+    color: var(--color-text-muted);
     cursor: move; /* fallback if grab cursor is unsupported */
     cursor: grab;
 
@@ -60,8 +67,8 @@
   }
 
   &__table {
-    border-top: 1px solid $border-color;
-    margin: 0 (-$gap-size);
+    border-top: 1px solid var(--color-border-subtle);
+    margin-inline: calc(-1 * gap(2));
     word-break: break-all;
     .table__row:last-child {
       border-bottom: 0;
@@ -70,11 +77,12 @@
 }
 
 .draggable-icon {
+  background-image: radial-gradient(currentColor 1px, transparent 1px);
+  background-size: 4px 4px;
+  color: var(--color-text-muted);
   position: absolute;
-  width: space(1);
-  height: space(2);
+  width: gap(1);
+  height: gap(2);
   inset-inline-end: 0;
-
-  background-image: url("./draggable.svg");
   z-index: 1;
 }

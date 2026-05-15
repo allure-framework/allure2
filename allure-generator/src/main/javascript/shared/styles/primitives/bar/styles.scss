@@ -1,22 +1,22 @@
-@use "../../../../variables.scss" as *;
 @use "../../../../mixins.scss" as *;
 
 .bar {
-  height: space(2);
+  height: var(--line-height-s);
   overflow: hidden;
-  border-radius: $space-micro-4;
-  background: #eee;
+  border-radius: var(--radius-pill);
+  background: var(--color-control-bg);
   display: inline-flex;
   width: 100%;
   &__fill {
     display: inline-block;
     overflow: hidden;
-    height: space(2);
-    background: $brand-blue;
+    height: var(--line-height-s);
+    background: var(--color-status-unknown-chart-fill);
     text-align: center;
-    color: #fff;
-    font-size: 12px;
-    line-height: space(2);
-    @include status-bg-bright();
+    color: var(--color-status-unknown-on-bg);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-s);
+    @include status-chart-fill-bg();
   }
 }

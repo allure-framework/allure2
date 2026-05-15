@@ -81,6 +81,9 @@
     "expand": "Մեծացնել",
     "fullscreen": "Ամբողջ էկրան",
     "language": "Փոխեք լեզուն",
+    "languageShort": "Լեզու",
+    "lightTheme": "Լուսավոր թեմա",
+    "darkTheme": "Մուգ թեմա",
     "loading": "Loading...",
     "close": "Close"
   },

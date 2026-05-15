@@ -87,6 +87,9 @@
     "expand": "Expandir",
     "fullscreen": "Tela cheia",
     "language": "Mudar a linguagem",
+    "languageShort": "Idioma",
+    "lightTheme": "Tema claro",
+    "darkTheme": "Tema escuro",
     "loading": "Loading...",
     "close": "Close"
   },

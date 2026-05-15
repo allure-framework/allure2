@@ -81,6 +81,9 @@
     "expand": "펼치기",
     "fullscreen": "전체화면",
     "language": "언어 변경",
+    "languageShort": "언어",
+    "lightTheme": "밝은 테마",
+    "darkTheme": "어두운 테마",
     "loading": "Loading...",
     "close": "Close"
   },
