@@ -11,7 +11,8 @@
       "name": "Կարգավիճակ"
     },
     "trend": {
-      "empty": "Տվյալներ չկան"
+      "empty": "Տվյալներ չկան",
+      "reportLink": "Open report for {{name}}"
     }
   },
   "component": {
@@ -50,7 +51,8 @@
         }
       },
       "unknown": "<անհայտ>",
-      "noItemSelected": "Ոչ մի տարր ընտրված չէ"
+      "noItemSelected": "Ոչ մի տարր ընտրված չէ",
+      "search": "Search test results"
     },
     "widgetStatus": {
       "showAll": "Ցույց տալ բոլորը",
@@ -60,7 +62,8 @@
     },
     "attachment": {
       "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag"
+      "videoNotSupported": "Your browser does not support the video tag",
+      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
     },
     "screenDiff": {
       "empty": "No diff data provided",
@@ -78,6 +81,9 @@
     "expand": "Մեծացնել",
     "fullscreen": "Ամբողջ էկրան",
     "language": "Փոխեք լեզուն",
+    "languageShort": "Լեզու",
+    "lightTheme": "Լուսավոր թեմա",
+    "darkTheme": "Մուգ թեմա",
     "loading": "Loading...",
     "close": "Close"
   },
@@ -131,7 +137,8 @@
       "name": "Ժամանակային աղյուսակ",
       "selected": "Ընտրվել է {{count}} թեստ ({{percent}}%) {{duration}}-ից բարձր տևողությամբ",
       "selected_one": "Ընտրվել է {{count}} թեստ ({{percent}}%) {{duration}}-ից բարձր տևողությամբ",
-      "selected_other": "Ընտրվել են {{count}} թեստեր ({{percent}}%) {{duration}}-ից բարձր տևողությամբ"
+      "selected_other": "Ընտրվել են {{count}} թեստեր ({{percent}}%) {{duration}}-ից բարձր տևողությամբ",
+      "resultLink": "Open test result {{name}}, status {{status}}"
     }
   },
   "testResult": {

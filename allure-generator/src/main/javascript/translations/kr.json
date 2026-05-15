@@ -11,7 +11,8 @@
       "name": "상태"
     },
     "trend": {
-      "empty": "정보가 없습니다."
+      "empty": "정보가 없습니다.",
+      "reportLink": "Open report for {{name}}"
     }
   },
   "component": {
@@ -50,7 +51,8 @@
         }
       },
       "unknown": "없는",
-      "noItemSelected": "선택된 항목이 없습니다"
+      "noItemSelected": "선택된 항목이 없습니다",
+      "search": "Search test results"
     },
     "widgetStatus": {
       "showAll": "전체보기",
@@ -60,7 +62,8 @@
     },
     "attachment": {
       "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag"
+      "videoNotSupported": "Your browser does not support the video tag",
+      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
     },
     "screenDiff": {
       "empty": "No diff data provided",
@@ -78,6 +81,9 @@
     "expand": "펼치기",
     "fullscreen": "전체화면",
     "language": "언어 변경",
+    "languageShort": "언어",
+    "lightTheme": "밝은 테마",
+    "darkTheme": "어두운 테마",
     "loading": "Loading...",
     "close": "Close"
   },
@@ -131,7 +137,8 @@
       "name": "타임라인",
       "selected": "{{duration}} 이상의 시간이 소요된 {{count}} 개 테스트 ({{percent}}%)",
       "selected_one": "{{duration}} 이상의 시간이 소요된 {{count}} 개 테스트 ({{percent}}%)",
-      "selected_other": "{{duration}} 이상의 시간이 소요된 {{count}} 개 테스트 ({{percent}}%)"
+      "selected_other": "{{duration}} 이상의 시간이 소요된 {{count}} 개 테스트 ({{percent}}%)",
+      "resultLink": "Open test result {{name}}, status {{status}}"
     }
   },
   "testResult": {

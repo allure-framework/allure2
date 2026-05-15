@@ -11,7 +11,8 @@
       "name": "Statusy testov"
     },
     "trend": {
-      "empty": "Nema informacije"
+      "empty": "Nema informacije",
+      "reportLink": "Open report for {{name}}"
     }
   },
   "component": {
@@ -56,7 +57,8 @@
         }
       },
       "unknown": "<Nema>",
-      "noItemSelected": "Ničto ne jest izbrano"
+      "noItemSelected": "Ničto ne jest izbrano",
+      "search": "Search test results"
     },
     "widgetStatus": {
       "showAll": "Pokaži vsečto",
@@ -68,7 +70,8 @@
     },
     "attachment": {
       "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag"
+      "videoNotSupported": "Your browser does not support the video tag",
+      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
     },
     "screenDiff": {
       "empty": "No diff data provided",
@@ -86,6 +89,9 @@
     "expand": "Razširi",
     "fullscreen": "Na cěly ekran",
     "language": "Izměni jezyk",
+    "languageShort": "Jezyk",
+    "lightTheme": "Světla tema",
+    "darkTheme": "Temna tema",
     "loading": "Loading...",
     "close": "Close"
   },
@@ -141,7 +147,8 @@
       "selected_one": "Izbrany {{count}} test ({{percent}}%) s trvanjem vyše od {{duration}}",
       "selected_few": "Izbrane {{count}} testy ({{percent}}%) s trvanjem vyše od {{duration}}",
       "selected_many": "Izbrane {{count}} testov ({{percent}}%) s trvanjem vyše od {{duration}}",
-      "selected_other": "Izbrane {{count}} testov ({{percent}}%) s trvanjem vyše od {{duration}}"
+      "selected_other": "Izbrane {{count}} testov ({{percent}}%) s trvanjem vyše od {{duration}}",
+      "resultLink": "Open test result {{name}}, status {{status}}"
     }
   },
   "testResult": {

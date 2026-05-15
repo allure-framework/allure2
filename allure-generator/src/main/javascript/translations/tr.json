@@ -11,7 +11,8 @@
       "name": "Durum"
     },
     "trend": {
-      "empty": "Gösterilecek bir şey yok"
+      "empty": "Gösterilecek bir şey yok",
+      "reportLink": "Open report for {{name}}"
     }
   },
   "component": {
@@ -50,7 +51,8 @@
         }
       },
       "unknown": "<Boş>",
-      "noItemSelected": "Hiçbir öğe seçilmedi"
+      "noItemSelected": "Hiçbir öğe seçilmedi",
+      "search": "Search test results"
     },
     "widgetStatus": {
       "showAll": "Hepsini Göster",
@@ -60,7 +62,8 @@
     },
     "attachment": {
       "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag"
+      "videoNotSupported": "Your browser does not support the video tag",
+      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
     },
     "screenDiff": {
       "empty": "No diff data provided",
@@ -78,6 +81,9 @@
     "expand": "Genişlet",
     "fullscreen": "Tam Ekran",
     "language": "Dili Değiştir",
+    "languageShort": "Dil",
+    "lightTheme": "Açık tema",
+    "darkTheme": "Koyu tema",
     "loading": "Loading...",
     "close": "Close"
   },
@@ -131,7 +137,8 @@
       "name": "Zaman Çizelgesi",
       "selected": "{{duration}} süreden fazla süren {{count}} test (%{{percent}}) seçildi",
       "selected_one": "{{duration}} süreden fazla süren {{count}} test (%{{percent}}) seçildi",
-      "selected_other": "{{duration}} süreden fazla süren {{count}} test (%{{percent}}) seçildi"
+      "selected_other": "{{duration}} süreden fazla süren {{count}} test (%{{percent}}) seçildi",
+      "resultLink": "Open test result {{name}}, status {{status}}"
     }
   },
   "testResult": {

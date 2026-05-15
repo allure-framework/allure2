@@ -1,0 +1,60 @@
+@use "sass:map";
+
+$breakpoint-compact: 640px;
+$breakpoint-medium: 960px;
+$breakpoint-wide: 1200px;
+$breakpoint-dashboard: 1440px;
+
+$space-steps: (
+  0: "0",
+  0.25: "0-25",
+  0.5: "0-5",
+  0.75: "0-75",
+  1: "1",
+  1.5: "1-5",
+  2: "2",
+  2.5: "2-5",
+  3: "3",
+  4: "4",
+  5: "5",
+  5.5: "5-5",
+  6: "6",
+  7: "7",
+  8: "8",
+  9: "9",
+  10: "10",
+  12: "12",
+  16: "16",
+);
+
+@function gap($step) {
+  @if not map.has-key($space-steps, $step) {
+    @error "Unknown spacing step `#{$step}`. Add it to spacing.scss only when it belongs to the shared 8px grid scale.";
+  }
+
+  @return var(--space-#{map.get($space-steps, $step)});
+}
+
+:root {
+  --space-0: 0;
+  --space-0-25: 2px;
+  --space-0-5: 4px;
+  --space-0-75: 6px;
+  --space-1: 8px;
+  --space-1-5: 12px;
+  --space-2: 16px;
+  --space-2-5: 20px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-5-5: 44px;
+  --space-6: 48px;
+  --space-7: 56px;
+  --space-8: 64px;
+  --space-9: 72px;
+  --space-10: 80px;
+  --space-12: 96px;
+  --space-16: 128px;
+
+  --layout-scroll-end-padding: var(--space-12);
+}

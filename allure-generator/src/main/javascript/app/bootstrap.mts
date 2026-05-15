@@ -4,6 +4,7 @@ import "../styles.scss";
 import i18next, { initTranslations } from "../core/i18n/index.mts";
 import router from "../core/routing/router.mts";
 import { attachMountable, destroyMountable } from "../core/view/mountables.mts";
+import { initTheme } from "../shared/theme.mts";
 
 type Mountable = import("../core/registry/types.mts").Mountable;
 type RouteArguments = import("../core/registry/types.mts").RouteArguments;
@@ -33,6 +34,12 @@ if (typeof window.requestAnimationFrame === "function") {
 }
 
 const rootPath = (path: string | null = "") => path?.split("/")[0] || "";
+
+const applyThemePlatformHints = () => {
+  if (window.navigator.platform.startsWith("Mac")) {
+    document.documentElement.dataset.os = "mac";
+  }
+};
 
 const createMountController = () => {
   const controller: {
@@ -117,6 +124,8 @@ export const createApp = ({
       }
 
       this.started = true;
+      initTheme();
+      applyThemePlatformHints();
 
       initTranslations().then(() => {
         registerTabRoutes({ notFound, router, showView });

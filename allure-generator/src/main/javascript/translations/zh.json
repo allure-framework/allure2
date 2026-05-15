@@ -11,7 +11,8 @@
       "name": "状态"
     },
     "trend": {
-      "empty": "没有信息"
+      "empty": "没有信息",
+      "reportLink": "Open report for {{name}}"
     }
   },
   "component": {
@@ -50,7 +51,8 @@
         }
       },
       "unknown": "空小组",
-      "noItemSelected": "未选择任何项"
+      "noItemSelected": "未选择任何项",
+      "search": "Search test results"
     },
     "widgetStatus": {
       "showAll": "显示所有",
@@ -60,7 +62,8 @@
     },
     "attachment": {
       "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag"
+      "videoNotSupported": "Your browser does not support the video tag",
+      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
     },
     "screenDiff": {
       "empty": "No diff data provided",
@@ -78,6 +81,9 @@
     "expand": "展开",
     "fullscreen": "全屏",
     "language": "切换地区语言",
+    "languageShort": "语言",
+    "lightTheme": "浅色主题",
+    "darkTheme": "深色主题",
     "loading": "Loading...",
     "close": "Close"
   },
@@ -131,7 +137,8 @@
       "name": "时间线",
       "selected": "{{count}}个测试用例({{percent}}%)执行时间超过{{duration}}",
       "selected_other": "{{count}}个测试用例({{percent}}%)执行时间超过{{duration}}",
-      "selected_one": "{{count}}个测试用例({{percent}}%)执行时间超过{{duration}}"
+      "selected_one": "{{count}}个测试用例({{percent}}%)执行时间超过{{duration}}",
+      "resultLink": "Open test result {{name}}, status {{status}}"
     }
   },
   "testResult": {

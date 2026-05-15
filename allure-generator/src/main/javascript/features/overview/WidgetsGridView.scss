@@ -1,32 +1,29 @@
-@use "../../variables.scss" as *;
+@use "../../theme/spacing.scss" as *;
+$widgets-grid-column-min-width: 304px;
 
 .widgets-grid {
   align-items: flex-start;
+  background: var(--color-bg-canvas);
+  gap: gap(3);
   inset: 0;
   position: absolute;
-  padding: $gap-size;
+  padding: gap(3) gap(3) var(--layout-scroll-end-padding);
   max-height: 100%;
   overflow: auto;
   display: flex;
   &__col {
     flex: 1 0 0%;
     width: 50%;
-    min-width: $min-pane-size;
-    padding-bottom: $gap-size;
-
-    &::after {
-      content: "";
-      display: block;
-      height: $gap-size;
-    }
+    min-width: $widgets-grid-column-min-width;
+    padding-bottom: 0;
   }
   &__col + &__col {
     flex: 1 0 0%;
-    padding-inline-start: $gap-size;
+    padding-inline-start: 0;
   }
 }
 
-@media (max-width: $small-screen) {
+@media (max-width: $breakpoint-medium) {
   .widgets-grid {
     display: block;
     &__col {

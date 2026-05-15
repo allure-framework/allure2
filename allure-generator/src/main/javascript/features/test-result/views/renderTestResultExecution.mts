@@ -191,8 +191,8 @@ const createStepTitle = ({
       hasContent
         ? createElement("span", {
             className: "step__arrow block__arrow",
-            children: createIconElement("lineArrowsChevronRight", {
-              className: `text_status_${status || "unknown"}`,
+            children: createIconElement("lineArrowsChevronRightStatus", {
+              className: `status-icon status-icon_status_${status || "unknown"}`,
               size: "s",
             }),
           })

@@ -1,16 +1,20 @@
-@use "../../../../variables.scss" as *;
 @use "../../../../mixins.scss" as *;
 
+@use "../../../../theme/spacing.scss" as *;
 .label {
   vertical-align: baseline;
-  letter-spacing: 1px;
-  color: #fff;
-  padding: $space-micro-2 $space-micro-4;
-  font-size: 80%;
-  border-radius: $space-micro-4;
+  letter-spacing: 0;
+  color: var(--color-text-on-accent);
+  min-height: gap(2.5);
+  padding: gap(0.25) gap(1);
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-s);
+  border-radius: var(--radius-pill);
   @include status-bg-bright();
 
   &__info {
-    background: #3c58e4;
+    background: var(--color-intent-info-bg);
+    color: var(--color-intent-info-on-bg);
   }
 }

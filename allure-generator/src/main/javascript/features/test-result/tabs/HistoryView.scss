@@ -1,13 +1,12 @@
-@use "../../../variables.scss" as *;
-
+@use "../../../theme/spacing.scss" as *;
 .test-result-history {
   .label {
     flex: 0 0 auto;
-    margin-inline-end: space(1);
+    margin-inline-end: gap(1);
   }
 
   &__row {
-    padding: space(1) space(2) space(1) 0;
+    padding: gap(1) gap(2) gap(1) 0;
   }
 
   &__entry,
@@ -15,7 +14,7 @@
     align-items: center;
     display: inline-flex;
     flex-wrap: wrap;
-    gap: space(1);
+    gap: gap(1);
   }
 
   &__link {
@@ -27,6 +26,6 @@
   }
 
   &__success-rate {
-    padding-bottom: space(1);
+    padding-bottom: gap(1);
   }
 }

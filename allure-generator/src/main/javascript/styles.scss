@@ -1,4 +1,4 @@
-@use "./variables.scss" as *;
+@use "./theme/index.scss" as *;
 @use "./rtl.scss" as *;
 @use "./shared/styles/primitives/alert/styles.scss" as *;
 @use "./shared/styles/primitives/attachment-row/styles.scss" as *;
@@ -13,19 +13,47 @@
 @use "./shared/styles/primitives/widget/styles.scss" as *;
 @use "./shared/styles/primitives/parameters-table/styles.scss" as *;
 
+@use "./theme/spacing.scss" as *;
+:root {
+  --layout-view-narrow-max-width: 1104px;
+  --layout-view-small-max-width: 304px;
+  --layout-view-medium-max-width: 600px;
+  --layout-view-large-max-width: #{$breakpoint-wide};
+}
+
+html,
 body {
-  color: $text-color;
-  font-family: Helvetica, Arial, sans-serif;
+  background: var(--color-bg-canvas);
+  color: var(--color-text-primary);
+}
+
+body {
+  background: var(--color-bg-canvas);
+  color-scheme: inherit;
+  font-family: var(--font-family);
+}
+
+a {
+  color: var(--color-link-text);
+}
+
+a:hover {
+  color: var(--color-link-text-hover);
+}
+
+::selection {
+  background: var(--color-intent-primary-bg-subtle, var(--color-control-bg-active));
 }
 
 * {
   box-sizing: border-box;
+  scrollbar-color: var(--color-scrollbar) transparent;
 }
 
 html,
 body {
   height: 100%;
-  font-size: 14px;
+  font-size: var(--font-size-m);
 }
 
 #content {
@@ -40,19 +68,19 @@ body {
 }
 
 .view {
-  padding: 0 space(2);
+  padding: 0 gap(2);
   margin: 0 auto;
   &_narrow {
-    max-width: grid(138);
+    max-width: var(--layout-view-narrow-max-width);
   }
   &-small {
-    max-width: grid(38);
+    max-width: var(--layout-view-small-max-width);
   }
   &-medium {
-    max-width: grid(75);
+    max-width: var(--layout-view-medium-max-width);
   }
   &-large {
-    max-width: grid(150);
+    max-width: var(--layout-view-large-max-width);
   }
 }
 

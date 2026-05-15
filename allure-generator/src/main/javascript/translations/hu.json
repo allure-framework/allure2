@@ -11,7 +11,8 @@
       "name": "Státusz"
     },
     "trend": {
-      "empty": "Üres"
+      "empty": "Üres",
+      "reportLink": "Open report for {{name}}"
     }
   },
   "component": {
@@ -50,7 +51,8 @@
         }
       },
       "unknown": "<Üres>",
-      "noItemSelected": "Nincs kijelölt elem"
+      "noItemSelected": "Nincs kijelölt elem",
+      "search": "Search test results"
     },
     "widgetStatus": {
       "showAll": "Összes mutatása",
@@ -60,7 +62,8 @@
     },
     "attachment": {
       "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag"
+      "videoNotSupported": "Your browser does not support the video tag",
+      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
     },
     "screenDiff": {
       "empty": "No diff data provided",
@@ -78,6 +81,9 @@
     "expand": "Kinyit",
     "fullscreen": "Teljes képernyő",
     "language": "Másik nyelv választása",
+    "languageShort": "Nyelv",
+    "lightTheme": "Világos téma",
+    "darkTheme": "Sötét téma",
     "loading": "Loading...",
     "close": "Close"
   },
@@ -131,7 +137,8 @@
       "name": "Idővonal",
       "selected": "{{count}} darab teszt ({{percent}}%) futásideje {{duration}}",
       "selected_one": "{{count}} darab teszt ({{percent}}%) futásideje {{duration}}",
-      "selected_other": "{{count}} tesztek ({{percent}}%) futásideje {{duration}}"
+      "selected_other": "{{count}} tesztek ({{percent}}%) futásideje {{duration}}",
+      "resultLink": "Open test result {{name}}, status {{status}}"
     }
   },
   "testResult": {

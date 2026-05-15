@@ -1,45 +1,46 @@
-@use "../../../variables.scss" as *;
-
-$popover-arrow-size: space(2);
-$popover-border-width: $space-micro-1;
+@use "../../../theme/spacing.scss" as *;
+$popover-arrow-size: gap(2);
+$popover-border-width: 1px;
 
 .popover {
   position: absolute;
-  background: $pane-bg-color;
-  color: $text-color;
-  border: 1px solid $border-accent-color;
-  padding: space(1);
-  font-size: 14px;
+  background: var(--color-bg-raised);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-1);
+  box-shadow: var(--shadow-medium);
+  padding: gap(1);
+  font-size: var(--font-size-m);
   &::before,
   &::after {
     content: " ";
     position: absolute;
     border: 8px solid transparent;
     top: 50%;
-    margin-top: -(space(1));
+    margin-top: calc(-1 * gap(1));
   }
   &_position_right {
     &::before {
-      left: -($popover-arrow-size);
-      border-right-color: $border-accent-color;
+      left: calc(-1 * #{$popover-arrow-size});
+      border-right-color: var(--color-border-default);
     }
     &::after {
       left: calc(-#{$popover-arrow-size} + #{$popover-border-width});
-      border-right-color: $pane-bg-color;
+      border-right-color: var(--color-bg-raised);
     }
   }
   &_position_left {
     &::before {
       left: 100%;
-      border-left-color: $border-accent-color;
+      border-left-color: var(--color-border-default);
     }
     &::after {
       left: calc(100% - #{$popover-border-width});
-      border-left-color: $pane-bg-color;
+      border-left-color: var(--color-bg-raised);
     }
   }
   &__list {
     margin: 0.5em 0;
-    padding-inline-start: space(3);
+    padding-inline-start: gap(3);
   }
 }

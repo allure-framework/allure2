@@ -1,13 +1,11 @@
-@use "../../../../variables.scss" as *;
-
 .splash {
   margin: auto;
   text-align: center;
   &__title {
-    font-size: 3.5em;
-    line-height: 1;
+    font-size: var(--font-size-3xl);
+    line-height: var(--line-height-xxl);
   }
   &__subtitle {
-    color: $text-muted-color;
+    color: var(--color-text-muted);
   }
 }

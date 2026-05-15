@@ -58,18 +58,3 @@ export const findWhere = <TItem extends Record<string, unknown>>(
 
 export const last = <TItem,>(items: ReadonlyArray<TItem> | null | undefined) =>
   items && items.length ? items[items.length - 1] : undefined;
-
-export const range = (start: number, stop?: number, step = 1) => {
-  let actualStart = start;
-  let actualStop = stop;
-  if (typeof actualStop === "undefined") {
-    actualStop = actualStart;
-    actualStart = 0;
-  }
-
-  const result = [];
-  for (let index = actualStart; index < actualStop; index += step) {
-    result.push(index);
-  }
-  return result;
-};

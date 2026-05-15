@@ -11,7 +11,8 @@
       "name": "Estado"
     },
     "trend": {
-      "empty": "No hay nada para mostrar"
+      "empty": "No hay nada para mostrar",
+      "reportLink": "Open report for {{name}}"
     }
   },
   "component": {
@@ -51,7 +52,8 @@
           "tooltip": "Duración desde el primer test iniciado hasta el último finalizado"
         }
       },
-      "noItemSelected": "Ningún elemento seleccionado"
+      "noItemSelected": "Ningún elemento seleccionado",
+      "search": "Search test results"
     },
     "widgetStatus": {
       "showAll": "Mostrar todo",
@@ -62,7 +64,8 @@
     },
     "attachment": {
       "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag"
+      "videoNotSupported": "Your browser does not support the video tag",
+      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
     },
     "screenDiff": {
       "empty": "No diff data provided",
@@ -80,6 +83,9 @@
     "expand": "Expandir",
     "fullscreen": "Pantalla completa",
     "language": "Cambiar lenguaje",
+    "languageShort": "Idioma",
+    "lightTheme": "Tema claro",
+    "darkTheme": "Tema oscuro",
     "loading": "Loading...",
     "close": "Close"
   },
@@ -134,7 +140,8 @@
       "selected": "Selecionada {{count}} prueba ({{percent}}%) con duración arriba de {{duration}}",
       "selected_one": "Selecionada {{count}} prueba ({{percent}}%) con duración arriba de {{duration}}",
       "selected_many": "Selecionadas {{count}} pruebas ({{percent}}%) con duración arriba de {{duration}}",
-      "selected_other": "Selecionadas {{count}} pruebas ({{percent}}%) con duración arriba de {{duration}}"
+      "selected_other": "Selecionadas {{count}} pruebas ({{percent}}%) con duración arriba de {{duration}}",
+      "resultLink": "Open test result {{name}}, status {{status}}"
     }
   },
   "testResult": {

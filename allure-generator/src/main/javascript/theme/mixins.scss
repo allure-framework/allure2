@@ -1,0 +1,50 @@
+@mixin status-bg-and-text {
+  &.status-passed {
+    background-color: var(--color-status-passed-bg);
+    color: var(--color-status-passed-on-bg);
+  }
+
+  &.status-failed {
+    background-color: var(--color-status-failed-bg);
+    color: var(--color-status-failed-on-bg);
+  }
+
+  &.status-broken {
+    background-color: var(--color-status-broken-bg);
+    color: var(--color-status-broken-on-bg);
+  }
+
+  &.status-skipped {
+    background-color: var(--color-status-skipped-bg);
+    color: var(--color-status-skipped-on-bg);
+  }
+
+  &.status-unknown {
+    background-color: var(--color-status-unknown-bg);
+    color: var(--color-status-unknown-on-bg);
+  }
+}
+
+@mixin allure-fonts {
+  @font-face {
+    font-family: "PTRootUIWebVF";
+    font-display: swap;
+    font-weight: 300 700;
+    src:
+      url("../fonts/pt-root-ui_vf.woff") format("woff2 supports variations"),
+      url("../fonts/pt-root-ui_vf.woff2") format("woff2-variations"),
+      url("../fonts/pt-root-ui_vf.woff") format("woff supports variations"),
+      url("../fonts/pt-root-ui_vf.woff") format("woff-variations");
+  }
+
+  @font-face {
+    font-family: JetBrainsMonoVF;
+    font-display: swap;
+    font-weight: 100 800;
+    src:
+      url("../fonts/JetBrainsMono_vf.woff2") format("woff2 supports variations"),
+      url("../fonts/JetBrainsMono_vf.woff2") format("woff2-variations"),
+      url("../fonts/JetBrainsMono_vf.woff") format("woff supports variations"),
+      url("../fonts/JetBrainsMono_vf.woff") format("woff-variations");
+  }
+}

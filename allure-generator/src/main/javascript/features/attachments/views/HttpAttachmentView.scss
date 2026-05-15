@@ -1,161 +1,166 @@
-@use "../../../variables.scss" as *;
-
-$http-label-column: grid(16);
+@use "../../../theme/spacing.scss" as *;
+$http-label-column: 128px;
+$http-url-min-column: 256px;
 .http-attachment {
-  color: $text-color;
-  font-size: 14px;
-  line-height: 24px;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-m);
+  line-height: var(--line-height-l);
 
   &__summary {
     align-items: center;
-    border-bottom: 1px solid $border-color;
+    border-bottom: 1px solid var(--color-border-subtle);
     display: grid;
-    gap: space(2);
+    gap: gap(2);
     grid-template-columns: auto minmax(0, 1fr) auto auto;
-    min-height: grid(5);
-    padding: space(1) space(2);
+    min-height: gap(5);
+    padding: gap(1) gap(2);
   }
 
   &__method {
     align-items: center;
     display: inline-flex;
-    font-size: 14px;
-    font-weight: 700;
-    line-height: 24px;
+    font-size: var(--font-size-m);
+    font-weight: var(--font-weight-extra-bold);
+    line-height: var(--line-height-l);
   }
 
   &__url {
-    flex: 1 1 grid(32);
-    font-size: 15px;
-    line-height: 24px;
+    flex: 1 1 $http-url-min-column;
+    font-size: var(--font-size-l);
+    line-height: var(--line-height-l);
     min-width: 0;
     overflow-wrap: anywhere;
   }
 
   &__status,
   &__duration {
-    color: $text-muted-color;
-    line-height: 24px;
+    color: var(--color-text-muted);
+    line-height: var(--line-height-l);
   }
 
   &__download {
     align-items: center;
-    color: $text-color;
+    color: var(--color-text-primary);
     cursor: pointer;
     display: inline-flex;
-    gap: space(1);
+    gap: gap(1);
     font: inherit;
     justify-content: center;
-    line-height: 24px;
+    line-height: var(--line-height-l);
     text-decoration: none;
     white-space: nowrap;
 
     &:hover {
-      color: $brand-blue;
+      color: var(--color-intent-primary-bg);
     }
   }
 
   &__section {
-    padding: space(2);
+    padding: gap(2);
 
     + .http-attachment__section {
-      border-top: 1px solid $border-color;
+      border-top: 1px solid var(--color-border-subtle);
     }
   }
 
   &__section-header {
     align-items: center;
     display: flex;
-    gap: space(2);
+    gap: gap(2);
     justify-content: space-between;
-    margin-bottom: space(1);
+    margin-bottom: gap(1);
   }
 
   &__section-title {
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 24px;
+    font-size: var(--font-size-l);
+    font-weight: var(--font-weight-extra-bold);
+    line-height: var(--line-height-l);
     margin: 0;
   }
 
   &__meta {
     display: grid;
-    gap: space(1);
-    margin-bottom: space(2);
+    gap: gap(1);
+    margin-bottom: gap(2);
   }
 
   &__meta-row {
     align-items: start;
     display: grid;
-    gap: space(2);
+    gap: gap(2);
     grid-template-columns: $http-label-column minmax(0, 1fr);
-    min-height: space(3);
+    min-height: gap(3);
   }
 
   &__label {
-    color: $text-muted-color;
-    line-height: 24px;
+    color: var(--color-text-muted);
+    line-height: var(--line-height-l);
   }
 
   &__value {
-    line-height: 24px;
+    line-height: var(--line-height-l);
     min-width: 0;
     overflow-wrap: anywhere;
   }
 
   &__subsection {
-    margin-top: space(1);
+    margin-top: gap(1);
   }
 
   &__subsection-title {
-    color: $text-muted-color;
-    font-size: 13px;
-    font-weight: 700;
-    line-height: 16px;
-    margin: 0 0 space(1);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-s);
+    font-weight: var(--font-weight-extra-bold);
+    line-height: var(--line-height-s);
+    margin: 0 0 gap(1);
   }
 
   &__table {
     border-collapse: collapse;
-    font-size: 14px;
-    line-height: 24px;
+    font-size: var(--font-size-m);
+    line-height: var(--line-height-l);
     table-layout: fixed;
     width: 100%;
 
     tr {
-      border-bottom: 1px solid $border-color;
+      border-bottom: 1px solid var(--color-border-subtle);
     }
 
     td {
       overflow-wrap: anywhere;
-      padding: space(1);
+      padding: gap(1);
       vertical-align: top;
     }
   }
 
   &__pair-name {
-    color: $text-muted-color;
+    color: var(--color-text-muted);
     width: $http-label-column;
   }
 
   &__pair-value_masked {
-    color: $text-muted-color;
+    color: var(--color-text-muted);
   }
 
   &__masked-value {
-    background: $summary-color;
-    border: 1px solid $border-color;
-    color: $text-muted-color;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border-subtle);
+    color: var(--color-text-muted);
     cursor: help;
     display: inline-block;
-    font: 14px normal "Courier New" monospace;
-    line-height: 16px;
-    padding: 0 space(1);
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-m-code);
+    font-weight: var(--font-weight-normal);
+    line-height: var(--line-height-s);
+    padding: 0 gap(1);
   }
 
   &__part-value {
-    font: 14px normal "Courier New" monospace;
-    margin: space(1) 0 0;
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-m-code);
+    font-weight: var(--font-weight-normal);
+    line-height: var(--line-height-m);
+    margin: gap(1) 0 0;
     overflow-wrap: anywhere;
     white-space: pre-wrap;
   }
@@ -163,37 +168,42 @@ $http-label-column: grid(16);
   &__body-toolbar {
     align-items: center;
     display: flex;
-    margin-bottom: space(1);
+    margin-bottom: gap(1);
   }
 
   &__body-meta {
-    color: $text-muted-color;
-    font-size: 13px;
-    line-height: 16px;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-s);
+    line-height: var(--line-height-s);
   }
 
   &__body-content {
     .attachment__text-container,
     .attachment__table-container {
-      background: $heading-bg;
-      padding: space(2);
+      background: var(--color-bg-secondary);
+      border-radius: var(--radius-0-5);
+      padding: gap(2);
     }
 
     .attachment__code,
     .attachment__text {
-      font: 14px normal "Courier New" monospace;
+      font-family: var(--font-family-mono);
+      font-size: var(--font-size-m-code);
+      font-weight: var(--font-weight-normal);
+      line-height: var(--line-height-m);
     }
 
     .attachment__media-container {
-      background: $heading-bg;
+      background: var(--color-bg-secondary);
+      border-radius: var(--radius-0-5);
       cursor: default;
-      padding: space(2);
+      padding: gap(2);
     }
   }
 
   &__empty,
   &__body-message {
-    color: $text-muted-color;
-    padding: space(2);
+    color: var(--color-text-muted);
+    padding: gap(2);
   }
 }

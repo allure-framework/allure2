@@ -1,16 +1,15 @@
-@use "../../../../variables.scss" as *;
-
+@use "../../../../theme/spacing.scss" as *;
 .step-stats {
   &__summary,
   &__time {
-    color: $text-muted-color;
-    font-size: small;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-s);
     white-space: nowrap;
     vertical-align: bottom;
   }
 
   &__summary {
-    margin-inline-start: space(1);
+    margin-inline-start: gap(1);
   }
 
   &__time {

@@ -4,6 +4,7 @@ import { defineMountableElement } from "../../../core/view/elementView.mts";
 import { attachMountable, destroyMountable } from "../../../core/view/mountables.mts";
 import translate from "../../../helpers/t.mts";
 import { createElement } from "../../../shared/dom.mts";
+import { statusChartColor } from "../../../shared/theme.mts";
 import { values } from "../../../utils/statuses.mts";
 import TrendChartView from "../charts/TrendChartView.mts";
 
@@ -38,7 +39,7 @@ const HistoryTrendWidgetView = (options: HistoryTrendWidgetOptions = {}) => {
         items: options?.data || [],
         hideLines: true,
         hidePoints: true,
-        colors: scaleOrdinal(["#fd5a3e", "#ffd050", "#97cc64", "#aaa", "#d35ebe"]).domain(values),
+        colors: scaleOrdinal(values.map(statusChartColor)).domain(values),
         keys: Array.from(values),
       }),
     );

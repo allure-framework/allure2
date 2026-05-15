@@ -11,13 +11,15 @@ type OverviewRenderOptions = {
 
 export const createTestResultOverviewContent = ({ cls, status, ...data }: OverviewRenderOptions) =>
   createFragment(
-    createElement("div", {
-      className: b("alert", "wide", { status }),
-      children: createStatusDetailsElement({
-        status,
-        ...data,
-      }),
-    }),
+    data.statusMessage || data.statusTrace
+      ? createElement("div", {
+          className: b("alert", "wide", { status }),
+          children: createStatusDetailsElement({
+            status,
+            ...data,
+          }),
+        })
+      : null,
     createElement("div", {
       className: b(cls, "tags"),
     }),

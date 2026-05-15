@@ -1,0 +1,31 @@
+@use "sass:map";
+
+$radius-steps: (
+  0: "0",
+  0.25: "0-25",
+  0.5: "0-5",
+  1: "1",
+  1.5: "1-5",
+  2: "2",
+  pill: "pill",
+  circle: "circle",
+);
+
+@function radius($step) {
+  @if not map.has-key($radius-steps, $step) {
+    @error "Unknown radius step `#{$step}`. Add it to radius.scss only when it belongs to the shared radius scale.";
+  }
+
+  @return var(--radius-#{map.get($radius-steps, $step)});
+}
+
+:root {
+  --radius-0: 0;
+  --radius-0-25: 2px;
+  --radius-0-5: 4px;
+  --radius-1: 8px;
+  --radius-1-5: 12px;
+  --radius-2: 16px;
+  --radius-pill: 999px;
+  --radius-circle: 50%;
+}

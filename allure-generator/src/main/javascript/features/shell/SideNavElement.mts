@@ -8,32 +8,41 @@ import translate from "../../helpers/t.mts";
 import b from "../../shared/bem/index.mts";
 import { createElement } from "../../shared/dom.mts";
 import { createIconElement } from "../../shared/icon/index.mts";
+import { THEME_CHANGE_EVENT, getActiveTheme, toggleTheme } from "../../shared/theme.mts";
 import TooltipView from "../../shared/ui/TooltipView.mts";
 import { findWhere } from "../../shared/utils/collections.mts";
 import LanguageSelectView from "./LanguageSelectView.mts";
+
+const getThemeSwitchLabel = () =>
+  translate(getActiveTheme() === "dark" ? "controls.lightTheme" : "controls.darkTheme");
+
+const getThemeSwitchIcon = () =>
+  getActiveTheme() === "dark" ? "lineWeatherSun" : "lineWeatherMoon";
 
 class SideNavCustomElement extends BaseElement {
   declare tooltip: TooltipView;
 
   declare langSelect: LanguageSelectView;
 
+  declare onThemeChange: () => void;
+
   constructor() {
     super();
     this.tooltip = new TooltipView({ position: "right" });
     this.langSelect = new LanguageSelectView();
+    this.onThemeChange = this.updateThemeSwitch.bind(this);
   }
 
   renderElement() {
     const language = findWhere(LANGUAGES, { id: settings.getLanguage() }) || LANGUAGES[0];
     const isCollapsed = settings.isSidebarCollapsed();
+    const themeSwitchLabel = getThemeSwitchLabel();
     if (!language) {
       throw new Error("At least one language must be configured");
     }
-    const languageButtonClass = `${b("button")} ${b("button", { inverse: true })} ${b(
-      "side-nav",
-      "language-small",
-      { lang: language.id },
-    )}`;
+    const languageButtonClass = `${b("button")} ${b("side-nav", "language-small", {
+      lang: language.id,
+    })}`;
 
     this.className = "side-nav";
     this.classList.toggle("side-nav_collapsed", isCollapsed);
@@ -99,6 +108,33 @@ class SideNavCustomElement extends BaseElement {
         children: [
           createElement("div", {
             attrs: {
+              "data-tooltip": themeSwitchLabel,
+            },
+            className: b("side-nav", "item"),
+            children: createElement("button", {
+              attrs: {
+                "aria-pressed": String(getActiveTheme() === "dark"),
+                "data-ga4-event": "theme_toggle_click",
+                type: "button",
+              },
+              className: b("side-nav", "theme"),
+              children: [
+                createElement("span", {
+                  className: b("side-nav", "icon-lane"),
+                  children: createIconElement(getThemeSwitchIcon(), {
+                    className: `${b("side-nav", "icon")} ${b("side-nav", "theme-icon")}`,
+                    size: "m",
+                  }),
+                }),
+                createElement("span", {
+                  className: `${b("side-nav", "text")} ${b("side-nav", "theme-label")}`,
+                  text: themeSwitchLabel,
+                }),
+              ],
+            }),
+          }),
+          createElement("div", {
+            attrs: {
               "data-tooltip": translate("controls.language"),
             },
             className: b("side-nav", "item"),
@@ -106,8 +142,20 @@ class SideNavCustomElement extends BaseElement {
               attrs: {
                 "data-ga4-event": "language_menu_click",
               },
-              className: languageButtonClass,
-              text: language.id,
+              className: b("side-nav", "language"),
+              children: [
+                createElement("span", {
+                  className: b("side-nav", "icon-lane"),
+                  children: createElement("span", {
+                    className: languageButtonClass,
+                    text: language.id,
+                  }),
+                }),
+                createElement("span", {
+                  className: b("side-nav", "text"),
+                  text: translate("controls.languageShort"),
+                }),
+              ],
             }),
           }),
           createElement("div", {
@@ -145,7 +193,7 @@ class SideNavCustomElement extends BaseElement {
         "mouseleave [data-tooltip]": "onSidelinkLeave",
         "click .side-nav__collapse": "onCollapseClick",
         "click .side-nav__language": "onLanguageClick",
-        "click .side-nav__language-small": "onLanguageClick",
+        "click .side-nav__theme": "onThemeClick",
       },
       this,
     );
@@ -156,6 +204,24 @@ class SideNavCustomElement extends BaseElement {
   isTabActive(name: string) {
     const currentUrl = router.getCurrentUrl();
     return name ? currentUrl.indexOf(name) === 0 : currentUrl === name;
+  }
+
+  attachToDom() {
+    if (this.isAttached) {
+      return;
+    }
+
+    super.attachToDom();
+    window.addEventListener(THEME_CHANGE_EVENT, this.onThemeChange);
+  }
+
+  detachFromDom() {
+    if (!this.isAttached) {
+      return;
+    }
+
+    window.removeEventListener(THEME_CHANGE_EVENT, this.onThemeChange);
+    super.detachFromDom();
   }
 
   onNavigationClick(event: Event) {
@@ -196,6 +262,42 @@ class SideNavCustomElement extends BaseElement {
     if (collapseText instanceof HTMLElement) {
       collapseText.toggleAttribute("hidden", collapsed);
     }
+    this.tooltip.hide();
+  }
+
+  updateThemeSwitch() {
+    const themeButton = this.querySelector(".side-nav__theme");
+
+    if (!(themeButton instanceof HTMLButtonElement)) {
+      return;
+    }
+
+    const label = getThemeSwitchLabel();
+    const item = themeButton.closest(".side-nav__item");
+    const labelElement = themeButton.querySelector(".side-nav__theme-label");
+    const iconElement = themeButton.querySelector(".side-nav__theme-icon");
+
+    themeButton.setAttribute("aria-pressed", String(getActiveTheme() === "dark"));
+    item?.setAttribute("data-tooltip", label);
+
+    if (labelElement) {
+      labelElement.textContent = label;
+    }
+
+    iconElement?.replaceWith(
+      createIconElement(getThemeSwitchIcon(), {
+        className: `${b("side-nav", "icon")} ${b("side-nav", "theme-icon")}`,
+        size: "m",
+      }),
+    );
+  }
+
+  onThemeClick(event: Event) {
+    event.preventDefault();
+
+    toggleTheme();
+    this.updateThemeSwitch();
+    window.requestAnimationFrame(() => router.reload());
     this.tooltip.hide();
   }
 

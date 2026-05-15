@@ -1,11 +1,12 @@
-@use "../../../variables.scss" as *;
+@use "../../../theme/spacing.scss" as *;
+$loader-screen-min-height: 320px;
 
 .loader-view {
   width: 100%;
 
   &_screen {
     height: 100%;
-    min-height: grid(40);
+    min-height: $loader-screen-min-height;
   }
 }
 
@@ -13,12 +14,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: space(2);
+  gap: gap(2);
   text-align: center;
-  color: $brand-blue;
+  color: var(--color-intent-primary-bg);
 
   &_screen {
-    gap: space(3);
+    gap: gap(3);
   }
 
   &__mask {
@@ -28,26 +29,26 @@
     width: 100%;
 
     &_inline {
-      padding: space(3) space(2);
+      padding: gap(3) gap(2);
     }
 
     &_screen {
       height: 100%;
-      min-height: grid(40);
-      padding: space(4);
+      min-height: $loader-screen-min-height;
+      padding: gap(4);
     }
   }
 
   &__spinner {
     display: block;
-    width: space(3);
-    height: space(3);
+    width: gap(3);
+    height: gap(3);
     animation: loader-spin 0.75s linear infinite;
   }
 
   &_screen &__spinner {
-    width: space(7);
-    height: space(7);
+    width: gap(7);
+    height: gap(7);
   }
 
   &__spinner-track {
@@ -60,7 +61,7 @@
   }
 
   &__text {
-    font-size: 14px;
+    font-size: var(--font-size-m);
     margin: 0;
 
     &_hidden {

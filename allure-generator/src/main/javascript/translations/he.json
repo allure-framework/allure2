@@ -11,7 +11,8 @@
       "name": "סטטוס"
     },
     "trend": {
-      "empty": "אין דבר להציג"
+      "empty": "אין דבר להציג",
+      "reportLink": "Open report for {{name}}"
     }
   },
   "component": {
@@ -51,7 +52,8 @@
         }
       },
       "unknown": "רֵיק",
-      "noItemSelected": "לא נבחר פריט"
+      "noItemSelected": "לא נבחר פריט",
+      "search": "Search test results"
     },
     "widgetStatus": {
       "showAll": "הצג את כל הפריטים",
@@ -62,7 +64,8 @@
     },
     "attachment": {
       "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag"
+      "videoNotSupported": "Your browser does not support the video tag",
+      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
     },
     "screenDiff": {
       "empty": "No diff data provided",
@@ -80,6 +83,9 @@
     "expand": "הרחב",
     "fullscreen": "מסך מלא",
     "language": "שנה שפה",
+    "languageShort": "שפה",
+    "lightTheme": "ערכת נושא בהירה",
+    "darkTheme": "ערכת נושא כהה",
     "loading": "Loading...",
     "close": "Close"
   },
@@ -134,7 +140,8 @@
       "selected": "נבחר מקרה בדיקה {{count}} ({{percent}}%) עם זמן ריצה מעל {{duration}}",
       "selected_one": "נבחר מקרה בדיקה {{count}} ({{percent}}%) עם זמן ריצה מעל {{duration}}",
       "selected_two": "נבחרו {{count}} מקרי בדיקה ({{percent}}%) עם זמן ריצה מעל {{duration}}",
-      "selected_other": "נבחרו {{count}} מקרי בדיקה ({{percent}}%) עם זמן ריצה מעל {{duration}}"
+      "selected_other": "נבחרו {{count}} מקרי בדיקה ({{percent}}%) עם זמן ריצה מעל {{duration}}",
+      "resultLink": "Open test result {{name}}, status {{status}}"
     }
   },
   "testResult": {

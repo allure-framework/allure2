@@ -2,10 +2,10 @@ import "./TrendChartView.scss";
 import { max } from "d3-array";
 import { scaleLinear, scalePoint } from "d3-scale";
 import { scaleOrdinal } from "d3-scale";
-import { schemeCategory10 } from "d3-scale-chromatic";
 import { area, line, stack } from "d3-shape";
 import translate from "../../../helpers/t.mts";
 import { createElement, createFragment } from "../../../shared/dom.mts";
+import { chartCategoricalColors } from "../../../shared/theme.mts";
 import BaseChartView from "../../../shared/ui/BaseChartView.mts";
 import TooltipView from "../../../shared/ui/TooltipView.mts";
 
@@ -22,6 +22,9 @@ type TrendChartOptions = {
   hideLines?: boolean;
   hidePoints?: boolean;
 };
+
+const getTrendReportLinkLabel = (point: TrendPoint) =>
+  translate("chart.trend.reportLink", { hash: { name: point.name } });
 
 class TrendChartView extends BaseChartView {
   PAD_BOTTOM = 50;
@@ -55,7 +58,7 @@ class TrendChartView extends BaseChartView {
       .keys(this.keys)
       .value((d, key) => d.data[key] || 0);
 
-    this.color = options.colors || scaleOrdinal(schemeCategory10);
+    this.color = options.colors || scaleOrdinal(chartCategoricalColors);
 
     if (options.notStacked) {
       this.stack.offset(() => {});
@@ -189,7 +192,8 @@ class TrendChartView extends BaseChartView {
       .append("a")
       .attr("class", "edge")
       .filter((d) => Boolean(d.reportUrl))
-      .attr("xlink:href", (d) => (typeof d.reportUrl === "string" ? d.reportUrl : ""));
+      .attr("xlink:href", (d) => (typeof d.reportUrl === "string" ? d.reportUrl : ""))
+      .attr("aria-label", getTrendReportLinkLabel);
 
     slices
       .filter((d) => !d.reportUrl)
@@ -205,7 +209,7 @@ class TrendChartView extends BaseChartView {
       .attr("y1", (d) => this.y(d.total))
       .attr("x2", (d) => this.x(d.id) ?? 0)
       .attr("y2", this.y(0))
-      .attr("stroke", "white")
+      .attr("stroke", "var(--color-bg-primary)")
       .attr("stroke-width", 1)
       .attr("class", "report-line");
 
