@@ -92,6 +92,7 @@
     }
     &_active {
       background-color: var(--color-row-bg-selected);
+      color: var(--color-text-primary);
       &::before {
         background-color: var(--color-row-bg-selected);
       }
