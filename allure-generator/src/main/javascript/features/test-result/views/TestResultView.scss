@@ -18,6 +18,7 @@ $test-result-header-column-gap: gap(2);
   }
 
   &__marks {
+    color: var(--color-text-secondary);
     display: inline-flex;
     gap: gap(1);
     margin-inline-end: gap(1);

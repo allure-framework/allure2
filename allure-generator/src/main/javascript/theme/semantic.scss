@@ -28,7 +28,7 @@
   --color-border-control: var(--palette-gray-neutral-alpha-day-300);
   --color-border-strong: var(--palette-gray-neutral-alpha-day-650);
   --color-border-inverse-strong: var(--palette-gray-neutral-alpha-night-300);
-  --color-focus-ring: var(--palette-periwinkle-300);
+  --color-focus-ring: var(--palette-periwinkle-400);
 
   /* Controls */
   --color-control-bg: var(--palette-gray-neutral-alpha-day-150);
@@ -54,7 +54,7 @@
 
   /* Links */
   --color-link-text: var(--palette-blue-day-darken-5);
-  --color-link-text-hover: var(--palette-blue-day-darken-4);
+  --color-link-text-hover: var(--palette-blue-day-darken-5);
   --color-link-text-active: var(--palette-blue-day-darken-6);
 
   /* Primary product actions */
@@ -71,13 +71,13 @@
   --color-intent-danger-bg-subtle: var(--palette-red-day-darken-1-8);
   --color-intent-danger-bg-subtle-hover: var(--palette-red-day-darken-1-16);
   --color-intent-danger-bg-subtle-active: var(--palette-red-day-darken-1-24);
-  --color-intent-danger-text: var(--palette-red-day-darken-4);
+  --color-intent-danger-text: var(--palette-red-day-darken-6);
   --color-intent-danger-border: var(--palette-red-day-darken-4);
-  --color-intent-danger-on-bg: var(--palette-gray-950);
+  --color-intent-danger-on-bg: var(--palette-gray-neutral-0);
 
   --color-intent-success-bg: var(--palette-green-day-darken-1);
   --color-intent-success-bg-hover: var(--palette-green-day-darken-2);
-  --color-intent-success-bg-active: var(--palette-green-day-darken-4);
+  --color-intent-success-bg-active: var(--palette-green-day-darken-2);
   --color-intent-success-bg-subtle: var(--palette-green-day-darken-1-8);
   --color-intent-success-bg-subtle-hover: var(--palette-green-day-darken-1-16);
   --color-intent-success-bg-subtle-active: var(--palette-green-day-darken-1-24);
@@ -86,33 +86,33 @@
   --color-intent-success-on-bg: var(--palette-gray-950);
 
   --color-intent-warning-bg: var(--palette-amber-day-darken-1);
-  --color-intent-warning-bg-hover: var(--palette-amber-day-darken-2);
-  --color-intent-warning-bg-active: var(--palette-amber-day-darken-4);
+  --color-intent-warning-bg-hover: var(--palette-amber-day-darken-1);
+  --color-intent-warning-bg-active: var(--palette-amber-day-darken-1);
   --color-intent-warning-bg-subtle: var(--palette-amber-day-darken-1-8);
   --color-intent-warning-text: var(--palette-amber-day-darken-6);
   --color-intent-warning-border: var(--palette-amber-day-darken-6);
   --color-intent-warning-on-bg: var(--palette-gray-950);
 
-  --color-intent-info-bg: var(--palette-sky-day-darken-1);
-  --color-intent-info-bg-hover: var(--palette-sky-day-darken-2);
-  --color-intent-info-bg-active: var(--palette-sky-day-darken-4);
+  --color-intent-info-bg: var(--palette-sky-day-darken-3);
+  --color-intent-info-bg-hover: var(--palette-sky-day-darken-4);
+  --color-intent-info-bg-active: var(--palette-sky-day-darken-5);
   --color-intent-info-bg-subtle: var(--palette-sky-day-darken-1-8);
   --color-intent-info-text: var(--palette-sky-day-darken-5);
   --color-intent-info-border: var(--palette-sky-day-darken-5);
-  --color-intent-info-on-bg: var(--palette-gray-950);
+  --color-intent-info-on-bg: var(--palette-gray-neutral-alpha-night-25);
 
   /* Test-result status colors */
   --color-status-failed-bg: var(--palette-red-day-darken-1);
   --color-status-failed-bg-subtle: var(--palette-red-day-darken-1-16);
-  --color-status-failed-text: var(--palette-red-day-darken-4);
+  --color-status-failed-text: var(--palette-red-day-darken-5);
   --color-status-failed-border: var(--palette-red-day-darken-1);
-  --color-status-failed-on-bg: var(--palette-gray-950);
+  --color-status-failed-on-bg: var(--palette-gray-neutral-0);
   --color-status-failed-chart: var(--palette-red-day-darken-2);
   --color-status-failed-chart-fill: var(--palette-red-day-darken-1);
 
   --color-status-broken-bg: var(--palette-orange-day-darken-1);
   --color-status-broken-bg-subtle: var(--palette-orange-day-darken-1-16);
-  --color-status-broken-text: var(--palette-orange-day-darken-5);
+  --color-status-broken-text: var(--palette-orange-day-darken-6);
   --color-status-broken-border: var(--palette-orange-day-darken-1);
   --color-status-broken-on-bg: var(--palette-gray-950);
   --color-status-broken-chart: var(--palette-orange-day-darken-2);
@@ -120,7 +120,7 @@
 
   --color-status-passed-bg: var(--palette-green-day-darken-1);
   --color-status-passed-bg-subtle: var(--palette-green-day-darken-1-16);
-  --color-status-passed-text: var(--palette-green-day-darken-5);
+  --color-status-passed-text: var(--palette-green-day-darken-6);
   --color-status-passed-border: var(--palette-green-day-darken-1);
   --color-status-passed-on-bg: var(--palette-gray-950);
   --color-status-passed-chart: var(--palette-green-day-darken-2);
@@ -209,7 +209,7 @@
   --color-text-on-accent: var(--palette-gray-neutral-75);
   --color-icon-primary: var(--palette-gray-neutral-alpha-night-250);
   --color-icon-secondary: var(--palette-gray-neutral-alpha-night-400);
-  --color-icon-muted: var(--palette-gray-neutral-alpha-night-550);
+  --color-icon-muted: var(--palette-gray-neutral-alpha-night-450);
   --color-icon-inverse-primary: var(--palette-gray-neutral-alpha-night-50);
 
   /* Borders and focus */
@@ -232,8 +232,8 @@
 
   /* Navigation and collection states */
   --color-nav-item-bg-hover: var(--palette-gray-neutral-alpha-night-900);
-  --color-nav-item-bg-active: var(--palette-violet-night-darken-5-20);
-  --color-nav-item-bg-active-hover: var(--palette-violet-night-darken-5-28);
+  --color-nav-item-bg-active: var(--palette-violet-night-darken-5-12);
+  --color-nav-item-bg-active-hover: var(--palette-violet-night-darken-5-12);
   --color-nav-item-text-active: var(--palette-violet-night-base);
   --color-nav-item-icon-active: var(--palette-violet-night-base);
   --color-row-bg-hover: var(--palette-gray-neutral-alpha-night-900);
@@ -244,9 +244,9 @@
   --color-sorter-fg-active: var(--palette-violet-night-base);
 
   /* Links */
-  --color-link-text: var(--palette-blue-night-darken-1);
-  --color-link-text-hover: var(--palette-blue-night-base);
-  --color-link-text-active: var(--palette-blue-night-darken-2);
+  --color-link-text: var(--palette-periwinkle-300);
+  --color-link-text-hover: var(--palette-periwinkle-300);
+  --color-link-text-active: var(--palette-periwinkle-300);
 
   /* Primary product actions */
   --color-intent-primary-bg: var(--palette-violet-night-darken-6);
@@ -261,10 +261,10 @@
   --color-intent-danger-bg-active: var(--palette-red-night-darken-7);
   --color-intent-danger-bg-subtle: var(--palette-red-night-darken-4-12);
   --color-intent-danger-bg-subtle-hover: var(--palette-red-night-darken-4-20);
-  --color-intent-danger-bg-subtle-active: var(--palette-red-night-darken-4-28);
+  --color-intent-danger-bg-subtle-active: var(--palette-red-night-darken-4-20);
   --color-intent-danger-text: var(--palette-red-night-base);
   --color-intent-danger-border: var(--palette-red-night-base);
-  --color-intent-danger-on-bg: var(--palette-gray-950);
+  --color-intent-danger-on-bg: var(--palette-gray-neutral-0);
 
   --color-intent-success-bg: var(--palette-green-night-darken-5);
   --color-intent-success-bg-hover: var(--palette-green-night-darken-6);
@@ -274,14 +274,14 @@
   --color-intent-success-bg-subtle-active: var(--palette-green-night-darken-5-28);
   --color-intent-success-text: var(--palette-green-night-base);
   --color-intent-success-border: var(--palette-green-night-base);
-  --color-intent-success-on-bg: var(--palette-gray-950);
+  --color-intent-success-on-bg: var(--palette-gray-neutral-0);
 
-  --color-intent-warning-bg: var(--palette-amber-night-darken-4);
-  --color-intent-warning-bg-hover: var(--palette-amber-night-darken-6);
-  --color-intent-warning-bg-active: var(--palette-amber-night-darken-7);
+  --color-intent-warning-bg: var(--palette-amber-night-darken-2);
+  --color-intent-warning-bg-hover: var(--palette-amber-night-darken-3);
+  --color-intent-warning-bg-active: var(--palette-amber-night-darken-3);
   --color-intent-warning-bg-subtle: var(--palette-amber-night-darken-4-12);
-  --color-intent-warning-text: var(--palette-amber-night-darken-3);
-  --color-intent-warning-border: var(--palette-amber-night-darken-3);
+  --color-intent-warning-text: var(--palette-amber-night-base);
+  --color-intent-warning-border: var(--palette-amber-night-base);
   --color-intent-warning-on-bg: var(--palette-gray-950);
 
   --color-intent-info-bg: var(--palette-sky-night-darken-5);
@@ -290,20 +290,20 @@
   --color-intent-info-bg-subtle: var(--palette-sky-night-darken-5-12);
   --color-intent-info-text: var(--palette-sky-night-base);
   --color-intent-info-border: var(--palette-sky-night-base);
-  --color-intent-info-on-bg: var(--palette-gray-950);
+  --color-intent-info-on-bg: var(--palette-gray-neutral-0);
 
   /* Test-result status colors */
   --color-status-failed-bg: var(--palette-red-night-darken-3);
   --color-status-failed-bg-subtle: var(--palette-red-night-darken-4-20);
-  --color-status-failed-text: var(--palette-red-night-darken-2);
+  --color-status-failed-text: var(--palette-red-night-base);
   --color-status-failed-border: var(--palette-red-night-darken-2);
-  --color-status-failed-on-bg: var(--palette-gray-950);
+  --color-status-failed-on-bg: var(--palette-gray-neutral-0);
   --color-status-failed-chart: var(--palette-red-night-darken-3);
-  --color-status-failed-chart-fill: var(--palette-red-night-darken-2);
+  --color-status-failed-chart-fill: var(--palette-red-night-darken-3);
 
-  --color-status-broken-bg: var(--palette-orange-night-darken-4);
+  --color-status-broken-bg: var(--palette-orange-night-darken-2);
   --color-status-broken-bg-subtle: var(--palette-orange-night-darken-4-20);
-  --color-status-broken-text: var(--palette-orange-night-darken-2);
+  --color-status-broken-text: var(--palette-orange-night-base);
   --color-status-broken-border: var(--palette-orange-night-darken-2);
   --color-status-broken-on-bg: var(--palette-gray-950);
   --color-status-broken-chart: var(--palette-orange-night-darken-4);
@@ -311,7 +311,7 @@
 
   --color-status-passed-bg: var(--palette-green-night-darken-3);
   --color-status-passed-bg-subtle: var(--palette-green-night-darken-5-20);
-  --color-status-passed-text: var(--palette-green-night-darken-2);
+  --color-status-passed-text: var(--palette-green-night-base);
   --color-status-passed-border: var(--palette-green-night-darken-2);
   --color-status-passed-on-bg: var(--palette-gray-950);
   --color-status-passed-chart: var(--palette-green-night-darken-4);
@@ -368,7 +368,7 @@
   --color-syntax-keyword: var(--palette-sky-night-base);
   --color-syntax-function: var(--palette-red-night-base);
   --color-syntax-type: var(--palette-violet-night-base);
-  --color-syntax-muted-accent: var(--palette-purple-night-darken-3);
+  --color-syntax-muted-accent: var(--palette-purple-night-base);
 
   /* Decorative icon colors for components that expose a visual color API. */
   --color-decorative-1-text: var(--palette-violet-night-base);

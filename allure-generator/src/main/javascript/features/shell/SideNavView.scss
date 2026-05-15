@@ -107,10 +107,18 @@ $side-nav-control-size: gap(4);
     &:hover {
       background: var(--color-nav-item-bg-hover);
       color: var(--color-text-primary);
+
+      .side-nav__icon {
+        color: var(--color-icon-primary);
+      }
     }
     &_active:hover {
       background: var(--color-nav-item-bg-active-hover);
       color: var(--color-nav-item-text-active);
+
+      .side-nav__icon {
+        color: var(--color-nav-item-icon-active);
+      }
     }
 
     &:focus-visible {
@@ -130,6 +138,7 @@ $side-nav-control-size: gap(4);
 
   &__icon {
     block-size: $side-nav-icon-size;
+    color: var(--color-icon-secondary);
     inline-size: $side-nav-icon-size;
   }
 

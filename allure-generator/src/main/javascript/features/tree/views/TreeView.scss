@@ -38,6 +38,7 @@
     white-space: nowrap;
   }
   &__mark {
+    color: var(--color-text-muted);
     padding-inline: gap(1);
     opacity: 0;
     &_shown {

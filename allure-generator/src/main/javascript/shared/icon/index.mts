@@ -49,11 +49,11 @@ const ICONS = defineIcons({
   },
   lineChartsBarChartSquare: {
     viewBox: "0 0 24 24",
-    body: '<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-opacity=".7" stroke-width="1.5" d="M8 13v4m8-6v6M12 7v10m-4 4h11l2-2V5l-2-2H5L3 5v14l2 2h3Z"/>',
+    body: '<path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 13v4m8-6v6M12 7v10m-4 4h11l2-2V5l-2-2H5L3 5v14l2 2h3Z"/>',
   },
   lineChartsTimeline: {
     viewBox: "0 0 24 24",
-    body: '<path d="M11 8H7" stroke="currentColor" stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 16H7" stroke="currentColor" stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 12H7" stroke="currentColor" stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 21L3 19V5L5 3H19L21 5V19L19 21H5Z" stroke="currentColor" stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>',
+    body: '<path vector-effect="non-scaling-stroke" d="M11 8H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path vector-effect="non-scaling-stroke" d="M13 16H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path vector-effect="non-scaling-stroke" d="M17 12H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path vector-effect="non-scaling-stroke" d="M5 21L3 19V5L5 3H19L21 5V19L19 21H5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>',
   },
   lineDevBug2: {
     viewBox: "0 0 24 24",
@@ -65,15 +65,15 @@ const ICONS = defineIcons({
   },
   lineDevDataflow3: {
     viewBox: "0 0 24 24",
-    body: '<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-opacity=".7" stroke-width="1.5" d="M12 4v14l2 2h3m0 0a2 2 0 1 0 4 0 2 2 0 0 0-4 0ZM7 4h10M7 4a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm10 0a2 2 0 1 0 4 0 2 2 0 0 0-4 0Zm-5 8h5m0 0a2 2 0 1 0 4 0 2 2 0 0 0-4 0Z"/>',
+    body: '<path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v14l2 2h3m0 0a2 2 0 1 0 4 0 2 2 0 0 0-4 0ZM7 4h10M7 4a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm10 0a2 2 0 1 0 4 0 2 2 0 0 0-4 0Zm-5 8h5m0 0a2 2 0 1 0 4 0 2 2 0 0 0-4 0Z"/>',
   },
   lineFilesClipboardCheck: {
     viewBox: "0 0 24 24",
-    body: '<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-opacity=".7" stroke-width="1.5" d="M16 4h2l2 2v14l-2 2H6l-2-2V6l2-2h2m1 11 2 2 5-4m-6-7h5l1-1V4v0-1l-1-1H9L8 3v2l1 1h1Z"/>',
+    body: '<path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 4h2l2 2v14l-2 2H6l-2-2V6l2-2h2m1 11 2 2 5-4m-6-7h5l1-1V4v0-1l-1-1H9L8 3v2l1 1h1Z"/>',
   },
   lineFilesFile2: {
     viewBox: "0 0 24 24",
-    body: '<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-opacity=".7" stroke-width="1.5" d="M14 11H8m2 4H8m8-8H8m12 0v13l-2 2H6l-2-2V4l2-2h12l2 2v3Z"/>',
+    body: '<path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 11H8m2 4H8m8-8H8m12 0v13l-2 2H6l-2-2V4l2-2h12l2 2v3Z"/>',
   },
   lineFilesFileAttachment2: {
     viewBox: "0 0 24 24",
@@ -81,7 +81,7 @@ const ICONS = defineIcons({
   },
   lineFilesFolder: {
     viewBox: "0 0 24 24",
-    body: '<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-opacity=".7" stroke-width="1.5" d="m13 7-1-2-1-1-1-1H3L2 4v3m0 0h18l2 2v10l-2 2H4l-2-2V7Z"/>',
+    body: '<path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m13 7-1-2-1-1-1-1H3L2 4v3m0 0h18l2 2v10l-2 2H4l-2-2V7Z"/>',
   },
   lineGeneralChecklist3: {
     viewBox: "0 0 24 24",
@@ -101,7 +101,7 @@ const ICONS = defineIcons({
   },
   lineGeneralInfoCircle: {
     viewBox: "0 0 17 16",
-    body: '<path d="M8.33268 10.6663V7.99967M8.33268 5.33301H8.33935M14.9993 7.99967C14.9993 11.6816 12.0146 14.6663 8.33268 14.6663C4.65078 14.6663 1.66602 11.6816 1.66602 7.99967C1.66602 4.31778 4.65078 1.33301 8.33268 1.33301C12.0146 1.33301 14.9993 4.31778 14.9993 7.99967Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>',
+    body: '<path vector-effect="non-scaling-stroke" d="M8.33268 10.6663V7.99967M8.33268 5.33301H8.33935M14.9993 7.99967C14.9993 11.6816 12.0146 14.6663 8.33268 14.6663C4.65078 14.6663 1.66602 11.6816 1.66602 7.99967C1.66602 4.31778 4.65078 1.33301 8.33268 1.33301C12.0146 1.33301 14.9993 4.31778 14.9993 7.99967Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>',
   },
   lineGeneralLink1: {
     viewBox: "0 0 24 24",
@@ -117,7 +117,7 @@ const ICONS = defineIcons({
   },
   lineHelpersFlag: {
     viewBox: "0 0 16 16",
-    body: '<path d="M2.667 10s.667-.667 2.667-.667c2 0 3.333 1.333 5.333 1.333S13.334 10 13.334 10V2s-.667.666-2.667.666c-2 0-3.333-1.333-5.333-1.333S2.667 2 2.667 2v12.666" stroke="currentColor" stroke-opacity=".72" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>',
+    body: '<path vector-effect="non-scaling-stroke" d="M2.667 10s.667-.667 2.667-.667c2 0 3.333 1.333 5.333 1.333S13.334 10 13.334 10V2s-.667.666-2.667.666c-2 0-3.333-1.333-5.333-1.333S2.667 2 2.667 2v12.666" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>',
   },
   lineHelpersPlayCircle: {
     viewBox: "0 0 24 24",
@@ -133,11 +133,11 @@ const ICONS = defineIcons({
   },
   lineLayoutsColumns2: {
     viewBox: "0 0 24 24",
-    body: '<path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="1" stroke-width="1.5" d="M12 3v18M8 3h11l2 2v14l-2 2H5l-2-2V5l2-2h3Z"/>',
+    body: '<path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v18M8 3h11l2 2v14l-2 2H5l-2-2V5l2-2h3Z"/>',
   },
   lineLayoutsMaximize2: {
     viewBox: "0 0 24 24",
-    body: '<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-opacity=".7" stroke-width="1.5" d="m14 10 7-7m0 0h-6m6 0v6m-11 5-7 7m0 0h6m-6 0v-6"/>',
+    body: '<path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m14 10 7-7m0 0h-6m6 0v6m-11 5-7 7m0 0h6m-6 0v-6"/>',
   },
   lineTimeClockStopwatch: {
     viewBox: "0 0 24 24",
