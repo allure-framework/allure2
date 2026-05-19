@@ -94,8 +94,6 @@ export const readThemeColor = (name: string) => {
   return value;
 };
 
-export const statusChartColor = (status: string) => themeVar(`--color-status-${status}-chart`);
-
 export const statusChartFillColor = (status: string) =>
   themeVar(`--color-status-${status}-chart-fill`);
 
