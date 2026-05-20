@@ -1,0 +1,78 @@
+name: Update visual snapshots
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      os:
+        description: Runner OS to use for snapshot updates
+        required: true
+        type: choice
+        default: "ubuntu-latest"
+        options:
+          - "ubuntu-latest"
+          - "macos-latest"
+          - "windows-latest"
+      commit_message:
+        description: Commit message for snapshot updates
+        required: false
+        default: "test: update visual snapshots"
+
+concurrency:
+  group: update-visual-snapshots-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  update:
+    name: Update visual snapshots
+    runs-on: ${{ inputs.os }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "20.x"
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: "zulu"
+          java-version: "17"
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: "wrapper"
+      - name: Prepare generator dependencies
+        run: ./gradlew :allure-commandline:build :allure-generator:npmInstall
+      - name: Install Playwright browser
+        if: runner.os == 'Linux'
+        run: cd allure-generator && npx playwright install --with-deps chromium
+      - name: Install Playwright browser
+        if: runner.os != 'Linux'
+        run: cd allure-generator && npx playwright install chromium
+      - name: Update snapshots
+        shell: bash
+        run: >
+          cd allure-generator &&
+          npx playwright test --config playwright.config.mts
+          tests/e2e/visual.spec.mts --update-snapshots
+      - name: Commit snapshot updates
+        shell: bash
+        env:
+          COMMIT_MESSAGE: ${{ inputs.commit_message }}
+          SNAPSHOT_OS: ${{ runner.os }}
+        run: |
+          git status --short allure-generator/tests/e2e/visual.spec.mts-snapshots
+          git add allure-generator/tests/e2e/visual.spec.mts-snapshots
+
+          if git diff --cached --quiet; then
+            echo "No visual snapshot changes to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "${COMMIT_MESSAGE} (${SNAPSHOT_OS})"
+          git push
