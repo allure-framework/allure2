@@ -84,7 +84,7 @@ subprojects {
             // latest version that supports java 8
             mavenBom("com.vladsch.flexmark:flexmark-all:0.62.2")
             mavenBom("io.qameta.allure:allure-bom:2.34.0")
-            mavenBom("org.junit:junit-bom:6.0.3")
+            mavenBom("org.junit:junit-bom:6.1.0")
         }
         dependencies {
             dependency("com.beust:jcommander:1.82")
