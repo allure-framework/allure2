@@ -1,13 +1,18 @@
 @use "../../../mixins.scss" as *;
 
+@use "../../../theme/spacing.scss" as *;
 .trend {
   &__tooltip {
-    white-space: nowrap;
     display: flex;
     flex-direction: column;
+    gap: gap(0.5);
+    white-space: nowrap;
+
     &_label {
+      align-items: center;
+      display: flex;
+      gap: gap(0.5);
       text-align: left;
-      display: inline-block;
     }
     &_name {
       vertical-align: middle;

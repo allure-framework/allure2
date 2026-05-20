@@ -1,13 +1,14 @@
-@use "../../../variables.scss" as *;
-
+@use "../../../theme/spacing.scss" as *;
 .tooltip {
   position: absolute;
-  background: $tooltip-bg;
-  color: $tooltip-color;
+  background: var(--color-bg-inverse-raised);
+  color: var(--color-text-inverse);
+  border-radius: var(--radius-0-5);
+  box-shadow: var(--shadow-small);
   text-align: center;
-  padding: 0 space(1);
-  line-height: space(3);
-  font-size: 12px;
+  padding: gap(1) gap(1.5);
+  line-height: var(--line-height-s);
+  font-size: var(--font-size-s);
   pointer-events: none;
   z-index: 5;
   &:before {
@@ -16,26 +17,26 @@
     border: 8px solid transparent;
   }
   &_position_top:before {
-    border-top-color: $tooltip-bg;
+    border-top-color: var(--color-bg-inverse-raised);
     top: 100%;
     left: 50%;
-    margin-left: -(space(1));
+    margin-left: calc(-1 * gap(1));
   }
   &_position_right:before {
-    border-right-color: $tooltip-bg;
-    top: $space-micro-4;
-    left: -(space(2));
+    border-right-color: var(--color-bg-inverse-raised);
+    top: gap(0.5);
+    left: calc(-1 * gap(2));
   }
   &_position_left:before {
-    border-left-color: $tooltip-bg;
-    top: $space-micro-4;
+    border-left-color: var(--color-bg-inverse-raised);
+    top: gap(0.5);
     left: 100%;
   }
   &_position_bottom:before {
-    border-bottom-color: $tooltip-bg;
-    top: -(space(2));
+    border-bottom-color: var(--color-bg-inverse-raised);
+    top: calc(-1 * gap(2));
     left: 50%;
-    margin-left: -(space(1));
+    margin-left: calc(-1 * gap(1));
   }
   &_position_center {
     pointer-events: none;

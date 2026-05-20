@@ -1,11 +1,10 @@
 import "./CategoriesTrendWidgetView.scss";
 import { scaleOrdinal } from "d3-scale";
-import { interpolateYlOrRd } from "d3-scale-chromatic";
 import { defineMountableElement } from "../../../core/view/elementView.mts";
 import { attachMountable, destroyMountable } from "../../../core/view/mountables.mts";
 import translate from "../../../helpers/t.mts";
 import { createElement } from "../../../shared/dom.mts";
-import { range } from "../../../shared/utils/collections.mts";
+import { chartCategoricalColors } from "../../../shared/theme.mts";
 import TrendChartView from "../charts/TrendChartView.mts";
 import { getSortedTrendKeysByLastValue } from "../model/widgetData.mts";
 
@@ -36,9 +35,7 @@ const CategoriesTrendWidgetView = (options: CategoriesTrendWidgetOptions = {}) =
 
     const items = options?.data || [];
     const keys = getSortedTrendKeysByLastValue(items);
-    const colors = scaleOrdinal(
-      range(0, 1, 1 / Math.max(keys.length, 1)).map((d) => interpolateYlOrRd(1 - d)),
-    );
+    const colors = scaleOrdinal(chartCategoricalColors).domain(keys);
     chart = attachMountable(
       container,
       new TrendChartView({

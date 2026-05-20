@@ -11,7 +11,8 @@
       "name": "Status"
     },
     "trend": {
-      "empty": "Brak czegokolwiek do pokazania"
+      "empty": "Brak czegokolwiek do pokazania",
+      "reportLink": "Open report for {{name}}"
     }
   },
   "component": {
@@ -56,7 +57,8 @@
         }
       },
       "unknown": "<Pusty>",
-      "noItemSelected": "Nie wybrano elementu"
+      "noItemSelected": "Nie wybrano elementu",
+      "search": "Search test results"
     },
     "widgetStatus": {
       "showAll": "Pokaż wszystko",
@@ -68,7 +70,8 @@
     },
     "attachment": {
       "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag"
+      "videoNotSupported": "Your browser does not support the video tag",
+      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
     },
     "screenDiff": {
       "empty": "No diff data provided",
@@ -86,6 +89,9 @@
     "expand": "Rozwiń",
     "fullscreen": "Pełny ekran",
     "language": "Zmień język",
+    "languageShort": "Język",
+    "lightTheme": "Jasny motyw",
+    "darkTheme": "Ciemny motyw",
     "loading": "Loading...",
     "close": "Close"
   },
@@ -141,7 +147,8 @@
       "selected_one": "{{count}} wybrany test ({{percent}}%) z czasem trwania powyżej {{duration}}",
       "selected_few": "{{count}} wybrane testy ({{percent}}%) z czasem trwania powyżej {{duration}}",
       "selected_many": "{{count}} wybranych testów ({{percent}}%) z czasem trwania powyżej {{duration}}",
-      "selected_other": "{{count}} wybranych testów ({{percent}}%) z czasem trwania powyżej {{duration}}"
+      "selected_other": "{{count}} wybranych testów ({{percent}}%) z czasem trwania powyżej {{duration}}",
+      "resultLink": "Open test result {{name}}, status {{status}}"
     }
   },
   "testResult": {

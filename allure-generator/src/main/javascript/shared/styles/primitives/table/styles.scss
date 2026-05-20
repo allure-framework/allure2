@@ -1,22 +1,23 @@
-@use "../../../../variables.scss" as *;
-
+@use "../../../../theme/spacing.scss" as *;
 .table {
   &__row,
   &__head {
     display: flex;
   }
   &__row {
-    border-bottom: 1px solid $border-color;
+    border-bottom: 1px solid var(--color-border-subtle);
     text-decoration: none;
-    color: $text-color;
+    color: var(--color-text-primary);
   }
   &__head {
-    border-bottom: 1px solid $border-accent-color;
-    font-weight: bold;
+    border-bottom: 1px solid var(--color-border-default);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-s);
+    font-weight: var(--font-weight-bold);
   }
   &__col {
-    line-height: 1.5em;
-    padding: space(1) space(2);
+    line-height: var(--line-height-m);
+    padding: gap(1) gap(2);
     flex: 1;
     &_center {
       text-align: center;
@@ -26,39 +27,63 @@
       justify-content: flex-end;
     }
     &_sortable {
+      align-items: center;
+      border-radius: var(--radius-0-5);
       cursor: pointer;
       display: flex;
+      margin-block: gap(0.5);
+      padding-block: gap(0.5);
       & > span {
         overflow: hidden;
-        padding-inline-end: space(1);
+        padding-inline-end: gap(1);
       }
       &:after {
+        background: var(--color-sorter-fg);
         flex-shrink: 0;
         vertical-align: middle;
         content: " ";
         display: inline-block;
-        width: space(2);
-        height: space(2);
-        background: url(./sort-icon.svg) center no-repeat;
-        background-size: contain;
+        width: gap(2);
+        height: gap(2);
+        mask: url(./sort-icon.svg) center / contain no-repeat;
+        -webkit-mask: url(./sort-icon.svg) center / contain no-repeat;
+      }
+      &:hover {
+        background: var(--color-row-bg-hover);
+        color: var(--color-text-primary);
+      }
+      &:hover:after {
+        background: var(--color-sorter-fg-hover);
       }
     }
     &_sorted_down:after {
-      background-image: url(./sort-down-icon.svg);
+      background: var(--color-sorter-fg-active);
+      mask-image: url(./sort-down-icon.svg);
+      -webkit-mask-image: url(./sort-down-icon.svg);
     }
     &_sorted_up:after {
-      background-image: url(./sort-up-icon.svg);
+      background: var(--color-sorter-fg-active);
+      mask-image: url(./sort-up-icon.svg);
+      -webkit-mask-image: url(./sort-up-icon.svg);
+    }
+    &_sorted_down:hover:after,
+    &_sorted_up:hover:after {
+      background: var(--color-sorter-fg-active);
     }
   }
   &_hover {
     .table__row:not([disabled]):hover {
-      background: $hover-color;
+      background: var(--color-row-bg-hover);
     }
   }
   .table__row_summary {
-    background: $summary-color;
+    background: var(--color-bg-secondary);
   }
   .table__row_active {
-    background: $selected-color;
+    background: var(--color-row-bg-selected);
+
+    &:hover {
+      background: var(--color-row-bg-selected-hover);
+    }
   }
 }

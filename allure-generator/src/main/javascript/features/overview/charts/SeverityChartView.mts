@@ -103,7 +103,7 @@ export default class SeverityChartView extends BaseChartView {
       .attr("y", this.height)
       .attr("height", 0)
       .attr("width", this.status.step())
-      .attr("class", (d) => `chart__bar chart__fill_status_${d.status}`);
+      .attr("class", (d) => `chart__bar chart__bar_status_${d.status}`);
 
     this.bindTooltip(bars);
 

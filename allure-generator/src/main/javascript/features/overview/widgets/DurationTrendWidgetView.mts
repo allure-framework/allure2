@@ -6,6 +6,7 @@ import { attachMountable, destroyMountable } from "../../../core/view/mountables
 import duration from "../../../helpers/duration.mts";
 import translate from "../../../helpers/t.mts";
 import { createElement } from "../../../shared/dom.mts";
+import { readThemeColor } from "../../../shared/theme.mts";
 import { last } from "../../../shared/utils/collections.mts";
 import TrendChartView from "../charts/TrendChartView.mts";
 
@@ -56,9 +57,10 @@ const DurationTrendWidgetView = (options: DurationTrendWidgetOptions = {}) => {
       0,
       Math.max(amplitude, 0.25 * Math.max(...values)),
     ]);
-    level
-      .range(lastDelta > 0 ? ["#c4cac6", "#31a354"] : ["#cdc5c4", "#e34a33"])
-      .interpolate(interpolateRgb);
+    const neutral = readThemeColor("--color-dashboard-neutral-medium");
+    const success = readThemeColor("--color-chart-heatmap-low");
+    const danger = readThemeColor("--color-chart-heatmap-high");
+    level.range(lastDelta > 0 ? [neutral, success] : [neutral, danger]).interpolate(interpolateRgb);
     const colors = scaleOrdinal<string, string>().range([level(Math.abs(lastDelta))]);
     chart = attachMountable(
       container,

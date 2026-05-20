@@ -1,12 +1,12 @@
-@use "../../../variables.scss" as *;
 @use "../../../mixins.scss" as *;
 
+@use "../../../theme/spacing.scss" as *;
 .status-toggle {
   &__items {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: space(1);
+    gap: gap(1);
     user-select: none;
     word-break: break-word;
   }
@@ -17,7 +17,7 @@
 
   &__item {
     cursor: pointer;
-    padding: space(1) 0;
+    padding: gap(1) 0;
     display: inline-block;
     white-space: nowrap;
   }
@@ -28,10 +28,14 @@
   display: inline-flex;
   justify-content: center;
   vertical-align: baseline;
-  letter-spacing: 1px;
-  color: #fff;
-  padding: $space-micro-2 $space-micro-4;
-  border-radius: $space-micro-4;
+  letter-spacing: 0;
+  color: var(--color-text-on-accent);
+  min-height: gap(2.5);
+  padding: gap(0.25) gap(1);
+  border-radius: var(--radius-pill);
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-s);
   @include status-bg-bright();
 }
 
@@ -40,11 +44,15 @@
   display: inline-flex;
   justify-content: center;
   vertical-align: baseline;
-  letter-spacing: 1px;
-  padding: $space-micro-1 $space-micro-3 $space-micro-1 $space-micro-4;
-  border-radius: $space-micro-4;
+  letter-spacing: 0;
+  min-height: gap(2.5);
+  padding: gap(0.25) gap(1);
+  border-radius: var(--radius-pill);
   border: 1px solid;
-  font-weight: bold;
+  background: var(--color-control-bg-ghost);
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-s);
   @include status-text();
   @include status-border();
 }

@@ -1,5 +1,4 @@
-@use "../../../variables.scss" as *;
-
+@use "../../../theme/spacing.scss" as *;
 .summary-widget {
   padding: 1em 0;
   &__stats {
@@ -10,6 +9,6 @@
     height: 100%;
     position: relative;
     padding-top: 50%;
-    padding-bottom: space(2);
+    padding-bottom: gap(2);
   }
 }

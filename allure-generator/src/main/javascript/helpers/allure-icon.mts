@@ -40,27 +40,27 @@ const icons: Record<string, IconDefinition> = {
     tooltip: "marks.retriesStatusChange",
   },
   failed: {
-    className: "text_status_failed",
+    className: "status-icon status-icon_status_failed",
     icon: "solidXCircle",
     tooltip: "status.failed",
   },
   broken: {
-    className: "text_status_broken",
+    className: "status-icon status-icon_status_broken",
     icon: "solidAlertCircle",
     tooltip: "status.broken",
   },
   passed: {
-    className: "text_status_passed",
+    className: "status-icon status-icon_status_passed",
     icon: "solidCheckCircle",
     tooltip: "status.passed",
   },
   skipped: {
-    className: "text_status_skipped",
+    className: "status-icon status-icon_status_skipped",
     icon: "solidMinusCircle",
     tooltip: "status.skipped",
   },
   unknown: {
-    className: "text_status_unknown",
+    className: "status-icon status-icon_status_unknown",
     icon: "solidHelpCircle",
     tooltip: "status.unknown",
   },

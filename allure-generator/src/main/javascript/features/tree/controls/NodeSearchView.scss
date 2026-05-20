@@ -1,29 +1,34 @@
-@use "../../../variables.scss" as *;
+@use "../../../theme/spacing.scss" as *;
+$node-search-max-width: 352px;
 
 .search {
   &__container {
     width: 100%;
-    max-width: grid(44);
+    max-width: $node-search-max-width;
     float: right;
   }
   &__input {
     width: 100%;
-    height: space(4);
-    font-size: 0.8em;
+    height: gap(4);
+    color: var(--color-text-primary);
+    font-family: var(--font-family);
+    font-size: var(--font-size-m);
     display: inline-block;
-    padding: 0 space(4) 0 space(2);
-    border: 1px solid $border-accent-color;
-    line-height: space(3);
-    background: no-repeat right space(1) center;
+    padding: 0 gap(4) 0 gap(2);
+    border: 1px solid var(--color-border-control);
+    border-radius: var(--radius-0-5);
+    line-height: var(--line-height-l);
+    background: var(--color-bg-primary) no-repeat right gap(1) center;
+    &::placeholder {
+      color: var(--color-text-muted);
+    }
     &:hover {
-      border-color: #888;
+      border-color: var(--color-border-control);
     }
     &:focus {
-      border-color: #51a7e8;
+      border-color: var(--color-focus-ring);
       outline: none;
-      box-shadow:
-        inset 0 1px 2px rgba(0, 0, 0, 0.075),
-        0 0 5px rgba(81, 167, 232, 0.5);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-focus-ring) 38%, transparent);
     }
   }
 }

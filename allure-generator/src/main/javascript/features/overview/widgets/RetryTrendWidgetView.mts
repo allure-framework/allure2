@@ -1,10 +1,11 @@
 import "./RetryTrendWidgetView.scss";
 import { scaleOrdinal } from "d3-scale";
-import { interpolateYlOrRd } from "d3-scale-chromatic";
+import { interpolateRgb } from "d3-interpolate";
 import { defineMountableElement } from "../../../core/view/elementView.mts";
 import { attachMountable, destroyMountable } from "../../../core/view/mountables.mts";
 import translate from "../../../helpers/t.mts";
 import { createElement } from "../../../shared/dom.mts";
+import { readThemeColor } from "../../../shared/theme.mts";
 import TrendChartView from "../charts/TrendChartView.mts";
 
 type TrendPoint = import("../../../types/report.mts").TrendPoint;
@@ -37,7 +38,12 @@ const RetryTrendWidgetView = (options: RetryTrendWidgetOptions = {}) => {
     const retry = lastItem?.data.retry || 0;
     const run = lastItem?.data.run || 1;
     const retriesPercent = Math.min(0.3 + Math.min(retry, run) / run, 1);
-    const colors = scaleOrdinal(["#4682b4", interpolateYlOrRd(retriesPercent)]);
+    const runColor = readThemeColor("--color-chart-categorical-3");
+    const retryColor = interpolateRgb(
+      readThemeColor("--color-chart-categorical-2"),
+      readThemeColor("--color-chart-heatmap-high"),
+    )(retriesPercent);
+    const colors = scaleOrdinal([runColor, retryColor]);
     chart = attachMountable(
       container,
       new TrendChartView({

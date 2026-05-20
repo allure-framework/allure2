@@ -26,6 +26,11 @@ const createDiv = (className: string) => createElement("div", { className });
 const createPre = (className: string, text: unknown) =>
   createElement("pre", { className, text: toText(text) });
 
+const getHtmlAttachmentFrameTitle = (attachment: Attachment) =>
+  translate("component.attachment.htmlPreviewTitle", {
+    hash: { name: attachment.name || attachment.source },
+  });
+
 const setResourceUrl = (element: Element, attribute: "data" | "href" | "src", value: unknown) => {
   const url = sanitizeResourceUrl(value);
   if (url) {
@@ -142,7 +147,7 @@ export const renderAttachmentView = ({
 
   if (type === "html") {
     const iframe = createElement("iframe", {
-      attrs: { frameborder: "0" },
+      attrs: { frameborder: "0", title: getHtmlAttachmentFrameTitle(attachment) },
       className: b("attachment__iframe", { fullscreen: fullScreen }),
     });
     setResourceUrl(iframe, "src", sourceUrl);
