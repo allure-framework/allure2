@@ -106,6 +106,28 @@ jobs:
         run: ./bin/allure --version
       - name: Generate demo report
         run: ./bin/allure generate testcmd-smoke-results
+      - name: Verify generated tree data
+        shell: pwsh
+        run: |
+          $requiredFiles = @(
+            'allure-report/data/behaviors.json',
+            'allure-report/data/behaviors.csv',
+            'allure-report/data/packages.json',
+            'allure-report/widgets/behaviors.json'
+          )
+
+          $missingFiles = $requiredFiles | Where-Object {
+            -not (Test-Path -LiteralPath $_ -PathType Leaf)
+          }
+
+          if ($missingFiles.Count -gt 0) {
+            Write-Error "Missing generated report files: $($missingFiles -join ', ')"
+            exit 1
+          }
+
+          $requiredFiles | ForEach-Object {
+            Write-Host "Verified $_"
+          }
   report:
     needs: [build, testcmd]
     name: "Build report"
