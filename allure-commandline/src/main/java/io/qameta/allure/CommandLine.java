@@ -34,6 +34,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.ProviderNotFoundException;
+import java.security.CodeSource;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -118,7 +119,7 @@ public class CommandLine {
     private static Optional<URI> getCodeSource() {
         try {
             return Optional.ofNullable(CommandLine.class.getProtectionDomain().getCodeSource())
-                    .map(codeSource -> codeSource.getLocation())
+                    .map(CodeSource::getLocation)
                     .map(location -> {
                         try {
                             return location.toURI();
