@@ -26,6 +26,7 @@ import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
 
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -60,6 +61,54 @@ class CommandLineTest {
     void setUp() {
         this.commands = mock(Commands.class);
         this.commandLine = new CommandLine(commands);
+    }
+
+    /**
+     * Verifies the explicit application home is used as the commandline home.
+     * The test checks APP_HOME has priority over the commandline location.
+     */
+    @Description
+    @Test
+    void shouldResolveAllureHomeFromAppHome(@TempDir final Path temp) {
+        final Path appHome = temp.resolve("custom-home");
+        final URI commandlineLocation = temp.resolve("allure").resolve("lib").resolve("allure-commandline.jar")
+                .toUri();
+
+        final Optional<Path> result = resolveAllureHome(appHome.toString(), commandlineLocation);
+
+        assertThat(result)
+                .hasValue(appHome);
+    }
+
+    /**
+     * Verifies the commandline can infer an installed distribution home.
+     * The test checks a commandline jar under lib resolves to the parent distribution directory.
+     */
+    @Description
+    @Test
+    void shouldInferAllureHomeFromCommandlineJar(@TempDir final Path temp) throws IOException {
+        final Path allureHome = createAllureHome(temp);
+        final Path commandlineJar = createCommandlineJar(allureHome);
+
+        final Optional<Path> result = resolveAllureHome(null, commandlineJar.toUri());
+
+        assertThat(result)
+                .hasValue(allureHome);
+    }
+
+    /**
+     * Verifies invalid commandline locations are ignored.
+     * The test checks a candidate without distribution config and plugins does not resolve.
+     */
+    @Description
+    @Test
+    void shouldIgnoreInvalidInferredAllureHome(@TempDir final Path temp) throws IOException {
+        final Path commandlineJar = createCommandlineJar(temp.resolve("invalid-allure"));
+
+        final Optional<Path> result = resolveAllureHome(null, commandlineJar.toUri());
+
+        assertThat(result)
+                .isEmpty();
     }
 
     /**
@@ -581,5 +630,56 @@ class CommandLineTest {
                 verboseOptions.isVerbose(),
                 verboseOptions.isQuiet()
         );
+    }
+
+    @Step("Create installed Allure home")
+    private Path createAllureHome(final Path temp) throws IOException {
+        final Path allureHome = temp.resolve("allure");
+        Files.createDirectories(allureHome.resolve("config"));
+        Files.write(allureHome.resolve("config").resolve("allure.yml"), Arrays.asList("plugins: []"));
+        Files.createDirectories(allureHome.resolve("plugins"));
+        Allure.addAttachment(
+                "allure-home-layout.txt",
+                "text/plain",
+                String.format(
+                        "home=%s%nconfig=%s%nplugins=%s%n",
+                        allureHome,
+                        allureHome.resolve("config").resolve("allure.yml"),
+                        allureHome.resolve("plugins")
+                ),
+                ".txt"
+        );
+        return allureHome;
+    }
+
+    @Step("Create commandline jar")
+    private Path createCommandlineJar(final Path allureHome) throws IOException {
+        final Path lib = Files.createDirectories(allureHome.resolve("lib"));
+        final Path commandlineJar = lib.resolve("allure-commandline-test.jar");
+        Files.write(commandlineJar, Arrays.asList("commandline jar marker"));
+        Allure.addAttachment(
+                "commandline-location.txt",
+                "text/plain",
+                String.format("commandlineJar=%s%n", commandlineJar),
+                ".txt"
+        );
+        return commandlineJar;
+    }
+
+    @Step("Resolve Allure home")
+    private Optional<Path> resolveAllureHome(final String appHome, final URI commandlineLocation) {
+        final Optional<Path> result = CommandLine.resolveAllureHome(appHome, commandlineLocation);
+        Allure.addAttachment(
+                "allure-home-resolution.txt",
+                "text/plain",
+                String.format(
+                        "appHome=%s%ncommandlineLocation=%s%nresolvedHome=%s%n",
+                        appHome,
+                        commandlineLocation,
+                        result.map(Path::toString).orElse("<empty>")
+                ),
+                ".txt"
+        );
+        return result;
     }
 }
