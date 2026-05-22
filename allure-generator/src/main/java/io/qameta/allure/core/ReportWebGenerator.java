@@ -53,6 +53,7 @@ public class ReportWebGenerator {
     private static final String IMAGE_X_ICON = "image/x-icon";
     private static final String TEXT_JAVASCRIPT = "text/javascript; charset=utf-8";
     private static final String TEXT_CSS = "text/css; charset=utf-8";
+    private static final String READ_FILE_ERROR_MESSAGE = "Can't read file ";
 
     private static final JsonMapper JSON_MAPPER = JsonMapper.builder().build();
     private static final TypeReference<Map<String, ViteManifestEntry>> VITE_MANIFEST_TYPE = new TypeReference<Map<String, ViteManifestEntry>>() {
@@ -63,7 +64,6 @@ public class ReportWebGenerator {
                          final Path outputDirectory) {
 
         final boolean inline = reportStorage instanceof InMemoryReportStorage;
-
         final Map<String, ViteManifestEntry> viteManifest = loadViteManifest();
         final List<String> entryFiles = getEntryFiles(viteManifest);
         final List<String> styleFiles = getStyleFiles(viteManifest);
@@ -71,62 +71,27 @@ public class ReportWebGenerator {
         final String faviconFile = requireFaviconFile(viteManifest);
 
         final List<String> coreStyleUrls = inline
-                ? inlineWebStyles(styleFiles)
+                ? inlineWebFiles(TEXT_CSS, styleFiles)
                 : new ArrayList<>(styleFiles);
         if (!inline) {
             copyWebResources(outputDirectory, producedFiles);
         }
         final List<String> coreJsUrls = inline
-                ? inlineWebScripts(entryFiles)
+                ? inlineWebFiles(TEXT_JAVASCRIPT, entryFiles)
                 : new ArrayList<>(entryFiles);
 
         final List<String> pluginJsUrls = new ArrayList<>();
         final List<String> pluginStyleUrls = new ArrayList<>();
-        configuration.getPlugins().forEach(plugin -> {
-            final Map<String, Path> pluginFiles = new HashMap<>(plugin.getPluginFiles());
-
-            final PluginConfiguration config = plugin.getConfig();
-            config.getJsFiles().forEach(jsFile -> {
-                final Path jsFilePath = pluginFiles.remove(jsFile);
-                if (inline) {
-                    pluginJsUrls.add(
-                            dataBase64(
-                                    TEXT_JAVASCRIPT,
-                                    jsFilePath
-                            )
-                    );
-                } else {
-                    final String key = pluginFileKey(config, jsFile);
-                    pluginJsUrls.add(key);
-                    write(outputDirectory, key, jsFilePath);
-                }
-            });
-
-            config.getCssFiles().forEach(cssFile -> {
-                final Path cssFilePath = pluginFiles.remove(cssFile);
-                if (inline) {
-                    pluginStyleUrls.add(
-                            dataBase64(
-                                    TEXT_CSS,
-                                    cssFilePath
-                            )
-                    );
-                } else {
-                    final String key = pluginFileKey(config, cssFile);
-                    pluginStyleUrls.add(key);
-                    write(outputDirectory, key, cssFilePath);
-                }
-            });
-
-            pluginFiles.forEach((key, path) -> {
-                final String pluginFileKey = pluginFileKey(config, key);
-                write(
+        configuration.getPlugins().forEach(
+                plugin -> processPlugin(
+                        plugin,
+                        inline,
+                        reportStorage,
                         outputDirectory,
-                        pluginFileKey,
-                        path
-                );
-            });
-        });
+                        pluginJsUrls,
+                        pluginStyleUrls
+                )
+        );
 
         final FreemarkerContext context = configuration.requireContext(FreemarkerContext.class);
 
@@ -147,12 +112,10 @@ public class ReportWebGenerator {
             dataModel.put("pluginJsUrls", pluginJsUrls);
 
             if (inline) {
-                final Map<String, String> reportDataFiles = new HashMap<>(
-                        ((InMemoryReportStorage) reportStorage)
-                                .getReportDataFiles()
+                dataModel.put(
+                        "reportDataFiles",
+                        ((InMemoryReportStorage) reportStorage).getReportDataFiles()
                 );
-
-                dataModel.put("reportDataFiles", reportDataFiles);
             }
 
             final boolean analyticsDisable = Optional.ofNullable(System.getenv(Constants.NO_ANALYTICS))
@@ -222,20 +185,52 @@ public class ReportWebGenerator {
         return new ArrayList<>(producedFiles);
     }
 
-    private static List<String> inlineWebStyles(final List<String> styleFiles) {
-        final List<String> inlineStyles = new ArrayList<>();
-
-        styleFiles.forEach(styleFile -> inlineStyles.add(dataBase64(TEXT_CSS, styleFile)));
-
-        return inlineStyles;
-    }
-
-    private static List<String> inlineWebScripts(final List<String> entryFiles) {
+    private static List<String> inlineWebFiles(final String contentType,
+                                               final List<String> entryFiles) {
         final List<String> scriptUrls = new ArrayList<>();
 
-        entryFiles.forEach(entryFile -> scriptUrls.add(dataBase64(TEXT_JAVASCRIPT, entryFile)));
+        entryFiles.forEach(entryFile -> scriptUrls.add(dataBase64(contentType, entryFile)));
 
         return scriptUrls;
+    }
+
+    private static void processPlugin(final Plugin plugin,
+                                      final boolean inline,
+                                      final ReportStorage reportStorage,
+                                      final Path outputDirectory,
+                                      final List<String> pluginJsUrls,
+                                      final List<String> pluginStyleUrls) {
+        final Map<String, Path> pluginFiles = new HashMap<>(plugin.getPluginFiles());
+        final PluginConfiguration config = plugin.getConfig();
+
+        config.getJsFiles().forEach(jsFile -> {
+            final Path jsFilePath = pluginFiles.remove(jsFile);
+            if (inline) {
+                pluginJsUrls.add(dataBase64(TEXT_JAVASCRIPT, jsFilePath));
+            } else {
+                final String key = pluginFileKey(config, jsFile);
+                pluginJsUrls.add(key);
+                write(outputDirectory, key, jsFilePath);
+            }
+        });
+
+        config.getCssFiles().forEach(cssFile -> {
+            final Path cssFilePath = pluginFiles.remove(cssFile);
+            if (inline) {
+                pluginStyleUrls.add(dataBase64(TEXT_CSS, cssFilePath));
+            } else {
+                final String key = pluginFileKey(config, cssFile);
+                pluginStyleUrls.add(key);
+                write(outputDirectory, key, cssFilePath);
+            }
+        });
+
+        if (inline) {
+            final InMemoryReportStorage storage = (InMemoryReportStorage) reportStorage;
+            pluginFiles.forEach((key, path) -> storage.addDataFile(pluginFileKey(config, key), path));
+        } else {
+            pluginFiles.forEach((key, path) -> write(outputDirectory, pluginFileKey(config, key), path));
+        }
     }
 
     private static String pluginFileKey(final PluginConfiguration config, final String cssFile) {
@@ -327,7 +322,7 @@ public class ReportWebGenerator {
             final byte[] bytes = FileUtils.readFileToByteArray(path.toFile());
             return dataUrl(contentType, bytes);
         } catch (IOException e) {
-            throw new ReportGenerationException("Can't read file " + path, e);
+            throw new ReportGenerationException(READ_FILE_ERROR_MESSAGE + path, e);
         }
     }
 
