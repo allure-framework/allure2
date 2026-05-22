@@ -18,14 +18,22 @@ package io.qameta.allure.core;
 import io.qameta.allure.Allure;
 import io.qameta.allure.ConfigurationBuilder;
 import io.qameta.allure.Description;
+import io.qameta.allure.PluginConfiguration;
 import io.qameta.allure.ReportStorage;
+import io.qameta.allure.plugin.DefaultPlugin;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junitpioneer.jupiter.SetEnvironmentVariable;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Base64;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -188,6 +196,61 @@ class ReportWebGeneratorTest {
                 .doesNotContain("type=\"importmap\"");
     }
 
+    /**
+     * Verifies embedding undeclared plugin static files in single file mode for web report generation.
+     *
+     * @throws IOException if plugin fixture files could not be written.
+     */
+    @Description
+    @Test
+    void shouldInlinePluginStaticFilesAsReportDataInSingleFileMode(
+                                                                   @TempDir final Path tempDirectory)
+            throws IOException {
+        final Path pluginDirectory = tempDirectory.resolve("screen-diff-plugin");
+        final Path pluginStaticDirectory = pluginDirectory.resolve("static");
+        final Path outputDirectory = tempDirectory.resolve("report");
+        final String script = "console.log('screen-diff');";
+        final String stylesheet = ".screen-diff {}";
+
+        Files.createDirectories(pluginStaticDirectory);
+        Files.writeString(
+                pluginStaticDirectory.resolve("index.js"),
+                script,
+                StandardCharsets.UTF_8
+        );
+        Files.writeString(pluginStaticDirectory.resolve("styles.css"), stylesheet, StandardCharsets.UTF_8);
+
+        final PluginConfiguration pluginConfiguration = new PluginConfiguration()
+                .setId("screen-diff");
+        final Configuration configuration = ConfigurationBuilder.empty()
+                .withPlugins(
+                        List.of(
+                                new DefaultPlugin(
+                                        pluginConfiguration,
+                                        Collections.emptyList(),
+                                        pluginDirectory
+                                )
+                        )
+                )
+                .build();
+
+        generateReport(configuration, new InMemoryReportStorage(), outputDirectory);
+
+        final Path indexHtml = outputDirectory.resolve("index.html");
+        final String encodedScript = Base64.getEncoder()
+                .encodeToString(script.getBytes(StandardCharsets.UTF_8));
+        final String encodedStylesheet = Base64.getEncoder()
+                .encodeToString(stylesheet.getBytes(StandardCharsets.UTF_8));
+
+        assertThat(listRelativeFiles(outputDirectory))
+                .containsExactly("index.html");
+        assertThat(indexHtml)
+                .isRegularFile()
+                .content(StandardCharsets.UTF_8)
+                .contains("d('plugin/screen-diff/index.js','" + encodedScript + "')")
+                .contains("d('plugin/screen-diff/styles.css','" + encodedStylesheet + "')");
+    }
+
     private void generateReport(
                                 final Configuration configuration,
                                 final ReportStorage reportStorage,
@@ -201,5 +264,16 @@ class ReportWebGeneratorTest {
                     Files.readString(indexHtml, StandardCharsets.UTF_8)
             );
         });
+    }
+
+    private List<String> listRelativeFiles(final Path outputDirectory) throws IOException {
+        try (Stream<Path> files = Files.walk(outputDirectory)) {
+            return files
+                    .filter(Files::isRegularFile)
+                    .map(outputDirectory::relativize)
+                    .map(Path::toString)
+                    .sorted()
+                    .collect(Collectors.toList());
+        }
     }
 }
