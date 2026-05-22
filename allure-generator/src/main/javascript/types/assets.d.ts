@@ -26,6 +26,7 @@ declare module "highlight.js/lib/languages/*" {
 }
 
 interface Window {
+  __allurePlaywrightTraceViewer?: { url: string } | null;
   dataLayer?: unknown[];
   reportData?: Record<string, string>;
   reportDataReady?: boolean;

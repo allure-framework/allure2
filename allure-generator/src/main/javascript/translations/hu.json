@@ -70,6 +70,18 @@
       "name": "Screen Diff",
       "showDiff": "Show diff",
       "showOverlay": "Show overlay"
+    },
+    "playwrightTrace": {
+      "unavailableTitle": "A Playwright trace megjelenítő nem érhető el",
+      "singleFileReason": "A beágyazott Playwright trace megtekintés nem érhető el egyfájlos jelentésekben, mert a Playwright Trace Viewer nem ágyazható be teljesen. Újra támogatni tervezzük, amint a felsőbb szintű hiba javításra kerül.",
+      "nonHttpReason": "A beágyazott Playwright trace megtekintéshez a jelentést HTTP(S)-en keresztül kell kiszolgálni. A Playwright Trace Viewer által használt böngésző service workerek nem érhetők el {{protocol}} jelentésekhez.",
+      "missingAssetsReason": "A beágyazott Playwright trace megtekintés nem érhető el, mert ez a jelentés nem tartalmazza a Playwright Trace Viewer erőforrásait.",
+      "issuePrefix": "Felsőbb szintű hiba:",
+      "issueLabel": "microsoft/playwright#40960",
+      "stepsTitle": "Trace megnyitása kézzel",
+      "stepDownload": "Trace archívum letöltése",
+      "stepOpenViewer": "Playwright Trace Viewer megnyitása",
+      "stepUpload": "A letöltött archívum feltöltése a megjelenítőben"
     }
   },
   "controls": {

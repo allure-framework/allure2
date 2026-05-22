@@ -72,6 +72,18 @@
       "name": "Screen Diff",
       "showDiff": "Show diff",
       "showOverlay": "Show overlay"
+    },
+    "playwrightTrace": {
+      "unavailableTitle": "מציג ה-trace של Playwright אינו זמין",
+      "singleFileReason": "צפייה מוטמעת ב-trace של Playwright אינה זמינה בדוחות של קובץ יחיד, מפני שלא ניתן להטמיע במלואו את Playwright Trace Viewer. אנו מתכננים לתמוך בכך שוב מיד לאחר תיקון הבעיה במעלה הזרם.",
+      "nonHttpReason": "צפייה מוטמעת ב-trace של Playwright דורשת שהדוח יוגש דרך HTTP(S). service workers בדפדפן, שעליהם מסתמך Playwright Trace Viewer, אינם זמינים לדוחות {{protocol}}.",
+      "missingAssetsReason": "צפייה מוטמעת ב-trace של Playwright אינה זמינה מפני שהדוח הזה אינו כולל את משאבי Playwright Trace Viewer.",
+      "issuePrefix": "בעיה במעלה הזרם:",
+      "issueLabel": "microsoft/playwright#40960",
+      "stepsTitle": "פתיחת ה-trace ידנית",
+      "stepDownload": "הורד את ארכיון ה-trace",
+      "stepOpenViewer": "פתח את Playwright Trace Viewer",
+      "stepUpload": "העלה את הארכיון שהורד במציג"
     }
   },
   "controls": {

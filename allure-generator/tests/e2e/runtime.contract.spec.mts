@@ -77,6 +77,12 @@ const hasZipMagic = (buffer: Buffer) =>
   [0x03, 0x05, 0x07].includes(buffer[2]) &&
   [0x04, 0x06, 0x08].includes(buffer[3]);
 
+const pathExists = async (filePath: string): Promise<boolean> =>
+  fs
+    .access(filePath)
+    .then(() => true)
+    .catch(() => false);
+
 test.describe("Runtime Contract", () => {
   test("removes legacy globals and keeps the report scripts free of legacy package names", async ({
     page,
@@ -229,5 +235,52 @@ test.describe("Runtime Contract", () => {
     );
 
     expect(checks.filter(({ isZip }) => !isZip)).toEqual([]);
+  });
+
+  test("copies Playwright trace viewer assets only for reports with trace attachments", async () => {
+    await expect(
+      pathExists(
+        path.join(
+          reportRoot,
+          fixtures.playwrightTrace.name,
+          REPORT_MODES.DIRECTORY,
+          "playwright-trace-viewer",
+          "index.html",
+        ),
+      ),
+    ).resolves.toBe(true);
+    await expect(
+      pathExists(
+        path.join(
+          reportRoot,
+          fixtures.playwrightTrace.name,
+          REPORT_MODES.DIRECTORY,
+          "data",
+          "playwright-trace-viewer.json",
+        ),
+      ),
+    ).resolves.toBe(true);
+
+    await expect(
+      pathExists(
+        path.join(
+          reportRoot,
+          fixtures.attachments.name,
+          REPORT_MODES.DIRECTORY,
+          "playwright-trace-viewer",
+        ),
+      ),
+    ).resolves.toBe(false);
+    await expect(
+      pathExists(
+        path.join(
+          reportRoot,
+          fixtures.attachments.name,
+          REPORT_MODES.DIRECTORY,
+          "data",
+          "playwright-trace-viewer.json",
+        ),
+      ),
+    ).resolves.toBe(false);
   });
 });

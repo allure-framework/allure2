@@ -103,6 +103,15 @@ $attachment-trace-fullscreen-offset: gap(12);
     justify-content: flex-end;
     padding: 0 0 gap(1);
   }
+  &__trace-actions:empty {
+    display: none;
+  }
+  &__trace-download {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   &__trace-body {
     position: relative;
     min-height: gap(12);
@@ -132,5 +141,46 @@ $attachment-trace-fullscreen-offset: gap(12);
     inset: 0;
     justify-content: center;
     position: absolute;
+  }
+  &__trace-instructions {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    min-height: gap(16);
+    padding: gap(6) gap(4);
+  }
+  &__trace-instructions-content {
+    color: var(--color-text-primary);
+    max-width: 720px;
+  }
+  &__trace-instructions-title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-l);
+    margin: 0 0 gap(1);
+  }
+  &__trace-instructions-reason,
+  &__trace-instructions-note {
+    color: var(--color-text-secondary);
+    margin: 0 0 gap(1);
+  }
+  &__trace-instructions-subtitle {
+    font-size: var(--font-size-l);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-l);
+    margin: gap(3) 0 gap(1);
+  }
+  &__trace-instructions-list {
+    color: var(--color-text-secondary);
+    list-style-position: outside;
+    list-style-type: decimal;
+    margin: 0;
+    padding-left: gap(3);
+  }
+  &__trace-instructions-list > li {
+    padding-left: gap(0.5);
+  }
+  &__trace-instructions-list > li + li {
+    margin-top: gap(1);
   }
 }

@@ -70,6 +70,18 @@
       "name": "Screen Diff",
       "showDiff": "Show diff",
       "showOverlay": "Show overlay"
+    },
+    "playwrightTrace": {
+      "unavailableTitle": "Playwright trace görüntüleyici kullanılamıyor",
+      "singleFileReason": "Gömülü Playwright trace görüntüleme tek dosyalı raporlarda kullanılamaz, çünkü Playwright Trace Viewer tamamen içeri gömülemiyor. Üst akıştaki sorun düzeltilir düzeltilmez bunu tekrar desteklemeyi planlıyoruz.",
+      "nonHttpReason": "Gömülü Playwright trace görüntüleme için raporun HTTP(S) üzerinden sunulması gerekir. Playwright Trace Viewer-in dayandığı tarayıcı service worker-ları {{protocol}} raporlarında kullanılamaz.",
+      "missingAssetsReason": "Gömülü Playwright trace görüntüleme kullanılamıyor, çünkü bu rapor Playwright Trace Viewer varlıklarını içermiyor.",
+      "issuePrefix": "Üst akış sorunu:",
+      "issueLabel": "microsoft/playwright#40960",
+      "stepsTitle": "Trace-i elle aç",
+      "stepDownload": "Trace arşivini indir",
+      "stepOpenViewer": "Playwright Trace Viewer-i aç",
+      "stepUpload": "İndirilen arşivi görüntüleyiciye yükle"
     }
   },
   "controls": {

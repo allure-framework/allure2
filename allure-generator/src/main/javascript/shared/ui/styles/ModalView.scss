@@ -1,3 +1,5 @@
+@use "../../../theme/spacing.scss" as *;
+
 .modal {
   &__background {
     position: absolute;
@@ -10,9 +12,35 @@
     z-index: 1000;
   }
   &__title {
+    align-items: center;
     display: flex;
+    gap: gap(2);
+    min-height: gap(5);
+    padding: gap(1) gap(2);
+  }
+  &__title-text {
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  &__actions {
+    align-items: center;
+    display: flex;
+    flex: 0 1 auto;
+    gap: gap(1);
+    justify-content: flex-end;
+    margin-left: auto;
+    min-width: 0;
+  }
+  &__actions:empty {
+    display: none;
   }
   &__close {
+    flex: 0 0 auto;
+  }
+  &__actions:empty + &__close {
     margin-left: auto;
   }
   &__window {
