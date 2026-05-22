@@ -10,6 +10,7 @@
   "author": "Dmitry Baev",
   "license": "Apache-2.0",
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "@types/d3-array": "^3.2.2",
     "@types/d3-axis": "^3.0.6",
     "@types/d3-brush": "^3.0.6",
@@ -29,7 +30,7 @@
     "eslint-plugin-prefer-arrow-functions": "^3.9.1",
     "oxfmt": "^0.45.0",
     "oxlint": "^1.60.0",
-    "playwright": "^1.59.1",
+    "playwright": "^1.60.0",
     "rimraf": "^5.0.5",
     "sass": "^1.99.0",
     "tsx": "^4.21.0",

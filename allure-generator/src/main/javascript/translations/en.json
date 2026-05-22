@@ -70,6 +70,18 @@
       "name": "Screen Diff",
       "showDiff": "Show diff",
       "showOverlay": "Show overlay"
+    },
+    "playwrightTrace": {
+      "unavailableTitle": "Playwright trace viewer unavailable",
+      "singleFileReason": "Embedded Playwright trace viewing is unavailable in single-file reports because the Playwright Trace Viewer cannot be fully inlined. We plan to support it again as soon as the upstream issue is fixed.",
+      "nonHttpReason": "Embedded Playwright trace viewing requires the report to be served over HTTP(S). Browser service workers, which the Playwright Trace Viewer relies on, are not available for {{protocol}} reports.",
+      "missingAssetsReason": "Embedded Playwright trace viewing is unavailable because this report does not include the Playwright Trace Viewer assets.",
+      "issuePrefix": "Upstream issue:",
+      "issueLabel": "microsoft/playwright#40960",
+      "stepsTitle": "Open the trace manually",
+      "stepDownload": "Download the trace archive",
+      "stepOpenViewer": "Open the Playwright Trace Viewer",
+      "stepUpload": "Upload the downloaded archive in the viewer"
     }
   },
   "controls": {

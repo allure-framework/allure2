@@ -78,6 +78,18 @@
       "name": "Screen Diff",
       "showDiff": "Show diff",
       "showOverlay": "Show overlay"
+    },
+    "playwrightTrace": {
+      "unavailableTitle": "Preglednik Playwright trace nije dostupan",
+      "singleFileReason": "Vgradženo pregledanje Playwright trace nije dostupno v jedno-fajlovyh raportah, zato že Playwright Trace Viewer ne može byti polno vgradžen. Planujemo znovu podporu, kogda bude popravljena upstream problema.",
+      "nonHttpReason": "Vgradženo pregledanje Playwright trace potrěbuje, že raport bude služeny črez HTTP(S). Browser service workery, na ktore se opira Playwright Trace Viewer, nisu dostupne za {{protocol}} raporte.",
+      "missingAssetsReason": "Vgradženo pregledanje Playwright trace nije dostupno, zato že tut raport ne vsebuje resursy Playwright Trace Viewer.",
+      "issuePrefix": "Upstream problema:",
+      "issueLabel": "microsoft/playwright#40960",
+      "stepsTitle": "Otvori trace ručno",
+      "stepDownload": "Skopiraj trace arhiv",
+      "stepOpenViewer": "Otvori Playwright Trace Viewer",
+      "stepUpload": "Naloži skopirany arhiv v preglednik"
     }
   },
   "controls": {

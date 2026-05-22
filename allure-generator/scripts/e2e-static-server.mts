@@ -23,9 +23,11 @@ const contentTypes: Record<string, string> = {
   ".png": "image/png",
   ".svg": "image/svg+xml",
   ".tsv": "text/tab-separated-values; charset=utf-8",
+  ".ttf": "font/ttf",
   ".txt": "text/plain; charset=utf-8",
   ".uri": "text/uri-list; charset=utf-8",
   ".webm": "video/webm",
+  ".webmanifest": "application/manifest+json; charset=utf-8",
   ".xml": "application/xml; charset=utf-8",
   ".zip": "application/zip",
 };

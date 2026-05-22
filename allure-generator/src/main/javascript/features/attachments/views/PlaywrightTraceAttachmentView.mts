@@ -1,14 +1,20 @@
 import { defineMountableElement } from "../../../core/view/elementView.mts";
-import { fetchReportBlob, normalizeReportDataError } from "../../../core/services/reportData.mts";
+import {
+  fetchReportBlob,
+  fetchReportJson,
+  normalizeReportDataError,
+  reportDataUrl,
+} from "../../../core/services/reportData.mts";
 import { attachMountable, destroyMountable } from "../../../core/view/mountables.mts";
 import translate from "../../../helpers/t.mts";
 import { createElement } from "../../../shared/dom.mts";
-import { sanitizeResourceUrl } from "../../../shared/url.mts";
+import { sanitizeNavigationUrl, sanitizeResourceUrl } from "../../../shared/url.mts";
 import ErrorSplashView from "../../../shared/ui/ErrorSplashView.mts";
 import LoaderView from "../../../shared/ui/LoaderView.mts";
+import { createModalHeaderActionsEvent } from "../../../shared/ui/modalHeaderActions.mts";
 import {
-  PLAYWRIGHT_TRACE_VIEWER_ORIGIN,
-  PLAYWRIGHT_TRACE_VIEWER_URL,
+  PLAYWRIGHT_TRACE_VIEWER_INFO_URL,
+  type PlaywrightTraceViewerInfo,
 } from "../model/playwrightTrace.mts";
 
 type Attachment = import("../../../types/report.mts").Attachment;
@@ -18,6 +24,41 @@ type ReportDataError = import("../../../core/services/reportData.mts").ReportDat
 type PlaywrightTraceAttachmentOptions = {
   sourceUrl: string;
   attachment: Attachment;
+};
+
+const PLAYWRIGHT_ISSUE_URL = "https://github.com/microsoft/playwright/issues/40960";
+const PLAYWRIGHT_TRACE_VIEWER_MANUAL_URL = "https://trace.playwright.dev/";
+
+type TraceViewerUnavailableReason = "singleFile" | "nonHttp" | "missingAssets";
+
+let traceViewerInfoPromise: Promise<PlaywrightTraceViewerInfo | null> | null = null;
+
+const normalizeTraceViewerInfo = (
+  info: PlaywrightTraceViewerInfo,
+): PlaywrightTraceViewerInfo | null => {
+  const url = typeof info?.url === "string" ? info.url.trim() : "";
+
+  return url ? { url } : null;
+};
+
+const loadTraceViewerInfo = async (): Promise<PlaywrightTraceViewerInfo | null> => {
+  if (typeof window.__allurePlaywrightTraceViewer !== "undefined") {
+    return window.__allurePlaywrightTraceViewer;
+  }
+
+  traceViewerInfoPromise ??= fetchReportJson<PlaywrightTraceViewerInfo>(
+    PLAYWRIGHT_TRACE_VIEWER_INFO_URL,
+  )
+    .then((info) => {
+      window.__allurePlaywrightTraceViewer = normalizeTraceViewerInfo(info);
+      return window.__allurePlaywrightTraceViewer;
+    })
+    .catch(() => {
+      window.__allurePlaywrightTraceViewer = null;
+      return null;
+    });
+
+  return traceViewerInfoPromise;
 };
 
 const createDownloadLink = (attachment: Attachment, href: string | null) => {
@@ -37,37 +78,54 @@ const createDownloadLink = (attachment: Attachment, href: string | null) => {
   });
 };
 
+const createNavigationLink = (href: string, text: string) =>
+  createElement("a", {
+    attrs: {
+      href: sanitizeNavigationUrl(href),
+      target: "_blank",
+      rel: "noopener noreferrer",
+    },
+    className: "link",
+    text,
+  });
+
+const isSingleFileReport = () => !!window.reportData;
+
+const getUnavailableReason = (): TraceViewerUnavailableReason => {
+  if (isSingleFileReport()) {
+    return "singleFile";
+  }
+
+  if (window.location.protocol !== "http:" && window.location.protocol !== "https:") {
+    return "nonHttp";
+  }
+
+  return "missingAssets";
+};
+
+const getProtocolLabel = () => window.location.protocol || "file:";
+
 export const PlaywrightTraceAttachmentView = (options: PlaywrightTraceAttachmentOptions) => {
   const el = defineMountableElement(document.createElement("div"), {});
-  const viewerUrl = PLAYWRIGHT_TRACE_VIEWER_URL;
-  const viewerOrigin = PLAYWRIGHT_TRACE_VIEWER_ORIGIN;
   let requestId = 0;
   let contentView: Mountable | null = null;
   let overlayView: Mountable | null = null;
   let isLoading = false;
   let loadError: ReportDataError | null = null;
   let traceBlob: Blob | null = null;
+  let traceUrl: string | null = null;
+  let traceViewerInfo: PlaywrightTraceViewerInfo | null = null;
   let downloadUrl: string | null = null;
   let traceFrame: HTMLIFrameElement | null = null;
-  let traceLoadTimeoutId: number | null = null;
   let viewerRevealTimeoutId: number | null = null;
-  let hasPostedTraceToViewer = false;
   let isViewerSettling = false;
+  let safeDownloadUrl: string | null = null;
 
   const revokeDownloadUrl = () => {
     if (downloadUrl?.startsWith("blob:")) {
       URL.revokeObjectURL(downloadUrl);
     }
     downloadUrl = null;
-  };
-
-  const clearTraceLoad = () => {
-    if (traceLoadTimeoutId === null) {
-      return;
-    }
-
-    window.clearTimeout(traceLoadTimeoutId);
-    traceLoadTimeoutId = null;
   };
 
   const clearViewerReveal = () => {
@@ -106,9 +164,7 @@ export const PlaywrightTraceAttachmentView = (options: PlaywrightTraceAttachment
     destroyContentView();
     if (traceFrame?.parentElement === frameHost) {
       traceFrame = null;
-      hasPostedTraceToViewer = false;
       isViewerSettling = false;
-      clearTraceLoad();
       clearViewerReveal();
     }
     contentView = attachMountable(frameHost, view);
@@ -158,6 +214,92 @@ export const PlaywrightTraceAttachmentView = (options: PlaywrightTraceAttachment
     };
   };
 
+  const renderDownloadActions = (actions: HTMLElement) => {
+    actions.replaceChildren();
+
+    const downloadLink = createDownloadLink(options.attachment, safeDownloadUrl);
+    const headerActionsEvent = createModalHeaderActionsEvent(downloadLink ? [downloadLink] : []);
+    const handledByModalHeader = !el.dispatchEvent(headerActionsEvent);
+
+    if (!handledByModalHeader && downloadLink) {
+      actions.appendChild(downloadLink);
+    }
+  };
+
+  const createTraceUnavailableView = (): HTMLElement => {
+    const reason = getUnavailableReason();
+    const downloadLink = createDownloadLink(options.attachment, safeDownloadUrl);
+
+    if (downloadLink) {
+      downloadLink.textContent = translate("component.playwrightTrace.stepDownload");
+      downloadLink.className = "link";
+    }
+
+    const issueRow =
+      reason === "singleFile"
+        ? createElement("p", {
+            className: "attachment__trace-instructions-note",
+            children: [
+              `${translate("component.playwrightTrace.issuePrefix")} `,
+              createNavigationLink(
+                PLAYWRIGHT_ISSUE_URL,
+                translate("component.playwrightTrace.issueLabel"),
+              ),
+              `.`,
+            ],
+          })
+        : null;
+
+    return createElement("section", {
+      className: "attachment__trace-instructions",
+      attrs: {
+        "aria-labelledby": "playwright-trace-unavailable-title",
+      },
+      children: createElement("div", {
+        className: "attachment__trace-instructions-content",
+        children: [
+          createElement("h1", {
+            attrs: {
+              id: "playwright-trace-unavailable-title",
+            },
+            className: "attachment__trace-instructions-title",
+            text: translate("component.playwrightTrace.unavailableTitle"),
+          }),
+          createElement("p", {
+            className: "attachment__trace-instructions-reason",
+            text: translate(`component.playwrightTrace.${reason}Reason`, {
+              hash: {
+                protocol: getProtocolLabel(),
+              },
+            }),
+          }),
+          issueRow,
+          createElement("h2", {
+            className: "attachment__trace-instructions-subtitle",
+            text: translate("component.playwrightTrace.stepsTitle"),
+          }),
+          createElement("ol", {
+            className: "attachment__trace-instructions-list",
+            children: [
+              createElement("li", {
+                children: downloadLink || translate("component.playwrightTrace.stepDownload"),
+              }),
+              createElement("li", {
+                children: createNavigationLink(
+                  PLAYWRIGHT_TRACE_VIEWER_MANUAL_URL,
+                  translate("component.playwrightTrace.stepOpenViewer"),
+                ),
+              }),
+              createElement("li", {
+                text: translate("component.playwrightTrace.stepUpload"),
+              }),
+            ],
+          }),
+        ],
+      }),
+    });
+  };
+
   const updateViewerOverlay = (body: HTMLElement, overlay: Element) => {
     body.classList.toggle("attachment__trace-body_loading", isViewerSettling);
 
@@ -171,48 +313,48 @@ export const PlaywrightTraceAttachmentView = (options: PlaywrightTraceAttachment
     overlayView = attachMountable(overlay, LoaderView());
   };
 
-  const postTraceToViewer = (iframe: HTMLIFrameElement, blob: Blob) => {
-    iframe.contentWindow?.postMessage(
-      {
-        method: "load",
-        params: {
-          trace: blob,
-        },
-      },
-      viewerOrigin,
-    );
-  };
+  const canRenderTraceViewer = () =>
+    window.location.protocol === "http:" || window.location.protocol === "https:";
 
-  const scheduleTraceLoad = (iframe: HTMLIFrameElement, blob: Blob) => {
-    if (hasPostedTraceToViewer) {
-      return;
+  const toAbsoluteTraceUrl = (url: string): string => {
+    if (url.startsWith("data:") || url.startsWith("blob:")) {
+      return url;
     }
 
-    clearTraceLoad();
+    return new URL(url, window.location.href).toString();
+  };
 
-    // The hosted viewer adds its `message` listener shortly after the iframe `load`
-    // event and may still be finishing its own startup work, so hand the blob off
-    // once after a short settle window.
-    traceLoadTimeoutId = window.setTimeout(() => {
-      traceLoadTimeoutId = null;
-      if (!iframe.isConnected || traceBlob !== blob || hasPostedTraceToViewer) {
-        return;
-      }
+  const resolveTraceUrl = async (): Promise<string> => {
+    if (options.sourceUrl.startsWith("data:") || options.sourceUrl.startsWith("blob:")) {
+      return options.sourceUrl;
+    }
 
-      hasPostedTraceToViewer = true;
-      postTraceToViewer(iframe, blob);
-    }, 1000);
+    return reportDataUrl(options.sourceUrl, options.attachment.type);
+  };
+
+  const buildTraceViewerUrl = (): string | null => {
+    if (!traceViewerInfo || !traceUrl) {
+      return null;
+    }
+
+    const url = new URL(traceViewerInfo.url, window.location.href);
+    url.searchParams.set("trace", traceUrl);
+
+    return url.toString();
   };
 
   const renderTraceViewer = (frameHost: HTMLElement) => {
+    const viewerUrl = buildTraceViewerUrl();
+    if (!viewerUrl) {
+      return;
+    }
+
     if (traceFrame?.parentElement === frameHost) {
       return;
     }
 
     destroyContentView();
-    clearTraceLoad();
     clearViewerReveal();
-    hasPostedTraceToViewer = false;
     isViewerSettling = true;
 
     const iframe = createElement("iframe", {
@@ -224,13 +366,6 @@ export const PlaywrightTraceAttachmentView = (options: PlaywrightTraceAttachment
         width: "100%",
       },
       className: "attachment__trace-frame",
-    });
-    iframe.addEventListener("load", () => {
-      if (!traceBlob) {
-        return;
-      }
-
-      scheduleTraceLoad(iframe, traceBlob);
     });
     traceFrame = iframe;
     frameHost.replaceChildren(iframe);
@@ -254,6 +389,42 @@ export const PlaywrightTraceAttachmentView = (options: PlaywrightTraceAttachment
     loadError = null;
 
     try {
+      const [viewerInfo, resolvedTraceUrl] = await Promise.all([
+        loadTraceViewerInfo(),
+        resolveTraceUrl(),
+      ]);
+      if (currentRequestId !== requestId) {
+        return;
+      }
+
+      traceViewerInfo = viewerInfo;
+      traceUrl = toAbsoluteTraceUrl(resolvedTraceUrl);
+      revokeDownloadUrl();
+
+      if (viewerInfo && canRenderTraceViewer()) {
+        downloadUrl = traceUrl;
+        isLoading = false;
+        loadError = null;
+
+        if (el.isConnected) {
+          el.render?.();
+        }
+
+        return;
+      }
+
+      if (!isSingleFileReport()) {
+        downloadUrl = traceUrl;
+        isLoading = false;
+        loadError = null;
+
+        if (el.isConnected) {
+          el.render?.();
+        }
+
+        return;
+      }
+
       const blob = await fetchReportBlob(options.sourceUrl, {
         contentType: options.attachment.type,
       });
@@ -262,8 +433,6 @@ export const PlaywrightTraceAttachmentView = (options: PlaywrightTraceAttachment
       }
 
       traceBlob = blob;
-      hasPostedTraceToViewer = false;
-      revokeDownloadUrl();
       downloadUrl = URL.createObjectURL(blob);
       isLoading = false;
       loadError = null;
@@ -290,15 +459,11 @@ export const PlaywrightTraceAttachmentView = (options: PlaywrightTraceAttachment
 
   Object.assign(el, {
     render() {
-      const safeDownloadUrl = sanitizeResourceUrl(downloadUrl || options.sourceUrl);
+      safeDownloadUrl = sanitizeResourceUrl(downloadUrl || options.sourceUrl);
 
       el.className = "attachment attachment_trace";
       const { actions, body, frameHost, overlay } = ensureTraceLayout();
-      const downloadLink = createDownloadLink(options.attachment, safeDownloadUrl);
-      actions.replaceChildren();
-      if (downloadLink) {
-        actions.appendChild(downloadLink);
-      }
+      renderDownloadActions(actions);
 
       if (loadError) {
         isViewerSettling = false;
@@ -313,8 +478,14 @@ export const PlaywrightTraceAttachmentView = (options: PlaywrightTraceAttachment
         return el;
       }
 
-      if (traceBlob) {
-        renderTraceViewer(frameHost);
+      if (traceUrl || traceBlob) {
+        if (canRenderTraceViewer() && traceViewerInfo && traceUrl) {
+          renderTraceViewer(frameHost);
+        } else {
+          isViewerSettling = false;
+          clearViewerReveal();
+          mountContentView(createTraceUnavailableView());
+        }
         updateViewerOverlay(body, overlay);
         return el;
       }
@@ -331,6 +502,10 @@ export const PlaywrightTraceAttachmentView = (options: PlaywrightTraceAttachment
       return el;
     },
     attachToDom() {
+      const actions = el.querySelector(".attachment__trace-actions");
+      if (actions instanceof HTMLElement) {
+        renderDownloadActions(actions);
+      }
       contentView?.attachToDom?.();
     },
     detachFromDom() {
@@ -341,13 +516,16 @@ export const PlaywrightTraceAttachmentView = (options: PlaywrightTraceAttachment
       isLoading = false;
       loadError = null;
       traceBlob = null;
+      traceUrl = null;
+      traceViewerInfo = null;
       traceFrame = null;
-      clearTraceLoad();
       clearViewerReveal();
-      hasPostedTraceToViewer = false;
       isViewerSettling = false;
       destroyContentView();
       destroyOverlayView();
+      if (el.isConnected) {
+        el.dispatchEvent(createModalHeaderActionsEvent([]));
+      }
       revokeDownloadUrl();
       el.remove();
     },

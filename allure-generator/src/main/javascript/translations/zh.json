@@ -70,6 +70,18 @@
       "name": "Screen Diff",
       "showDiff": "Show diff",
       "showOverlay": "Show overlay"
+    },
+    "playwrightTrace": {
+      "unavailableTitle": "Playwright trace 查看器不可用",
+      "singleFileReason": "单文件报告暂不支持嵌入式 Playwright trace 查看，因为 Playwright Trace Viewer 目前无法完全内联。上游问题修复后，我们计划重新支持此功能。",
+      "nonHttpReason": "嵌入式 Playwright trace 查看要求报告通过 HTTP(S) 提供。Playwright Trace Viewer 依赖的浏览器 service worker 不适用于 {{protocol}} 报告。",
+      "missingAssetsReason": "嵌入式 Playwright trace 查看不可用，因为此报告不包含 Playwright Trace Viewer 资源。",
+      "issuePrefix": "上游问题：",
+      "issueLabel": "microsoft/playwright#40960",
+      "stepsTitle": "手动打开 trace",
+      "stepDownload": "下载 trace 归档",
+      "stepOpenViewer": "打开 Playwright Trace Viewer",
+      "stepUpload": "在查看器中上传已下载的归档"
     }
   },
   "controls": {

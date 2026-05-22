@@ -27,6 +27,7 @@ import io.qameta.allure.context.ReportInfoContext;
 import io.qameta.allure.core.AttachmentsPlugin;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.MarkdownDescriptionsPlugin;
+import io.qameta.allure.core.PlaywrightTraceViewerPlugin;
 import io.qameta.allure.core.Plugin;
 import io.qameta.allure.core.TestsResultsPlugin;
 import io.qameta.allure.duration.DurationPlugin;
@@ -96,6 +97,7 @@ public class ConfigurationBuilder {
             new SuitesPlugin(),
             new TestsResultsPlugin(),
             new AttachmentsPlugin(),
+            new PlaywrightTraceViewerPlugin(),
             new MailPlugin(),
             new InfluxDbExportPlugin(),
             new PrometheusExportPlugin(),

@@ -70,6 +70,18 @@
       "name": "Screen Diff",
       "showDiff": "Show diff",
       "showOverlay": "Show overlay"
+    },
+    "playwrightTrace": {
+      "unavailableTitle": "Playwright trace դիտիչը հասանելի չէ",
+      "singleFileReason": "Ներկառուցված Playwright trace դիտումը հասանելի չէ մեկ ֆայլով հաշվետվություններում, քանի որ Playwright Trace Viewer-ը հնարավոր չէ ամբողջությամբ ներդնել։ Մենք նախատեսում ենք նորից աջակցել, հենց որ վերին հոսքի խնդիրը շտկվի։",
+      "nonHttpReason": "Ներկառուցված Playwright trace դիտման համար հաշվետվությունը պետք է մատուցվի HTTP(S)-ով։ Բրաուզերի service worker-ները, որոնց վրա հիմնվում է Playwright Trace Viewer-ը, հասանելի չեն {{protocol}} հաշվետվությունների համար։",
+      "missingAssetsReason": "Ներկառուցված Playwright trace դիտումը հասանելի չէ, քանի որ այս հաշվետվությունը չի պարունակում Playwright Trace Viewer-ի ռեսուրսները։",
+      "issuePrefix": "Վերին հոսքի խնդիր՝",
+      "issueLabel": "microsoft/playwright#40960",
+      "stepsTitle": "Բացել trace-ը ձեռքով",
+      "stepDownload": "Ներբեռնել trace արխիվը",
+      "stepOpenViewer": "Բացել Playwright Trace Viewer-ը",
+      "stepUpload": "Վերբեռնել ներբեռնված արխիվը դիտիչում"
     }
   },
   "controls": {

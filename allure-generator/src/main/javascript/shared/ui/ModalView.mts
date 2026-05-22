@@ -6,6 +6,10 @@ import { createElement } from "../dom.mts";
 import { createIconElement } from "../icon/index.mts";
 import translate from "../../helpers/t.mts";
 import TooltipView from "./TooltipView.mts";
+import {
+  MODAL_HEADER_ACTIONS_EVENT,
+  type ModalHeaderActionsEventDetail,
+} from "./modalHeaderActions.mts";
 
 type ModalOptions = {
   childView: Mountable;
@@ -47,7 +51,8 @@ class ModalElement extends BaseElement {
             createElement("h2", {
               className: b("modal", "title"),
               children: [
-                createElement("span", { text: title }),
+                createElement("span", { className: b("modal", "title-text"), text: title }),
+                createElement("span", { className: b("modal", "actions") }),
                 createIconElement("lineGeneralXClose", {
                   attributes: {
                     "data-tooltip": translate("controls.close"),
@@ -71,6 +76,7 @@ class ModalElement extends BaseElement {
         "click .modal__background, .modal__close": "onClose",
         "mouseenter [data-tooltip]": "onTooltipHover",
         "mouseleave [data-tooltip]": "onTooltipLeave",
+        [MODAL_HEADER_ACTIONS_EVENT]: "onHeaderActions",
       },
       this,
     );
@@ -82,8 +88,32 @@ class ModalElement extends BaseElement {
     e.stopPropagation();
   }
 
-  onClose() {
+  onClose(e: Event) {
+    const target = e.target;
+    const background = this.querySelector(".modal__background");
+
+    if (target !== background && !(target instanceof Element && target.closest(".modal__close"))) {
+      return;
+    }
+
     this.destroy();
+  }
+
+  onHeaderActions(e: Event) {
+    const actionsContainer = this.querySelector(".modal__actions");
+
+    if (!(actionsContainer instanceof HTMLElement) || !(e instanceof CustomEvent)) {
+      return;
+    }
+
+    const detail = e.detail as ModalHeaderActionsEventDetail | undefined;
+    const actions = Array.isArray(detail?.actions)
+      ? detail.actions.filter((action): action is Element => action instanceof Element)
+      : [];
+
+    actionsContainer.replaceChildren(...actions);
+    e.preventDefault();
+    e.stopPropagation();
   }
 
   onTooltipHover(e: Event) {
