@@ -39,6 +39,8 @@ const ansiColors: Record<number, string> = {
 };
 
 const xtermColorLevels = [0, 95, 135, 175, 215, 255];
+const ansiEscape = "\u001B";
+const ansiControlSequencePattern = new RegExp(`${ansiEscape}\\[([0-9;]*)m`, "g");
 
 const getReadableAnsiColor = (red: number, green: number, blue: number) => {
   const brightness = red * 0.299 + green * 0.587 + blue * 0.114;
@@ -49,10 +51,21 @@ const getReadableAnsiColor = (red: number, green: number, blue: number) => {
     return semanticAnsiColor.warning;
   }
 
-  if (green >= red + 20 && green >= blue + 20) return semanticAnsiColor.success;
-  if (red >= green + 30 && red >= blue + 30) return semanticAnsiColor.danger;
-  if (blue >= red + 20 && blue >= green - 10) return semanticAnsiColor.info;
-  if (red >= 120 && blue >= 120 && green <= max - 20) return semanticAnsiColor.unknown;
+  if (green >= red + 20 && green >= blue + 20) {
+    return semanticAnsiColor.success;
+  }
+
+  if (red >= green + 30 && red >= blue + 30) {
+    return semanticAnsiColor.danger;
+  }
+
+  if (blue >= red + 20 && blue >= green - 10) {
+    return semanticAnsiColor.info;
+  }
+
+  if (red >= 120 && blue >= 120 && green <= max - 20) {
+    return semanticAnsiColor.unknown;
+  }
 
   if (max - min <= 32) {
     return brightness >= 150 || brightness <= 80
@@ -83,17 +96,22 @@ const getXtermColorRgb = (colorIndex: number) => {
 
 const isValidColorPart = (value: number) => Number.isInteger(value) && value >= 0 && value <= 255;
 
+const normalizeEscapedAnsiSequences = (text: string) =>
+  text.replace(/\\u001b(?=\[)/giu, ansiEscape).replace(/\\x1b(?=\[)/giu, ansiEscape);
+
 const normalizeAnsiForegroundColors = (text: string) =>
-  text.replace(/\x1b\[([0-9;]*)m/g, (match, sequence: string) => {
+  text.replace(ansiControlSequencePattern, (match, sequence: string) => {
     const codes = sequence.length === 0 ? [0] : sequence.split(";").map(Number);
 
-    if (codes.some((code) => !Number.isInteger(code))) return match;
+    if (codes.some((code) => !Number.isInteger(code))) {
+      return match;
+    }
 
     const fragments: string[] = [];
     let displayCodes: number[] = [];
     const flushDisplayCodes = () => {
       if (displayCodes.length > 0) {
-        fragments.push(`\x1b[${displayCodes.join(";")}m`);
+        fragments.push(`${ansiEscape}[${displayCodes.join(";")}m`);
         displayCodes = [];
       }
     };
@@ -106,7 +124,7 @@ const normalizeAnsiForegroundColors = (text: string) =>
 
         flushDisplayCodes();
         fragments.push(
-          `\x1b[38;5;${rgb ? getReadableAnsiColor(rgb.red, rgb.green, rgb.blue) : semanticAnsiColor.primary}m`,
+          `${ansiEscape}[38;5;${rgb ? getReadableAnsiColor(rgb.red, rgb.green, rgb.blue) : semanticAnsiColor.primary}m`,
         );
         index += 3;
         continue;
@@ -121,7 +139,7 @@ const normalizeAnsiForegroundColors = (text: string) =>
       ) {
         flushDisplayCodes();
         fragments.push(
-          `\x1b[38;5;${getReadableAnsiColor(codes[index + 2], codes[index + 3], codes[index + 4])}m`,
+          `${ansiEscape}[38;5;${getReadableAnsiColor(codes[index + 2], codes[index + 3], codes[index + 4])}m`,
         );
         index += 5;
         continue;
@@ -129,7 +147,7 @@ const normalizeAnsiForegroundColors = (text: string) =>
 
       if (code === 48 && codes[index + 1] === 5 && isValidColorPart(codes[index + 2])) {
         flushDisplayCodes();
-        fragments.push(`\x1b[48;5;${codes[index + 2]}m`);
+        fragments.push(`${ansiEscape}[48;5;${codes[index + 2]}m`);
         index += 3;
         continue;
       }
@@ -142,7 +160,9 @@ const normalizeAnsiForegroundColors = (text: string) =>
         isValidColorPart(codes[index + 4])
       ) {
         flushDisplayCodes();
-        fragments.push(`\x1b[48;2;${codes[index + 2]};${codes[index + 3]};${codes[index + 4]}m`);
+        fragments.push(
+          `${ansiEscape}[48;2;${codes[index + 2]};${codes[index + 3]};${codes[index + 4]}m`,
+        );
         index += 5;
         continue;
       }
@@ -165,6 +185,10 @@ const ansiConverter = new AnsiToHtml({
 });
 
 const ansi = (input: unknown): string =>
-  ansiConverter.toHtml(normalizeAnsiForegroundColors(input == null ? "" : String(input)));
+  ansiConverter.toHtml(
+    normalizeAnsiForegroundColors(
+      normalizeEscapedAnsiSequences(input == null ? "" : String(input)),
+    ),
+  );
 
 export default ansi;
