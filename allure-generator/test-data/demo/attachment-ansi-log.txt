@@ -1,0 +1,11 @@
+$ npm run deployment:gate
+[32mPASS[0m collected deployment logs
+[34mINFO[0m region=us-east-1 release=2026.05.27
+[33mWARN[0m cache entry age is 42m
+[93mWARN[0m bright yellow should remain readable
+[38;5;178mWARN[0m xterm olive/yellow should map to warning text
+[38;2;180;150;30mWARN[0m truecolor brown/yellow should map to warning text
+[35mMETA[0m labels: layer=web feature=Execution details
+[36mTRACE[0m streamed 7 log chunks before failure
+[90mDEBUG[0m using fallback endpoint https://example.test/api
+[31mFAIL[0m deployment gate failed: stale cache warning exceeded threshold

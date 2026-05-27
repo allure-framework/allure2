@@ -25,6 +25,72 @@
   }
 }
 
+@mixin status-label-shape($root-class, $icon-class, $text-class) {
+  .#{$root-class} {
+    --status-label-bg: var(--color-status-unknown-bg);
+    --status-label-fg: var(--color-status-unknown-on-bg);
+    --status-label-icon-bg: var(--color-bg-primary);
+    --status-label-icon-fg: var(--color-status-unknown-text);
+
+    align-items: center;
+    gap: var(--space-0-5);
+    padding: var(--space-0-25) var(--space-1) var(--space-0-25) var(--space-0-25);
+    display: inline-flex;
+    border-radius: var(--radius-pill);
+    background-color: var(--status-label-bg);
+    color: var(--status-label-fg);
+    height: max-content;
+  }
+
+  .#{$text-class} {
+    padding: 0;
+    color: var(--status-label-fg);
+  }
+
+  .#{$icon-class} {
+    --tree-item-icon-padding: 0;
+
+    padding: 0;
+  }
+
+  .#{$root-class} .#{$icon-class} {
+    --tree-item-icon-bg: var(--status-label-icon-bg);
+    --tree-item-icon-fg: var(--status-label-icon-fg);
+
+    color: var(--status-label-icon-bg);
+  }
+
+  .#{$root-class}.status-passed {
+    --status-label-bg: var(--color-status-passed-bg);
+    --status-label-fg: var(--color-status-passed-on-bg);
+    --status-label-icon-fg: var(--color-status-passed-text);
+  }
+
+  .#{$root-class}.status-failed {
+    --status-label-bg: var(--color-status-failed-bg);
+    --status-label-fg: var(--color-status-failed-on-bg);
+    --status-label-icon-fg: var(--color-status-failed-text);
+  }
+
+  .#{$root-class}.status-broken {
+    --status-label-bg: var(--color-status-broken-bg);
+    --status-label-fg: var(--color-status-broken-on-bg);
+    --status-label-icon-fg: var(--color-status-broken-text);
+  }
+
+  .#{$root-class}.status-skipped {
+    --status-label-bg: var(--color-status-skipped-bg);
+    --status-label-fg: var(--color-status-skipped-on-bg);
+    --status-label-icon-fg: var(--color-status-skipped-text);
+  }
+
+  .#{$root-class}.status-unknown {
+    --status-label-bg: var(--color-status-unknown-bg);
+    --status-label-fg: var(--color-status-unknown-on-bg);
+    --status-label-icon-fg: var(--color-status-unknown-text);
+  }
+}
+
 @mixin allure-fonts {
   @font-face {
     font-family: "PTRootUIWebVF";

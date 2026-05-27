@@ -1,0 +1,102 @@
+{
+  "uuid": "5bf9dfd7-5f4a-44df-9aa5-6fb7207df08e",
+  "historyId": "9d777f82dfc84fb090ec5173292a93fd",
+  "name": "renders ANSI colors in status details and log attachments",
+  "fullName": "io.qameta.allure.AnsiRenderingTest.shouldRenderAnsiInStatusDetailsAndAttachments",
+  "status": "failed",
+  "statusDetails": {
+    "known": false,
+    "muted": false,
+    "flaky": false,
+    "message": "\u001b[31mAssertionError\u001b[0m: deployment gate failed after terminal checks\n\u001b[33mWARN\u001b[0m standard ANSI yellow should use warning text\n\u001b[93mWARN\u001b[0m bright ANSI yellow should use warning text\n\u001b[38;5;178mWARN\u001b[0m xterm olive/yellow should use warning text\n\u001b[38;2;180;150;30mWARN\u001b[0m truecolor brown/yellow should use warning text",
+    "trace": "\u001b[31mAssertionError\u001b[0m: expected deployment gate to pass\n    at io.qameta.allure.demo.AnsiRenderingTest.assertGate(AnsiRenderingTest.java:42)\n\u001b[32mPASS\u001b[0m collected deployment logs\n\u001b[34mINFO\u001b[0m normalized terminal blue to info text\n\u001b[35mMETA\u001b[0m normalized terminal magenta to unknown status text\n\u001b[36mTRACE\u001b[0m normalized terminal cyan to decorative text\n\u001b[90mDEBUG\u001b[0m bright black became muted text"
+  },
+  "stage": "finished",
+  "description": "Demonstrates ANSI escape rendering in status details and text attachments.",
+  "steps": [
+    {
+      "name": "Collect terminal log with semantic ANSI colors",
+      "status": "failed",
+      "stage": "finished",
+      "steps": [],
+      "attachments": [
+        {
+          "name": "ANSI terminal log",
+          "source": "attachment-ansi-log.txt",
+          "type": "text/plain"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "terminal",
+          "value": "xterm-256color"
+        }
+      ],
+      "start": 1710000250000,
+      "stop": 1710000256400
+    }
+  ],
+  "attachments": [],
+  "parameters": [],
+  "start": 1710000250000,
+  "stop": 1710000256400,
+  "labels": [
+    {
+      "name": "tag",
+      "value": "web"
+    },
+    {
+      "name": "tag",
+      "value": "theme"
+    },
+    {
+      "name": "layer",
+      "value": "web"
+    },
+    {
+      "name": "feature",
+      "value": "Execution details"
+    },
+    {
+      "name": "story",
+      "value": "ANSI colors"
+    },
+    {
+      "name": "epic",
+      "value": "Report rendering"
+    },
+    {
+      "name": "host",
+      "value": "demo.local"
+    },
+    {
+      "name": "thread",
+      "value": "4242@demo.local.main(1)"
+    },
+    {
+      "name": "framework",
+      "value": "junit-platform"
+    },
+    {
+      "name": "language",
+      "value": "java"
+    },
+    {
+      "name": "package",
+      "value": "io.qameta.allure.demo"
+    },
+    {
+      "name": "testClass",
+      "value": "io.qameta.allure.demo.AnsiRenderingTest"
+    },
+    {
+      "name": "testMethod",
+      "value": "shouldRenderAnsiInStatusDetailsAndAttachments"
+    },
+    {
+      "name": "suite",
+      "value": "io.qameta.allure.demo.AnsiRenderingTest"
+    }
+  ],
+  "links": []
+}
