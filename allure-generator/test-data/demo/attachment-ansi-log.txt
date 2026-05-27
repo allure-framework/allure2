@@ -1,0 +1,11 @@
+$ npm run deployment:gate
+\u001b[32mPASS\u001b[0m collected deployment logs
+\u001b[34mINFO\u001b[0m region=us-east-1 release=2026.05.27
+\u001b[33mWARN\u001b[0m cache entry age is 42m
+\u001b[93mWARN\u001b[0m bright yellow should remain readable
+\u001b[38;5;178mWARN\u001b[0m xterm olive/yellow should map to warning text
+\u001b[38;2;180;150;30mWARN\u001b[0m truecolor brown/yellow should map to warning text
+\u001b[35mMETA\u001b[0m labels: layer=web feature=Execution details
+\u001b[36mTRACE\u001b[0m streamed 7 log chunks before failure
+\u001b[90mDEBUG\u001b[0m using fallback endpoint https://example.test/api
+\u001b[31mFAIL\u001b[0m deployment gate rejected status code 502

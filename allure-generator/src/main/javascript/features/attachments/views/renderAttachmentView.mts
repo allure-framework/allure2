@@ -1,8 +1,9 @@
+import ansi from "../../../helpers/ansi.mts";
+import translate from "../../../helpers/t.mts";
 import b from "../../../shared/bem/index.mts";
-import { appendChildren, createElement } from "../../../shared/dom.mts";
+import { appendChildren, createElement, createFragmentFromHtml } from "../../../shared/dom.mts";
 import { createIconElement } from "../../../shared/icon/index.mts";
 import { sanitizeNavigationUrl, sanitizeResourceUrl } from "../../../shared/url.mts";
-import translate from "../../../helpers/t.mts";
 
 type Attachment = import("../../../types/report.mts").Attachment;
 
@@ -25,6 +26,12 @@ const createDiv = (className: string) => createElement("div", { className });
 
 const createPre = (className: string, text: unknown) =>
   createElement("pre", { className, text: toText(text) });
+
+const createAnsiPre = (className: string, text: unknown) => {
+  const pre = createElement("pre", { className });
+  pre.append(createFragmentFromHtml(ansi(toText(text)), pre));
+  return pre;
+};
 
 const getHtmlAttachmentFrameTitle = (attachment: Attachment) =>
   translate("component.attachment.htmlPreviewTitle", {
@@ -83,7 +90,7 @@ export const renderAttachmentView = ({
   if (type === "text") {
     const textContainer = createDiv(b("attachment__text-container", { fullscreen: fullScreen }));
     textContainer.appendChild(
-      createPre("attachment__text", typeof content === "string" ? content : ""),
+      createAnsiPre("attachment__text", typeof content === "string" ? content : ""),
     );
     return textContainer;
   }
