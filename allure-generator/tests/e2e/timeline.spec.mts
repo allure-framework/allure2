@@ -64,6 +64,45 @@ test.describe("Timeline", () => {
     await expect(page.locator(".brush .handle--e")).toBeVisible();
   });
 
+  test("renders retry results as status-colored hatched bars", async ({ page }) => {
+    await openReport(page, {
+      fixture: uiDemo.name,
+      mode: REPORT_MODES.DIRECTORY,
+      route: "timeline",
+    });
+
+    const retryLinks = page.locator(".timeline__plot a:has(.timeline__item_retry)");
+    await expect.poll(() => retryLinks.count()).toBeGreaterThan(0);
+
+    const retryBars = page.locator(".timeline__item_retry");
+    const retryCount = await retryBars.count();
+    for (let index = 0; index < retryCount; index += 1) {
+      const retryBar = retryBars.nth(index);
+      const className = (await retryBar.getAttribute("class")) || "";
+      const status = className.match(
+        /\btimeline__item_status_(failed|broken|passed|skipped|unknown)\b/u,
+      )?.[1];
+      expect(status, `retry bar ${index} keeps its status class`).toBeTruthy();
+
+      const fill = await retryBar.evaluate((node) => getComputedStyle(node).fill);
+      expect(fill).toContain(`timeline-retry-${status}`);
+    }
+
+    const regularFill = await page
+      .locator(".timeline__item:not(.timeline__item_retry)")
+      .first()
+      .evaluate((node) => getComputedStyle(node).fill);
+    expect(regularFill).not.toContain("timeline-retry-");
+
+    const firstRetryLink = retryLinks.first();
+    await expect(firstRetryLink).toHaveAttribute("href", /^#testresult\/.+$/);
+    await firstRetryLink.evaluate((node) => {
+      node.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    await expect.poll(() => currentRoute(page)).toMatch(/^testresult\/.+$/);
+    await expect(page.locator(".test-result__name")).toBeVisible();
+  });
+
   test("shows a loader and error splash when timeline data fails to load", async ({ page }) => {
     const gate = createDeferredGate();
 

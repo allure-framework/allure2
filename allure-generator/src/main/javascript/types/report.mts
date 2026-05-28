@@ -109,6 +109,7 @@ export type TreeNode = {
   newBroken?: boolean;
   retriesCount?: number;
   retriesStatusChange?: boolean;
+  retry?: boolean;
   parameters?: string[];
   tags?: string[];
   children?: TreeNode[];

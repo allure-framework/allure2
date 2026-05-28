@@ -60,6 +60,58 @@
     &_status_unknown {
       fill: var(--color-status-unknown-chart-fill);
     }
+
+    &_retry {
+      fill: url("#timeline-retry-unknown");
+    }
+
+    &_retry.timeline__item_status_failed {
+      fill: url("#timeline-retry-failed");
+    }
+
+    &_retry.timeline__item_status_broken {
+      fill: url("#timeline-retry-broken");
+    }
+
+    &_retry.timeline__item_status_passed {
+      fill: url("#timeline-retry-passed");
+    }
+
+    &_retry.timeline__item_status_skipped {
+      fill: url("#timeline-retry-skipped");
+    }
+
+    &_retry.timeline__item_status_unknown {
+      fill: url("#timeline-retry-unknown");
+    }
+  }
+
+  &__retry-pattern-base {
+    fill: var(--color-bg-primary);
+  }
+
+  &__retry-pattern-stripe {
+    fill: var(--color-status-unknown-chart-fill);
+  }
+
+  &__retry-pattern_status_failed &__retry-pattern-stripe {
+    fill: var(--color-status-failed-chart-fill);
+  }
+
+  &__retry-pattern_status_broken &__retry-pattern-stripe {
+    fill: var(--color-status-broken-chart-fill);
+  }
+
+  &__retry-pattern_status_passed &__retry-pattern-stripe {
+    fill: var(--color-status-passed-chart-fill);
+  }
+
+  &__retry-pattern_status_skipped &__retry-pattern-stripe {
+    fill: var(--color-status-skipped-chart-fill);
+  }
+
+  &__retry-pattern_status_unknown &__retry-pattern-stripe {
+    fill: var(--color-status-unknown-chart-fill);
   }
 
   &__group_title {

@@ -33,6 +33,15 @@ const getTimelineResultLinkLabel = (result: TimelineTreeNode) => {
   return translate("tab.timeline.resultLink", { hash: { name, status } });
 };
 
+const getTimelineItemClassName = (result: TimelineTreeNode) =>
+  [
+    "timeline__item",
+    `timeline__item_status_${result.status || "unknown"}`,
+    result.retry ? "timeline__item_retry" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
 class TimelineView extends BaseChartView {
   rootClassName = "timeline";
 
@@ -266,10 +275,7 @@ class TimelineView extends BaseChartView {
         .attr("xlink:href", (d: TimelineTreeNode) => `#testresult/${d.uid}`)
         .attr("aria-label", getTimelineResultLinkLabel)
         .append("rect")
-        .attr(
-          "class",
-          (d: TimelineTreeNode) => `timeline__item timeline__item_status_${d.status || "unknown"}`,
-        )
+        .attr("class", getTimelineItemClassName)
         .attr("x", (d: TimelineTreeNode) => this.chartX(d.time?.start || 0))
         .attr("width", (d: TimelineTreeNode) =>
           this.chartX((d.time?.start || 0) + (d.time?.duration || 0)),
