@@ -39,6 +39,7 @@ import io.qameta.allure.history.HistoryPlugin;
 import io.qameta.allure.history.HistoryTrendPlugin;
 import io.qameta.allure.idea.IdeaLinksPlugin;
 import io.qameta.allure.influxdb.InfluxDbExportPlugin;
+import io.qameta.allure.labels.LabelTabsPlugin;
 import io.qameta.allure.launch.LaunchPlugin;
 import io.qameta.allure.mail.MailPlugin;
 import io.qameta.allure.owner.OwnerPlugin;
@@ -93,6 +94,7 @@ public class ConfigurationBuilder {
             new DurationPlugin(),
             new DurationTrendPlugin(),
             new StatusChartPlugin(),
+            new LabelTabsPlugin(),
             new TimelinePlugin(),
             new SuitesPlugin(),
             new TestsResultsPlugin(),
@@ -171,6 +173,7 @@ public class ConfigurationBuilder {
                         new DurationPlugin(),
                         new DurationTrendPlugin(),
                         new StatusChartPlugin(),
+                        new LabelTabsPlugin(),
                         new TimelinePlugin(),
                         new SuitesPlugin(),
                         new TestsResultsPlugin(),

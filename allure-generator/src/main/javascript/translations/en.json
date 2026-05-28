@@ -133,6 +133,9 @@
     "behaviors": {
       "name": "Behaviors"
     },
+    "issues": {
+      "name": "Issues"
+    },
     "graph": {
       "name": "Graphs"
     },
@@ -144,6 +147,12 @@
     },
     "suites": {
       "name": "Suites"
+    },
+    "tags": {
+      "name": "Tags"
+    },
+    "testTypes": {
+      "name": "Test types"
     },
     "timeline": {
       "name": "Timeline",

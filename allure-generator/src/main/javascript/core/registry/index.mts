@@ -9,6 +9,7 @@ import {
   overviewTab,
   widgetsByTab as overviewWidgets,
 } from "../../features/overview/index.mts";
+import { issuesTab, tagsTab, testTypesTab } from "../../features/labels/index.mts";
 import { packagesTab } from "../../features/packages/index.mts";
 import { suitesTab } from "../../features/suites/index.mts";
 import { testResultBlocks, testResultTabs } from "../../features/test-result/index.mts";
@@ -41,6 +42,9 @@ const tabs: TabDescriptor[] = [
   categoriesTab,
   suitesTab,
   behaviorsTab,
+  tagsTab,
+  issuesTab,
+  testTypesTab,
   packagesTab,
   graphTab,
   timelineTab,
