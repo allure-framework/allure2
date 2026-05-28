@@ -54,7 +54,7 @@ pluginManagement {
         id("com.bmuschko.docker-remote-api") version "10.0.0"
         id("com.diffplug.spotless") version "8.6.0"
         id("com.github.node-gradle.node") version "7.1.0"
-        id("com.gorylenko.gradle-git-properties") version "2.5.7"
+        id("com.gorylenko.gradle-git-properties") version "3.0.3"
         id("com.netflix.nebula.ospackage") version "12.3.0"
         id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
         id("io.qameta.allure") version "4.0.2"
