@@ -5,6 +5,30 @@ import { createDeferredGate } from "./support/async.mts";
 
 const uiDemo = fixtures.uiDemo;
 
+type TimelineNode = {
+  children?: TimelineNode[];
+  retry?: boolean;
+  time?: {
+    duration?: number;
+    start?: number;
+    stop?: number;
+  };
+};
+
+const makeFirstTimelineLeafZeroDuration = (node: TimelineNode): boolean => {
+  if (node.children) {
+    return node.children.some(makeFirstTimelineLeafZeroDuration);
+  }
+
+  if (node.retry || typeof node.time?.start !== "number" || typeof node.time.stop !== "number") {
+    return false;
+  }
+
+  node.time.stop = node.time.start;
+  node.time.duration = 0;
+  return true;
+};
+
 test.describe("Timeline", () => {
   test("filters visible results by duration and links bars to test results", async ({ page }) => {
     await openReport(page, {
@@ -97,6 +121,62 @@ test.describe("Timeline", () => {
     const firstRetryLink = retryLinks.first();
     await expect(firstRetryLink).toHaveAttribute("href", /^#testresult\/.+$/);
     await firstRetryLink.evaluate((node) => {
+      node.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    await expect.poll(() => currentRoute(page)).toMatch(/^testresult\/.+$/);
+    await expect(page.locator(".test-result__name")).toBeVisible();
+  });
+
+  test("renders zero-duration results as status-colored dots", async ({ page }) => {
+    await page.route(/\/data\/timeline\.json(?:\?.*)?$/, async (route) => {
+      const response = await route.fetch();
+      const timeline = (await response.json()) as TimelineNode;
+
+      if (!makeFirstTimelineLeafZeroDuration(timeline)) {
+        throw new Error("Expected the timeline fixture to contain at least one non-retry result");
+      }
+
+      await route.fulfill({ json: timeline, response });
+    });
+
+    await openReport(page, {
+      fixture: uiDemo.name,
+      mode: REPORT_MODES.DIRECTORY,
+      route: "timeline",
+    });
+
+    const zeroDots = page.locator("circle.timeline__item_zero");
+    await expect(zeroDots).toHaveCount(1);
+    await expect(page.locator("rect.timeline__item_zero")).toHaveCount(0);
+    await expect(page.locator("rect.timeline__item:not(.timeline__item_zero)")).not.toHaveCount(0);
+
+    const zeroDot = zeroDots.first();
+    const className = (await zeroDot.getAttribute("class")) || "";
+    const status = className.match(
+      /\btimeline__item_status_(failed|broken|passed|skipped|unknown)\b/u,
+    )?.[1];
+    expect(status, "zero-duration dot keeps its status class").toBeTruthy();
+
+    await expect(zeroDot).toHaveAttribute("r", "5");
+    await expect
+      .poll(async () => Number.isFinite(Number(await zeroDot.getAttribute("cx"))))
+      .toBe(true);
+
+    const zeroResultLink = page.locator(".timeline__plot a:has(circle.timeline__item_zero)").first();
+    await expect(zeroResultLink).toHaveAttribute("href", /^#testresult\/.+$/);
+    await expect
+      .poll(async () =>
+        zeroResultLink.evaluate((node) => {
+          const siblings = Array.from(node.parentElement?.children ?? []);
+          const dotIndex = siblings.indexOf(node);
+
+          return siblings
+            .slice(dotIndex + 1)
+            .every((sibling) => !sibling.querySelector("rect.timeline__item"));
+        }),
+      )
+      .toBe(true);
+    await zeroResultLink.evaluate((node) => {
       node.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
     await expect.poll(() => currentRoute(page)).toMatch(/^testresult\/.+$/);

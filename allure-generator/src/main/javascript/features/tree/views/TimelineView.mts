@@ -19,6 +19,7 @@ const BRUSH_VIEW_HEIGHT = 48;
 const BAR_HEIGHT = 20;
 const BAR_GAP = 2;
 const PADDING = 30;
+const ZERO_DURATION_MARK_RADIUS = 5;
 
 type TimelineTreeNode = import("../../../types/report.mts").TreeNode;
 type LoadedTreeData = import("../model/treeData.mts").LoadedTreeData;
@@ -33,10 +34,17 @@ const getTimelineResultLinkLabel = (result: TimelineTreeNode) => {
   return translate("tab.timeline.resultLink", { hash: { name, status } });
 };
 
+const isZeroDurationResult = (result: TimelineTreeNode) => {
+  const durationValue = result.time?.duration;
+
+  return typeof durationValue === "number" && durationValue <= 0;
+};
+
 const getTimelineItemClassName = (result: TimelineTreeNode) =>
   [
     "timeline__item",
     `timeline__item_status_${result.status || "unknown"}`,
+    isZeroDurationResult(result) ? "timeline__item_zero" : "",
     result.retry ? "timeline__item_retry" : "",
   ]
     .filter(Boolean)
@@ -267,13 +275,16 @@ class TimelineView extends BaseChartView {
     parent: import("d3-selection").Selection<SVGGElement, unknown, null, undefined>,
   ) {
     if (items.length) {
-      const bars = parent
+      const links = parent
         .selectAll(".timeline__item")
         .data(items)
         .enter()
         .append("a")
         .attr("xlink:href", (d: TimelineTreeNode) => `#testresult/${d.uid}`)
-        .attr("aria-label", getTimelineResultLinkLabel)
+        .attr("aria-label", getTimelineResultLinkLabel);
+      const barLinks = links.filter((d: TimelineTreeNode) => !isZeroDurationResult(d));
+      const dotLinks = links.filter((d: TimelineTreeNode) => isZeroDurationResult(d));
+      const bars = barLinks
         .append("rect")
         .attr("class", getTimelineItemClassName)
         .attr("x", (d: TimelineTreeNode) => this.chartX(d.time?.start || 0))
@@ -283,8 +294,17 @@ class TimelineView extends BaseChartView {
         .attr("rx", 2)
         .attr("ry", 2)
         .attr("height", BAR_HEIGHT);
+      const dots = dotLinks
+        .raise()
+        .append("circle")
+        .attr("class", getTimelineItemClassName)
+        .attr("cx", (d: TimelineTreeNode) => this.chartX(d.time?.start || 0))
+        .attr("cy", BAR_HEIGHT / 2)
+        .attr("r", ZERO_DURATION_MARK_RADIUS);
       this.bindTooltip(bars);
+      this.bindTooltip(dots);
       bars.on("click", this.hideTooltip.bind(this));
+      dots.on("click", this.hideTooltip.bind(this));
       return BAR_HEIGHT + BAR_GAP;
     }
     return 0;
@@ -300,9 +320,12 @@ class TimelineView extends BaseChartView {
       const brushRange = selection as [number, number];
       this.chartX.domain(brushRange.map((value) => this.brushX.invert(value)) as [number, number]);
       this.svgChart
-        .selectAll<SVGRectElement, TimelineTreeNode>(".timeline__item")
+        .selectAll<SVGRectElement, TimelineTreeNode>("rect.timeline__item")
         .attr("x", (d) => start(d))
         .attr("width", (d) => stop(d) - start(d));
+      this.svgChart
+        .selectAll<SVGCircleElement, TimelineTreeNode>("circle.timeline__item_zero")
+        .attr("cx", (d) => start(d));
       this.svgBrush
         .select<SVGGElement>(".timeline__brush__axis_x")
         .call(
