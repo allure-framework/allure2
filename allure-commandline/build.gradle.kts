@@ -51,7 +51,20 @@ tasks.distTar {
 
 val startScripts by tasks.existing(CreateStartScripts::class) {
     applicationName = "allure"
-    classpath = files(tasks.jar) + configurations.runtimeClasspath.get() + files("src/lib/config")
+    classpath = files(tasks.jar) + configurations.runtimeClasspath.get() + files("src/dist/lib/config")
+    doLast {
+        val classpathLine = Regex("(?m)^set CLASSPATH=.*$")
+        val script = windowsScript.readText()
+        val matches = classpathLine.findAll(script).toList()
+
+        if (matches.size != 1) {
+            throw GradleException("Expected exactly one CLASSPATH line in ${windowsScript}, found ${matches.size}")
+        }
+
+        windowsScript.writeText(classpathLine.replace(script) {
+            "set CLASSPATH=%APP_HOME%\\lib\\*;%APP_HOME%\\lib\\config"
+        })
+    }
 }
 
 tasks.build {
