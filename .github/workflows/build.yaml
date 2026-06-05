@@ -79,15 +79,22 @@ jobs:
     name: "Test Allure Commandline"
     runs-on: ${{ matrix.os }}
     needs: build
+    env:
+      ALLURE_TESTCMD_DUMP_NAME: allure-results-testcmd-${{ matrix.os }}-jdk-${{ matrix.java-version }}-${{ matrix.install.name }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
         java-version: [ '8', '11', '17', '20' ]
-        commandline-path:
-          - .
-          - testcmd/install/allure-commandline-under-a-nested-working-directory/with-windows-launcher-classpath-length-regression/allure-commandline
+        install:
+          - name: regular
+            path: .
+          - name: nested
+            path: testcmd/install/allure-commandline-under-a-nested-working-directory/with-windows-launcher-classpath-length-regression/allure-commandline
     steps:
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '20.x'
       - name: Set up JRE ${{ matrix.java-version }}
         uses: actions/setup-java@v5
         with:
@@ -98,21 +105,42 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           name: allure-commandline
-          path: ${{ matrix.commandline-path }}
+          path: ${{ matrix.install.path }}
       - name: Download testcmd smoke results artifact
         uses: actions/download-artifact@v8
         with:
           name: testcmd-smoke-results
           path: testcmd-smoke-results
       - name: Add execute permissions to script
-        run: chmod +x ${{ matrix.commandline-path }}/bin/allure
+        run: chmod +x ${{ matrix.install.path }}/bin/allure
       - name: Run version command
-        run: ${{ matrix.commandline-path }}/bin/allure --version
+        shell: pwsh
+        run: |
+          $allure = '${{ matrix.install.path }}/bin/allure'
+          npx -y allure@3 check `
+            --name 'testcmd allure --version (${{ matrix.os }}, Java ${{ matrix.java-version }}, ${{ matrix.install.name }})' `
+            --tag testcmd `
+            --tag ${{ matrix.os }} `
+            --tag java-${{ matrix.java-version }} `
+            --tag ${{ matrix.install.name }} `
+            --dump '${{ env.ALLURE_TESTCMD_DUMP_NAME }}-version' `
+            -- pwsh -NoProfile -Command "& '$allure' --version"
       - name: Generate demo report
-        run: ${{ matrix.commandline-path }}/bin/allure generate testcmd-smoke-results
+        shell: pwsh
+        run: |
+          $allure = '${{ matrix.install.path }}/bin/allure'
+          npx -y allure@3 check `
+            --name 'testcmd allure generate (${{ matrix.os }}, Java ${{ matrix.java-version }}, ${{ matrix.install.name }})' `
+            --tag testcmd `
+            --tag ${{ matrix.os }} `
+            --tag java-${{ matrix.java-version }} `
+            --tag ${{ matrix.install.name }} `
+            --dump '${{ env.ALLURE_TESTCMD_DUMP_NAME }}-generate' `
+            -- pwsh -NoProfile -Command "& '$allure' generate testcmd-smoke-results"
       - name: Verify generated tree data
         shell: pwsh
         run: |
+          $verifyScript = @'
           $requiredFiles = @(
             'allure-report/data/behaviors.json',
             'allure-report/data/behaviors.csv',
@@ -132,6 +160,23 @@ jobs:
           $requiredFiles | ForEach-Object {
             Write-Host "Verified $_"
           }
+          '@
+
+          npx -y allure@3 check `
+            --name 'testcmd generated tree data (${{ matrix.os }}, Java ${{ matrix.java-version }}, ${{ matrix.install.name }})' `
+            --tag testcmd `
+            --tag ${{ matrix.os }} `
+            --tag java-${{ matrix.java-version }} `
+            --tag ${{ matrix.install.name }} `
+            --dump '${{ env.ALLURE_TESTCMD_DUMP_NAME }}-tree-data' `
+            -- pwsh -NoProfile -Command $verifyScript
+      - name: Upload Allure testcmd dump
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ env.ALLURE_TESTCMD_DUMP_NAME }}
+          path: ./${{ env.ALLURE_TESTCMD_DUMP_NAME }}-*.zip
+          if-no-files-found: ignore
   report:
     needs: [build, testcmd]
     name: "Build report"
