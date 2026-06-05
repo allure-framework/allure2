@@ -140,7 +140,6 @@ jobs:
       - name: Verify generated tree data
         shell: pwsh
         run: |
-          $verifyScript = @'
           $requiredFiles = @(
             'allure-report/data/behaviors.json',
             'allure-report/data/behaviors.csv',
@@ -153,23 +152,34 @@ jobs:
           }
 
           if ($missingFiles.Count -gt 0) {
-            Write-Error "Missing generated report files: $($missingFiles -join ', ')"
+            $message = "Missing generated report files: $($missingFiles -join ', ')"
+            npx -y allure@3 check `
+              --name 'testcmd generated tree data (${{ matrix.os }}, Java ${{ matrix.java-version }}, ${{ matrix.install.name }})' `
+              --status failed `
+              --message $message `
+              --tag testcmd `
+              --tag ${{ matrix.os }} `
+              --tag java-${{ matrix.java-version }} `
+              --tag ${{ matrix.install.name }} `
+              --dump '${{ env.ALLURE_TESTCMD_DUMP_NAME }}-tree-data'
+            Write-Error $message
             exit 1
           }
 
           $requiredFiles | ForEach-Object {
             Write-Host "Verified $_"
           }
-          '@
 
+          $message = "Verified generated report files: $($requiredFiles -join ', ')"
           npx -y allure@3 check `
             --name 'testcmd generated tree data (${{ matrix.os }}, Java ${{ matrix.java-version }}, ${{ matrix.install.name }})' `
+            --status passed `
+            --message $message `
             --tag testcmd `
             --tag ${{ matrix.os }} `
             --tag java-${{ matrix.java-version }} `
             --tag ${{ matrix.install.name }} `
-            --dump '${{ env.ALLURE_TESTCMD_DUMP_NAME }}-tree-data' `
-            -- pwsh -NoProfile -Command $verifyScript
+            --dump '${{ env.ALLURE_TESTCMD_DUMP_NAME }}-tree-data'
       - name: Upload Allure testcmd dump
         if: always()
         uses: actions/upload-artifact@v7
