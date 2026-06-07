@@ -50,6 +50,7 @@ import io.qameta.allure.status.StatusChartPlugin;
 import io.qameta.allure.suites.SuitesPlugin;
 import io.qameta.allure.summary.SummaryPlugin;
 import io.qameta.allure.tags.TagsPlugin;
+import io.qameta.allure.tags.TagsTreePlugin;
 import io.qameta.allure.timeline.TimelinePlugin;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -81,6 +82,7 @@ public class ConfigurationBuilder {
     private static final List<Extension> BUNDLED_EXTENSIONS = Arrays.asList(
             new MarkdownDescriptionsPlugin(),
             new TagsPlugin(),
+            new TagsTreePlugin(),
             new RetryPlugin(),
             new RetryTrendPlugin(),
             new SeverityPlugin(),
@@ -159,6 +161,7 @@ public class ConfigurationBuilder {
                         new RandomUidContext(),
                         new MarkdownDescriptionsPlugin(),
                         new TagsPlugin(),
+                        new TagsTreePlugin(),
                         new RetryPlugin(),
                         new RetryTrendPlugin(),
                         new SeverityPlugin(),
