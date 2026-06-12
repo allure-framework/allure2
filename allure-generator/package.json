@@ -55,10 +55,7 @@
     "split.js": "^1.6.4"
   },
   "browserslist": [
-    "last 2 Chrome major versions",
-    "last 2 Edge major versions",
-    "last 2 Firefox major versions",
-    "last 2 Safari major versions"
+    "defaults"
   ],
   "scripts": {
     "build": "npm run cleanup && vite build --mode production",
