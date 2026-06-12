@@ -33,7 +33,28 @@ jobs:
           permission-issues: write
           permission-pull-requests: write
 
+      - name: Check update branch
+        id: update-branch
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          UPDATE_BRANCH: ${{ env.UPDATE_BRANCH }}
+        run: |
+          response="$(gh api --include --silent "repos/${GITHUB_REPOSITORY}/git/ref/heads/${UPDATE_BRANCH}" 2>&1)" && {
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          }
+
+          if printf "%s\n" "$response" | grep -Eq "(^HTTP/[0-9.]+ 404|HTTP 404)"; then
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          printf "%s\n" "$response" >&2
+          exit 1
+
       - name: Reset stale update branch
+        if: steps.update-branch.outputs.exists == 'true'
         uses: actions/github-script@v9
         env:
           UPDATE_BRANCH: ${{ env.UPDATE_BRANCH }}
@@ -73,7 +94,11 @@ jobs:
                 ref: `heads/${updateBranch}`,
               });
             } catch (error) {
-              if (error.status !== 404) {
+              const missingRef =
+                error.status === 404 ||
+                (error.status === 422 && /Reference does not exist/i.test(error.message));
+
+              if (!missingRef) {
                 throw error;
               }
             }
