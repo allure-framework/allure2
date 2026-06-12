@@ -11,6 +11,7 @@ import {
 } from "../../features/overview/index.mts";
 import { packagesTab } from "../../features/packages/index.mts";
 import { suitesTab } from "../../features/suites/index.mts";
+import { tagsTab } from "../../features/tags/index.mts";
 import { testResultBlocks, testResultTabs } from "../../features/test-result/index.mts";
 import { timelineTab } from "../../features/timeline/index.mts";
 
@@ -40,6 +41,7 @@ const tabs: TabDescriptor[] = [
   overviewTab,
   categoriesTab,
   suitesTab,
+  tagsTab,
   behaviorsTab,
   packagesTab,
   graphTab,

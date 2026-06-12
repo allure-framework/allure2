@@ -103,6 +103,8 @@ class ReportGeneratorTest {
     void shouldGenerateXunitJson() {
         assertThat(output.resolve("data/suites.json"))
                 .isRegularFile();
+        assertThat(output.resolve("data/tags.json"))
+                .isRegularFile();
     }
 
     /**

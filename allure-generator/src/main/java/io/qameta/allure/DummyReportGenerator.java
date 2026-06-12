@@ -48,6 +48,7 @@ import io.qameta.allure.status.StatusChartPlugin;
 import io.qameta.allure.suites.SuitesPlugin;
 import io.qameta.allure.summary.SummaryPlugin;
 import io.qameta.allure.tags.TagsPlugin;
+import io.qameta.allure.tags.TagsTreePlugin;
 import io.qameta.allure.timeline.TimelinePlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,6 +78,7 @@ public final class DummyReportGenerator {
             new RandomUidContext(),
             new MarkdownDescriptionsPlugin(),
             new TagsPlugin(),
+            new TagsTreePlugin(),
             new RetryPlugin(),
             new RetryTrendPlugin(),
             new SeverityPlugin(),
