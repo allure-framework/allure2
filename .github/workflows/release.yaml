@@ -2,8 +2,7 @@ name: Release
 run-name: Release ${{ inputs.releaseVersion }} (next ${{ inputs.nextVersion }}) by ${{ github.actor }}
 
 permissions:
-  contents: write
-  actions: write
+  contents: read
 
 on:
   workflow_dispatch:
@@ -18,6 +17,9 @@ on:
 jobs:
   triage:
     runs-on: ubuntu-latest
+    env:
+      GIT_COMMIT_AUTHOR_EMAIL: ${{ vars.ALLURE_CI_APP_USER_ID }}+${{ vars.ALLURE_CI_APP_SLUG }}[bot]@users.noreply.github.com
+      GIT_COMMIT_AUTHOR_NAME: ${{ vars.ALLURE_CI_APP_SLUG }}[bot]
     steps:
       - name: "Check release version"
         run: |
@@ -25,14 +27,23 @@ jobs:
       - name: "Check next version"
         run: |
           expr "${{ github.event.inputs.nextVersion }}" : '[[:digit:]][[:digit:]]*\.[[:digit:]][[:digit:]]*$'
+
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ vars.ALLURE_CI_APP_CLIENT_ID }}
+          private-key: ${{ secrets.ALLURE_CI_APP_PRIVATE_KEY }}
+          permission-contents: write
+
       - uses: actions/checkout@v6
         with:
-          token: ${{ secrets.QAMETA_CI }}
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: "Configure CI Git User"
         run: |
-          git config --global user.name qameta-ci
-          git config --global user.email qameta-ci@qameta.io
+          git config --global user.name "${GIT_COMMIT_AUTHOR_NAME}"
+          git config --global user.email "${GIT_COMMIT_AUTHOR_EMAIL}"
       - name: "Set release version"
         run: |
           sed -i -e '/version=/s/.*/version=${{ github.event.inputs.releaseVersion }}/g' gradle.properties
@@ -59,4 +70,4 @@ jobs:
           generate_release_notes: true
           target_commitish: ${{ github.ref }}
         env:
-          GITHUB_TOKEN: ${{ secrets.QAMETA_CI }}
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
