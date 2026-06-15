@@ -23,7 +23,6 @@ import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.Link;
 import io.qameta.allure.entity.TestResult;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,10 +59,11 @@ public class IdeaLinksPlugin implements Aggregator2 {
                           final List<LaunchResults> launchesResults,
                           final ReportStorage storage) {
         if (enabled) {
-            launchesResults.stream()
-                    .map(LaunchResults::getAllResults)
-                    .flatMap(Collection::stream)
-                    .forEach(this::addIdeaLink);
+            for (LaunchResults launchResults : launchesResults) {
+                for (TestResult testResult : launchResults.getAllResults()) {
+                    addIdeaLink(testResult);
+                }
+            }
         }
     }
 
