@@ -74,45 +74,34 @@ subprojects {
     apply(plugin = "com.diffplug.spotless")
     apply(plugin = "io.spring.dependency-management")
 
-    val orgSlf4jVersion = "2.0.18"
-    val comSquareupRetrofit2Version = "3.0.0"
-
     dependencyManagement {
         imports {
             mavenBom("com.fasterxml.jackson:jackson-bom:2.22.0")
             mavenBom("com.squareup.okhttp3:okhttp-bom:5.4.0")
+            mavenBom("com.squareup.retrofit2:retrofit-bom:3.0.0")
             // latest version that supports java 8
             mavenBom("com.vladsch.flexmark:flexmark-all:0.62.2")
             mavenBom("io.qameta.allure:allure-bom:2.35.2")
+            mavenBom("org.assertj:assertj-bom:3.27.7")
             mavenBom("org.junit:junit-bom:6.1.0")
+            mavenBom("org.mockito:mockito-bom:5.23.0")
+            mavenBom("org.slf4j:slf4j-bom:2.0.18")
         }
         dependencies {
             dependency("com.beust:jcommander:1.82")
             dependency("com.github.spotbugs:spotbugs:4.10.2")
             dependency("com.opencsv:opencsv:5.12.0")
             dependency("com.puppycrawl.tools:checkstyle:12.2.0")
-            dependency("com.squareup.retrofit2:converter-jackson:${comSquareupRetrofit2Version}")
-            dependency("com.squareup.retrofit2:retrofit:${comSquareupRetrofit2Version}")
-            dependency("commons-beanutils:commons-beanutils:1.11.0")
             dependency("commons-io:commons-io:2.22.0")
             dependency("javax.xml.bind:jaxb-api:2.3.1")
             dependency("net.sourceforge.pmd:pmd-java:7.25.0")
             dependency("org.allurefw:allure1-model:1.0")
-            dependency("org.apache.commons:commons-collections4:4.5.0")
             dependency("org.apache.commons:commons-lang3:3.20.0")
             dependency("org.apache.httpcomponents:httpclient:4.5.14")
-            dependency("org.assertj:assertj-core:3.27.7")
-            dependency("org.eclipse.jetty:jetty-server:12.0.16")
             dependency("org.freemarker:freemarker:2.3.34")
             dependency("org.jsoup:jsoup:1.22.2")
             dependency("org.junit-pioneer:junit-pioneer:2.3.0")
-            dependency("org.mockito:mockito-core:5.23.0")
             dependency("org.projectlombok:lombok:1.18.46")
-            dependency("org.slf4j:slf4j-api:${orgSlf4jVersion}")
-            dependency("org.slf4j:slf4j-jdk14:${orgSlf4jVersion}")
-            dependency("org.slf4j:slf4j-nop:${orgSlf4jVersion}")
-            dependency("org.slf4j:slf4j-simple:${orgSlf4jVersion}")
-            dependency("org.zeroturnaround:zt-zip:1.17")
         }
     }
 
