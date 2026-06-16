@@ -367,10 +367,12 @@ class XcTestPluginTest {
         results.forEach(result -> {
             builder.append("resultName=").append(result.getName()).append(System.lineSeparator());
             result.getTestStage().getSteps()
-                    .forEach(step -> builder
-                            .append("stepName=")
-                            .append(step.getName())
-                            .append(System.lineSeparator()));
+                    .forEach(
+                            step -> builder
+                                    .append("stepName=")
+                                    .append(step.getName())
+                                    .append(System.lineSeparator())
+                    );
         });
         return builder.toString();
     }
