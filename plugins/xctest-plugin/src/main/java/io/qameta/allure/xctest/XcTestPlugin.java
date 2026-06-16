@@ -23,11 +23,19 @@ import io.qameta.allure.entity.Status;
 import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
+import io.qameta.allure.parser.ClasspathEntityResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 import xmlwise.Plist;
+import xmlwise.XmlElement;
 import xmlwise.XmlParseException;
 
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -77,12 +85,36 @@ public class XcTestPlugin implements Reader {
     private void readSummaries(final Path directory, final Path testSummariesPath, final ResultsVisitor visitor) {
         try {
             LOGGER.info("Parse file {}", testSummariesPath);
-            final Map<String, Object> loaded = Plist.load(testSummariesPath.toFile());
+            final Map<String, Object> loaded = loadPlist(testSummariesPath);
             final List<?> summaries = asList(loaded.getOrDefault(TESTABLE_SUMMARIES, emptyList()));
             summaries.forEach(summary -> parseSummary(directory, summary, visitor));
-        } catch (XmlParseException | IOException e) {
+        } catch (XmlParseException | SAXException | ParserConfigurationException | IOException e) {
             LOGGER.error("Could not parse file {}", testSummariesPath, e);
         }
+    }
+
+    private Map<String, Object> loadPlist(final Path testSummariesPath)
+            throws IOException, ParserConfigurationException, SAXException, XmlParseException {
+        final DocumentBuilderFactory factory = newDocumentBuilderFactory();
+        final DocumentBuilder builder = factory.newDocumentBuilder();
+        builder.setEntityResolver(new ClasspathEntityResolver());
+
+        final Document document = builder.parse(testSummariesPath.toFile());
+        return Plist.fromXmlElement(new XmlElement(document.getDocumentElement()));
+    }
+
+    private DocumentBuilderFactory newDocumentBuilderFactory() throws ParserConfigurationException {
+        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setValidating(false);
+        factory.setXIncludeAware(false);
+        factory.setExpandEntityReferences(false);
+        factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+        factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+        factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+        return factory;
     }
 
     private void parseSummary(final Path directory, final Object summary, final ResultsVisitor visitor) {
