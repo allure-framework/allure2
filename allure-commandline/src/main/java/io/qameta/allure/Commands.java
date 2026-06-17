@@ -15,7 +15,6 @@
  */
 package io.qameta.allure;
 
-import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 import io.qameta.allure.config.ConfigLoader;
 import io.qameta.allure.core.Configuration;
@@ -32,22 +31,17 @@ import org.slf4j.LoggerFactory;
 import java.awt.AWTError;
 import java.awt.Desktop;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
-import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import static io.qameta.allure.DefaultResultsVisitor.probeContentType;
 import static java.lang.String.format;
 
 /**
@@ -58,10 +52,8 @@ import static java.lang.String.format;
 public class Commands {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Commands.class);
-    private static final String CURRENT_DIRECTORY = ".";
     private static final String DIRECTORY_EXISTS_MESSAGE = "Allure: Target directory {} for the report is already"
             + " in use, add a '--clean' option to overwrite";
-    private static final String PATH_SEPARATOR = "/";
 
     private final Path allureHome;
 
@@ -246,7 +238,7 @@ public class Commands {
         LOGGER.info("Starting web server...");
         final HttpServer server;
         try {
-            server = setUpServer(host, port, reportDirectory);
+            server = LocalReportServer.setUp(host, port, reportDirectory);
             server.start();
         } catch (Exception e) {
             LOGGER.error("Could not serve the report", e);
@@ -270,7 +262,8 @@ public class Commands {
                     e
             );
         }
-        LOGGER.info("Server started at <{}>. Press <Ctrl+C> to exit", uri);
+        LOGGER.info("Local preview server started at <{}>. Press <Ctrl+C> to exit", uri);
+        LOGGER.info(LocalReportServer.LOCAL_SERVE_MESSAGE);
         try {
             Thread.currentThread().join();
         } catch (InterruptedException e) {
@@ -319,84 +312,6 @@ public class Commands {
                 .withReportName(reportNameOptions.getReportName())
                 .withReportLanguage(reportLanguageOptions.getReportLanguage())
                 .build();
-    }
-
-    /**
-     * Set up HttpServer to serve Allure Report.
-     *
-     * @param host            the host
-     * @param port            the port
-     * @param reportDirectory the report directory
-     * @return self for method chaining
-     * @throws IOException the io exception
-     */
-    protected HttpServer setUpServer(final String host, final int port, final Path reportDirectory) throws IOException {
-        final HttpServer server = HttpServer
-                .create(new InetSocketAddress(Objects.isNull(host) ? "localhost" : host, port), 0);
-        final Path normalizedReportDirectory = reportDirectory.normalize();
-
-        server.createContext(PATH_SEPARATOR, exchange -> {
-            final String requestPath = exchange.getRequestURI().getPath();
-            if (!isValidRequestPath(requestPath)) {
-                serveNotFound(exchange);
-                return;
-            }
-            final Path requestedPath = normalizedReportDirectory.resolve(CURRENT_DIRECTORY + requestPath).normalize();
-            if (!isWithinReportDirectory(normalizedReportDirectory, requestedPath)) {
-                serveNotFound(exchange);
-                return;
-            }
-            if (Files.isRegularFile(requestedPath, LinkOption.NOFOLLOW_LINKS)) {
-                serveFile(exchange, requestedPath);
-                return;
-            }
-            if (Files.isDirectory(requestedPath, LinkOption.NOFOLLOW_LINKS)) {
-                serveIndex(exchange, requestedPath.resolve("index.html"));
-                return;
-            }
-            serveNotFound(exchange);
-        });
-
-        return server;
-    }
-
-    private static boolean isValidRequestPath(final String requestPath) {
-        return requestPath.indexOf('\\') < 0
-                && Stream.of(requestPath.split(PATH_SEPARATOR))
-                        .noneMatch(segment -> CURRENT_DIRECTORY.equals(segment) || "..".equals(segment));
-    }
-
-    static boolean isWithinReportDirectory(final Path normalizedReportDirectory,
-                                           final Path requestedPath) {
-        return requestedPath.startsWith(normalizedReportDirectory);
-    }
-
-    private static void serveIndex(final HttpExchange exchange,
-                                   final Path indexFile)
-            throws IOException {
-        if (Files.isRegularFile(indexFile, LinkOption.NOFOLLOW_LINKS)) {
-            serveFile(exchange, indexFile);
-            return;
-        }
-        serveNotFound(exchange);
-    }
-
-    private static void serveFile(final HttpExchange exchange, final Path file) throws IOException {
-        final String contentType = Optional.ofNullable(probeContentType(file))
-                .orElse(DefaultResultsVisitor.APPLICATION_OCTET_STREAM);
-        exchange.getResponseHeaders().set("Content-Type", contentType);
-        exchange.sendResponseHeaders(200, Files.size(file));
-        try (OutputStream os = exchange.getResponseBody()) {
-            Files.copy(file, os);
-        }
-    }
-
-    private static void serveNotFound(final HttpExchange exchange) throws IOException {
-        final String response = "404 Not Found";
-        exchange.sendResponseHeaders(404, response.length());
-        try (OutputStream os = exchange.getResponseBody()) {
-            os.write(response.getBytes(StandardCharsets.UTF_8));
-        }
     }
 
     /**
