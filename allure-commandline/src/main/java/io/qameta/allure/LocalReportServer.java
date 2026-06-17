@@ -50,6 +50,7 @@ import static io.qameta.allure.DefaultResultsVisitor.probeContentType;
  * attachment routes are handled conservatively so HTML previews remain usable without giving attachment content
  * script privileges in the report origin.
  */
+@SuppressWarnings("PMD.AvoidUsingHardCodedIP")
 final class LocalReportServer {
 
     static final String LOCAL_SERVE_MESSAGE = "`allure serve` is intended for local report preview only. "
@@ -158,10 +159,7 @@ final class LocalReportServer {
     }
 
     static boolean isLocalServerHost(final String host) {
-        if (Objects.isNull(host)) {
-            return true;
-        }
-        return LOCAL_SERVER_HOSTS.contains(normalizeHost(host));
+        return Objects.isNull(host) || LOCAL_SERVER_HOSTS.contains(normalizeHost(host));
     }
 
     static boolean isLocalHostHeader(final String hostHeader) {
@@ -207,7 +205,8 @@ final class LocalReportServer {
 
     private static void serveFile(final HttpExchange exchange,
                                   final Path file,
-                                  final boolean attachmentRequest) throws IOException {
+                                  final boolean attachmentRequest)
+            throws IOException {
         final String contentType = Optional.ofNullable(probeContentType(file))
                 .orElse(DefaultResultsVisitor.APPLICATION_OCTET_STREAM);
         setSecurityHeaders(exchange);
@@ -280,10 +279,9 @@ final class LocalReportServer {
     }
 
     private static String normalizeContentType(final String contentType) {
-        final String normalized = contentType.split(";", 2)[0]
+        return contentType.split(";", 2)[0]
                 .trim()
                 .toLowerCase(Locale.ROOT);
-        return normalized;
     }
 
     private static boolean isAttachmentRequest(final String requestPath) {
