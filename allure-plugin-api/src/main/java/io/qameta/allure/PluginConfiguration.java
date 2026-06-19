@@ -27,7 +27,8 @@ import java.util.List;
  */
 @Data
 @Accessors(chain = true)
-public class PluginConfiguration implements Serializable {
+public class
+PluginConfiguration implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
