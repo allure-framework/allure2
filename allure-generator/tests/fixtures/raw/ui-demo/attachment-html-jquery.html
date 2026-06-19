@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>HTML Attachment With jQuery</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        background: #f8f7fb;
+        color: #241d35;
+        font: 14px/1.5 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      main {
+        max-width: 780px;
+      }
+
+      h1 {
+        margin: 0 0 10px;
+        font-size: 22px;
+      }
+
+      .status {
+        display: inline-block;
+        margin: 0 0 18px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: #ebe5f7;
+        color: #51377d;
+        font-weight: 700;
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+
+      button {
+        border: 1px solid #c8b8e6;
+        border-radius: 6px;
+        padding: 7px 10px;
+        background: #ffffff;
+        color: #3d2d5f;
+        cursor: pointer;
+        font: inherit;
+      }
+
+      button[aria-pressed="true"] {
+        background: #5f3fb0;
+        color: #ffffff;
+      }
+
+      .event {
+        margin: 8px 0;
+        padding: 12px 14px;
+        border: 1px solid #ded4ef;
+        border-radius: 8px;
+        background: #ffffff;
+      }
+
+      .event strong {
+        display: block;
+      }
+    </style>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <main>
+      <h1>External JavaScript dependency</h1>
+      <p class="status">Waiting for jQuery from code.jquery.com</p>
+      <div class="toolbar" aria-label="Filters">
+        <button type="button" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" data-filter="api">API</button>
+        <button type="button" data-filter="ui">UI</button>
+        <button type="button" data-filter="worker">Worker</button>
+      </div>
+      <div class="events"></div>
+    </main>
+
+    <script>
+      window.addEventListener("load", () => {
+        if (!window.jQuery) {
+          document.querySelector(".status").textContent = "jQuery did not load";
+          return;
+        }
+
+        const $ = window.jQuery;
+        const events = [
+          ["api", "GET /api/orders returned 200 in 83 ms"],
+          ["ui", "Checkout drawer rendered promotional pricing"],
+          ["worker", "Queue consumer handled 42 messages"],
+          ["api", "POST /api/payment returned 201 in 164 ms"],
+          ["ui", "Receipt page displayed tracking summary"],
+          ["worker", "Retry worker drained the dead-letter queue"],
+        ];
+
+        const render = (filter) => {
+          $(".events").empty();
+          events
+            .filter(([type]) => filter === "all" || type === filter)
+            .forEach(([type, title]) => {
+              $("<article />")
+                .addClass("event")
+                .attr("data-type", type)
+                .append($("<strong />").text(type.toUpperCase()))
+                .append($("<span />").text(title))
+                .appendTo(".events");
+            });
+        };
+
+        $(".status").text(`jQuery ${$.fn.jquery} loaded from code.jquery.com`);
+        render("all");
+
+        $("button").on("click", function () {
+          const filter = $(this).data("filter");
+          $("button").attr("aria-pressed", "false");
+          $(this).attr("aria-pressed", "true");
+          render(filter);
+        });
+      });
+    </script>
+  </body>
+</html>

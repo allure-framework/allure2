@@ -85,11 +85,36 @@ $attachment-trace-fullscreen-offset: gap(12);
   }
   &__iframe {
     width: 100%;
+    background-color: var(--color-bg-raised);
     &_fullscreen {
-      background-color: var(--color-bg-raised);
       height: $attachment-iframe-fullscreen-height;
       height: $attachment-iframe-fullscreen-height-dynamic;
     }
+  }
+  &__download {
+    align-items: center;
+    display: inline-flex;
+    gap: gap(0.5);
+  }
+  &__download-icon {
+    flex: 0 0 auto;
+  }
+  &__html-preview-fallback {
+    padding: 0;
+  }
+  &__html-preview-status {
+    padding: gap(2);
+  }
+  &__html-preview-message {
+    color: var(--color-text-secondary);
+    margin-bottom: gap(1);
+  }
+  &__html-preview-source {
+    background: var(--color-bg-raised);
+    border-top: 1px solid var(--color-border-subtle);
+    max-height: 640px;
+    overflow: auto;
+    padding: gap(2);
   }
   &__trace-container {
     overflow: hidden;

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Interactive Attachment</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f7f7fb;
+        color: #1f2937;
+      }
+
+      main {
+        min-height: 980px;
+        padding: 24px;
+      }
+
+      .chart {
+        height: 720px;
+        margin-top: 16px;
+        border-radius: 8px;
+        background:
+          linear-gradient(90deg, rgba(36, 117, 255, 0.2) 1px, transparent 1px),
+          linear-gradient(rgba(36, 117, 255, 0.2) 1px, transparent 1px),
+          white;
+        background-size: 48px 48px;
+        border: 1px solid #dbe3f0;
+      }
+
+      .status {
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        border-radius: 999px;
+        background: #e8f4ee;
+        color: #166534;
+        font-weight: 700;
+        padding: 6px 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Interactive HTML attachment</h1>
+      <p>This page uses inline JavaScript to render additional diagnostic content.</p>
+      <div class="status" data-preview-ready="false">Preparing view</div>
+      <div class="chart" aria-label="Generated chart area"></div>
+    </main>
+    <script>
+      const status = document.querySelector(".status");
+      status.dataset.previewReady = "true";
+      status.textContent = "Script rendered graph controls";
+    </script>
+  </body>
+</html>

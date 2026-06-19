@@ -15,6 +15,17 @@ import LoaderView from "../../../shared/ui/LoaderView.mts";
 import TooltipView from "../../../shared/ui/TooltipView.mts";
 import highlight from "../../../utils/highlight.mts";
 import attachmentType from "../model/attachmentType.mts";
+import {
+  getHtmlPreviewByteLength,
+  getHtmlPreviewInvalidReason,
+  getHtmlPreviewOversizeReason,
+  HTML_PREVIEW_MAX_BYTES,
+  HTML_PREVIEW_MAX_INLINE_HEIGHT,
+  HTML_PREVIEW_MIN_HEIGHT,
+  HTML_PREVIEW_RESIZE_MESSAGE_TYPE,
+  isHtmlPreviewOversized,
+  isRenderableHtmlPreview,
+} from "../model/htmlPreview.mts";
 import { PlaywrightTraceAttachmentView } from "./PlaywrightTraceAttachmentView.mts";
 import { renderAttachmentView } from "./renderAttachmentView.mts";
 
@@ -49,6 +60,16 @@ class AttachmentElement extends BaseElement {
 
   declare renderRequestId: number;
 
+  declare htmlPreviewDisabledReason: string | null;
+
+  declare htmlPreviewFrame: HTMLIFrameElement | null;
+
+  declare htmlPreviewMessageHandler: (event: MessageEvent) => void;
+
+  declare htmlPreviewReleaseMessages: (() => void) | null;
+
+  declare htmlPreviewToken: string;
+
   constructor() {
     super();
     this.fullScreen = false;
@@ -56,6 +77,11 @@ class AttachmentElement extends BaseElement {
     this.loadError = null;
     this.sourceUrl = null;
     this.renderRequestId = 0;
+    this.htmlPreviewDisabledReason = null;
+    this.htmlPreviewFrame = null;
+    this.htmlPreviewMessageHandler = this.onHtmlPreviewMessage.bind(this);
+    this.htmlPreviewReleaseMessages = null;
+    this.htmlPreviewToken = this.createHtmlPreviewToken();
     this.tooltip = new TooltipView({
       position: "bottom",
     });
@@ -80,16 +106,21 @@ class AttachmentElement extends BaseElement {
       this.content = undefined;
       this.isLoading = false;
       this.loadError = null;
+      this.htmlPreviewDisabledReason = null;
+      this.htmlPreviewToken = this.createHtmlPreviewToken();
     }
     return this;
   }
 
   renderElement() {
     const requestId = ++this.renderRequestId;
+    this.htmlPreviewFrame = null;
+    this.releaseHtmlPreviewMessages();
     const isContentPending =
       this.needsFetch() &&
       typeof this.content === "undefined" &&
       !!this.sourceUrl &&
+      !this.htmlPreviewDisabledReason &&
       !this.loadError;
 
     if (this.isLoading || isContentPending) {
@@ -129,6 +160,8 @@ class AttachmentElement extends BaseElement {
         sourceUrl: this.sourceUrl || undefined,
         attachment: this.attachment,
         fullScreen: this.fullScreen,
+        htmlPreviewDisabledReason: this.htmlPreviewDisabledReason,
+        htmlPreviewToken: this.htmlPreviewToken,
       }),
     );
     this.bindEvents(
@@ -168,6 +201,8 @@ class AttachmentElement extends BaseElement {
       if (codeBlock) {
         highlight.highlightElement(codeBlock);
       }
+    } else if (this.attachmentInfo.type === "html") {
+      this.bindHtmlPreviewFrame();
     }
 
     return this;
@@ -184,6 +219,10 @@ class AttachmentElement extends BaseElement {
 
     if (!this.sourceUrl) {
       return true;
+    }
+
+    if (this.htmlPreviewDisabledReason) {
+      return false;
     }
 
     return this.needsFetch() && this.content === undefined;
@@ -219,7 +258,11 @@ class AttachmentElement extends BaseElement {
           this.sourceUrl = sourceUrl;
         }
 
-        if (this.needsFetch() && this.content === undefined) {
+        if (this.attachmentInfo.type === "html" && isHtmlPreviewOversized(this.attachment.size)) {
+          this.htmlPreviewDisabledReason = getHtmlPreviewOversizeReason();
+        }
+
+        if (this.needsFetch() && this.content === undefined && !this.htmlPreviewDisabledReason) {
           await this.loadContent(requestId);
         }
       }
@@ -263,7 +306,7 @@ class AttachmentElement extends BaseElement {
   }
 
   needsFetch() {
-    return "parser" in this.attachmentInfo;
+    return this.attachmentInfo.type === "html" || "parser" in this.attachmentInfo;
   }
 
   loadContent(requestId: number) {
@@ -278,9 +321,82 @@ class AttachmentElement extends BaseElement {
         return;
       }
 
+      if (this.attachmentInfo.type === "html") {
+        const htmlSize = getHtmlPreviewByteLength(responseText);
+        if (htmlSize > HTML_PREVIEW_MAX_BYTES) {
+          this.htmlPreviewDisabledReason = getHtmlPreviewOversizeReason();
+          return;
+        }
+
+        if (!isRenderableHtmlPreview(responseText)) {
+          this.htmlPreviewDisabledReason = getHtmlPreviewInvalidReason();
+          this.content = responseText;
+          return;
+        }
+
+        this.content = responseText;
+        return;
+      }
+
       const parser = this.attachmentInfo.parser;
       this.content = parser?.(responseText);
     });
+  }
+
+  createHtmlPreviewToken() {
+    return `${this.cid}-${Math.random().toString(36).slice(2)}`;
+  }
+
+  bindHtmlPreviewFrame() {
+    if (this.fullScreen) {
+      return;
+    }
+
+    const frame = this.querySelector<HTMLIFrameElement>(".attachment__iframe");
+    if (!frame) {
+      return;
+    }
+
+    this.htmlPreviewFrame = frame;
+    window.addEventListener("message", this.htmlPreviewMessageHandler);
+    this.htmlPreviewReleaseMessages = () => {
+      window.removeEventListener("message", this.htmlPreviewMessageHandler);
+      this.htmlPreviewReleaseMessages = null;
+    };
+  }
+
+  releaseHtmlPreviewMessages() {
+    this.htmlPreviewReleaseMessages?.();
+  }
+
+  onHtmlPreviewMessage(event: MessageEvent) {
+    const frame = this.htmlPreviewFrame;
+    if (!frame || event.source !== frame.contentWindow) {
+      return;
+    }
+
+    const data = event.data as { height?: unknown; token?: unknown; type?: unknown };
+    if (
+      !data ||
+      data.type !== HTML_PREVIEW_RESIZE_MESSAGE_TYPE ||
+      data.token !== this.htmlPreviewToken
+    ) {
+      return;
+    }
+
+    const height = Number(data.height);
+    if (!Number.isFinite(height) || height <= 0) {
+      return;
+    }
+
+    const clampedHeight = Math.min(
+      Math.max(Math.ceil(height), HTML_PREVIEW_MIN_HEIGHT),
+      HTML_PREVIEW_MAX_INLINE_HEIGHT,
+    );
+
+    frame.style.height = `${clampedHeight}px`;
+    frame.dataset.htmlPreviewHeight = String(clampedHeight);
+    frame.dataset.htmlPreviewOverflow = height > HTML_PREVIEW_MAX_INLINE_HEIGHT ? "true" : "false";
   }
 
   onTooltipHover(e: Event) {
@@ -299,6 +415,7 @@ class AttachmentElement extends BaseElement {
     if (this.sourceUrl?.startsWith?.("blob:")) {
       URL.revokeObjectURL(this.sourceUrl);
     }
+    this.releaseHtmlPreviewMessages();
     if (this.fullScreen && !this.suppressRouteReset) {
       router.setSearch({
         attachment: null,

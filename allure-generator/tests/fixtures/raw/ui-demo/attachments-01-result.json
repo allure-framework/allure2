@@ -93,6 +93,123 @@
     },
     {
       "status": "passed",
+      "name": "text/html small",
+      "start": 1710000179000,
+      "stop": 1710000179040,
+      "attachments": [
+        {
+          "name": "text/html small",
+          "type": "text/html",
+          "source": "attachment-html-small.html"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "text/html long",
+      "start": 1710000179080,
+      "stop": 1710000179120,
+      "attachments": [
+        {
+          "name": "text/html long",
+          "type": "text/html",
+          "source": "attachment-html-long.html"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "text/html collapsible",
+      "start": 1710000179160,
+      "stop": 1710000179200,
+      "attachments": [
+        {
+          "name": "text/html collapsible",
+          "type": "text/html",
+          "source": "attachment-html-collapsible.html"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "text/html jQuery",
+      "start": 1710000179240,
+      "stop": 1710000179280,
+      "attachments": [
+        {
+          "name": "text/html jQuery",
+          "type": "text/html",
+          "source": "attachment-html-jquery.html"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "text/html external media",
+      "start": 1710000179300,
+      "stop": 1710000179320,
+      "attachments": [
+        {
+          "name": "text/html external media",
+          "type": "text/html",
+          "source": "attachment-html-external-media.html"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "text/html searchable table",
+      "start": 1710000179320,
+      "stop": 1710000179340,
+      "attachments": [
+        {
+          "name": "text/html searchable table",
+          "type": "text/html",
+          "source": "attachment-html-searchable-table.html"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "text/html XSS probe",
+      "start": 1710000179340,
+      "stop": 1710000179345,
+      "attachments": [
+        {
+          "name": "text/html XSS probe",
+          "type": "text/html",
+          "source": "attachment-html-xss-probe.html"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "text/html invalid",
+      "start": 1710000179345,
+      "stop": 1710000179352,
+      "attachments": [
+        {
+          "name": "text/html invalid",
+          "type": "text/html",
+          "source": "attachment-html-invalid.html"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "text/html over limit",
+      "start": 1710000179352,
+      "stop": 1710000179360,
+      "attachments": [
+        {
+          "name": "text/html over limit",
+          "type": "text/html",
+          "source": "attachment-html-over-limit.html"
+        }
+      ]
+    },
+    {
+      "status": "passed",
       "name": "text/uri-list",
       "start": 1710000179360,
       "stop": 1710000180800,

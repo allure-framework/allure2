@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Searchable HTML Attachment</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        background: #f7fafc;
+        color: #172033;
+        font: 14px/1.45 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      main {
+        max-width: 860px;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: 22px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 12px;
+        font-weight: 700;
+      }
+
+      input {
+        display: block;
+        width: min(420px, 100%);
+        margin-top: 6px;
+        box-sizing: border-box;
+        border: 1px solid #b9c6d6;
+        border-radius: 6px;
+        padding: 8px 10px;
+        font: inherit;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid #d7e0eb;
+        background: #ffffff;
+      }
+
+      th,
+      td {
+        padding: 10px 12px;
+        border-bottom: 1px solid #e6edf5;
+        text-align: left;
+      }
+
+      th {
+        background: #eef3f8;
+      }
+
+      .count {
+        color: #536274;
+        margin-bottom: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Searchable table attachment</h1>
+      <label>
+        Filter rows
+        <input type="search" placeholder="Try api, worker, or checkout" />
+      </label>
+      <p class="count" aria-live="polite"></p>
+      <table>
+        <thead>
+          <tr>
+            <th>Area</th>
+            <th>Scenario</th>
+            <th>Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>API</td>
+            <td>Create order</td>
+            <td>83 ms</td>
+          </tr>
+          <tr>
+            <td>Checkout</td>
+            <td>Apply promotion</td>
+            <td>126 ms</td>
+          </tr>
+          <tr>
+            <td>Worker</td>
+            <td>Send receipt email</td>
+            <td>214 ms</td>
+          </tr>
+          <tr>
+            <td>API</td>
+            <td>Capture payment</td>
+            <td>164 ms</td>
+          </tr>
+          <tr>
+            <td>Checkout</td>
+            <td>Render shipping estimator</td>
+            <td>97 ms</td>
+          </tr>
+          <tr>
+            <td>Worker</td>
+            <td>Sync analytics event</td>
+            <td>71 ms</td>
+          </tr>
+          <tr>
+            <td>Catalog</td>
+            <td>Rebuild product cache</td>
+            <td>308 ms</td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+
+    <script>
+      const input = document.querySelector("input");
+      const count = document.querySelector(".count");
+      const rows = Array.from(document.querySelectorAll("tbody tr"));
+
+      const applyFilter = () => {
+        const query = input.value.trim().toLowerCase();
+        let visible = 0;
+
+        rows.forEach((row) => {
+          const matches = row.textContent.toLowerCase().includes(query);
+          row.hidden = !matches;
+          visible += matches ? 1 : 0;
+        });
+
+        count.textContent = `${visible} of ${rows.length} rows visible`;
+      };
+
+      input.addEventListener("input", applyFilter);
+      applyFilter();
+    </script>
+  </body>
+</html>
