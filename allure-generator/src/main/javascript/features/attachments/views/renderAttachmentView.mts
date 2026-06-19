@@ -4,6 +4,12 @@ import b from "../../../shared/bem/index.mts";
 import { appendChildren, createElement, createFragmentFromHtml } from "../../../shared/dom.mts";
 import { createIconElement } from "../../../shared/icon/index.mts";
 import { sanitizeNavigationUrl, sanitizeResourceUrl } from "../../../shared/url.mts";
+import {
+  createHtmlPreviewSrcDoc,
+  getHtmlPreviewByteLength,
+  HTML_PREVIEW_INITIAL_HEIGHT,
+  HTML_PREVIEW_SOURCE_MAX_BYTES,
+} from "../model/htmlPreview.mts";
 
 type Attachment = import("../../../types/report.mts").Attachment;
 
@@ -18,6 +24,8 @@ type AttachmentRenderOptions = {
   sourceUrl?: string | null;
   attachment: Attachment;
   fullScreen: boolean;
+  htmlPreviewDisabledReason?: string | null;
+  htmlPreviewToken?: string;
 };
 
 const toText = (value: unknown) => (value == null ? "" : String(value));
@@ -45,6 +53,29 @@ const setResourceUrl = (element: Element, attribute: "data" | "href" | "src", va
   }
 };
 
+const createDownloadLink = (attachment: Attachment, sourceUrl?: string | null) => {
+  const link = createElement("a", {
+    attrs: { download: attachment.name || "" },
+    className: "link",
+    text: translate("component.attachment.download"),
+  });
+  setResourceUrl(link, "href", sourceUrl);
+  return link;
+};
+
+const createDownloadAction = (attachment: Attachment, sourceUrl?: string | null) => {
+  const downloadAction = createDiv("attachment__download");
+  appendChildren(
+    downloadAction,
+    createIconElement("lineGeneralDownloadCloud", {
+      className: "attachment__download-icon",
+      size: "s",
+    }),
+    createDownloadLink(attachment, sourceUrl),
+  );
+  return downloadAction;
+};
+
 const appendTextOrLink = (container: HTMLElement, text: string) => {
   const safeHref = sanitizeNavigationUrl(text);
   if (!safeHref) {
@@ -70,6 +101,8 @@ export const renderAttachmentView = ({
   sourceUrl,
   attachment,
   fullScreen,
+  htmlPreviewDisabledReason,
+  htmlPreviewToken = "",
 }: AttachmentRenderOptions) => {
   if (type === "custom") {
     return createDiv("attachment__custom-view");
@@ -153,23 +186,48 @@ export const renderAttachmentView = ({
   }
 
   if (type === "html") {
+    const htmlContent = typeof content === "string" ? content : "";
+
+    if (htmlPreviewDisabledReason || !htmlContent) {
+      const htmlFallbackContainer = createDiv(
+        `${b("attachment__text-container", { fullscreen: fullScreen })} attachment__html-preview-fallback`,
+      );
+      const htmlFallbackStatus = createDiv("attachment__html-preview-status");
+      appendChildren(
+        htmlFallbackStatus,
+        createElement("div", {
+          className: "attachment__html-preview-message",
+          text: htmlPreviewDisabledReason || translate("errors.loadingFailed"),
+        }),
+        createDownloadAction(attachment, sourceUrl),
+      );
+      htmlFallbackContainer.appendChild(htmlFallbackStatus);
+
+      if (htmlContent && getHtmlPreviewByteLength(htmlContent) <= HTML_PREVIEW_SOURCE_MAX_BYTES) {
+        htmlFallbackContainer.appendChild(
+          createPre("attachment__code attachment__html-preview-source", htmlContent),
+        );
+      }
+
+      return htmlFallbackContainer;
+    }
+
     const iframe = createElement("iframe", {
-      attrs: { frameborder: "0", title: getHtmlAttachmentFrameTitle(attachment) },
+      attrs: {
+        "data-html-preview-token": htmlPreviewToken,
+        frameborder: "0",
+        referrerpolicy: "no-referrer",
+        sandbox: "allow-scripts",
+        srcdoc: createHtmlPreviewSrcDoc(htmlContent, htmlPreviewToken),
+        style: fullScreen ? null : `height: ${HTML_PREVIEW_INITIAL_HEIGHT}px`,
+        title: getHtmlAttachmentFrameTitle(attachment),
+      },
       className: b("attachment__iframe", { fullscreen: fullScreen }),
     });
-    setResourceUrl(iframe, "src", sourceUrl);
     return iframe;
   }
 
   const fallbackContainer = createDiv(b("attachment__text-container", { fullscreen: fullScreen }));
-  fallbackContainer.appendChild(createIconElement("lineGeneralDownloadCloud", { size: "s" }));
-
-  const link = createElement("a", {
-    attrs: { download: attachment.name || "" },
-    className: "link",
-    text: translate("component.attachment.download"),
-  });
-  setResourceUrl(link, "href", sourceUrl);
-  fallbackContainer.appendChild(link);
+  fallbackContainer.appendChild(createDownloadAction(attachment, sourceUrl));
   return fallbackContainer;
 };

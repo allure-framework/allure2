@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Sandbox XSS Probe</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        background: #fbf8f6;
+        color: #241d19;
+        font: 14px/1.5 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      main {
+        max-width: 820px;
+      }
+
+      h1 {
+        margin: 0 0 10px;
+        font-size: 22px;
+      }
+
+      .lead {
+        color: #62544c;
+        margin: 0 0 18px;
+      }
+
+      .checks {
+        display: grid;
+        gap: 10px;
+        margin: 0 0 18px;
+        padding: 0;
+      }
+
+      .check {
+        display: grid;
+        grid-template-columns: 96px 1fr;
+        gap: 12px;
+        align-items: start;
+        padding: 12px 14px;
+        border: 1px solid #e1d5ce;
+        border-radius: 8px;
+        background: #ffffff;
+      }
+
+      .label {
+        border-radius: 999px;
+        padding: 3px 8px;
+        text-align: center;
+        font-weight: 700;
+      }
+
+      .pending .label {
+        background: #f3eee9;
+        color: #6a5b52;
+      }
+
+      .pass .label {
+        background: #e3f4e7;
+        color: #246338;
+      }
+
+      .warn .label {
+        background: #fff2cc;
+        color: #6b5200;
+      }
+
+      .fail .label {
+        background: #ffe1dd;
+        color: #8d261b;
+      }
+
+      button {
+        border: 1px solid #cbb9ae;
+        border-radius: 6px;
+        padding: 8px 12px;
+        background: #ffffff;
+        color: #3f3028;
+        cursor: pointer;
+        font: inherit;
+      }
+
+      button:hover {
+        border-color: #8a6d5d;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Sandbox XSS probe</h1>
+      <p class="lead">
+        This attachment intentionally runs JavaScript, then checks whether it can escape the HTML
+        preview sandbox.
+      </p>
+
+      <div class="checks">
+        <div class="check pending" id="script-check">
+          <span class="label">pending</span>
+          <span class="message">Inline script has not reported yet.</span>
+        </div>
+        <div class="check pending" id="origin-check">
+          <span class="label">pending</span>
+          <span class="message">Checking iframe origin.</span>
+        </div>
+        <div class="check pending" id="parent-check">
+          <span class="label">pending</span>
+          <span class="message">Checking parent document access.</span>
+        </div>
+        <div class="check pending" id="storage-check">
+          <span class="label">pending</span>
+          <span class="message">Checking localStorage access.</span>
+        </div>
+        <div class="check pending" id="network-check">
+          <span class="label">pending</span>
+          <span class="message">Checking outbound fetch.</span>
+        </div>
+        <div class="check pending" id="alert-check">
+          <span class="label">manual</span>
+          <span class="message">Click the button to try alert(). No modal should appear.</span>
+        </div>
+      </div>
+
+      <button type="button" id="alert-button">Try alert()</button>
+    </main>
+
+    <script>
+      const setCheck = (id, state, message) => {
+        const element = document.getElementById(id);
+        element.className = `check ${state}`;
+        element.querySelector(".label").textContent = state;
+        element.querySelector(".message").textContent = message;
+      };
+
+      setCheck("script-check", "pass", "Inline script executed inside the iframe.");
+
+      setCheck(
+        "origin-check",
+        window.location.origin === "null" ? "pass" : "warn",
+        `Serialized iframe origin: ${window.location.origin}`,
+      );
+
+      try {
+        const parentTitle = window.parent.document.title;
+        setCheck("parent-check", "fail", `Parent document was readable: ${parentTitle}`);
+      } catch (error) {
+        setCheck("parent-check", "pass", `Parent document access blocked: ${error.name}`);
+      }
+
+      try {
+        window.localStorage.setItem("allure-xss-probe", "1");
+        setCheck("storage-check", "fail", "localStorage was writable from the sandbox.");
+      } catch (error) {
+        setCheck("storage-check", "pass", `localStorage blocked: ${error.name}`);
+      }
+
+      fetch("https://example.com/allure-xss-probe")
+        .then(() => {
+          setCheck("network-check", "fail", "Outbound fetch unexpectedly completed.");
+        })
+        .catch((error) => {
+          setCheck("network-check", "pass", `Outbound fetch blocked: ${error.name}`);
+        });
+
+      document.getElementById("alert-button").addEventListener("click", () => {
+        try {
+          window.alert("If this dialog is visible, allow-modals is enabled.");
+          setCheck(
+            "alert-check",
+            "pass",
+            "alert() returned. If no modal appeared, sandbox modal blocking is working.",
+          );
+        } catch (error) {
+          setCheck("alert-check", "pass", `alert() blocked: ${error.name}`);
+        }
+      });
+    </script>
+  </body>
+</html>

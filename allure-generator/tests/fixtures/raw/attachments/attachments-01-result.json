@@ -236,6 +236,32 @@
     },
     {
       "status": "passed",
+      "name": "text/html interactive",
+      "start": 1710000186780,
+      "stop": 1710000186800,
+      "attachments": [
+        {
+          "name": "text/html interactive",
+          "type": "text/html",
+          "source": "attachment-interactive.html"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "name": "text/html invalid",
+      "start": 1710000186800,
+      "stop": 1710000186820,
+      "attachments": [
+        {
+          "name": "text/html invalid",
+          "type": "text/html",
+          "source": "attachment-invalid-html.html"
+        }
+      ]
+    },
+    {
+      "status": "passed",
       "name": "application/vnd.allure.image.diff",
       "start": 1710000186720,
       "stop": 1710000188160,

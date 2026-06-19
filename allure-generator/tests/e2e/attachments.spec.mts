@@ -46,6 +46,135 @@ const expectImageToDecode = async (locator: Locator) => {
 };
 
 test.describe("Generic Attachments", () => {
+  for (const mode of [REPORT_MODES.SINGLE_FILE, REPORT_MODES.DIRECTORY] as const) {
+    test(`renders sandboxed interactive HTML attachment previews (${mode})`, async ({ page }) => {
+      await openCaseFromTree(page, {
+        fixture: attachmentsFixture.name,
+        mode,
+        tab: "suites",
+        caseName: attachmentsFixture.caseName,
+      });
+
+      const htmlRow = attachmentRow(page, attachmentsFixture.attachments.htmlInteractive);
+      await expect(htmlRow).toBeVisible();
+      await htmlRow.click();
+
+      const preview = previewContainerFor(htmlRow);
+      const iframe = preview.locator(".attachment__iframe");
+      await expect(iframe).toBeVisible();
+      await expect(iframe).toHaveAttribute("sandbox", "allow-scripts");
+      await expect(iframe).toHaveAttribute("referrerpolicy", "no-referrer");
+      await expect(iframe).toHaveAttribute("srcdoc", /Content-Security-Policy/);
+      await expect(iframe).not.toHaveAttribute("src", /.+/);
+      await expect(
+        page.frameLocator(".attachment-row__preview .attachment__iframe").locator(".status"),
+      ).toHaveText("Script rendered graph controls");
+      await expect(
+        page
+          .frameLocator(".attachment-row__preview .attachment__iframe")
+          .locator("[data-preview-ready='true']"),
+      ).toBeVisible();
+
+      await expect
+        .poll(() =>
+          iframe.evaluate((node) => Number((node as HTMLElement).dataset.htmlPreviewHeight || 0)),
+        )
+        .toBeGreaterThan(900);
+      await expect
+        .poll(() => iframe.evaluate((node) => node.getBoundingClientRect().height))
+        .toBeLessThanOrEqual(1600);
+    });
+  }
+
+  test("shows source and download fallback for invalid HTML attachment previews", async ({
+    page,
+  }) => {
+    await openCaseFromTree(page, {
+      fixture: attachmentsFixture.name,
+      mode: REPORT_MODES.SINGLE_FILE,
+      tab: "suites",
+      caseName: attachmentsFixture.caseName,
+    });
+
+    const htmlRow = attachmentRow(page, attachmentsFixture.attachments.htmlInvalid);
+    await expect(htmlRow).toBeVisible();
+    await htmlRow.click();
+
+    const preview = previewContainerFor(htmlRow);
+    await expect(preview.locator(".attachment__iframe")).toHaveCount(0);
+    await expect(preview.locator(".attachment__html-preview-message")).toHaveText(
+      "HTML preview is disabled because the attachment does not look like HTML.",
+    );
+    await expect(preview.locator(".attachment__html-preview-source")).toContainText(
+      "plain text pretending to be an HTML attachment",
+    );
+    await expect(preview.locator(".link[download]")).toHaveAttribute(
+      "download",
+      attachmentsFixture.attachments.htmlInvalid,
+    );
+  });
+
+  test("does not fetch live HTML previews when attachment metadata exceeds the size cap", async ({
+    page,
+  }) => {
+    let htmlAttachmentFetches = 0;
+
+    await page.route(/\/data\/attachments\/.*\.html(?:\?.*)?$/, async (route) => {
+      htmlAttachmentFetches += 1;
+      await route.continue();
+    });
+    await page.route(/\/data\/test-cases\/.*\.json(?:\?.*)?$/, async (route) => {
+      const response = await route.fetch();
+      const payload = await response.json();
+
+      if (payload.name === attachmentsFixture.caseName) {
+        type TestStageNode = {
+          attachments?: { name?: string; size?: number }[];
+          steps?: TestStageNode[];
+        };
+
+        const updateAttachments = (node?: TestStageNode) => {
+          if (!node) {
+            return;
+          }
+
+          node.attachments?.forEach((attachment) => {
+            if (attachment.name === attachmentsFixture.attachments.htmlInteractive) {
+              attachment.size = 10 * 1024 * 1024 + 1;
+            }
+          });
+          node.steps?.forEach(updateAttachments);
+        };
+
+        updateAttachments(payload.testStage);
+      }
+
+      await route.fulfill({
+        response,
+        body: JSON.stringify(payload),
+        contentType: "application/json",
+      });
+    });
+
+    await openCaseFromTree(page, {
+      fixture: attachmentsFixture.name,
+      mode: REPORT_MODES.DIRECTORY,
+      tab: "suites",
+      caseName: attachmentsFixture.caseName,
+    });
+
+    const htmlRow = attachmentRow(page, attachmentsFixture.attachments.htmlInteractive);
+    await expect(htmlRow).toBeVisible();
+    await htmlRow.click();
+
+    const preview = previewContainerFor(htmlRow);
+    await expect(preview.locator(".attachment__iframe")).toHaveCount(0);
+    await expect(preview.locator(".attachment__html-preview-message")).toHaveText(
+      "HTML preview is disabled because the attachment is larger than 10 MiB.",
+    );
+    expect(htmlAttachmentFetches).toBe(0);
+  });
+
   test("renders code and table attachment viewers", async ({ page }) => {
     await openCaseFromTree(page, {
       fixture: attachmentsFixture.name,
