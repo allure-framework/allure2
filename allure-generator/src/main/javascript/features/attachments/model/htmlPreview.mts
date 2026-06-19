@@ -8,8 +8,6 @@ export const HTML_PREVIEW_MAX_INLINE_HEIGHT = 1600;
 export const HTML_PREVIEW_RESIZE_MESSAGE_TYPE = "allure:html-preview:resize";
 
 const HTML_PREVIEW_MAX_MESSAGE_HEIGHT = 10000;
-const HTML_PREVIEW_SCRIPT_SOURCES = ["https://code.jquery.com"];
-const HTML_PREVIEW_MEDIA_SOURCES = ["https://raw.githubusercontent.com"];
 
 const HTML_PREVIEW_CSP = [
   "default-src 'none'",
@@ -21,11 +19,11 @@ const HTML_PREVIEW_CSP = [
   "worker-src 'none'",
   "connect-src 'none'",
   "navigate-to 'none'",
-  `img-src data: blob: ${HTML_PREVIEW_MEDIA_SOURCES.join(" ")}`,
-  `media-src data: blob: ${HTML_PREVIEW_MEDIA_SOURCES.join(" ")}`,
-  "font-src data:",
-  "style-src 'unsafe-inline'",
-  `script-src 'unsafe-inline' 'unsafe-eval' ${HTML_PREVIEW_SCRIPT_SOURCES.join(" ")}`,
+  "img-src data: blob: https:",
+  "media-src data: blob: https:",
+  "font-src data: https:",
+  "style-src 'unsafe-inline' https:",
+  "script-src 'unsafe-inline' 'unsafe-eval' https:",
 ].join("; ");
 
 const HTML_LIKE_PATTERN = /<\/?[a-z][\s\S]*>/i;
