@@ -32,7 +32,7 @@ jobs:
       ALLURE_TEST_DUMP_NAME: allure-results-build-jdk-${{ matrix.java-version }}
       ALLURE_E2E_DUMP_NAME: allure-results-e2e-jdk-${{ matrix.java-version }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v6
         with:
           node-version: '20.x'
@@ -199,7 +199,7 @@ jobs:
     env:
       ALLURE_SERVICE_TOKEN: ${{ secrets.ALLURE_SERVICE_TOKEN }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v6
         with:
           node-version: '20.x'
