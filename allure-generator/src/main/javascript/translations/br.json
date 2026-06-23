@@ -12,7 +12,7 @@
     },
     "trend": {
       "empty": "Não há nada para mostrar",
-      "reportLink": "Open report for {{name}}"
+      "reportLink": "Abrir relatório de {{name}}"
     }
   },
   "component": {
@@ -25,7 +25,7 @@
       "showCases": "Mostrar resultados dos testes com situação {{status}}"
     },
     "tree": {
-      "download": "Download CSV",
+      "download": "Baixar CSV",
       "empty": "Não há itens",
       "filter": "Filtrar por situação",
       "filter-marks": "Marcas",
@@ -41,7 +41,7 @@
       "groups": "Alternar informações do grupo",
       "time": {
         "max": {
-          "name": "Max",
+          "name": "Máx.",
           "tooltip": "Teste mais demorado"
         },
         "sum": {
@@ -49,13 +49,13 @@
           "tooltip": "Soma da duração de todos os testes"
         },
         "total": {
-          "name": "Total",
+          "name": "Total geral",
           "tooltip": "Duração de inicio do primeiro teste até o ultimo teste finalizar"
         }
       },
       "unknown": "Grupo vazio",
       "noItemSelected": "Nenhum item selecionado",
-      "search": "Search test results"
+      "search": "Pesquisar resultados de teste"
     },
     "widgetStatus": {
       "showAll": "Mostrar tudo",
@@ -67,15 +67,15 @@
       "total_other": "total de itens {{count}}"
     },
     "attachment": {
-      "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag",
-      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
+      "download": "Clique para baixar o anexo",
+      "videoNotSupported": "Seu navegador não suporta a tag de vídeo",
+      "htmlPreviewTitle": "Pré-visualização do anexo HTML: {{name}}"
     },
     "screenDiff": {
-      "empty": "No diff data provided",
-      "name": "Screen Diff",
-      "showDiff": "Show diff",
-      "showOverlay": "Show overlay"
+      "empty": "Nenhum dado de diff fornecido",
+      "name": "Diferença de tela",
+      "showDiff": "Mostrar diferença",
+      "showOverlay": "Mostrar sobreposição"
     },
     "playwrightTrace": {
       "unavailableTitle": "Visualizador de trace do Playwright indisponível",
@@ -102,8 +102,8 @@
     "languageShort": "Idioma",
     "lightTheme": "Tema claro",
     "darkTheme": "Tema escuro",
-    "loading": "Loading...",
-    "close": "Close"
+    "loading": "Carregando...",
+    "close": "Fechar"
   },
   "errors": {
     "missedAttachment": "Anexo não encontrado",
@@ -159,7 +159,7 @@
       "selected_few": "Selecionados {{count}} testes ({{percent}}%) com duração acima de {{duration}}",
       "selected_many": "Selecionados {{count}} testes ({{percent}}%) com duração acima de {{duration}}",
       "selected_other": "Selecionados {{count}} testes ({{percent}}%) com duração acima de {{duration}}",
-      "resultLink": "Open test result {{name}}, status {{status}}"
+      "resultLink": "Abrir resultado de teste {{name}}, situação {{status}}"
     }
   },
   "testResult": {
@@ -190,7 +190,7 @@
       "time": "{{date}} às {{time}}"
     },
     "links": {
-      "name": "Links"
+      "name": "Hiperlinks"
     },
     "overview": {
       "name": "Visão geral"
@@ -210,9 +210,9 @@
       "name": "Severidade",
       "blocker": "bloqueador",
       "critical": "crítica",
-      "normal": "normal",
+      "normal": "comum",
       "minor": "menor",
-      "trivial": "trivial"
+      "trivial": "mínima"
     },
     "stats": {
       "count": {
@@ -241,7 +241,7 @@
       "trace": "Mostrar trace"
     },
     "tags": {
-      "name": "Tags"
+      "name": "Etiquetas"
     }
   },
   "widget": {

@@ -8,11 +8,11 @@
       "name": "Ważność"
     },
     "status": {
-      "name": "Status"
+      "name": "Stan"
     },
     "trend": {
       "empty": "Brak czegokolwiek do pokazania",
-      "reportLink": "Open report for {{name}}"
+      "reportLink": "Otwórz raport dla {{name}}"
     }
   },
   "component": {
@@ -58,7 +58,7 @@
       },
       "unknown": "<Pusty>",
       "noItemSelected": "Nie wybrano elementu",
-      "search": "Search test results"
+      "search": "Szukaj wyników testów"
     },
     "widgetStatus": {
       "showAll": "Pokaż wszystko",
@@ -69,15 +69,15 @@
       "total_other": "Razem {{count}} pozycji"
     },
     "attachment": {
-      "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag",
-      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
+      "download": "Kliknij, aby pobrać załącznik",
+      "videoNotSupported": "Twoja przeglądarka nie obsługuje tagu video",
+      "htmlPreviewTitle": "Podgląd załącznika HTML: {{name}}"
     },
     "screenDiff": {
-      "empty": "No diff data provided",
-      "name": "Screen Diff",
-      "showDiff": "Show diff",
-      "showOverlay": "Show overlay"
+      "empty": "Nie podano danych różnic",
+      "name": "Różnice ekranu",
+      "showDiff": "Pokaż różnice",
+      "showOverlay": "Pokaż nakładkę"
     },
     "playwrightTrace": {
       "unavailableTitle": "Przeglądarka trace Playwright jest niedostępna",
@@ -104,8 +104,8 @@
     "languageShort": "Język",
     "lightTheme": "Jasny motyw",
     "darkTheme": "Ciemny motyw",
-    "loading": "Loading...",
-    "close": "Close"
+    "loading": "Ładowanie...",
+    "close": "Zamknij"
   },
   "errors": {
     "missedAttachment": "Nie znaleziono załącznika",
@@ -125,7 +125,7 @@
     "duration": "czas trwania",
     "name": "nazwa",
     "order": "kolejność",
-    "status": "status"
+    "status": "stan"
   },
   "status": {
     "broken": "Uszkodzony",
@@ -160,7 +160,7 @@
       "selected_few": "{{count}} wybrane testy ({{percent}}%) z czasem trwania powyżej {{duration}}",
       "selected_many": "{{count}} wybranych testów ({{percent}}%) z czasem trwania powyżej {{duration}}",
       "selected_other": "{{count}} wybranych testów ({{percent}}%) z czasem trwania powyżej {{duration}}",
-      "resultLink": "Open test result {{name}}, status {{status}}"
+      "resultLink": "Otwórz wynik testu {{name}}, status {{status}}"
     }
   },
   "testResult": {
@@ -290,7 +290,7 @@
       "testResults_other": "przypadków testowych"
     },
     "trend": {
-      "name": "Trend"
+      "name": "Tendencja"
     }
   }
 }

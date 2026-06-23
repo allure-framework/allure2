@@ -12,7 +12,7 @@
     },
     "trend": {
       "empty": "Non c'è nulla da mostrare",
-      "reportLink": "Open report for {{name}}"
+      "reportLink": "Apri il report per {{name}}"
     }
   },
   "component": {
@@ -39,7 +39,7 @@
       "groups": "Mostra/nascondi info gruppi",
       "time": {
         "max": {
-          "name": "Max",
+          "name": "Massimo",
           "tooltip": "Durata più lunga del test"
         },
         "sum": {
@@ -53,7 +53,7 @@
       },
       "unknown": "<Vuoto>",
       "noItemSelected": "Nessun elemento selezionato",
-      "search": "Search test results"
+      "search": "Cerca risultati dei test"
     },
     "widgetStatus": {
       "showAll": "Mostra tutto",
@@ -63,15 +63,15 @@
       "total_other": "{{count}} elementi totali"
     },
     "attachment": {
-      "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag",
-      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
+      "download": "Fai clic per scaricare l'allegato",
+      "videoNotSupported": "Il tuo browser non supporta il tag video",
+      "htmlPreviewTitle": "Anteprima allegato HTML: {{name}}"
     },
     "screenDiff": {
-      "empty": "No diff data provided",
-      "name": "Screen Diff",
-      "showDiff": "Show diff",
-      "showOverlay": "Show overlay"
+      "empty": "Nessun dato di diff fornito",
+      "name": "Differenza schermata",
+      "showDiff": "Mostra differenza",
+      "showOverlay": "Mostra sovrapposizione"
     },
     "playwrightTrace": {
       "unavailableTitle": "Visualizzatore trace Playwright non disponibile",
@@ -81,9 +81,9 @@
       "issuePrefix": "Problema upstream:",
       "issueLabel": "microsoft/playwright#40960",
       "stepsTitle": "Aprire la trace manualmente",
-      "stepDownload": "Scarica l archivio della trace",
+      "stepDownload": "Scarica l'archivio della trace",
       "stepOpenViewer": "Apri Playwright Trace Viewer",
-      "stepUpload": "Carica l archivio scaricato nel visualizzatore"
+      "stepUpload": "Carica l'archivio scaricato nel visualizzatore"
     }
   },
   "controls": {
@@ -98,8 +98,8 @@
     "languageShort": "Lingua",
     "lightTheme": "Tema chiaro",
     "darkTheme": "Tema scuro",
-    "loading": "Loading...",
-    "close": "Close"
+    "loading": "Caricamento...",
+    "close": "Chiudi"
   },
   "errors": {
     "missedAttachment": "Allegato non trovato",
@@ -153,7 +153,7 @@
       "selected_one": "{{count}} test selezionato ({{percent}}%) con durata superiore a {{duration}}",
       "selected_many": "{{count}} test selezionati ({{percent}}%) con durata superiore a {{duration}}",
       "selected_other": "{{count}} test selezionati ({{percent}}%) con durata superiore a {{duration}}",
-      "resultLink": "Open test result {{name}}, status {{status}}"
+      "resultLink": "Apri risultato del test {{name}}, stato {{status}}"
     }
   },
   "testResult": {

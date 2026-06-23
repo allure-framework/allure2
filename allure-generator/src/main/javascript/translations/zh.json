@@ -12,7 +12,7 @@
     },
     "trend": {
       "empty": "没有信息",
-      "reportLink": "Open report for {{name}}"
+      "reportLink": "打开 {{name}} 报告"
     }
   },
   "component": {
@@ -52,7 +52,7 @@
       },
       "unknown": "空小组",
       "noItemSelected": "未选择任何项",
-      "search": "Search test results"
+      "search": "搜索测试结果"
     },
     "widgetStatus": {
       "showAll": "显示所有",
@@ -61,15 +61,15 @@
       "total_one": "总共{{count}}项"
     },
     "attachment": {
-      "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag",
-      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
+      "download": "点击下载附件",
+      "videoNotSupported": "你的浏览器不支持 video 标签",
+      "htmlPreviewTitle": "HTML 附件预览：{{name}}"
     },
     "screenDiff": {
-      "empty": "No diff data provided",
-      "name": "Screen Diff",
-      "showDiff": "Show diff",
-      "showOverlay": "Show overlay"
+      "empty": "未提供差异数据",
+      "name": "屏幕差异",
+      "showDiff": "显示差异",
+      "showOverlay": "显示叠加"
     },
     "playwrightTrace": {
       "unavailableTitle": "Playwright trace 查看器不可用",
@@ -96,8 +96,8 @@
     "languageShort": "语言",
     "lightTheme": "浅色主题",
     "darkTheme": "深色主题",
-    "loading": "Loading...",
-    "close": "Close"
+    "loading": "正在加载...",
+    "close": "关闭"
   },
   "errors": {
     "missedAttachment": "没有找到附件",
@@ -150,7 +150,7 @@
       "selected": "{{count}}个测试用例({{percent}}%)执行时间超过{{duration}}",
       "selected_other": "{{count}}个测试用例({{percent}}%)执行时间超过{{duration}}",
       "selected_one": "{{count}}个测试用例({{percent}}%)执行时间超过{{duration}}",
-      "resultLink": "Open test result {{name}}, status {{status}}"
+      "resultLink": "打开测试结果 {{name}}，状态 {{status}}"
     }
   },
   "testResult": {

@@ -12,7 +12,7 @@
     },
     "trend": {
       "empty": "אין דבר להציג",
-      "reportLink": "Open report for {{name}}"
+      "reportLink": "פתח דוח עבור {{name}}"
     }
   },
   "component": {
@@ -53,7 +53,7 @@
       },
       "unknown": "רֵיק",
       "noItemSelected": "לא נבחר פריט",
-      "search": "Search test results"
+      "search": "חפש תוצאות בדיקה"
     },
     "widgetStatus": {
       "showAll": "הצג את כל הפריטים",
@@ -63,15 +63,15 @@
       "total_other": "סך הכול {{count}} פריטים"
     },
     "attachment": {
-      "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag",
-      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
+      "download": "לחץ כדי להוריד את הקובץ המצורף",
+      "videoNotSupported": "הדפדפן שלך אינו תומך בתגית הווידאו",
+      "htmlPreviewTitle": "תצוגה מקדימה של קובץ HTML מצורף: {{name}}"
     },
     "screenDiff": {
-      "empty": "No diff data provided",
-      "name": "Screen Diff",
-      "showDiff": "Show diff",
-      "showOverlay": "Show overlay"
+      "empty": "לא סופקו נתוני diff",
+      "name": "השוואת מסך",
+      "showDiff": "הצג diff",
+      "showOverlay": "הצג שכבת-על"
     },
     "playwrightTrace": {
       "unavailableTitle": "מציג ה-trace של Playwright אינו זמין",
@@ -98,8 +98,8 @@
     "languageShort": "שפה",
     "lightTheme": "ערכת נושא בהירה",
     "darkTheme": "ערכת נושא כהה",
-    "loading": "Loading...",
-    "close": "Close"
+    "loading": "טוען...",
+    "close": "סגור"
   },
   "errors": {
     "missedAttachment": "התוכן המצורף לא נמצא",
@@ -153,7 +153,7 @@
       "selected_one": "נבחר מקרה בדיקה {{count}} ({{percent}}%) עם זמן ריצה מעל {{duration}}",
       "selected_two": "נבחרו {{count}} מקרי בדיקה ({{percent}}%) עם זמן ריצה מעל {{duration}}",
       "selected_other": "נבחרו {{count}} מקרי בדיקה ({{percent}}%) עם זמן ריצה מעל {{duration}}",
-      "resultLink": "Open test result {{name}}, status {{status}}"
+      "resultLink": "פתח תוצאת בדיקה {{name}}, סטטוס {{status}}"
     }
   },
   "testResult": {
