@@ -12,7 +12,7 @@
     },
     "trend": {
       "empty": "Üres",
-      "reportLink": "Open report for {{name}}"
+      "reportLink": "{{name}} jelentés megnyitása"
     }
   },
   "component": {
@@ -38,7 +38,7 @@
       "groups": "Csoportok extra információ",
       "time": {
         "max": {
-          "name": "Max",
+          "name": "Maximum",
           "tooltip": "Leghosszabb ideig futó teszt"
         },
         "sum": {
@@ -52,7 +52,7 @@
       },
       "unknown": "<Üres>",
       "noItemSelected": "Nincs kijelölt elem",
-      "search": "Search test results"
+      "search": "Teszteredmények keresése"
     },
     "widgetStatus": {
       "showAll": "Összes mutatása",
@@ -61,15 +61,15 @@
       "total_other": "{{count}} összesen elem"
     },
     "attachment": {
-      "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag",
-      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
+      "download": "Kattints a csatolmány letöltéséhez",
+      "videoNotSupported": "A böngésződ nem támogatja a video taget",
+      "htmlPreviewTitle": "HTML csatolmány előnézete: {{name}}"
     },
     "screenDiff": {
-      "empty": "No diff data provided",
-      "name": "Screen Diff",
-      "showDiff": "Show diff",
-      "showOverlay": "Show overlay"
+      "empty": "Nincs megadva eltérésadat",
+      "name": "Képernyőkülönbség",
+      "showDiff": "Eltérés megjelenítése",
+      "showOverlay": "Átfedés megjelenítése"
     },
     "playwrightTrace": {
       "unavailableTitle": "A Playwright trace megjelenítő nem érhető el",
@@ -96,8 +96,8 @@
     "languageShort": "Nyelv",
     "lightTheme": "Világos téma",
     "darkTheme": "Sötét téma",
-    "loading": "Loading...",
-    "close": "Close"
+    "loading": "Betöltés...",
+    "close": "Bezárás"
   },
   "errors": {
     "missedAttachment": "Nem található csatolmány",
@@ -150,7 +150,7 @@
       "selected": "{{count}} darab teszt ({{percent}}%) futásideje {{duration}}",
       "selected_one": "{{count}} darab teszt ({{percent}}%) futásideje {{duration}}",
       "selected_other": "{{count}} tesztek ({{percent}}%) futásideje {{duration}}",
-      "resultLink": "Open test result {{name}}, status {{status}}"
+      "resultLink": "{{name}} teszteredmény megnyitása, státusz: {{status}}"
     }
   },
   "testResult": {
@@ -169,8 +169,8 @@
         "tooltip": "Csatolmány megnyitása új fülön"
       },
       "name": "Futás",
-      "setup": "Megelőző lépések (Set up)",
-      "teardown": "Lezáró lépések (Tear down)",
+      "setup": "Megelőző lépések",
+      "teardown": "Lezáró lépések",
       "empty": "Nem áll rendelkezésre információ a teszt végrehajtásáról."
     },
     "history": {
@@ -270,7 +270,7 @@
       "testResults_other": "tesztesetek"
     },
     "trend": {
-      "name": "Trend"
+      "name": "Tendencia"
     }
   }
 }

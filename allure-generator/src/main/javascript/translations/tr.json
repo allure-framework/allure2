@@ -12,7 +12,7 @@
     },
     "trend": {
       "empty": "Gösterilecek bir şey yok",
-      "reportLink": "Open report for {{name}}"
+      "reportLink": "{{name}} raporunu aç"
     }
   },
   "component": {
@@ -52,7 +52,7 @@
       },
       "unknown": "<Boş>",
       "noItemSelected": "Hiçbir öğe seçilmedi",
-      "search": "Search test results"
+      "search": "Test sonuçlarında ara"
     },
     "widgetStatus": {
       "showAll": "Hepsini Göster",
@@ -61,15 +61,15 @@
       "total_other": "{{count}} öğe toplam"
     },
     "attachment": {
-      "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag",
-      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
+      "download": "Eki indirmek için tıkla",
+      "videoNotSupported": "Tarayıcınız video etiketini desteklemiyor",
+      "htmlPreviewTitle": "HTML eki önizlemesi: {{name}}"
     },
     "screenDiff": {
-      "empty": "No diff data provided",
-      "name": "Screen Diff",
-      "showDiff": "Show diff",
-      "showOverlay": "Show overlay"
+      "empty": "Fark verisi sağlanmadı",
+      "name": "Ekran farkı",
+      "showDiff": "Farkı göster",
+      "showOverlay": "Üst üste görünümü göster"
     },
     "playwrightTrace": {
       "unavailableTitle": "Playwright trace görüntüleyici kullanılamıyor",
@@ -96,8 +96,8 @@
     "languageShort": "Dil",
     "lightTheme": "Açık tema",
     "darkTheme": "Koyu tema",
-    "loading": "Loading...",
-    "close": "Close"
+    "loading": "Yükleniyor...",
+    "close": "Kapat"
   },
   "errors": {
     "missedAttachment": "Ek dosya bulunamadı",
@@ -150,7 +150,7 @@
       "selected": "{{duration}} süreden fazla süren {{count}} test (%{{percent}}) seçildi",
       "selected_one": "{{duration}} süreden fazla süren {{count}} test (%{{percent}}) seçildi",
       "selected_other": "{{duration}} süreden fazla süren {{count}} test (%{{percent}}) seçildi",
-      "resultLink": "Open test result {{name}}, status {{status}}"
+      "resultLink": "{{name}} test sonucunu aç, durum {{status}}"
     }
   },
   "testResult": {
@@ -201,7 +201,7 @@
       "name": "Önem",
       "blocker": "engelleyici",
       "critical": "kritik",
-      "normal": "normal",
+      "normal": "olağan",
       "minor": "küçük",
       "trivial": "önemsiz"
     },
@@ -270,7 +270,7 @@
       "testResults_other": "test durumları"
     },
     "trend": {
-      "name": "Trend"
+      "name": "Eğilim"
     }
   }
 }

@@ -12,7 +12,7 @@
     },
     "trend": {
       "empty": "No hay nada para mostrar",
-      "reportLink": "Open report for {{name}}"
+      "reportLink": "Abrir reporte de {{name}}"
     }
   },
   "component": {
@@ -40,7 +40,7 @@
       "groups": "Alternar información del grupo",
       "time": {
         "max": {
-          "name": "Max",
+          "name": "Máx.",
           "tooltip": "Prueba con mayor duración"
         },
         "sum": {
@@ -48,12 +48,12 @@
           "tooltip": "Suma de todas las pruebas"
         },
         "total": {
-          "name": "Total",
+          "name": "Total general",
           "tooltip": "Duración desde el primer test iniciado hasta el último finalizado"
         }
       },
       "noItemSelected": "Ningún elemento seleccionado",
-      "search": "Search test results"
+      "search": "Buscar resultados de prueba"
     },
     "widgetStatus": {
       "showAll": "Mostrar todo",
@@ -63,15 +63,15 @@
       "total_other": "total de ítems {{count}}"
     },
     "attachment": {
-      "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag",
-      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
+      "download": "Haz clic para descargar el adjunto",
+      "videoNotSupported": "Tu navegador no admite la etiqueta de video",
+      "htmlPreviewTitle": "Vista previa del adjunto HTML: {{name}}"
     },
     "screenDiff": {
-      "empty": "No diff data provided",
-      "name": "Screen Diff",
-      "showDiff": "Show diff",
-      "showOverlay": "Show overlay"
+      "empty": "No se proporcionaron datos de diferencias",
+      "name": "Diferencia de pantalla",
+      "showDiff": "Mostrar diferencias",
+      "showOverlay": "Mostrar superposición"
     },
     "playwrightTrace": {
       "unavailableTitle": "Visor de trace de Playwright no disponible",
@@ -98,8 +98,8 @@
     "languageShort": "Idioma",
     "lightTheme": "Tema claro",
     "darkTheme": "Tema oscuro",
-    "loading": "Loading...",
-    "close": "Close"
+    "loading": "Cargando...",
+    "close": "Cerrar"
   },
   "errors": {
     "missedAttachment": "Adjunto no encontrado",
@@ -145,7 +145,7 @@
       "name": "Paquetes"
     },
     "suites": {
-      "name": "Suites"
+      "name": "Suites de prueba"
     },
     "timeline": {
       "name": "Línea de Tiempo",
@@ -153,7 +153,7 @@
       "selected_one": "Selecionada {{count}} prueba ({{percent}}%) con duración arriba de {{duration}}",
       "selected_many": "Selecionadas {{count}} pruebas ({{percent}}%) con duración arriba de {{duration}}",
       "selected_other": "Selecionadas {{count}} pruebas ({{percent}}%) con duración arriba de {{duration}}",
-      "resultLink": "Open test result {{name}}, status {{status}}"
+      "resultLink": "Abrir resultado de prueba {{name}}, estado {{status}}"
     }
   },
   "testResult": {
@@ -184,7 +184,7 @@
       "time": "{{date}} a las {{time}}"
     },
     "links": {
-      "name": "Links"
+      "name": "Enlaces"
     },
     "overview": {
       "name": "Visión general"
@@ -204,9 +204,9 @@
       "name": "Severidad",
       "blocker": "bloqueante",
       "critical": "crítica",
-      "normal": "normal",
+      "normal": "media",
       "minor": "menor",
-      "trivial": "trivial"
+      "trivial": "mínima"
     },
     "stats": {
       "count": {
@@ -264,7 +264,7 @@
       "name": "Tendencia de reintentos"
     },
     "suites": {
-      "name": "Suites"
+      "name": "Suites de prueba"
     },
     "summary": {
       "aggregatedName": "Reporte agregado",

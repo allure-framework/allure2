@@ -12,7 +12,7 @@
     },
     "trend": {
       "empty": "Il n'y a rien à montrer",
-      "reportLink": "Open report for {{name}}"
+      "reportLink": "Ouvrir le rapport pour {{name}}"
     }
   },
   "component": {
@@ -47,13 +47,13 @@
           "tooltip": "Somme de toutes les durées"
         },
         "total": {
-          "name": "Total",
+          "name": "Total général",
           "tooltip": "Durée depuis le premier test démarré jusqu'au dernier test terminé"
         }
       },
       "unknown": "<Vide>",
       "noItemSelected": "Aucun élément sélectionné",
-      "search": "Search test results"
+      "search": "Rechercher des résultats de test"
     },
     "widgetStatus": {
       "showAll": "Montrer tout",
@@ -63,15 +63,15 @@
       "total_other": "{{count}} articles au total"
     },
     "attachment": {
-      "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag",
-      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
+      "download": "Cliquer pour télécharger la pièce jointe",
+      "videoNotSupported": "Votre navigateur ne prend pas en charge la balise vidéo",
+      "htmlPreviewTitle": "Aperçu de la pièce jointe HTML : {{name}}"
     },
     "screenDiff": {
-      "empty": "No diff data provided",
-      "name": "Screen Diff",
-      "showDiff": "Show diff",
-      "showOverlay": "Show overlay"
+      "empty": "Aucune donnée de comparaison fournie",
+      "name": "Différence d'écran",
+      "showDiff": "Afficher les différences",
+      "showOverlay": "Afficher la superposition"
     },
     "playwrightTrace": {
       "unavailableTitle": "Visionneuse de trace Playwright indisponible",
@@ -81,9 +81,9 @@
       "issuePrefix": "Problème upstream :",
       "issueLabel": "microsoft/playwright#40960",
       "stepsTitle": "Ouvrir la trace manuellement",
-      "stepDownload": "Télécharger l archive de trace",
+      "stepDownload": "Télécharger l'archive de trace",
       "stepOpenViewer": "Ouvrir Playwright Trace Viewer",
-      "stepUpload": "Importer l archive téléchargée dans la visionneuse"
+      "stepUpload": "Importer l'archive téléchargée dans la visionneuse"
     }
   },
   "controls": {
@@ -98,8 +98,8 @@
     "languageShort": "Langue",
     "lightTheme": "Thème clair",
     "darkTheme": "Thème sombre",
-    "loading": "Loading...",
-    "close": "Close"
+    "loading": "Chargement...",
+    "close": "Fermer"
   },
   "errors": {
     "missedAttachment": "Pièce jointe non trouvée",
@@ -145,7 +145,7 @@
       "name": "Paquets"
     },
     "suites": {
-      "name": "Suites"
+      "name": "Suites de tests"
     },
     "timeline": {
       "name": "Chronologie",
@@ -153,7 +153,7 @@
       "selected_one": "{{count}} test sélectionné ({{percent}}%) avec une durée supérieure à {{duration}}",
       "selected_many": "{{count}} tests sélectionnés ({{percent}}%) avec une durée supérieure à {{duration}}",
       "selected_other": "{{count}} tests sélectionnés ({{percent}}%) avec une durée supérieure à {{duration}}",
-      "resultLink": "Open test result {{name}}, status {{status}}"
+      "resultLink": "Ouvrir le résultat de test {{name}}, statut {{status}}"
     }
   },
   "testResult": {
@@ -161,7 +161,7 @@
       "name": "Catégories"
     },
     "description": {
-      "name": "Description"
+      "name": "Descriptif"
     },
     "duration": {
       "name": "Durée"
@@ -229,7 +229,7 @@
       "trace": "Afficher la trace"
     },
     "tags": {
-      "name": "Tags"
+      "name": "Étiquettes"
     }
   },
   "widget": {
@@ -264,7 +264,7 @@
       "name": "Tendance des tentatives"
     },
     "suites": {
-      "name": "Suites"
+      "name": "Suites de tests"
     },
     "summary": {
       "aggregatedName": "Rapport agrégé",

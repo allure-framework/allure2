@@ -8,11 +8,11 @@
       "name": "Ausmaß"
     },
     "status": {
-      "name": "Status"
+      "name": "Zustand"
     },
     "trend": {
       "empty": "Hier gibt es nichts zu zeigen",
-      "reportLink": "Open report for {{name}}"
+      "reportLink": "Bericht für {{name}} öffnen"
     }
   },
   "component": {
@@ -38,7 +38,7 @@
       "groups": "Gruppeninformationen an- / ausschalten",
       "time": {
         "max": {
-          "name": "Max",
+          "name": "Maximum",
           "tooltip": "Längste Testdauer"
         },
         "sum": {
@@ -52,7 +52,7 @@
       },
       "unknown": "<Leer>",
       "noItemSelected": "Kein Eintrag ausgewählt",
-      "search": "Search test results"
+      "search": "Testergebnisse suchen"
     },
     "widgetStatus": {
       "showAll": "Zeige alle",
@@ -61,15 +61,15 @@
       "total_other": "{{count}} Einträge insgesamt"
     },
     "attachment": {
-      "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag",
-      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
+      "download": "Klicken, um den Anhang herunterzuladen",
+      "videoNotSupported": "Ihr Browser unterstützt das Video-Tag nicht",
+      "htmlPreviewTitle": "HTML-Anhangsvorschau: {{name}}"
     },
     "screenDiff": {
-      "empty": "No diff data provided",
-      "name": "Screen Diff",
-      "showDiff": "Show diff",
-      "showOverlay": "Show overlay"
+      "empty": "Keine Diff-Daten vorhanden",
+      "name": "Bildschirmvergleich",
+      "showDiff": "Diff anzeigen",
+      "showOverlay": "Überlagerung anzeigen"
     },
     "playwrightTrace": {
       "unavailableTitle": "Playwright-Trace-Viewer nicht verfügbar",
@@ -96,8 +96,8 @@
     "languageShort": "Sprache",
     "lightTheme": "Helles Design",
     "darkTheme": "Dunkles Design",
-    "loading": "Loading...",
-    "close": "Close"
+    "loading": "Laden...",
+    "close": "Schließen"
   },
   "errors": {
     "missedAttachment": "Anhang nicht gefunden",
@@ -150,7 +150,7 @@
       "selected": "{{count}} Test ausgewählt ({{percent}}%) mit einer Dauer von über {{duration}}",
       "selected_one": "{{count}} Test ausgewählt ({{percent}}%) mit einer Dauer von über {{duration}}",
       "selected_other": "{{count}} Tests ausgewählt ({{percent}}%) mit einer Dauer von über {{duration}}",
-      "resultLink": "Open test result {{name}}, status {{status}}"
+      "resultLink": "Testergebnis {{name}} öffnen, Status {{status}}"
     }
   },
   "testResult": {
@@ -181,7 +181,7 @@
       "time": "{{date}} um {{time}}"
     },
     "links": {
-      "name": "Links"
+      "name": "Verweise"
     },
     "overview": {
       "name": "Übersicht"
@@ -201,9 +201,9 @@
       "name": "Ausmaß",
       "blocker": "Blocker",
       "critical": "kritisch",
-      "normal": "normal",
+      "normal": "gewöhnlich",
       "minor": "gering",
-      "trivial": "trivial"
+      "trivial": "geringfügig"
     },
     "stats": {
       "count": {
@@ -223,7 +223,7 @@
       "trace": "Zeige Stracktrace"
     },
     "tags": {
-      "name": "Tags"
+      "name": "Schlagwörter"
     }
   },
   "widget": {
@@ -270,7 +270,7 @@
       "testResults_other": "Testfälle"
     },
     "trend": {
-      "name": "Trend"
+      "name": "Tendenz"
     }
   }
 }
