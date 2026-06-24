@@ -158,50 +158,49 @@ const HtmlFallbackAttachmentPreviewView = ({
 
 export const HtmlAttachmentPreviewView: AttachmentPreviewComponent = (options) => {
   const loadSourceUrl = () => loadAttachmentSourceUrl(options);
-
-  if (isHtmlPreviewOversized(options.attachment.size)) {
-    return createAsyncAttachmentPreview({
+  const createFallbackPreview = (
+    fallbackOptions: Pick<
+      AttachmentPreviewOptions,
+      "htmlPreviewDisabledReason" | "previewData"
+    >,
+  ) =>
+    createAsyncAttachmentPreview({
       createSuccess: (sourceUrl) =>
         HtmlFallbackAttachmentPreviewView({
           ...options,
-          htmlPreviewDisabledReason: getHtmlPreviewOversizeReason(),
+          ...fallbackOptions,
           sourceUrl,
         }),
       load: loadSourceUrl,
     });
+
+  if (isHtmlPreviewOversized(options.attachment.size)) {
+    return createFallbackPreview({
+      htmlPreviewDisabledReason: getHtmlPreviewOversizeReason(),
+    });
   }
 
   return createAsyncAttachmentPreview({
-    createSuccess: ({ content, sourceUrl }) => {
+    createSuccess: (content) => {
       const htmlSize = getHtmlPreviewByteLength(content);
       if (htmlSize > HTML_PREVIEW_MAX_BYTES) {
-        return HtmlFallbackAttachmentPreviewView({
-          ...options,
+        return createFallbackPreview({
           htmlPreviewDisabledReason: getHtmlPreviewOversizeReason(),
-          sourceUrl,
         });
       }
 
       if (!isRenderableHtmlPreview(content)) {
-        return HtmlFallbackAttachmentPreviewView({
-          ...options,
+        return createFallbackPreview({
           htmlPreviewDisabledReason: getHtmlPreviewInvalidReason(),
           previewData: content,
-          sourceUrl,
         });
       }
 
       return HtmlFrameAttachmentPreviewView({
         ...options,
         previewData: content,
-        sourceUrl,
       });
     },
-    load: async () => {
-      const content = await loadAttachmentText(options);
-      const sourceUrl = await loadSourceUrl();
-
-      return { content, sourceUrl };
-    },
+    load: () => loadAttachmentText(options),
   });
 };

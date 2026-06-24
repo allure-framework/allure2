@@ -1,7 +1,7 @@
 import BaseElement from "../../../core/elements/BaseElement.mts";
 import router from "../../../core/routing/router.mts";
 import attachmentType from "../model/attachmentType.mts";
-import { renderAttachmentView } from "./renderAttachmentView.mts";
+import { PreviewView } from "./PreviewView.mts";
 
 type Attachment = import("../../../types/report.mts").Attachment;
 type AttachmentTypeInfo = import("../model/attachmentType.mts").AttachmentTypeInfo;
@@ -40,7 +40,7 @@ class AttachmentElement extends BaseElement {
     this.replaceChildren();
     this.mountChild(
       "preview",
-      renderAttachmentView({
+      PreviewView({
         view: this.attachmentInfo.view,
         attachment: this.attachment,
         fullScreen: this.fullScreen,

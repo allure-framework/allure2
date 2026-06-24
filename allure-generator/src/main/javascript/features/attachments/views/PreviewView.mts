@@ -34,5 +34,3 @@ export const PreviewView: AttachmentPreviewComponent = (options) => {
 
   return (createPreviewView ?? FallbackAttachmentPreviewView)(options);
 };
-
-export const renderAttachmentView = PreviewView;

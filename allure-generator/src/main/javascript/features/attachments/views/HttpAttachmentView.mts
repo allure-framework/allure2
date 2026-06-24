@@ -16,9 +16,10 @@ import attachmentType from "../model/attachmentType.mts";
 import { HTTP_EXCHANGE_REDACTED_VALUE } from "../model/httpAttachment.mts";
 import {
   createAttachmentSourceUrlPreview,
+  type AttachmentPreviewOptions,
   type AttachmentPreviewComponent,
 } from "./BaseAttachmentPreviewView.mts";
-import { PreviewView } from "./renderAttachmentView.mts";
+import { PreviewView } from "./PreviewView.mts";
 
 type Mountable = import("../../../core/view/types.mts").Mountable;
 type Attachment = import("../../../types/report.mts").Attachment;
@@ -506,8 +507,9 @@ const renderNoBodyView = (body: HttpBody) =>
     text: `No inline view for ${body.contentType || "this content type"}.`,
   });
 
-const renderBodyPreviewView = (options: Parameters<typeof PreviewView>[0]) => {
+const renderBodyPreviewView = (options: AttachmentPreviewOptions) => {
   const previewContainer = createElement("div");
+  // Keep this call deferred: PreviewView imports HttpAttachmentView for the top-level HTTP preview.
   attachMountable(previewContainer, PreviewView(options));
 
   return previewContainer;
