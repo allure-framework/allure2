@@ -33,13 +33,11 @@ const parseUriPreviewData = (previewData: unknown): UriContent[] => {
     }));
 };
 
-export const renderLoadedUriAttachmentPreviewView = ({
+const renderLoadedUriAttachmentPreviewView = ({
   fullScreen,
   previewData,
 }: AttachmentPreviewOptions) => {
-  const uriContainer = createDiv(
-    b("attachment-preview", { fullscreen: fullScreen, uri: true }),
-  );
+  const uriContainer = createDiv(b("attachment-preview", { fullscreen: fullScreen, uri: true }));
   const uriContent = parseUriPreviewData(previewData);
 
   uriContent.forEach(({ comment, text }) => {

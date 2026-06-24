@@ -51,9 +51,10 @@ export const createPre = (className: string, text: unknown) =>
 export const joinClassNames = (...classNames: (string | null | undefined | false)[]) =>
   classNames.filter(Boolean).join(" ");
 
-export const attachmentUrl = (attachment: Attachment) => `data/attachments/${attachment.source}`;
+const attachmentUrl = (attachment: Attachment) => `data/attachments/${attachment.source}`;
 
-export const getAttachmentSubtype = (attachment: Attachment) => attachment.type.split("/").pop() || "";
+export const getAttachmentSubtype = (attachment: Attachment) =>
+  attachment.type.split("/").pop() || "";
 
 export const hasPreviewData = (options: AttachmentPreviewOptions) =>
   Object.prototype.hasOwnProperty.call(options, "previewData");
@@ -79,7 +80,7 @@ export const setResourceUrl = (
   }
 };
 
-export const createDownloadLink = (attachment: Attachment, sourceUrl?: string | null) => {
+const createDownloadLink = (attachment: Attachment, sourceUrl?: string | null) => {
   const link = createElement("a", {
     attrs: { download: attachment.name || "" },
     className: "link",

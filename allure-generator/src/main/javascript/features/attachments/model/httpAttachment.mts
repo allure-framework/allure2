@@ -1,9 +1,3 @@
-const HTTP_EXCHANGE_ATTACHMENT_MIME = "application/vnd.allure.http+json";
-const HTTP_EXCHANGE_ATTACHMENT_MIME_ALIAS = "application/vnd.allure.http";
-export const HTTP_EXCHANGE_ATTACHMENT_MIME_TYPES = [
-  HTTP_EXCHANGE_ATTACHMENT_MIME,
-  HTTP_EXCHANGE_ATTACHMENT_MIME_ALIAS,
-];
 export const HTTP_EXCHANGE_REDACTED_VALUE = "__ALLURE_REDACTED__";
 
 export type HttpExchangeSchemaVersion = 1;

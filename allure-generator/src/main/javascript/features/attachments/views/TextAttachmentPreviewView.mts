@@ -18,13 +18,11 @@ const createAnsiPre = (className: string, text: unknown) => {
   return pre;
 };
 
-export const renderLoadedTextAttachmentPreviewView = ({
+const renderLoadedTextAttachmentPreviewView = ({
   fullScreen,
   previewData,
 }: AttachmentPreviewOptions) => {
-  const textContainer = createDiv(
-    b("attachment-preview", { fullscreen: fullScreen, text: true }),
-  );
+  const textContainer = createDiv(b("attachment-preview", { fullscreen: fullScreen, text: true }));
   textContainer.appendChild(
     createAnsiPre(
       b("attachment-preview", "text"),

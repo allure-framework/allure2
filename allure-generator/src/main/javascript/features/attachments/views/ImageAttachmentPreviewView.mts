@@ -18,10 +18,7 @@ export const renderLoadedImageAttachmentPreviewView = ({
   sourceUrl,
 }: AttachmentPreviewOptions) => {
   const mediaContainer = createDiv(
-    joinClassNames(
-      b("attachment-preview", { fullscreen: fullScreen, image: true }),
-      className,
-    ),
+    joinClassNames(b("attachment-preview", { fullscreen: fullScreen, image: true }), className),
   );
   const image = createElement("img", { className: b("attachment-preview", "media") });
   setResourceUrl(image, "src", sourceUrl);

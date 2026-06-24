@@ -10,7 +10,7 @@ import {
   type AttachmentPreviewOptions,
 } from "./BaseAttachmentPreviewView.mts";
 
-export const renderLoadedVideoAttachmentPreviewView = ({
+const renderLoadedVideoAttachmentPreviewView = ({
   attachment,
   sourceUrl,
 }: AttachmentPreviewOptions) => {

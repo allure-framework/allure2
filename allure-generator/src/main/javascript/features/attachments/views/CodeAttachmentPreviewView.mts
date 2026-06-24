@@ -12,15 +12,13 @@ import {
   type AttachmentPreviewOptions,
 } from "./BaseAttachmentPreviewView.mts";
 
-export const renderLoadedCodeAttachmentPreviewView = ({
+const renderLoadedCodeAttachmentPreviewView = ({
   attachment,
   codeLanguage,
   fullScreen,
   previewData,
 }: AttachmentPreviewOptions) => {
-  const textContainer = createDiv(
-    b("attachment-preview", { code: true, fullscreen: fullScreen }),
-  );
+  const textContainer = createDiv(b("attachment-preview", { code: true, fullscreen: fullScreen }));
   const codeBlock = createPre(
     b("attachment-preview", "code"),
     typeof previewData === "string" ? previewData : "",

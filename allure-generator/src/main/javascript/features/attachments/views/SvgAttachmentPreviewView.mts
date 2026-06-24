@@ -8,7 +8,7 @@ import {
 } from "./BaseAttachmentPreviewView.mts";
 import { renderLoadedImageAttachmentPreviewView } from "./ImageAttachmentPreviewView.mts";
 
-export const renderLoadedSvgAttachmentPreviewView = (options: AttachmentPreviewOptions) =>
+const renderLoadedSvgAttachmentPreviewView = (options: AttachmentPreviewOptions) =>
   renderLoadedImageAttachmentPreviewView({
     ...options,
     className: "attachment-preview_svg",

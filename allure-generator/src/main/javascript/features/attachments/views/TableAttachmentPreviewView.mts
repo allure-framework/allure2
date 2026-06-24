@@ -28,7 +28,7 @@ const parseTablePreviewData = (attachment: Attachment, previewData: unknown) => 
     : csvParseRows(content);
 };
 
-export const renderLoadedTableAttachmentPreviewView = ({
+const renderLoadedTableAttachmentPreviewView = ({
   attachment,
   fullScreen,
   previewData,

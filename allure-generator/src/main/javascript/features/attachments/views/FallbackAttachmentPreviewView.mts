@@ -9,17 +9,14 @@ import {
   type AttachmentPreviewOptions,
 } from "./BaseAttachmentPreviewView.mts";
 
-export const renderFallbackAttachmentPreviewView = ({
+const renderFallbackAttachmentPreviewView = ({
   attachment,
   className,
   fullScreen,
   sourceUrl,
 }: AttachmentPreviewOptions) => {
   const fallbackContainer = createDiv(
-    joinClassNames(
-      b("attachment-preview", { fallback: true, fullscreen: fullScreen }),
-      className,
-    ),
+    joinClassNames(b("attachment-preview", { fallback: true, fullscreen: fullScreen }), className),
   );
   fallbackContainer.appendChild(createDownloadAction(attachment, sourceUrl));
   return fallbackContainer;

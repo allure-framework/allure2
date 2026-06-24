@@ -29,10 +29,7 @@ import {
   isRenderableHtmlPreview,
 } from "./HtmlAttachmentPreviewView.helpers.mts";
 
-const getHtmlAttachmentFrameTitle = ({
-  name,
-  source,
-}: AttachmentPreviewOptions["attachment"]) =>
+const getHtmlAttachmentFrameTitle = ({ name, source }: AttachmentPreviewOptions["attachment"]) =>
   translate("component.attachment.htmlPreviewTitle", {
     hash: { name: name || source },
   });
@@ -97,9 +94,7 @@ const HtmlFrameAttachmentPreviewView = ({
   };
 
   return defineMountableElement(frame, {
-    render() {
-      return frame;
-    },
+    render: () => frame,
     attachToDom() {
       if (releaseMessages) {
         return;
@@ -130,9 +125,7 @@ const HtmlFallbackAttachmentPreviewView = ({
 }: AttachmentPreviewOptions) => {
   const htmlContent = typeof previewData === "string" ? previewData : "";
   const htmlFallbackContainer = createDiv(
-    joinClassNames(
-      b("attachment-preview", { fallback: true, fullscreen: fullScreen, html: true }),
-    ),
+    joinClassNames(b("attachment-preview", { fallback: true, fullscreen: fullScreen, html: true })),
   );
   const htmlFallbackStatus = createDiv(b("attachment-preview", "html-status"));
   htmlFallbackStatus.append(
@@ -159,10 +152,7 @@ const HtmlFallbackAttachmentPreviewView = ({
 export const HtmlAttachmentPreviewView: AttachmentPreviewComponent = (options) => {
   const loadSourceUrl = () => loadAttachmentSourceUrl(options);
   const createFallbackPreview = (
-    fallbackOptions: Pick<
-      AttachmentPreviewOptions,
-      "htmlPreviewDisabledReason" | "previewData"
-    >,
+    fallbackOptions: Pick<AttachmentPreviewOptions, "htmlPreviewDisabledReason" | "previewData">,
   ) =>
     createAsyncAttachmentPreview({
       createSuccess: (sourceUrl) =>
