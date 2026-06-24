@@ -1,12 +1,11 @@
-import { csvParseRows, tsvParseRows } from "d3-dsv";
+import { AttachmentPreviewView } from "./attachmentPreviewView.mts";
 import { PLAYWRIGHT_TRACE_MIME } from "./playwrightTrace.mts";
 
 type IconName = import("../../../shared/icon/index.mts").IconName;
 
 export type AttachmentTypeInfo = {
-  type: string | null;
+  view: AttachmentPreviewView | null;
   icon: IconName;
-  parser?: (content: string) => unknown;
 };
 
 export const normalizeAttachmentContentType = (type: string) =>
@@ -24,6 +23,12 @@ export const getBuiltinAttachmentType = (type: string): AttachmentTypeInfo => {
   const normalizedType = normalizeAttachmentContentType(type);
 
   switch (normalizedType) {
+    case "application/vnd.allure.http+json":
+    case "application/vnd.allure.http":
+      return {
+        view: AttachmentPreviewView.HttpExchange,
+        icon: "lineDevDataflow3",
+      };
     case "image/bmp":
     case "image/gif":
     case "image/tiff":
@@ -33,7 +38,7 @@ export const getBuiltinAttachmentType = (type: string): AttachmentTypeInfo => {
     case "image/webp":
     case "image/*":
       return {
-        type: "image",
+        view: AttachmentPreviewView.Image,
         icon: "lineImagesImage",
       };
     case "text/xml":
@@ -43,61 +48,48 @@ export const getBuiltinAttachmentType = (type: string): AttachmentTypeInfo => {
     case "application/x-yaml":
     case "text/x-yaml":
       return {
-        type: "code",
+        view: AttachmentPreviewView.Code,
         icon: "lineDevCodeSquare",
-        parser: (d) => d,
       };
     case "text/plain":
     case "text/event-stream":
     case "text/*":
       return {
-        type: "text",
+        view: AttachmentPreviewView.Text,
         icon: "lineFilesFile2",
-        parser: (d) => d,
       };
     case "application/xhtml+xml":
     case "text/html":
       return {
-        type: "html",
+        view: AttachmentPreviewView.Html,
         icon: "lineDevCodeSquare",
       };
     case "text/csv":
       return {
-        type: "table",
+        view: AttachmentPreviewView.Table,
         icon: "lineGeneralChecklist3",
-        parser: (d) => csvParseRows(d),
       };
     case "text/tab-separated-values":
       return {
-        type: "table",
+        view: AttachmentPreviewView.Table,
         icon: "lineGeneralChecklist3",
-        parser: (d) => tsvParseRows(d),
       };
     case "image/svg+xml":
       return {
-        type: "svg",
+        view: AttachmentPreviewView.Svg,
         icon: "lineImagesImage",
       };
     case "video/mp4":
     case "video/ogg":
     case "video/webm":
       return {
-        type: "video",
+        view: AttachmentPreviewView.Video,
         icon: "lineHelpersPlayCircle",
       };
     case "text/uri-list":
       return {
-        type: "uri",
+        view: AttachmentPreviewView.Uri,
         icon: "lineGeneralLink1",
-        parser: (d) =>
-          d
-            .split("\n")
-            .map((line) => line.trim())
-            .filter((line) => line.length > 0)
-            .map((line) => ({
-              comment: line.indexOf("#") === 0,
-              text: line,
-            })),
       };
     case "application/x-tar":
     case "application/x-gtar":
@@ -105,25 +97,30 @@ export const getBuiltinAttachmentType = (type: string): AttachmentTypeInfo => {
     case "application/gzip":
     case "application/zip":
       return {
-        type: "archive",
+        view: AttachmentPreviewView.Archive,
         icon: "lineFilesFileAttachment2",
       };
     case PLAYWRIGHT_TRACE_MIME:
       return {
-        type: "playwright-trace",
+        view: AttachmentPreviewView.PlaywrightTrace,
         icon: "lineDevCodeSquare",
+      };
+    case "application/vnd.allure.image.diff":
+    case "application/vnd.allure.image.diff+json":
+      return {
+        view: AttachmentPreviewView.ScreenDiff,
+        icon: "lineLayoutsColumns2",
       };
     default:
       if (isJsonAttachmentContentType(normalizedType)) {
         return {
-          type: "code",
+          view: AttachmentPreviewView.Code,
           icon: "lineDevCodeSquare",
-          parser: (d) => d,
         };
       }
 
       return {
-        type: null,
+        view: null,
         icon: "lineFilesFile2",
       };
   }

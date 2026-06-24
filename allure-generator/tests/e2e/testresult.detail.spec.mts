@@ -64,12 +64,12 @@ for (const mode of reportModes) {
 
       await expect(page).toHaveURL(/attachment=/);
       await expect(page.locator("#content")).toHaveClass(/blur/);
-      await expect(page.locator(".attachment__iframe")).toBeVisible();
+      await expect(page.locator(".attachment-preview__frame")).toBeVisible();
 
       await page.keyboard.press("Escape");
       await expect(page).not.toHaveURL(/attachment=/);
       await expect(page.locator("#content")).not.toHaveClass(/blur/);
-      await expect(page.locator(".attachment__iframe")).toHaveCount(0);
+      await expect(page.locator(".attachment-preview__frame")).toHaveCount(0);
     });
 
     test("renders history and retries for retried results", async ({ page }) => {

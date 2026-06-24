@@ -1,0 +1,20 @@
+@use "../../../theme/spacing.scss" as *;
+
+.attachment-preview_uri {
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-0-5);
+  padding: gap(2);
+
+  &_fullscreen {
+    background-color: var(--color-bg-raised);
+  }
+}
+
+.attachment-preview__url {
+  margin: gap(1) 0;
+  padding: 0 gap(2);
+
+  &_comment {
+    color: var(--color-text-muted);
+  }
+}

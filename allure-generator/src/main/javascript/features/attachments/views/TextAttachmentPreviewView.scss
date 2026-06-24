@@ -1,0 +1,22 @@
+@use "../../../theme/spacing.scss" as *;
+
+.attachment-preview_text {
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-0-5);
+  padding: gap(2);
+
+  &_fullscreen {
+    background-color: var(--color-bg-raised);
+  }
+}
+
+.attachment-preview__text {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-m-code);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-m);
+  margin: 0;
+  padding: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}

@@ -60,18 +60,18 @@ test.describe("Generic Attachments", () => {
       await htmlRow.click();
 
       const preview = previewContainerFor(htmlRow);
-      const iframe = preview.locator(".attachment__iframe");
+      const iframe = preview.locator(".attachment-preview__frame");
       await expect(iframe).toBeVisible();
       await expect(iframe).toHaveAttribute("sandbox", "allow-scripts");
       await expect(iframe).toHaveAttribute("referrerpolicy", "no-referrer");
       await expect(iframe).toHaveAttribute("srcdoc", /Content-Security-Policy/);
       await expect(iframe).not.toHaveAttribute("src", /.+/);
       await expect(
-        page.frameLocator(".attachment-row__preview .attachment__iframe").locator(".status"),
+        page.frameLocator(".attachment-row__preview .attachment-preview__frame").locator(".status"),
       ).toHaveText("Script rendered graph controls");
       await expect(
         page
-          .frameLocator(".attachment-row__preview .attachment__iframe")
+          .frameLocator(".attachment-row__preview .attachment-preview__frame")
           .locator("[data-preview-ready='true']"),
       ).toBeVisible();
 
@@ -101,11 +101,11 @@ test.describe("Generic Attachments", () => {
     await htmlRow.click();
 
     const preview = previewContainerFor(htmlRow);
-    await expect(preview.locator(".attachment__iframe")).toHaveCount(0);
-    await expect(preview.locator(".attachment__html-preview-message")).toHaveText(
+    await expect(preview.locator(".attachment-preview__frame")).toHaveCount(0);
+    await expect(preview.locator(".attachment-preview__html-message")).toHaveText(
       "HTML preview is disabled because the attachment does not look like HTML.",
     );
-    await expect(preview.locator(".attachment__html-preview-source")).toContainText(
+    await expect(preview.locator(".attachment-preview__html-source")).toContainText(
       "plain text pretending to be an HTML attachment",
     );
     await expect(preview.locator(".link[download]")).toHaveAttribute(
@@ -168,8 +168,8 @@ test.describe("Generic Attachments", () => {
     await htmlRow.click();
 
     const preview = previewContainerFor(htmlRow);
-    await expect(preview.locator(".attachment__iframe")).toHaveCount(0);
-    await expect(preview.locator(".attachment__html-preview-message")).toHaveText(
+    await expect(preview.locator(".attachment-preview__frame")).toHaveCount(0);
+    await expect(preview.locator(".attachment-preview__html-message")).toHaveText(
       "HTML preview is disabled because the attachment is larger than 10 MiB.",
     );
     expect(htmlAttachmentFetches).toBe(0);
@@ -187,22 +187,22 @@ test.describe("Generic Attachments", () => {
     await expect(xmlRow).toBeVisible();
     await xmlRow.click();
     await expect(page).not.toHaveURL(/attachment=/);
-    await expect(previewContainerFor(xmlRow).locator(".attachment__code")).toBeVisible();
+    await expect(previewContainerFor(xmlRow).locator(".attachment-preview__code")).toBeVisible();
 
     const jsonRow = attachmentRow(page, attachmentsFixture.attachments.json);
     await expect(jsonRow).toBeVisible();
     await jsonRow.click();
-    await expect(previewContainerFor(jsonRow).locator(".attachment__code")).toContainText("{");
+    await expect(previewContainerFor(jsonRow).locator(".attachment-preview__code")).toContainText("{");
 
     const csvRow = attachmentRow(page, attachmentsFixture.attachments.csv);
     await expect(csvRow).toBeVisible();
     await csvRow.click();
-    await expect(previewContainerFor(csvRow).locator(".attachment__table tr")).toHaveCount(4);
+    await expect(previewContainerFor(csvRow).locator(".attachment-preview__table tr")).toHaveCount(4);
 
     const tsvRow = attachmentRow(page, attachmentsFixture.attachments.tsv);
     await expect(tsvRow).toBeVisible();
     await tsvRow.click();
-    await expect(previewContainerFor(tsvRow).locator(".attachment__table tr")).toHaveCount(4);
+    await expect(previewContainerFor(tsvRow).locator(".attachment-preview__table tr")).toHaveCount(4);
   });
 
   test("renders media and URI-list attachments", async ({ page }) => {
@@ -216,17 +216,17 @@ test.describe("Generic Attachments", () => {
     const pngRow = attachmentRow(page, attachmentsFixture.attachments.png);
     await expect(pngRow).toBeVisible();
     await pngRow.click();
-    await expectImageToDecode(previewContainerFor(pngRow).locator(".attachment__media"));
+    await expectImageToDecode(previewContainerFor(pngRow).locator(".attachment-preview__media"));
 
     const jpegRow = attachmentRow(page, attachmentsFixture.attachments.jpeg);
     await expect(jpegRow).toBeVisible();
     await jpegRow.click();
-    await expectImageToDecode(previewContainerFor(jpegRow).locator(".attachment__media"));
+    await expectImageToDecode(previewContainerFor(jpegRow).locator(".attachment-preview__media"));
 
     const svgRow = attachmentRow(page, attachmentsFixture.attachments.svg);
     await expect(svgRow).toBeVisible();
     await svgRow.click();
-    await expectImageToDecode(previewContainerFor(svgRow).locator(".attachment__media"));
+    await expectImageToDecode(previewContainerFor(svgRow).locator(".attachment-preview__media"));
 
     const videoRow = attachmentRow(page, attachmentsFixture.attachments.video);
     await expect(videoRow).toBeVisible();
@@ -236,16 +236,16 @@ test.describe("Generic Attachments", () => {
     const uriRow = attachmentRow(page, attachmentsFixture.attachments.uri);
     await expect(uriRow).toBeVisible();
     await uriRow.click();
-    await expect(previewContainerFor(uriRow).locator(".attachment__url .link")).toHaveCount(2);
+    await expect(previewContainerFor(uriRow).locator(".attachment-preview__url .link")).toHaveCount(2);
     await expect(
-      previewContainerFor(uriRow).locator(".attachment__url .link").first(),
+      previewContainerFor(uriRow).locator(".attachment-preview__url .link").first(),
     ).toHaveAttribute("href", attachmentsFixture.uriLinks.graphs);
     await expect(
-      previewContainerFor(uriRow).locator(".attachment__url .link").nth(1),
+      previewContainerFor(uriRow).locator(".attachment-preview__url .link").nth(1),
     ).toHaveAttribute("href", attachmentsFixture.uriLinks.docs);
   });
 
-  test("renders the image diff attachment with the custom viewer", async ({ page }) => {
+  test("renders the image diff attachment with the screen diff viewer", async ({ page }) => {
     await openCaseFromTree(page, {
       fixture: attachmentsFixture.name,
       mode: REPORT_MODES.DIRECTORY,
@@ -268,7 +268,7 @@ test.describe("Generic Attachments", () => {
   });
 
   for (const mode of [REPORT_MODES.SINGLE_FILE, REPORT_MODES.DIRECTORY] as const) {
-    test(`renders the HTTP Exchange attachment with the custom viewer (${mode})`, async ({
+    test(`renders the HTTP Exchange attachment with the HTTP exchange viewer (${mode})`, async ({
       page,
     }) => {
       await openCaseFromTree(page, {
@@ -314,12 +314,12 @@ test.describe("Generic Attachments", () => {
       await expect(requestMaskedValues.first()).toHaveText("*****");
       await requestMaskedValues.first().hover();
       await expect(page.locator(".tooltip.tooltip_position_bottom")).toHaveText("Value is masked");
-      await expect(requestSection.locator(".http-attachment__body-content .attachment__code")).toContainText(
-        '{"name":"demo","quantity":1}',
-      );
-      await expect(requestSection.locator(".http-attachment__body-content .attachment__code")).toHaveClass(
-        /language-json/,
-      );
+      await expect(
+        requestSection.locator(".http-attachment__body-content .attachment-preview__code"),
+      ).toContainText('{"name":"demo","quantity":1}');
+      await expect(
+        requestSection.locator(".http-attachment__body-content .attachment-preview__code"),
+      ).toHaveClass(/language-json/);
       const requestDownload = requestSection.getByRole("link", { name: "Download request" });
       await expect(requestDownload).toHaveAttribute("download", "request-body.json");
       await expect(requestDownload).toHaveAttribute(
@@ -337,20 +337,18 @@ test.describe("Generic Attachments", () => {
       await expect(responseSection).toContainText("HttpOnly");
       await expect(responseSection).not.toContainText("__ALLURE_REDACTED__");
       await expect(responseSection.locator("[data-http-masked-value]")).toHaveCount(2);
-      await expect(responseSection.locator(".http-attachment__body-content .attachment__code")).toContainText(
-        "<script>window.__httpAttachmentXss = true</script>",
-      );
-      await expect(responseSection.locator(".http-attachment__body-content .attachment__code")).toHaveClass(
-        /language-json/,
-      );
+      await expect(
+        responseSection.locator(".http-attachment__body-content .attachment-preview__code"),
+      ).toContainText("<script>window.__httpAttachmentXss = true</script>");
+      await expect(
+        responseSection.locator(".http-attachment__body-content .attachment-preview__code"),
+      ).toHaveClass(/language-json/);
       const responseDownload = responseSection.getByRole("link", { name: "Download response" });
       await expect(responseDownload).toHaveAttribute("download", "response-body.json");
       await expect
         .poll(() =>
           page.evaluate(() =>
-            Boolean(
-              (window as Window & { __httpAttachmentXss?: boolean }).__httpAttachmentXss,
-            ),
+            Boolean((window as Window & { __httpAttachmentXss?: boolean }).__httpAttachmentXss),
           ),
         )
         .toBe(false);
@@ -368,9 +366,7 @@ test.describe("Generic Attachments", () => {
       await expect(aliasPreview.locator(".http-attachment__url")).toHaveText(
         "https://api.example.com/v1/mime-alias",
       );
-      await expect(aliasPreview.locator(".http-attachment__status")).toHaveText(
-        "204 No Content",
-      );
+      await expect(aliasPreview.locator(".http-attachment__status")).toHaveText("204 No Content");
     });
 
     test(`renders rich HTTP Exchange response bodies with attachment viewers (${mode})`, async ({
@@ -400,7 +396,9 @@ test.describe("Generic Attachments", () => {
       await expect(responseSection).toContainText("base64");
       await expect(responseSection).toContainText("1649 bytes");
 
-      const richImage = responseSection.locator(".http-attachment__body-content .attachment__media");
+      const richImage = responseSection.locator(
+        ".http-attachment__body-content .attachment-preview__media",
+      );
       await expectImageToDecode(richImage);
       await expect
         .poll(() =>
@@ -537,9 +535,9 @@ test.describe("Generic Attachments", () => {
       const responseSection = preview.locator(".http-attachment__section", {
         hasText: "Response",
       });
-      await expect(responseSection.locator(".http-attachment__body-content .attachment__code")).toContainText(
-        '{"uploaded":true}',
-      );
+      await expect(
+        responseSection.locator(".http-attachment__body-content .attachment-preview__code"),
+      ).toContainText('{"uploaded":true}');
     });
 
     test(`renders streaming HTTP Exchange bodies (${mode})`, async ({ page }) => {
@@ -573,9 +571,9 @@ test.describe("Generic Attachments", () => {
       await expect(responseSection).toContainText("false");
       await expect(responseSection).toContainText("chunkCount");
       await expect(responseSection).toContainText("1");
-      await expect(responseSection.locator(".http-attachment__body-content .attachment__text")).toContainText(
-        "event: ready",
-      );
+      await expect(
+        responseSection.locator(".http-attachment__body-content .attachment-preview__text"),
+      ).toContainText("event: ready");
     });
   }
 
@@ -619,7 +617,7 @@ test.describe("Generic Attachments", () => {
     const svgRow = attachmentRow(page, attachmentsFixture.attachments.svg);
     await expect(svgRow).toBeVisible();
     await svgRow.click();
-    await expectImageToDecode(previewContainerFor(svgRow).locator(".attachment__media"));
+    await expectImageToDecode(previewContainerFor(svgRow).locator(".attachment-preview__media"));
   });
 
   test("keeps attachment MIME labels wired on inline rows", async ({ page }) => {
@@ -647,12 +645,12 @@ test.describe("Generic Attachments", () => {
     const xmlRow = attachmentRow(page, attachmentsFixture.attachments.xml);
     await expect(xmlRow).toBeVisible();
     await xmlRow.click();
-    await expect(previewContainerFor(xmlRow).locator(".attachment__code")).toBeVisible();
+    await expect(previewContainerFor(xmlRow).locator(".attachment-preview__code")).toBeVisible();
 
     await page.locator('.side-nav__link[href="#categories"]').click();
 
     await expect(page).toHaveURL(/#categories$/);
-    await expect(page.locator(".side-nav__link_active[href=\"#categories\"]")).toBeVisible();
+    await expect(page.locator('.side-nav__link_active[href="#categories"]')).toBeVisible();
     await expect(page.locator(".app__content .pane__title-text").first()).toHaveText("Categories");
     await expect(
       page.locator(".app__content .side-by-side__left allure-tree-view .tree__content"),

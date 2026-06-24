@@ -1,0 +1,119 @@
+@use "../../../theme/spacing.scss" as *;
+
+$attachment-trace-fullscreen-offset: gap(12);
+
+.attachment-preview_trace {
+  display: flex;
+  flex-direction: column;
+  gap: gap(1);
+}
+
+.attachment-preview__trace-container {
+  height: calc(100vh - #{$attachment-trace-fullscreen-offset});
+  height: calc(100dvh - #{$attachment-trace-fullscreen-offset});
+  overflow: hidden;
+}
+
+.attachment-preview__trace-actions {
+  align-items: center;
+  display: flex;
+  gap: gap(1);
+  justify-content: flex-end;
+  padding: 0 0 gap(1);
+}
+
+.attachment-preview__trace-actions:empty {
+  display: none;
+}
+
+.attachment-preview__trace-download {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.attachment-preview__trace-body {
+  min-height: gap(12);
+  position: relative;
+
+  &_loading {
+    .attachment-preview__trace-frame {
+      visibility: hidden;
+    }
+
+    .attachment-preview__trace-overlay {
+      display: flex;
+    }
+  }
+}
+
+.attachment-preview__trace-frame-host {
+  min-height: gap(12);
+}
+
+.attachment-preview__trace-frame {
+  border: 0;
+  display: block;
+  height: calc(100vh - #{$attachment-trace-fullscreen-offset});
+  height: calc(100dvh - #{$attachment-trace-fullscreen-offset});
+  width: 100%;
+}
+
+.attachment-preview__trace-overlay {
+  align-items: center;
+  background: color-mix(in srgb, var(--color-bg-raised) 90%, transparent);
+  display: none;
+  inset: 0;
+  justify-content: center;
+  position: absolute;
+}
+
+.attachment-preview__trace-instructions {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: gap(16);
+  padding: gap(6) gap(4);
+}
+
+.attachment-preview__trace-instructions-content {
+  color: var(--color-text-primary);
+  max-width: 720px;
+}
+
+.attachment-preview__trace-instructions-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-l);
+  margin: 0 0 gap(1);
+}
+
+.attachment-preview__trace-instructions-reason,
+.attachment-preview__trace-instructions-note {
+  color: var(--color-text-secondary);
+  margin: 0 0 gap(1);
+}
+
+.attachment-preview__trace-instructions-subtitle {
+  font-size: var(--font-size-l);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-l);
+  margin: gap(3) 0 gap(1);
+}
+
+.attachment-preview__trace-instructions-list {
+  color: var(--color-text-secondary);
+  list-style-position: outside;
+  list-style-type: decimal;
+  margin: 0;
+  padding-left: gap(3);
+}
+
+.attachment-preview__trace-instructions-list > li {
+  padding-left: gap(0.5);
+}
+
+.attachment-preview__trace-instructions-list > li + li {
+  margin-top: gap(1);
+}

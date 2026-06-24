@@ -43,7 +43,7 @@ test.describe("Playwright Trace", () => {
       await expect(previewContainerFor(traceRow).locator("#pw-trace-iframe")).toHaveCount(0);
 
       const traceFrame = page.locator(".modal__content #pw-trace-iframe");
-      const downloadLink = page.locator(".modal__title .attachment__trace-download");
+      const downloadLink = page.locator(".modal__title .attachment-preview__trace-download");
       await expect(downloadLink).toBeVisible();
       await expect(downloadLink).toHaveAttribute("download", /\.zip$/);
 
@@ -62,7 +62,7 @@ test.describe("Playwright Trace", () => {
       } else {
         await expect(downloadLink).toHaveAttribute("href", /^blob:/);
         await expect(traceFrame).toHaveCount(0);
-        const instructions = page.locator(".modal__content .attachment__trace-instructions");
+        const instructions = page.locator(".modal__content .attachment-preview__trace-instructions");
         await expect(instructions).toContainText("single-file reports");
         await expect(instructions).toContainText("Open the trace manually");
         await expect(instructions.getByRole("link", { name: "microsoft/playwright#40960" }))

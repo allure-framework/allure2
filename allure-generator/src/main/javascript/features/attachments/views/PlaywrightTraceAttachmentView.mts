@@ -1,3 +1,4 @@
+import "./PlaywrightTraceAttachmentView.scss";
 import { defineMountableElement } from "../../../core/view/elementView.mts";
 import {
   fetchReportBlob,
@@ -13,6 +14,10 @@ import ErrorSplashView from "../../../shared/ui/ErrorSplashView.mts";
 import LoaderView from "../../../shared/ui/LoaderView.mts";
 import { createModalHeaderActionsEvent } from "../../../shared/ui/modalHeaderActions.mts";
 import {
+  createAttachmentSourceUrlPreview,
+  type AttachmentPreviewComponent,
+} from "./BaseAttachmentPreviewView.mts";
+import {
   PLAYWRIGHT_TRACE_VIEWER_INFO_URL,
   type PlaywrightTraceViewerInfo,
 } from "../model/playwrightTrace.mts";
@@ -21,7 +26,7 @@ type Attachment = import("../../../types/report.mts").Attachment;
 type Mountable = import("../../../core/view/types.mts").Mountable;
 type ReportDataError = import("../../../core/services/reportData.mts").ReportDataError;
 
-type PlaywrightTraceAttachmentOptions = {
+type PlaywrightTraceAttachmentContentOptions = {
   sourceUrl: string;
   attachment: Attachment;
 };
@@ -73,7 +78,7 @@ const createDownloadLink = (attachment: Attachment, href: string | null) => {
       target: "_blank",
       rel: "noopener noreferrer",
     },
-    className: "link attachment__trace-download",
+    className: "link attachment-preview__trace-download",
     text: translate("component.attachment.download"),
   });
 };
@@ -105,7 +110,7 @@ const getUnavailableReason = (): TraceViewerUnavailableReason => {
 
 const getProtocolLabel = () => window.location.protocol || "file:";
 
-export const PlaywrightTraceAttachmentView = (options: PlaywrightTraceAttachmentOptions) => {
+const PlaywrightTraceAttachmentContentView = (options: PlaywrightTraceAttachmentContentOptions) => {
   const el = defineMountableElement(document.createElement("div"), {});
   let requestId = 0;
   let contentView: Mountable | null = null;
@@ -156,7 +161,7 @@ export const PlaywrightTraceAttachmentView = (options: PlaywrightTraceAttachment
   };
 
   const mountContentView = (view: Mountable) => {
-    const frameHost = el.querySelector(".attachment__trace-frame-host");
+    const frameHost = el.querySelector(".attachment-preview__trace-frame-host");
     if (!(frameHost instanceof Element)) {
       return;
     }
@@ -171,10 +176,10 @@ export const PlaywrightTraceAttachmentView = (options: PlaywrightTraceAttachment
   };
 
   const ensureTraceLayout = () => {
-    const currentActions = el.querySelector(".attachment__trace-actions");
-    const currentBody = el.querySelector(".attachment__trace-body");
-    const currentFrameHost = el.querySelector(".attachment__trace-frame-host");
-    const currentOverlay = el.querySelector(".attachment__trace-overlay");
+    const currentActions = el.querySelector(".attachment-preview__trace-actions");
+    const currentBody = el.querySelector(".attachment-preview__trace-body");
+    const currentFrameHost = el.querySelector(".attachment-preview__trace-frame-host");
+    const currentOverlay = el.querySelector(".attachment-preview__trace-overlay");
 
     if (
       currentActions instanceof HTMLDivElement &&
@@ -191,16 +196,16 @@ export const PlaywrightTraceAttachmentView = (options: PlaywrightTraceAttachment
     }
 
     const actions = createElement("div", {
-      className: "attachment__trace-actions",
+      className: "attachment-preview__trace-actions",
     });
     const body = createElement("div", {
-      className: "attachment__trace-body attachment__trace-body_loading",
+      className: "attachment-preview__trace-body attachment-preview__trace-body_loading",
       children: [
         createElement("div", {
-          className: "attachment__trace-frame-host",
+          className: "attachment-preview__trace-frame-host",
         }),
         createElement("div", {
-          className: "attachment__trace-overlay",
+          className: "attachment-preview__trace-overlay",
         }),
       ],
     });
@@ -209,8 +214,8 @@ export const PlaywrightTraceAttachmentView = (options: PlaywrightTraceAttachment
     return {
       actions,
       body,
-      frameHost: body.querySelector(".attachment__trace-frame-host") as HTMLDivElement,
-      overlay: body.querySelector(".attachment__trace-overlay") as HTMLDivElement,
+      frameHost: body.querySelector(".attachment-preview__trace-frame-host") as HTMLDivElement,
+      overlay: body.querySelector(".attachment-preview__trace-overlay") as HTMLDivElement,
     };
   };
 
@@ -238,7 +243,7 @@ export const PlaywrightTraceAttachmentView = (options: PlaywrightTraceAttachment
     const issueRow =
       reason === "singleFile"
         ? createElement("p", {
-            className: "attachment__trace-instructions-note",
+            className: "attachment-preview__trace-instructions-note",
             children: [
               `${translate("component.playwrightTrace.issuePrefix")} `,
               createNavigationLink(
@@ -251,22 +256,22 @@ export const PlaywrightTraceAttachmentView = (options: PlaywrightTraceAttachment
         : null;
 
     return createElement("section", {
-      className: "attachment__trace-instructions",
+      className: "attachment-preview__trace-instructions",
       attrs: {
         "aria-labelledby": "playwright-trace-unavailable-title",
       },
       children: createElement("div", {
-        className: "attachment__trace-instructions-content",
+        className: "attachment-preview__trace-instructions-content",
         children: [
           createElement("h1", {
             attrs: {
               id: "playwright-trace-unavailable-title",
             },
-            className: "attachment__trace-instructions-title",
+            className: "attachment-preview__trace-instructions-title",
             text: translate("component.playwrightTrace.unavailableTitle"),
           }),
           createElement("p", {
-            className: "attachment__trace-instructions-reason",
+            className: "attachment-preview__trace-instructions-reason",
             text: translate(`component.playwrightTrace.${reason}Reason`, {
               hash: {
                 protocol: getProtocolLabel(),
@@ -275,11 +280,11 @@ export const PlaywrightTraceAttachmentView = (options: PlaywrightTraceAttachment
           }),
           issueRow,
           createElement("h2", {
-            className: "attachment__trace-instructions-subtitle",
+            className: "attachment-preview__trace-instructions-subtitle",
             text: translate("component.playwrightTrace.stepsTitle"),
           }),
           createElement("ol", {
-            className: "attachment__trace-instructions-list",
+            className: "attachment-preview__trace-instructions-list",
             children: [
               createElement("li", {
                 children: downloadLink || translate("component.playwrightTrace.stepDownload"),
@@ -301,7 +306,7 @@ export const PlaywrightTraceAttachmentView = (options: PlaywrightTraceAttachment
   };
 
   const updateViewerOverlay = (body: HTMLElement, overlay: Element) => {
-    body.classList.toggle("attachment__trace-body_loading", isViewerSettling);
+    body.classList.toggle("attachment-preview__trace-body_loading", isViewerSettling);
 
     if (!isViewerSettling) {
       destroyOverlayView();
@@ -365,7 +370,7 @@ export const PlaywrightTraceAttachmentView = (options: PlaywrightTraceAttachment
         title: "Playwright Trace Viewer",
         width: "100%",
       },
-      className: "attachment__trace-frame",
+      className: "attachment-preview__trace-frame",
     });
     traceFrame = iframe;
     frameHost.replaceChildren(iframe);
@@ -376,8 +381,8 @@ export const PlaywrightTraceAttachmentView = (options: PlaywrightTraceAttachment
       }
 
       isViewerSettling = false;
-      const body = el.querySelector(".attachment__trace-body");
-      const overlay = el.querySelector(".attachment__trace-overlay");
+      const body = el.querySelector(".attachment-preview__trace-body");
+      const overlay = el.querySelector(".attachment-preview__trace-overlay");
       if (body instanceof HTMLElement && overlay instanceof Element) {
         updateViewerOverlay(body, overlay);
       }
@@ -461,7 +466,7 @@ export const PlaywrightTraceAttachmentView = (options: PlaywrightTraceAttachment
     render() {
       safeDownloadUrl = sanitizeResourceUrl(downloadUrl || options.sourceUrl);
 
-      el.className = "attachment attachment_trace";
+      el.className = "attachment-preview attachment-preview_trace";
       const { actions, body, frameHost, overlay } = ensureTraceLayout();
       renderDownloadActions(actions);
 
@@ -502,7 +507,7 @@ export const PlaywrightTraceAttachmentView = (options: PlaywrightTraceAttachment
       return el;
     },
     attachToDom() {
-      const actions = el.querySelector(".attachment__trace-actions");
+      const actions = el.querySelector(".attachment-preview__trace-actions");
       if (actions instanceof HTMLElement) {
         renderDownloadActions(actions);
       }
@@ -533,3 +538,11 @@ export const PlaywrightTraceAttachmentView = (options: PlaywrightTraceAttachment
 
   return el;
 };
+
+export const PlaywrightTraceAttachmentView: AttachmentPreviewComponent = (options) =>
+  createAttachmentSourceUrlPreview(options, (sourceUrl) =>
+    PlaywrightTraceAttachmentContentView({
+      attachment: options.attachment,
+      sourceUrl,
+    }),
+  );

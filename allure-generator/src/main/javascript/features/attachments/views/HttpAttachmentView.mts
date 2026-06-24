@@ -7,14 +7,19 @@ import { attachMountable, destroyMountable } from "../../../core/view/mountables
 import { createElement } from "../../../shared/dom.mts";
 import { createIconElement } from "../../../shared/icon/index.mts";
 import TooltipView from "../../../shared/ui/TooltipView.mts";
-import highlight from "../../../utils/highlight.mts";
 import {
   isJsonAttachmentContentType,
   normalizeAttachmentContentType,
 } from "../model/builtinAttachmentType.mts";
+import { AttachmentPreviewView } from "../model/attachmentPreviewView.mts";
 import attachmentType from "../model/attachmentType.mts";
 import { HTTP_EXCHANGE_REDACTED_VALUE } from "../model/httpAttachment.mts";
-import { renderAttachmentView } from "./renderAttachmentView.mts";
+import {
+  createAttachmentSourceUrlPreview,
+  type AttachmentPreviewOptions,
+  type AttachmentPreviewComponent,
+} from "./BaseAttachmentPreviewView.mts";
+import { PreviewView } from "./PreviewView.mts";
 
 type Mountable = import("../../../core/view/types.mts").Mountable;
 type Attachment = import("../../../types/report.mts").Attachment;
@@ -22,7 +27,7 @@ type AttachmentTypeInfo = import("../model/attachmentType.mts").AttachmentTypeIn
 type DomChild = import("../../../shared/dom.mts").DomChild;
 type HttpExchangePayload = import("../model/httpAttachment.mts").HttpExchangePayload;
 
-type HttpAttachmentOptions = {
+type HttpAttachmentContentOptions = {
   sourceUrl: string;
 };
 
@@ -385,18 +390,6 @@ const normalizeContentType = (contentType: string) =>
 const isJsonContentType = (contentType: string) =>
   isJsonAttachmentContentType(normalizeContentType(contentType));
 
-const isHtmlContentType = (contentType: string) => {
-  const normalized = normalizeContentType(contentType);
-
-  return normalized === "text/html" || normalized === "application/xhtml+xml";
-};
-
-const canRenderSourceBody = (type: string | null) =>
-  type === "image" || type === "svg" || type === "video";
-
-const canRenderTextBody = (type: string | null) =>
-  type === "code" || type === "text" || type === "table" || type === "uri";
-
 const bodyCodeLanguage = (contentType: string) => {
   const normalized = normalizeContentType(contentType);
 
@@ -412,22 +405,6 @@ const bodyCodeLanguage = (contentType: string) => {
   );
 };
 
-const highlightBodyCode = (container: HTMLElement, body: HttpBody) => {
-  const codeBlock = container.querySelector(".attachment__code") as HTMLElement | null;
-
-  if (!codeBlock) {
-    return container;
-  }
-
-  const language = bodyCodeLanguage(body.contentType);
-  if (language) {
-    codeBlock.classList.add(`language-${language}`);
-  }
-  highlight.highlightElement(codeBlock);
-
-  return container;
-};
-
 const createBodyAttachment = (body: HttpBody): Attachment => ({
   name: body.contentType || "body",
   size: body.size,
@@ -439,11 +416,10 @@ const getSafeBodyAttachmentType = (body: HttpBody): AttachmentTypeInfo => {
   const contentType = normalizeContentType(body.contentType);
   const bodyAttachmentType = attachmentType(contentType);
 
-  if (bodyAttachmentType.type === "html" || isHtmlContentType(contentType)) {
+  if (bodyAttachmentType.view === AttachmentPreviewView.Html) {
     return {
-      type: "code",
+      view: AttachmentPreviewView.Code,
       icon: "lineDevCodeSquare",
-      parser: (value) => value,
     };
   }
 
@@ -474,7 +450,7 @@ const bodyDownloadExtension = (body: HttpBody) => {
     return extensionByContentType[contentType];
   }
 
-  if (attachmentInfo.type) {
+  if (attachmentInfo.view) {
     const subtype = contentType
       .split("/")
       .pop()
@@ -514,15 +490,15 @@ const renderBodyDownload = (body: HttpBody | null, name: "request" | "response")
     : null;
 
 const renderBodyFallbackCode = (value: string) =>
-  renderAttachmentView({
+  renderBodyPreviewView({
     attachment: {
       name: "body",
       source: "",
       type: DEFAULT_BODY_CONTENT_TYPE,
     },
-    content: value,
     fullScreen: false,
-    type: "code",
+    previewData: value,
+    view: AttachmentPreviewView.Code,
   });
 
 const renderNoBodyView = (body: HttpBody) =>
@@ -531,47 +507,29 @@ const renderNoBodyView = (body: HttpBody) =>
     text: `No inline view for ${body.contentType || "this content type"}.`,
   });
 
+const renderBodyPreviewView = (options: AttachmentPreviewOptions) => {
+  const previewContainer = createElement("div");
+  // Keep this call deferred: PreviewView imports HttpAttachmentView for the top-level HTTP preview.
+  attachMountable(previewContainer, PreviewView(options));
+
+  return previewContainer;
+};
+
 const renderBodyValue = (body: HttpBody) => {
   const attachmentInfo = getSafeBodyAttachmentType(body);
-  const attachment = createBodyAttachment(body);
 
-  if (body.encoding === "base64") {
-    if (canRenderSourceBody(attachmentInfo.type)) {
-      return renderAttachmentView({
-        attachment,
-        fullScreen: false,
-        sourceUrl: createBase64DataUrl(body),
-        type: attachmentInfo.type,
-      });
-    }
-
+  if (!attachmentInfo.view) {
     return renderNoBodyView(body);
   }
 
-  if (canRenderSourceBody(attachmentInfo.type)) {
-    return renderAttachmentView({
-      attachment,
-      fullScreen: false,
-      sourceUrl: createUtf8DataUrl(body),
-      type: attachmentInfo.type,
-    });
-  }
-
-  if (canRenderTextBody(attachmentInfo.type)) {
-    const contentValue = maskRedactedText(body.value);
-    const content = attachmentInfo.parser ? attachmentInfo.parser(contentValue) : contentValue;
-
-    const view = renderAttachmentView({
-      attachment,
-      content,
-      fullScreen: false,
-      type: attachmentInfo.type,
-    });
-
-    return attachmentInfo.type === "code" ? highlightBodyCode(view, body) : view;
-  }
-
-  return renderNoBodyView(body);
+  return renderBodyPreviewView({
+    attachment: createBodyAttachment(body),
+    codeLanguage: bodyCodeLanguage(body.contentType),
+    fullScreen: false,
+    previewData: maskRedactedText(body.value),
+    sourceUrl: createBodyDownloadUrl(body),
+    view: attachmentInfo.view,
+  });
 };
 
 const renderInlinePairs = (pairs: HttpPair[]): DomChild[] =>
@@ -1068,7 +1026,7 @@ const createHttpAttachmentContent = (payload: HttpExchangePayload) => {
   return el;
 };
 
-export const HttpAttachmentView = (options: HttpAttachmentOptions) => {
+const HttpAttachmentContentView = (options: HttpAttachmentContentOptions) => {
   const el = defineMountableElement(document.createElement("div"), {});
   let requestId = 0;
   let subView: Mountable | null = null;
@@ -1122,3 +1080,10 @@ export const HttpAttachmentView = (options: HttpAttachmentOptions) => {
 
   return el;
 };
+
+export const HttpAttachmentView: AttachmentPreviewComponent = (options) =>
+  createAttachmentSourceUrlPreview(options, (sourceUrl) =>
+    HttpAttachmentContentView({
+      sourceUrl,
+    }),
+  );

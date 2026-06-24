@@ -1,0 +1,18 @@
+@use "../../../theme/spacing.scss" as *;
+
+.attachment-preview_image {
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-0-5);
+  cursor: zoom-in;
+  text-align: center;
+
+  &_fullscreen {
+    cursor: zoom-out;
+  }
+}
+
+.attachment-preview__media {
+  display: block;
+  margin: auto;
+  max-width: 100%;
+}

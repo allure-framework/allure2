@@ -1,0 +1,41 @@
+@use "../../../theme/spacing.scss" as *;
+
+$attachment-iframe-fullscreen-height: 85vh;
+$attachment-iframe-fullscreen-height-dynamic: 85dvh;
+
+.attachment-preview__frame {
+  background-color: var(--color-bg-raised);
+  width: 100%;
+
+  &_fullscreen {
+    height: $attachment-iframe-fullscreen-height;
+    height: $attachment-iframe-fullscreen-height-dynamic;
+  }
+}
+
+.attachment-preview_html.attachment-preview_fallback {
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-0-5);
+  padding: 0;
+
+  &_fullscreen {
+    background-color: var(--color-bg-raised);
+  }
+}
+
+.attachment-preview__html-status {
+  padding: gap(2);
+}
+
+.attachment-preview__html-message {
+  color: var(--color-text-secondary);
+  margin-bottom: gap(1);
+}
+
+.attachment-preview__html-source {
+  background: var(--color-bg-raised);
+  border-top: 1px solid var(--color-border-subtle);
+  max-height: 640px;
+  overflow: auto;
+  padding: gap(2);
+}

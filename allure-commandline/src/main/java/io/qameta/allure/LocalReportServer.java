@@ -83,14 +83,14 @@ final class LocalReportServer {
             + CSP_BASE_URI_NONE
             + CSP_FORM_ACTION_NONE
             + "frame-ancestors 'none'; "
-            + "img-src 'self' data: blob:; "
-            + "media-src 'self' data: blob:; "
-            + "font-src 'self' data:; "
+            + "img-src 'self' data: blob: https:; "
+            + "media-src 'self' data: blob: https:; "
+            + "font-src 'self' data: https:; "
             + "connect-src 'self'; "
             + "frame-src 'self' blob:; "
             + "worker-src 'self' blob:; "
-            + "script-src 'self' 'unsafe-inline'; "
-            + "style-src 'self' 'unsafe-inline'";
+            + "script-src 'self' 'unsafe-inline' https:; "
+            + "style-src 'self' 'unsafe-inline' https:";
     private static final String ATTACHMENT_CONTENT_SECURITY_POLICY = "sandbox; default-src 'none'";
     private static final String HTML_ATTACHMENT_CONTENT_SECURITY_POLICY = "sandbox; default-src 'none'; "
             + CSP_BASE_URI_NONE
