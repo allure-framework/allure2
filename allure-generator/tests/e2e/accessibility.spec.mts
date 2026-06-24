@@ -134,7 +134,7 @@ const scanTargets: AccessibilityTarget[] = [
       await attachmentRow.locator(".attachment-row__fullscreen").click();
 
       await expect(page).toHaveURL(/attachment=/);
-      await expect(page.locator(".attachment__iframe")).toBeVisible();
+      await expect(page.locator(".attachment-preview__frame")).toBeVisible();
     },
   },
 ];

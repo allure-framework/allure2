@@ -178,22 +178,27 @@ $http-url-min-column: 256px;
   }
 
   &__body-content {
-    .attachment__text-container,
-    .attachment__table-container {
+    .attachment-preview_code,
+    .attachment-preview_fallback,
+    .attachment-preview_table,
+    .attachment-preview_text,
+    .attachment-preview_uri {
       background: var(--color-bg-secondary);
       border-radius: var(--radius-0-5);
       padding: gap(2);
     }
 
-    .attachment__code,
-    .attachment__text {
+    .attachment-preview__code,
+    .attachment-preview__text {
       font-family: var(--font-family-mono);
       font-size: var(--font-size-m-code);
       font-weight: var(--font-weight-normal);
       line-height: var(--line-height-m);
     }
 
-    .attachment__media-container {
+    .attachment-preview_image,
+    .attachment-preview_svg,
+    .attachment-preview_video {
       background: var(--color-bg-secondary);
       border-radius: var(--radius-0-5);
       cursor: default;

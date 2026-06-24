@@ -124,7 +124,11 @@ class LocalReportServerTest {
             assertThat(reportRequest.getHeaderField("Content-Security-Policy"))
                     .contains("default-src 'self'")
                     .contains("frame-ancestors 'none'")
-                    .contains("script-src 'self' 'unsafe-inline'");
+                    .contains("img-src 'self' data: blob: https:")
+                    .contains("media-src 'self' data: blob: https:")
+                    .contains("font-src 'self' data: https:")
+                    .contains("script-src 'self' 'unsafe-inline' https:")
+                    .contains("style-src 'self' 'unsafe-inline' https:");
             assertThat(reportRequest.getHeaderField("X-Content-Type-Options")).isEqualTo("nosniff");
             assertThat(reportRequest.getHeaderField("Referrer-Policy")).isEqualTo("no-referrer");
             assertThat(reportRequest.getHeaderField("Cache-Control")).isEqualTo("no-store");

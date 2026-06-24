@@ -1,7 +1,4 @@
-import {
-  attachmentTestResultBlocks,
-  attachmentViewers,
-} from "../../features/attachments/index.mts";
+import { attachmentTestResultBlocks } from "../../features/attachments/index.mts";
 import { categoriesTab } from "../../features/categories/index.mts";
 import { behaviorsTab } from "../../features/behaviors/index.mts";
 import {
@@ -14,7 +11,6 @@ import { suitesTab } from "../../features/suites/index.mts";
 import { testResultBlocks, testResultTabs } from "../../features/test-result/index.mts";
 import { timelineTab } from "../../features/timeline/index.mts";
 
-type AttachmentViewers = import("./types.mts").AttachmentViewers;
 type AvailabilityResolver = import("./types.mts").AvailabilityResolver;
 type Mountable = import("./types.mts").Mountable;
 type RouteArguments = import("./types.mts").RouteArguments;
@@ -73,9 +69,6 @@ export const getTestResultBlocks = (position: TestResultBlockPosition) =>
   blocksByPosition[position] || [];
 
 export const getTestResultTabs = () => [...testResultTabs];
-
-export const getAttachmentViewer = (mimeType: string) =>
-  (attachmentViewers as AttachmentViewers)[mimeType] || null;
 
 export const registerTabRoutes = ({ notFound, router, showView }: RegisterTabRoutesOptions) => {
   tabs.forEach(({ tabName, route, onEnter = notFound }) => {

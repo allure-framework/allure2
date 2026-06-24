@@ -9,6 +9,7 @@ import timeHelper from "../../../helpers/time.mts";
 import b from "../../../shared/bem/index.mts";
 import { createElement, createFragment } from "../../../shared/dom.mts";
 import { createIconElement } from "../../../shared/icon/index.mts";
+import { AttachmentPreviewView } from "../../attachments/model/attachmentPreviewView.mts";
 import attachmentType from "../../attachments/model/attachmentType.mts";
 import { createStatusDetailsElement } from "./renderStatusDetails.mts";
 type Attachment = import("../../../types/report.mts").Attachment;
@@ -92,7 +93,7 @@ const createStepStats = ({
 const createAttachmentRow = ({ uid, type, name, source, size }: Attachment) =>
   (() => {
     const attachmentInfo = attachmentType(type || "");
-    const isTraceAttachment = attachmentInfo.type === "playwright-trace";
+    const isTraceAttachment = attachmentInfo.view === AttachmentPreviewView.PlaywrightTrace;
 
     return createElement("div", {
       children: [

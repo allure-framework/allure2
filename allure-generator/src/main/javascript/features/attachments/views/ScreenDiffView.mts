@@ -7,6 +7,10 @@ import { createReportLoadErrorView, mountAsyncView } from "../../../core/view/as
 import { attachMountable, destroyMountable } from "../../../core/view/mountables.mts";
 import translate from "../../../helpers/t.mts";
 import { createElement } from "../../../shared/dom.mts";
+import {
+  createAttachmentSourceUrlPreview,
+  type AttachmentPreviewComponent,
+} from "./BaseAttachmentPreviewView.mts";
 
 type ScreenDiffPayload = import("../../../types/report.mts").ScreenDiffPayload;
 type ScreenDiffAttachment = { name: string; source: string };
@@ -186,11 +190,11 @@ const createScreenDiffView = (options: ScreenDiffOptions) => {
   return el;
 };
 
-type ScreenDiffAttachmentOptions = {
+type ScreenDiffAttachmentContentOptions = {
   sourceUrl: string;
 };
 
-export const ScreenDiffAttachmentView = (options: ScreenDiffAttachmentOptions) => {
+const ScreenDiffAttachmentContentView = (options: ScreenDiffAttachmentContentOptions) => {
   const el = defineMountableElement(document.createElement("div"), {});
   let requestId = 0;
   let subView: import("../../../core/view/types.mts").Mountable | null = null;
@@ -249,6 +253,13 @@ export const ScreenDiffAttachmentView = (options: ScreenDiffAttachmentOptions) =
 
   return el;
 };
+
+export const ScreenDiffAttachmentView: AttachmentPreviewComponent = (options) =>
+  createAttachmentSourceUrlPreview(options, (sourceUrl) =>
+    ScreenDiffAttachmentContentView({
+      sourceUrl,
+    }),
+  );
 
 type ScreenDiffTestResultOptions = {
   data: ScreenDiffTestResultData;
