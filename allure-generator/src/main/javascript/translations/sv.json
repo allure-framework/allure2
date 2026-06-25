@@ -8,11 +8,11 @@
       "name": "Allvarlighetsgrad"
     },
     "status": {
-      "name": "Status"
+      "name": "Tillstånd"
     },
     "trend": {
       "empty": "Det finns ingenting att visa här",
-      "reportLink": "Open report for {{name}}"
+      "reportLink": "Öppna rapport för {{name}}"
     }
   },
   "component": {
@@ -27,7 +27,7 @@
     "tree": {
       "download": "Ladda ner CSV-fil",
       "empty": "Det finns inga föremål",
-      "filter": "Status",
+      "filter": "Tillstånd",
       "filter-marks": "Märken",
       "filtered": {
         "shown": "{{count}} visas",
@@ -38,7 +38,7 @@
       "groups": "Växla gruppinformation",
       "time": {
         "max": {
-          "name": "Max",
+          "name": "Längst",
           "tooltip": "Längsta testkörningstid"
         },
         "sum": {
@@ -46,13 +46,13 @@
           "tooltip": "Summan av alla testkörningstider"
         },
         "total": {
-          "name": "Total",
+          "name": "Totalt",
           "tooltip": "Varaktighet från det första testet började till det sista testet avslutat"
         }
       },
       "unknown": "<Töm>",
       "noItemSelected": "Inget objekt valt",
-      "search": "Search test results"
+      "search": "Sök testresultat"
     },
     "widgetStatus": {
       "showAll": "Visa allt",
@@ -61,15 +61,15 @@
       "total_other": "{{count}} artiklar totalt"
     },
     "attachment": {
-      "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag",
-      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
+      "download": "Klicka för att ladda ner bilagan",
+      "videoNotSupported": "Din webbläsare stöder inte video-taggen",
+      "htmlPreviewTitle": "Förhandsvisning av HTML-bilaga: {{name}}"
     },
     "screenDiff": {
-      "empty": "No diff data provided",
-      "name": "Screen Diff",
-      "showDiff": "Show diff",
-      "showOverlay": "Show overlay"
+      "empty": "Inga diffdata angivna",
+      "name": "Skärmskillnad",
+      "showDiff": "Visa diff",
+      "showOverlay": "Visa överlagring"
     },
     "playwrightTrace": {
       "unavailableTitle": "Playwright trace-visaren är inte tillgänglig",
@@ -96,8 +96,8 @@
     "languageShort": "Språk",
     "lightTheme": "Ljust tema",
     "darkTheme": "Mörkt tema",
-    "loading": "Loading...",
-    "close": "Close"
+    "loading": "Läser in...",
+    "close": "Stäng"
   },
   "errors": {
     "missedAttachment": "Det gick inte att hitta bilagan",
@@ -117,7 +117,7 @@
     "duration": "varaktighet",
     "name": "namn",
     "order": "ordning",
-    "status": "status"
+    "status": "tillstånd"
   },
   "status": {
     "broken": "Trasig",
@@ -150,7 +150,7 @@
       "selected": "{{count}} test valt ({{percent}}%) med en varaktighet på över {{duration}}",
       "selected_one": "{{count}} test valt ({{percent}}%) med en varaktighet på över {{duration}}",
       "selected_other": "{{count}} tester valda ({{percent}}%) med en varaktighet på över {{duration}}",
-      "resultLink": "Open test result {{name}}, status {{status}}"
+      "resultLink": "Öppna testresultat {{name}}, status {{status}}"
     }
   },
   "testResult": {
@@ -201,18 +201,18 @@
       "name": "Allvarlighetsgrad",
       "blocker": "blockare",
       "critical": "kritisk",
-      "normal": "normal",
+      "normal": "vanlig",
       "minor": "mindre",
-      "trivial": "trivial"
+      "trivial": "obetydlig"
     },
     "stats": {
       "count": {
         "attachments": "{{count}} bilaga",
-        "parameters": "{{count}} parameter",
+        "parameters": "{{count}} testparameter",
         "steps": "{{count}} delsteg",
         "attachments_one": "{{count}} bilaga",
         "attachments_other": "{{count}} bilagor",
-        "parameters_one": "{{count}} parameter",
+        "parameters_one": "{{count}} testparameter",
         "parameters_other": "{{count}} parametrar",
         "steps_one": "{{count}} delsteg",
         "steps_other": "{{count}} delsteg"
@@ -270,7 +270,7 @@
       "testResults_other": "testfall"
     },
     "trend": {
-      "name": "Trend"
+      "name": "Tendens"
     }
   }
 }

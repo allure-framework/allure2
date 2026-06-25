@@ -20,6 +20,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
+import io.qameta.allure.entity.Step;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,6 +49,8 @@ import static org.mockito.Mockito.when;
  * @author charlie (Dmitry Baev).
  */
 class XcTestPluginTest {
+
+    private static final String EXTERNAL_ENTITY_CONTENT = "TOPSECRET_XCTEST_LEAK_98765";
 
     private Configuration configuration;
     private ResultsVisitor visitor;
@@ -109,6 +112,35 @@ class XcTestPluginTest {
                         tuple("test_C1397()", Time.create(1494595230L, 1494627643L)),
                         tuple("test_C6925()", Time.create(1494595397L, 1494624364L))
                 );
+    }
+
+    /**
+     * Verifies XCTest plist parsing does not expand external entities from an internal DTD subset.
+     * The test checks file contents do not flow into parsed test or step names.
+     */
+    @Description
+    @Test
+    void shouldNotExpandExternalEntities() throws Exception {
+        final Path secret = Allure.step("Create external entity target file", () -> {
+            final Path target = resultsDirectory.resolve("secret.txt");
+            Files.write(target, EXTERNAL_ENTITY_CONTENT.getBytes(StandardCharsets.UTF_8));
+            Allure.addAttachment("external-entity-target.txt", "text/plain", EXTERNAL_ENTITY_CONTENT);
+            return target;
+        });
+        writePlist(resultsDirectory, "sample.plist", xxePlist(secret.toUri().toString()));
+
+        readResults(resultsDirectory);
+
+        final List<TestResult> results = captureTestResults(1);
+        Allure.addAttachment("external-entity-parsed-names.txt", "text/plain", describeResultAndStepNames(results));
+
+        assertThat(results)
+                .extracting(TestResult::getName)
+                .doesNotContain(EXTERNAL_ENTITY_CONTENT);
+        assertThat(results.get(0).getTestStage().getSteps())
+                .hasSize(1)
+                .extracting(Step::getName)
+                .doesNotContain(EXTERNAL_ENTITY_CONTENT);
     }
 
     /**
@@ -260,6 +292,16 @@ class XcTestPluginTest {
         });
     }
 
+    private Path writePlist(final Path directory, final String fileName, final String plist) throws IOException {
+        return Allure.step("Write plist fixture " + fileName, () -> {
+            final Path destination = directory.resolve(fileName);
+            Files.createDirectories(destination.getParent());
+            Files.write(destination, plist.getBytes(StandardCharsets.UTF_8));
+            Allure.addAttachment(fileName, "application/xml", plist, ".plist");
+            return destination;
+        });
+    }
+
     private List<TestResult> captureTestResults(final int expectedCount) {
         return Allure.step("Capture parsed XCTest test results", () -> {
             final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
@@ -319,6 +361,22 @@ class XcTestPluginTest {
         return builder.toString();
     }
 
+    private String describeResultAndStepNames(final List<TestResult> results) {
+        final StringBuilder builder = new StringBuilder();
+        builder.append("results=").append(results.size()).append(System.lineSeparator());
+        results.forEach(result -> {
+            builder.append("resultName=").append(result.getName()).append(System.lineSeparator());
+            result.getTestStage().getSteps()
+                    .forEach(
+                            step -> builder
+                                    .append("stepName=")
+                                    .append(step.getName())
+                                    .append(System.lineSeparator())
+                    );
+        });
+        return builder.toString();
+    }
+
     private String describeAttachments(final List<Path> attachments) {
         final StringBuilder builder = new StringBuilder();
         builder.append("attachments=").append(attachments.size()).append(System.lineSeparator());
@@ -344,5 +402,47 @@ class XcTestPluginTest {
             return null;
         }
         return String.format("start=%s, stop=%s, duration=%s", time.getStart(), time.getStop(), time.getDuration());
+    }
+
+    private String xxePlist(final String entityUri) {
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                + "<!DOCTYPE plist [\n"
+                + "  <!ENTITY xxe SYSTEM \"" + entityUri + "\">\n"
+                + "]>\n"
+                + "<plist version=\"1.0\">\n"
+                + "  <dict>\n"
+                + "    <key>TestableSummaries</key>\n"
+                + "    <array>\n"
+                + "      <dict>\n"
+                + "        <key>TestName</key>\n"
+                + "        <string>Suite</string>\n"
+                + "        <key>Tests</key>\n"
+                + "        <array>\n"
+                + "          <dict>\n"
+                + "            <key>TestName</key>\n"
+                + "            <string>&xxe;</string>\n"
+                + "            <key>TestIdentifier</key>\n"
+                + "            <string>XxeVerification/testExternalEntity()</string>\n"
+                + "            <key>TestStatus</key>\n"
+                + "            <string>Success</string>\n"
+                + "            <key>Duration</key>\n"
+                + "            <real>0.1</real>\n"
+                + "            <key>ActivitySummaries</key>\n"
+                + "            <array>\n"
+                + "              <dict>\n"
+                + "                <key>Title</key>\n"
+                + "                <string>&xxe;</string>\n"
+                + "                <key>StartTimeInterval</key>\n"
+                + "                <real>0.0</real>\n"
+                + "                <key>FinishTimeInterval</key>\n"
+                + "                <real>0.1</real>\n"
+                + "              </dict>\n"
+                + "            </array>\n"
+                + "          </dict>\n"
+                + "        </array>\n"
+                + "      </dict>\n"
+                + "    </array>\n"
+                + "  </dict>\n"
+                + "</plist>\n";
     }
 }

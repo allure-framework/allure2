@@ -1,0 +1,21 @@
+@use "../../../theme/spacing.scss" as *;
+
+.attachment-preview_fallback {
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-0-5);
+  padding: gap(2);
+
+  &_fullscreen {
+    background-color: var(--color-bg-raised);
+  }
+}
+
+.attachment-preview__download {
+  align-items: center;
+  display: inline-flex;
+  gap: gap(0.5);
+}
+
+.attachment-preview__download-icon {
+  flex: 0 0 auto;
+}

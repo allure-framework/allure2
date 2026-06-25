@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>HTML Attachment With External Media</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        background: #f7f9fb;
+        color: #172033;
+        font: 14px/1.5 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      main {
+        max-width: 860px;
+      }
+
+      h1 {
+        margin: 0 0 10px;
+        font-size: 22px;
+      }
+
+      figure {
+        margin: 18px 0 0;
+        padding: 14px;
+        border: 1px solid #d6e0eb;
+        border-radius: 8px;
+        background: #ffffff;
+      }
+
+      img {
+        display: block;
+        width: 100%;
+        max-width: 760px;
+        height: auto;
+        border-radius: 6px;
+      }
+
+      figcaption {
+        margin-top: 10px;
+        color: #526173;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>External media attachment</h1>
+      <p>This HTML references an image from this repository through raw.githubusercontent.com.</p>
+      <figure>
+        <img
+          src="https://raw.githubusercontent.com/allure-framework/allure2/main/allure-generator/test-data/demo/attachment-screenshot.png"
+          alt="Demo screenshot loaded from the Allure repository"
+        />
+        <figcaption>Remote image, loaded under the preview resource allowlist.</figcaption>
+      </figure>
+    </main>
+  </body>
+</html>

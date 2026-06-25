@@ -12,7 +12,7 @@
     },
     "trend": {
       "empty": "Нет данных",
-      "reportLink": "Open report for {{name}}"
+      "reportLink": "Открыть отчет для {{name}}"
     }
   },
   "component": {
@@ -58,7 +58,7 @@
       },
       "unknown": "<Пусто>",
       "noItemSelected": "Ничего не выбрано",
-      "search": "Search test results"
+      "search": "Искать результаты тестов"
     },
     "widgetStatus": {
       "showAll": "Показать все",
@@ -69,15 +69,15 @@
       "total_other": "Всего {{count}} элементов"
     },
     "attachment": {
-      "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag",
-      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
+      "download": "Нажмите, чтобы скачать вложение",
+      "videoNotSupported": "Ваш браузер не поддерживает тег video",
+      "htmlPreviewTitle": "Предпросмотр HTML-вложения: {{name}}"
     },
     "screenDiff": {
-      "empty": "No diff data provided",
-      "name": "Screen Diff",
-      "showDiff": "Show diff",
-      "showOverlay": "Show overlay"
+      "empty": "Данные различий не предоставлены",
+      "name": "Различия на экране",
+      "showDiff": "Показать различия",
+      "showOverlay": "Показать наложение"
     },
     "playwrightTrace": {
       "unavailableTitle": "Просмотрщик trace Playwright недоступен",
@@ -104,8 +104,8 @@
     "languageShort": "Язык",
     "lightTheme": "Светлая тема",
     "darkTheme": "Тёмная тема",
-    "loading": "Loading...",
-    "close": "Close"
+    "loading": "Загрузка...",
+    "close": "Закрыть"
   },
   "errors": {
     "missedAttachment": "Вложение не найдено",
@@ -160,7 +160,7 @@
       "selected_few": "Выбрано {{count}} теста ({{percent}}%) с длительностью выше {{duration}}",
       "selected_many": "Выбрано {{count}} тестов ({{percent}}%) с длительностью выше {{duration}}",
       "selected_other": "Выбрано {{count}} тестов ({{percent}}%) с длительностью выше {{duration}}",
-      "resultLink": "Open test result {{name}}, status {{status}}"
+      "resultLink": "Открыть результат теста {{name}}, статус {{status}}"
     }
   },
   "testResult": {
@@ -187,7 +187,7 @@
       "empty": "История недоступна.",
       "name": "История",
       "statistic": "{{passed}} из {{total}}",
-      "successRate": "Success rate",
+      "successRate": "Доля успешных",
       "time": "{{date}} в {{time}}"
     },
     "links": {

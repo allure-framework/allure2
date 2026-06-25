@@ -8,11 +8,11 @@
       "name": "Ernst"
     },
     "status": {
-      "name": "Status"
+      "name": "Toestand"
     },
     "trend": {
       "empty": "Er is niets te tonen",
-      "reportLink": "Open report for {{name}}"
+      "reportLink": "Rapport voor {{name}} openen"
     }
   },
   "component": {
@@ -25,9 +25,9 @@
       "showCases": "Toon testresultaten met status ‘{{status}}’"
     },
     "tree": {
-      "download": "Download CSV",
+      "download": "CSV downloaden",
       "empty": "Er zijn geen items",
-      "filter": "Status",
+      "filter": "Statusfilter",
       "filter-marks": "Markeringen",
       "filtered": {
         "shown": "{{count}} getoond",
@@ -52,7 +52,7 @@
       },
       "unknown": "<Leeg>",
       "noItemSelected": "Geen item geselecteerd",
-      "search": "Search test results"
+      "search": "Testresultaten zoeken"
     },
     "widgetStatus": {
       "showAll": "Toon alle",
@@ -61,15 +61,15 @@
       "total_other": "{{count}} items in totaal"
     },
     "attachment": {
-      "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag",
-      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
+      "download": "Klik om de bijlage te downloaden",
+      "videoNotSupported": "Je browser ondersteunt de videotag niet",
+      "htmlPreviewTitle": "Voorbeeld van HTML-bijlage: {{name}}"
     },
     "screenDiff": {
-      "empty": "No diff data provided",
-      "name": "Screen Diff",
-      "showDiff": "Show diff",
-      "showOverlay": "Show overlay"
+      "empty": "Geen diffgegevens opgegeven",
+      "name": "Schermverschil",
+      "showDiff": "Diff tonen",
+      "showOverlay": "Overlay tonen"
     },
     "playwrightTrace": {
       "unavailableTitle": "Playwright trace viewer niet beschikbaar",
@@ -96,8 +96,8 @@
     "languageShort": "Taal",
     "lightTheme": "Licht thema",
     "darkTheme": "Donker thema",
-    "loading": "Loading...",
-    "close": "Close"
+    "loading": "Laden...",
+    "close": "Sluiten"
   },
   "errors": {
     "missedAttachment": "Bijlage niet gevonden",
@@ -117,7 +117,7 @@
     "duration": "duur",
     "name": "naam",
     "order": "volgorde",
-    "status": "status"
+    "status": "toestand"
   },
   "status": {
     "broken": "Defect",
@@ -140,17 +140,17 @@
       "name": "Overzicht"
     },
     "packages": {
-      "name": "Packages"
+      "name": "Pakketten"
     },
     "suites": {
-      "name": "Suites"
+      "name": "Testreeksen"
     },
     "timeline": {
       "name": "Tijdlijn",
       "selected": "{{count}} test ({{percent}}%) geselecteerd met een duur van meer dan {{duration}}",
       "selected_one": "{{count}} test ({{percent}}%) geselecteerd met een duur van meer dan {{duration}}",
       "selected_other": "{{count}} tests ({{percent}}%) geselecteerd met een duur van meer dan {{duration}}",
-      "resultLink": "Open test result {{name}}, status {{status}}"
+      "resultLink": "Testresultaat {{name}} openen, status {{status}}"
     }
   },
   "testResult": {
@@ -164,13 +164,13 @@
       "name": "Duur"
     },
     "execution": {
-      "body": "Test body",
+      "body": "Testinhoud",
       "downloadAttachment": {
         "tooltip": "Bijlage in een nieuw tabblad openen"
       },
       "name": "Uitvoering",
-      "setup": "Set up",
-      "teardown": "Tear down",
+      "setup": "Voorbereiding",
+      "teardown": "Afronding",
       "empty": "Geen informatie over de testuitvoering beschikbaar."
     },
     "history": {
@@ -181,7 +181,7 @@
       "time": "{{date}} om {{time}}"
     },
     "links": {
-      "name": "Links"
+      "name": "Koppelingen"
     },
     "overview": {
       "name": "Overzicht"
@@ -190,7 +190,7 @@
       "name": "Eigenaar"
     },
     "parameters": {
-      "name": "Parameters"
+      "name": "Testparameters"
     },
     "retries": {
       "empty": "Geen informatie beschikbaar.",
@@ -208,12 +208,12 @@
     "stats": {
       "count": {
         "attachments": "{{count}} bijlage",
-        "parameters": "{{count}} parameter",
+        "parameters": "{{count}} testparameter",
         "steps": "{{count}} substap",
         "attachments_one": "{{count}} bijlage",
         "attachments_other": "{{count}} bijlagen",
-        "parameters_one": "{{count}} parameter",
-        "parameters_other": "{{count}} parameters",
+        "parameters_one": "{{count}} testparameter",
+        "parameters_other": "{{count}} testparameters",
         "steps_one": "{{count}} substap",
         "steps_other": "{{count}} substappen"
       }
@@ -223,7 +223,7 @@
       "trace": "Toon trace"
     },
     "tags": {
-      "name": "Tags"
+      "name": "Labels"
     }
   },
   "widget": {
@@ -258,7 +258,7 @@
       "name": "Trend nieuwe pogingen"
     },
     "suites": {
-      "name": "Suites"
+      "name": "Testreeksen"
     },
     "summary": {
       "aggregatedName": "Geaggregeerd rapport",
@@ -270,7 +270,7 @@
       "testResults_other": "testgevallen"
     },
     "trend": {
-      "name": "Trend"
+      "name": "Tendens"
     }
   }
 }

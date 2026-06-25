@@ -12,7 +12,7 @@
     },
     "trend": {
       "empty": "მონაცემები არაა ხელმისაწვდომი",
-      "reportLink": "Open report for {{name}}"
+      "reportLink": "გახსენი {{name}} ანგარიში"
     }
   },
   "component": {
@@ -52,7 +52,7 @@
       },
       "unknown": "<ცარიელი>",
       "noItemSelected": "არცერთი ელემენტი არ არის არჩეული",
-      "search": "Search test results"
+      "search": "ტესტის შედეგების ძიება"
     },
     "widgetStatus": {
       "showAll": "ყველას ჩვენება",
@@ -61,15 +61,15 @@
       "total_other": "სულ {{count}} ელემენტი"
     },
     "attachment": {
-      "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag",
-      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
+      "download": "მიმაგრებული ფაილის ჩამოსატვირთად დააწკაპუნე",
+      "videoNotSupported": "თქვენი ბრაუზერი video ტეგს არ უჭერს მხარს",
+      "htmlPreviewTitle": "HTML მიმაგრებული ფაილის წინასწარი ნახვა: {{name}}"
     },
     "screenDiff": {
-      "empty": "No diff data provided",
-      "name": "Screen Diff",
-      "showDiff": "Show diff",
-      "showOverlay": "Show overlay"
+      "empty": "განსხვავების მონაცემები არ არის მოწოდებული",
+      "name": "ეკრანის განსხვავება",
+      "showDiff": "განსხვავების ჩვენება",
+      "showOverlay": "გადაფარვის ჩვენება"
     },
     "playwrightTrace": {
       "unavailableTitle": "Playwright trace viewer მიუწვდომელია",
@@ -85,7 +85,7 @@
     }
   },
   "controls": {
-    "backto": "Back to",
+    "backto": "უკან",
     "clipboard": "გაცვლის ბუფერში კოპირება",
     "clipboardError": "გაცვლის ბიფერში კოპირება შეუძლებელია. როგორც ჩანს ეს ფუნქციონალი არაა მხარდაჭერილი ბრაუზერში",
     "clipboardSuccess": "წარმატებით დაკოპირდა",
@@ -96,8 +96,8 @@
     "languageShort": "ენა",
     "lightTheme": "ღია თემა",
     "darkTheme": "მუქი თემა",
-    "loading": "Loading...",
-    "close": "Close"
+    "loading": "იტვირთება...",
+    "close": "დახურვა"
   },
   "errors": {
     "missedAttachment": "მიმაგრებული ფაილი არ მოიძებნა",
@@ -150,7 +150,7 @@
       "selected": "მონიშნულია {{count}} ტესტი ({{percent}}%) {{duration}}-ზე მეტი ხანგრძლივობით",
       "selected_one": "მონიშნულია {{count}} ტესტი ({{percent}}%) {{duration}}-ზე მეტი ხანგრძლივობით",
       "selected_other": "მონიშნულია {{count}} ტესტი ({{percent}}%) {{duration}}-ზე მეტი ხანგრძლივობით",
-      "resultLink": "Open test result {{name}}, status {{status}}"
+      "resultLink": "გახსენი ტესტის შედეგი {{name}}, სტატუსი {{status}}"
     }
   },
   "testResult": {

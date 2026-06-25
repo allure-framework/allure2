@@ -12,7 +12,7 @@
     },
     "trend": {
       "empty": "Nema informacije",
-      "reportLink": "Open report for {{name}}"
+      "reportLink": "Otvori raport za {{name}}"
     }
   },
   "component": {
@@ -58,7 +58,7 @@
       },
       "unknown": "<Nema>",
       "noItemSelected": "Ničto ne jest izbrano",
-      "search": "Search test results"
+      "search": "Išči rezultaty testov"
     },
     "widgetStatus": {
       "showAll": "Pokaži vsečto",
@@ -69,15 +69,15 @@
       "total_other": "{{count}} elementov vsego"
     },
     "attachment": {
-      "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag",
-      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
+      "download": "Klikni za daunlod prilogy",
+      "videoNotSupported": "Tvoj browser ne podpira video tag",
+      "htmlPreviewTitle": "Prědgled HTML prilogy: {{name}}"
     },
     "screenDiff": {
-      "empty": "No diff data provided",
-      "name": "Screen Diff",
-      "showDiff": "Show diff",
-      "showOverlay": "Show overlay"
+      "empty": "Nisu podane dannye razlike",
+      "name": "Ekranna razlika",
+      "showDiff": "Pokaži razliku",
+      "showOverlay": "Pokaži prekrytje"
     },
     "playwrightTrace": {
       "unavailableTitle": "Preglednik Playwright trace nije dostupan",
@@ -104,8 +104,8 @@
     "languageShort": "Jezyk",
     "lightTheme": "Světla tema",
     "darkTheme": "Temna tema",
-    "loading": "Loading...",
-    "close": "Close"
+    "loading": "Zagružanje...",
+    "close": "Zakryj"
   },
   "errors": {
     "missedAttachment": "Priloga ne najdena",
@@ -125,7 +125,7 @@
     "duration": "trvanje",
     "name": "nazva",
     "order": "poredok",
-    "status": "status"
+    "status": "stav"
   },
   "status": {
     "broken": "Slomjeny",
@@ -160,7 +160,7 @@
       "selected_few": "Izbrane {{count}} testy ({{percent}}%) s trvanjem vyše od {{duration}}",
       "selected_many": "Izbrane {{count}} testov ({{percent}}%) s trvanjem vyše od {{duration}}",
       "selected_other": "Izbrane {{count}} testov ({{percent}}%) s trvanjem vyše od {{duration}}",
-      "resultLink": "Open test result {{name}}, status {{status}}"
+      "resultLink": "Otvori rezultat testa {{name}}, status {{status}}"
     }
   },
   "testResult": {
@@ -290,7 +290,7 @@
       "testResults_other": "testovyh scenarijev"
     },
     "trend": {
-      "name": "Trend"
+      "name": "Tendencija"
     }
   }
 }

@@ -12,7 +12,7 @@
     },
     "trend": {
       "empty": "Տվյալներ չկան",
-      "reportLink": "Open report for {{name}}"
+      "reportLink": "Բացել {{name}} հաշվետվությունը"
     }
   },
   "component": {
@@ -52,7 +52,7 @@
       },
       "unknown": "<անհայտ>",
       "noItemSelected": "Ոչ մի տարր ընտրված չէ",
-      "search": "Search test results"
+      "search": "Որոնել թեստի արդյունքները"
     },
     "widgetStatus": {
       "showAll": "Ցույց տալ բոլորը",
@@ -61,15 +61,15 @@
       "total_other": "Ընդհանուր {{count}} էլեմենտներ"
     },
     "attachment": {
-      "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag",
-      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
+      "download": "Սեղմեք կցված ֆայլը ներբեռնելու համար",
+      "videoNotSupported": "Ձեր դիտարկիչը չի աջակցում video պիտակը",
+      "htmlPreviewTitle": "HTML կցված ֆայլի նախադիտում՝ {{name}}"
     },
     "screenDiff": {
-      "empty": "No diff data provided",
-      "name": "Screen Diff",
-      "showDiff": "Show diff",
-      "showOverlay": "Show overlay"
+      "empty": "Տարբերությունների տվյալներ չկան",
+      "name": "Էկրանի տարբերություն",
+      "showDiff": "Ցույց տալ տարբերությունը",
+      "showOverlay": "Ցույց տալ վերադրված տեսքը"
     },
     "playwrightTrace": {
       "unavailableTitle": "Playwright trace դիտիչը հասանելի չէ",
@@ -96,8 +96,8 @@
     "languageShort": "Լեզու",
     "lightTheme": "Լուսավոր թեմա",
     "darkTheme": "Մուգ թեմա",
-    "loading": "Loading...",
-    "close": "Close"
+    "loading": "Բեռնվում է...",
+    "close": "Փակել"
   },
   "errors": {
     "missedAttachment": "Կցված ֆայլը չի գտնվել",
@@ -150,7 +150,7 @@
       "selected": "Ընտրվել է {{count}} թեստ ({{percent}}%) {{duration}}-ից բարձր տևողությամբ",
       "selected_one": "Ընտրվել է {{count}} թեստ ({{percent}}%) {{duration}}-ից բարձր տևողությամբ",
       "selected_other": "Ընտրվել են {{count}} թեստեր ({{percent}}%) {{duration}}-ից բարձր տևողությամբ",
-      "resultLink": "Open test result {{name}}, status {{status}}"
+      "resultLink": "Բացել {{name}} թեստի արդյունքը, կարգավիճակ՝ {{status}}"
     }
   },
   "testResult": {

@@ -12,7 +12,7 @@
     },
     "trend": {
       "empty": "Göstəriləcək heç nə yoxdur",
-      "reportLink": "Open report for {{name}}"
+      "reportLink": "{{name}} üçün hesabatı açın"
     }
   },
   "component": {
@@ -27,7 +27,7 @@
     "tree": {
       "download": "CSV endirin",
       "empty": "Məlumat yoxdur",
-      "filter": "Status",
+      "filter": "Vəziyyət",
       "filter-marks": "Teqlər",
       "filtered": {
         "shown": "{{count}} göstərilir",
@@ -52,7 +52,7 @@
       },
       "unknown": "<Boş>",
       "noItemSelected": "Heç bir element seçilməyib",
-      "search": "Search test results"
+      "search": "Test nəticələrində axtarın"
     },
     "widgetStatus": {
       "showAll": "Hamısını göstər",
@@ -61,15 +61,15 @@
       "total_other": "Toplam {{count}} element"
     },
     "attachment": {
-      "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag",
-      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
+      "download": "Qoşmanı endirmək üçün klikləyin",
+      "videoNotSupported": "Brauzeriniz video teqini dəstəkləmir",
+      "htmlPreviewTitle": "HTML qoşmasına önbaxış: {{name}}"
     },
     "screenDiff": {
-      "empty": "No diff data provided",
-      "name": "Screen Diff",
-      "showDiff": "Show diff",
-      "showOverlay": "Show overlay"
+      "empty": "Fərq məlumatı yoxdur",
+      "name": "Ekran fərqi",
+      "showDiff": "Fərqi göstərin",
+      "showOverlay": "Üst-üstə görünüşü göstərin"
     },
     "playwrightTrace": {
       "unavailableTitle": "Playwright trace görüntüləyicisi əlçatan deyil",
@@ -96,8 +96,8 @@
     "languageShort": "Dil",
     "lightTheme": "Açıq tema",
     "darkTheme": "Tünd tema",
-    "loading": "Loading...",
-    "close": "Close"
+    "loading": "Yüklənir...",
+    "close": "Bağla"
   },
   "errors": {
     "missedAttachment": "Qoşma tapılmadı",
@@ -117,7 +117,7 @@
     "duration": "müddət",
     "name": "ad",
     "order": "sıra",
-    "status": "status"
+    "status": "vəziyyət"
   },
   "status": {
     "broken": "Qırılmış",
@@ -150,7 +150,7 @@
       "selected": "Müddəti {{duration}} çox olan {{count}} test ({{percent}}%) seçildi",
       "selected_one": "Müddəti {{duration}} çox olan {{count}} test ({{percent}}%) seçildi",
       "selected_other": "Müddəti {{duration}} çox olan {{count}} test ({{percent}}%) seçildi",
-      "resultLink": "Open test result {{name}}, status {{status}}"
+      "resultLink": "{{name}} test nəticəsini açın, vəziyyət: {{status}}"
     }
   },
   "testResult": {
@@ -178,7 +178,7 @@
       "name": "Tarix",
       "statistic": "Toplam:{{total}}, Keçmiş:{{passed}} ",
       "successRate": "Uğur faizi",
-      "time": "{{date}} at {{time}}"
+      "time": "{{date}} saat {{time}}"
     },
     "links": {
       "name": "Linklər"
@@ -195,25 +195,25 @@
     "retries": {
       "empty": "Testlərin yenidən çalışdırılması ilə bağlı məlumat yoxdur",
       "name": "Yenidən Cəhdlər",
-      "time": "{{date}} at {{time}}"
+      "time": "{{date}} saat {{time}}"
     },
     "severity": {
       "name": "Əhəmiyyəti",
       "blocker": "bloklayıcı",
       "critical": "kritik",
-      "normal": "normal",
+      "normal": "adi",
       "minor": "kiçik",
       "trivial": "əhəmiyyətsiz"
     },
     "stats": {
       "count": {
         "attachments": "{{count}} qoşma",
-        "parameters": "{{count}} parameter",
+        "parameters": "{{count}} parametr",
         "steps": "{{count}} alt addım",
         "attachments_one": "{{count}} qoşma",
         "attachments_other": "{{count}} qoşma",
-        "parameters_one": "{{count}} parameter",
-        "parameters_other": "{{count}} parameter",
+        "parameters_one": "{{count}} parametr",
+        "parameters_other": "{{count}} parametr",
         "steps_one": "{{count}} alt addım",
         "steps_other": "{{count}} alt addım"
       }
@@ -270,7 +270,7 @@
       "testResults_other": "test nəticələri"
     },
     "trend": {
-      "name": "Trend"
+      "name": "Tendensiya"
     }
   }
 }

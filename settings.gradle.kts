@@ -52,7 +52,7 @@ pluginManagement {
     }
     plugins {
         id("com.bmuschko.docker-remote-api") version "10.0.0"
-        id("com.diffplug.spotless") version "8.6.0"
+        id("com.diffplug.spotless") version "8.7.0"
         id("com.github.node-gradle.node") version "7.1.0"
         id("com.gorylenko.gradle-git-properties") version "4.0.1"
         id("com.netflix.nebula.ospackage") version "12.3.0"
@@ -60,6 +60,6 @@ pluginManagement {
         id("io.qameta.allure") version "4.1.0"
         id("io.spring.dependency-management") version "1.1.7"
         id("org.owasp.dependencycheck") version "12.2.2"
-        id("com.github.spotbugs") version "6.5.5"
+        id("com.github.spotbugs") version "6.5.8"
     }
 }

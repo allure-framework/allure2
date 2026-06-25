@@ -5,7 +5,6 @@ export type MountableFactory<
 > = import("../view/types.mts").MountableFactory<TOptions, TMountable>;
 type IconName = import("../../shared/icon/index.mts").IconName;
 type TranslationKey = import("../i18n/types.mts").TranslationKey;
-type Attachment = import("../../types/report.mts").Attachment;
 type TestResult = import("../../types/report.mts").TestResult;
 type TrendPoint = import("../../types/report.mts").TrendPoint;
 type WidgetAttributes = import("../../types/report.mts").WidgetAttributes;
@@ -71,20 +70,6 @@ export type TestResultTabDescriptor = {
   name: TranslationKey;
   create: TestResultTabFactory;
 };
-
-export type AttachmentViewerOptions = {
-  sourceUrl: string;
-  attachment: Attachment;
-};
-
-export type AttachmentViewerFactory = MountableFactory<AttachmentViewerOptions>;
-
-export type AttachmentViewerDescriptor = {
-  create: AttachmentViewerFactory;
-  icon: IconName;
-};
-
-export type AttachmentViewers = Record<string, AttachmentViewerDescriptor>;
 
 export const defineWidgetDescriptor = <TData,>(descriptor: {
   widgetName: string;

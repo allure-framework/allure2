@@ -12,7 +12,7 @@
     },
     "trend": {
       "empty": "何も表示するものがありません",
-      "reportLink": "Open report for {{name}}"
+      "reportLink": "{{name}} のレポートを開く"
     }
   },
   "component": {
@@ -52,7 +52,7 @@
       },
       "unknown": "空ける",
       "noItemSelected": "項目が選択されていません",
-      "search": "Search test results"
+      "search": "テスト結果を検索"
     },
     "widgetStatus": {
       "showAll": "全て表示",
@@ -61,15 +61,15 @@
       "total_one": "計 {{count}} 件"
     },
     "attachment": {
-      "download": "Click to download attachment",
-      "videoNotSupported": "Your browser does not support the video tag",
-      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
+      "download": "クリックして添付ファイルをダウンロード",
+      "videoNotSupported": "お使いのブラウザーは video タグをサポートしていません",
+      "htmlPreviewTitle": "HTML 添付ファイルのプレビュー: {{name}}"
     },
     "screenDiff": {
-      "empty": "No diff data provided",
-      "name": "Screen Diff",
-      "showDiff": "Show diff",
-      "showOverlay": "Show overlay"
+      "empty": "差分データがありません",
+      "name": "画面差分",
+      "showDiff": "差分を表示",
+      "showOverlay": "オーバーレイを表示"
     },
     "playwrightTrace": {
       "unavailableTitle": "Playwright trace ビューアーは利用できません",
@@ -96,8 +96,8 @@
     "languageShort": "言語",
     "lightTheme": "ライトテーマ",
     "darkTheme": "ダークテーマ",
-    "loading": "Loading...",
-    "close": "Close"
+    "loading": "読み込み中...",
+    "close": "閉じる"
   },
   "errors": {
     "missedAttachment": "添付ファイルは見つかりませんでした",
@@ -150,7 +150,7 @@
       "selected": "{{duration}} の期間で選択された {{count}} 件のテスト ({{percent}}%)",
       "selected_other": "{{duration}} の期間で選択された {{count}} 件のテスト ({{percent}}%)",
       "selected_one": "{{duration}} の期間で選択された {{count}} 件のテスト ({{percent}}%)",
-      "resultLink": "Open test result {{name}}, status {{status}}"
+      "resultLink": "テスト結果 {{name}} を開く、ステータス {{status}}"
     }
   },
   "testResult": {
