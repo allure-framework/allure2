@@ -182,7 +182,7 @@ test.describe("Generic Attachments", () => {
 
     const preview = previewContainerFor(htmlRow);
     await expect(preview.locator(".attachment-preview__frame")).toHaveCount(0);
-    await expect(preview.locator(".attachment-preview__html-message")).toHaveText(
+    await expect(preview.locator(".attachment-preview__preview-message")).toHaveText(
       "HTML preview is disabled because the attachment is larger than 10 MiB.",
     );
 
