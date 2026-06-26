@@ -69,7 +69,10 @@
     "attachment": {
       "download": "Clique para baixar o anexo",
       "videoNotSupported": "Seu navegador não suporta a tag de vídeo",
-      "htmlPreviewTitle": "Pré-visualização do anexo HTML: {{name}}"
+      "htmlPreviewTitle": "Pré-visualização do anexo HTML: {{name}}",
+      "previewSizeExceeded": "A pré-visualização do anexo está desativada porque o anexo é maior que {{size}}.",
+      "htmlPreviewSizeExceeded": "A pré-visualização HTML está desativada porque o anexo é maior que {{size}}.",
+      "htmlPreviewInvalid": "A pré-visualização HTML está desativada porque o anexo não parece ser HTML."
     },
     "screenDiff": {
       "empty": "Nenhum dado de diff fornecido",

@@ -1,6 +1,6 @@
 import "./CodeAttachmentPreviewView.scss";
 import b from "../../../shared/bem/index.mts";
-import highlight from "../../../utils/highlight.mts";
+import { highlightElement } from "../../../utils/highlight.mts";
 import {
   createDiv,
   createPre,
@@ -29,7 +29,7 @@ const renderLoadedCodeAttachmentPreviewView = ({
     codeBlock.classList.add(`language-${language}`);
   }
 
-  highlight.highlightElement(codeBlock);
+  highlightElement(codeBlock);
   textContainer.appendChild(codeBlock);
   return textContainer;
 };

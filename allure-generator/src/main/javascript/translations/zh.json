@@ -63,7 +63,10 @@
     "attachment": {
       "download": "点击下载附件",
       "videoNotSupported": "你的浏览器不支持 video 标签",
-      "htmlPreviewTitle": "HTML 附件预览：{{name}}"
+      "htmlPreviewTitle": "HTML 附件预览：{{name}}",
+      "previewSizeExceeded": "附件大于 {{size}}，因此已禁用附件预览。",
+      "htmlPreviewSizeExceeded": "附件大于 {{size}}，因此已禁用 HTML 预览。",
+      "htmlPreviewInvalid": "附件看起来不像 HTML，因此已禁用 HTML 预览。"
     },
     "screenDiff": {
       "empty": "未提供差异数据",

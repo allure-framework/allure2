@@ -63,7 +63,10 @@
     "attachment": {
       "download": "Klicka för att ladda ner bilagan",
       "videoNotSupported": "Din webbläsare stöder inte video-taggen",
-      "htmlPreviewTitle": "Förhandsvisning av HTML-bilaga: {{name}}"
+      "htmlPreviewTitle": "Förhandsvisning av HTML-bilaga: {{name}}",
+      "previewSizeExceeded": "Förhandsvisningen av bilagan är inaktiverad eftersom bilagan är större än {{size}}.",
+      "htmlPreviewSizeExceeded": "HTML-förhandsvisningen är inaktiverad eftersom bilagan är större än {{size}}.",
+      "htmlPreviewInvalid": "HTML-förhandsvisningen är inaktiverad eftersom bilagan inte ser ut som HTML."
     },
     "screenDiff": {
       "empty": "Inga diffdata angivna",

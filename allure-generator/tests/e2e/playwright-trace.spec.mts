@@ -4,6 +4,7 @@ import { openCaseFromTree } from "./support/report.mts";
 import { previewContainerFor, stepLocator } from "./support/ui.mts";
 
 const playwrightTrace = fixtures.playwrightTrace;
+const ATTACHMENT_PREVIEW_MAX_BYTES = 10 * 1024 * 1024;
 
 const expandStep = async (page: Page, title: string): Promise<Locator> => {
   const step = stepLocator(page, title);
@@ -78,6 +79,65 @@ test.describe("Playwright Trace", () => {
       }
     });
   }
+
+  test("does not apply the generic preview size limit to trace attachments", async ({ page }) => {
+    await page.route(/\/data\/test-cases\/.*\.json(?:\?.*)?$/, async (route) => {
+      const response = await route.fetch();
+      const payload = await response.json();
+
+      if (payload.name === playwrightTrace.caseName) {
+        type TestStageNode = {
+          attachments?: { name?: string; size?: number }[];
+          steps?: TestStageNode[];
+        };
+
+        const updateTraceAttachment = (node?: TestStageNode) => {
+          if (!node) {
+            return;
+          }
+
+          node.attachments?.forEach((attachment) => {
+            if (attachment.name === playwrightTrace.attachmentName) {
+              attachment.size = ATTACHMENT_PREVIEW_MAX_BYTES + 1;
+            }
+          });
+          node.steps?.forEach(updateTraceAttachment);
+        };
+
+        updateTraceAttachment(payload.testStage);
+      }
+
+      await route.fulfill({
+        response,
+        body: JSON.stringify(payload),
+        contentType: "application/json",
+      });
+    });
+
+    await openCaseFromTree(page, {
+      fixture: playwrightTrace.name,
+      mode: REPORT_MODES.DIRECTORY,
+      tab: "suites",
+      caseName: playwrightTrace.caseName,
+    });
+
+    const traceRow = (await expandStep(page, playwrightTrace.stepName)).locator(".attachment-row", {
+      hasText: playwrightTrace.attachmentName,
+    });
+
+    await traceRow.click();
+    await expect(page).toHaveURL(/attachment=/);
+    await expect(
+      previewContainerFor(traceRow).locator(".attachment-preview__preview-message"),
+    ).toHaveCount(0);
+
+    const traceFrame = page.locator(".modal__content #pw-trace-iframe");
+    const downloadLink = page.locator(".modal__title .attachment-preview__trace-download");
+
+    await expect(traceFrame).toBeVisible();
+    await expect(downloadLink).toBeVisible();
+    await expect(downloadLink).toHaveAttribute("download", /\.zip$/);
+  });
 
   test("loads the trace content on the first modal open in directory reports", async ({ page }) => {
     await openCaseFromTree(page, {

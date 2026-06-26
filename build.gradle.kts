@@ -81,7 +81,7 @@ subprojects {
             mavenBom("com.squareup.retrofit2:retrofit-bom:3.0.0")
             // latest version that supports java 8
             mavenBom("com.vladsch.flexmark:flexmark-all:0.62.2")
-            mavenBom("io.qameta.allure:allure-bom:2.35.2")
+            mavenBom("io.qameta.allure:allure-bom:2.35.3")
             mavenBom("org.assertj:assertj-bom:3.27.7")
             mavenBom("org.junit:junit-bom:6.1.0")
             mavenBom("org.mockito:mockito-bom:5.23.0")

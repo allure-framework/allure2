@@ -65,7 +65,10 @@
     "attachment": {
       "download": "לחץ כדי להוריד את הקובץ המצורף",
       "videoNotSupported": "הדפדפן שלך אינו תומך בתגית הווידאו",
-      "htmlPreviewTitle": "תצוגה מקדימה של קובץ HTML מצורף: {{name}}"
+      "htmlPreviewTitle": "תצוגה מקדימה של קובץ HTML מצורף: {{name}}",
+      "previewSizeExceeded": "התצוגה המקדימה של הקובץ המצורף מושבתת כי הקובץ המצורף גדול מ-{{size}}.",
+      "htmlPreviewSizeExceeded": "התצוגה המקדימה של HTML מושבתת כי הקובץ המצורף גדול מ-{{size}}.",
+      "htmlPreviewInvalid": "התצוגה המקדימה של HTML מושבתת כי הקובץ המצורף לא נראה כמו HTML."
     },
     "screenDiff": {
       "empty": "לא סופקו נתוני diff",

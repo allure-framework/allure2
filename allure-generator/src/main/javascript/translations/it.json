@@ -65,7 +65,10 @@
     "attachment": {
       "download": "Fai clic per scaricare l'allegato",
       "videoNotSupported": "Il tuo browser non supporta il tag video",
-      "htmlPreviewTitle": "Anteprima allegato HTML: {{name}}"
+      "htmlPreviewTitle": "Anteprima allegato HTML: {{name}}",
+      "previewSizeExceeded": "L'anteprima dell'allegato è disattivata perché l'allegato è più grande di {{size}}.",
+      "htmlPreviewSizeExceeded": "L'anteprima HTML è disattivata perché l'allegato è più grande di {{size}}.",
+      "htmlPreviewInvalid": "L'anteprima HTML è disattivata perché l'allegato non sembra HTML."
     },
     "screenDiff": {
       "empty": "Nessun dato di diff fornito",

@@ -63,7 +63,10 @@
     "attachment": {
       "download": "Klicken, um den Anhang herunterzuladen",
       "videoNotSupported": "Ihr Browser unterstützt das Video-Tag nicht",
-      "htmlPreviewTitle": "HTML-Anhangsvorschau: {{name}}"
+      "htmlPreviewTitle": "HTML-Anhangsvorschau: {{name}}",
+      "previewSizeExceeded": "Die Anhangsvorschau ist deaktiviert, weil der Anhang größer als {{size}} ist.",
+      "htmlPreviewSizeExceeded": "Die HTML-Vorschau ist deaktiviert, weil der Anhang größer als {{size}} ist.",
+      "htmlPreviewInvalid": "Die HTML-Vorschau ist deaktiviert, weil der Anhang nicht wie HTML aussieht."
     },
     "screenDiff": {
       "empty": "Keine Diff-Daten vorhanden",
