@@ -13,11 +13,17 @@ const renderFallbackAttachmentPreviewView = ({
   attachment,
   className,
   fullScreen,
+  previewDisabledReason,
   sourceUrl,
 }: AttachmentPreviewOptions) => {
   const fallbackContainer = createDiv(
     joinClassNames(b("attachment-preview", { fallback: true, fullscreen: fullScreen }), className),
   );
+  if (previewDisabledReason) {
+    const message = createDiv(b("attachment-preview", "preview-message"));
+    message.textContent = previewDisabledReason;
+    fallbackContainer.appendChild(message);
+  }
   fallbackContainer.appendChild(createDownloadAction(attachment, sourceUrl));
   return fallbackContainer;
 };

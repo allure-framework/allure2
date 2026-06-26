@@ -63,7 +63,10 @@
     "attachment": {
       "download": "მიმაგრებული ფაილის ჩამოსატვირთად დააწკაპუნე",
       "videoNotSupported": "თქვენი ბრაუზერი video ტეგს არ უჭერს მხარს",
-      "htmlPreviewTitle": "HTML მიმაგრებული ფაილის წინასწარი ნახვა: {{name}}"
+      "htmlPreviewTitle": "HTML მიმაგრებული ფაილის წინასწარი ნახვა: {{name}}",
+      "previewSizeExceeded": "დანართის წინასწარი ნახვა გამორთულია, რადგან დანართი {{size}}-ზე დიდია.",
+      "htmlPreviewSizeExceeded": "HTML-ის წინასწარი ნახვა გამორთულია, რადგან დანართი {{size}}-ზე დიდია.",
+      "htmlPreviewInvalid": "HTML-ის წინასწარი ნახვა გამორთულია, რადგან დანართი HTML-ს არ ჰგავს."
     },
     "screenDiff": {
       "empty": "განსხვავების მონაცემები არ არის მოწოდებული",

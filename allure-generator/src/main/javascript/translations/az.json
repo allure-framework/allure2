@@ -63,7 +63,10 @@
     "attachment": {
       "download": "Qoşmanı endirmək üçün klikləyin",
       "videoNotSupported": "Brauzeriniz video teqini dəstəkləmir",
-      "htmlPreviewTitle": "HTML qoşmasına önbaxış: {{name}}"
+      "htmlPreviewTitle": "HTML qoşmasına önbaxış: {{name}}",
+      "previewSizeExceeded": "Qoşmanın önizləməsi deaktiv edilib, çünki qoşma {{size}} ölçüsündən böyükdür.",
+      "htmlPreviewSizeExceeded": "HTML önizləməsi deaktiv edilib, çünki qoşma {{size}} ölçüsündən böyükdür.",
+      "htmlPreviewInvalid": "HTML önizləməsi deaktiv edilib, çünki qoşma HTML kimi görünmür."
     },
     "screenDiff": {
       "empty": "Fərq məlumatı yoxdur",

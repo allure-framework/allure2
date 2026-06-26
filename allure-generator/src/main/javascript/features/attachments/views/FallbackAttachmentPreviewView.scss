@@ -16,6 +16,11 @@
   gap: gap(0.5);
 }
 
+.attachment-preview__preview-message {
+  color: var(--color-text-secondary);
+  margin-bottom: gap(1);
+}
+
 .attachment-preview__download-icon {
   flex: 0 0 auto;
 }

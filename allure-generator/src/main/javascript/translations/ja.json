@@ -63,7 +63,10 @@
     "attachment": {
       "download": "クリックして添付ファイルをダウンロード",
       "videoNotSupported": "お使いのブラウザーは video タグをサポートしていません",
-      "htmlPreviewTitle": "HTML 添付ファイルのプレビュー: {{name}}"
+      "htmlPreviewTitle": "HTML 添付ファイルのプレビュー: {{name}}",
+      "previewSizeExceeded": "添付ファイルが {{size}} を超えているため、プレビューは無効です。",
+      "htmlPreviewSizeExceeded": "添付ファイルが {{size}} を超えているため、HTML プレビューは無効です。",
+      "htmlPreviewInvalid": "添付ファイルが HTML のように見えないため、HTML プレビューは無効です。"
     },
     "screenDiff": {
       "empty": "差分データがありません",

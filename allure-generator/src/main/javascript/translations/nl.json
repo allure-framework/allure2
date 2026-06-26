@@ -63,7 +63,10 @@
     "attachment": {
       "download": "Klik om de bijlage te downloaden",
       "videoNotSupported": "Je browser ondersteunt de videotag niet",
-      "htmlPreviewTitle": "Voorbeeld van HTML-bijlage: {{name}}"
+      "htmlPreviewTitle": "Voorbeeld van HTML-bijlage: {{name}}",
+      "previewSizeExceeded": "De bijlagevoorvertoning is uitgeschakeld omdat de bijlage groter is dan {{size}}.",
+      "htmlPreviewSizeExceeded": "De HTML-voorvertoning is uitgeschakeld omdat de bijlage groter is dan {{size}}.",
+      "htmlPreviewInvalid": "De HTML-voorvertoning is uitgeschakeld omdat de bijlage niet op HTML lijkt."
     },
     "screenDiff": {
       "empty": "Geen diffgegevens opgegeven",

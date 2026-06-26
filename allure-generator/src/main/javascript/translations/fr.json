@@ -65,7 +65,10 @@
     "attachment": {
       "download": "Cliquer pour télécharger la pièce jointe",
       "videoNotSupported": "Votre navigateur ne prend pas en charge la balise vidéo",
-      "htmlPreviewTitle": "Aperçu de la pièce jointe HTML : {{name}}"
+      "htmlPreviewTitle": "Aperçu de la pièce jointe HTML : {{name}}",
+      "previewSizeExceeded": "L'aperçu de la pièce jointe est désactivé, car la pièce jointe dépasse {{size}}.",
+      "htmlPreviewSizeExceeded": "L'aperçu HTML est désactivé, car la pièce jointe dépasse {{size}}.",
+      "htmlPreviewInvalid": "L'aperçu HTML est désactivé, car la pièce jointe ne ressemble pas à du HTML."
     },
     "screenDiff": {
       "empty": "Aucune donnée de comparaison fournie",

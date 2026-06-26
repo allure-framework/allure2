@@ -65,7 +65,10 @@
     "attachment": {
       "download": "Haz clic para descargar el adjunto",
       "videoNotSupported": "Tu navegador no admite la etiqueta de video",
-      "htmlPreviewTitle": "Vista previa del adjunto HTML: {{name}}"
+      "htmlPreviewTitle": "Vista previa del adjunto HTML: {{name}}",
+      "previewSizeExceeded": "La vista previa del adjunto está desactivada porque el adjunto supera {{size}}.",
+      "htmlPreviewSizeExceeded": "La vista previa HTML está desactivada porque el adjunto supera {{size}}.",
+      "htmlPreviewInvalid": "La vista previa HTML está desactivada porque el adjunto no parece HTML."
     },
     "screenDiff": {
       "empty": "No se proporcionaron datos de diferencias",
