@@ -137,7 +137,10 @@ const HtmlFallbackAttachmentPreviewView = ({
   );
   htmlFallbackContainer.appendChild(htmlFallbackStatus);
 
-  if (htmlContent && getHtmlPreviewByteLength(htmlContent) <= INVALID_HTML_PREVIEW_SOURCE_MAX_BYTES) {
+  if (
+    htmlContent &&
+    getHtmlPreviewByteLength(htmlContent) <= INVALID_HTML_PREVIEW_SOURCE_MAX_BYTES
+  ) {
     htmlFallbackContainer.appendChild(
       createPre(
         `${b("attachment-preview", "code")} ${b("attachment-preview", "html-source")}`,
