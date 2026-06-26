@@ -24,7 +24,7 @@ import {
   HTML_PREVIEW_MAX_INLINE_HEIGHT,
   HTML_PREVIEW_MIN_HEIGHT,
   HTML_PREVIEW_RESIZE_MESSAGE_TYPE,
-  HTML_PREVIEW_SOURCE_MAX_BYTES,
+  INVALID_HTML_PREVIEW_SOURCE_MAX_BYTES,
   isHtmlPreviewOversized,
   isRenderableHtmlPreview,
 } from "./HtmlAttachmentPreviewView.helpers.mts";
@@ -137,7 +137,7 @@ const HtmlFallbackAttachmentPreviewView = ({
   );
   htmlFallbackContainer.appendChild(htmlFallbackStatus);
 
-  if (htmlContent && getHtmlPreviewByteLength(htmlContent) <= HTML_PREVIEW_SOURCE_MAX_BYTES) {
+  if (htmlContent && getHtmlPreviewByteLength(htmlContent) <= INVALID_HTML_PREVIEW_SOURCE_MAX_BYTES) {
     htmlFallbackContainer.appendChild(
       createPre(
         `${b("attachment-preview", "code")} ${b("attachment-preview", "html-source")}`,

@@ -71,7 +71,10 @@
     "attachment": {
       "download": "Нажмите, чтобы скачать вложение",
       "videoNotSupported": "Ваш браузер не поддерживает тег video",
-      "htmlPreviewTitle": "Предпросмотр HTML-вложения: {{name}}"
+      "htmlPreviewTitle": "Предпросмотр HTML-вложения: {{name}}",
+      "previewSizeExceeded": "Предпросмотр вложения отключен, потому что вложение больше {{size}}.",
+      "htmlPreviewSizeExceeded": "Предпросмотр HTML отключен, потому что вложение больше {{size}}.",
+      "htmlPreviewInvalid": "Предпросмотр HTML отключен, потому что вложение не похоже на HTML."
     },
     "screenDiff": {
       "empty": "Данные различий не предоставлены",

@@ -63,7 +63,10 @@
     "attachment": {
       "download": "Սեղմեք կցված ֆայլը ներբեռնելու համար",
       "videoNotSupported": "Ձեր դիտարկիչը չի աջակցում video պիտակը",
-      "htmlPreviewTitle": "HTML կցված ֆայլի նախադիտում՝ {{name}}"
+      "htmlPreviewTitle": "HTML կցված ֆայլի նախադիտում՝ {{name}}",
+      "previewSizeExceeded": "Կցորդի նախադիտումն անջատված է, քանի որ կցորդը {{size}}-ից մեծ է։",
+      "htmlPreviewSizeExceeded": "HTML նախադիտումն անջատված է, քանի որ կցորդը {{size}}-ից մեծ է։",
+      "htmlPreviewInvalid": "HTML նախադիտումն անջատված է, քանի որ կցորդը HTML-ի նման չէ։"
     },
     "screenDiff": {
       "empty": "Տարբերությունների տվյալներ չկան",

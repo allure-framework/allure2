@@ -63,7 +63,10 @@
     "attachment": {
       "download": "Eki indirmek için tıkla",
       "videoNotSupported": "Tarayıcınız video etiketini desteklemiyor",
-      "htmlPreviewTitle": "HTML eki önizlemesi: {{name}}"
+      "htmlPreviewTitle": "HTML eki önizlemesi: {{name}}",
+      "previewSizeExceeded": "Ek önizlemesi, ek {{size}} boyutundan büyük olduğu için devre dışı bırakıldı.",
+      "htmlPreviewSizeExceeded": "HTML önizlemesi, ek {{size}} boyutundan büyük olduğu için devre dışı bırakıldı.",
+      "htmlPreviewInvalid": "HTML önizlemesi, ek HTML gibi görünmediği için devre dışı bırakıldı."
     },
     "screenDiff": {
       "empty": "Fark verisi sağlanmadı",

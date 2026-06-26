@@ -71,7 +71,10 @@
     "attachment": {
       "download": "Klikni za daunlod prilogy",
       "videoNotSupported": "Tvoj browser ne podpira video tag",
-      "htmlPreviewTitle": "Prědgled HTML prilogy: {{name}}"
+      "htmlPreviewTitle": "Prědgled HTML prilogy: {{name}}",
+      "previewSizeExceeded": "Pregled prilogy jest izključeny, zato že priloga jest večša od {{size}}.",
+      "htmlPreviewSizeExceeded": "HTML pregled jest izključeny, zato že priloga jest večša od {{size}}.",
+      "htmlPreviewInvalid": "HTML pregled jest izključeny, zato že priloga ne vygląda kako HTML."
     },
     "screenDiff": {
       "empty": "Nisu podane dannye razlike",

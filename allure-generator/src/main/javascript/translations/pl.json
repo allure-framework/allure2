@@ -71,7 +71,10 @@
     "attachment": {
       "download": "Kliknij, aby pobrać załącznik",
       "videoNotSupported": "Twoja przeglądarka nie obsługuje tagu video",
-      "htmlPreviewTitle": "Podgląd załącznika HTML: {{name}}"
+      "htmlPreviewTitle": "Podgląd załącznika HTML: {{name}}",
+      "previewSizeExceeded": "Podgląd załącznika jest wyłączony, ponieważ załącznik jest większy niż {{size}}.",
+      "htmlPreviewSizeExceeded": "Podgląd HTML jest wyłączony, ponieważ załącznik jest większy niż {{size}}.",
+      "htmlPreviewInvalid": "Podgląd HTML jest wyłączony, ponieważ załącznik nie wygląda jak HTML."
     },
     "screenDiff": {
       "empty": "Nie podano danych różnic",

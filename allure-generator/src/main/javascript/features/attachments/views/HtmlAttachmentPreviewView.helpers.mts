@@ -1,7 +1,14 @@
-const MiB = 1024 * 1024;
+import filesize from "../../../helpers/filesize.mts";
+import translate from "../../../helpers/t.mts";
+import {
+  ATTACHMENT_PREVIEW_MAX_BYTES,
+  getTextByteLength,
+  isAttachmentPreviewOversized,
+} from "../model/previewLimits.mts";
 
-export const HTML_PREVIEW_MAX_BYTES = 10 * MiB;
-export const HTML_PREVIEW_SOURCE_MAX_BYTES = 2 * MiB;
+export { INVALID_HTML_PREVIEW_SOURCE_MAX_BYTES } from "../model/previewLimits.mts";
+
+export const HTML_PREVIEW_MAX_BYTES = ATTACHMENT_PREVIEW_MAX_BYTES;
 export const HTML_PREVIEW_MIN_HEIGHT = 320;
 export const HTML_PREVIEW_INITIAL_HEIGHT = 480;
 export const HTML_PREVIEW_MAX_INLINE_HEIGHT = 1600;
@@ -28,20 +35,19 @@ const HTML_PREVIEW_CSP = [
 
 const HTML_LIKE_PATTERN = /<\/?[a-z][\s\S]*>/i;
 
-const formatMiB = (bytes: number) => `${Math.round(bytes / MiB)} MiB`;
-
-export const getHtmlPreviewByteLength = (content: string) => new Blob([content]).size;
+export const getHtmlPreviewByteLength = getTextByteLength;
 
 export const getHtmlPreviewOversizeReason = () =>
-  `HTML preview is disabled because the attachment is larger than ${formatMiB(
-    HTML_PREVIEW_MAX_BYTES,
-  )}.`;
+  translate("component.attachment.htmlPreviewSizeExceeded", {
+    hash: {
+      size: filesize(HTML_PREVIEW_MAX_BYTES),
+    },
+  });
 
 export const getHtmlPreviewInvalidReason = () =>
-  "HTML preview is disabled because the attachment does not look like HTML.";
+  translate("component.attachment.htmlPreviewInvalid");
 
-export const isHtmlPreviewOversized = (size: unknown) =>
-  typeof size === "number" && Number.isFinite(size) && size > HTML_PREVIEW_MAX_BYTES;
+export const isHtmlPreviewOversized = isAttachmentPreviewOversized;
 
 export const isRenderableHtmlPreview = (content: string) =>
   HTML_LIKE_PATTERN.test(content.replace(/^\uFEFF/, "").trim());

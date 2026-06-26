@@ -63,7 +63,10 @@
     "attachment": {
       "download": "첨부 파일을 다운로드하려면 클릭",
       "videoNotSupported": "브라우저가 video 태그를 지원하지 않습니다",
-      "htmlPreviewTitle": "HTML 첨부 파일 미리보기: {{name}}"
+      "htmlPreviewTitle": "HTML 첨부 파일 미리보기: {{name}}",
+      "previewSizeExceeded": "첨부 파일이 {{size}}보다 커서 미리보기가 비활성화되었습니다.",
+      "htmlPreviewSizeExceeded": "첨부 파일이 {{size}}보다 커서 HTML 미리보기가 비활성화되었습니다.",
+      "htmlPreviewInvalid": "첨부 파일이 HTML처럼 보이지 않아 HTML 미리보기가 비활성화되었습니다."
     },
     "screenDiff": {
       "empty": "차이 데이터가 제공되지 않았습니다",

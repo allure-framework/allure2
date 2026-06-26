@@ -63,7 +63,10 @@
     "attachment": {
       "download": "Click to download attachment",
       "videoNotSupported": "Your browser does not support the video tag",
-      "htmlPreviewTitle": "HTML attachment preview: {{name}}"
+      "htmlPreviewTitle": "HTML attachment preview: {{name}}",
+      "previewSizeExceeded": "Attachment preview is disabled because the attachment is larger than {{size}}.",
+      "htmlPreviewSizeExceeded": "HTML preview is disabled because the attachment is larger than {{size}}.",
+      "htmlPreviewInvalid": "HTML preview is disabled because the attachment does not look like HTML."
     },
     "screenDiff": {
       "empty": "No diff data provided",

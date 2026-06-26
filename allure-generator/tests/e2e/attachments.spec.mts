@@ -5,6 +5,8 @@ import { openCaseFromTree } from "./support/report.mts";
 import { previewContainerFor } from "./support/ui.mts";
 
 const attachmentsFixture = fixtures.attachments;
+const ATTACHMENT_PREVIEW_MAX_BYTES = 10 * 1024 * 1024;
+const ATTACHMENT_SYNTAX_HIGHLIGHT_MAX_BYTES = 2 * 1024 * 1024;
 
 const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
@@ -114,13 +116,17 @@ test.describe("Generic Attachments", () => {
     );
   });
 
-  test("does not fetch live HTML previews when attachment metadata exceeds the size cap", async ({
+  test("does not fetch oversized attachment previews when metadata exceeds the size cap", async ({
     page,
   }) => {
-    let htmlAttachmentFetches = 0;
+    const fetchedPreviewAttachments: string[] = [];
+    const oversizedPreviewSources = new Set<string>();
 
-    await page.route(/\/data\/attachments\/.*\.html(?:\?.*)?$/, async (route) => {
-      htmlAttachmentFetches += 1;
+    await page.route(/\/data\/attachments\/[^/]+(?:\?.*)?$/, async (route) => {
+      const source = new URL(route.request().url()).pathname.split("/").pop() || "";
+      if (oversizedPreviewSources.has(source)) {
+        fetchedPreviewAttachments.push(source);
+      }
       await route.continue();
     });
     await page.route(/\/data\/test-cases\/.*\.json(?:\?.*)?$/, async (route) => {
@@ -129,7 +135,7 @@ test.describe("Generic Attachments", () => {
 
       if (payload.name === attachmentsFixture.caseName) {
         type TestStageNode = {
-          attachments?: { name?: string; size?: number }[];
+          attachments?: { name?: string; size?: number; source?: string }[];
           steps?: TestStageNode[];
         };
 
@@ -139,8 +145,15 @@ test.describe("Generic Attachments", () => {
           }
 
           node.attachments?.forEach((attachment) => {
-            if (attachment.name === attachmentsFixture.attachments.htmlInteractive) {
-              attachment.size = 10 * 1024 * 1024 + 1;
+            if (
+              attachment.name === attachmentsFixture.attachments.htmlInteractive ||
+              attachment.name === attachmentsFixture.attachments.json ||
+              attachment.name === attachmentsFixture.attachments.http
+            ) {
+              attachment.size = ATTACHMENT_PREVIEW_MAX_BYTES + 1;
+              if (attachment.source) {
+                oversizedPreviewSources.add(attachment.source);
+              }
             }
           });
           node.steps?.forEach(updateAttachments);
@@ -172,7 +185,106 @@ test.describe("Generic Attachments", () => {
     await expect(preview.locator(".attachment-preview__html-message")).toHaveText(
       "HTML preview is disabled because the attachment is larger than 10 MiB.",
     );
-    expect(htmlAttachmentFetches).toBe(0);
+
+    const jsonRow = attachmentRow(page, attachmentsFixture.attachments.json);
+    await expect(jsonRow).toBeVisible();
+    await jsonRow.click();
+
+    const jsonPreview = previewContainerFor(jsonRow);
+    await expect(jsonPreview.locator(".attachment-preview__code")).toHaveCount(0);
+    await expect(jsonPreview.locator(".attachment-preview__preview-message")).toHaveText(
+      "Attachment preview is disabled because the attachment is larger than 10 MiB.",
+    );
+
+    const httpRow = attachmentRow(page, attachmentsFixture.attachments.http);
+    await expect(httpRow).toBeVisible();
+    await httpRow.click();
+
+    const httpPreview = previewContainerFor(httpRow);
+    await expect(httpPreview.locator(".http-attachment__summary")).toHaveCount(0);
+    await expect(httpPreview.locator(".attachment-preview__preview-message")).toHaveText(
+      "Attachment preview is disabled because the attachment is larger than 10 MiB.",
+    );
+
+    expect(fetchedPreviewAttachments).toEqual([]);
+  });
+
+  test("keeps media previews when metadata exceeds the generic preview cap", async ({ page }) => {
+    await page.route(/\/data\/test-cases\/.*\.json(?:\?.*)?$/, async (route) => {
+      const response = await route.fetch();
+      const payload = await response.json();
+
+      if (payload.name === attachmentsFixture.caseName) {
+        type TestStageNode = {
+          attachments?: { name?: string; size?: number }[];
+          steps?: TestStageNode[];
+        };
+
+        const updateAttachments = (node?: TestStageNode) => {
+          if (!node) {
+            return;
+          }
+
+          node.attachments?.forEach((attachment) => {
+            if (attachment.name === attachmentsFixture.attachments.png) {
+              attachment.size = ATTACHMENT_PREVIEW_MAX_BYTES + 1;
+            }
+          });
+          node.steps?.forEach(updateAttachments);
+        };
+
+        updateAttachments(payload.testStage);
+      }
+
+      await route.fulfill({
+        response,
+        body: JSON.stringify(payload),
+        contentType: "application/json",
+      });
+    });
+
+    await openCaseFromTree(page, {
+      fixture: attachmentsFixture.name,
+      mode: REPORT_MODES.DIRECTORY,
+      tab: "suites",
+      caseName: attachmentsFixture.caseName,
+    });
+
+    const pngRow = attachmentRow(page, attachmentsFixture.attachments.png);
+    await expect(pngRow).toBeVisible();
+    await pngRow.click();
+
+    const pngPreview = previewContainerFor(pngRow);
+    await expectImageToDecode(pngPreview.locator(".attachment-preview__media"));
+    await expect(pngPreview.locator(".attachment-preview__preview-message")).toHaveCount(0);
+  });
+
+  test("skips syntax highlighting for large code attachment previews", async ({ page }) => {
+    const largeJson = `{"payload":"${"x".repeat(ATTACHMENT_SYNTAX_HIGHLIGHT_MAX_BYTES + 1)}"}`;
+
+    await page.route(/\/data\/attachments\/.*\.json(?:\?.*)?$/, async (route) => {
+      await route.fulfill({
+        body: largeJson,
+        contentType: "application/json",
+      });
+    });
+
+    await openCaseFromTree(page, {
+      fixture: attachmentsFixture.name,
+      mode: REPORT_MODES.DIRECTORY,
+      tab: "suites",
+      caseName: attachmentsFixture.caseName,
+    });
+
+    const jsonRow = attachmentRow(page, attachmentsFixture.attachments.json);
+    await expect(jsonRow).toBeVisible();
+    await jsonRow.click();
+
+    const codeBlock = previewContainerFor(jsonRow).locator(".attachment-preview__code");
+    await expect(codeBlock).toBeVisible();
+    await expect(codeBlock).toHaveClass(/language-json/);
+    await expect(codeBlock).toHaveAttribute("data-syntax-highlight-skipped", "true");
+    await expect(codeBlock).not.toHaveClass(/hljs/);
   });
 
   test("renders code and table attachment viewers", async ({ page }) => {

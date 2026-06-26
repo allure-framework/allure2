@@ -19,6 +19,7 @@ export type AttachmentPreviewOptions = {
   className?: string;
   codeLanguage?: string;
   htmlPreviewDisabledReason?: string | null;
+  previewDisabledReason?: string | null;
   previewData?: unknown;
   sourceUrl?: string | null;
 };

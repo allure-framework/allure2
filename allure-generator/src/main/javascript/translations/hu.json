@@ -63,7 +63,10 @@
     "attachment": {
       "download": "Kattints a csatolmány letöltéséhez",
       "videoNotSupported": "A böngésződ nem támogatja a video taget",
-      "htmlPreviewTitle": "HTML csatolmány előnézete: {{name}}"
+      "htmlPreviewTitle": "HTML csatolmány előnézete: {{name}}",
+      "previewSizeExceeded": "A melléklet előnézete le van tiltva, mert a melléklet nagyobb, mint {{size}}.",
+      "htmlPreviewSizeExceeded": "A HTML előnézet le van tiltva, mert a melléklet nagyobb, mint {{size}}.",
+      "htmlPreviewInvalid": "A HTML előnézet le van tiltva, mert a melléklet nem tűnik HTML-nek."
     },
     "screenDiff": {
       "empty": "Nincs megadva eltérésadat",
