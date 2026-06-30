@@ -73,18 +73,6 @@
       "name": "画面差分",
       "showDiff": "差分を表示",
       "showOverlay": "オーバーレイを表示"
-    },
-    "playwrightTrace": {
-      "unavailableTitle": "Playwright trace ビューアーは利用できません",
-      "singleFileReason": "Playwright trace の埋め込み表示は、単一ファイルレポートでは利用できません。Playwright Trace Viewer を完全にインライン化できないためです。上流の問題が修正され次第、再びサポートする予定です。",
-      "nonHttpReason": "Playwright trace の埋め込み表示には、レポートが HTTP(S) 経由で配信されている必要があります。Playwright Trace Viewer が依存するブラウザーの service worker は、{{protocol}} レポートでは利用できません。",
-      "missingAssetsReason": "このレポートに Playwright Trace Viewer のアセットが含まれていないため、Playwright trace の埋め込み表示は利用できません。",
-      "issuePrefix": "上流の問題:",
-      "issueLabel": "microsoft/playwright#40960",
-      "stepsTitle": "trace を手動で開く",
-      "stepDownload": "trace アーカイブをダウンロード",
-      "stepOpenViewer": "Playwright Trace Viewer を開く",
-      "stepUpload": "ダウンロードしたアーカイブをビューアーにアップロード"
     }
   },
   "controls": {

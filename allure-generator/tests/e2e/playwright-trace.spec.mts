@@ -1,10 +1,66 @@
 import { expect, test, type Locator, type Page } from "playwright/test";
 import { fixtures, REPORT_MODES } from "./support/fixtures.mts";
-import { openCaseFromTree } from "./support/report.mts";
+import { directoryServerOrigin, openCaseFromTree } from "./support/report.mts";
 import { previewContainerFor, stepLocator } from "./support/ui.mts";
 
 const playwrightTrace = fixtures.playwrightTrace;
 const ATTACHMENT_PREVIEW_MAX_BYTES = 10 * 1024 * 1024;
+const TRACE_VIEWER_URL = "https://trace.playwright.dev/";
+
+// Mirror of LocalReportServer.REPORT_CONTENT_SECURITY_POLICY sent by `allure open`/
+// `allure serve`: script-src allows data: (so single-file reports, which inline their
+// bundle via <script src="data:...">, boot) but connect-src stays 'self' (so embedded
+// attachments must be decoded without fetch).
+const LOCAL_SERVER_REPORT_CSP =
+  "default-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; " +
+  "frame-ancestors 'none'; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; " +
+  "font-src 'self' data: https:; connect-src 'self'; " +
+  "frame-src 'self' blob: https://trace.playwright.dev; worker-src 'self' blob:; " +
+  "script-src 'self' 'unsafe-inline' https: data:; style-src 'self' 'unsafe-inline' https:";
+
+// A hermetic stand-in for the hosted Playwright Trace Viewer. It records the
+// trace handed over through postMessage so the tests can assert the handoff
+// without depending on the live external service. The message listener can be
+// attached after a delay to emulate the real viewer, which registers it from a
+// React passive effect that runs after the iframe load event.
+const traceViewerStub = (listenerDelayMs: number) => `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Playwright Trace Viewer stub</title>
+    <script>
+      const attachListener = () => {
+        window.addEventListener("message", (event) => {
+          const data = event.data || {};
+          const trace = data.params && data.params.trace;
+          if (data.method === "load" && trace instanceof Blob) {
+            const root = document.documentElement;
+            root.setAttribute("data-trace-loaded", "1");
+            root.setAttribute("data-trace-size", String(trace.size));
+          }
+        });
+      };
+
+      if (${listenerDelayMs} > 0) {
+        window.setTimeout(attachListener, ${listenerDelayMs});
+      } else {
+        attachListener();
+      }
+    </script>
+  </head>
+  <body>
+    <main data-stub-viewer>Playwright Trace Viewer stub</main>
+  </body>
+</html>`;
+
+const mockTraceViewer = async (page: Page, listenerDelayMs = 400): Promise<void> => {
+  await page.route("https://trace.playwright.dev/**", (route) =>
+    route.fulfill({
+      contentType: "text/html; charset=utf-8",
+      body: traceViewerStub(listenerDelayMs),
+    }),
+  );
+};
 
 const expandStep = async (page: Page, title: string): Promise<Locator> => {
   const step = stepLocator(page, title);
@@ -16,9 +72,11 @@ const expandStep = async (page: Page, title: string): Promise<Locator> => {
 
 test.describe("Playwright Trace", () => {
   for (const mode of [REPORT_MODES.SINGLE_FILE, REPORT_MODES.DIRECTORY] as const) {
-    test(`opens the trace modal and keeps a download fallback visible (${mode})`, async ({
+    test(`opens the trace viewer and hands the trace over via postMessage (${mode})`, async ({
       page,
     }) => {
+      await mockTraceViewer(page);
+
       await openCaseFromTree(page, {
         fixture: playwrightTrace.name,
         mode,
@@ -44,43 +102,102 @@ test.describe("Playwright Trace", () => {
       await expect(previewContainerFor(traceRow).locator("#pw-trace-iframe")).toHaveCount(0);
 
       const traceFrame = page.locator(".modal__content #pw-trace-iframe");
+      await expect(traceFrame).toBeVisible();
+      await expect(traceFrame).toHaveAttribute("src", TRACE_VIEWER_URL);
+
       const downloadLink = page.locator(".modal__title .attachment-preview__trace-download");
       await expect(downloadLink).toBeVisible();
       await expect(downloadLink).toHaveAttribute("download", /\.zip$/);
+      await expect(downloadLink).toHaveAttribute("href", /^blob:/);
 
-      if (mode === REPORT_MODES.DIRECTORY) {
-        await expect(traceFrame).toBeVisible();
-        await expect(traceFrame).toHaveAttribute(
-          "src",
-          /\/playwright-trace-viewer\/index\.html\?trace=/,
-        );
-
-        const iframeSrc = await traceFrame.getAttribute("src");
-        const traceUrl = new URL(iframeSrc ?? "").searchParams.get("trace");
-        expect(traceUrl).toContain("/data/attachments/");
-        expect(traceUrl).toContain("reportUuid=");
-        await expect(downloadLink).toHaveAttribute("href", /\/data\/attachments\/.*reportUuid=/);
-      } else {
-        await expect(downloadLink).toHaveAttribute("href", /^blob:/);
-        await expect(traceFrame).toHaveCount(0);
-        const instructions = page.locator(".modal__content .attachment-preview__trace-instructions");
-        await expect(instructions).toContainText("single-file reports");
-        await expect(instructions).toContainText("Open the trace manually");
-        await expect(instructions.getByRole("link", { name: "microsoft/playwright#40960" }))
-          .toHaveAttribute("href", "https://github.com/microsoft/playwright/issues/40960");
-        await expect(instructions.getByRole("link", { name: "Download the trace archive" }))
-          .toHaveAttribute("download", /\.zip$/);
-        await expect(
-          instructions.getByRole("link", { name: "Open the Playwright Trace Viewer" }),
-        ).toHaveAttribute("href", "https://trace.playwright.dev/");
-        await expect(instructions).toContainText(
-          "Upload the downloaded archive in the viewer",
-        );
-      }
+      const viewerRoot = page.frameLocator(".modal__content #pw-trace-iframe").locator("html");
+      await expect(viewerRoot).toHaveAttribute("data-trace-loaded", "1");
+      await expect(viewerRoot).toHaveAttribute("data-trace-size", /^[1-9][0-9]*$/);
     });
   }
 
+  test("re-sends the trace until the viewer attaches its listener", async ({ page }) => {
+    // The listener only appears well after the iframe load event (and after the
+    // first couple of handoff attempts), so the trace shows up only if the view
+    // keeps re-posting it.
+    await mockTraceViewer(page, 800);
+
+    await openCaseFromTree(page, {
+      fixture: playwrightTrace.name,
+      mode: REPORT_MODES.DIRECTORY,
+      tab: "suites",
+      caseName: playwrightTrace.caseName,
+    });
+
+    const traceRow = (await expandStep(page, playwrightTrace.stepName)).locator(".attachment-row", {
+      hasText: playwrightTrace.attachmentName,
+    });
+    await traceRow.click();
+
+    const viewerRoot = page.frameLocator(".modal__content #pw-trace-iframe").locator("html");
+    await expect(viewerRoot).toHaveAttribute("data-trace-loaded", "1");
+  });
+
+  test("loads single-file traces under the allure serve content security policy", async ({
+    page,
+  }) => {
+    await mockTraceViewer(page);
+
+    const singleFileUrl = `${directoryServerOrigin}/${playwrightTrace.name}/${REPORT_MODES.SINGLE_FILE}/index.html`;
+
+    // Reproduce the local report server response for single-file reports: the
+    // document is served with the relaxed-script-src / strict-connect-src CSP.
+    // It boots only if data: scripts are allowed, and the trace loads only if
+    // embedded data: attachments are decoded instead of fetched.
+    await page.route(
+      `**/${playwrightTrace.name}/${REPORT_MODES.SINGLE_FILE}/index.html`,
+      async (route) => {
+        const response = await route.fetch();
+        await route.fulfill({
+          response,
+          headers: { ...response.headers(), "content-security-policy": LOCAL_SERVER_REPORT_CSP },
+        });
+      },
+    );
+
+    await page.goto(`${singleFileUrl}#suites`, { waitUntil: "domcontentloaded" });
+    const searchInput = page.locator(".search__input");
+    await expect(searchInput).toBeVisible();
+    await searchInput.fill(playwrightTrace.caseName);
+
+    const leaf = page
+      .locator(".node__leaf:visible")
+      .filter({ hasText: playwrightTrace.caseName })
+      .first();
+    for (let index = 0; index < 10; index += 1) {
+      if (await leaf.isVisible().catch(() => false)) {
+        break;
+      }
+      const collapsedGroupTitle = page
+        .locator(".node[data-node-kind='group']:visible:not(.node__expanded) > .node__title")
+        .first();
+      if (!(await collapsedGroupTitle.isVisible().catch(() => false))) {
+        break;
+      }
+      await collapsedGroupTitle.click();
+    }
+    await leaf.click();
+
+    const traceRow = (await expandStep(page, playwrightTrace.stepName)).locator(".attachment-row", {
+      hasText: playwrightTrace.attachmentName,
+    });
+    await traceRow.click();
+
+    const traceFrame = page.locator(".modal__content #pw-trace-iframe");
+    await expect(traceFrame).toBeVisible();
+
+    const viewerRoot = page.frameLocator(".modal__content #pw-trace-iframe").locator("html");
+    await expect(viewerRoot).toHaveAttribute("data-trace-loaded", "1");
+  });
+
   test("does not apply the generic preview size limit to trace attachments", async ({ page }) => {
+    await mockTraceViewer(page);
+
     await page.route(/\/data\/test-cases\/.*\.json(?:\?.*)?$/, async (route) => {
       const response = await route.fetch();
       const payload = await response.json();
@@ -137,58 +254,8 @@ test.describe("Playwright Trace", () => {
     await expect(traceFrame).toBeVisible();
     await expect(downloadLink).toBeVisible();
     await expect(downloadLink).toHaveAttribute("download", /\.zip$/);
-  });
 
-  test("loads the trace content on the first modal open in directory reports", async ({ page }) => {
-    await openCaseFromTree(page, {
-      fixture: playwrightTrace.name,
-      mode: REPORT_MODES.DIRECTORY,
-      tab: "suites",
-      caseName: playwrightTrace.caseName,
-    });
-
-    const traceRow = (await expandStep(page, playwrightTrace.stepName)).locator(".attachment-row", {
-      hasText: playwrightTrace.attachmentName,
-    });
-    await traceRow.click();
-
-    const traceFrame = page.frameLocator(".modal__content #pw-trace-iframe");
-    await expect(traceFrame.getByRole("tab", { name: "Action", exact: true })).toBeVisible();
-  });
-
-  test("loads the trace through the viewer URL without message handoff", async ({ page }) => {
-    await page.route(/\/playwright-trace-viewer\/index\.[^/]+\.js(?:\?.*)?$/, async (route) => {
-      const response = await route.fetch();
-      const source = await response.text();
-      const disabledMessageListener = `
-        const __allureTraceViewerAddEventListener = window.addEventListener.bind(window);
-        window.addEventListener = function (type, listener, options) {
-          if (type === "message") {
-            return;
-          }
-          return __allureTraceViewerAddEventListener(type, listener, options);
-        };
-      `;
-
-      await route.fulfill({
-        response,
-        body: `${disabledMessageListener}\n${source}`,
-      });
-    });
-
-    await openCaseFromTree(page, {
-      fixture: playwrightTrace.name,
-      mode: REPORT_MODES.DIRECTORY,
-      tab: "suites",
-      caseName: playwrightTrace.caseName,
-    });
-
-    const traceRow = (await expandStep(page, playwrightTrace.stepName)).locator(".attachment-row", {
-      hasText: playwrightTrace.attachmentName,
-    });
-    await traceRow.click();
-
-    const traceFrame = page.frameLocator(".modal__content #pw-trace-iframe");
-    await expect(traceFrame.getByRole("tab", { name: "Action", exact: true })).toBeVisible();
+    const viewerRoot = page.frameLocator(".modal__content #pw-trace-iframe").locator("html");
+    await expect(viewerRoot).toHaveAttribute("data-trace-loaded", "1");
   });
 });

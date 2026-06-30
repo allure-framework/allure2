@@ -183,6 +183,37 @@ const assertOk = (response: Response, url = response.url): Response => {
   return response;
 };
 
+const decodeBase64ToBytes = (base64: string) => {
+  const binary = atob(base64);
+  const bytes = new Uint8Array(new ArrayBuffer(binary.length));
+  for (let index = 0; index < binary.length; index += 1) {
+    bytes[index] = binary.charCodeAt(index);
+  }
+  return bytes;
+};
+
+const dataUrlToBlob = (dataUrl: string): Blob => {
+  const commaIndex = dataUrl.indexOf(",");
+  if (commaIndex < 0) {
+    throw new ReportDataError({
+      message: defaultReportErrorMessage(),
+      status: DEFAULT_REPORT_ERROR_STATUS,
+      url: dataUrl,
+    });
+  }
+
+  const meta = dataUrl.slice("data:".length, commaIndex);
+  const data = dataUrl.slice(commaIndex + 1);
+  const isBase64 = /;base64$/iu.test(meta);
+  const mediaType = meta.replace(/;base64$/iu, "") || "text/plain;charset=US-ASCII";
+
+  // A base64 payload decodes to raw bytes; a plain payload is percent-encoded
+  // text that Blob will re-encode as UTF-8 on its own.
+  return isBase64
+    ? new Blob([decodeBase64ToBytes(data)], { type: mediaType })
+    : new Blob([decodeURIComponent(data)], { type: mediaType });
+};
+
 const fetchReportData = async (
   url: string,
   { contentType = "application/octet-stream", ...options }: ReportFetchOptions = {},
@@ -191,6 +222,21 @@ const fetchReportData = async (
     url.startsWith("data:") || url.startsWith("blob:")
       ? url
       : await reportDataUrl(url, contentType);
+
+  // Embedded (single-file) report data resolves to data: URLs. Decode them
+  // directly instead of fetch()-ing: under a strict connect-src CSP (such as the
+  // one `allure open`/`allure serve` sends) the browser rejects fetch(data:...),
+  // which would otherwise break every embedded attachment, including traces.
+  if (fetchUrl.startsWith("data:")) {
+    try {
+      return new Response(dataUrlToBlob(fetchUrl), { status: 200 });
+    } catch (error: unknown) {
+      throw normalizeReportDataError(error, {
+        status: DEFAULT_REPORT_ERROR_STATUS,
+        url,
+      });
+    }
+  }
 
   try {
     return await fetch(fetchUrl, options).then((response) => assertOk(response, url));

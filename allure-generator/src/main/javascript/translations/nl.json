@@ -73,18 +73,6 @@
       "name": "Schermverschil",
       "showDiff": "Diff tonen",
       "showOverlay": "Overlay tonen"
-    },
-    "playwrightTrace": {
-      "unavailableTitle": "Playwright trace viewer niet beschikbaar",
-      "singleFileReason": "Ingebedde Playwright trace-weergave is niet beschikbaar in rapporten met één bestand, omdat de Playwright Trace Viewer niet volledig kan worden ingesloten. We zijn van plan dit weer te ondersteunen zodra het upstream-probleem is opgelost.",
-      "nonHttpReason": "Ingebedde Playwright trace-weergave vereist dat het rapport via HTTP(S) wordt aangeboden. Browser-serviceworkers, waarop de Playwright Trace Viewer vertrouwt, zijn niet beschikbaar voor {{protocol}}-rapporten.",
-      "missingAssetsReason": "Ingebedde Playwright trace-weergave is niet beschikbaar omdat dit rapport de Playwright Trace Viewer-assets niet bevat.",
-      "issuePrefix": "Upstream-probleem:",
-      "issueLabel": "microsoft/playwright#40960",
-      "stepsTitle": "Trace handmatig openen",
-      "stepDownload": "Trace-archief downloaden",
-      "stepOpenViewer": "Playwright Trace Viewer openen",
-      "stepUpload": "Het gedownloade archief uploaden in de viewer"
     }
   },
   "controls": {

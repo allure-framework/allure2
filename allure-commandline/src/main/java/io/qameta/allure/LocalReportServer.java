@@ -74,6 +74,7 @@ final class LocalReportServer {
     private static final String CSP_BASE_URI_NONE = "base-uri 'none'; ";
     private static final String CSP_FORM_ACTION_NONE = "form-action 'none'; ";
     private static final String LOCALHOST = "localhost";
+    private static final String PLAYWRIGHT_TRACE_VIEWER_ORIGIN = "https://trace.playwright.dev";
     private static final String ATTACHMENTS_REQUEST_PATH = "/data/attachments/";
     private static final Set<String> LOCAL_SERVER_HOSTS = Collections.unmodifiableSet(
             new HashSet<>(Arrays.asList(LOCALHOST, "127.0.0.1", "::1"))
@@ -87,9 +88,11 @@ final class LocalReportServer {
             + "media-src 'self' data: blob: https:; "
             + "font-src 'self' data: https:; "
             + "connect-src 'self'; "
-            + "frame-src 'self' blob:; "
+            + "frame-src 'self' blob: " + PLAYWRIGHT_TRACE_VIEWER_ORIGIN + "; "
             + "worker-src 'self' blob:; "
-            + "script-src 'self' 'unsafe-inline' https:; "
+            // data: scripts are required by single-file reports, which inline their bundle through
+            // <script src="data:...">.
+            + "script-src 'self' 'unsafe-inline' https: data:; "
             + "style-src 'self' 'unsafe-inline' https:";
     private static final String ATTACHMENT_CONTENT_SECURITY_POLICY = "sandbox; default-src 'none'";
     private static final String HTML_ATTACHMENT_CONTENT_SECURITY_POLICY = "sandbox; default-src 'none'; "

@@ -73,18 +73,6 @@
       "name": "화면 차이",
       "showDiff": "차이 보기",
       "showOverlay": "오버레이 보기"
-    },
-    "playwrightTrace": {
-      "unavailableTitle": "Playwright trace 뷰어를 사용할 수 없음",
-      "singleFileReason": "Playwright trace 내장 보기는 단일 파일 보고서에서 사용할 수 없습니다. Playwright Trace Viewer를 완전히 인라인할 수 없기 때문입니다. 업스트림 문제가 수정되면 다시 지원할 예정입니다.",
-      "nonHttpReason": "Playwright trace 내장 보기를 사용하려면 보고서가 HTTP(S)로 제공되어야 합니다. Playwright Trace Viewer가 의존하는 브라우저 service worker는 {{protocol}} 보고서에서 사용할 수 없습니다.",
-      "missingAssetsReason": "이 보고서에 Playwright Trace Viewer 자산이 포함되어 있지 않아 Playwright trace 내장 보기를 사용할 수 없습니다.",
-      "issuePrefix": "업스트림 이슈:",
-      "issueLabel": "microsoft/playwright#40960",
-      "stepsTitle": "trace 수동으로 열기",
-      "stepDownload": "trace 아카이브 다운로드",
-      "stepOpenViewer": "Playwright Trace Viewer 열기",
-      "stepUpload": "다운로드한 아카이브를 뷰어에 업로드"
     }
   },
   "controls": {
