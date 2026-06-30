@@ -73,18 +73,6 @@
       "name": "Ekran fərqi",
       "showDiff": "Fərqi göstərin",
       "showOverlay": "Üst-üstə görünüşü göstərin"
-    },
-    "playwrightTrace": {
-      "unavailableTitle": "Playwright trace görüntüləyicisi əlçatan deyil",
-      "singleFileReason": "Daxili Playwright trace görüntüləməsi tək fayllı hesabatlarda əlçatan deyil, çünki Playwright Trace Viewer tam şəkildə içəri yerləşdirilə bilmir. Yuxarı axındakı problem düzələn kimi bunu yenidən dəstəkləməyi planlaşdırırıq.",
-      "nonHttpReason": "Daxili Playwright trace görüntüləməsi üçün hesabat HTTP(S) üzərindən verilməlidir. Playwright Trace Viewer-in istifadə etdiyi brauzer service worker-ləri {{protocol}} hesabatları üçün əlçatan deyil.",
-      "missingAssetsReason": "Daxili Playwright trace görüntüləməsi əlçatan deyil, çünki bu hesabatda Playwright Trace Viewer resursları yoxdur.",
-      "issuePrefix": "Yuxarı axın problemi:",
-      "issueLabel": "microsoft/playwright#40960",
-      "stepsTitle": "Trace-i əl ilə açın",
-      "stepDownload": "Trace arxivini endirin",
-      "stepOpenViewer": "Playwright Trace Viewer-i açın",
-      "stepUpload": "Endirilmiş arxivi görüntüləyiciyə yükləyin"
     }
   },
   "controls": {

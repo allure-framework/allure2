@@ -81,18 +81,6 @@
       "name": "Различия на экране",
       "showDiff": "Показать различия",
       "showOverlay": "Показать наложение"
-    },
-    "playwrightTrace": {
-      "unavailableTitle": "Просмотрщик trace Playwright недоступен",
-      "singleFileReason": "Встроенный просмотр trace Playwright недоступен в однофайловых отчетах, потому что Playwright Trace Viewer нельзя полностью встроить. Мы планируем вернуть поддержку, как только проблема upstream будет исправлена.",
-      "nonHttpReason": "Для встроенного просмотра trace Playwright отчет должен отдаваться по HTTP(S). Service worker браузера, на которые опирается Playwright Trace Viewer, недоступны для отчетов {{protocol}}.",
-      "missingAssetsReason": "Встроенный просмотр trace Playwright недоступен, потому что этот отчет не содержит ресурсы Playwright Trace Viewer.",
-      "issuePrefix": "Проблема upstream:",
-      "issueLabel": "microsoft/playwright#40960",
-      "stepsTitle": "Открыть trace вручную",
-      "stepDownload": "Скачать архив trace",
-      "stepOpenViewer": "Открыть Playwright Trace Viewer",
-      "stepUpload": "Загрузить скачанный архив в просмотрщик"
     }
   },
   "controls": {

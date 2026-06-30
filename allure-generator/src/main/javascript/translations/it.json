@@ -75,18 +75,6 @@
       "name": "Differenza schermata",
       "showDiff": "Mostra differenza",
       "showOverlay": "Mostra sovrapposizione"
-    },
-    "playwrightTrace": {
-      "unavailableTitle": "Visualizzatore trace Playwright non disponibile",
-      "singleFileReason": "La visualizzazione incorporata delle trace Playwright non è disponibile nei report a file singolo perché Playwright Trace Viewer non può essere incorporato completamente. Prevediamo di supportarla di nuovo appena il problema upstream sarà risolto.",
-      "nonHttpReason": "La visualizzazione incorporata delle trace Playwright richiede che il report sia servito tramite HTTP(S). I service worker del browser, su cui si basa Playwright Trace Viewer, non sono disponibili per i report {{protocol}}.",
-      "missingAssetsReason": "La visualizzazione incorporata delle trace Playwright non è disponibile perché questo report non include le risorse di Playwright Trace Viewer.",
-      "issuePrefix": "Problema upstream:",
-      "issueLabel": "microsoft/playwright#40960",
-      "stepsTitle": "Aprire la trace manualmente",
-      "stepDownload": "Scarica l'archivio della trace",
-      "stepOpenViewer": "Apri Playwright Trace Viewer",
-      "stepUpload": "Carica l'archivio scaricato nel visualizzatore"
     }
   },
   "controls": {

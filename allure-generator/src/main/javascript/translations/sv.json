@@ -73,18 +73,6 @@
       "name": "Skärmskillnad",
       "showDiff": "Visa diff",
       "showOverlay": "Visa överlagring"
-    },
-    "playwrightTrace": {
-      "unavailableTitle": "Playwright trace-visaren är inte tillgänglig",
-      "singleFileReason": "Inbäddad visning av Playwright trace är inte tillgänglig i rapporter med en enda fil eftersom Playwright Trace Viewer inte kan bäddas in helt. Vi planerar att stödja detta igen så snart upstream-problemet är åtgärdat.",
-      "nonHttpReason": "Inbäddad visning av Playwright trace kräver att rapporten serveras via HTTP(S). Webbläsarens service workers, som Playwright Trace Viewer använder, är inte tillgängliga för {{protocol}}-rapporter.",
-      "missingAssetsReason": "Inbäddad visning av Playwright trace är inte tillgänglig eftersom den här rapporten inte innehåller resurserna för Playwright Trace Viewer.",
-      "issuePrefix": "Upstream-problem:",
-      "issueLabel": "microsoft/playwright#40960",
-      "stepsTitle": "Öppna trace manuellt",
-      "stepDownload": "Ladda ner trace-arkivet",
-      "stepOpenViewer": "Öppna Playwright Trace Viewer",
-      "stepUpload": "Ladda upp det nedladdade arkivet i visaren"
     }
   },
   "controls": {

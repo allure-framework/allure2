@@ -73,18 +73,6 @@
       "name": "ეკრანის განსხვავება",
       "showDiff": "განსხვავების ჩვენება",
       "showOverlay": "გადაფარვის ჩვენება"
-    },
-    "playwrightTrace": {
-      "unavailableTitle": "Playwright trace viewer მიუწვდომელია",
-      "singleFileReason": "ჩაშენებული Playwright trace-ის ნახვა ერთფაილიან ანგარიშებში მიუწვდომელია, რადგან Playwright Trace Viewer სრულად ვერ ჩაიშენება. ვგეგმავთ მხარდაჭერის დაბრუნებას როგორც კი upstream პრობლემა გასწორდება.",
-      "nonHttpReason": "ჩაშენებული Playwright trace-ის ნახვისთვის ანგარიში HTTP(S)-ით უნდა მიეწოდოს. ბრაუზერის service worker-ები, რომლებსაც Playwright Trace Viewer ეყრდნობა, {{protocol}} ანგარიშებისთვის ხელმისაწვდომი არ არის.",
-      "missingAssetsReason": "ჩაშენებული Playwright trace-ის ნახვა მიუწვდომელია, რადგან ეს ანგარიში არ შეიცავს Playwright Trace Viewer-ის რესურსებს.",
-      "issuePrefix": "Upstream პრობლემა:",
-      "issueLabel": "microsoft/playwright#40960",
-      "stepsTitle": "Trace-ის ხელით გახსნა",
-      "stepDownload": "Trace არქივის ჩამოტვირთვა",
-      "stepOpenViewer": "Playwright Trace Viewer-ის გახსნა",
-      "stepUpload": "ჩამოტვირთული არქივის ატვირთვა viewer-ში"
     }
   },
   "controls": {

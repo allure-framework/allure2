@@ -81,18 +81,6 @@
       "name": "Różnice ekranu",
       "showDiff": "Pokaż różnice",
       "showOverlay": "Pokaż nakładkę"
-    },
-    "playwrightTrace": {
-      "unavailableTitle": "Przeglądarka trace Playwright jest niedostępna",
-      "singleFileReason": "Osadzone wyświetlanie trace Playwright jest niedostępne w raportach jednoplikowych, ponieważ Playwright Trace Viewer nie może być w pełni osadzony. Planujemy ponownie je obsługiwać, gdy problem upstream zostanie naprawiony.",
-      "nonHttpReason": "Osadzone wyświetlanie trace Playwright wymaga serwowania raportu przez HTTP(S). Service workery przeglądarki, na których polega Playwright Trace Viewer, nie są dostępne dla raportów {{protocol}}.",
-      "missingAssetsReason": "Osadzone wyświetlanie trace Playwright jest niedostępne, ponieważ ten raport nie zawiera zasobów Playwright Trace Viewer.",
-      "issuePrefix": "Problem upstream:",
-      "issueLabel": "microsoft/playwright#40960",
-      "stepsTitle": "Otwórz trace ręcznie",
-      "stepDownload": "Pobierz archiwum trace",
-      "stepOpenViewer": "Otwórz Playwright Trace Viewer",
-      "stepUpload": "Prześlij pobrane archiwum w przeglądarce"
     }
   },
   "controls": {

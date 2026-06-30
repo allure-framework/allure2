@@ -237,35 +237,12 @@ test.describe("Runtime Contract", () => {
     expect(checks.filter(({ isZip }) => !isZip)).toEqual([]);
   });
 
-  test("copies Playwright trace viewer assets only for reports with trace attachments", async () => {
+  test("does not bundle a Playwright trace viewer into reports", async () => {
     await expect(
       pathExists(
         path.join(
           reportRoot,
           fixtures.playwrightTrace.name,
-          REPORT_MODES.DIRECTORY,
-          "playwright-trace-viewer",
-          "index.html",
-        ),
-      ),
-    ).resolves.toBe(true);
-    await expect(
-      pathExists(
-        path.join(
-          reportRoot,
-          fixtures.playwrightTrace.name,
-          REPORT_MODES.DIRECTORY,
-          "data",
-          "playwright-trace-viewer.json",
-        ),
-      ),
-    ).resolves.toBe(true);
-
-    await expect(
-      pathExists(
-        path.join(
-          reportRoot,
-          fixtures.attachments.name,
           REPORT_MODES.DIRECTORY,
           "playwright-trace-viewer",
         ),
@@ -275,7 +252,7 @@ test.describe("Runtime Contract", () => {
       pathExists(
         path.join(
           reportRoot,
-          fixtures.attachments.name,
+          fixtures.playwrightTrace.name,
           REPORT_MODES.DIRECTORY,
           "data",
           "playwright-trace-viewer.json",
