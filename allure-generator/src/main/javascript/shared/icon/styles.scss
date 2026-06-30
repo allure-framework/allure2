@@ -37,22 +37,35 @@
   height: gap(5);
 }
 
+// Solid status badges are two-tone: the circle uses `color` (currentColor),
+// the inner glyph is painted with the theme's per-status foreground token so it
+// stays legible on both light and dark backgrounds (a knockout glyph would be
+// transparent and disappear on dark status colors).
+.status-icon__glyph {
+  fill: var(--status-icon-fg, var(--palette-gray-neutral-0));
+}
+
 .status-icon_status_failed {
   color: var(--color-status-failed-bg);
+  --status-icon-fg: var(--color-status-failed-on-bg);
 }
 
 .status-icon_status_broken {
   color: var(--color-status-broken-bg);
+  --status-icon-fg: var(--color-status-broken-on-bg);
 }
 
 .status-icon_status_passed {
   color: var(--color-status-passed-bg);
+  --status-icon-fg: var(--color-status-passed-on-bg);
 }
 
 .status-icon_status_skipped {
   color: var(--color-status-skipped-bg);
+  --status-icon-fg: var(--color-status-skipped-on-bg);
 }
 
 .status-icon_status_unknown {
   color: var(--color-status-unknown-bg);
+  --status-icon-fg: var(--color-status-unknown-on-bg);
 }
