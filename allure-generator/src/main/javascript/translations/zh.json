@@ -162,7 +162,9 @@
       "name": "执行",
       "setup": "前置",
       "teardown": "后置",
-      "empty": "没有可用的测试执行信息。"
+      "empty": "没有可用的测试执行信息。",
+      "expandAll": "全部展开",
+      "collapseAll": "全部折叠"
     },
     "history": {
       "empty": "没有可用的历史信息。",
