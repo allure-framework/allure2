@@ -162,7 +162,9 @@
       "name": "Durchführung",
       "setup": "Vorbereitung",
       "teardown": "Aufräumung",
-      "empty": "Keine Informationen zur Testausführung verfügbar."
+      "empty": "Keine Informationen zur Testausführung verfügbar.",
+      "expandAll": "Alle ausklappen",
+      "collapseAll": "Alle einklappen"
     },
     "history": {
       "empty": "Keine Historie verfügbar.",

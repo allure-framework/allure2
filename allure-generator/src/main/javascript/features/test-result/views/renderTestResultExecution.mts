@@ -327,9 +327,32 @@ export const createTestResultExecutionContent = ({
   after,
 }: ExecutionTemplateOptions) =>
   createFragment(
-    createElement("h3", {
-      className: "test-result-execution__title",
-      text: translate("testResult.execution.name"),
+    createElement("div", {
+      className: "test-result-execution__header",
+      children: [
+        createElement("h3", {
+          className: "test-result-execution__title",
+          text: translate("testResult.execution.name"),
+        }),
+        hasContent
+          ? createElement("div", {
+              className: "test-result-execution__controls",
+              children: [
+                createElement("a", {
+                  className: "link test-result-execution__expand-all",
+                  text: translate("testResult.execution.expandAll"),
+                }),
+                createElement("span", {
+                  text: " / ",
+                }),
+                createElement("a", {
+                  className: "link test-result-execution__collapse-all",
+                  text: translate("testResult.execution.collapseAll"),
+                }),
+              ],
+            })
+          : null,
+      ],
     }),
     hasContent
       ? createElement("div", {

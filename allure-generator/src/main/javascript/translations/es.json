@@ -165,7 +165,9 @@
       "name": "Ejecución",
       "setup": "Pre-ejecución",
       "teardown": "Post-ejecución",
-      "empty": "No hay información disponible sobre la ejecución de la prueba."
+      "empty": "No hay información disponible sobre la ejecución de la prueba.",
+      "expandAll": "Expandir todo",
+      "collapseAll": "Colapsar todo"
     },
     "history": {
       "empty": "No hay información de historial disponible.",
