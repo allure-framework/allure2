@@ -94,7 +94,7 @@ subprojects {
             dependency("com.puppycrawl.tools:checkstyle:12.2.0")
             dependency("commons-io:commons-io:2.22.0")
             dependency("javax.xml.bind:jaxb-api:2.3.1")
-            dependency("net.sourceforge.pmd:pmd-java:7.25.0")
+            dependency("net.sourceforge.pmd:pmd-java:7.26.0")
             dependency("org.allurefw:allure1-model:1.0")
             dependency("org.apache.commons:commons-lang3:3.20.0")
             dependency("org.apache.httpcomponents:httpclient:4.5.14")
