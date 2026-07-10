@@ -5,11 +5,11 @@ updates:
     schedule:
       interval: "daily"
     labels:
-      - "type:dependencies"
+      - "pr:dependencies"
 
   - package-ecosystem: "gradle"
     directory: "/"
     schedule:
       interval: "daily"
     labels:
-      - "type:dependencies"
+      - "pr:dependencies"

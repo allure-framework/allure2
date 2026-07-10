@@ -1,0 +1,16 @@
+name: Task
+description: Track internal maintenance or repository work.
+type: task
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: Describe the maintenance, cleanup, or repository task.
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: Add relevant context, constraints, links, or acceptance criteria.
