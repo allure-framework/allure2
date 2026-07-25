@@ -44,8 +44,7 @@ const isRelativeUrl = (value: string) => {
     value.startsWith("?") ||
     value.startsWith("/") ||
     value.startsWith("./") ||
-    value.startsWith("../") ||
-    !value.startsWith("\\")
+    value.startsWith("../") 
   );
 };
 
