@@ -1,7 +1,7 @@
 import { createElement, createFragment } from "../shared/dom.mts";
-import { sanitizeNavigationUrl } from "../shared/url.mts";
+import { sanitizeDetectedNavigationUrl } from "../shared/url.mts";
 
-const URL_REGEXP = /((?:(https?:\/\/|ftp:\/\/|mailto:)|www\.)\S+?)(\s|"|'|\)|]|}|&#62|$)/gm;
+const URL_REGEXP = /((?:(?:https?:\/\/|ftp:\/\/|mailto:)|www\.)\S+?)(\s|"|'|\)|]|}|&#62|$)/gim;
 
 export const createTextWithLinksFragment = (text: unknown) => {
   const value = text == null ? "" : String(text);
@@ -16,7 +16,7 @@ export const createTextWithLinksFragment = (text: unknown) => {
   let match: RegExpExecArray | null;
 
   while ((match = URL_REGEXP.exec(value)) !== null) {
-    const [matchedText, urlFullText, urlProtocol = "", terminalSymbol = ""] = match;
+    const [matchedText, urlFullText, terminalSymbol = ""] = match;
     const matchIndex = match.index;
     const fullEnd = matchIndex + matchedText.length;
 
@@ -24,8 +24,7 @@ export const createTextWithLinksFragment = (text: unknown) => {
       fragment.append(value.slice(lastIndex, matchIndex));
     }
 
-    const href = urlProtocol ? urlFullText : `https://${urlFullText}`;
-    const safeHref = sanitizeNavigationUrl(href);
+    const safeHref = sanitizeDetectedNavigationUrl(urlFullText);
 
     if (!safeHref) {
       fragment.append(urlFullText);

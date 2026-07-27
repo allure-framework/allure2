@@ -173,6 +173,7 @@ test.describe("Runtime Contract", () => {
     const demoRoots = [
       path.join(generatorRoot, "test-data", "demo"),
       path.join(generatorRoot, "tests", "fixtures", "raw", uiDemo.name),
+      path.join(generatorRoot, "tests", "fixtures", "raw", fixtures.detectedLinks.name),
       path.join(generatorRoot, "tests", "fixtures", "raw", "attachments"),
       path.join(generatorRoot, "tests", "fixtures", "raw", "screen-diff"),
       path.join(generatorRoot, "tests", "fixtures", "raw", "playwright-trace"),

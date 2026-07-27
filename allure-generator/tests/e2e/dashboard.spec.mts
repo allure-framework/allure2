@@ -82,6 +82,85 @@ test.describe("Dashboards", () => {
     await expect(page.locator(".chart__svg")).toHaveCount(7);
   });
 
+  test("links only whole absolute environment values", async ({ page }) => {
+    await openReport(page, {
+      fixture: uiDemo.name,
+      mode: REPORT_MODES.DIRECTORY,
+    });
+
+    const environmentWidget = page.locator(".widget").filter({
+      has: exactWidgetTitle(page, uiDemo.widgets.environment),
+    });
+    await environmentWidget.locator(".environment-widget__expand").click();
+
+    const absoluteUrl = environmentWidget.locator(".table__row", {
+      hasText: "demo.base.urlhttps://demo.allurereport.org",
+    });
+    await expect(
+      absoluteUrl.getByRole("link", { name: "https://demo.allurereport.org" }),
+    ).toHaveAttribute("href", "https://demo.allurereport.org");
+
+    const wwwUrl = environmentWidget.locator(".table__row", {
+      hasText: "demo.www.urlwww.example.org/docs",
+    });
+    await expect(wwwUrl.getByRole("link", { name: "www.example.org/docs" })).toHaveAttribute(
+      "href",
+      "https://www.example.org/docs",
+    );
+
+    await expect(
+      environmentWidget
+        .locator(".table__row", { hasText: "demo.relative.url./index.html#/graphs" })
+        .getByRole("link"),
+    ).toHaveCount(0);
+    await expect(
+      environmentWidget
+        .locator(".table__row", { hasText: "demo.protocol.relative.url//example.org/docs" })
+        .getByRole("link"),
+    ).toHaveCount(0);
+    await expect(
+      environmentWidget
+        .locator(".table__row", { hasText: "demo.plain.valueAPI - Local" })
+        .getByRole("link"),
+    ).toHaveCount(0);
+    await expect(
+      environmentWidget
+        .locator(".table__row", { hasText: "demo.embedded.urlOpen https://example.org/docs" })
+        .getByRole("link"),
+    ).toHaveCount(0);
+    await expect(
+      environmentWidget
+        .locator(".table__row", { hasText: "demo.dangerous.urljavascript:alert(1)" })
+        .getByRole("link"),
+    ).toHaveCount(0);
+  });
+
+  test("validates explicit dashboard URL fields", async ({ page }) => {
+    await openReport(page, {
+      fixture: uiDemo.name,
+      mode: REPORT_MODES.DIRECTORY,
+    });
+
+    const executorsWidget = page.locator(".widget").filter({
+      has: exactWidgetTitle(page, uiDemo.widgets.executors),
+    });
+    await expect(executorsWidget.getByRole("link", { name: /demo-report-207/ })).toHaveAttribute(
+      "href",
+      "https://github.com/allure-framework/allure2/actions/runs/207",
+    );
+
+    const trendChart = page.locator(".history-trend__chart");
+    await expect(
+      trendChart.getByRole("link", { name: "Open report for #12", exact: true }),
+    ).toHaveAttribute(
+      "href",
+      "https://ci.qameta.io/job/allure2/job/master/Demo2_Report/index.html",
+    );
+    await expect(
+      trendChart.getByRole("link", { name: "Open report for #11", exact: true }),
+    ).toHaveCount(0);
+  });
+
   test("directory mode keeps overview and graph widget ordering stable", async ({ page }) => {
     await openReport(page, {
       fixture: uiDemo.name,

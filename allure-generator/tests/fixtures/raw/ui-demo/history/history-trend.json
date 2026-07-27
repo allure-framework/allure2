@@ -21,7 +21,7 @@
       "total": 21
     },
     "buildOrder": 11,
-    "reportUrl": "https://ci.qameta.io/job/allure2/job/master/Demo2_Report/index.html"
+    "reportUrl": "javascript:alert(1)"
   },
   {
     "statistic": {

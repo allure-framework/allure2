@@ -2,7 +2,7 @@ import "./UriAttachmentPreviewView.scss";
 import b from "../../../shared/bem/index.mts";
 import { createElement } from "../../../shared/dom.mts";
 import {
-  appendTextOrLink,
+  appendLinkSafely,
   createDiv,
   hasPreviewData,
   LoadedPreviewView,
@@ -47,7 +47,7 @@ const renderLoadedUriAttachmentPreviewView = ({
     if (comment) {
       paragraph.textContent = text;
     } else {
-      appendTextOrLink(paragraph, text);
+      appendLinkSafely(paragraph, text);
     }
     uriContainer.appendChild(paragraph);
   });

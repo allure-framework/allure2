@@ -6,7 +6,6 @@ import {
   createAttachmentSourceUrlPreview,
   createDiv,
   joinClassNames,
-  setResourceUrl,
   type AttachmentPreviewComponent,
   type AttachmentPreviewOptions,
 } from "./BaseAttachmentPreviewView.mts";
@@ -20,8 +19,10 @@ export const renderLoadedImageAttachmentPreviewView = ({
   const mediaContainer = createDiv(
     joinClassNames(b("attachment-preview", { fullscreen: fullScreen, image: true }), className),
   );
-  const image = createElement("img", { className: b("attachment-preview", "media") });
-  setResourceUrl(image, "src", sourceUrl);
+  const image = createElement("img", {
+    attrs: { src: sourceUrl || undefined },
+    className: b("attachment-preview", "media"),
+  });
   mediaContainer.appendChild(image);
   mediaContainer.addEventListener("click", () => {
     router.setSearch({

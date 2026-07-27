@@ -1,0 +1,135 @@
+{
+  "uuid": "detected-links-policy",
+  "historyId": "detected-links-policy-history",
+  "name": "renders detected links safely",
+  "fullName": "io.qameta.allure.DetectedLinksTest.shouldRenderDetectedLinksSafely",
+  "status": "passed",
+  "stage": "finished",
+  "description": "",
+  "start": 1710000250000,
+  "stop": 1710000254500,
+  "steps": [
+    {
+      "name": "Open www.example.org/docs and compare ./index.html#/graphs",
+      "status": "passed",
+      "stage": "finished",
+      "start": 1710000250100,
+      "stop": 1710000250200,
+      "steps": [],
+      "attachments": [],
+      "parameters": []
+    },
+    {
+      "name": "Open https://a.org/x?a=1&amp;b=2",
+      "status": "passed",
+      "stage": "finished",
+      "start": 1710000250200,
+      "stop": 1710000250300,
+      "steps": [],
+      "attachments": [],
+      "parameters": []
+    },
+    {
+      "name": "Do not open javascript:alert(1)",
+      "status": "passed",
+      "stage": "finished",
+      "start": 1710000250300,
+      "stop": 1710000250400,
+      "steps": [],
+      "attachments": [],
+      "parameters": []
+    }
+  ],
+  "attachments": [],
+  "parameters": [
+    {
+      "name": "Absolute URL",
+      "value": "https://example.org/docs"
+    },
+    {
+      "name": "WWW URL",
+      "value": "www.example.org/docs"
+    },
+    {
+      "name": "Encoded WWW URL",
+      "value": "&#119;ww.example.org"
+    },
+    {
+      "name": "Relative URL",
+      "value": "./index.html#/graphs"
+    },
+    {
+      "name": "Protocol-relative URL",
+      "value": "//example.org/docs"
+    },
+    {
+      "name": "Plain text",
+      "value": "API - Local"
+    },
+    {
+      "name": "Embedded URL",
+      "value": "Open https://example.org/docs"
+    },
+    {
+      "name": "Dangerous URL",
+      "value": "javascript:alert(1)"
+    }
+  ],
+  "labels": [
+    {
+      "name": "feature",
+      "value": "Execution details"
+    },
+    {
+      "name": "story",
+      "value": "Render detected links safely"
+    },
+    {
+      "name": "host",
+      "value": "localhost"
+    },
+    {
+      "name": "thread",
+      "value": "main"
+    },
+    {
+      "name": "framework",
+      "value": "junit-platform"
+    },
+    {
+      "name": "language",
+      "value": "java"
+    },
+    {
+      "name": "package",
+      "value": "io.qameta.allure.DetectedLinksTest"
+    },
+    {
+      "name": "testClass",
+      "value": "io.qameta.allure.DetectedLinksTest"
+    },
+    {
+      "name": "testMethod",
+      "value": "shouldRenderDetectedLinksSafely"
+    },
+    {
+      "name": "suite",
+      "value": "io.qameta.allure.DetectedLinksTest"
+    },
+    {
+      "name": "epic",
+      "value": "Report rendering"
+    }
+  ],
+  "links": [
+    {
+      "name": "Relative report",
+      "url": "reports/latest/index.html",
+      "type": "custom"
+    },
+    {
+      "name": "Label without URL",
+      "type": "custom"
+    }
+  ]
+}

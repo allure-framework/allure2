@@ -4,6 +4,7 @@ import { openCaseFromTree } from "./support/report.mts";
 import { stepLocator } from "./support/ui.mts";
 
 const uiDemo = fixtures.uiDemo;
+const detectedLinks = fixtures.detectedLinks;
 const reportModes = [REPORT_MODES.SINGLE_FILE, REPORT_MODES.DIRECTORY] as const;
 
 for (const mode of reportModes) {
@@ -41,6 +42,110 @@ for (const mode of reportModes) {
       await expect(execution).toContainText("Test body");
       await expect(execution).toContainText("Tear down");
       await expect(execution).toContainText("Open pull requests page");
+    });
+
+    test("links only whole absolute parameter values", async ({ page }) => {
+      await openCaseFromTree(page, {
+        fixture: detectedLinks.name,
+        mode,
+        tab: "suites",
+        caseName: detectedLinks.caseName,
+      });
+
+      const absoluteUrl = page.locator(".environment", {
+        hasText: "Absolute URL: https://example.org/docs",
+      });
+      await expect(
+        absoluteUrl.getByRole("link", { name: "https://example.org/docs" }),
+      ).toHaveAttribute("href", "https://example.org/docs");
+
+      const wwwUrl = page.locator(".environment", {
+        hasText: "WWW URL: www.example.org/docs",
+      });
+      await expect(wwwUrl.getByRole("link", { name: "www.example.org/docs" })).toHaveAttribute(
+        "href",
+        "https://www.example.org/docs",
+      );
+
+      const encodedWwwUrl = page.locator(".environment", {
+        hasText: "Encoded WWW URL: &#119;ww.example.org",
+      });
+      await expect(encodedWwwUrl.getByRole("link")).toHaveCount(0);
+
+      await expect(
+        page
+          .locator(".environment", { hasText: "Relative URL: ./index.html#/graphs" })
+          .getByRole("link"),
+      ).toHaveCount(0);
+      await expect(
+        page
+          .locator(".environment", { hasText: "Protocol-relative URL: //example.org/docs" })
+          .getByRole("link"),
+      ).toHaveCount(0);
+      await expect(
+        page.locator(".environment", { hasText: "Plain text: API - Local" }).getByRole("link"),
+      ).toHaveCount(0);
+      await expect(
+        page
+          .locator(".environment", { hasText: "Embedded URL: Open https://example.org/docs" })
+          .getByRole("link"),
+      ).toHaveCount(0);
+      await expect(
+        page
+          .locator(".environment", { hasText: "Dangerous URL: javascript:alert(1)" })
+          .getByRole("link"),
+      ).toHaveCount(0);
+    });
+
+    test("detects only absolute links in step names", async ({ page }) => {
+      await openCaseFromTree(page, {
+        fixture: detectedLinks.name,
+        mode,
+        tab: "suites",
+        caseName: detectedLinks.caseName,
+      });
+
+      const stepName = page.locator(".step__name", {
+        hasText: "Open www.example.org/docs and compare ./index.html#/graphs",
+      });
+      await expect(stepName.getByRole("link", { name: "www.example.org/docs" })).toHaveAttribute(
+        "href",
+        "https://www.example.org/docs",
+      );
+      await expect(stepName.getByRole("link")).toHaveCount(1);
+      await expect(stepName).toContainText("./index.html#/graphs");
+
+      const entityEncodedUrl = page.locator(".step__name", {
+        hasText: "Open https://a.org/x?a=1&amp;b=2",
+      });
+      await expect(
+        entityEncodedUrl.getByRole("link", { name: "https://a.org/x?a=1&amp;b=2" }),
+      ).toHaveAttribute("href", "https://a.org/x?a=1&amp;b=2");
+
+      const dangerousScheme = page.locator(".step__name", {
+        hasText: "Do not open javascript:alert(1)",
+      });
+      await expect(dangerousScheme).toContainText("javascript:alert(1)");
+      await expect(dangerousScheme.getByRole("link")).toHaveCount(0);
+    });
+
+    test("uses only Link.url as an explicit link target", async ({ page }) => {
+      await openCaseFromTree(page, {
+        fixture: detectedLinks.name,
+        mode,
+        tab: "suites",
+        caseName: detectedLinks.caseName,
+      });
+
+      const relativeLink = page.locator(".testresult-link", { hasText: "Relative report" });
+      await expect(relativeLink.getByRole("link", { name: "Relative report" })).toHaveAttribute(
+        "href",
+        "reports/latest/index.html",
+      );
+
+      const labelOnly = page.locator(".testresult-link", { hasText: "Label without URL" });
+      await expect(labelOnly).toContainText("Label without URL");
+      await expect(labelOnly.getByRole("link")).toHaveCount(0);
     });
 
     test("updates attachment routing for modal previews", async ({ page }) => {

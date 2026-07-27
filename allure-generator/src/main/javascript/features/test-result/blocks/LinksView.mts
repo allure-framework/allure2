@@ -35,7 +35,6 @@ const LinksView = (options: TestResultBlockOptions) => {
     );
 
     links.forEach(({ type, url, name }) => {
-      const href = firstTruthy(url, name);
       const label = firstTruthy(name, url, "link") || "link";
       const row = createElement("span", { className: "testresult-link" });
 
@@ -45,7 +44,7 @@ const LinksView = (options: TestResultBlockOptions) => {
         row.appendChild(createIconElement("lineFilesClipboardCheck", { size: "s" }));
       }
 
-      const safeHref = sanitizeNavigationUrl(href);
+      const safeHref = sanitizeNavigationUrl(url);
       if (safeHref) {
         const link = createElement("a", {
           attrs: {

@@ -3,7 +3,7 @@ import { bindDelegatedEvents } from "../../../core/view/domEvents.mts";
 import { defineMountableElement } from "../../../core/view/elementView.mts";
 import translate from "../../../helpers/t.mts";
 import { createElement, createFragment } from "../../../shared/dom.mts";
-import { sanitizeNavigationUrl } from "../../../shared/url.mts";
+import { sanitizeDetectedNavigationUrl } from "../../../shared/url.mts";
 
 type TestResult = import("../../../types/report.mts").TestResult;
 
@@ -22,7 +22,7 @@ const createParametersView = (options: TestResultBlockOptions) => {
   let releaseEvents = () => {};
 
   const appendValue = (container: HTMLElement, value: string) => {
-    const safeHref = sanitizeNavigationUrl(value);
+    const safeHref = sanitizeDetectedNavigationUrl(value);
     if (!safeHref) {
       container.textContent = value;
       return;
