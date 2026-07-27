@@ -24,6 +24,8 @@ export interface ReportRequest {
 export const DEFAULT_REPORTS: ReportRequest[] = [
   { fixture: "ui-demo", mode: REPORT_MODES.SINGLE_FILE },
   { fixture: "ui-demo", mode: REPORT_MODES.DIRECTORY },
+  { fixture: "detected-links", mode: REPORT_MODES.SINGLE_FILE },
+  { fixture: "detected-links", mode: REPORT_MODES.DIRECTORY },
   { fixture: "attachments", mode: REPORT_MODES.SINGLE_FILE },
   { fixture: "attachments", mode: REPORT_MODES.DIRECTORY },
   { fixture: "screen-diff", mode: REPORT_MODES.DIRECTORY },

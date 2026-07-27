@@ -1,11 +1,6 @@
-type SafeUrlKind = "navigation" | "resource";
-
 const SCHEME_PATTERN = /^[a-z][a-z\d+\-.]*:/i;
 
-const ALLOWED_PROTOCOLS: Record<SafeUrlKind, Set<string>> = {
-  navigation: new Set(["ftp:", "http:", "https:", "mailto:"]),
-  resource: new Set(["blob:", "data:", "file:", "ftp:", "http:", "https:"]),
-};
+const ALLOWED_NAVIGATION_PROTOCOLS = new Set(["ftp:", "http:", "https:", "mailto:"]);
 
 const decodeHtmlEntities = (value: string): string => {
   if (typeof DOMParser === "undefined") {
@@ -27,6 +22,8 @@ const normalizeCandidate = (value: string) =>
   stripIgnoredSchemeCharacters(decodeHtmlEntities(value.trim()));
 
 const hasExplicitScheme = (value: string) => SCHEME_PATTERN.test(value);
+
+const hasIgnoredUrlCharacters = (value: string) => stripIgnoredSchemeCharacters(value) !== value;
 
 const isProtocolRelativeUrl = (value: string) => value.startsWith("//");
 
@@ -65,7 +62,27 @@ const resolveProtocol = (value: string): string | null => {
   }
 };
 
-const sanitizeUrl = (value: unknown, kind: SafeUrlKind): string | null => {
+const sanitizeNormalizedNavigationUrl = (
+  rawValue: string,
+  normalizedValue: string,
+): string | null => {
+  if (!normalizedValue) {
+    return null;
+  }
+
+  if (isRelativeUrl(normalizedValue)) {
+    return rawValue;
+  }
+
+  const protocol = resolveProtocol(normalizedValue);
+  if (!protocol) {
+    return null;
+  }
+
+  return ALLOWED_NAVIGATION_PROTOCOLS.has(protocol) ? rawValue : null;
+};
+
+export const sanitizeNavigationUrl = (value: unknown): string | null => {
   if (value === null || typeof value === "undefined") {
     return null;
   }
@@ -75,23 +92,37 @@ const sanitizeUrl = (value: unknown, kind: SafeUrlKind): string | null => {
     return null;
   }
 
-  const normalized = normalizeCandidate(rawValue);
-  if (!normalized) {
-    return null;
-  }
-
-  if (isRelativeUrl(normalized)) {
-    return rawValue;
-  }
-
-  const protocol = resolveProtocol(normalized);
-  if (!protocol) {
-    return null;
-  }
-
-  return ALLOWED_PROTOCOLS[kind].has(protocol) ? rawValue : null;
+  return sanitizeNormalizedNavigationUrl(rawValue, normalizeCandidate(rawValue));
 };
 
-export const sanitizeNavigationUrl = (value: unknown) => sanitizeUrl(value, "navigation");
+export const sanitizeDetectedNavigationUrl = (value: unknown): string | null => {
+  if (value === null || typeof value === "undefined") {
+    return null;
+  }
 
-export const sanitizeResourceUrl = (value: unknown) => sanitizeUrl(value, "resource");
+  const rawValue = String(value).trim();
+  if (!rawValue) {
+    return null;
+  }
+
+  const decodedValue = decodeHtmlEntities(rawValue);
+  if (hasIgnoredUrlCharacters(decodedValue)) {
+    return null;
+  }
+
+  const isWwwUrl = /^www\./i.test(rawValue);
+  const normalizedValue = isWwwUrl ? `https://${decodedValue}` : decodedValue;
+  if (!hasExplicitScheme(normalizedValue)) {
+    return null;
+  }
+
+  try {
+    new URL(normalizedValue);
+  } catch {
+    return null;
+  }
+
+  const href = isWwwUrl ? `https://${rawValue}` : rawValue;
+
+  return sanitizeNormalizedNavigationUrl(href, normalizedValue);
+};

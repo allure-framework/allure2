@@ -63,6 +63,10 @@ export const fixtures = {
     htmlAttachmentStep: "Open pull requests page `allure-framework/allure2`",
     expectedStatusDetailsHtmlTags: "<input>, <textarea>, <select>",
   },
+  detectedLinks: {
+    name: "detected-links",
+    caseName: "renders detected links safely",
+  },
   attachments: {
     name: "attachments",
     caseName: "attachmentsInStep",

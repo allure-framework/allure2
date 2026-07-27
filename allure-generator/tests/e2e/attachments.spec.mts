@@ -348,12 +348,15 @@ test.describe("Generic Attachments", () => {
     const uriRow = attachmentRow(page, attachmentsFixture.attachments.uri);
     await expect(uriRow).toBeVisible();
     await uriRow.click();
-    await expect(previewContainerFor(uriRow).locator(".attachment-preview__url .link")).toHaveCount(2);
+    const uriPreview = previewContainerFor(uriRow);
+    const relativeUri = uriPreview.locator(".attachment-preview__url", {
+      hasText: attachmentsFixture.uriLinks.graphs,
+    });
+    await expect(relativeUri).toContainText(attachmentsFixture.uriLinks.graphs);
+    await expect(relativeUri.getByRole("link")).toHaveCount(0);
+    await expect(uriPreview.locator(".attachment-preview__url .link")).toHaveCount(1);
     await expect(
-      previewContainerFor(uriRow).locator(".attachment-preview__url .link").first(),
-    ).toHaveAttribute("href", attachmentsFixture.uriLinks.graphs);
-    await expect(
-      previewContainerFor(uriRow).locator(".attachment-preview__url .link").nth(1),
+      uriPreview.getByRole("link", { name: attachmentsFixture.uriLinks.docs }),
     ).toHaveAttribute("href", attachmentsFixture.uriLinks.docs);
   });
 
@@ -689,7 +692,9 @@ test.describe("Generic Attachments", () => {
     });
   }
 
-  test("renders a download fallback for unsupported attachment types", async ({ page }) => {
+  test("renders a report-local download fallback for unsupported attachment types", async ({
+    page,
+  }) => {
     await openCaseFromTree(page, {
       fixture: attachmentsFixture.name,
       mode: REPORT_MODES.DIRECTORY,
@@ -705,7 +710,7 @@ test.describe("Generic Attachments", () => {
     const downloadLink = preview.locator(".link[download]");
     await expect(downloadLink).toBeVisible();
     await expect(downloadLink).toHaveAttribute("download", attachmentsFixture.attachments.css);
-    await expect(downloadLink).toHaveAttribute("href", /data\/attachments\//);
+    await expect(downloadLink).toHaveAttribute("href", /^data\/attachments\//);
   });
 
   test("renders svg attachments even when the server returns a generic MIME type", async ({

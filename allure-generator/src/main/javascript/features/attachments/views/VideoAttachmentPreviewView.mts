@@ -5,7 +5,6 @@ import { appendChildren, createElement } from "../../../shared/dom.mts";
 import {
   createAttachmentSourceUrlPreview,
   createDiv,
-  setResourceUrl,
   type AttachmentPreviewComponent,
   type AttachmentPreviewOptions,
 } from "./BaseAttachmentPreviewView.mts";
@@ -17,8 +16,12 @@ const renderLoadedVideoAttachmentPreviewView = ({
   const mediaContainer = createDiv(b("attachment-preview", { video: true }));
   const video = createElement("video", { className: b("attachment-preview", "media") });
   video.controls = true;
-  const source = createElement("source", { attrs: { type: attachment.type } });
-  setResourceUrl(source, "src", sourceUrl);
+  const source = createElement("source", {
+    attrs: {
+      src: sourceUrl || undefined,
+      type: attachment.type,
+    },
+  });
   appendChildren(video, source, translate("component.attachment.videoNotSupported"));
   mediaContainer.appendChild(video);
   return mediaContainer;

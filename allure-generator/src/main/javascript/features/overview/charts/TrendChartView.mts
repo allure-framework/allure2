@@ -8,6 +8,7 @@ import { createElement, createFragment } from "../../../shared/dom.mts";
 import { chartCategoricalColors } from "../../../shared/theme.mts";
 import BaseChartView from "../../../shared/ui/BaseChartView.mts";
 import TooltipView from "../../../shared/ui/TooltipView.mts";
+import { sanitizeNavigationUrl } from "../../../shared/url.mts";
 
 type Series<Datum, Key> = import("d3-shape").Series<Datum, Key>;
 type SeriesPoint<Datum> = import("d3-shape").SeriesPoint<Datum>;
@@ -25,6 +26,8 @@ type TrendChartOptions = {
 
 const getTrendReportLinkLabel = (point: TrendPoint) =>
   translate("chart.trend.reportLink", { hash: { name: point.name } });
+
+const getTrendReportUrl = (point: TrendPoint) => sanitizeNavigationUrl(point.reportUrl);
 
 class TrendChartView extends BaseChartView {
   PAD_BOTTOM = 50;
@@ -188,15 +191,14 @@ class TrendChartView extends BaseChartView {
       .attr("class", "slice");
 
     slices
-      .filter((d) => Boolean(d.reportUrl))
+      .filter((d) => Boolean(getTrendReportUrl(d)))
       .append("a")
       .attr("class", "edge")
-      .filter((d) => Boolean(d.reportUrl))
-      .attr("xlink:href", (d) => (typeof d.reportUrl === "string" ? d.reportUrl : ""))
+      .attr("xlink:href", (d) => getTrendReportUrl(d) || "")
       .attr("aria-label", getTrendReportLinkLabel);
 
     slices
-      .filter((d) => !d.reportUrl)
+      .filter((d) => !getTrendReportUrl(d))
       .append("g")
       .attr("class", "edge");
 

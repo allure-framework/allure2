@@ -3,7 +3,7 @@ import { defineMountableElement } from "../../../core/view/elementView.mts";
 import translate from "../../../helpers/t.mts";
 import b from "../../../shared/bem/index.mts";
 import { createElement } from "../../../shared/dom.mts";
-import { sanitizeNavigationUrl } from "../../../shared/url.mts";
+import { sanitizeDetectedNavigationUrl } from "../../../shared/url.mts";
 
 type EnvironmentWidgetOptions = {
   data?: {
@@ -43,7 +43,7 @@ const createEnvironmentWidget = (options: EnvironmentWidgetOptions = {}) => {
             createElement("div", {
               className: `${b("table", "col")} long-line`,
               children: values.flatMap((value, index) => {
-                const safeHref = sanitizeNavigationUrl(value);
+                const safeHref = sanitizeDetectedNavigationUrl(value);
                 const content = safeHref
                   ? createElement("a", {
                       attrs: {

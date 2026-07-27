@@ -4,7 +4,6 @@ import { fetchReportBlob, normalizeReportDataError } from "../../../core/service
 import { attachMountable, destroyMountable } from "../../../core/view/mountables.mts";
 import translate from "../../../helpers/t.mts";
 import { createElement } from "../../../shared/dom.mts";
-import { sanitizeResourceUrl } from "../../../shared/url.mts";
 import ErrorSplashView from "../../../shared/ui/ErrorSplashView.mts";
 import LoaderView from "../../../shared/ui/LoaderView.mts";
 import { createModalHeaderActionsEvent } from "../../../shared/ui/modalHeaderActions.mts";
@@ -67,7 +66,6 @@ const PlaywrightTraceAttachmentContentView = (options: PlaywrightTraceAttachment
   let traceFrame: HTMLIFrameElement | null = null;
   let handoffTimers: number[] = [];
   let isViewerSettling = false;
-  let safeDownloadUrl: string | null = null;
 
   const clearHandoffTimers = () => {
     handoffTimers.forEach((id) => window.clearTimeout(id));
@@ -161,7 +159,7 @@ const PlaywrightTraceAttachmentContentView = (options: PlaywrightTraceAttachment
   const renderDownloadActions = (actions: HTMLElement) => {
     actions.replaceChildren();
 
-    const downloadLink = createDownloadLink(options.attachment, safeDownloadUrl);
+    const downloadLink = createDownloadLink(options.attachment, downloadUrl || options.sourceUrl);
     const headerActionsEvent = createModalHeaderActionsEvent(downloadLink ? [downloadLink] : []);
     const handledByModalHeader = !el.dispatchEvent(headerActionsEvent);
 
@@ -285,8 +283,6 @@ const PlaywrightTraceAttachmentContentView = (options: PlaywrightTraceAttachment
 
   Object.assign(el, {
     render() {
-      safeDownloadUrl = sanitizeResourceUrl(downloadUrl || options.sourceUrl);
-
       el.className = "attachment-preview attachment-preview_trace";
       const { actions, body, frameHost, overlay } = ensureTraceLayout();
       renderDownloadActions(actions);
