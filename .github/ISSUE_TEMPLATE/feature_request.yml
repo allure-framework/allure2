@@ -1,0 +1,32 @@
+name: Feature request
+description: Suggest a user-facing feature or improvement.
+type: feature
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement for Allure Report. Please describe the outcome you need, not only a possible implementation.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem should this solve?
+      description: Describe the workflow, limitation, or user need behind the request.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would you like to happen?
+      description: Describe the behavior or capability you want Allure Report to provide.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Share any current workaround or alternative design you have considered.
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Add examples, links, screenshots, or related issues.

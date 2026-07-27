@@ -1,6 +1,6 @@
-name: 🐞 Bug Report
-description: File a Bug report in Java Integration
-labels: [ "type:bug", "triage" ]
+name: Bug report
+description: Report broken or incorrect behavior.
+type: bug
 assignees: []
 body:
   - type: markdown

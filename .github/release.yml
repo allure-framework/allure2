@@ -1,25 +1,29 @@
 # release.yml
 
 changelog:
+  exclude:
+    labels:
+      - 'pr:invalid'
+      - 'pr:tests'
   categories:
     - title: '🚀 New Features'
       labels:
-        - 'type:new feature'
+        - 'pr:new feature'
     - title: '🔬 Improvements'
       labels:
-        - 'type:improvement'
+        - 'pr:improvement'
     - title: '🐞 Bug Fixes'
       labels:
-        - 'type:bug'
+        - 'pr:bug'
     - title: '⬆️ Dependency Updates'
       labels:
-        - 'type:dependencies'
+        - 'pr:dependencies'
     - title: '📖 Documentation improvements'
       labels:
-        - 'type:documentation'
+        - 'pr:documentation'
     - title: '⛔️ Security'
       labels:
-        - 'type:security'
+        - 'pr:security'
     - title: '👻 Internal changes'
       labels:
-        - 'type:internal'
+        - 'pr:internal'
