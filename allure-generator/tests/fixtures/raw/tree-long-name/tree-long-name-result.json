@@ -1,0 +1,58 @@
+{
+  "uuid": "tree-long-name-result",
+  "historyId": "tree-long-name-history",
+  "name": "test_screenshot_default_games_section_with_a_descriptive_name_that_remains_long_enough_to_overflow_the_tree_row_even_on_wide_viewports",
+  "fullName": "frontend.pages.TestScreenshotMainPageDefaultGamesSection.test_screenshot_default_games_section_with_a_descriptive_name_that_remains_long_enough_to_overflow_the_tree_row_even_on_wide_viewports",
+  "status": "passed",
+  "stage": "finished",
+  "description": "Regression fixture for long tree names next to parameter text.",
+  "start": 1710000000000,
+  "stop": 1710000013000,
+  "steps": [],
+  "attachments": [],
+  "parameters": [
+    {
+      "name": "session",
+      "value": "session[LivePage]"
+    },
+    {
+      "name": "page",
+      "value": "frontend.pages.screenshot.default.games.section"
+    }
+  ],
+  "labels": [
+    {
+      "name": "suite",
+      "value": "TestScreenshotMainPageDefaultGamesSection"
+    },
+    {
+      "name": "package",
+      "value": "frontend.pages"
+    },
+    {
+      "name": "testClass",
+      "value": "TestScreenshotMainPageDefaultGamesSection"
+    },
+    {
+      "name": "testMethod",
+      "value": "test_screenshot_default_games_section_with_a_descriptive_name_that_remains_long_enough_to_overflow_the_tree_row_even_on_wide_viewports"
+    },
+    {
+      "name": "framework",
+      "value": "pytest"
+    },
+    {
+      "name": "language",
+      "value": "python"
+    },
+    {
+      "name": "host",
+      "value": "localhost"
+    },
+    {
+      "name": "thread",
+      "value": "main"
+    }
+  ],
+  "links": []
+}
