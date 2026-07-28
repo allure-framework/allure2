@@ -31,6 +31,7 @@ export const DEFAULT_REPORTS: ReportRequest[] = [
   { fixture: "screen-diff", mode: REPORT_MODES.DIRECTORY },
   { fixture: "playwright-trace", mode: REPORT_MODES.SINGLE_FILE },
   { fixture: "playwright-trace", mode: REPORT_MODES.DIRECTORY },
+  { fixture: "tree-long-name", mode: REPORT_MODES.DIRECTORY },
 ];
 
 const gradleWrapper = path.join(repoRoot, process.platform === "win32" ? "gradlew.bat" : "gradlew");

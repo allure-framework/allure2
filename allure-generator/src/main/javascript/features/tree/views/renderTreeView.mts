@@ -79,7 +79,7 @@ const createTreeLeaf = (
           text: `#${item.order}`,
         }),
         createElement("div", {
-          className: "node__name",
+          className: "node__name line-ellipsis",
           text: item.name,
         }),
         item.parameters
