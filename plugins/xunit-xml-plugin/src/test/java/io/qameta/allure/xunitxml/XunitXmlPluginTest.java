@@ -16,6 +16,7 @@
 package io.qameta.allure.xunitxml;
 
 import io.qameta.allure.Allure;
+import io.qameta.allure.DefaultResultsVisitor;
 import io.qameta.allure.Description;
 import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
@@ -71,7 +72,7 @@ class XunitXmlPluginTest {
 
     /**
      * Verifies an xUnit XML test case is converted into an Allure result.
-     * The test checks parsed name, history identifier, and passed status.
+     * The test checks parsed name, identity hashes, and passed status.
      */
     @Description
     @Test
@@ -85,9 +86,21 @@ class XunitXmlPluginTest {
 
         assertThat(results)
                 .hasSize(1)
-                .extracting(TestResult::getName, TestResult::getHistoryId, TestResult::getStatus)
+                .extracting(
+                        TestResult::getName,
+                        TestResult::getTestCaseHash,
+                        TestResult::getParametersHash,
+                        TestResult::getRetryHash,
+                        TestResult::getStatus
+                )
                 .containsExactlyInAnyOrder(
-                        Tuple.tuple("passedTest", "Some test", Status.PASSED)
+                        Tuple.tuple(
+                                "passedTest",
+                                "41252492d10e496cdec9d61c5eed7b51",
+                                "d41d8cd98f00b204e9800998ecf8427e",
+                                "41252492d10e496cdec9d61c5eed7b51.d41d8cd98f00b204e9800998ecf8427e",
+                                Status.PASSED
+                        )
                 );
     }
 
@@ -305,6 +318,8 @@ class XunitXmlPluginTest {
             final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
             verify(visitor, times(expectedCount)).visitTestResult(captor.capture());
             final List<TestResult> results = captor.getAllValues();
+            final DefaultResultsVisitor resultVisitor = new DefaultResultsVisitor(configuration);
+            results.forEach(resultVisitor::visitTestResult);
             Allure.addAttachment("parsed-test-results.txt", "text/plain", describeTestResults(results));
             return results;
         });
@@ -318,7 +333,9 @@ class XunitXmlPluginTest {
                         .append(System.lineSeparator())
                         .append("name=").append(result.getName()).append(System.lineSeparator())
                         .append("fullName=").append(result.getFullName()).append(System.lineSeparator())
-                        .append("historyId=").append(result.getHistoryId()).append(System.lineSeparator())
+                        .append("testCaseHash=").append(result.getTestCaseHash()).append(System.lineSeparator())
+                        .append("parametersHash=").append(result.getParametersHash()).append(System.lineSeparator())
+                        .append("retryHash=").append(result.getRetryHash()).append(System.lineSeparator())
                         .append("status=").append(result.getStatus()).append(System.lineSeparator())
                         .append("duration=")
                         .append(result.getTime() == null ? null : result.getTime().getDuration())

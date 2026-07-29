@@ -90,7 +90,7 @@ class JiraTestResultExportPluginTest {
 
         assertThat(exported.getExternalId()).isEqualTo(testResult.getUid());
         assertThat(exported.getTestCaseId()).isEqualTo(testResult.getUid());
-        assertThat(exported.getHistoryKey()).isEqualTo(testResult.getHistoryId());
+        assertThat(exported.getHistoryKey()).isEqualTo(testResult.getRetryHash());
         assertThat(exported.getUrl()).contains(testResult.getUid());
         assertThat(exported.getName()).isEqualTo(testResult.getName());
         assertThat(exported.getStatus()).isEqualTo(testResult.getStatus().toString());
@@ -108,11 +108,11 @@ class JiraTestResultExportPluginTest {
                         "jira-test-result-input.txt",
                         "text/plain",
                         String.format(
-                                "uid=%s%nname=%s%nhistoryId=%s%nstatus=%s%nstop=%s%nlinks=%s%n"
+                                "uid=%s%nname=%s%nretryHash=%s%nstatus=%s%nstop=%s%nlinks=%s%n"
                                         + "executorBuildName=%s%nexecutorReportUrl=%s",
                                 testResult.getUid(),
                                 testResult.getName(),
-                                testResult.getHistoryId(),
+                                testResult.getRetryHash(),
                                 testResult.getStatus(),
                                 testResult.getTime().getStop(),
                                 describeLinks(testResult.getLinks()),

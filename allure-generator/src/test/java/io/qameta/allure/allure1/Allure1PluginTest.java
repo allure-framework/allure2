@@ -335,21 +335,34 @@ class Allure1PluginTest {
     }
 
     /**
-     * Verifies generating different history id for parameterized tests for Allure 1 parsing.
+     * Verifies generating separate parameter and retry hashes for parameterized Allure 1 tests.
      */
     @Description
     @Test
-    void shouldGenerateDifferentHistoryIdForParameterizedTests() throws Exception {
-        final String historyId1 = "56f15d234f8ad63b493afb25f7c26556";
-        final String historyId2 = "e374f6eb3cf497543291506c8c20353";
+    void shouldGenerateDifferentRetryHashesForParameterizedTests() throws Exception {
         Set<TestResult> testResults = process(
                 "allure1/suite-with-parameters.xml", generateTestSuiteXmlName()
         ).getResults();
 
         assertThat(testResults)
-                .extracting(TestResult::getHistoryId)
-                .as("History ids for parameterized tests must be different")
-                .containsExactlyInAnyOrder(historyId1, historyId2);
+                .extracting(
+                        TestResult::getTestCaseHash,
+                        TestResult::getParametersHash,
+                        TestResult::getRetryHash
+                )
+                .as("Retry hashes for parameterized tests must be different")
+                .containsExactlyInAnyOrder(
+                        Tuple.tuple(
+                                "59143445e8de68070640560c106299fe",
+                                "7d4ecec621d4160a846418baa497c967",
+                                "59143445e8de68070640560c106299fe.7d4ecec621d4160a846418baa497c967"
+                        ),
+                        Tuple.tuple(
+                                "59143445e8de68070640560c106299fe",
+                                "87749f11750f15b79e8b18a921eec986",
+                                "59143445e8de68070640560c106299fe.87749f11750f15b79e8b18a921eec986"
+                        )
+                );
     }
 
     /**
@@ -399,24 +412,28 @@ class Allure1PluginTest {
     }
 
     /**
-     * Verifies that an Allure 1 history-id label overrides generated history ids.
+     * Verifies legacy Allure 1 history-id labels do not override generated retry hashes.
      */
     @Description
     @Test
-    void shouldBeAbleToSpecifyHistoryIdViaLabel() throws Exception {
+    void shouldIgnoreHistoryIdLabel() throws Exception {
         final Set<TestResult> results = process(
                 "allure1/history-id-label.xml", generateTestSuiteXmlName()
         ).getResults();
 
         assertThat(results)
                 .filteredOn("name", "test1")
-                .extracting(TestResult::getHistoryId)
-                .containsExactly("something");
+                .extracting(TestResult::getRetryHash)
+                .containsExactly(
+                        "47c78c8a5a1548bc8e800a8f2e7caeb8.d41d8cd98f00b204e9800998ecf8427e"
+                );
 
         assertThat(results)
                 .filteredOn("name", "test2")
-                .extracting(TestResult::getHistoryId)
-                .containsNull();
+                .extracting(TestResult::getRetryHash)
+                .containsExactly(
+                        "2b562de6055b47e72bac4c19bc9b7ec4.d41d8cd98f00b204e9800998ecf8427e"
+                );
     }
 
     /**

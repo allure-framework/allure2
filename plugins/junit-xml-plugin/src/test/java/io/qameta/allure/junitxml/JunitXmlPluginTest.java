@@ -16,6 +16,7 @@
 package io.qameta.allure.junitxml;
 
 import io.qameta.allure.Allure;
+import io.qameta.allure.DefaultResultsVisitor;
 import io.qameta.allure.Description;
 import io.qameta.allure.Issue;
 import io.qameta.allure.context.RandomUidContext;
@@ -228,7 +229,7 @@ class JunitXmlPluginTest {
 
     /**
      * Verifies repeated JUnit results are modeled as retries.
-     * The test checks visible and hidden retry flags, history IDs, and status details.
+     * The test checks visible and hidden retry flags, retry hashes, and status details.
      */
     @Description
     @Test
@@ -239,12 +240,12 @@ class JunitXmlPluginTest {
 
         final List<TestResult> results = captureTestResults(4);
         assertThat(results)
-                .extracting(TestResult::getName, TestResult::getStatus, TestResult::isHidden, TestResult::getHistoryId)
+                .extracting(TestResult::getName, TestResult::getStatus, TestResult::isHidden, TestResult::getRetryHash)
                 .containsExactlyInAnyOrder(
-                        Tuple.tuple("searchTest", Status.BROKEN, false, "my.company.tests.SearchTest:my.company.tests.SearchTest#searchTest"),
-                        Tuple.tuple("searchTest", Status.BROKEN, true, "my.company.tests.SearchTest:my.company.tests.SearchTest#searchTest"),
-                        Tuple.tuple("searchTest", Status.BROKEN, true, "my.company.tests.SearchTest:my.company.tests.SearchTest#searchTest"),
-                        Tuple.tuple("searchTest", Status.FAILED, true, "my.company.tests.SearchTest:my.company.tests.SearchTest#searchTest")
+                        Tuple.tuple("searchTest", Status.BROKEN, false, "fbad9a3df2386edf402f5fceb9614f19.d41d8cd98f00b204e9800998ecf8427e"),
+                        Tuple.tuple("searchTest", Status.BROKEN, true, "fbad9a3df2386edf402f5fceb9614f19.d41d8cd98f00b204e9800998ecf8427e"),
+                        Tuple.tuple("searchTest", Status.BROKEN, true, "fbad9a3df2386edf402f5fceb9614f19.d41d8cd98f00b204e9800998ecf8427e"),
+                        Tuple.tuple("searchTest", Status.FAILED, true, "fbad9a3df2386edf402f5fceb9614f19.d41d8cd98f00b204e9800998ecf8427e")
                 );
 
         assertThat(results)
@@ -535,6 +536,8 @@ class JunitXmlPluginTest {
             final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
             verify(visitor, times(expectedCount)).visitTestResult(captor.capture());
             final List<TestResult> results = captor.getAllValues();
+            final DefaultResultsVisitor resultVisitor = new DefaultResultsVisitor(configuration);
+            results.forEach(resultVisitor::visitTestResult);
             Allure.addAttachment("parsed-test-results.txt", "text/plain", describeTestResults(results));
             return results;
         });
@@ -581,7 +584,9 @@ class JunitXmlPluginTest {
                         .append("name=").append(result.getName()).append(System.lineSeparator())
                         .append("status=").append(result.getStatus()).append(System.lineSeparator())
                         .append("hidden=").append(result.isHidden()).append(System.lineSeparator())
-                        .append("historyId=").append(result.getHistoryId()).append(System.lineSeparator())
+                        .append("testCaseHash=").append(result.getTestCaseHash()).append(System.lineSeparator())
+                        .append("parametersHash=").append(result.getParametersHash()).append(System.lineSeparator())
+                        .append("retryHash=").append(result.getRetryHash()).append(System.lineSeparator())
                         .append("statusMessage=").append(result.getStatusMessage()).append(System.lineSeparator())
                         .append("statusTrace=").append(result.getStatusTrace()).append(System.lineSeparator())
                         .append("time=").append(describeTime(result.getTime())).append(System.lineSeparator())

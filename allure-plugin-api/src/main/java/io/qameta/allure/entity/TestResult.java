@@ -46,9 +46,10 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
     protected String uid;
     protected String name;
     protected String fullName;
-    protected String historyId;
     @JsonIgnore
-    protected String retryHash;
+    protected String testCaseHash;
+    @JsonIgnore
+    protected String parametersHash;
     protected String testId;
     protected Time time = new Time();
     protected String description;
@@ -80,6 +81,13 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
     @JsonProperty
     public String getSource() {
         return getUid() + ".json";
+    }
+
+    @JsonIgnore
+    public String getRetryHash() {
+        return testCaseHash == null || parametersHash == null
+                ? null
+                : testCaseHash + "." + parametersHash;
     }
 
     public void addExtraBlock(final String blockName, final Object block) {

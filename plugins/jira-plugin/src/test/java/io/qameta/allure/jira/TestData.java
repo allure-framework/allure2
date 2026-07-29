@@ -59,10 +59,13 @@ public final class TestData {
     }
 
     public static TestResult createTestResult(final Status status) {
+        final String testCaseHash = RandomStringUtils.insecure().nextAlphanumeric(9);
+        final String parametersHash = RandomStringUtils.insecure().nextAlphanumeric(9);
         return new TestResult()
                 .setUid(RandomStringUtils.insecure().nextAlphanumeric(10))
                 .setName(RandomStringUtils.insecure().nextAlphanumeric(10))
-                .setHistoryId(RandomStringUtils.insecure().nextAlphanumeric(9))
+                .setTestCaseHash(testCaseHash)
+                .setParametersHash(parametersHash)
                 .setStatus(status);
     }
 

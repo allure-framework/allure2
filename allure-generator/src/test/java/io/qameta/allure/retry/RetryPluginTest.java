@@ -41,6 +41,7 @@ class RetryPluginTest {
     private static final String FIRST_RESULT = "first";
     private static final String SECOND_RESULT = "second";
     private static final String LAST_RESULT = "last";
+    private static final String PARAMETERS_HASH = "parameters";
 
     private RetryPlugin retryPlugin = new RetryPlugin();
 
@@ -50,12 +51,12 @@ class RetryPluginTest {
     @Description
     @Test
     void shouldMergeRetriesTestResults() {
-        String historyId = UUID.randomUUID().toString();
+        String retryHash = UUID.randomUUID().toString();
 
         List<LaunchResults> launchResultsList = createSingleLaunchResults(
-                createTestResult(FIRST_RESULT, historyId, 1L, 9L),
-                createTestResult(SECOND_RESULT, historyId, 11L, 19L),
-                createTestResult(LAST_RESULT, historyId, 21L, 29L)
+                createTestResult(FIRST_RESULT, retryHash, 1L, 9L),
+                createTestResult(SECOND_RESULT, retryHash, 11L, 19L),
+                createTestResult(LAST_RESULT, retryHash, 21L, 29L)
         );
 
         retryPlugin.aggregate(null, launchResultsList, null);
@@ -90,17 +91,17 @@ class RetryPluginTest {
     }
 
     /**
-     * Verifies retry aggregation keeps unrelated history ids separate.
+     * Verifies retry aggregation keeps unrelated retry hashes separate.
      */
     @Description
     @Test
     void shouldNotMergeOtherTestResults() {
-        String firstHistoryId = UUID.randomUUID().toString();
-        String secondHistoryId = UUID.randomUUID().toString();
+        String firstRetryHash = UUID.randomUUID().toString();
+        String secondRetryHash = UUID.randomUUID().toString();
 
         List<LaunchResults> launchResultsList = createSingleLaunchResults(
-                createTestResult(FIRST_RESULT, firstHistoryId, 1L, 9L),
-                createTestResult(SECOND_RESULT, secondHistoryId, 11L, 19L)
+                createTestResult(FIRST_RESULT, firstRetryHash, 1L, 9L),
+                createTestResult(SECOND_RESULT, secondRetryHash, 11L, 19L)
         );
 
         retryPlugin.aggregate(null, launchResultsList, null);
@@ -117,16 +118,14 @@ class RetryPluginTest {
     }
 
     /**
-     * Verifies generated retry hashes keep parameterized results with a shared history id separate.
+     * Verifies results without a generated retry hash are not merged.
      */
     @Description
     @Test
-    void shouldPreferRetryHashOverHistoryId() {
-        String historyId = UUID.randomUUID().toString();
-
+    void shouldIgnoreResultsWithoutRetryHash() {
         List<LaunchResults> launchResultsList = createSingleLaunchResults(
-                createTestResult(FIRST_RESULT, historyId, 1L, 9L).setRetryHash("first-retry-hash"),
-                createTestResult(SECOND_RESULT, historyId, 11L, 19L).setRetryHash("second-retry-hash")
+                createTestResult(FIRST_RESULT, null, 1L, 9L),
+                createTestResult(SECOND_RESULT, null, 11L, 19L)
         );
 
         retryPlugin.aggregate(null, launchResultsList, null);
@@ -137,14 +136,14 @@ class RetryPluginTest {
     }
 
     /**
-     * Verifies generated retry hashes merge attempts even when adapters provide different history ids.
+     * Verifies matching retry hashes merge attempts.
      */
     @Description
     @Test
     void shouldMergeByRetryHash() {
         List<LaunchResults> launchResultsList = createSingleLaunchResults(
-                createTestResult(FIRST_RESULT, "first-history-id", 1L, 9L).setRetryHash("retry-hash"),
-                createTestResult(SECOND_RESULT, "second-history-id", 11L, 19L).setRetryHash("retry-hash")
+                createTestResult(FIRST_RESULT, "retry-hash", 1L, 9L),
+                createTestResult(SECOND_RESULT, "retry-hash", 11L, 19L)
         );
 
         retryPlugin.aggregate(null, launchResultsList, null);
@@ -163,11 +162,11 @@ class RetryPluginTest {
     @Description
     @Test
     void shouldSkipHiddenResults() {
-        String historyId = UUID.randomUUID().toString();
+        String retryHash = UUID.randomUUID().toString();
         List<LaunchResults> launchResultsList = createSingleLaunchResults(
-                createTestResult(FIRST_RESULT, historyId, 1L, 9L),
-                createTestResult(SECOND_RESULT, historyId, 11L, 19L),
-                createTestResult(LAST_RESULT, historyId, 21L, 29L).setHidden(true)
+                createTestResult(FIRST_RESULT, retryHash, 1L, 9L),
+                createTestResult(SECOND_RESULT, retryHash, 11L, 19L),
+                createTestResult(LAST_RESULT, retryHash, 21L, 29L).setHidden(true)
         );
         retryPlugin.aggregate(null, launchResultsList, null);
         Set<TestResult> results = launchResultsList.get(0).getAllResults();
@@ -191,10 +190,10 @@ class RetryPluginTest {
     @Description
     @Test
     void shouldNotMarkLatestAsFlakyIfRetriesArePassed() {
-        String historyId = UUID.randomUUID().toString();
+        String retryHash = UUID.randomUUID().toString();
         List<LaunchResults> launchResultsList = createSingleLaunchResults(
-                createTestResult(FIRST_RESULT, historyId, 1L, 9L).setStatus(Status.PASSED),
-                createTestResult(SECOND_RESULT, historyId, 11L, 19L).setStatus(Status.PASSED)
+                createTestResult(FIRST_RESULT, retryHash, 1L, 9L).setStatus(Status.PASSED),
+                createTestResult(SECOND_RESULT, retryHash, 11L, 19L).setStatus(Status.PASSED)
         );
         retryPlugin.aggregate(null, launchResultsList, null);
         Set<TestResult> results = launchResultsList.get(0).getAllResults();
@@ -216,11 +215,11 @@ class RetryPluginTest {
     @Description
     @Test
     void shouldNotMarkLatestAsFlakyIfRetriesSkipped() {
-        String historyId = UUID.randomUUID().toString();
+        String retryHash = UUID.randomUUID().toString();
         List<LaunchResults> launchResultsList = createSingleLaunchResults(
-                createTestResult(FIRST_RESULT, historyId, 1L, 9L).setStatus(Status.SKIPPED),
-                createTestResult(SECOND_RESULT, historyId, 11L, 19L).setStatus(Status.PASSED),
-                createTestResult(LAST_RESULT, historyId, 12L, 20L).setHidden(true).setStatus(Status.PASSED)
+                createTestResult(FIRST_RESULT, retryHash, 1L, 9L).setStatus(Status.SKIPPED),
+                createTestResult(SECOND_RESULT, retryHash, 11L, 19L).setStatus(Status.PASSED),
+                createTestResult(LAST_RESULT, retryHash, 12L, 20L).setHidden(true).setStatus(Status.PASSED)
         );
         retryPlugin.aggregate(null, launchResultsList, null);
         Set<TestResult> results = launchResultsList.get(0).getAllResults();
@@ -236,10 +235,11 @@ class RetryPluginTest {
                 .containsExactlyInAnyOrder(tuple(SECOND_RESULT, false));
     }
 
-    private TestResult createTestResult(String name, String historyId, long start, long stop) {
+    private TestResult createTestResult(String name, String retryHash, long start, long stop) {
         return new TestResult()
                 .setName(name)
-                .setHistoryId(historyId)
+                .setTestCaseHash(retryHash)
+                .setParametersHash(PARAMETERS_HASH)
                 .setStatus(Status.BROKEN)
                 .setTime(new Time().setStart(start).setStop(stop));
     }

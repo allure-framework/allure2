@@ -257,13 +257,12 @@ public class JunitXmlPlugin implements Reader {
         final String className = testCaseElement.getAttribute(CLASS_NAME_ATTRIBUTE_NAME);
         final Optional<String> suiteName = firstNotNull(info.getName(), className);
         final String name = testCaseElement.getAttribute(NAME_ATTRIBUTE_NAME);
-        final String historyId = String.format("%s:%s#%s", info.getName(), className, name);
         final TestResult result = new TestResult();
-        if (nonNull(className) && nonNull(name)) {
-            result.setHistoryId(historyId);
-        }
         result.setUid(context.getValue().get());
         result.setName(isNull(name) ? "Unknown test case" : name);
+        if (nonNull(className) && nonNull(name)) {
+            result.setFullName(className + "." + name);
+        }
         result.setTime(getTime(info.getTimestamp(), testCaseElement, parsedFile));
         result.addLabelIfNotExists(RESULT_FORMAT, JUNIT_RESULTS_FORMAT);
         setParameters(result, testCaseElement);

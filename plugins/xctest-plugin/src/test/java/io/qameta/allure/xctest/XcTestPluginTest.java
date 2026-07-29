@@ -16,6 +16,7 @@
 package io.qameta.allure.xctest;
 
 import io.qameta.allure.Allure;
+import io.qameta.allure.DefaultResultsVisitor;
 import io.qameta.allure.Description;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
@@ -66,7 +67,7 @@ class XcTestPluginTest {
 
     /**
      * Verifies an XCTest plist is parsed into Allure test results.
-     * The test checks the number of emitted results from the sample report.
+     * The test checks the emitted count and generated identity hashes.
      */
     @Description
     @Test
@@ -79,6 +80,14 @@ class XcTestPluginTest {
 
         assertThat(results)
                 .hasSize(14);
+
+        results.forEach(result -> {
+            assertThat(result.getTestCaseHash()).as("test case hash for %s", result.getName()).isNotNull();
+            assertThat(result.getParametersHash()).as("parameters hash for %s", result.getName()).isNotNull();
+            assertThat(result.getRetryHash())
+                    .as("retry hash for %s", result.getName())
+                    .isEqualTo(result.getTestCaseHash() + "." + result.getParametersHash());
+        });
     }
 
     /**
@@ -307,6 +316,8 @@ class XcTestPluginTest {
             final ArgumentCaptor<TestResult> captor = ArgumentCaptor.forClass(TestResult.class);
             verify(visitor, times(expectedCount)).visitTestResult(captor.capture());
             final List<TestResult> results = captor.getAllValues();
+            final DefaultResultsVisitor resultVisitor = new DefaultResultsVisitor(configuration);
+            results.forEach(resultVisitor::visitTestResult);
             Allure.addAttachment("parsed-test-results.txt", "text/plain", describeTestResults(results));
             return results;
         });

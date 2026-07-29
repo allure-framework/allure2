@@ -50,13 +50,9 @@ public class RetryPlugin implements Aggregator2 {
 
         final Map<String, List<TestResult>> byRetryHash = launchesResults.stream()
                 .flatMap(results -> results.getAllResults().stream())
-                .filter(result -> Objects.nonNull(getRetryHash(result)))
-                .collect(Collectors.toMap(this::getRetryHash, Arrays::asList, this::merge));
+                .filter(result -> Objects.nonNull(result.getRetryHash()))
+                .collect(Collectors.toMap(TestResult::getRetryHash, Arrays::asList, this::merge));
         byRetryHash.forEach((retryHash, results) -> findLatest(results).ifPresent(addRetries(results)));
-    }
-
-    private String getRetryHash(final TestResult result) {
-        return Objects.nonNull(result.getRetryHash()) ? result.getRetryHash() : result.getHistoryId();
     }
 
     private Consumer<TestResult> addRetries(final List<TestResult> results) {

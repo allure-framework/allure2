@@ -16,6 +16,7 @@
 package io.qameta.allure.trx;
 
 import io.qameta.allure.Allure;
+import io.qameta.allure.DefaultResultsVisitor;
 import io.qameta.allure.Description;
 import io.qameta.allure.Issue;
 import io.qameta.allure.context.RandomUidContext;
@@ -73,7 +74,7 @@ class TrxPluginTest {
 
     /**
      * Verifies a TRX file is converted into Allure test results.
-     * The test checks parsed names, statuses, descriptions, and result format labels.
+     * The test checks parsed data, generated identity hashes, and result format labels.
      */
     @Description
     @Test
@@ -99,6 +100,14 @@ class TrxPluginTest {
                 .extracting(result -> result.findOneLabel(LabelName.RESULT_FORMAT))
                 .extracting(Optional::get)
                 .containsOnly(TrxPlugin.TRX_RESULTS_FORMAT);
+
+        results.forEach(result -> {
+            assertThat(result.getTestCaseHash()).as("test case hash for %s", result.getName()).isNotNull();
+            assertThat(result.getParametersHash()).as("parameters hash for %s", result.getName()).isNotNull();
+            assertThat(result.getRetryHash())
+                    .as("retry hash for %s", result.getName())
+                    .isEqualTo(result.getTestCaseHash() + "." + result.getParametersHash());
+        });
 
     }
 
@@ -311,6 +320,8 @@ class TrxPluginTest {
             final ArgumentCaptor<TestResult> captor = ArgumentCaptor.captor();
             verify(visitor, times(expectedCount)).visitTestResult(captor.capture());
             final List<TestResult> results = captor.getAllValues();
+            final DefaultResultsVisitor resultVisitor = new DefaultResultsVisitor(configuration);
+            results.forEach(resultVisitor::visitTestResult);
             Allure.addAttachment("parsed-test-results.txt", "text/plain", describeTestResults(results));
             return results;
         });

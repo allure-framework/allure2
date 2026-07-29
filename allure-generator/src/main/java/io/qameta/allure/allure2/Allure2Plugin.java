@@ -36,6 +36,7 @@ import io.qameta.allure.model.StepResult;
 import io.qameta.allure.model.TestResult;
 import io.qameta.allure.model.TestResultContainer;
 import io.qameta.allure.util.HtmlSanitizerUtils;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -90,6 +91,10 @@ public class Allure2Plugin implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Allure2Plugin.class);
 
+    private static final String ALLURE_ID_LABEL = "ALLURE_ID";
+    private static final String AS_ID_LABEL = "AS_ID";
+    private static final String UNKNOWN_PARAMETER_VALUE = "#___unknown_value___#";
+
     private static final Pattern ATTACHMENT_SOURCE_PATTERN = Pattern.compile("^[a-zA-Z0-9._-]{1,100}$");
 
     private static final Comparator<StageResult> BY_START = comparing(
@@ -99,6 +104,9 @@ public class Allure2Plugin implements Reader {
 
     private static final Comparator<Parameter> PARAMETER_COMPARATOR = comparing(Parameter::getName, nullsFirst(naturalOrder()))
             .thenComparing(Parameter::getValue, nullsFirst(naturalOrder()));
+
+    private static final Comparator<io.qameta.allure.model.Parameter> RETRY_PARAMETER_COMPARATOR = comparing(io.qameta.allure.model.Parameter::getName)
+            .thenComparing(parameter -> Objects.toString(parameter.getValue(), UNKNOWN_PARAMETER_VALUE));
 
     private final ObjectMapper mapper = JsonMapper.builder()
             .enable(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME)
@@ -180,17 +188,62 @@ public class Allure2Plugin implements Reader {
                 }));
     }
 
+    static String getTestCaseHash(final TestResult result) {
+        final String identity = getTestCaseIdentity(result);
+        return Optional.ofNullable(identity)
+                .map(DigestUtils::md5Hex)
+                .orElse(null);
+    }
+
+    static String getParametersHash(final TestResult result) {
+        final String parameters = Optional.ofNullable(result.getParameters())
+                .orElseGet(ArrayList::new)
+                .stream()
+                .filter(Objects::nonNull)
+                .filter(parameter -> nonNull(parameter.getName()))
+                .filter(parameter -> !parameter.getName().isEmpty())
+                .filter(parameter -> !Boolean.TRUE.equals(parameter.getExcluded()))
+                .sorted(RETRY_PARAMETER_COMPARATOR)
+                .map(
+                        parameter -> parameter.getName()
+                                + ":"
+                                + Objects.toString(parameter.getValue(), UNKNOWN_PARAMETER_VALUE)
+                )
+                .collect(Collectors.joining(","));
+        return DigestUtils.md5Hex(parameters);
+    }
+
+    private static String getTestCaseIdentity(final TestResult result) {
+        final String allureId = Optional.ofNullable(result.getLabels())
+                .orElseGet(ArrayList::new)
+                .stream()
+                .filter(Objects::nonNull)
+                .filter(label -> ALLURE_ID_LABEL.equals(label.getName()) || AS_ID_LABEL.equals(label.getName()))
+                .map(io.qameta.allure.model.Label::getValue)
+                .filter(Objects::nonNull)
+                .filter(value -> !value.isEmpty())
+                .findFirst()
+                .orElse(null);
+        final String allureIdentity = Optional.ofNullable(allureId)
+                .map(id -> ALLURE_ID_LABEL + "=" + id)
+                .orElse(null);
+        return Stream.of(allureIdentity, result.getTestCaseId(), result.getFullName())
+                .filter(Objects::nonNull)
+                .filter(value -> !value.isEmpty())
+                .findFirst()
+                .orElse(null);
+    }
+
     private void convert(final Supplier<String> uidGenerator,
                          final Path resultsDirectory,
                          final ResultsVisitor visitor,
                          final TestResult result,
                          final Map<String, List<StageResult>> befores,
                          final Map<String, List<StageResult>> afters) {
-        final io.qameta.allure.entity.TestResult dest = new io.qameta.allure.entity.TestResult();
-        final Allure2RetryHashCalculator.Identifiers identifiers = Allure2RetryHashCalculator.calculate(result);
-        dest.setUid(uidGenerator.get());
-        dest.setHistoryId(identifiers.getHistoryId());
-        dest.setRetryHash(identifiers.getRetryHash());
+        final io.qameta.allure.entity.TestResult dest = new io.qameta.allure.entity.TestResult()
+                .setTestCaseHash(getTestCaseHash(result))
+                .setParametersHash(getParametersHash(result))
+                .setUid(uidGenerator.get());
         dest.setFullName(result.getFullName());
         dest.setName(firstNonNull(result.getName(), result.getFullName(), "Unknown test"));
         dest.setTime(Time.create(result.getStart(), result.getStop()));

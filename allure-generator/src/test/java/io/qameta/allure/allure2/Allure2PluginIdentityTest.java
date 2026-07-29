@@ -24,15 +24,16 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static io.qameta.allure.allure2.Allure2RetryHashCalculator.calculate;
+import static io.qameta.allure.allure2.Allure2Plugin.getParametersHash;
+import static io.qameta.allure.allure2.Allure2Plugin.getTestCaseHash;
 import static io.qameta.allure.model.Parameter.Mode.HIDDEN;
 import static io.qameta.allure.model.Parameter.Mode.MASKED;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class Allure2RetryHashCalculatorTest {
+class Allure2PluginIdentityTest {
 
     /**
-     * Verifies history and retry identifier compatibility with Allure 3, including raw hidden and masked values.
+     * Verifies identity hash compatibility, including raw hidden and masked parameter values.
      */
     @Description
     @Test
@@ -50,15 +51,16 @@ class Allure2RetryHashCalculatorTest {
                         )
                 );
 
-        final Allure2RetryHashCalculator.Identifiers identifiers = calculate(result);
+        final io.qameta.allure.entity.TestResult identity = calculateIdentity(result);
 
-        assertThat(identifiers.getHistoryId())
+        assertThat(identity.getTestCaseHash()).isEqualTo("c6afc390a37d516b75b0889d60eadf7b");
+        assertThat(identity.getParametersHash()).isEqualTo("a0995c760832a18e23b1ad9d26b6ede1");
+        assertThat(identity.getRetryHash())
                 .isEqualTo("c6afc390a37d516b75b0889d60eadf7b.a0995c760832a18e23b1ad9d26b6ede1");
-        assertThat(identifiers.getRetryHash()).isEqualTo("fbd6d583218739ca9c0497362505bf43");
     }
 
     /**
-     * Verifies adapter-provided history ids do not participate in generated identifier calculation.
+     * Verifies adapter-provided history ids do not participate in identity hash calculation.
      */
     @Description
     @Test
@@ -67,21 +69,22 @@ class Allure2RetryHashCalculatorTest {
                 .setTestCaseId("test-case-id")
                 .setHistoryId("first-history-id")
                 .setParameters(Collections.singletonList(parameter("argument", "value")));
-        final Allure2RetryHashCalculator.Identifiers first = calculate(result);
+        final io.qameta.allure.entity.TestResult first = calculateIdentity(result);
 
         result.setHistoryId("second-history-id");
 
-        final Allure2RetryHashCalculator.Identifiers second = calculate(result);
-        assertThat(second.getHistoryId()).isEqualTo(first.getHistoryId());
+        final io.qameta.allure.entity.TestResult second = calculateIdentity(result);
+        assertThat(second.getTestCaseHash()).isEqualTo(first.getTestCaseHash());
+        assertThat(second.getParametersHash()).isEqualTo(first.getParametersHash());
         assertThat(second.getRetryHash()).isEqualTo(first.getRetryHash());
     }
 
     /**
-     * Verifies parameter variants receive separate history ids even when an adapter reuses its history id.
+     * Verifies parameter variants receive separate retry hashes even when an adapter reuses its history id.
      */
     @Description
     @Test
-    void shouldSeparateHistoryByParameters() {
+    void shouldSeparateRetriesByParameters() {
         final TestResult first = new TestResult()
                 .setTestCaseId("test-case-id")
                 .setHistoryId("shared-adapter-history-id")
@@ -91,7 +94,7 @@ class Allure2RetryHashCalculatorTest {
                 .setHistoryId("shared-adapter-history-id")
                 .setParameters(Collections.singletonList(parameter("argument", "second")));
 
-        assertThat(calculate(first).getHistoryId()).isNotEqualTo(calculate(second).getHistoryId());
+        assertThat(calculateIdentity(first).getRetryHash()).isNotEqualTo(calculateIdentity(second).getRetryHash());
     }
 
     /**
@@ -103,7 +106,12 @@ class Allure2RetryHashCalculatorTest {
         final TestResult result = new TestResult()
                 .setFullName("org.example.ExampleTest.parameterized(java.lang.String)");
 
-        assertThat(calculate(result).getRetryHash()).isEqualTo("50edf5c4826881a53ed73dc3350766a7");
+        final io.qameta.allure.entity.TestResult identity = calculateIdentity(result);
+
+        assertThat(identity.getTestCaseHash()).isEqualTo("72aa5b1c6dc992de123d1924d01f74d0");
+        assertThat(identity.getParametersHash()).isEqualTo("d41d8cd98f00b204e9800998ecf8427e");
+        assertThat(identity.getRetryHash())
+                .isEqualTo("72aa5b1c6dc992de123d1924d01f74d0.d41d8cd98f00b204e9800998ecf8427e");
     }
 
     /**
@@ -116,19 +124,30 @@ class Allure2RetryHashCalculatorTest {
                 .setTestCaseId("test-case-id")
                 .setLabels(Collections.singletonList(new Label().setName("AS_ID").setValue("123")));
 
-        assertThat(calculate(result).getRetryHash()).isEqualTo("4619a6b0bbfb4dafaba4e1044eee6eac");
+        final io.qameta.allure.entity.TestResult identity = calculateIdentity(result);
+
+        assertThat(identity.getTestCaseHash()).isEqualTo("094bc5de67cbc4ea04b49808c98bbf69");
+        assertThat(identity.getRetryHash())
+                .isEqualTo("094bc5de67cbc4ea04b49808c98bbf69.d41d8cd98f00b204e9800998ecf8427e");
     }
 
     /**
-     * Verifies results without a stable test identity are not grouped as retries.
+     * Verifies results without a stable test identity retain only their parameter hash.
      */
     @Description
     @Test
     void shouldNotCalculateRetryHashWithoutTestIdentity() {
-        final Allure2RetryHashCalculator.Identifiers identifiers = calculate(new TestResult());
+        final io.qameta.allure.entity.TestResult identity = calculateIdentity(new TestResult());
 
-        assertThat(identifiers.getHistoryId()).isNull();
-        assertThat(identifiers.getRetryHash()).isNull();
+        assertThat(identity.getTestCaseHash()).isNull();
+        assertThat(identity.getParametersHash()).isEqualTo("d41d8cd98f00b204e9800998ecf8427e");
+        assertThat(identity.getRetryHash()).isNull();
+    }
+
+    private static io.qameta.allure.entity.TestResult calculateIdentity(final TestResult result) {
+        return new io.qameta.allure.entity.TestResult()
+                .setTestCaseHash(getTestCaseHash(result))
+                .setParametersHash(getParametersHash(result));
     }
 
     private static Parameter parameter(final String name, final String value) {

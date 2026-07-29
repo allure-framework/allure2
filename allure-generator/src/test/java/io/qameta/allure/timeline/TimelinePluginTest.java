@@ -42,6 +42,7 @@ class TimelinePluginTest {
     private static final String FIRST_UID = "first-attempt";
     private static final String SECOND_UID = "second-attempt";
     private static final String LATEST_UID = "latest-attempt";
+    private static final String PARAMETERS_HASH = "parameters";
 
     private final ObjectMapper mapper = JsonMapper.builder()
             .serializationInclusion(JsonInclude.Include.NON_NULL)
@@ -58,11 +59,11 @@ class TimelinePluginTest {
     @Test
     void shouldMarkRetriesInTimelineJson() throws Exception {
         Allure.label("component", "timeline");
-        final String historyId = UUID.randomUUID().toString();
+        final String retryHash = UUID.randomUUID().toString();
         final List<LaunchResults> launchResults = createSingleLaunchResults(
-                createTestResult("first attempt", FIRST_UID, historyId, 1L, 9L),
-                createTestResult("second attempt", SECOND_UID, historyId, 11L, 19L),
-                createTestResult("latest attempt", LATEST_UID, historyId, 21L, 29L)
+                createTestResult("first attempt", FIRST_UID, retryHash, 1L, 9L),
+                createTestResult("second attempt", SECOND_UID, retryHash, 11L, 19L),
+                createTestResult("latest attempt", LATEST_UID, retryHash, 21L, 29L)
         );
 
         Allure.step("Aggregate retries before timeline generation", () -> {
@@ -105,13 +106,14 @@ class TimelinePluginTest {
 
     private TestResult createTestResult(final String name,
                                         final String uid,
-                                        final String historyId,
+                                        final String retryHash,
                                         final long start,
                                         final long stop) {
         return new TestResult()
                 .setName(name)
                 .setUid(uid)
-                .setHistoryId(historyId)
+                .setTestCaseHash(retryHash)
+                .setParametersHash(PARAMETERS_HASH)
                 .setStatus(Status.BROKEN)
                 .setLabels(
                         asList(
