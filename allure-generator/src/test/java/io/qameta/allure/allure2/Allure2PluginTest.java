@@ -306,6 +306,26 @@ class Allure2PluginTest {
     }
 
     /**
+     * Verifies replacing adapter history ids with Allure 3-compatible history and retry identifiers.
+     */
+    @Description
+    @Test
+    void shouldCalculateHistoryAndRetryIdentifiers() throws Exception {
+        Set<TestResult> testResults = process(
+                "allure2/parameters.json", generateTestResultName()
+        ).getResults();
+
+        assertThat(testResults)
+                .extracting(TestResult::getHistoryId, TestResult::getRetryHash)
+                .containsExactly(
+                        tuple(
+                                "fa121e5badc3c93651d3921a7898a04c.9030faa44fb9da8aeaee27f28c29a4f9",
+                                "20dc506b9484d24d5d97927b50bc592d"
+                        )
+                );
+    }
+
+    /**
      * Verifies processing step parameters for Allure 2 parsing.
      */
     @Description

@@ -117,6 +117,47 @@ class RetryPluginTest {
     }
 
     /**
+     * Verifies generated retry hashes keep parameterized results with a shared history id separate.
+     */
+    @Description
+    @Test
+    void shouldPreferRetryHashOverHistoryId() {
+        String historyId = UUID.randomUUID().toString();
+
+        List<LaunchResults> launchResultsList = createSingleLaunchResults(
+                createTestResult(FIRST_RESULT, historyId, 1L, 9L).setRetryHash("first-retry-hash"),
+                createTestResult(SECOND_RESULT, historyId, 11L, 19L).setRetryHash("second-retry-hash")
+        );
+
+        retryPlugin.aggregate(null, launchResultsList, null);
+
+        assertThat(launchResultsList.get(0).getAllResults())
+                .filteredOn(TestResult::isHidden)
+                .isEmpty();
+    }
+
+    /**
+     * Verifies generated retry hashes merge attempts even when adapters provide different history ids.
+     */
+    @Description
+    @Test
+    void shouldMergeByRetryHash() {
+        List<LaunchResults> launchResultsList = createSingleLaunchResults(
+                createTestResult(FIRST_RESULT, "first-history-id", 1L, 9L).setRetryHash("retry-hash"),
+                createTestResult(SECOND_RESULT, "second-history-id", 11L, 19L).setRetryHash("retry-hash")
+        );
+
+        retryPlugin.aggregate(null, launchResultsList, null);
+
+        assertThat(launchResultsList.get(0).getAllResults())
+                .extracting(TestResult::getName, TestResult::isHidden, TestResult::getRetriesCount)
+                .containsExactlyInAnyOrder(
+                        tuple(FIRST_RESULT, true, 0),
+                        tuple(SECOND_RESULT, false, 1)
+                );
+    }
+
+    /**
      * Verifies retry aggregation keeps hidden results out of latest-result selection.
      */
     @Description

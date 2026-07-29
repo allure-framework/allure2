@@ -15,6 +15,7 @@
  */
 package io.qameta.allure.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -46,6 +47,8 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
     protected String name;
     protected String fullName;
     protected String historyId;
+    @JsonIgnore
+    protected String retryHash;
     protected String testId;
     protected Time time = new Time();
     protected String description;

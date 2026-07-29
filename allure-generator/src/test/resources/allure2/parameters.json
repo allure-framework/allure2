@@ -1,4 +1,6 @@
 {
+  "testCaseId": "org.example.ParameterTest.parameters",
+  "historyId": "adapter-provided-history-id",
   "name": "Status is passed",
   "status": "Passed",
   "parameters": [
