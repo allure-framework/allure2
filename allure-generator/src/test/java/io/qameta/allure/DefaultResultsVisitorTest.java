@@ -24,6 +24,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -63,6 +64,48 @@ class DefaultResultsVisitorTest {
         assertThat(result.getTestCaseHash()).isNull();
         assertThat(result.getParametersHash()).isEqualTo("d41d8cd98f00b204e9800998ecf8427e");
         assertThat(result.getRetryHash()).isNull();
+    }
+
+    /**
+     * Verifies the storage-boundary fallback collapses exact duplicate parameter pairs.
+     */
+    @Description
+    @Test
+    void shouldCollapseExactDuplicateParameters() {
+        final DefaultResultsVisitor visitor = new DefaultResultsVisitor(ConfigurationBuilder.empty().build());
+        final TestResult result = new TestResult()
+                .setFullName("org.example.ExampleTest.test")
+                .setParameters(
+                        Arrays.asList(
+                                new Parameter().setName("argument").setValue("value"),
+                                new Parameter().setName("argument").setValue("value")
+                        )
+                );
+
+        visitor.visitTestResult(result);
+
+        assertThat(result.getParametersHash()).isEqualTo("310bf7d9fc9765b03f3a78f1816f40a8");
+    }
+
+    /**
+     * Verifies the storage-boundary fallback orders parameters by UTF-8 bytes.
+     */
+    @Description
+    @Test
+    void shouldSortParametersByUtf8Bytes() {
+        final DefaultResultsVisitor visitor = new DefaultResultsVisitor(ConfigurationBuilder.empty().build());
+        final TestResult result = new TestResult()
+                .setFullName("org.example.ExampleTest.test")
+                .setParameters(
+                        Arrays.asList(
+                                new Parameter().setName("\uD83D\uDE00").setValue("value"),
+                                new Parameter().setName("\uE000").setValue("value")
+                        )
+                );
+
+        visitor.visitTestResult(result);
+
+        assertThat(result.getParametersHash()).isEqualTo("a6cd7ed419df4da92294adabd4ff4904");
     }
 
     /**

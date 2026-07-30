@@ -306,7 +306,7 @@ class Allure2PluginTest {
     }
 
     /**
-     * Verifies replacing adapter history ids with generated identity hashes.
+     * Verifies ignoring adapter-provided identity fields and calculating canonical hashes.
      */
     @Description
     @Test

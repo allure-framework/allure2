@@ -74,9 +74,14 @@ class Allure2PluginIdentityTest {
         result.setHistoryId("second-history-id");
 
         final io.qameta.allure.entity.TestResult second = calculateIdentity(result);
+
         assertThat(second.getTestCaseHash()).isEqualTo(first.getTestCaseHash());
         assertThat(second.getParametersHash()).isEqualTo(first.getParametersHash());
         assertThat(second.getRetryHash()).isEqualTo(first.getRetryHash());
+        assertThat(second.getTestCaseHash()).isEqualTo("97a2c529ed683cc603ce988040c657f8");
+        assertThat(second.getParametersHash()).isEqualTo("310bf7d9fc9765b03f3a78f1816f40a8");
+        assertThat(second.getRetryHash())
+                .isEqualTo("97a2c529ed683cc603ce988040c657f8.310bf7d9fc9765b03f3a78f1816f40a8");
     }
 
     /**
@@ -98,6 +103,81 @@ class Allure2PluginIdentityTest {
     }
 
     /**
+     * Verifies exact duplicate parameter pairs do not change parameter identity.
+     */
+    @Description
+    @Test
+    void shouldCollapseExactDuplicateParameters() {
+        final TestResult withDuplicate = new TestResult()
+                .setParameters(
+                        Arrays.asList(
+                                parameter("argument", "value"),
+                                parameter("argument", "value")
+                        )
+                );
+        final TestResult withoutDuplicate = new TestResult()
+                .setParameters(Collections.singletonList(parameter("argument", "value")));
+
+        assertThat(getParametersHash(withDuplicate))
+                .isEqualTo("310bf7d9fc9765b03f3a78f1816f40a8")
+                .isEqualTo(getParametersHash(withoutDuplicate));
+    }
+
+    /**
+     * Verifies parameters with the same name and different values remain part of parameter identity.
+     */
+    @Description
+    @Test
+    void shouldKeepSameNamedParametersWithDifferentValues() {
+        final TestResult result = new TestResult()
+                .setParameters(
+                        Arrays.asList(
+                                parameter("argument", "second"),
+                                parameter("argument", "first")
+                        )
+                );
+
+        assertThat(getParametersHash(result)).isEqualTo("6e29f32eaf2b41fc71988ccc7ad13ac2");
+    }
+
+    /**
+     * Verifies parameter ordering compares UTF-8 bytes instead of UTF-16 code units.
+     */
+    @Description
+    @Test
+    void shouldSortParametersByUtf8Bytes() {
+        final TestResult result = new TestResult()
+                .setParameters(
+                        Arrays.asList(
+                                parameter("\uD83D\uDE00", "value"),
+                                parameter("\uE000", "value")
+                        )
+                );
+
+        assertThat(getParametersHash(result)).isEqualTo("a6cd7ed419df4da92294adabd4ff4904");
+    }
+
+    /**
+     * Verifies invalid and excluded parameters are discarded and null values use the compatibility sentinel.
+     */
+    @Description
+    @Test
+    void shouldNormalizeParametersBeforeHashing() {
+        final TestResult result = new TestResult()
+                .setParameters(
+                        Arrays.asList(
+                                null,
+                                parameter(null, "ignored"),
+                                parameter("", "ignored"),
+                                parameter("excluded", "ignored").setExcluded(true),
+                                parameter("missing", null)
+                        )
+                );
+
+        assertThat(getParametersHash(result)).isEqualTo("3bf9dbcebd98256fba82c63e37384e7d");
+    }
+
+    /**
      * Verifies full name fallback compatibility with Allure 3 for results without a test case id.
      */
     @Description
@@ -115,20 +195,61 @@ class Allure2PluginIdentityTest {
     }
 
     /**
-     * Verifies explicit Allure ids take precedence over adapter test case ids.
+     * Verifies external Allure ids do not change execution identity hashes.
      */
     @Description
     @Test
-    void shouldPreferAllureId() {
+    void shouldIgnoreAllureIdLabelsForIdentityHashes() {
         final TestResult result = new TestResult()
                 .setTestCaseId("test-case-id")
-                .setLabels(Collections.singletonList(new Label().setName("AS_ID").setValue("123")));
+                .setParameters(Collections.singletonList(parameter("argument", "value")));
+        final io.qameta.allure.entity.TestResult withoutAllureId = calculateIdentity(result);
 
-        final io.qameta.allure.entity.TestResult identity = calculateIdentity(result);
+        result.setLabels(Collections.singletonList(new Label().setName("AS_ID").setValue("123")));
+        final io.qameta.allure.entity.TestResult withAsId = calculateIdentity(result);
 
-        assertThat(identity.getTestCaseHash()).isEqualTo("094bc5de67cbc4ea04b49808c98bbf69");
-        assertThat(identity.getRetryHash())
-                .isEqualTo("094bc5de67cbc4ea04b49808c98bbf69.d41d8cd98f00b204e9800998ecf8427e");
+        result.setLabels(Collections.singletonList(new Label().setName("ALLURE_ID").setValue("123")));
+        final io.qameta.allure.entity.TestResult withAllureId = calculateIdentity(result);
+
+        assertThat(withAsId.getTestCaseHash()).isEqualTo(withoutAllureId.getTestCaseHash());
+        assertThat(withAsId.getParametersHash()).isEqualTo(withoutAllureId.getParametersHash());
+        assertThat(withAsId.getRetryHash()).isEqualTo(withoutAllureId.getRetryHash());
+        assertThat(withAllureId.getTestCaseHash()).isEqualTo(withoutAllureId.getTestCaseHash());
+        assertThat(withAllureId.getParametersHash()).isEqualTo(withoutAllureId.getParametersHash());
+        assertThat(withAllureId.getRetryHash()).isEqualTo(withoutAllureId.getRetryHash());
+
+        result.setTestCaseId(null);
+        final io.qameta.allure.entity.TestResult withoutTestCaseIdentity = calculateIdentity(result);
+
+        assertThat(withoutTestCaseIdentity.getTestCaseHash()).isNull();
+        assertThat(withoutTestCaseIdentity.getRetryHash()).isNull();
+    }
+
+    /**
+     * Verifies fallback test case ids are ignored when no cross-report test-case catalog exists.
+     */
+    @Description
+    @Test
+    void shouldIgnoreFallbackTestCaseIdWithoutCatalog() {
+        final TestResult result = new TestResult()
+                .setTestCaseId("current-test-case-id");
+        final io.qameta.allure.entity.TestResult withoutFallback = calculateIdentity(result);
+
+        result.setLabels(
+                Collections.singletonList(
+                        new Label().setName("_fallbackTestCaseId").setValue("previous-test-case-id")
+                )
+        );
+        final io.qameta.allure.entity.TestResult withFallback = calculateIdentity(result);
+
+        assertThat(withFallback.getTestCaseHash()).isEqualTo(withoutFallback.getTestCaseHash());
+        assertThat(withFallback.getRetryHash()).isEqualTo(withoutFallback.getRetryHash());
+
+        result.setTestCaseId(null);
+        final io.qameta.allure.entity.TestResult withoutTestCaseIdentity = calculateIdentity(result);
+
+        assertThat(withoutTestCaseIdentity.getTestCaseHash()).isNull();
+        assertThat(withoutTestCaseIdentity.getRetryHash()).isNull();
     }
 
     /**

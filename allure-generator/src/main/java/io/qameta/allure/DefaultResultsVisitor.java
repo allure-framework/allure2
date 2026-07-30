@@ -31,14 +31,15 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -61,9 +62,25 @@ public class DefaultResultsVisitor implements ResultsVisitor {
 
     private static final String UNKNOWN_PARAMETER_VALUE = "#___unknown_value___#";
 
+    private static final Comparator<String> UTF8_COMPARATOR = (first, second) -> {
+        final byte[] firstBytes = first.getBytes(StandardCharsets.UTF_8);
+        final byte[] secondBytes = second.getBytes(StandardCharsets.UTF_8);
+        final int length = Math.min(firstBytes.length, secondBytes.length);
+        for (int index = 0; index < length; index++) {
+            final int comparison = Integer.compare(
+                    Byte.toUnsignedInt(firstBytes[index]),
+                    Byte.toUnsignedInt(secondBytes[index])
+            );
+            if (comparison != 0) {
+                return comparison;
+            }
+        }
+        return Integer.compare(firstBytes.length, secondBytes.length);
+    };
+
     private static final Comparator<Parameter> PARAMETER_COMPARATOR = Comparator
-            .comparing(Parameter::getName)
-            .thenComparing(DefaultResultsVisitor::getParameterValue);
+            .comparing(Parameter::getName, UTF8_COMPARATOR)
+            .thenComparing(DefaultResultsVisitor::getParameterValue, UTF8_COMPARATOR);
 
     private final Configuration configuration;
 
@@ -118,23 +135,28 @@ public class DefaultResultsVisitor implements ResultsVisitor {
         final String fullName = result.getFullName();
         return fullName == null || fullName.isEmpty()
                 ? null
-                : DigestUtils.md5Hex(fullName);
+                : md5Utf8(fullName);
     }
 
     private static String getParametersHash(final TestResult result) {
-        final List<Parameter> parameters = Optional.ofNullable(result.getParameters())
-                .orElseGet(Collections::emptyList);
-        final String value = parameters.stream()
+        final Set<Parameter> parameters = Optional.ofNullable(result.getParameters())
+                .orElseGet(Collections::emptyList)
+                .stream()
                 .filter(Objects::nonNull)
                 .filter(parameter -> parameter.getName() != null && !parameter.getName().isEmpty())
-                .sorted(PARAMETER_COMPARATOR)
+                .collect(Collectors.toCollection(() -> new TreeSet<>(PARAMETER_COMPARATOR)));
+        final String value = parameters.stream()
                 .map(parameter -> parameter.getName() + ":" + getParameterValue(parameter))
                 .collect(Collectors.joining(","));
-        return DigestUtils.md5Hex(value);
+        return md5Utf8(value);
     }
 
     private static String getParameterValue(final Parameter parameter) {
         return Objects.toString(parameter.getValue(), UNKNOWN_PARAMETER_VALUE);
+    }
+
+    private static String md5Utf8(final String value) {
+        return DigestUtils.md5Hex(value.getBytes(StandardCharsets.UTF_8));
     }
 
     @Override

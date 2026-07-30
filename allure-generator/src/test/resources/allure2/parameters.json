@@ -1,6 +1,10 @@
 {
   "testCaseId": "org.example.ParameterTest.parameters",
   "historyId": "adapter-provided-history-id",
+  "historyKey": "adapter-provided-history-key",
+  "testCaseHash": "adapter-provided-test-case-hash",
+  "parametersHash": "adapter-provided-parameters-hash",
+  "retryHash": "adapter-provided-retry-hash",
   "name": "Status is passed",
   "status": "Passed",
   "parameters": [
