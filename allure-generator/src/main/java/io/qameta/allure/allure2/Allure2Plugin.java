@@ -36,11 +36,13 @@ import io.qameta.allure.model.StepResult;
 import io.qameta.allure.model.TestResult;
 import io.qameta.allure.model.TestResultContainer;
 import io.qameta.allure.util.HtmlSanitizerUtils;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -90,6 +92,8 @@ public class Allure2Plugin implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Allure2Plugin.class);
 
+    private static final String UNKNOWN_PARAMETER_VALUE = "#___unknown_value___#";
+
     private static final Pattern ATTACHMENT_SOURCE_PATTERN = Pattern.compile("^[a-zA-Z0-9._-]{1,100}$");
 
     private static final Comparator<StageResult> BY_START = comparing(
@@ -99,6 +103,30 @@ public class Allure2Plugin implements Reader {
 
     private static final Comparator<Parameter> PARAMETER_COMPARATOR = comparing(Parameter::getName, nullsFirst(naturalOrder()))
             .thenComparing(Parameter::getValue, nullsFirst(naturalOrder()));
+
+    private static final Comparator<String> UTF8_COMPARATOR = (first, second) -> {
+        final byte[] firstBytes = first.getBytes(StandardCharsets.UTF_8);
+        final byte[] secondBytes = second.getBytes(StandardCharsets.UTF_8);
+        final int length = Math.min(firstBytes.length, secondBytes.length);
+        for (int index = 0; index < length; index++) {
+            final int comparison = Integer.compare(
+                    Byte.toUnsignedInt(firstBytes[index]),
+                    Byte.toUnsignedInt(secondBytes[index])
+            );
+            if (comparison != 0) {
+                return comparison;
+            }
+        }
+        return Integer.compare(firstBytes.length, secondBytes.length);
+    };
+
+    private static final Comparator<io.qameta.allure.model.Parameter> RETRY_PARAMETER_COMPARATOR = comparing(
+            io.qameta.allure.model.Parameter::getName,
+            UTF8_COMPARATOR
+    ).thenComparing(
+            parameter -> Objects.toString(parameter.getValue(), UNKNOWN_PARAMETER_VALUE),
+            UTF8_COMPARATOR
+    );
 
     private final ObjectMapper mapper = JsonMapper.builder()
             .enable(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME)
@@ -180,15 +208,50 @@ public class Allure2Plugin implements Reader {
                 }));
     }
 
+    static String getTestCaseHash(final TestResult result) {
+        final String identity = getTestCaseIdentity(result);
+        return Optional.ofNullable(identity)
+                .map(value -> DigestUtils.md5Hex(value.getBytes(StandardCharsets.UTF_8)))
+                .orElse(null);
+    }
+
+    static String getParametersHash(final TestResult result) {
+        final Set<io.qameta.allure.model.Parameter> parameters = Optional.ofNullable(result.getParameters())
+                .orElseGet(ArrayList::new)
+                .stream()
+                .filter(Objects::nonNull)
+                .filter(parameter -> nonNull(parameter.getName()))
+                .filter(parameter -> !parameter.getName().isEmpty())
+                .filter(parameter -> !Boolean.TRUE.equals(parameter.getExcluded()))
+                .collect(Collectors.toCollection(() -> new TreeSet<>(RETRY_PARAMETER_COMPARATOR)));
+        final String serializedParameters = parameters.stream()
+                .map(
+                        parameter -> parameter.getName()
+                                + ":"
+                                + Objects.toString(parameter.getValue(), UNKNOWN_PARAMETER_VALUE)
+                )
+                .collect(Collectors.joining(","));
+        return DigestUtils.md5Hex(serializedParameters.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private static String getTestCaseIdentity(final TestResult result) {
+        return Stream.of(result.getTestCaseId(), result.getFullName())
+                .filter(Objects::nonNull)
+                .filter(value -> !value.isEmpty())
+                .findFirst()
+                .orElse(null);
+    }
+
     private void convert(final Supplier<String> uidGenerator,
                          final Path resultsDirectory,
                          final ResultsVisitor visitor,
                          final TestResult result,
                          final Map<String, List<StageResult>> befores,
                          final Map<String, List<StageResult>> afters) {
-        final io.qameta.allure.entity.TestResult dest = new io.qameta.allure.entity.TestResult();
-        dest.setUid(uidGenerator.get());
-        dest.setHistoryId(result.getHistoryId());
+        final io.qameta.allure.entity.TestResult dest = new io.qameta.allure.entity.TestResult()
+                .setTestCaseHash(getTestCaseHash(result))
+                .setParametersHash(getParametersHash(result))
+                .setUid(uidGenerator.get());
         dest.setFullName(result.getFullName());
         dest.setName(firstNonNull(result.getName(), result.getFullName(), "Unknown test"));
         dest.setTime(Time.create(result.getStart(), result.getStop()));

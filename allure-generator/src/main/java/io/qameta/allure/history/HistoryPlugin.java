@@ -138,7 +138,7 @@ public class HistoryPlugin extends CommonJsonAggregator2 implements Reader {
                     ExecutorInfo::new
             );
             launch.getResults().stream()
-                    .filter(result -> Objects.nonNull(result.getHistoryId()))
+                    .filter(result -> Objects.nonNull(result.getRetryHash()))
                     .forEach(result -> updateHistory(history, result, executorInfo));
         });
         return history;
@@ -148,7 +148,7 @@ public class HistoryPlugin extends CommonJsonAggregator2 implements Reader {
                                final TestResult result,
                                final ExecutorInfo info) {
         final HistoryData data = history.computeIfAbsent(
-                result.getHistoryId(),
+                result.getRetryHash(),
                 id -> new HistoryData().setStatistic(new Statistic())
         );
 

@@ -17,15 +17,96 @@ package io.qameta.allure;
 
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.entity.Attachment;
+import io.qameta.allure.entity.Parameter;
+import io.qameta.allure.entity.TestResult;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class DefaultResultsVisitorTest {
+
+    /**
+     * Verifies the storage boundary fills missing identity hashes from a result's full name and parameters.
+     */
+    @Description
+    @Test
+    void shouldEnsureTestResultIdentityHashes() {
+        final DefaultResultsVisitor visitor = new DefaultResultsVisitor(ConfigurationBuilder.empty().build());
+        final TestResult result = new TestResult()
+                .setFullName("org.example.ExampleTest.test")
+                .setParameters(Collections.singletonList(new Parameter().setName("argument").setValue("value")));
+
+        visitor.visitTestResult(result);
+
+        assertThat(result.getTestCaseHash()).isEqualTo("f103a4030d01bbae3f83d8a344f63a47");
+        assertThat(result.getParametersHash()).isEqualTo("310bf7d9fc9765b03f3a78f1816f40a8");
+        assertThat(result.getRetryHash())
+                .isEqualTo("f103a4030d01bbae3f83d8a344f63a47.310bf7d9fc9765b03f3a78f1816f40a8");
+    }
+
+    /**
+     * Verifies a result without a stable test case identity cannot join a retry group.
+     */
+    @Description
+    @Test
+    void shouldNotCreateRetryHashWithoutFullName() {
+        final DefaultResultsVisitor visitor = new DefaultResultsVisitor(ConfigurationBuilder.empty().build());
+        final TestResult result = new TestResult();
+
+        visitor.visitTestResult(result);
+
+        assertThat(result.getTestCaseHash()).isNull();
+        assertThat(result.getParametersHash()).isEqualTo("d41d8cd98f00b204e9800998ecf8427e");
+        assertThat(result.getRetryHash()).isNull();
+    }
+
+    /**
+     * Verifies the storage-boundary fallback collapses exact duplicate parameter pairs.
+     */
+    @Description
+    @Test
+    void shouldCollapseExactDuplicateParameters() {
+        final DefaultResultsVisitor visitor = new DefaultResultsVisitor(ConfigurationBuilder.empty().build());
+        final TestResult result = new TestResult()
+                .setFullName("org.example.ExampleTest.test")
+                .setParameters(
+                        Arrays.asList(
+                                new Parameter().setName("argument").setValue("value"),
+                                new Parameter().setName("argument").setValue("value")
+                        )
+                );
+
+        visitor.visitTestResult(result);
+
+        assertThat(result.getParametersHash()).isEqualTo("310bf7d9fc9765b03f3a78f1816f40a8");
+    }
+
+    /**
+     * Verifies the storage-boundary fallback orders parameters by UTF-8 bytes.
+     */
+    @Description
+    @Test
+    void shouldSortParametersByUtf8Bytes() {
+        final DefaultResultsVisitor visitor = new DefaultResultsVisitor(ConfigurationBuilder.empty().build());
+        final TestResult result = new TestResult()
+                .setFullName("org.example.ExampleTest.test")
+                .setParameters(
+                        Arrays.asList(
+                                new Parameter().setName("\uD83D\uDE00").setValue("value"),
+                                new Parameter().setName("\uE000").setValue("value")
+                        )
+                );
+
+        visitor.visitTestResult(result);
+
+        assertThat(result.getParametersHash()).isEqualTo("a6cd7ed419df4da92294adabd4ff4904");
+    }
 
     /**
      * Verifies falling back to application/octet-stream for unknown attachment types.

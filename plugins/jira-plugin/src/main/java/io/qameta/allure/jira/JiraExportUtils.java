@@ -63,7 +63,7 @@ public final class JiraExportUtils {
             final JiraTestResult jiraTestResult = new JiraTestResult()
                     .setExternalId(testResult.getUid())
                     .setTestCaseId(testResult.getUid())
-                    .setHistoryKey(testResult.getHistoryId())
+                    .setHistoryKey(testResult.getRetryHash())
                     .setName(testResult.getName())
                     .setUrl(getJiraTestResultUrl(executor.getReportUrl(), testResult.getUid()))
                     .setStatus(testResult.getStatus().toString())

@@ -72,7 +72,6 @@ export type TestResult = {
   uid: string;
   name?: string;
   fullName?: string;
-  historyId?: string;
   time?: Time;
   description?: string;
   descriptionHtml?: string;

@@ -22,20 +22,26 @@ import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.detect.MagicBytesContentTypeDetector;
 import io.qameta.allure.detect.WellKnownFileExtensionsUtils;
 import io.qameta.allure.entity.Attachment;
+import io.qameta.allure.entity.Parameter;
 import io.qameta.allure.entity.TestResult;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import static java.nio.file.Files.newInputStream;
 import static java.nio.file.Files.size;
@@ -53,6 +59,28 @@ public class DefaultResultsVisitor implements ResultsVisitor {
 
     // so far maximum offset is 512 for supported files
     private static final int MAGIC_HEADER_LENGTH = 1024;
+
+    private static final String UNKNOWN_PARAMETER_VALUE = "#___unknown_value___#";
+
+    private static final Comparator<String> UTF8_COMPARATOR = (first, second) -> {
+        final byte[] firstBytes = first.getBytes(StandardCharsets.UTF_8);
+        final byte[] secondBytes = second.getBytes(StandardCharsets.UTF_8);
+        final int length = Math.min(firstBytes.length, secondBytes.length);
+        for (int index = 0; index < length; index++) {
+            final int comparison = Integer.compare(
+                    Byte.toUnsignedInt(firstBytes[index]),
+                    Byte.toUnsignedInt(secondBytes[index])
+            );
+            if (comparison != 0) {
+                return comparison;
+            }
+        }
+        return Integer.compare(firstBytes.length, secondBytes.length);
+    };
+
+    private static final Comparator<Parameter> PARAMETER_COMPARATOR = Comparator
+            .comparing(Parameter::getName, UTF8_COMPARATOR)
+            .thenComparing(DefaultResultsVisitor::getParameterValue, UTF8_COMPARATOR);
 
     private final Configuration configuration;
 
@@ -92,7 +120,43 @@ public class DefaultResultsVisitor implements ResultsVisitor {
 
     @Override
     public void visitTestResult(final TestResult result) {
-        results.add(result);
+        final String testCaseHash = Optional.ofNullable(result.getTestCaseHash())
+                .orElseGet(() -> getTestCaseHash(result));
+        final String parametersHash = Optional.ofNullable(result.getParametersHash())
+                .orElseGet(() -> getParametersHash(result));
+        results.add(
+                result
+                        .setTestCaseHash(testCaseHash)
+                        .setParametersHash(parametersHash)
+        );
+    }
+
+    private static String getTestCaseHash(final TestResult result) {
+        final String fullName = result.getFullName();
+        return fullName == null || fullName.isEmpty()
+                ? null
+                : md5Utf8(fullName);
+    }
+
+    private static String getParametersHash(final TestResult result) {
+        final Set<Parameter> parameters = Optional.ofNullable(result.getParameters())
+                .orElseGet(Collections::emptyList)
+                .stream()
+                .filter(Objects::nonNull)
+                .filter(parameter -> parameter.getName() != null && !parameter.getName().isEmpty())
+                .collect(Collectors.toCollection(() -> new TreeSet<>(PARAMETER_COMPARATOR)));
+        final String value = parameters.stream()
+                .map(parameter -> parameter.getName() + ":" + getParameterValue(parameter))
+                .collect(Collectors.joining(","));
+        return md5Utf8(value);
+    }
+
+    private static String getParameterValue(final Parameter parameter) {
+        return Objects.toString(parameter.getValue(), UNKNOWN_PARAMETER_VALUE);
+    }
+
+    private static String md5Utf8(final String value) {
+        return DigestUtils.md5Hex(value.getBytes(StandardCharsets.UTF_8));
     }
 
     @Override

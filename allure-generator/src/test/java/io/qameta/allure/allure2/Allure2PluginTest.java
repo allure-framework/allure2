@@ -306,6 +306,31 @@ class Allure2PluginTest {
     }
 
     /**
+     * Verifies ignoring adapter-provided identity fields and calculating canonical hashes.
+     */
+    @Description
+    @Test
+    void shouldCalculateIdentityHashes() throws Exception {
+        Set<TestResult> testResults = process(
+                "allure2/parameters.json", generateTestResultName()
+        ).getResults();
+
+        assertThat(testResults)
+                .extracting(
+                        TestResult::getTestCaseHash,
+                        TestResult::getParametersHash,
+                        TestResult::getRetryHash
+                )
+                .containsExactly(
+                        tuple(
+                                "fa121e5badc3c93651d3921a7898a04c",
+                                "9030faa44fb9da8aeaee27f28c29a4f9",
+                                "fa121e5badc3c93651d3921a7898a04c.9030faa44fb9da8aeaee27f28c29a4f9"
+                        )
+                );
+    }
+
+    /**
      * Verifies processing step parameters for Allure 2 parsing.
      */
     @Description
