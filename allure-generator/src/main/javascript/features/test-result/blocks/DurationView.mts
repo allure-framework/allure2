@@ -26,7 +26,7 @@ const DurationView = (options: TestResultBlockOptions) => {
         time
           ? createElement("span", {
               attrs: {
-                "data-tooltip": `${dateHelper(time.start)} ${timeHelper(time.start)}&nbsp;&ndash;&nbsp;${timeHelper(time.stop)}`,
+                "data-tooltip": `${dateHelper(time.start)} ${timeHelper(time.start)}\u00a0\u2013\u00a0${timeHelper(time.stop)}`,
               },
               children: [
                 `${translate("testResult.duration.name")}: `,
