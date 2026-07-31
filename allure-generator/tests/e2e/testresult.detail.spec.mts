@@ -44,6 +44,26 @@ for (const mode of reportModes) {
       await expect(execution).toContainText("Open pull requests page");
     });
 
+    test("renders the duration tooltip with an en dash", async ({ page }) => {
+      await openCaseFromTree(page, {
+        fixture: uiDemo.name,
+        mode,
+        tab: "suites",
+        caseName: uiDemo.cases.failedPullRequest,
+      });
+
+      const duration = page.locator(".test-result-overview [data-tooltip]", {
+        hasText: "Duration:",
+      });
+      await duration.hover();
+
+      const tooltip = page.locator(".tooltip");
+      await expect(tooltip).toBeVisible();
+      await expect(tooltip).toContainText("\u00a0\u2013\u00a0");
+      await expect(tooltip).not.toContainText("&ndash;");
+      await expect(tooltip).not.toContainText("&nbsp;");
+    });
+
     test("links only whole absolute parameter values", async ({ page }) => {
       await openCaseFromTree(page, {
         fixture: detectedLinks.name,
