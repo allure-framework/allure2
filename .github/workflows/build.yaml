@@ -33,7 +33,7 @@ jobs:
       ALLURE_E2E_DUMP_NAME: allure-results-e2e-jdk-${{ matrix.java-version }}
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: '20.x'
       - name: Set up JDK ${{ matrix.java-version }}
@@ -92,7 +92,7 @@ jobs:
           - name: nested
             path: testcmd/install/allure-commandline-under-a-nested-working-directory/with-windows-launcher-classpath-length-regression/allure-commandline
     steps:
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: '20.x'
       - name: Set up JRE ${{ matrix.java-version }}
@@ -200,7 +200,7 @@ jobs:
       ALLURE_SERVICE_TOKEN: ${{ secrets.ALLURE_SERVICE_TOKEN }}
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: '20.x'
       - name: Download Allure dumps
