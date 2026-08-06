@@ -19,7 +19,7 @@ import io.qameta.allure.context.RandomUidContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ResultsVisitor;
-import io.qameta.allure.detect.MagicBytesContentTypeDetector;
+import io.qameta.allure.detect.ContentTypeDetector;
 import io.qameta.allure.detect.WellKnownFileExtensionsUtils;
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.Parameter;
@@ -55,10 +55,7 @@ public class DefaultResultsVisitor implements ResultsVisitor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultResultsVisitor.class);
 
-    public static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
-
-    // so far maximum offset is 512 for supported files
-    private static final int MAGIC_HEADER_LENGTH = 1024;
+    public static final String APPLICATION_OCTET_STREAM = ContentTypeDetector.APPLICATION_OCTET_STREAM;
 
     private static final String UNKNOWN_PARAMETER_VALUE = "#___unknown_value___#";
 
@@ -193,20 +190,8 @@ public class DefaultResultsVisitor implements ResultsVisitor {
     }
 
     private static String probeContentType(final InputStream is, final String name) throws IOException {
-        // first try to detect using name if provided
-        final String lookup = WellKnownFileExtensionsUtils.lookup(name);
-        if (Objects.nonNull(lookup)) {
-            return lookup;
-        }
-
-        // try to read file header bytes and detect using magic bytes detector
         try (InputStream stream = new BufferedInputStream(is)) {
-            final byte[] buffer = new byte[MAGIC_HEADER_LENGTH];
-            final int bytesRead = stream.read(buffer);
-            if (bytesRead <= 0) {
-                return APPLICATION_OCTET_STREAM;
-            }
-            return MagicBytesContentTypeDetector.detectContentType(buffer);
+            return ContentTypeDetector.probeContentType(stream, name);
         }
     }
 

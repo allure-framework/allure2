@@ -17,10 +17,17 @@ package io.qameta.allure;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
+import io.qameta.allure.detect.ContentTypeDetector;
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.nio.channels.Channels;
+import java.nio.channels.SeekableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -34,7 +41,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static io.qameta.allure.DefaultResultsVisitor.probeContentType;
+import static io.qameta.allure.LocalReportFiles.isAttachmentPath;
+import static io.qameta.allure.LocalReportFiles.openFile;
+import static io.qameta.allure.LocalReportFiles.resolveReportDirectory;
+import static io.qameta.allure.LocalReportFiles.resolveRequestedPath;
 
 /**
  * Creates and configures the local-only report preview server used by command-line report viewing.
@@ -48,10 +58,20 @@ import static io.qameta.allure.DefaultResultsVisitor.probeContentType;
  * The policies in this class protect the local preview surface: binding is limited to loopback hosts, request
  * {@code Host} headers are restricted to local names, report responses receive browser hardening headers, and
  * attachment routes are handled conservatively so HTML previews remain usable without giving attachment content
- * script privileges in the report origin.
+ * script privileges in the report origin. The configured report root may itself be a symbolic link, but symbolic
+ * links in request paths are rejected instead of being followed.
+ * <p>
+ * Providers that expose {@link java.nio.file.SecureDirectoryStream} get atomic, component-relative file opening.
+ * Other providers are validated before and after opening the file with {@code NOFOLLOW_LINKS} where supported. The
+ * JDK does not expose an equivalent portable primitive for eliminating concurrent intermediate-directory replacement
+ * on those providers, so the fallback is best-effort and remains appropriate only for this local preview surface.
+ * Portable Java file APIs also cannot distinguish an ordinary file from a hard link to a file outside the report
+ * directory. Do not preview a report tree that is writable by an untrusted local user.
  */
 @SuppressWarnings("PMD.AvoidUsingHardCodedIP")
 final class LocalReportServer {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(LocalReportServer.class);
 
     static final String LOCAL_SERVE_MESSAGE = "`allure serve` is intended for local report preview only. "
             + "To host a report, run `allure generate <results-dir> -o <report-dir>` "
@@ -75,7 +95,6 @@ final class LocalReportServer {
     private static final String CSP_FORM_ACTION_NONE = "form-action 'none'; ";
     private static final String LOCALHOST = "localhost";
     private static final String PLAYWRIGHT_TRACE_VIEWER_ORIGIN = "https://trace.playwright.dev";
-    private static final String ATTACHMENTS_REQUEST_PATH = "/data/attachments/";
     private static final Set<String> LOCAL_SERVER_HOSTS = Collections.unmodifiableSet(
             new HashSet<>(Arrays.asList(LOCALHOST, "127.0.0.1", "::1"))
     );
@@ -121,44 +140,72 @@ final class LocalReportServer {
      * @param port the local port to bind
      * @param reportDirectory the generated report directory to preview
      * @return configured local preview server
-     * @throws IOException if the server cannot be created, including when a non-local host is requested
+     * @throws IOException if the report directory is unavailable or the server cannot be created,
+     *                     including when a non-local host is requested
      */
     static HttpServer setUp(final String host, final int port, final Path reportDirectory) throws IOException {
         final String serverHost = Objects.isNull(host) ? LOCALHOST : host;
         if (!isLocalServerHost(serverHost)) {
             throw new IOException(LOCAL_SERVE_MESSAGE);
         }
+        final Path realReportDirectory = resolveReportDirectory(reportDirectory);
         final HttpServer server = HttpServer
                 .create(new InetSocketAddress(serverHost, port), 0);
-        final Path normalizedReportDirectory = reportDirectory.normalize();
 
-        server.createContext(PATH_SEPARATOR, exchange -> {
-            if (!isLocalHostHeader(exchange.getRequestHeaders().getFirst(HEADER_HOST))) {
-                serveForbidden(exchange);
-                return;
-            }
-            final String requestPath = exchange.getRequestURI().getPath();
-            if (!isValidRequestPath(requestPath)) {
-                serveNotFound(exchange);
-                return;
-            }
-            final Path requestedPath = normalizedReportDirectory.resolve(CURRENT_DIRECTORY + requestPath).normalize();
-            if (!isWithinReportDirectory(normalizedReportDirectory, requestedPath)) {
-                serveNotFound(exchange);
-                return;
-            }
-            if (Files.isRegularFile(requestedPath, LinkOption.NOFOLLOW_LINKS)) {
-                serveFile(exchange, requestedPath, isAttachmentRequest(requestPath));
-                return;
-            }
-            if (Files.isDirectory(requestedPath, LinkOption.NOFOLLOW_LINKS)) {
-                serveIndex(exchange, requestedPath.resolve("index.html"));
-                return;
-            }
-            serveNotFound(exchange);
-        });
+        server.createContext(PATH_SEPARATOR, exchange -> serveRequest(exchange, realReportDirectory));
 
         return server;
+    }
+
+    private static void serveRequest(final HttpExchange exchange,
+                                     final Path realReportDirectory)
+            throws IOException {
+        if (!isLocalHostHeader(exchange.getRequestHeaders().getFirst(HEADER_HOST))) {
+            serveForbidden(exchange);
+            return;
+        }
+        final String requestPath = exchange.getRequestURI().getPath();
+        if (!isValidRequestPath(requestPath)) {
+            serveNotFound(exchange);
+            return;
+        }
+        final Optional<Path> realRequestedPath = resolveRequestedPath(
+                realReportDirectory,
+                CURRENT_DIRECTORY + requestPath
+        );
+        if (!realRequestedPath.isPresent()) {
+            serveNotFound(exchange);
+            return;
+        }
+        serveRequestedPath(exchange, realReportDirectory, realRequestedPath.get());
+    }
+
+    private static void serveRequestedPath(final HttpExchange exchange,
+                                           final Path realReportDirectory,
+                                           final Path resolvedRequestedPath)
+            throws IOException {
+        if (Files.isRegularFile(resolvedRequestedPath, LinkOption.NOFOLLOW_LINKS)) {
+            if (!serveFile(
+                    exchange,
+                    realReportDirectory,
+                    resolvedRequestedPath,
+                    isAttachmentPath(realReportDirectory, resolvedRequestedPath)
+            )) {
+                serveNotFound(exchange);
+            }
+            return;
+        }
+        if (Files.isDirectory(resolvedRequestedPath, LinkOption.NOFOLLOW_LINKS)) {
+            final Path indexFile = resolvedRequestedPath.resolve("index.html");
+            serveIndex(
+                    exchange,
+                    realReportDirectory,
+                    indexFile,
+                    isAttachmentPath(realReportDirectory, indexFile)
+            );
+            return;
+        }
+        serveNotFound(exchange);
     }
 
     static boolean isLocalServerHost(final String host) {
@@ -185,11 +232,6 @@ final class LocalReportServer {
         return isLocalServerHost(host);
     }
 
-    static boolean isWithinReportDirectory(final Path normalizedReportDirectory,
-                                           final Path requestedPath) {
-        return requestedPath.startsWith(normalizedReportDirectory);
-    }
-
     private static boolean isValidRequestPath(final String requestPath) {
         return requestPath.indexOf('\\') < 0
                 && Stream.of(requestPath.split(PATH_SEPARATOR))
@@ -197,28 +239,55 @@ final class LocalReportServer {
     }
 
     private static void serveIndex(final HttpExchange exchange,
-                                   final Path indexFile)
+                                   final Path realReportDirectory,
+                                   final Path indexFile,
+                                   final boolean attachmentRequest)
             throws IOException {
-        if (Files.isRegularFile(indexFile, LinkOption.NOFOLLOW_LINKS)) {
-            serveFile(exchange, indexFile, false);
+        if (Files.isRegularFile(indexFile, LinkOption.NOFOLLOW_LINKS)
+                && serveFile(exchange, realReportDirectory, indexFile, attachmentRequest)) {
             return;
         }
         serveNotFound(exchange);
     }
 
-    private static void serveFile(final HttpExchange exchange,
-                                  final Path file,
-                                  final boolean attachmentRequest)
+    private static boolean serveFile(final HttpExchange exchange,
+                                     final Path realReportDirectory,
+                                     final Path file,
+                                     final boolean attachmentRequest)
             throws IOException {
-        final String contentType = Optional.ofNullable(probeContentType(file))
-                .orElse(DefaultResultsVisitor.APPLICATION_OCTET_STREAM);
-        setSecurityHeaders(exchange);
-        setAttachmentHeaders(exchange, contentType, attachmentRequest);
-        exchange.getResponseHeaders().set(HEADER_CONTENT_TYPE, contentType);
-        exchange.sendResponseHeaders(200, Files.size(file));
-        try (OutputStream os = exchange.getResponseBody()) {
-            Files.copy(file, os);
+        final Optional<SeekableByteChannel> openedFile = openFile(realReportDirectory, file);
+        if (!openedFile.isPresent()) {
+            return false;
         }
+        try (SeekableByteChannel channel = openedFile.get()) {
+            final String contentType = probeContentType(file, channel);
+            setSecurityHeaders(exchange);
+            setAttachmentHeaders(exchange, contentType, attachmentRequest);
+            exchange.getResponseHeaders().set(HEADER_CONTENT_TYPE, contentType);
+            exchange.sendResponseHeaders(200, channel.size());
+            try (InputStream input = Channels.newInputStream(channel);
+                    OutputStream output = exchange.getResponseBody()) {
+                IOUtils.copy(input, output);
+            }
+        }
+        return true;
+    }
+
+    static String probeContentType(final Path file,
+                                   final SeekableByteChannel channel)
+            throws IOException {
+        String contentType = ContentTypeDetector.APPLICATION_OCTET_STREAM;
+        try {
+            contentType = ContentTypeDetector.probeContentType(
+                    Channels.newInputStream(channel),
+                    Objects.toString(file.getFileName())
+            );
+        } catch (IOException e) {
+            LOGGER.warn("Couldn't detect the media type of report file {}", file, e);
+        } finally {
+            channel.position(0);
+        }
+        return contentType;
     }
 
     private static void serveNotFound(final HttpExchange exchange) throws IOException {
@@ -267,7 +336,7 @@ final class LocalReportServer {
 
     private static boolean shouldServeAsDownload(final String contentType) {
         final String normalized = normalizeContentType(contentType);
-        return DefaultResultsVisitor.APPLICATION_OCTET_STREAM.equals(normalized)
+        return ContentTypeDetector.APPLICATION_OCTET_STREAM.equals(normalized)
                 || "image/svg+xml".equals(normalized)
                 || "application/pdf".equals(normalized)
                 || "application/xml".equals(normalized)
@@ -285,10 +354,6 @@ final class LocalReportServer {
         return contentType.split(";", 2)[0]
                 .trim()
                 .toLowerCase(Locale.ROOT);
-    }
-
-    private static boolean isAttachmentRequest(final String requestPath) {
-        return requestPath.startsWith(ATTACHMENTS_REQUEST_PATH);
     }
 
     private static String normalizeHost(final String host) {
