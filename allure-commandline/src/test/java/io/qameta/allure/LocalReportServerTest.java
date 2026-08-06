@@ -25,13 +25,20 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.Socket;
 import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.channels.SeekableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Locale;
 import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests for the local-only Allure report preview server.
@@ -65,6 +72,44 @@ class LocalReportServerTest {
     }
 
     /**
+     * Verifies the configured report root may itself be a symbolic link.
+     * The test checks files are served from the canonical target directory.
+     */
+    @Description
+    @Test
+    void shouldServeReportWhenReportDirectoryIsSymbolicLink(@TempDir final Path temp) throws Exception {
+        final Path reportDirectory = Files.createDirectories(temp.resolve("report"));
+        Files.writeString(reportDirectory.resolve("app.js"), "console.log('report');");
+        final Path attachments = Files.createDirectories(reportDirectory.resolve("data").resolve("attachments"));
+        Files.writeString(attachments.resolve("preview.html"), "<p>attachment preview</p>");
+        final Path reportLink = temp.resolve("report-link");
+        createSymbolicLinkOrSkip(reportLink, reportDirectory);
+
+        final HttpServer server = LocalReportServer.setUp("127.0.0.1", 0, reportLink);
+        server.start();
+
+        try {
+            final int port = server.getAddress().getPort();
+
+            final HttpURLConnection fileRequest = openConnection(port, "/app.js");
+            assertThat(fileRequest.getResponseCode()).isEqualTo(200);
+            assertThat(readResponse(fileRequest)).isEqualTo("console.log('report');");
+
+            final HttpURLConnection attachmentRequest = openConnection(
+                    port,
+                    "/data/attachments/preview.html"
+            );
+            assertThat(attachmentRequest.getResponseCode()).isEqualTo(200);
+            assertThat(attachmentRequest.getHeaderField("Content-Security-Policy"))
+                    .contains("sandbox")
+                    .contains("default-src 'none'");
+            assertThat(readResponse(attachmentRequest)).isEqualTo("<p>attachment preview</p>");
+        } finally {
+            server.stop(0);
+        }
+    }
+
+    /**
      * Verifies the report server refuses to bind to a remote-facing host.
      * The test checks allure serve stays a local preview command by default.
      */
@@ -76,6 +121,34 @@ class LocalReportServerTest {
         assertThatThrownBy(() -> LocalReportServer.setUp("0.0.0.0", 0, reportDirectory))
                 .isInstanceOf(IOException.class)
                 .hasMessageContaining("local report preview only");
+    }
+
+    /**
+     * Verifies server setup rejects a report directory that does not exist.
+     * The test checks the error identifies the unavailable directory.
+     */
+    @Description
+    @Test
+    void shouldRejectMissingReportDirectory(@TempDir final Path temp) {
+        final Path missingReportDirectory = temp.resolve("missing-report");
+
+        assertThatThrownBy(() -> LocalReportServer.setUp("127.0.0.1", 0, missingReportDirectory))
+                .isInstanceOf(IOException.class)
+                .hasMessage("Report directory does not exist: " + missingReportDirectory.toAbsolutePath());
+    }
+
+    /**
+     * Verifies server setup rejects an existing path that is not a directory.
+     * The test checks the error identifies the invalid report path.
+     */
+    @Description
+    @Test
+    void shouldRejectReportPathThatIsNotDirectory(@TempDir final Path temp) throws Exception {
+        final Path reportFile = Files.writeString(temp.resolve("report.html"), "report");
+
+        assertThatThrownBy(() -> LocalReportServer.setUp("127.0.0.1", 0, reportFile))
+                .isInstanceOf(IOException.class)
+                .hasMessage("Report path is not a directory: " + reportFile.toAbsolutePath());
     }
 
     /**
@@ -174,6 +247,131 @@ class LocalReportServerTest {
             assertThat(attachmentRequest.getHeaderField("X-Frame-Options")).isEqualTo("SAMEORIGIN");
             assertThat(attachmentRequest.getHeaderField("X-Content-Type-Options")).isEqualTo("nosniff");
             assertThat(readResponse(attachmentRequest)).isEqualTo("<script>alert(1)</script>");
+        } finally {
+            server.stop(0);
+        }
+    }
+
+    /**
+     * Verifies attachment security policy is based on the resolved file location.
+     * The test checks a doubled slash cannot make an HTML attachment receive the report policy.
+     */
+    @Description
+    @Test
+    void shouldSandboxHtmlAttachmentRequestedWithDoubledSlash(@TempDir final Path temp) throws Exception {
+        final Path reportDirectory = Files.createDirectories(temp.resolve("report"));
+        final Path attachments = Files.createDirectories(reportDirectory.resolve("data").resolve("attachments"));
+        Files.writeString(attachments.resolve("preview.html"), "<p>attachment preview</p>");
+
+        final HttpServer server = LocalReportServer.setUp("127.0.0.1", 0, reportDirectory);
+        server.start();
+
+        try {
+            final int port = server.getAddress().getPort();
+
+            final String response = readRawHttpResponse(
+                    port,
+                    "127.0.0.1:" + port,
+                    "/data//attachments/preview.html"
+            ).toLowerCase(Locale.ROOT);
+            assertThat(response)
+                    .contains("http/1.1 200 ok")
+                    .contains("content-security-policy: sandbox; default-src 'none';")
+                    .contains("x-frame-options: sameorigin");
+        } finally {
+            server.stop(0);
+        }
+    }
+
+    /**
+     * Verifies attachment security policy is based on the decoded and resolved file location.
+     * The test checks an encoded slash cannot make an HTML attachment receive the report policy.
+     */
+    @Description
+    @Test
+    void shouldSandboxHtmlAttachmentRequestedWithEncodedSlash(@TempDir final Path temp) throws Exception {
+        final Path reportDirectory = Files.createDirectories(temp.resolve("report"));
+        final Path attachments = Files.createDirectories(reportDirectory.resolve("data").resolve("attachments"));
+        Files.writeString(attachments.resolve("preview.html"), "<p>attachment preview</p>");
+
+        final HttpServer server = LocalReportServer.setUp("127.0.0.1", 0, reportDirectory);
+        server.start();
+
+        try {
+            final int port = server.getAddress().getPort();
+
+            final String response = readRawHttpResponse(
+                    port,
+                    "127.0.0.1:" + port,
+                    "/data/%2fattachments/preview.html"
+            ).toLowerCase(Locale.ROOT);
+            assertThat(response)
+                    .contains("http/1.1 200 ok")
+                    .contains("content-security-policy: sandbox; default-src 'none';")
+                    .contains("x-frame-options: sameorigin");
+        } finally {
+            server.stop(0);
+        }
+    }
+
+    /**
+     * Verifies path aliases do not over-classify report application files as attachments.
+     * The test checks a doubled-slash report URL retains the report CSP.
+     */
+    @Description
+    @Test
+    void shouldServeReportFileRequestedWithDoubledSlashUsingReportPolicy(@TempDir final Path temp) throws Exception {
+        final Path reportDirectory = Files.createDirectories(temp.resolve("report"));
+        final Path nestedDirectory = Files.createDirectories(reportDirectory.resolve("nested"));
+        Files.writeString(nestedDirectory.resolve("index.html"), "<p>report</p>");
+
+        final HttpServer server = LocalReportServer.setUp("127.0.0.1", 0, reportDirectory);
+        server.start();
+
+        try {
+            final int port = server.getAddress().getPort();
+
+            final String response = readRawHttpResponse(
+                    port,
+                    "127.0.0.1:" + port,
+                    "/nested//index.html"
+            ).toLowerCase(Locale.ROOT);
+            assertThat(response)
+                    .contains("http/1.1 200 ok")
+                    .contains("content-security-policy: default-src 'self'")
+                    .doesNotContain("content-security-policy: sandbox");
+        } finally {
+            server.stop(0);
+        }
+    }
+
+    /**
+     * Verifies directory indexes below the attachment directory retain attachment security policy.
+     * The test checks an attachment index receives the restrictive sandbox CSP.
+     */
+    @Description
+    @Test
+    void shouldSandboxHtmlAttachmentDirectoryIndex(@TempDir final Path temp) throws Exception {
+        final Path reportDirectory = Files.createDirectories(temp.resolve("report"));
+        final Path attachmentDirectory = Files.createDirectories(
+                reportDirectory.resolve("data").resolve("attachments").resolve("nested")
+        );
+        Files.writeString(attachmentDirectory.resolve("index.html"), "<p>attachment index</p>");
+
+        final HttpServer server = LocalReportServer.setUp("127.0.0.1", 0, reportDirectory);
+        server.start();
+
+        try {
+            final int port = server.getAddress().getPort();
+
+            final HttpURLConnection attachmentRequest = openConnection(port, "/data/attachments/nested/");
+            assertThat(attachmentRequest.getResponseCode()).isEqualTo(200);
+            assertThat(attachmentRequest.getHeaderField("Content-Security-Policy"))
+                    .contains("sandbox")
+                    .contains("default-src 'none'")
+                    .contains("frame-ancestors 'self'");
+            assertThat(attachmentRequest.getHeaderField("X-Frame-Options")).isEqualTo("SAMEORIGIN");
+            assertThat(readResponse(attachmentRequest)).isEqualTo("<p>attachment index</p>");
         } finally {
             server.stop(0);
         }
@@ -317,6 +515,77 @@ class LocalReportServerTest {
     }
 
     /**
+     * Verifies the primary report URL serves the report-root index.
+     * The test checks a request for the root path returns the generated report entry point.
+     */
+    @Description
+    @Test
+    void shouldServeReportRootIndex(@TempDir final Path temp) throws Exception {
+        final Path reportDirectory = Files.createDirectories(temp.resolve("report"));
+        Files.writeString(reportDirectory.resolve("index.html"), "report");
+
+        final HttpServer server = LocalReportServer.setUp("127.0.0.1", 0, reportDirectory);
+        server.start();
+
+        try {
+            final int port = server.getAddress().getPort();
+
+            final HttpURLConnection rootRequest = openConnection(port, "/");
+            assertThat(rootRequest.getResponseCode()).isEqualTo(200);
+            assertThat(readResponse(rootRequest)).isEqualTo("report");
+        } finally {
+            server.stop(0);
+        }
+    }
+
+    /**
+     * Verifies a report root reached through a symlinked parent is canonicalized.
+     * The test checks files remain servable from the real report directory.
+     */
+    @Description
+    @Test
+    void shouldServeReportWhenParentDirectoryIsSymbolicLink(@TempDir final Path temp) throws Exception {
+        final Path actualParent = Files.createDirectories(temp.resolve("actual-parent"));
+        final Path reportDirectory = Files.createDirectories(actualParent.resolve("report"));
+        Files.writeString(reportDirectory.resolve("index.html"), "report");
+        final Path parentLink = temp.resolve("parent-link");
+        createSymbolicLinkOrSkip(parentLink, actualParent);
+
+        final HttpServer server = LocalReportServer.setUp(
+                "127.0.0.1",
+                0,
+                parentLink.resolve("report")
+        );
+        server.start();
+
+        try {
+            final int port = server.getAddress().getPort();
+
+            final HttpURLConnection rootRequest = openConnection(port, "/");
+            assertThat(rootRequest.getResponseCode()).isEqualTo(200);
+            assertThat(readResponse(rootRequest)).isEqualTo("report");
+        } finally {
+            server.stop(0);
+        }
+    }
+
+    /**
+     * Verifies content-type read failures use the safe generic type.
+     * The test checks the channel is rewound before serving continues.
+     */
+    @Description
+    @Test
+    void shouldUseOctetStreamWhenContentTypeProbeFails() throws Exception {
+        final SeekableByteChannel channel = mock(SeekableByteChannel.class);
+        when(channel.read(any(ByteBuffer.class))).thenThrow(new IOException("probe failed"));
+        when(channel.position(0)).thenReturn(channel);
+
+        assertThat(LocalReportServer.probeContentType(Path.of("attachment"), channel))
+                .isEqualTo("application/octet-stream");
+        verify(channel).position(0);
+    }
+
+    /**
      * Verifies encoded traversal attempts are rejected by the report server.
      * The test checks a normalized outside path returns a 404 response.
      */
@@ -343,16 +612,44 @@ class LocalReportServerTest {
     }
 
     /**
-     * Verifies explicit path-boundary checks reject paths outside the normalized report directory.
-     * The test checks a normalized parent traversal target is not considered inside the report directory.
+     * Verifies platform-invalid filesystem paths are handled as missing report files.
+     * The test checks an encoded null character receives a complete 404 response.
      */
     @Description
     @Test
-    void shouldDetectResolvedPathOutsideNormalizedReportDirectory(@TempDir final Path temp) throws Exception {
-        final Path normalizedReportDirectory = Files.createDirectories(temp.resolve("report")).normalize();
-        final Path requestedPath = normalizedReportDirectory.resolve("../outside.txt").normalize();
+    void shouldReturnNotFoundForPlatformInvalidRequestPath(@TempDir final Path temp) throws Exception {
+        final Path reportDirectory = Files.createDirectories(temp.resolve("report"));
 
-        assertThat(LocalReportServer.isWithinReportDirectory(normalizedReportDirectory, requestedPath))
+        final HttpServer server = LocalReportServer.setUp("127.0.0.1", 0, reportDirectory);
+        server.start();
+
+        try {
+            final int port = server.getAddress().getPort();
+
+            final String response = readRawHttpResponse(
+                    port,
+                    "127.0.0.1:" + port,
+                    "/invalid%00path"
+            );
+            assertThat(response)
+                    .contains("404 Not Found")
+                    .endsWith("404 Not Found");
+        } finally {
+            server.stop(0);
+        }
+    }
+
+    /**
+     * Verifies explicit path-boundary checks reject paths outside the report directory.
+     * The test checks a parent traversal target is not considered inside the report directory.
+     */
+    @Description
+    @Test
+    void shouldDetectResolvedPathOutsideReportDirectory(@TempDir final Path temp) throws Exception {
+        final Path reportDirectory = Files.createDirectories(temp.resolve("report")).normalize();
+        final Path requestedPath = reportDirectory.resolve("../outside.txt").normalize();
+
+        assertThat(LocalReportFiles.isWithinDirectory(reportDirectory, requestedPath))
                 .isFalse();
     }
 
@@ -374,6 +671,85 @@ class LocalReportServerTest {
             final HttpURLConnection missingFileRequest = openConnection(port, "/missing.js");
             assertThat(missingFileRequest.getResponseCode()).isEqualTo(404);
             assertThat(readResponse(missingFileRequest)).isEqualTo("404 Not Found");
+        } finally {
+            server.stop(0);
+        }
+    }
+
+    /**
+     * Verifies files reached through an intermediate symbolic link cannot escape the report directory.
+     * The test checks a regular file outside the report root returns a not-found response.
+     */
+    @Description
+    @Test
+    void shouldRejectFileBehindIntermediateSymbolicLink(@TempDir final Path temp) throws Exception {
+        final Path reportDirectory = Files.createDirectories(temp.resolve("report"));
+        final Path outsideDirectory = Files.createDirectories(temp.resolve("outside"));
+        Files.writeString(outsideDirectory.resolve("outside.txt"), "outside");
+        createSymbolicLinkOrSkip(reportDirectory.resolve("link"), outsideDirectory);
+
+        final HttpServer server = LocalReportServer.setUp("127.0.0.1", 0, reportDirectory);
+        server.start();
+
+        try {
+            final int port = server.getAddress().getPort();
+
+            final HttpURLConnection outsideFileRequest = openConnection(port, "/link/outside.txt");
+            assertThat(outsideFileRequest.getResponseCode()).isEqualTo(404);
+            assertThat(readResponse(outsideFileRequest)).isEqualTo("404 Not Found");
+        } finally {
+            server.stop(0);
+        }
+    }
+
+    /**
+     * Verifies request paths do not follow intermediate symbolic links within the report directory.
+     * The test checks the same no-symlink policy applies even when the target stays inside the report root.
+     */
+    @Description
+    @Test
+    void shouldRejectFileBehindInternalIntermediateSymbolicLink(@TempDir final Path temp) throws Exception {
+        final Path reportDirectory = Files.createDirectories(temp.resolve("report"));
+        final Path nestedDirectory = Files.createDirectories(reportDirectory.resolve("nested"));
+        Files.writeString(nestedDirectory.resolve("nested.txt"), "nested");
+        createSymbolicLinkOrSkip(reportDirectory.resolve("link"), nestedDirectory);
+
+        final HttpServer server = LocalReportServer.setUp("127.0.0.1", 0, reportDirectory);
+        server.start();
+
+        try {
+            final int port = server.getAddress().getPort();
+
+            final HttpURLConnection linkedFileRequest = openConnection(port, "/link/nested.txt");
+            assertThat(linkedFileRequest.getResponseCode()).isEqualTo(404);
+            assertThat(readResponse(linkedFileRequest)).isEqualTo("404 Not Found");
+        } finally {
+            server.stop(0);
+        }
+    }
+
+    /**
+     * Verifies directory indexes reached through an intermediate symbolic link cannot escape the report directory.
+     * The test checks a nested index outside the report root returns a not-found response.
+     */
+    @Description
+    @Test
+    void shouldRejectIndexBehindIntermediateSymbolicLink(@TempDir final Path temp) throws Exception {
+        final Path reportDirectory = Files.createDirectories(temp.resolve("report"));
+        final Path outsideDirectory = Files.createDirectories(temp.resolve("outside"));
+        final Path nestedDirectory = Files.createDirectories(outsideDirectory.resolve("nested"));
+        Files.writeString(nestedDirectory.resolve("index.html"), "outside");
+        createSymbolicLinkOrSkip(reportDirectory.resolve("link"), outsideDirectory);
+
+        final HttpServer server = LocalReportServer.setUp("127.0.0.1", 0, reportDirectory);
+        server.start();
+
+        try {
+            final int port = server.getAddress().getPort();
+
+            final HttpURLConnection outsideIndexRequest = openConnection(port, "/link/nested/");
+            assertThat(outsideIndexRequest.getResponseCode()).isEqualTo(404);
+            assertThat(readResponse(outsideIndexRequest)).isEqualTo("404 Not Found");
         } finally {
             server.stop(0);
         }
