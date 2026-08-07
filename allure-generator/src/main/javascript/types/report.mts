@@ -98,6 +98,7 @@ export type TestResult = {
 
 export type TreeNode = {
   name?: string;
+  searchPath?: string;
   uid?: string;
   parentUid?: string;
   status?: Status;
