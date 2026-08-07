@@ -165,7 +165,9 @@
       "name": "Exécution",
       "setup": "Pré exécution",
       "teardown": "Post exécution",
-      "empty": "Aucune information sur l'exécution du test n'est disponible."
+      "empty": "Aucune information sur l'exécution du test n'est disponible.",
+      "expandAll": "Tout déplier",
+      "collapseAll": "Tout plier"
     },
     "history": {
       "empty": "Aucune information à propos de l'historique.",

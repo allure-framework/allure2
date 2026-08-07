@@ -162,7 +162,9 @@
       "name": "Execution",
       "setup": "Set up",
       "teardown": "Tear down",
-      "empty": "No information about test execution is available."
+      "empty": "No information about test execution is available.",
+      "expandAll": "Expand all",
+      "collapseAll": "Collapse all"
     },
     "history": {
       "empty": "No history information available.",
