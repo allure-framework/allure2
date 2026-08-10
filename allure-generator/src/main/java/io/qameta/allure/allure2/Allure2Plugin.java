@@ -94,6 +94,8 @@ public class Allure2Plugin implements Reader {
 
     private static final String UNKNOWN_PARAMETER_VALUE = "#___unknown_value___#";
 
+    private static final String TEMPORARY_FILE_SUFFIX = ".tmp";
+
     private static final Pattern ATTACHMENT_SOURCE_PATTERN = Pattern.compile("^[a-zA-Z0-9._-]{1,100}$");
 
     private static final Comparator<StageResult> BY_START = comparing(
@@ -344,7 +346,8 @@ public class Allure2Plugin implements Reader {
         final Path normalizedSource = source.normalize();
         final Path attachmentFile = normalizedSource.resolve(attachmentSource).normalize();
 
-        if (attachmentFile.startsWith(normalizedSource)
+        if (!attachmentSource.endsWith(TEMPORARY_FILE_SUFFIX)
+                && attachmentFile.startsWith(normalizedSource)
                 && Files.isRegularFile(attachmentFile, LinkOption.NOFOLLOW_LINKS)) {
             final Attachment found = visitor.visitAttachmentFile(attachmentFile);
             if (nonNull(attachment.getType())) {
@@ -503,6 +506,7 @@ public class Allure2Plugin implements Reader {
         try (DirectoryStream<Path> directoryStream = newDirectoryStream(directory, glob)) {
             return StreamSupport.stream(directoryStream.spliterator(), true)
                     .filter(Files::isRegularFile)
+                    .filter(path -> !path.getFileName().toString().endsWith(TEMPORARY_FILE_SUFFIX))
                     .collect(Collectors.toList())
                     .stream();
         } catch (IOException e) {
