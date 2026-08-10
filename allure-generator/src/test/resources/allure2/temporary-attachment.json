@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "name": "shouldIgnoreTemporaryAttachment",
+  "start": 1479552611395,
+  "stop": 1479552611399,
+  "attachments": [
+    {
+      "name": "Unfinished attachment",
+      "source": ".allure-write-attachment.tmp",
+      "type": "text/plain"
+    }
+  ]
+}

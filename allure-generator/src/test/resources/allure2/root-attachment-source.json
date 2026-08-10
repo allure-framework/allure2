@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "name": "shouldTreatRootAttachmentSourceAsMissing",
+  "start": 1479552611395,
+  "stop": 1479552611399,
+  "attachments": [
+    {
+      "name": "Root attachment",
+      "source": "..",
+      "type": "text/plain"
+    }
+  ]
+}

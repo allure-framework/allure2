@@ -33,11 +33,14 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -171,6 +174,89 @@ class Allure2PluginTest {
                 .extracting(Attachment::getName)
                 .describedAs("Attachment's name is unexpected")
                 .containsExactly("String attachment in after");
+    }
+
+    /**
+     * Verifies ignoring unfinished Allure 2 result and container files.
+     */
+    @Description
+    @Test
+    void shouldIgnoreTemporaryResultAndContainerFiles() throws IOException {
+        final LaunchResults results = process(
+                "allure2/other-testcase.json", generateTestResultName(),
+                "allure2/flaky.json", generateTestResultName() + ".tmp",
+                "allure2/first-testgroup.json", generateTestResultContainerName() + ".tmp"
+        );
+
+        assertThat(results.getResults())
+                .singleElement()
+                .satisfies(result -> {
+                    assertThat(result.getName()).isEqualTo("shouldCreate");
+                    assertThat(result.getBeforeStages()).isEmpty();
+                    assertThat(result.getAfterStages()).isEmpty();
+                });
+    }
+
+    /**
+     * Verifies keeping links to unfinished Allure 2 attachments unresolved.
+     */
+    @Description
+    @Test
+    void shouldTreatTemporaryAttachmentFilesAsMissing() throws IOException {
+        final LaunchResults results = process(
+                "allure2/temporary-attachment.json", generateTestResultName(),
+                "allure2/test-sample-attachment.txt", ".allure-write-attachment.tmp"
+        );
+
+        assertThat(results.getResults())
+                .singleElement()
+                .satisfies(result -> {
+                    final StageResult stage = result.getTestStage();
+                    assertThat(stage).isNotNull();
+                    assertThat(stage.getAttachments())
+                            .extracting(
+                                    Attachment::getName,
+                                    Attachment::getType,
+                                    Attachment::getSource,
+                                    Attachment::getSize
+                            )
+                            .containsExactly(tuple("Unfinished attachment", "text/plain", null, 0L));
+                });
+        assertThat(results.getAttachments()).isEmpty();
+    }
+
+    /**
+     * Verifies treating attachment sources that resolve to a filesystem root as missing.
+     */
+    @Description
+    @Test
+    void shouldTreatRootAttachmentSourceAsMissing() throws IOException {
+        final Path archive = directory.resolve("results.zip");
+        try (FileSystem fileSystem = FileSystems.newFileSystem(archive, Map.of("create", "true"))) {
+            final Path resultsDirectory = fileSystem.getPath("/allure-results");
+            Files.createDirectory(resultsDirectory);
+            copyFile(resultsDirectory, "allure2/root-attachment-source.json", generateTestResultName());
+
+            final Allure2Plugin reader = new Allure2Plugin();
+            final Configuration configuration = ConfigurationBuilder.bundled().build();
+            final LaunchResults results = readResults(reader, configuration, resultsDirectory);
+
+            assertThat(results.getResults())
+                    .singleElement()
+                    .satisfies(result -> {
+                        final StageResult stage = result.getTestStage();
+                        assertThat(stage).isNotNull();
+                        assertThat(stage.getAttachments())
+                                .extracting(
+                                        Attachment::getName,
+                                        Attachment::getType,
+                                        Attachment::getSource,
+                                        Attachment::getSize
+                                )
+                                .containsExactly(tuple("Root attachment", "text/plain", null, 0L));
+                    });
+            assertThat(results.getAttachments()).isEmpty();
+        }
     }
 
     /**
