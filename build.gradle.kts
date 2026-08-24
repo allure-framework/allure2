@@ -89,7 +89,7 @@ subprojects {
         }
         dependencies {
             dependency("com.beust:jcommander:1.82")
-            dependency("com.github.spotbugs:spotbugs:4.10.3")
+            dependency("com.github.spotbugs:spotbugs:4.10.4")
             dependency("com.opencsv:opencsv:5.12.0")
             dependency("com.puppycrawl.tools:checkstyle:12.2.0")
             dependency("commons-io:commons-io:2.22.0")
