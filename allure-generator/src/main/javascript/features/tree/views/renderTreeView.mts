@@ -79,23 +79,25 @@ const createTreeLeaf = (
           text: `#${item.order}`,
         }),
         createElement("div", {
-          className: "node__name line-ellipsis",
-          text: item.name,
-        }),
-        item.parameters
-          ? createElement("div", {
-              className: "node__parameters long-line line-ellipsis",
-              children: item.parameters.flatMap((parameter) => [
-                parameter ?? "null",
-                createElement("span", {
-                  className: "node__parameters_separator",
-                  text: ",",
-                }),
-              ]),
-            })
-          : null,
-        createElement("div", {
-          className: "tree__strut",
+          className: "node__text",
+          children: [
+            createElement("div", {
+              className: "node__name line-ellipsis",
+              text: item.name,
+            }),
+            item.parameters
+              ? createElement("div", {
+                  className: "node__parameters long-line line-ellipsis",
+                  children: item.parameters.flatMap((parameter) => [
+                    parameter ?? "null",
+                    createElement("span", {
+                      className: "node__parameters_separator",
+                      text: ",",
+                    }),
+                  ]),
+                })
+              : null,
+          ],
         }),
         createMarkElement("flaky", Boolean(item.flaky)),
         createMarkElement("newFailed", Boolean(item.newFailed)),

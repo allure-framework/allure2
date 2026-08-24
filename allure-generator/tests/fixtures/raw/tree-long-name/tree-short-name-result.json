@@ -1,0 +1,54 @@
+{
+  "uuid": "tree-short-name-result",
+  "historyId": "tree-short-name-history",
+  "name": "SpreadSheet export",
+  "fullName": "frontend.pages.SpreadSheetTest.SpreadSheet export",
+  "status": "passed",
+  "stage": "finished",
+  "description": "Regression fixture for a short tree name next to oversized parameter text.",
+  "start": 1710000020000,
+  "stop": 1710000025000,
+  "steps": [],
+  "attachments": [],
+  "parameters": [
+    {
+      "name": "source",
+      "value": "frontend.pages.spreadsheets.quarterly.exports.with.a.parameter.value.that.is.long.enough.to.use.the.remaining.tree.row.space"
+    }
+  ],
+  "labels": [
+    {
+      "name": "suite",
+      "value": "TestScreenshotMainPageDefaultGamesSection"
+    },
+    {
+      "name": "package",
+      "value": "frontend.pages"
+    },
+    {
+      "name": "testClass",
+      "value": "SpreadSheetTest"
+    },
+    {
+      "name": "testMethod",
+      "value": "SpreadSheet export"
+    },
+    {
+      "name": "framework",
+      "value": "pytest"
+    },
+    {
+      "name": "language",
+      "value": "python"
+    },
+    {
+      "name": "host",
+      "value": "localhost"
+    },
+    {
+      "name": "thread",
+      "value": "main"
+    }
+  ],
+  "links": []
+}

@@ -26,6 +26,13 @@
     }
   }
   &__name {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+  &__text {
+    display: flex;
+    flex: 1 1 0;
+    gap: gap(1);
     min-width: 0;
   }
   &__unknown {
@@ -126,6 +133,7 @@
     padding: gap(1);
   }
   &__parameters {
+    flex: 1 1 10ch;
     padding: 0;
     color: var(--color-text-muted);
     min-width: 2ch;
@@ -170,4 +178,10 @@ allure-tree-view > .tree__content::after {
   content: "";
   display: block;
   height: var(--layout-scroll-end-padding);
+}
+
+@container side-by-side-left (max-width: 360px) {
+  .node__parameters {
+    display: none;
+  }
 }

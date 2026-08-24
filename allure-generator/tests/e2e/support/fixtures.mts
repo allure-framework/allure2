@@ -144,9 +144,9 @@ export const fixtures = {
     name: "tree-long-name",
     caseName:
       "test_screenshot_default_games_section_with_a_descriptive_name_that_remains_long_enough_to_overflow_the_tree_row_even_on_wide_viewports",
-    parameters: [
-      "session[LivePage]",
-      "frontend.pages.screenshot.default.games.section",
-    ],
+    shortCaseName: "SpreadSheet export",
+    parameters: ["session[LivePage]", "frontend.pages.screenshot.default.games.section"],
+    longParameter:
+      "frontend.pages.spreadsheets.quarterly.exports.with.a.parameter.value.that.is.long.enough.to.use.the.remaining.tree.row.space",
   },
 } as const;
