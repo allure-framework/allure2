@@ -77,7 +77,7 @@ subprojects {
     dependencyManagement {
         imports {
             mavenBom("com.fasterxml.jackson:jackson-bom:2.22.2")
-            mavenBom("com.squareup.okhttp3:okhttp-bom:5.4.0")
+            mavenBom("com.squareup.okhttp3:okhttp-bom:5.5.0")
             mavenBom("com.squareup.retrofit2:retrofit-bom:3.0.0")
             // latest version that supports java 8
             mavenBom("com.vladsch.flexmark:flexmark-all:0.62.2")
