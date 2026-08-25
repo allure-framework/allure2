@@ -83,7 +83,7 @@ subprojects {
             mavenBom("com.vladsch.flexmark:flexmark-all:0.62.2")
             mavenBom("io.qameta.allure:allure-bom:2.35.4")
             mavenBom("org.assertj:assertj-bom:3.27.7")
-            mavenBom("org.junit:junit-bom:6.1.2")
+            mavenBom("org.junit:junit-bom:6.1.3")
             mavenBom("org.mockito:mockito-bom:5.23.0")
             mavenBom("org.slf4j:slf4j-bom:2.0.18")
         }
