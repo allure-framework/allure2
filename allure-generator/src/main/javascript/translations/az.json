@@ -104,6 +104,26 @@
     "newPassed": "Yeni keçmiş",
     "retriesStatusChange": "Yenidən cəhd etdikdən sonra status dəyişib"
   },
+  "run": {
+    "actual": "Actual",
+    "allTestsPassedWithErrors": "All {{tests}} reported tests passed, but this run is unsuccessful. Run errors: {{count}}.",
+    "attachments": "Attachments",
+    "completedWithErrors": "Run completed with errors",
+    "errorCount": "Run errors: {{count}}",
+    "errors": "Errors",
+    "errorsOutsideTests": "Run-level errors outside test results: {{count}}.",
+    "expected": "Expected",
+    "failed": "Run failed",
+    "failedBeforeTests": "Run failed before tests were reported",
+    "failureExplanation": "These errors happened outside test results. Test statistics remain unchanged.",
+    "moreErrors": "and {{count}} additional errors",
+    "noAttachments": "No run-level attachments were reported.",
+    "noErrors": "No run errors",
+    "noErrorsExplanation": "No errors outside test results were reported for this run.",
+    "reviewDetails": "Review run details",
+    "trace": "Trace",
+    "unknownError": "Unknown run error"
+  },
   "sorter": {
     "duration": "müddət",
     "name": "ad",
@@ -132,6 +152,9 @@
     },
     "packages": {
       "name": "Paketlər"
+    },
+    "run": {
+      "name": "Run"
     },
     "suites": {
       "name": "Test dəsti"

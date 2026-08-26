@@ -34,6 +34,7 @@ import io.qameta.allure.duration.DurationTrendPlugin;
 import io.qameta.allure.environment.Allure1EnvironmentPlugin;
 import io.qameta.allure.executor.ExecutorPlugin;
 import io.qameta.allure.ga.GaPlugin;
+import io.qameta.allure.globals.GlobalsPlugin;
 import io.qameta.allure.history.HistoryPlugin;
 import io.qameta.allure.history.HistoryTrendPlugin;
 import io.qameta.allure.idea.IdeaLinksPlugin;
@@ -96,6 +97,7 @@ public class ConfigurationBuilder {
             new SuitesPlugin(),
             new TestsResultsPlugin(),
             new AttachmentsPlugin(),
+            new GlobalsPlugin(),
             new MailPlugin(),
             new InfluxDbExportPlugin(),
             new PrometheusExportPlugin(),
@@ -173,6 +175,7 @@ public class ConfigurationBuilder {
                         new SuitesPlugin(),
                         new TestsResultsPlugin(),
                         new AttachmentsPlugin(),
+                        new GlobalsPlugin(),
                         new MailPlugin(),
                         new InfluxDbExportPlugin(),
                         new PrometheusExportPlugin(),

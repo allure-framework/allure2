@@ -173,6 +173,8 @@ public final class TestData {
             final List<TestResult> testResults = sortedResults(results.getAllResults());
             attachJson("launch-results.json", testResults);
             attachJson("launch-attachments.json", describeAttachments(results));
+            attachJson("launch-global-errors.json", results.getGlobalErrors());
+            attachJson("launch-global-attachments.json", results.getGlobalAttachments());
 
             results.getAttachments().entrySet().stream()
                     .sorted(Map.Entry.comparingByKey())

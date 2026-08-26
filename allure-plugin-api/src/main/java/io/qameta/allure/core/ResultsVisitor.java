@@ -16,6 +16,8 @@
 package io.qameta.allure.core;
 
 import io.qameta.allure.entity.Attachment;
+import io.qameta.allure.entity.GlobalAttachment;
+import io.qameta.allure.entity.GlobalError;
 import io.qameta.allure.entity.TestResult;
 
 import java.nio.file.Path;
@@ -43,6 +45,25 @@ public interface ResultsVisitor {
      * @param result the result to process.
      */
     void visitTestResult(TestResult result);
+
+    /**
+     * Process an error that belongs to the entire test run.
+     *
+     * @param error the global error to process.
+     */
+    default void visitGlobalError(final GlobalError error) {
+        // Compatibility no-op for third-party visitors.
+    }
+
+    /**
+     * Process an attachment that belongs to the entire test run.
+     * The attachment content must also be registered with {@link #visitAttachmentFile(Path)}.
+     *
+     * @param attachment the global attachment to process.
+     */
+    default void visitGlobalAttachment(final GlobalAttachment attachment) {
+        // Compatibility no-op for third-party visitors.
+    }
 
     /**
      * Visit extra block. You can access this block using {@link LaunchResults#getExtra(String)}.

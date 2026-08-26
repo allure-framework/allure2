@@ -1,0 +1,11 @@
+{
+  "errors": [],
+  "attachments": [
+    {
+      "name": "Browser console log",
+      "type": "text/plain",
+      "source": "browser-console.log",
+      "environment": "staging"
+    }
+  ]
+}

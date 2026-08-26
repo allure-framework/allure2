@@ -1,0 +1,64 @@
+@use "../../../theme/spacing.scss" as *;
+
+.run-status-banner {
+  align-items: flex-start;
+  background: var(--color-intent-danger-bg-subtle);
+  border-color: var(--color-intent-danger-border);
+  box-shadow: none;
+  display: flex;
+  gap: gap(2);
+  padding: gap(2.5) gap(3);
+
+  &__icon {
+    color: var(--color-intent-danger-text);
+    flex: 0 0 auto;
+    padding-top: gap(0.25);
+  }
+
+  &__body {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  &__title {
+    color: var(--color-intent-danger-text);
+    font-size: var(--font-size-l);
+    font-weight: var(--font-weight-extra-bold);
+    line-height: var(--line-height-l);
+    margin: 0;
+  }
+
+  &__description,
+  &__first-error {
+    line-height: var(--line-height-m);
+    margin: gap(0.5) 0 0;
+  }
+
+  &__description {
+    color: var(--color-text-primary);
+  }
+
+  &__first-error {
+    color: var(--color-text-secondary);
+    overflow-wrap: anywhere;
+  }
+
+  &__link {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    font-weight: var(--font-weight-bold);
+    gap: gap(0.5);
+    margin-top: gap(0.25);
+  }
+}
+
+@media (max-width: $breakpoint-medium) {
+  .run-status-banner {
+    flex-wrap: wrap;
+
+    &__link {
+      margin-inline-start: gap(5);
+    }
+  }
+}

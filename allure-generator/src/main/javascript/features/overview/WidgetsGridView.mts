@@ -3,10 +3,12 @@ import BaseElement from "../../core/elements/BaseElement.mts";
 import { getWidgets } from "../../core/registry/index.mts";
 import { getSettingsForWidgetGridPlugin } from "../../core/services/settings.mts";
 import { createReportLoadErrorView } from "../../core/view/asyncMount.mts";
+import type { Mountable } from "../../core/view/types.mts";
 import { createElement } from "../../shared/dom.mts";
 import LoaderView from "../../shared/ui/LoaderView.mts";
 
 type WidgetsGridOptions = {
+  header?: Mountable;
   tabName: string;
   settings?: ReturnType<typeof getSettingsForWidgetGridPlugin>;
 };
@@ -74,6 +76,12 @@ class WidgetsGridElement extends BaseElement {
       },
       this,
     );
+
+    if (this.options.header) {
+      const header = createElement("div", { className: "widgets-grid__header" });
+      this.appendChild(header);
+      this.mountChild("header", this.options.header, header);
+    }
 
     this.getWidgetsArrangement().forEach((widgetNames) => {
       const col = createElement("div", { className: "widgets-grid__col" });

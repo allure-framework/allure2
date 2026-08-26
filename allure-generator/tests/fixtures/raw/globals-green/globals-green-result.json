@@ -1,0 +1,20 @@
+{
+  "uuid": "globals-green-result",
+  "historyId": "globals-green-history",
+  "name": "reported test remains passed",
+  "fullName": "io.qameta.allure.GlobalsTest.reportedTestRemainsPassed",
+  "status": "passed",
+  "stage": "finished",
+  "start": 1724662799000,
+  "stop": 1724662800000,
+  "steps": [],
+  "attachments": [],
+  "parameters": [],
+  "labels": [
+    {
+      "name": "suite",
+      "value": "Globals"
+    }
+  ],
+  "links": []
+}

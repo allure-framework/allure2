@@ -16,9 +16,13 @@
 package io.qameta.allure.core;
 
 import io.qameta.allure.entity.Attachment;
+import io.qameta.allure.entity.GlobalAttachment;
+import io.qameta.allure.entity.GlobalError;
 import io.qameta.allure.entity.TestResult;
 
 import java.nio.file.Path;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -56,6 +60,24 @@ public interface LaunchResults {
      * @return attachments.
      */
     Map<Path, Attachment> getAttachments();
+
+    /**
+     * Returns errors that belong to the entire test run.
+     *
+     * @return global errors.
+     */
+    default List<GlobalError> getGlobalErrors() {
+        return Collections.emptyList();
+    }
+
+    /**
+     * Returns attachments that belong to the entire test run.
+     *
+     * @return global attachments.
+     */
+    default List<GlobalAttachment> getGlobalAttachments() {
+        return Collections.emptyList();
+    }
 
     /**
      * Returns extra info by given name.

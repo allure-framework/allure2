@@ -11,6 +11,7 @@ import { createIconElement } from "../../shared/icon/index.mts";
 import { THEME_CHANGE_EVENT, getActiveTheme, toggleTheme } from "../../shared/theme.mts";
 import TooltipView from "../../shared/ui/TooltipView.mts";
 import { findWhere } from "../../shared/utils/collections.mts";
+import { loadGlobalsData } from "../run/model/globalsData.mts";
 import LanguageSelectView from "./LanguageSelectView.mts";
 
 const getThemeSwitchLabel = () =>
@@ -26,11 +27,14 @@ class SideNavCustomElement extends BaseElement {
 
   declare onThemeChange: () => void;
 
+  declare runStatusRequestId: number;
+
   constructor() {
     super();
     this.tooltip = new TooltipView({ position: "right" });
     this.langSelect = new LanguageSelectView();
     this.onThemeChange = this.updateThemeSwitch.bind(this);
+    this.runStatusRequestId = 0;
   }
 
   renderElement() {
@@ -78,18 +82,30 @@ class SideNavCustomElement extends BaseElement {
               "data-ga4-event": "tab_click",
               "data-ga4-param-tab": tabName,
               "data-tooltip": translate(title),
+              ...(tabName === "run" ? { hidden: "" } : {}),
             },
             className: b("side-nav", "item"),
             children: createElement("a", {
-              attrs: { href: `#${tabName}` },
+              attrs: { "data-tab": tabName, href: `#${tabName}` },
               className: linkClass,
               children: [
                 createElement("span", {
                   className: b("side-nav", "icon-lane"),
-                  children: createIconElement(icon, {
-                    className: b("side-nav", "icon"),
-                    size: "m",
-                  }),
+                  children: [
+                    createIconElement(icon, {
+                      className: b("side-nav", "icon"),
+                      size: "m",
+                    }),
+                    tabName === "run"
+                      ? createElement("span", {
+                          attrs: {
+                            "aria-hidden": "true",
+                            hidden: "",
+                          },
+                          className: b("side-nav", "badge"),
+                        })
+                      : null,
+                  ],
                 }),
                 createElement("span", {
                   className: b("side-nav", "text"),
@@ -197,8 +213,43 @@ class SideNavCustomElement extends BaseElement {
       },
       this,
     );
+    this.loadRunStatus(++this.runStatusRequestId);
 
     return this;
+  }
+
+  loadRunStatus(requestId: number) {
+    loadGlobalsData()
+      .then(({ attachments, errors }) => {
+        if (requestId !== this.runStatusRequestId) {
+          return;
+        }
+        const link = this.querySelector<HTMLAnchorElement>('.side-nav__link[data-tab="run"]');
+        const badge = link?.querySelector<HTMLElement>(".side-nav__badge");
+        const item = link?.closest<HTMLElement>(".side-nav__item");
+        if (!link || !badge || !item) {
+          return;
+        }
+
+        if (errors.length === 0 && attachments.length === 0) {
+          item.remove();
+          return;
+        }
+
+        const errorCount = errors.length;
+        item.removeAttribute("hidden");
+        link.classList.toggle("side-nav__link_error", errorCount > 0);
+        badge.toggleAttribute("hidden", errorCount === 0);
+        badge.textContent = String(errorCount);
+        item.dataset.tooltip = errorCount
+          ? `${translate("tab.run.name")} · ${translate("run.errorCount", {
+              hash: { count: errorCount },
+            })}`
+          : translate("tab.run.name");
+      })
+      .catch(() => {
+        // Keep shell navigation usable; the page-level loader renders the data error.
+      });
   }
 
   isTabActive(name: string) {
@@ -312,6 +363,7 @@ class SideNavCustomElement extends BaseElement {
   }
 
   destroy() {
+    this.runStatusRequestId += 1;
     this.tooltip.hide();
     this.langSelect.hide();
     super.destroy();

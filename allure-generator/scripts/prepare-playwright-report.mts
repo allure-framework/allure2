@@ -32,6 +32,10 @@ export const DEFAULT_REPORTS: ReportRequest[] = [
   { fixture: "playwright-trace", mode: REPORT_MODES.SINGLE_FILE },
   { fixture: "playwright-trace", mode: REPORT_MODES.DIRECTORY },
   { fixture: "tree-long-name", mode: REPORT_MODES.DIRECTORY },
+  { fixture: "globals-green", mode: REPORT_MODES.SINGLE_FILE },
+  { fixture: "globals-green", mode: REPORT_MODES.DIRECTORY },
+  { fixture: "globals-no-tests", mode: REPORT_MODES.DIRECTORY },
+  { fixture: "globals-attachments", mode: REPORT_MODES.DIRECTORY },
 ];
 
 const gradleWrapper = path.join(repoRoot, process.platform === "win32" ? "gradlew.bat" : "gradlew");
@@ -147,7 +151,7 @@ export default async function preparePlaywrightReport({
 if (process.argv[1] && path.resolve(process.argv[1]) === moduleFilename) {
   void preparePlaywrightReport({ reports: parseCliReports(process.argv.slice(2)) }).catch(
     (error: unknown) => {
-      const message = error instanceof Error ? error.stack ?? error.message : String(error);
+      const message = error instanceof Error ? (error.stack ?? error.message) : String(error);
       process.stderr.write(`${message}\n`);
       process.exit(1);
     },

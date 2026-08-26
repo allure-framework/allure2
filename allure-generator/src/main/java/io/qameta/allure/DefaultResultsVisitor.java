@@ -22,6 +22,8 @@ import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.detect.ContentTypeDetector;
 import io.qameta.allure.detect.WellKnownFileExtensionsUtils;
 import io.qameta.allure.entity.Attachment;
+import io.qameta.allure.entity.GlobalAttachment;
+import io.qameta.allure.entity.GlobalError;
 import io.qameta.allure.entity.Parameter;
 import io.qameta.allure.entity.TestResult;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -33,14 +35,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
 import static java.nio.file.Files.newInputStream;
@@ -87,11 +92,17 @@ public class DefaultResultsVisitor implements ResultsVisitor {
 
     private final Map<String, Object> extra;
 
+    private final Queue<GlobalError> globalErrors;
+
+    private final Queue<GlobalAttachment> globalAttachments;
+
     public DefaultResultsVisitor(final Configuration configuration) {
         this.configuration = configuration;
         this.results = ConcurrentHashMap.newKeySet();
         this.attachments = new ConcurrentHashMap<>();
         this.extra = new ConcurrentHashMap<>();
+        this.globalErrors = new ConcurrentLinkedQueue<>();
+        this.globalAttachments = new ConcurrentLinkedQueue<>();
     }
 
     @Override
@@ -126,6 +137,16 @@ public class DefaultResultsVisitor implements ResultsVisitor {
                         .setTestCaseHash(testCaseHash)
                         .setParametersHash(parametersHash)
         );
+    }
+
+    @Override
+    public void visitGlobalError(final GlobalError error) {
+        globalErrors.add(error);
+    }
+
+    @Override
+    public void visitGlobalAttachment(final GlobalAttachment attachment) {
+        globalAttachments.add(attachment);
     }
 
     private static String getTestCaseHash(final TestResult result) {
@@ -175,7 +196,9 @@ public class DefaultResultsVisitor implements ResultsVisitor {
         return new DefaultLaunchResults(
                 Collections.unmodifiableSet(results),
                 Collections.unmodifiableMap(attachments),
-                Collections.unmodifiableMap(extra)
+                Collections.unmodifiableMap(extra),
+                Collections.unmodifiableList(new ArrayList<>(globalErrors)),
+                Collections.unmodifiableList(new ArrayList<>(globalAttachments))
         );
     }
 

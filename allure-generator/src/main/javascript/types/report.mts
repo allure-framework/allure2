@@ -31,6 +31,28 @@ export type Attachment = {
   size?: number;
 };
 
+export type GlobalError = {
+  timestamp?: number;
+  message?: string;
+  trace?: string;
+  actual?: string;
+  expected?: string;
+};
+
+export type GlobalAttachment = Attachment;
+
+export type GlobalsData = {
+  errors: GlobalError[];
+  attachments: GlobalAttachment[];
+};
+
+export type SummaryData = {
+  reportName?: string;
+  testRuns?: unknown[];
+  statistic?: Statistic;
+  time?: Time;
+};
+
 export type Step = {
   name?: string;
   description?: string;
