@@ -74,12 +74,14 @@ class Allure2GlobalsReader {
                 .orElseGet(ArrayList::new)
                 .stream()
                 .filter(Objects::nonNull)
-                .map(error -> new GlobalError()
-                        .setTimestamp(error.getTimestamp())
-                        .setMessage(error.getMessage())
-                        .setTrace(error.getTrace())
-                        .setActual(error.getActual())
-                        .setExpected(error.getExpected()))
+                .map(
+                        error -> new GlobalError()
+                                .setTimestamp(error.getTimestamp())
+                                .setMessage(error.getMessage())
+                                .setTrace(error.getTrace())
+                                .setActual(error.getActual())
+                                .setExpected(error.getExpected())
+                )
                 .forEach(visitor::visitGlobalError);
 
         Optional.ofNullable(globals.getAttachments())
@@ -116,12 +118,14 @@ class Allure2GlobalsReader {
             }
         }
 
-        visitor.visitGlobalAttachment(new GlobalAttachment()
-                .setUid(stored.getUid())
-                .setName(Optional.ofNullable(attachment.getName()).orElse(stored.getName()))
-                .setSource(stored.getSource())
-                .setType(stored.getType())
-                .setSize(stored.getSize()));
+        visitor.visitGlobalAttachment(
+                new GlobalAttachment()
+                        .setUid(stored.getUid())
+                        .setName(Optional.ofNullable(attachment.getName()).orElse(stored.getName()))
+                        .setSource(stored.getSource())
+                        .setType(stored.getType())
+                        .setSize(stored.getSize())
+        );
     }
 
     private Optional<Allure2Globals> readGlobalsFile(final Path file) {

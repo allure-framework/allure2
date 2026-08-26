@@ -22,9 +22,11 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Attachment;
 import io.qameta.allure.entity.GlobalAttachment;
+import io.qameta.allure.entity.GlobalError;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Generates the run-level data consumed by the report UI.
@@ -37,15 +39,17 @@ public class GlobalsPlugin implements Aggregator2 {
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
                           final ReportStorage storage) {
-        final GlobalsData data = new GlobalsData();
-        launchesResults.forEach(launch -> {
-            data.getErrors().addAll(launch.getGlobalErrors());
-            launch.getGlobalAttachments().stream()
-                    .filter(attachment -> hasContent(launch, attachment))
-                    .forEach(data.getAttachments()::add);
-        });
+        final List<GlobalError> errors = launchesResults.stream()
+                .flatMap(launch -> launch.getGlobalErrors().stream())
+                .collect(Collectors.toList());
+        final List<GlobalAttachment> attachments = launchesResults.stream()
+                .flatMap(
+                        launch -> launch.getGlobalAttachments().stream()
+                                .filter(attachment -> hasContent(launch, attachment))
+                )
+                .collect(Collectors.toList());
 
-        storage.addDataJson(Constants.widgetsPath(JSON_FILE_NAME), data);
+        storage.addDataJson(Constants.widgetsPath(JSON_FILE_NAME), new GlobalsData(errors, attachments));
     }
 
     private static boolean hasContent(final LaunchResults launch, final GlobalAttachment globalAttachment) {

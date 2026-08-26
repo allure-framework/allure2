@@ -591,7 +591,7 @@ class Allure2PluginTest {
                                 1724662800000L,
                                 "Container DatabaseTests failed, tests inside it did not run",
                                 "java.lang.IllegalStateException: database is unavailable\n"
-                                + "\tat example.DatabaseFixture.beforeAll(DatabaseFixture.java:42)",
+                                        + "\tat example.DatabaseFixture.beforeAll(DatabaseFixture.java:42)",
                                 "database unavailable",
                                 "database ready"
                         )

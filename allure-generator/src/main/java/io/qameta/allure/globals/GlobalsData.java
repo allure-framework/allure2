@@ -17,23 +17,33 @@ package io.qameta.allure.globals;
 
 import io.qameta.allure.entity.GlobalAttachment;
 import io.qameta.allure.entity.GlobalError;
-import lombok.Data;
-import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Browser-facing run-level errors and attachments.
  */
-@Data
-@Accessors(chain = true)
 public class GlobalsData implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    protected List<GlobalError> errors = new ArrayList<>();
-    protected List<GlobalAttachment> attachments = new ArrayList<>();
+    private final List<GlobalError> errors;
+    private final List<GlobalAttachment> attachments;
+
+    public GlobalsData(final List<GlobalError> errors, final List<GlobalAttachment> attachments) {
+        this.errors = new ArrayList<>(errors);
+        this.attachments = new ArrayList<>(attachments);
+    }
+
+    public List<GlobalError> getErrors() {
+        return Collections.unmodifiableList(errors);
+    }
+
+    public List<GlobalAttachment> getAttachments() {
+        return Collections.unmodifiableList(attachments);
+    }
 
 }
