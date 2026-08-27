@@ -11,6 +11,7 @@
   ],
   "attachments": [
     {
+      "timestamp": 1724662800500,
       "name": "Global launch log",
       "type": "text/plain",
       "source": "global-run.log",

@@ -35,9 +35,14 @@
     width: gap(2);
     height: gap(2);
   }
-  &__name {
+  &__label {
     flex: 1 1 auto;
     min-width: 0;
+  }
+  &__details {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-s);
+    margin-block-start: gap(0.25);
   }
   &__control {
     padding-inline-start: gap(2);

@@ -97,6 +97,29 @@ test.describe("Run errors and attachments", () => {
     });
   });
 
+  test("shows attachment timestamps and orders evidence by time then name", async ({ page }) => {
+    await openReport(page, {
+      fixture: fixtures.globalsAttachments.name,
+      mode: REPORT_MODES.DIRECTORY,
+      route: "run",
+    });
+
+    await expect(page.locator(".run-view__attachments .attachment-row__name")).toHaveText(
+      fixtures.globalsAttachments.orderedAttachments,
+    );
+    await expect(page.locator(".attachment-row__details")).toHaveCount(3);
+    await expect(
+      page.locator(".attachment-row", {
+        hasText: fixtures.globalsAttachments.attachment,
+      }).locator(".attachment-row__details"),
+    ).toContainText("2024");
+    await expect(
+      page.locator(".attachment-row", { hasText: "Alpha legacy log" }).locator(
+        ".attachment-row__details",
+      ),
+    ).toHaveCount(0);
+  });
+
   test("loads global metadata and attachment content from a single-file report", async ({
     page,
   }) => {

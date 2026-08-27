@@ -44,6 +44,7 @@ class Allure2Globals {
     @Data
     @Accessors(chain = true)
     static class Attachment {
+        private Long timestamp;
         private String name;
         private String type;
         private String source;

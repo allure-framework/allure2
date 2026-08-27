@@ -21,9 +21,32 @@ type RunViewOptions = {
 
 const attachmentUid = (attachment: GlobalAttachment) => String(attachment.uid || attachment.source);
 
+const formatTimestamp = (timestamp: number | undefined) =>
+  typeof timestamp === "number"
+    ? translate("testResult.history.time", {
+        hash: { date: date(timestamp), time: time(timestamp, true) },
+      })
+    : undefined;
+
+const compareGlobalAttachments = (left: GlobalAttachment, right: GlobalAttachment) => {
+  const leftTimestamp = left.timestamp;
+  const rightTimestamp = right.timestamp;
+  const leftHasTimestamp = typeof leftTimestamp === "number";
+  const rightHasTimestamp = typeof rightTimestamp === "number";
+
+  if (leftHasTimestamp && rightHasTimestamp && leftTimestamp !== rightTimestamp) {
+    return leftTimestamp - rightTimestamp;
+  }
+  if (leftHasTimestamp !== rightHasTimestamp) {
+    return leftHasTimestamp ? -1 : 1;
+  }
+
+  return String(left.name || left.source).localeCompare(String(right.name || right.source));
+};
+
 const createErrorCard = (error: GlobalError, index: number) => {
   const hasComparison = typeof error.actual === "string" || typeof error.expected === "string";
-  const hasTimestamp = typeof error.timestamp === "number";
+  const timestamp = formatTimestamp(error.timestamp);
 
   return createElement("article", {
     className: "run-view__error island",
@@ -41,12 +64,10 @@ const createErrorCard = (error: GlobalError, index: number) => {
           }),
         ],
       }),
-      hasTimestamp
+      timestamp
         ? createElement("div", {
             className: "run-view__timestamp",
-            text: translate("testResult.history.time", {
-              hash: { date: date(error.timestamp), time: time(error.timestamp, true) },
-            }),
+            text: timestamp,
           })
         : null,
       hasComparison
@@ -183,7 +204,7 @@ class RunViewElement extends BaseElement {
   }
 
   createAttachmentsSection() {
-    const attachments = this.data.attachments;
+    const attachments = [...this.data.attachments].sort(compareGlobalAttachments);
     return createElement("section", {
       className: "run-view__section",
       children: [
@@ -204,7 +225,9 @@ class RunViewElement extends BaseElement {
                 const normalized = { ...attachment, uid: attachmentUid(attachment) };
                 return createElement("div", {
                   className: "run-view__attachment",
-                  children: createAttachmentRow(normalized),
+                  children: createAttachmentRow(normalized, {
+                    details: formatTimestamp(attachment.timestamp),
+                  }),
                 });
               }),
             })

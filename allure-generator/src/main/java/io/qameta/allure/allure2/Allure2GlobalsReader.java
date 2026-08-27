@@ -120,6 +120,7 @@ class Allure2GlobalsReader {
 
         visitor.visitGlobalAttachment(
                 new GlobalAttachment()
+                        .setTimestamp(attachment.getTimestamp())
                         .setUid(stored.getUid())
                         .setName(Optional.ofNullable(attachment.getName()).orElse(stored.getName()))
                         .setSource(stored.getSource())

@@ -39,7 +39,9 @@ export type GlobalError = {
   expected?: string;
 };
 
-export type GlobalAttachment = Attachment;
+export type GlobalAttachment = Attachment & {
+  timestamp?: number;
+};
 
 export type GlobalsData = {
   errors: GlobalError[];

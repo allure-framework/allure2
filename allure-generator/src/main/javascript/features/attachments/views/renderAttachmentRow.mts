@@ -9,7 +9,14 @@ import attachmentType from "../model/attachmentType.mts";
 
 type Attachment = import("../../../types/report.mts").Attachment;
 
-export const createAttachmentRow = ({ uid, type, name, source, size }: Attachment) => {
+type AttachmentRowOptions = {
+  details?: string;
+};
+
+export const createAttachmentRow = (
+  { uid, type, name, source, size }: Attachment,
+  { details }: AttachmentRowOptions = {},
+) => {
   const attachmentInfo = attachmentType(type || "");
   const isTraceAttachment = attachmentInfo.view === AttachmentPreviewView.PlaywrightTrace;
 
@@ -42,8 +49,19 @@ export const createAttachmentRow = ({ uid, type, name, source, size }: Attachmen
             }),
           }),
           createElement("div", {
-            className: "attachment-row__name long-line",
-            text: name || source,
+            className: "attachment-row__label",
+            children: [
+              createElement("div", {
+                className: "attachment-row__name long-line",
+                text: name || source,
+              }),
+              details
+                ? createElement("div", {
+                    className: "attachment-row__details",
+                    text: details,
+                  })
+                : null,
+            ],
           }),
           createElement("div", {
             className: "attachment-row__control attachment-row__link",

@@ -163,5 +163,11 @@ export const fixtures = {
     name: "globals-attachments",
     attachment: "Browser console log",
     attachmentContent: "Browser console remained clean throughout the test run",
+    orderedAttachments: [
+      "Beta setup log",
+      "Zeta setup log",
+      "Browser console log",
+      "Alpha legacy log",
+    ],
   },
 } as const;

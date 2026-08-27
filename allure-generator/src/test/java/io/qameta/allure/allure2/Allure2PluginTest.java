@@ -599,6 +599,7 @@ class Allure2PluginTest {
         assertThat(results.getGlobalAttachments())
                 .singleElement()
                 .satisfies(attachment -> {
+                    assertThat(attachment.getTimestamp()).isEqualTo(1724662800500L);
                     assertThat(attachment.getName()).isEqualTo("Launch log");
                     assertThat(attachment.getType()).isEqualTo("text/plain");
                     assertThat(attachment.getSource()).endsWith(".txt");
