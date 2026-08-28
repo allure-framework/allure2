@@ -149,4 +149,25 @@ export const fixtures = {
     longParameter:
       "frontend.pages.spreadsheets.quarterly.exports.with.a.parameter.value.that.is.long.enough.to.use.the.remaining.tree.row.space",
   },
+  globalsGreen: {
+    name: "globals-green",
+    error: "Global beforeAll fixture failed",
+    attachment: "Global launch log",
+    attachmentContent: "the database fixture failed before the remaining tests could start",
+  },
+  globalsNoTests: {
+    name: "globals-no-tests",
+    error: "Container DatabaseTests failed, tests inside it did not run",
+  },
+  globalsAttachments: {
+    name: "globals-attachments",
+    attachment: "Browser console log",
+    attachmentContent: "Browser console remained clean throughout the test run",
+    orderedAttachments: [
+      "Beta setup log",
+      "Zeta setup log",
+      "Browser console log",
+      "Alpha legacy log",
+    ],
+  },
 } as const;

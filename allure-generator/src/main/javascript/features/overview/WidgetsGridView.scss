@@ -11,6 +11,11 @@ $widgets-grid-column-min-width: 304px;
   max-height: 100%;
   overflow: auto;
   display: flex;
+  flex-wrap: wrap;
+  &__header {
+    flex: 0 0 100%;
+    width: 100%;
+  }
   &__col {
     flex: 1 0 0%;
     width: 50%;
@@ -26,6 +31,9 @@ $widgets-grid-column-min-width: 304px;
 @media (max-width: $breakpoint-medium) {
   .widgets-grid {
     display: block;
+    &__header {
+      margin-bottom: gap(3);
+    }
     &__col {
       width: 100%;
     }

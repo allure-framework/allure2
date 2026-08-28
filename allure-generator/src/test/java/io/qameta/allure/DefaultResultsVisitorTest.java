@@ -16,7 +16,10 @@
 package io.qameta.allure;
 
 import io.qameta.allure.core.Configuration;
+import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Attachment;
+import io.qameta.allure.entity.GlobalAttachment;
+import io.qameta.allure.entity.GlobalError;
 import io.qameta.allure.entity.Parameter;
 import io.qameta.allure.entity.TestResult;
 import org.junit.jupiter.api.Test;
@@ -139,5 +142,29 @@ class DefaultResultsVisitorTest {
         assertThat(attachment.getType()).isEqualTo(DefaultResultsVisitor.APPLICATION_OCTET_STREAM);
         assertThat(attachment.getSource()).endsWith(".foobar");
         assertThat(attachment.getSize()).isEqualTo(14L);
+    }
+
+    /**
+     * Verifies preserving run-level data independently from test results.
+     */
+    @Description
+    @Test
+    void shouldStoreGlobalErrorsAndAttachments() {
+        final DefaultResultsVisitor visitor = new DefaultResultsVisitor(ConfigurationBuilder.empty().build());
+        final GlobalError error = new GlobalError().setMessage("Run setup failed");
+        final GlobalAttachment attachment = new GlobalAttachment()
+                .setUid("attachment-uid")
+                .setName("Run log")
+                .setSource("attachment-uid.txt")
+                .setType("text/plain")
+                .setSize(12L);
+
+        visitor.visitGlobalError(error);
+        visitor.visitGlobalAttachment(attachment);
+
+        final LaunchResults launch = visitor.getLaunchResults();
+        assertThat(launch.getResults()).isEmpty();
+        assertThat(launch.getGlobalErrors()).containsExactly(error);
+        assertThat(launch.getGlobalAttachments()).containsExactly(attachment);
     }
 }

@@ -7,6 +7,7 @@ import {
   widgetsByTab as overviewWidgets,
 } from "../../features/overview/index.mts";
 import { packagesTab } from "../../features/packages/index.mts";
+import { runTab } from "../../features/run/index.mts";
 import { suitesTab } from "../../features/suites/index.mts";
 import { testResultBlocks, testResultTabs } from "../../features/test-result/index.mts";
 import { timelineTab } from "../../features/timeline/index.mts";
@@ -34,6 +35,7 @@ const defaultAvailability: AvailabilityResolver = () => true;
 
 const tabs: TabDescriptor[] = [
   overviewTab,
+  runTab,
   categoriesTab,
   suitesTab,
   behaviorsTab,

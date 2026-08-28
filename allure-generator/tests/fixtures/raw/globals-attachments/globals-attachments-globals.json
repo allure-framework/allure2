@@ -1,0 +1,29 @@
+{
+  "errors": [],
+  "attachments": [
+    {
+      "timestamp": 1724662802000,
+      "name": "Browser console log",
+      "type": "text/plain",
+      "source": "browser-console.log",
+      "environment": "staging"
+    },
+    {
+      "timestamp": 1724662800000,
+      "name": "Zeta setup log",
+      "type": "text/plain",
+      "source": "zeta-setup.log"
+    },
+    {
+      "name": "Alpha legacy log",
+      "type": "text/plain",
+      "source": "alpha-legacy.log"
+    },
+    {
+      "timestamp": 1724662800000,
+      "name": "Beta setup log",
+      "type": "text/plain",
+      "source": "beta-setup.log"
+    }
+  ]
+}

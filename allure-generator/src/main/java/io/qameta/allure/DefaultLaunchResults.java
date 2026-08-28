@@ -17,9 +17,13 @@ package io.qameta.allure;
 
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Attachment;
+import io.qameta.allure.entity.GlobalAttachment;
+import io.qameta.allure.entity.GlobalError;
 import io.qameta.allure.entity.TestResult;
 
 import java.nio.file.Path;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -38,12 +42,26 @@ public class DefaultLaunchResults implements LaunchResults {
 
     private final Map<String, Object> extra;
 
+    private final List<GlobalError> globalErrors;
+
+    private final List<GlobalAttachment> globalAttachments;
+
     public DefaultLaunchResults(final Set<TestResult> results,
                                 final Map<Path, Attachment> attachments,
                                 final Map<String, Object> extra) {
+        this(results, attachments, extra, Collections.emptyList(), Collections.emptyList());
+    }
+
+    public DefaultLaunchResults(final Set<TestResult> results,
+                                final Map<Path, Attachment> attachments,
+                                final Map<String, Object> extra,
+                                final List<GlobalError> globalErrors,
+                                final List<GlobalAttachment> globalAttachments) {
         this.results = results;
         this.attachments = attachments;
         this.extra = extra;
+        this.globalErrors = globalErrors;
+        this.globalAttachments = globalAttachments;
     }
 
     @Override
@@ -54,6 +72,16 @@ public class DefaultLaunchResults implements LaunchResults {
     @Override
     public Map<Path, Attachment> getAttachments() {
         return attachments;
+    }
+
+    @Override
+    public List<GlobalError> getGlobalErrors() {
+        return globalErrors;
+    }
+
+    @Override
+    public List<GlobalAttachment> getGlobalAttachments() {
+        return globalAttachments;
     }
 
     @Override

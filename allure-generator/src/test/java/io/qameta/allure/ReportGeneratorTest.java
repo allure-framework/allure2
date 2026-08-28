@@ -246,6 +246,16 @@ class ReportGeneratorTest {
     }
 
     /**
+     * Verifies generating run-level data even when the input format has no globals.
+     */
+    @Description
+    @Test
+    void shouldGenerateWidgetGlobalsJson() {
+        assertThat(output.resolve("widgets/globals.json"))
+                .isRegularFile();
+    }
+
+    /**
      * Verifies generating attachments for report generation.
      */
     @Description

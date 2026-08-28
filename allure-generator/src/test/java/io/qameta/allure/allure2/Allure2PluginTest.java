@@ -22,6 +22,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Attachment;
+import io.qameta.allure.entity.GlobalError;
 import io.qameta.allure.entity.LabelName;
 import io.qameta.allure.entity.Parameter;
 import io.qameta.allure.entity.StageResult;
@@ -563,6 +564,69 @@ class Allure2PluginTest {
                 );
 
         assertThat(attachments.get(0).getSource()).endsWith(".txt");
+    }
+
+    /**
+     * Verifies reading run-level errors and attachments without creating a phantom test result.
+     */
+    @Description
+    @Test
+    void shouldReadGlobalErrorsAndAttachmentsWithoutTestResults() throws IOException {
+        final LaunchResults results = process(
+                "allure2/globals.json", UUID.randomUUID() + "-globals.json",
+                "allure2/launch.log", "launch.log"
+        );
+
+        assertThat(results.getResults()).isEmpty();
+        assertThat(results.getGlobalErrors())
+                .extracting(
+                        GlobalError::getTimestamp,
+                        GlobalError::getMessage,
+                        GlobalError::getTrace,
+                        GlobalError::getActual,
+                        GlobalError::getExpected
+                )
+                .containsExactly(
+                        tuple(
+                                1724662800000L,
+                                "Container DatabaseTests failed, tests inside it did not run",
+                                "java.lang.IllegalStateException: database is unavailable\n"
+                                        + "\tat example.DatabaseFixture.beforeAll(DatabaseFixture.java:42)",
+                                "database unavailable",
+                                "database ready"
+                        )
+                );
+        assertThat(results.getGlobalAttachments())
+                .singleElement()
+                .satisfies(attachment -> {
+                    assertThat(attachment.getTimestamp()).isEqualTo(1724662800500L);
+                    assertThat(attachment.getName()).isEqualTo("Launch log");
+                    assertThat(attachment.getType()).isEqualTo("text/plain");
+                    assertThat(attachment.getSource()).endsWith(".txt");
+                    assertThat(attachment.getSize()).isPositive();
+                });
+        assertThat(results.getAttachments())
+                .hasSize(1)
+                .allSatisfy((path, attachment) -> {
+                    assertThat(path.getFileName()).hasToString("launch.log");
+                    assertThat(attachment.getSource()).endsWith(".txt");
+                });
+    }
+
+    /**
+     * Verifies omitting global attachment metadata when its content is missing.
+     */
+    @Description
+    @Test
+    void shouldOmitGlobalAttachmentWhenContentIsMissing() throws IOException {
+        final LaunchResults results = process(
+                "allure2/globals.json", UUID.randomUUID() + "-globals.json"
+        );
+
+        assertThat(results.getResults()).isEmpty();
+        assertThat(results.getGlobalErrors()).hasSize(1);
+        assertThat(results.getGlobalAttachments()).isEmpty();
+        assertThat(results.getAttachments()).isEmpty();
     }
 
     /**

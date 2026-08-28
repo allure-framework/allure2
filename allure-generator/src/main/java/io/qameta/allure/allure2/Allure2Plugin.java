@@ -169,6 +169,8 @@ public class Allure2Plugin implements Reader {
                                 befores, afters
                         )
                 );
+
+        new Allure2GlobalsReader(mapper).readResults(visitor, resultsDirectory);
     }
 
     private static void sortByStart(final Map<String, List<StageResult>> befores) {

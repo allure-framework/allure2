@@ -1,0 +1,11 @@
+{
+  "errors": [
+    {
+      "timestamp": 1724662800000,
+      "message": "Container DatabaseTests failed, tests inside it did not run",
+      "trace": "java.lang.IllegalStateException: database is unavailable\n\tat example.DatabaseFixture.beforeAll(DatabaseFixture.java:42)",
+      "environment": "qa"
+    }
+  ],
+  "attachments": []
+}

@@ -1,0 +1,21 @@
+{
+  "errors": [
+    {
+      "timestamp": 1724662800000,
+      "message": "Global beforeAll fixture failed",
+      "trace": "java.lang.IllegalStateException: database is unavailable\n\tat example.DatabaseFixture.beforeAll(DatabaseFixture.java:42)",
+      "actual": "database unavailable",
+      "expected": "database ready",
+      "environment": "qa"
+    }
+  ],
+  "attachments": [
+    {
+      "timestamp": 1724662800500,
+      "name": "Global launch log",
+      "type": "text/plain",
+      "source": "global-run.log",
+      "environment": "qa"
+    }
+  ]
+}

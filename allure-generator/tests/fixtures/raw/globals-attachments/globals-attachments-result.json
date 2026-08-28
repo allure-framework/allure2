@@ -1,0 +1,20 @@
+{
+  "uuid": "globals-attachments-result",
+  "historyId": "globals-attachments-history",
+  "name": "reported test passes with run evidence",
+  "fullName": "io.qameta.allure.GlobalsTest.reportedTestPassesWithRunEvidence",
+  "status": "passed",
+  "stage": "finished",
+  "start": 1724662799000,
+  "stop": 1724662800000,
+  "steps": [],
+  "attachments": [],
+  "parameters": [],
+  "labels": [
+    {
+      "name": "suite",
+      "value": "Globals"
+    }
+  ],
+  "links": []
+}
