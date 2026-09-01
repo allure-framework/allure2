@@ -98,7 +98,7 @@ subprojects {
             dependency("org.allurefw:allure1-model:1.0")
             dependency("org.apache.commons:commons-lang3:3.20.0")
             dependency("org.apache.httpcomponents:httpclient:4.5.14")
-            dependency("org.freemarker:freemarker:2.3.34")
+            dependency("org.freemarker:freemarker:2.3.35")
             dependency("org.jsoup:jsoup:1.23.1")
             dependency("org.junit-pioneer:junit-pioneer:2.3.0")
             dependency("org.projectlombok:lombok:1.18.46")
