@@ -138,6 +138,7 @@ public class XunitXmlPlugin implements Reader {
         result.setTime(getTime(testElement));
 
         fullName.ifPresent(result::setFullName);
+        fullName.ifPresent(result::setLegacyHistoryId);
         getStatusMessage(testElement).ifPresent(result::setStatusMessage);
         getStatusTrace(testElement).ifPresent(result::setStatusTrace);
         getParameters(testElement).ifPresent(result::setParameters);

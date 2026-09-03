@@ -229,7 +229,7 @@ class JunitXmlPluginTest {
 
     /**
      * Verifies repeated JUnit results are modeled as retries.
-     * The test checks visible and hidden retry flags, retry hashes, and status details.
+     * The test checks visible and hidden retry flags, current and legacy history keys, and status details.
      */
     @Description
     @Test
@@ -247,6 +247,9 @@ class JunitXmlPluginTest {
                         Tuple.tuple("searchTest", Status.BROKEN, true, "fbad9a3df2386edf402f5fceb9614f19.d41d8cd98f00b204e9800998ecf8427e"),
                         Tuple.tuple("searchTest", Status.FAILED, true, "fbad9a3df2386edf402f5fceb9614f19.d41d8cd98f00b204e9800998ecf8427e")
                 );
+        assertThat(results)
+                .extracting(TestResult::getLegacyHistoryId)
+                .containsOnly("my.company.tests.SearchTest:my.company.tests.SearchTest#searchTest");
 
         assertThat(results)
                 .extracting(TestResult::getStatusMessage, TestResult::getStatusTrace)

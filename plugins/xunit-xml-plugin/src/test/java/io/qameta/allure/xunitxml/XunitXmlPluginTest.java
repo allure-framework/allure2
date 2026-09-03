@@ -72,7 +72,7 @@ class XunitXmlPluginTest {
 
     /**
      * Verifies an xUnit XML test case is converted into an Allure result.
-     * The test checks parsed name, identity hashes, and passed status.
+     * The test checks parsed name, current and legacy identity keys, and passed status.
      */
     @Description
     @Test
@@ -91,6 +91,7 @@ class XunitXmlPluginTest {
                         TestResult::getTestCaseHash,
                         TestResult::getParametersHash,
                         TestResult::getRetryHash,
+                        TestResult::getLegacyHistoryId,
                         TestResult::getStatus
                 )
                 .containsExactlyInAnyOrder(
@@ -99,6 +100,7 @@ class XunitXmlPluginTest {
                                 "41252492d10e496cdec9d61c5eed7b51",
                                 "d41d8cd98f00b204e9800998ecf8427e",
                                 "41252492d10e496cdec9d61c5eed7b51.d41d8cd98f00b204e9800998ecf8427e",
+                                "Some test",
                                 Status.PASSED
                         )
                 );
