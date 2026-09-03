@@ -161,6 +161,37 @@ class HistoryPluginTest {
         assertThat(data.get(retryHash(testCaseHash2)).getItems()).hasSize(2);
     }
 
+    /**
+     * Verifies history falls back to the adapter-provided key when the canonical retry hash is absent.
+     */
+    @Description
+    @Test
+    void shouldFallbackToLegacyHistory() {
+        final String testCaseHash = UUID.randomUUID().toString();
+        final String legacyHistoryId = UUID.randomUUID().toString();
+        final Map<String, Object> extra = new HashMap<>();
+        final Map<String, HistoryData> historyDataMap = new HashMap<>();
+        historyDataMap.put(
+                legacyHistoryId,
+                new HistoryData()
+                        .setItems(singletonList(createHistoryItem(PASSED, 1, 2)))
+        );
+        extra.put(HISTORY_BLOCK_NAME, historyDataMap);
+        final TestResult testResult = createTestResult(FAILED, testCaseHash, 100, 101)
+                .setLegacyHistoryId(legacyHistoryId);
+
+        final Map<String, HistoryData> data = getHistoryData(extra, testResult);
+
+        assertThat(data).containsKey(retryHash(testCaseHash));
+        assertThat(data.get(retryHash(testCaseHash)).getItems())
+                .extracting(HistoryItem::getStatus)
+                .containsExactly(FAILED, PASSED);
+        assertThat(testResult.<HistoryData>getExtraBlock(HISTORY_BLOCK_NAME).getItems())
+                .extracting(HistoryItem::getStatus)
+                .containsExactly(PASSED);
+        assertThat(testResult.isNewFailed()).isTrue();
+    }
+
     private Map<String, HistoryData> copyHistoryData(Map<String, HistoryData> historyDataMap) {
         return historyDataMap.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> new HistoryData().setItems(e.getValue().getItems())));

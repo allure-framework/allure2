@@ -363,6 +363,13 @@ class Allure1PluginTest {
                                 "59143445e8de68070640560c106299fe.87749f11750f15b79e8b18a921eec986"
                         )
                 );
+        assertThat(testResults)
+                .extracting(TestResult::getLegacyHistoryId)
+                .as("Legacy history ids for parameterized tests must remain compatible")
+                .containsExactlyInAnyOrder(
+                        "56f15d234f8ad63b493afb25f7c26556",
+                        "e374f6eb3cf497543291506c8c20353"
+                );
     }
 
     /**
@@ -412,7 +419,7 @@ class Allure1PluginTest {
     }
 
     /**
-     * Verifies legacy Allure 1 history-id labels do not override generated retry hashes.
+     * Verifies legacy Allure 1 history-id labels are preserved without overriding generated retry hashes.
      */
     @Description
     @Test
@@ -423,16 +430,22 @@ class Allure1PluginTest {
 
         assertThat(results)
                 .filteredOn("name", "test1")
-                .extracting(TestResult::getRetryHash)
+                .extracting(TestResult::getRetryHash, TestResult::getLegacyHistoryId)
                 .containsExactly(
-                        "47c78c8a5a1548bc8e800a8f2e7caeb8.d41d8cd98f00b204e9800998ecf8427e"
+                        Tuple.tuple(
+                                "47c78c8a5a1548bc8e800a8f2e7caeb8.d41d8cd98f00b204e9800998ecf8427e",
+                                "something"
+                        )
                 );
 
         assertThat(results)
                 .filteredOn("name", "test2")
-                .extracting(TestResult::getRetryHash)
+                .extracting(TestResult::getRetryHash, TestResult::getLegacyHistoryId)
                 .containsExactly(
-                        "2b562de6055b47e72bac4c19bc9b7ec4.d41d8cd98f00b204e9800998ecf8427e"
+                        Tuple.tuple(
+                                "2b562de6055b47e72bac4c19bc9b7ec4.d41d8cd98f00b204e9800998ecf8427e",
+                                null
+                        )
                 );
     }
 

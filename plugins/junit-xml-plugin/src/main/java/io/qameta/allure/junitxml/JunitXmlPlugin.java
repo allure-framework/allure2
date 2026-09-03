@@ -261,6 +261,7 @@ public class JunitXmlPlugin implements Reader {
         result.setUid(context.getValue().get());
         result.setName(isNull(name) ? "Unknown test case" : name);
         if (nonNull(className) && nonNull(name)) {
+            result.setLegacyHistoryId(String.format("%s:%s#%s", info.getName(), className, name));
             result.setFullName(className + "." + name);
         }
         result.setTime(getTime(info.getTimestamp(), testCaseElement, parsedFile));

@@ -74,7 +74,7 @@ class TrxPluginTest {
 
     /**
      * Verifies a TRX file is converted into Allure test results.
-     * The test checks parsed data, generated identity hashes, and result format labels.
+     * The test checks parsed data, current and legacy identity keys, and result format labels.
      */
     @Description
     @Test
@@ -107,6 +107,9 @@ class TrxPluginTest {
             assertThat(result.getRetryHash())
                     .as("retry hash for %s", result.getName())
                     .isEqualTo(result.getTestCaseHash() + "." + result.getParametersHash());
+            assertThat(result.getLegacyHistoryId())
+                    .as("legacy history id for %s", result.getName())
+                    .isEqualTo(result.getFullName());
         });
 
     }

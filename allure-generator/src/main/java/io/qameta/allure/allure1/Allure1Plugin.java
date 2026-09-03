@@ -50,12 +50,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PushbackReader;
+import java.math.BigInteger;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -108,6 +111,7 @@ public class Allure1Plugin implements Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Allure1Plugin.class);
     private static final String UNKNOWN = "unknown";
+    private static final String MD_5 = "md5";
     private static final String ISSUE_URL_PROPERTY = "allure.issues.tracker.pattern";
     private static final String TMS_LINK_PROPERTY = "allure.tests.management.pattern";
     private static final Comparator<Parameter> PARAMETER_COMPARATOR = comparing(Parameter::getName, nullsFirst(naturalOrder()))
@@ -202,6 +206,14 @@ public class Allure1Plugin implements Reader {
         final String name = firstNonNull(source.getTitle(), source.getName(), "unknown test case");
 
         final List<Parameter> parameters = getParameters(source);
+        final Optional<ru.yandex.qatools.allure.model.Label> historyId = source.getLabels().stream()
+                .filter(label -> "historyId".equals(label.getName()))
+                .findAny();
+        dest.setLegacyHistoryId(
+                historyId.isPresent()
+                        ? historyId.get().getValue()
+                        : getLegacyHistoryId(String.format("%s#%s", testClass, name), parameters)
+        );
         dest.setUid(randomUid.get());
         dest.setName(name);
         dest.setFullName(String.format("%s.%s", testClass, testMethod));
@@ -505,6 +517,27 @@ public class Allure1Plugin implements Reader {
                                 "firstNonNull method should have at least one non null parameter"
                         )
                 );
+    }
+
+    private static String getLegacyHistoryId(final String name, final List<Parameter> parameters) {
+        final MessageDigest digest = getMessageDigest();
+        digest.update(name.getBytes(UTF_8));
+        parameters.stream()
+                .sorted(PARAMETER_COMPARATOR)
+                .forEachOrdered(parameter -> {
+                    digest.update(Objects.toString(parameter.getName()).getBytes(UTF_8));
+                    digest.update(Objects.toString(parameter.getValue()).getBytes(UTF_8));
+                });
+        final byte[] bytes = digest.digest();
+        return new BigInteger(1, bytes).toString(16);
+    }
+
+    private static MessageDigest getMessageDigest() {
+        try {
+            return MessageDigest.getInstance(MD_5);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException("Could not find md5 hashing algorithm", e);
+        }
     }
 
     private Map<String, String> processEnvironment(final Path directory) {

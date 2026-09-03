@@ -393,7 +393,7 @@ class Allure2PluginTest {
     }
 
     /**
-     * Verifies ignoring adapter-provided identity fields and calculating canonical hashes.
+     * Verifies calculating canonical hashes while preserving the adapter-provided history ID for fallback.
      */
     @Description
     @Test
@@ -406,13 +406,15 @@ class Allure2PluginTest {
                 .extracting(
                         TestResult::getTestCaseHash,
                         TestResult::getParametersHash,
-                        TestResult::getRetryHash
+                        TestResult::getRetryHash,
+                        TestResult::getLegacyHistoryId
                 )
                 .containsExactly(
                         tuple(
                                 "fa121e5badc3c93651d3921a7898a04c",
                                 "9030faa44fb9da8aeaee27f28c29a4f9",
-                                "fa121e5badc3c93651d3921a7898a04c.9030faa44fb9da8aeaee27f28c29a4f9"
+                                "fa121e5badc3c93651d3921a7898a04c.9030faa44fb9da8aeaee27f28c29a4f9",
+                                "adapter-provided-history-id"
                         )
                 );
     }

@@ -149,7 +149,10 @@ public class HistoryPlugin extends CommonJsonAggregator2 implements Reader {
                                final ExecutorInfo info) {
         final HistoryData data = history.computeIfAbsent(
                 result.getRetryHash(),
-                id -> new HistoryData().setStatistic(new Statistic())
+                id -> Optional.ofNullable(result.getLegacyHistoryId())
+                        .map(history::get)
+                        .map(HistoryPlugin::copy)
+                        .orElseGet(() -> new HistoryData().setStatistic(new Statistic()))
         );
 
         data.getStatistic().update(result);

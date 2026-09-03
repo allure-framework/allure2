@@ -50,6 +50,8 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
     protected String testCaseHash;
     @JsonIgnore
     protected String parametersHash;
+    @JsonIgnore
+    protected transient String legacyHistoryId;
     protected String testId;
     protected Time time = new Time();
     protected String description;
