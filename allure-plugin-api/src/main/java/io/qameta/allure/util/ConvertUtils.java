@@ -36,6 +36,7 @@ public final class ConvertUtils {
         return convertList(source, t -> true, converter);
     }
 
+    @SuppressWarnings("PMD.ReturnEmptyCollectionRatherThanNull") // Preserve null source semantics.
     public static <T, R> List<R> convertList(final Collection<T> source,
                                              final Predicate<T> predicate,
                                              final Function<T, R> converter) {
