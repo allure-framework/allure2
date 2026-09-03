@@ -91,7 +91,7 @@ subprojects {
             dependency("com.beust:jcommander:1.82")
             dependency("com.github.spotbugs:spotbugs:4.10.4")
             dependency("com.opencsv:opencsv:5.12.0")
-            dependency("com.puppycrawl.tools:checkstyle:12.2.0")
+            dependency("com.puppycrawl.tools:checkstyle:14.1.0")
             dependency("commons-io:commons-io:2.22.0")
             dependency("javax.xml.bind:jaxb-api:2.3.1")
             dependency("net.sourceforge.pmd:pmd-java:7.26.0")
