@@ -8,6 +8,23 @@
   }
 }
 
+.test-result-execution {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-block-end: gap(2);
+  }
+  &__title {
+    margin: 0;
+  }
+  &__controls {
+    display: flex;
+    gap: gap(0.5);
+    font-size: var(--font-size-s);
+  }
+}
+
 .step {
   &__main {
     flex: 1 1 auto;
