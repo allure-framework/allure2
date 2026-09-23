@@ -18,6 +18,7 @@ package io.qameta.allure.history;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.qameta.allure.CommonJsonAggregator2;
 import io.qameta.allure.Reader;
+import io.qameta.allure.ReportStorage;
 import io.qameta.allure.context.JacksonContext;
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.LaunchResults;
@@ -61,6 +62,11 @@ public class HistoryPlugin extends CommonJsonAggregator2 implements Reader {
 
     public HistoryPlugin() {
         super(HISTORY_BLOCK_NAME, HISTORY_FILE_NAME);
+    }
+
+    @Override
+    protected void writeData(final ReportStorage storage, final String name, final Object data) {
+        storage.addAdditionalJson(name, data);
     }
 
     @Override

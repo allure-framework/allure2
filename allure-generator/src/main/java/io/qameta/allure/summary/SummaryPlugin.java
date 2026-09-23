@@ -46,6 +46,14 @@ public class SummaryPlugin implements Aggregator2 {
     public void aggregate(final Configuration configuration,
                           final List<LaunchResults> launchesResults,
                           final ReportStorage storage) {
+        storage.addDataJson(
+                String.format("%s/%s", Constants.WIDGETS_DIR, JSON_FILE_NAME),
+                getData(configuration, launchesResults)
+        );
+    }
+
+    static SummaryData getData(final Configuration configuration,
+                               final List<LaunchResults> launchesResults) {
         final SummaryData data1 = new SummaryData()
                 .setStatistic(new Statistic())
                 .setTime(new GroupTime())
@@ -59,7 +67,7 @@ public class SummaryPlugin implements Aggregator2 {
                     data1.getTime().update(result);
                 });
 
-        storage.addDataJson(String.format("%s/%s", Constants.WIDGETS_DIR, JSON_FILE_NAME), data1);
+        return data1;
     }
 
     private static String getReportName(final Configuration configuration,

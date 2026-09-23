@@ -18,6 +18,11 @@ package io.qameta.allure;
 import java.nio.file.Path;
 
 /**
+ * Storage for generated report content and additional integration artifacts.
+ * Report content is embedded in single-file mode. Additional artifacts are
+ * written beside the HTML by the single-file report storage.
+ * The method selects the destination; output paths do not affect embedding.
+ *
  * @author charlie (Dmitry Baev).
  */
 public interface ReportStorage {
@@ -27,5 +32,36 @@ public interface ReportStorage {
     void addDataBinary(String name, byte[] data);
 
     void addDataFile(String name, Path file);
+
+    /**
+     * Store additional JSON data, such as a CI summary, outside the embedded report.
+     * The default implementation preserves compatibility with existing storage implementations.
+     *
+     * @param name the relative output path.
+     * @param data the data to serialize.
+     */
+    default void addAdditionalJson(final String name, final Object data) {
+        addDataJson(name, data);
+    }
+
+    /**
+     * Store additional binary data outside the embedded report.
+     *
+     * @param name the relative output path.
+     * @param data the data to write.
+     */
+    default void addAdditionalBinary(final String name, final byte[] data) {
+        addDataBinary(name, data);
+    }
+
+    /**
+     * Copy an additional file outside the embedded report.
+     *
+     * @param name the relative output path.
+     * @param file the source file.
+     */
+    default void addAdditionalFile(final String name, final Path file) {
+        addDataFile(name, file);
+    }
 
 }
