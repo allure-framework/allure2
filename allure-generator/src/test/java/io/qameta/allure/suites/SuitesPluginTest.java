@@ -23,8 +23,12 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.InMemoryReportStorage;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Label;
+import io.qameta.allure.entity.Link;
+import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
+import io.qameta.allure.history.HistoryData;
+import io.qameta.allure.history.HistoryPlugin;
 import io.qameta.allure.tree.Tree;
 import io.qameta.allure.tree.TreeNode;
 import org.junit.jupiter.api.Test;
@@ -109,6 +113,45 @@ class SuitesPluginTest {
 
         assertThat(storage.getReportDataFiles())
                 .containsKey("data/" + SuitesPlugin.CSV_FILE_NAME);
+    }
+
+    /**
+     * Verifies the suites CSV file contains the success rate and issue links.
+     * The test checks the success rate is taken from the history block of the test result.
+     */
+    @Description
+    @Issue("3092")
+    @Issue("2727")
+    @Test
+    void shouldExportSuccessRateAndIssuesToCsvFile() {
+        final Configuration configuration = ConfigurationBuilder.bundled().build();
+        final TestResult result = new TestResult()
+                .setName("first")
+                .setLabels(singletonList(new Label().setName("suite").setValue("s1")))
+                .setLinks(
+                        singletonList(
+                                new Link().setType("issue").setName("ABC-1").setUrl("https://example.com/browse/ABC-1")
+                        )
+                );
+        result.addExtraBlock(
+                HistoryPlugin.HISTORY_BLOCK_NAME,
+                new HistoryData().setStatistic(new Statistic().setPassed(3).setFailed(1))
+        );
+
+        final InMemoryReportStorage storage = new InMemoryReportStorage();
+        Allure.step("Aggregate suites report files", () -> {
+            new SuitesPlugin().aggregate(configuration, createSingleLaunchResults(result), storage);
+            attachStorageFiles(storage);
+        });
+
+        final String csv = new String(
+                Base64.getDecoder().decode(storage.getReportDataFiles().get("data/" + SuitesPlugin.CSV_FILE_NAME)),
+                StandardCharsets.UTF_8
+        );
+        assertThat(csv)
+                .contains("\"SUCCESS RATE\"", "\"ISSUES\"")
+                .contains("\"75%\"")
+                .contains("\"ABC-1 (https://example.com/browse/ABC-1)\"");
     }
 
     private void attachStorageFiles(final InMemoryReportStorage storage) {

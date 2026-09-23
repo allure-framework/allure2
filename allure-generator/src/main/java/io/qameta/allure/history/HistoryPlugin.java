@@ -53,7 +53,7 @@ public class HistoryPlugin extends CommonJsonAggregator2 implements Reader {
 
     private static final Set<Status> MARK_STATUSES = EnumSet.of(Status.FAILED, Status.BROKEN, Status.PASSED);
 
-    private static final String HISTORY_BLOCK_NAME = "history";
+    public static final String HISTORY_BLOCK_NAME = "history";
     private static final String HISTORY_FILE_NAME = "history.json";
 
     private static final TypeReference<Map<String, HistoryData>> HISTORY_TYPE = new TypeReference<Map<String, HistoryData>>() {

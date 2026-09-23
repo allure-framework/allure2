@@ -17,12 +17,18 @@ package io.qameta.allure.csv;
 
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
+import io.qameta.allure.entity.Link;
+import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.TestResult;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static java.time.ZoneId.systemDefault;
 
@@ -31,6 +37,8 @@ import static java.time.ZoneId.systemDefault;
  *
  */
 public class CsvExportSuite implements Serializable {
+
+    private static final String ISSUE_LINK_TYPE = "issue";
 
     @CsvBindByName(column = "Status")
     @CsvBindByPosition(position = 0)
@@ -76,7 +84,25 @@ public class CsvExportSuite implements Serializable {
     @CsvBindByPosition(position = 10)
     private final String description;
 
+    @CsvBindByName(column = "Success Rate")
+    @CsvBindByPosition(position = 11)
+    private final String successRate;
+
+    @CsvBindByName(column = "Issues")
+    @CsvBindByPosition(position = 12)
+    private final String issues;
+
     public CsvExportSuite(final TestResult result) {
+        this(result, null);
+    }
+
+    /**
+     * Creates the suites csv export row.
+     *
+     * @param result           the test result.
+     * @param historyStatistic the history statistic of the test result, may be null.
+     */
+    public CsvExportSuite(final TestResult result, final Statistic historyStatistic) {
         final Map<String, String> resultMap = result.toMap();
         this.status = result.getStatus() != null ? result.getStatus().value() : null;
         this.duration = result.getTime().getDuration() != null ? result.getTime().getDuration().toString() : null;
@@ -89,6 +115,8 @@ public class CsvExportSuite implements Serializable {
         this.testMethod = resultMap.getOrDefault("testMethod", null);
         this.name = result.getName();
         this.description = result.getDescription();
+        this.successRate = asSuccessRate(historyStatistic);
+        this.issues = asIssues(result.getLinks());
     }
 
     public String getStatus() {
@@ -133,6 +161,45 @@ public class CsvExportSuite implements Serializable {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getSuccessRate() {
+        return successRate;
+    }
+
+    public String getIssues() {
+        return issues;
+    }
+
+    private static String asIssues(final List<Link> links) {
+        if (Objects.isNull(links)) {
+            return null;
+        }
+        final String value = links.stream()
+                .filter(link -> ISSUE_LINK_TYPE.equalsIgnoreCase(link.getType()))
+                .map(CsvExportSuite::asIssue)
+                .filter(Objects::nonNull)
+                .collect(Collectors.joining(", "));
+        return value.isEmpty() ? null : value;
+    }
+
+    private static String asIssue(final Link link) {
+        final String name = link.getName();
+        final String url = link.getUrl();
+        if (Objects.isNull(url) || url.equals(name)) {
+            return name;
+        }
+        return Objects.isNull(name) ? url : name + " (" + url + ")";
+    }
+
+    private static String asSuccessRate(final Statistic statistic) {
+        if (Objects.isNull(statistic) || statistic.getTotal() == 0) {
+            return null;
+        }
+        final BigDecimal rate = BigDecimal.valueOf(statistic.getPassed() * 100)
+                .divide(BigDecimal.valueOf(statistic.getTotal()), 2, RoundingMode.FLOOR)
+                .stripTrailingZeros();
+        return rate.toPlainString() + "%";
     }
 
     private static String asDate(final Long epochMills) {

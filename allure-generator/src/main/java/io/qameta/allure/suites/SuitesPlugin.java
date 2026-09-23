@@ -22,6 +22,8 @@ import io.qameta.allure.Constants;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.csv.CsvExportSuite;
 import io.qameta.allure.entity.TestResult;
+import io.qameta.allure.history.HistoryData;
+import io.qameta.allure.history.HistoryPlugin;
 import io.qameta.allure.tree.TestResultTree;
 import io.qameta.allure.tree.TestResultTreeGroup;
 import io.qameta.allure.tree.Tree;
@@ -32,6 +34,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static io.qameta.allure.entity.LabelName.PARENT_SUITE;
@@ -112,7 +115,12 @@ public class SuitesPlugin extends CompositeAggregator2 {
         protected List<CsvExportSuite> getData(final List<LaunchResults> launchesResults) {
             return launchesResults.stream()
                     .flatMap(launch -> launch.getResults().stream())
-                    .map(CsvExportSuite::new).collect(Collectors.toList());
+                    .map(CsvExportAggregator::toCsvExportSuite).collect(Collectors.toList());
+        }
+
+        private static CsvExportSuite toCsvExportSuite(final TestResult result) {
+            final HistoryData history = result.getExtraBlock(HistoryPlugin.HISTORY_BLOCK_NAME, null);
+            return new CsvExportSuite(result, Objects.isNull(history) ? null : history.getStatistic());
         }
     }
 
