@@ -53,7 +53,7 @@ public class MailPlugin implements Aggregator2 {
         try (Writer writer = new OutputStreamWriter(bos, StandardCharsets.UTF_8)) {
             final Template template = context.getValue().getTemplate("mail.html.ftl");
             template.process(new HashMap<>(), writer);
-            storage.addDataBinary(
+            storage.addAdditionalBinary(
                     Constants.exportPath("mail.html"),
                     bos.toByteArray()
             );
