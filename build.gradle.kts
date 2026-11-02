@@ -101,7 +101,7 @@ subprojects {
             dependency("org.freemarker:freemarker:2.3.35")
             dependency("org.jsoup:jsoup:1.23.2")
             dependency("org.junit-pioneer:junit-pioneer:2.3.0")
-            dependency("org.projectlombok:lombok:1.18.46")
+            dependency("org.projectlombok:lombok:1.18.48")
         }
     }
 
