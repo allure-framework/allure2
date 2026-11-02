@@ -85,7 +85,7 @@ subprojects {
             mavenBom("org.assertj:assertj-bom:3.27.7")
             mavenBom("org.junit:junit-bom:6.1.3")
             mavenBom("org.mockito:mockito-bom:5.23.0")
-            mavenBom("org.slf4j:slf4j-bom:2.0.18")
+            mavenBom("org.slf4j:slf4j-bom:2.0.19")
         }
         dependencies {
             dependency("com.beust:jcommander:1.82")
