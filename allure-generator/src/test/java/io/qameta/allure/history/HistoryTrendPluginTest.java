@@ -180,22 +180,28 @@ class HistoryTrendPluginTest {
     }
 
     /**
-     * Verifies aggregating for empty report for history trend aggregation.
+     * Exports an empty report's history trend through the additional-file API,
+     * with zero results and no executor metadata.
      */
     @Description
     @Test
-    void shouldAggregateForEmptyReport() {
+    void shouldAggregateForEmptyReport() throws Exception {
         final Configuration configuration = mock(Configuration.class);
 
         final HistoryTrendPlugin.JsonAggregator aggregator = new HistoryTrendPlugin.JsonAggregator();
         final ReportStorage reportStorage = mock();
         Allure.step(
-                "Aggregate history trend widget for an empty report",
+                "Export history trend for an empty report",
                 () -> aggregator.aggregate(configuration, Collections.emptyList(), reportStorage)
         );
 
         final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.captor();
-        verify(reportStorage, times(1)).addDataJson(eq("history/history-trend.json"), captor.capture());
+        verify(reportStorage, times(1)).addAdditionalJson(eq("history/history-trend.json"), captor.capture());
+        Allure.addAttachment(
+                "history/history-trend.json", "application/json",
+                new JacksonContext().getValue().writerWithDefaultPrettyPrinter().writeValueAsString(captor.getValue()),
+                ".json"
+        );
 
         assertThat(captor.getValue())
                 .hasSize(1)

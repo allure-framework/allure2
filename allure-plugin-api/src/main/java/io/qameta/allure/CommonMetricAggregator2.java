@@ -49,7 +49,7 @@ public abstract class CommonMetricAggregator2 implements Aggregator2 {
                           final List<LaunchResults> launchesResults,
                           final ReportStorage storage) {
 
-        storage.addDataBinary(
+        storage.addAdditionalBinary(
                 Constants.path(location, fileName),
                 getData(launchesResults).getBytes(StandardCharsets.UTF_8)
         );

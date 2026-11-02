@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.CommonJsonAggregator2;
 import io.qameta.allure.Constants;
+import io.qameta.allure.ReportStorage;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Statistic;
 import io.qameta.allure.entity.TestResult;
@@ -104,6 +105,11 @@ public class HistoryTrendPlugin extends AbstractTrendPlugin<HistoryTrendItem> {
 
         JsonAggregator() {
             super(Constants.HISTORY_DIR, JSON_FILE_NAME);
+        }
+
+        @Override
+        protected void writeData(final ReportStorage storage, final String name, final Object data) {
+            storage.addAdditionalJson(name, data);
         }
 
         @Override

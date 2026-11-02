@@ -43,7 +43,19 @@ public abstract class CommonJsonAggregator2 implements Aggregator2 {
                           final List<LaunchResults> launchesResults,
                           final ReportStorage storage) {
         final Object data = getData(launchesResults);
-        storage.addDataJson(String.format("%s/%s", this.location, this.fileName), data);
+        writeData(storage, String.format("%s/%s", this.location, this.fileName), data);
+    }
+
+    /**
+     * Write aggregated JSON as report content. Additional-file producers can
+     * override this method to use {@link ReportStorage#addAdditionalJson(String, Object)}.
+     *
+     * @param storage the report storage.
+     * @param name the relative output path.
+     * @param data the aggregated data.
+     */
+    protected void writeData(final ReportStorage storage, final String name, final Object data) {
+        storage.addDataJson(name, data);
     }
 
     protected abstract Object getData(List<LaunchResults> launches);

@@ -17,9 +17,9 @@ package io.qameta.allure;
 
 import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.FileSystemReportStorage;
-import io.qameta.allure.core.InMemoryReportStorage;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.core.ReportWebGenerator;
+import io.qameta.allure.core.SingleFileReportStorage;
 import io.qameta.allure.util.DeleteVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -123,7 +123,7 @@ public class ReportGenerator {
     }
 
     public void generateSingleFile(final Path outputDirectory, final List<Path> resultsDirectories) {
-        final InMemoryReportStorage storage = new InMemoryReportStorage();
+        final SingleFileReportStorage storage = new SingleFileReportStorage(outputDirectory);
         generate(storage, outputDirectory, resultsDirectories);
     }
 
