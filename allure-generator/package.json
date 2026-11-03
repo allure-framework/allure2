@@ -28,7 +28,7 @@
     "autoprefixer": "^10.5.0",
     "axe-core": "^4.11.4",
     "eslint-plugin-prefer-arrow-functions": "^3.9.1",
-    "oxfmt": "^0.45.0",
+    "oxfmt": "^0.76.0",
     "oxlint": "^1.60.0",
     "playwright": "^1.60.0",
     "rimraf": "^6.1.3",
