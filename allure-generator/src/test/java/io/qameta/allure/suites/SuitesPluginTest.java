@@ -116,7 +116,7 @@ class SuitesPluginTest {
                 "Attach in-memory storage contents", () -> storage.getReportDataFiles().entrySet().stream()
                         .sorted(Map.Entry.comparingByKey())
                         .forEach(
-                                entry -> Allure.addAttachment(
+                                entry -> Allure.attachment(
                                         entry.getKey(),
                                         "text/plain",
                                         new String(

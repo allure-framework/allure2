@@ -104,7 +104,7 @@ class JiraTestResultExportPluginTest {
 
     private void attachTestResultInput(final TestResult testResult, final ExecutorInfo executorInfo) {
         Allure.step(
-                "Attach Jira test-result input", () -> Allure.addAttachment(
+                "Attach Jira test-result input", () -> Allure.attachment(
                         "jira-test-result-input.txt",
                         "text/plain",
                         String.format(
@@ -128,7 +128,7 @@ class JiraTestResultExportPluginTest {
             final ArgumentCaptor<JiraTestResult> resultCaptor = ArgumentCaptor.forClass(JiraTestResult.class);
             verify(service, times(1)).createTestResult(resultCaptor.capture(), eq(ISSUES));
             final JiraTestResult result = resultCaptor.getValue();
-            Allure.addAttachment("jira-test-result-payload.txt", "text/plain", describeTestResultExport(result));
+            Allure.attachment("jira-test-result-payload.txt", "text/plain", describeTestResultExport(result));
             return result;
         });
     }

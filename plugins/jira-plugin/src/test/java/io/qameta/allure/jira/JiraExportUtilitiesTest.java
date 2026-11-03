@@ -120,7 +120,7 @@ public class JiraExportUtilitiesTest {
     private void createLaunchResults(final LaunchResults launchResults, final Set<TestResult> results) {
         Allure.step("Create launch results for Jira statistics", () -> {
             when(launchResults.getAllResults()).thenReturn(results);
-            Allure.addAttachment("jira-statistic-input.txt", "text/plain", describeResults(results));
+            Allure.attachment("jira-statistic-input.txt", "text/plain", describeResults(results));
         });
     }
 
@@ -128,7 +128,7 @@ public class JiraExportUtilitiesTest {
         return Allure.step("Convert Jira launch statistics", () -> {
             final Statistic statistic = JiraExportUtils.getStatistic(Arrays.asList(launchResults));
             final List<LaunchStatisticExport> exports = JiraExportUtils.convertStatistics(statistic);
-            Allure.addAttachment("jira-statistic-output.txt", "text/plain", describeStatistic(exports));
+            Allure.attachment("jira-statistic-output.txt", "text/plain", describeStatistic(exports));
             return exports;
         });
     }

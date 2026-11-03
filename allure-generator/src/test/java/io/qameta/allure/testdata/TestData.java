@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.qameta.allure.Allure;
+import io.qameta.allure.AttachmentOptions;
 import io.qameta.allure.DefaultLaunchResults;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.Attachment;
@@ -165,7 +166,7 @@ public final class TestData {
 
     public static void attachFileContent(final String fileName, final byte[] content) {
         final String body = formatFileContent(fileName, content);
-        Allure.addAttachment(fileName, getContentType(fileName), body, getFileExtension(fileName));
+        Allure.attachment(fileName, getContentType(fileName), body, AttachmentOptions.withFileExtension(getFileExtension(fileName)));
     }
 
     public static void attachLaunchResults(final String stepName, final LaunchResults results) {
@@ -246,7 +247,7 @@ public final class TestData {
     }
 
     private static void attachJson(final String fileName, final Object value) {
-        Allure.addAttachment(fileName, APPLICATION_JSON, toJson(value), ".json");
+        Allure.attachment(fileName, APPLICATION_JSON, toJson(value), AttachmentOptions.withFileExtension(".json"));
     }
 
     private static String prettifyJson(final String value) {

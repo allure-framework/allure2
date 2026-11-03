@@ -80,7 +80,7 @@ class EmptyResultsTest {
         Allure.parameter("resultsDirectoryKind", resultsDirectoryKind);
         Allure.step("Generate report when results path is " + resultsDirectoryKind, () -> {
             generator.generate(outputDirectory, resultsDirectory);
-            Allure.addAttachment("Generated report files", "text/plain", listRelativeFiles(outputDirectory));
+            Allure.attachment("Generated report files", "text/plain", listRelativeFiles(outputDirectory));
         });
     }
 

@@ -16,6 +16,7 @@
 package io.qameta.allure.tree;
 
 import io.qameta.allure.Allure;
+import io.qameta.allure.AttachmentOptions;
 import io.qameta.allure.Description;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.TestResult;
@@ -156,11 +157,11 @@ class TestResultTreeTest {
 
     private void attachTree(final String fileName, final Tree<?> tree) {
         Allure.step(
-                "Attach tree structure as " + fileName, () -> Allure.addAttachment(
+                "Attach tree structure as " + fileName, () -> Allure.attachment(
                         fileName,
                         "text/plain",
                         describeTree(tree),
-                        ".txt"
+                        AttachmentOptions.withFileExtension(".txt")
                 )
         );
     }

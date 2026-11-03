@@ -16,6 +16,7 @@
 package io.qameta.allure.history;
 
 import io.qameta.allure.Allure;
+import io.qameta.allure.AttachmentOptions;
 import io.qameta.allure.Description;
 import io.qameta.allure.ReportStorage;
 import io.qameta.allure.context.JacksonContext;
@@ -197,10 +198,10 @@ class HistoryTrendPluginTest {
 
         final ArgumentCaptor<List<HistoryTrendItem>> captor = ArgumentCaptor.captor();
         verify(reportStorage, times(1)).addAdditionalJson(eq("history/history-trend.json"), captor.capture());
-        Allure.addAttachment(
+        Allure.attachment(
                 "history/history-trend.json", "application/json",
                 new JacksonContext().getValue().writerWithDefaultPrettyPrinter().writeValueAsString(captor.getValue()),
-                ".json"
+                AttachmentOptions.withFileExtension(".json")
         );
 
         assertThat(captor.getValue())

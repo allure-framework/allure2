@@ -192,7 +192,7 @@ class PackagesPluginTest {
 
     private LaunchResults createLaunchResults(final Set<TestResult> testResults) {
         return Allure.step("Create launch results", () -> {
-            Allure.addAttachment("input-test-results.txt", "text/plain", describeTestResults(testResults));
+            Allure.attachment("input-test-results.txt", "text/plain", describeTestResults(testResults));
             return new DefaultLaunchResults(testResults, Collections.emptyMap(), Collections.emptyMap());
         });
     }
@@ -201,7 +201,7 @@ class PackagesPluginTest {
         return Allure.step("Aggregate packages tree", () -> {
             final PackagesPlugin packagesPlugin = new PackagesPlugin();
             final Tree<TestResult> tree = packagesPlugin.getData(singletonList(results));
-            Allure.addAttachment("packages-tree.txt", "text/plain", describeTree(tree.getChildren(), 0));
+            Allure.attachment("packages-tree.txt", "text/plain", describeTree(tree.getChildren(), 0));
             return tree;
         });
     }

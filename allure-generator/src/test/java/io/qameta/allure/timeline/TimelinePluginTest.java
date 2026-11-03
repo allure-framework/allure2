@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.qameta.allure.Allure;
+import io.qameta.allure.AttachmentOptions;
 import io.qameta.allure.Description;
 import io.qameta.allure.core.LaunchResults;
 import io.qameta.allure.entity.LabelName;
@@ -74,11 +75,11 @@ class TimelinePluginTest {
                 "Generate timeline tree after retry aggregation",
                 () -> mapper.valueToTree(timelinePlugin.getData(launchResults))
         );
-        Allure.addAttachment(
+        Allure.attachment(
                 "timeline-tree.json",
                 "application/json",
                 mapper.writerWithDefaultPrettyPrinter().writeValueAsString(timeline),
-                ".json"
+                AttachmentOptions.withFileExtension(".json")
         );
 
         Allure.step("Verify only older attempts are marked as retry leaves", () -> {

@@ -111,14 +111,14 @@ class JiraModeDetectorTest {
                               final Supplier<JiraService> serverSupplier) {
         return Allure.step("Detect Jira mode", () -> {
             final String mode = JiraModeDetector.detectMode(cloudSupplier, serverSupplier);
-            Allure.addAttachment("jira-mode-output.txt", "text/plain", "mode=" + mode);
+            Allure.attachment("jira-mode-output.txt", "text/plain", "mode=" + mode);
             return mode;
         });
     }
 
     private void attachServerInfo(final String fileName, final JiraServerInfo serverInfo) {
         Allure.step(
-                "Attach Jira server info", () -> Allure.addAttachment(
+                "Attach Jira server info", () -> Allure.attachment(
                         fileName, "text/plain", String.format(
                                 "deploymentType=%s%nversion=%s%nserverTitle=%s",
                                 serverInfo.getDeploymentType(),

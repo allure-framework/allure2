@@ -105,11 +105,11 @@ class CommandsTest {
 
         final Commands commands = new Commands(home);
         final CommandlineConfig config = commands.getConfig(options);
-        Allure.addAttachment(
+        Allure.attachment(
                 "loaded-config.txt",
                 "text/plain",
                 String.format("profile=test%nplugins=%s%n", config.getPlugins()),
-                ".txt"
+                AttachmentOptions.withFileExtension(".txt")
         );
         assertThat(config)
                 .isNotNull();

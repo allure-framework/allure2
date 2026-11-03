@@ -258,7 +258,7 @@ class ReportWebGeneratorTest {
         Allure.step("Generate report web assets into " + outputDirectory, () -> {
             new ReportWebGenerator().generate(configuration, reportStorage, outputDirectory);
             final Path indexHtml = outputDirectory.resolve("index.html");
-            Allure.addAttachment(
+            Allure.attachment(
                     "Generated index.html",
                     "text/html",
                     Files.readString(indexHtml, StandardCharsets.UTF_8)

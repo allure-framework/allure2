@@ -81,11 +81,19 @@ subprojects {
             mavenBom("com.squareup.retrofit2:retrofit-bom:3.0.0")
             // latest version that supports java 8
             mavenBom("com.vladsch.flexmark:flexmark-all:0.62.2")
-            mavenBom("io.qameta.allure:allure-bom:3.0.1")
+            mavenBom("io.qameta.allure:allure-bom:2.35.5")
             mavenBom("org.assertj:assertj-bom:3.27.7")
             mavenBom("org.junit:junit-bom:6.1.3")
             mavenBom("org.mockito:mockito-bom:5.24.0")
             mavenBom("org.slf4j:slf4j-bom:2.0.19")
+        }
+        // Allure 3 adapters run in tests on Java 17; the report runtime still supports Java 8.
+        withGroovyBuilder {
+            "configurations"("testCompileClasspath", "testRuntimeClasspath", "testAnnotationProcessor") {
+                "imports" {
+                    "mavenBom"("io.qameta.allure:allure-bom:3.0.1")
+                }
+            }
         }
         dependencies {
             dependency("com.beust:jcommander:1.82")
