@@ -161,7 +161,7 @@ class CategoriesPluginTest {
         Allure.step("Classify a failed result that matches two category rules", () -> {
             CategoriesPlugin.addCategoriesForResults(createSingleLaunchResults(meta, result));
             final List<Category> matchedCategories = result.getExtraBlock(CATEGORIES, new ArrayList<>());
-            Allure.addAttachment(
+            Allure.attachment(
                     "Category matching result",
                     "text/plain",
                     String.format(
@@ -445,7 +445,7 @@ class CategoriesPluginTest {
         final List<Category> categories = launchResults.getExtra(CATEGORIES, ArrayList::new);
         assertThat(categories).hasSize(1);
         final String sanitizedDescriptionHtml = categories.get(0).getDescriptionHtml();
-        Allure.addAttachment(
+        Allure.attachment(
                 "Sanitized category description HTML",
                 "text/plain",
                 String.format(
@@ -474,7 +474,7 @@ class CategoriesPluginTest {
     private void assertAnsiStripped(final String input, final String expected) {
         Allure.step("Strip ANSI escapes from category text", () -> {
             final String actual = stripAnsi(input);
-            Allure.addAttachment(
+            Allure.attachment(
                     "ANSI stripping sample",
                     "text/plain",
                     String.format("input=%s%nexpected=%s%nactual=%s%n", input, expected, actual)
@@ -488,7 +488,7 @@ class CategoriesPluginTest {
                 "Attach in-memory storage contents", () -> storage.getReportDataFiles().entrySet().stream()
                         .sorted(Map.Entry.comparingByKey())
                         .forEach(
-                                entry -> Allure.addAttachment(
+                                entry -> Allure.attachment(
                                         entry.getKey(),
                                         "text/plain",
                                         new String(

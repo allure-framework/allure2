@@ -16,6 +16,7 @@
 package io.qameta.allure.trx;
 
 import io.qameta.allure.Allure;
+import io.qameta.allure.AttachmentOptions;
 import io.qameta.allure.DefaultResultsVisitor;
 import io.qameta.allure.Description;
 import io.qameta.allure.Issue;
@@ -307,14 +308,14 @@ class TrxPluginTest {
             final Path destination = dir.resolve(fileName);
             Files.createDirectories(destination.getParent());
             Files.write(destination, content);
-            Allure.addAttachment(fileName, "application/xml", new String(content, StandardCharsets.UTF_8), ".trx");
+            Allure.attachment(fileName, "application/xml", new String(content, StandardCharsets.UTF_8), AttachmentOptions.withFileExtension(".trx"));
         });
     }
 
     private void writeTextFile(final Path path, final String fileName, final String content) throws IOException {
         Allure.step("Write text fixture " + fileName, () -> {
             Files.writeString(path, content, StandardCharsets.UTF_8);
-            Allure.addAttachment(fileName, "application/xml", content, ".trx");
+            Allure.attachment(fileName, "application/xml", content, AttachmentOptions.withFileExtension(".trx"));
         });
     }
 
@@ -325,7 +326,7 @@ class TrxPluginTest {
             final List<TestResult> results = captor.getAllValues();
             final DefaultResultsVisitor resultVisitor = new DefaultResultsVisitor(configuration);
             results.forEach(resultVisitor::visitTestResult);
-            Allure.addAttachment("parsed-test-results.txt", "text/plain", describeTestResults(results));
+            Allure.attachment("parsed-test-results.txt", "text/plain", describeTestResults(results));
             return results;
         });
     }

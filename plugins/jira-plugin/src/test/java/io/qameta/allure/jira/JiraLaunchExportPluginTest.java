@@ -96,7 +96,7 @@ class JiraLaunchExportPluginTest {
                                    final ExecutorInfo executorInfo,
                                    final List<LaunchStatisticExport> expectedStatistic) {
         Allure.step(
-                "Attach Jira launch input", () -> Allure.addAttachment(
+                "Attach Jira launch input", () -> Allure.attachment(
                         "jira-launch-input.txt", "text/plain", String.format(
                                 "executorBuildName=%s%nexecutorReportUrl=%s%nresults:%n%s%nexpectedStatistic:%n%s",
                                 executorInfo.getBuildName(),
@@ -115,7 +115,7 @@ class JiraLaunchExportPluginTest {
             final ArgumentCaptor<List<String>> issuesCaptor = ArgumentCaptor.forClass(List.class);
             verify(service, times(1)).createJiraLaunch(launchCaptor.capture(), issuesCaptor.capture());
             final CapturedLaunchExport export = new CapturedLaunchExport(launchCaptor.getValue(), issuesCaptor.getValue());
-            Allure.addAttachment("jira-launch-payload.txt", "text/plain", describeLaunchExport(export));
+            Allure.attachment("jira-launch-payload.txt", "text/plain", describeLaunchExport(export));
             return export;
         });
     }

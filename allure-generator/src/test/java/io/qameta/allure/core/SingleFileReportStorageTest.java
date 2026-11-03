@@ -17,6 +17,7 @@ package io.qameta.allure.core;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.qameta.allure.Allure;
+import io.qameta.allure.AttachmentOptions;
 import io.qameta.allure.Description;
 import io.qameta.allure.ReportStorage;
 import org.junit.jupiter.api.io.TempDir;
@@ -153,9 +154,9 @@ class SingleFileReportStorageTest {
     }
 
     private static void attachJson(final String name, final Map<String, String> data) throws Exception {
-        Allure.addAttachment(
+        Allure.attachment(
                 name, "application/json", MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(data),
-                ".json"
+                AttachmentOptions.withFileExtension(".json")
         );
     }
 }

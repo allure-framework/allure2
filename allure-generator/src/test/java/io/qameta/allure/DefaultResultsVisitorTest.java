@@ -127,8 +127,8 @@ class DefaultResultsVisitorTest {
                 "Visit attachment file with an unknown extension",
                 () -> visitor.visitAttachmentFile(attachmentFile)
         );
-        Allure.addAttachment(attachment.getName(), "text/plain", Files.readString(attachmentFile));
-        Allure.addAttachment(
+        Allure.attachment(attachment.getName(), "text/plain", Files.readString(attachmentFile));
+        Allure.attachment(
                 "Visited attachment metadata", "text/plain", String.format(
                         "name=%s%ntype=%s%nsource=%s%ncontent=%s%n",
                         attachment.getName(),

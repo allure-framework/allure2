@@ -830,7 +830,7 @@ class LocalReportServerTest {
             socket.getOutputStream().flush();
 
             final String response = new String(socket.getInputStream().readAllBytes(), StandardCharsets.ISO_8859_1);
-            Allure.addAttachment("raw-http-response.txt", "text/plain", response, ".txt");
+            Allure.attachment("raw-http-response.txt", "text/plain", response, AttachmentOptions.withFileExtension(".txt"));
             return response;
         }
     }
@@ -841,7 +841,7 @@ class LocalReportServerTest {
                 ? connection.getErrorStream()
                 : connection.getInputStream()) {
             final String body = new String(response.readAllBytes(), StandardCharsets.UTF_8);
-            Allure.addAttachment(
+            Allure.attachment(
                     "http-response.txt",
                     "text/plain",
                     String.format(
@@ -851,7 +851,7 @@ class LocalReportServerTest {
                             connection.getHeaderField("Content-Type"),
                             body
                     ),
-                    ".txt"
+                    AttachmentOptions.withFileExtension(".txt")
             );
             return body;
         }

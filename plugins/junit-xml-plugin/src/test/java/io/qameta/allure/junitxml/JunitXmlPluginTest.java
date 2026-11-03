@@ -16,6 +16,7 @@
 package io.qameta.allure.junitxml;
 
 import io.qameta.allure.Allure;
+import io.qameta.allure.AttachmentOptions;
 import io.qameta.allure.DefaultResultsVisitor;
 import io.qameta.allure.Description;
 import io.qameta.allure.Issue;
@@ -518,11 +519,11 @@ class JunitXmlPluginTest {
             final Path destination = dir.resolve(fileName);
             Files.createDirectories(destination.getParent());
             Files.write(destination, content);
-            Allure.addAttachment(
+            Allure.attachment(
                     fileName,
                     contentType(fileName),
                     new String(content, StandardCharsets.UTF_8),
-                    extension(fileName)
+                    AttachmentOptions.withFileExtension(extension(fileName))
             );
         });
     }
@@ -530,7 +531,7 @@ class JunitXmlPluginTest {
     private void writeTextFile(final Path path, final String fileName, final String content) throws IOException {
         Allure.step("Write text fixture " + fileName, () -> {
             Files.writeString(path, content, StandardCharsets.UTF_8);
-            Allure.addAttachment(fileName, contentType(fileName), content, extension(fileName));
+            Allure.attachment(fileName, contentType(fileName), content, AttachmentOptions.withFileExtension(extension(fileName)));
         });
     }
 
@@ -541,7 +542,7 @@ class JunitXmlPluginTest {
             final List<TestResult> results = captor.getAllValues();
             final DefaultResultsVisitor resultVisitor = new DefaultResultsVisitor(configuration);
             results.forEach(resultVisitor::visitTestResult);
-            Allure.addAttachment("parsed-test-results.txt", "text/plain", describeTestResults(results));
+            Allure.attachment("parsed-test-results.txt", "text/plain", describeTestResults(results));
             return results;
         });
     }
@@ -551,7 +552,7 @@ class JunitXmlPluginTest {
             final ArgumentCaptor<Path> captor = ArgumentCaptor.captor();
             verify(visitor, times(expectedCount)).visitAttachmentFile(captor.capture());
             final List<Path> attachments = captor.getAllValues();
-            Allure.addAttachment("visited-attachments.txt", "text/plain", describeAttachments(attachments));
+            Allure.attachment("visited-attachments.txt", "text/plain", describeAttachments(attachments));
             return attachments;
         });
     }
@@ -559,14 +560,14 @@ class JunitXmlPluginTest {
     private void verifyNoAttachmentFiles() {
         Allure.step("Verify no attachment files were visited", () -> {
             verify(visitor, times(0)).visitAttachmentFile(any());
-            Allure.addAttachment("visited-attachments.txt", "text/plain", "attachments=0");
+            Allure.attachment("visited-attachments.txt", "text/plain", "attachments=0");
         });
     }
 
     private void verifyNoTestResults() {
         Allure.step("Verify no JUnit test results were emitted", () -> {
             verify(visitor, times(0)).visitTestResult(any());
-            Allure.addAttachment("parsed-test-results.txt", "text/plain", "results=0");
+            Allure.attachment("parsed-test-results.txt", "text/plain", "results=0");
         });
     }
 

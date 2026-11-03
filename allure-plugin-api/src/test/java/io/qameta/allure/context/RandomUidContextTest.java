@@ -16,6 +16,7 @@
 package io.qameta.allure.context;
 
 import io.qameta.allure.Allure;
+import io.qameta.allure.AttachmentOptions;
 import io.qameta.allure.Description;
 import org.junit.jupiter.api.Test;
 
@@ -51,7 +52,7 @@ class RandomUidContextTest {
         final String second = generator.get();
 
         Allure.step(
-                "Record generated UID values", () -> Allure.addAttachment(
+                "Record generated UID values", () -> Allure.attachment(
                         "generated-uids.txt",
                         "text/plain",
                         String.format(
@@ -62,7 +63,7 @@ class RandomUidContextTest {
                                 second.trim().isEmpty(),
                                 first.equals(second)
                         ),
-                        ".txt"
+                        AttachmentOptions.withFileExtension(".txt")
                 )
         );
 

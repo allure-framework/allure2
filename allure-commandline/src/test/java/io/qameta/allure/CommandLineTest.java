@@ -597,17 +597,17 @@ class CommandLineTest {
     @Step("Run parsed command")
     private ExitCode runCommand() {
         final ExitCode result = commandLine.run();
-        Allure.addAttachment(
+        Allure.attachment(
                 "command-run.txt",
                 "text/plain",
                 String.format("runResult=%s%n%s", result, describeMainCommand()),
-                ".txt"
+                AttachmentOptions.withFileExtension(".txt")
         );
         return result;
     }
 
     private void attachCommandParse(final String[] arguments, final Optional<ExitCode> result) {
-        Allure.addAttachment(
+        Allure.attachment(
                 "command-parse.txt",
                 "text/plain",
                 String.format(
@@ -616,7 +616,7 @@ class CommandLineTest {
                         result.map(ExitCode::name).orElse("<empty>"),
                         describeMainCommand()
                 ),
-                ".txt"
+                AttachmentOptions.withFileExtension(".txt")
         );
     }
 
@@ -638,7 +638,7 @@ class CommandLineTest {
         Files.createDirectories(allureHome.resolve("config"));
         Files.write(allureHome.resolve("config").resolve("allure.yml"), Arrays.asList("plugins: []"));
         Files.createDirectories(allureHome.resolve("plugins"));
-        Allure.addAttachment(
+        Allure.attachment(
                 "allure-home-layout.txt",
                 "text/plain",
                 String.format(
@@ -647,7 +647,7 @@ class CommandLineTest {
                         allureHome.resolve("config").resolve("allure.yml"),
                         allureHome.resolve("plugins")
                 ),
-                ".txt"
+                AttachmentOptions.withFileExtension(".txt")
         );
         return allureHome;
     }
@@ -657,11 +657,11 @@ class CommandLineTest {
         final Path lib = Files.createDirectories(allureHome.resolve("lib"));
         final Path commandlineJar = lib.resolve("allure-commandline-test.jar");
         Files.write(commandlineJar, Arrays.asList("commandline jar marker"));
-        Allure.addAttachment(
+        Allure.attachment(
                 "commandline-location.txt",
                 "text/plain",
                 String.format("commandlineJar=%s%n", commandlineJar),
-                ".txt"
+                AttachmentOptions.withFileExtension(".txt")
         );
         return commandlineJar;
     }
@@ -669,7 +669,7 @@ class CommandLineTest {
     @Step("Resolve Allure home")
     private Optional<Path> resolveAllureHome(final String appHome, final URI commandlineLocation) {
         final Optional<Path> result = CommandLine.resolveAllureHome(appHome, commandlineLocation);
-        Allure.addAttachment(
+        Allure.attachment(
                 "allure-home-resolution.txt",
                 "text/plain",
                 String.format(
@@ -678,7 +678,7 @@ class CommandLineTest {
                         commandlineLocation,
                         result.map(Path::toString).orElse("<empty>")
                 ),
-                ".txt"
+                AttachmentOptions.withFileExtension(".txt")
         );
         return result;
     }

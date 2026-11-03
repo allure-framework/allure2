@@ -663,7 +663,7 @@ class Allure1PluginTest {
         Allure.step("Write environment.properties with " + bytes.length + " byte(s)", () -> {
             final Path output = directory.resolve("environment.properties");
             Files.write(output, bytes);
-            Allure.addAttachment("environment.properties", TEXT_PLAIN, describeEnvironmentProperties(bytes));
+            Allure.attachment("environment.properties", TEXT_PLAIN, describeEnvironmentProperties(bytes));
         });
     }
 

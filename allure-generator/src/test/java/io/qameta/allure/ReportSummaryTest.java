@@ -169,7 +169,7 @@ class ReportSummaryTest {
                             || name.startsWith("export/") || name.equals("summary.json")
             );
             assertThat(reportData.get("data/suites.csv")).contains("checkout", "passed");
-            Allure.addAttachment("Embedded data/suites.csv", "text/csv", reportData.get("data/suites.csv"), ".csv");
+            Allure.attachment("Embedded data/suites.csv", "text/csv", reportData.get("data/suites.csv"), AttachmentOptions.withFileExtension(".csv"));
             final JsonNode embedded = MAPPER.readTree(reportData.get("widgets/summary.json"));
             attachJson("Embedded widgets/summary.json", embedded);
             assertThat(embedded.path("statistic")).isEqualTo(MAPPER.readTree("""
@@ -314,7 +314,7 @@ class ReportSummaryTest {
         );
         final String filename = uuid + "-result.json";
         Files.writeString(directory.resolve(filename), content);
-        Allure.addAttachment(filename, "application/json", content, ".json");
+        Allure.attachment(filename, "application/json", content, AttachmentOptions.withFileExtension(".json"));
     }
 
     private static void generateReport(final Configuration configuration, final Path output,
@@ -327,14 +327,14 @@ class ReportSummaryTest {
                 generator.generate(output, results);
             }
             try (Stream<Path> files = Files.walk(output)) {
-                Allure.addAttachment(
+                Allure.attachment(
                         "Generated report files", "text/plain", files
                                 .filter(Files::isRegularFile)
                                 .map(output::relativize)
                                 .map(Path::toString)
                                 .sorted()
                                 .collect(Collectors.joining("\n")),
-                        ".txt"
+                        AttachmentOptions.withFileExtension(".txt")
                 );
             }
         });
@@ -384,6 +384,6 @@ class ReportSummaryTest {
     }
 
     private static void attachJson(final String name, final JsonNode data) {
-        Allure.addAttachment(name, "application/json", data.toPrettyString(), ".json");
+        Allure.attachment(name, "application/json", data.toPrettyString(), AttachmentOptions.withFileExtension(".json"));
     }
 }

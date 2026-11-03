@@ -17,6 +17,7 @@ package io.qameta.allure.plugin;
 
 import io.qameta.allure.Aggregator;
 import io.qameta.allure.Allure;
+import io.qameta.allure.AttachmentOptions;
 import io.qameta.allure.Description;
 import io.qameta.allure.Extension;
 import io.qameta.allure.core.Plugin;
@@ -196,7 +197,7 @@ class DirectoryPluginLoaderTest {
     private Optional<Plugin> loadPlugin(final Path pluginFolder) {
         return Allure.step("Load plugin from directory", () -> {
             final Optional<Plugin> plugin = pluginLoader.loadPlugin(getClass().getClassLoader(), pluginFolder);
-            Allure.addAttachment("loaded-plugin.txt", "text/plain", describePlugin(plugin));
+            Allure.attachment("loaded-plugin.txt", "text/plain", describePlugin(plugin));
             return plugin;
         });
     }
@@ -216,15 +217,15 @@ class DirectoryPluginLoaderTest {
 
     private void attachCopiedResource(final String fileName, final byte[] content) {
         if (isText(fileName)) {
-            Allure.addAttachment(
+            Allure.attachment(
                     Path.of(fileName).getFileName().toString(),
                     contentType(fileName),
                     new String(content, StandardCharsets.UTF_8),
-                    extension(fileName)
+                    AttachmentOptions.withFileExtension(extension(fileName))
             );
             return;
         }
-        Allure.addAttachment(
+        Allure.attachment(
                 Path.of(fileName).getFileName() + ".metadata.txt",
                 "text/plain",
                 "fileName=" + Path.of(fileName).getFileName() + System.lineSeparator()

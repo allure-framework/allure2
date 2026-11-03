@@ -162,7 +162,7 @@ class Allure1EnvironmentPluginTest {
             }
             Allure1EnvironmentPlugin envPlugin = new Allure1EnvironmentPlugin();
             final List<EnvironmentItem> environment = envPlugin.getData(launches);
-            Allure.addAttachment("Environment items", TEXT_PLAIN, describeEnvironment(environment));
+            Allure.attachment("Environment items", TEXT_PLAIN, describeEnvironment(environment));
             return environment;
         });
     }

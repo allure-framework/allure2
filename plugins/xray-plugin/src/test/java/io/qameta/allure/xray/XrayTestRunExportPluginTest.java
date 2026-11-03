@@ -253,7 +253,7 @@ class XrayTestRunExportPluginTest {
                                  final ExecutorInfo executorInfo,
                                  final List<XrayTestRun> testRuns) {
         Allure.step(
-                "Attach Xray export input", () -> Allure.addAttachment(
+                "Attach Xray export input", () -> Allure.attachment(
                         "xray-export-input.txt", "text/plain", String.format(
                                 "executionIssues=%s%nexecutorBuildName=%s%nexecutorReportUrl=%s%nresults:%n%s%ntestRuns:%n%s",
                                 executionIssues,
@@ -280,7 +280,7 @@ class XrayTestRunExportPluginTest {
                         )
                 );
             }
-            Allure.addAttachment("xray-comments.txt", "text/plain", describeComments(comments));
+            Allure.attachment("xray-comments.txt", "text/plain", describeComments(comments));
             return comments;
         });
     }
@@ -294,7 +294,7 @@ class XrayTestRunExportPluginTest {
             for (int i = 0; i < idCaptor.getAllValues().size(); i++) {
                 updates.add(new StatusUpdate(idCaptor.getAllValues().get(i), statusCaptor.getAllValues().get(i)));
             }
-            Allure.addAttachment("xray-status-updates.txt", "text/plain", describeStatusUpdates(updates));
+            Allure.attachment("xray-status-updates.txt", "text/plain", describeStatusUpdates(updates));
             return updates;
         });
     }

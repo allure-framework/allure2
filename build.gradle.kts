@@ -87,6 +87,14 @@ subprojects {
             mavenBom("org.mockito:mockito-bom:5.24.0")
             mavenBom("org.slf4j:slf4j-bom:2.0.19")
         }
+        // Allure 3 adapters run in tests on Java 17; the report runtime still supports Java 8.
+        withGroovyBuilder {
+            "configurations"("testCompileClasspath", "testRuntimeClasspath", "testAnnotationProcessor") {
+                "imports" {
+                    "mavenBom"("io.qameta.allure:allure-bom:3.0.1")
+                }
+            }
+        }
         dependencies {
             dependency("com.beust:jcommander:1.82")
             dependency("com.github.spotbugs:spotbugs:4.10.5")

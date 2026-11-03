@@ -16,6 +16,7 @@
 package io.qameta.allure.xctest;
 
 import io.qameta.allure.Allure;
+import io.qameta.allure.AttachmentOptions;
 import io.qameta.allure.DefaultResultsVisitor;
 import io.qameta.allure.Description;
 import io.qameta.allure.context.JacksonContext;
@@ -133,7 +134,7 @@ class XcTestPluginTest {
         final Path secret = Allure.step("Create external entity target file", () -> {
             final Path target = resultsDirectory.resolve("secret.txt");
             Files.write(target, EXTERNAL_ENTITY_CONTENT.getBytes(StandardCharsets.UTF_8));
-            Allure.addAttachment("external-entity-target.txt", "text/plain", EXTERNAL_ENTITY_CONTENT);
+            Allure.attachment("external-entity-target.txt", "text/plain", EXTERNAL_ENTITY_CONTENT);
             return target;
         });
         writePlist(resultsDirectory, "sample.plist", xxePlist(secret.toUri().toString()));
@@ -141,7 +142,7 @@ class XcTestPluginTest {
         readResults(resultsDirectory);
 
         final List<TestResult> results = captureTestResults(1);
-        Allure.addAttachment("external-entity-parsed-names.txt", "text/plain", describeResultAndStepNames(results));
+        Allure.attachment("external-entity-parsed-names.txt", "text/plain", describeResultAndStepNames(results));
 
         assertThat(results)
                 .extracting(TestResult::getName)
@@ -306,7 +307,7 @@ class XcTestPluginTest {
             final Path destination = directory.resolve(fileName);
             Files.createDirectories(destination.getParent());
             Files.write(destination, plist.getBytes(StandardCharsets.UTF_8));
-            Allure.addAttachment(fileName, "application/xml", plist, ".plist");
+            Allure.attachment(fileName, "application/xml", plist, AttachmentOptions.withFileExtension(".plist"));
             return destination;
         });
     }
@@ -318,7 +319,7 @@ class XcTestPluginTest {
             final List<TestResult> results = captor.getAllValues();
             final DefaultResultsVisitor resultVisitor = new DefaultResultsVisitor(configuration);
             results.forEach(resultVisitor::visitTestResult);
-            Allure.addAttachment("parsed-test-results.txt", "text/plain", describeTestResults(results));
+            Allure.attachment("parsed-test-results.txt", "text/plain", describeTestResults(results));
             return results;
         });
     }
@@ -328,7 +329,7 @@ class XcTestPluginTest {
             final ArgumentCaptor<Path> captor = ArgumentCaptor.forClass(Path.class);
             verify(visitor, times(expectedCount)).visitAttachmentFile(captor.capture());
             final List<Path> attachments = captor.getAllValues();
-            Allure.addAttachment("visited-attachments.txt", "text/plain", describeAttachments(attachments));
+            Allure.attachment("visited-attachments.txt", "text/plain", describeAttachments(attachments));
             return attachments;
         });
     }
@@ -336,14 +337,14 @@ class XcTestPluginTest {
     private void verifyNoAttachmentFiles() {
         Allure.step("Verify no XCTest attachment files were visited", () -> {
             verify(visitor, times(0)).visitAttachmentFile(any());
-            Allure.addAttachment("visited-attachments.txt", "text/plain", "attachments=0");
+            Allure.attachment("visited-attachments.txt", "text/plain", "attachments=0");
         });
     }
 
     private void verifyAttachmentFileWasNotVisited(final Path attachment) {
         Allure.step("Verify XCTest attachment file was not visited", () -> {
             verify(visitor, times(0)).visitAttachmentFile(attachment);
-            Allure.addAttachment(
+            Allure.attachment(
                     "visited-attachments.txt", "text/plain",
                     "attachments=0" + System.lineSeparator() + "blockedFile=" + attachment.getFileName()
             );
@@ -352,12 +353,12 @@ class XcTestPluginTest {
 
     private void attachResourceContent(final String fileName, final byte[] content) {
         if (fileName.endsWith(".plist")) {
-            Allure.addAttachment(fileName, "application/xml", new String(content, StandardCharsets.UTF_8), ".plist");
+            Allure.attachment(fileName, "application/xml", new String(content, StandardCharsets.UTF_8), AttachmentOptions.withFileExtension(".plist"));
             return;
         }
         final String type = fileName.endsWith(".jpeg") ? "image/jpeg" : "image/png";
         final String extension = fileName.endsWith(".jpeg") ? ".jpeg" : ".png";
-        Allure.addAttachment(fileName, type, new ByteArrayInputStream(content), extension);
+        Allure.attachment(fileName, type, new ByteArrayInputStream(content), AttachmentOptions.withFileExtension(extension));
     }
 
     private String describeTestResults(final List<TestResult> results) {

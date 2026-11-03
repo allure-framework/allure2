@@ -147,7 +147,7 @@ class BehaviorsPluginTest {
 
     private LaunchResults createLaunchResults(final Set<TestResult> testResults) {
         return Allure.step("Create launch results", () -> {
-            Allure.addAttachment("input-test-results.txt", "text/plain", describeTestResults(testResults));
+            Allure.attachment("input-test-results.txt", "text/plain", describeTestResults(testResults));
             return new DefaultLaunchResults(testResults, Collections.emptyMap(), Collections.emptyMap());
         });
     }
@@ -155,7 +155,7 @@ class BehaviorsPluginTest {
     private TreeWidgetData aggregateBehaviorWidget(final LaunchResults results) {
         return Allure.step("Aggregate behavior widget data", () -> {
             final TreeWidgetData data = new BehaviorsPlugin.WidgetAggregator().getData(Collections.singletonList(results));
-            Allure.addAttachment("behavior-widget.txt", "text/plain", describeWidgetItems(data.getItems()));
+            Allure.attachment("behavior-widget.txt", "text/plain", describeWidgetItems(data.getItems()));
             return data;
         });
     }
@@ -163,7 +163,7 @@ class BehaviorsPluginTest {
     private Tree<TestResult> aggregateBehaviorTree(final LaunchResults results) {
         return Allure.step("Aggregate behavior tree", () -> {
             final Tree<TestResult> tree = BehaviorsPlugin.getData(Collections.singletonList(results));
-            Allure.addAttachment("behavior-tree.txt", "text/plain", describeTree(tree.getChildren(), 0));
+            Allure.attachment("behavior-tree.txt", "text/plain", describeTree(tree.getChildren(), 0));
             return tree;
         });
     }

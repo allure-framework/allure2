@@ -65,7 +65,7 @@ class MagicBytesContentTypeDetectorTest {
                 IOUtils.copy(Objects.requireNonNull(stream, "no resource found:" + resource), bos);
             }
             final byte[] content = bos.toByteArray();
-            Allure.addAttachment(resourceName, "text/plain", describeMagicBytes(content));
+            Allure.attachment(resourceName, "text/plain", describeMagicBytes(content));
             return content;
         });
         final String detectedContentType = Allure.step(

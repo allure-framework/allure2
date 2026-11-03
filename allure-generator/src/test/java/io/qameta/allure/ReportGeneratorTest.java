@@ -51,7 +51,7 @@ class ReportGeneratorTest {
         });
         Allure.step("Generate report from Allure 1 fixture dataset", () -> {
             generator.generate(output, resultsDirectory);
-            Allure.addAttachment(
+            Allure.attachment(
                     "Generated report files", "text/plain", String.join(
                             System.lineSeparator(),
                             listRelativeFiles(output)
