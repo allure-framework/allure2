@@ -241,7 +241,7 @@ export default class BaseChartView {
     selection: Selection<TElement, TDatum, TParent, unknown>,
   ) {
     selection
-      .on("mouseenter", (event: MouseEvent, datum: TDatum) => {
+      .on("mouseenter", (event, datum) => {
         if (event.target instanceof Element) {
           this.showTooltip(datum, event.target);
         }
