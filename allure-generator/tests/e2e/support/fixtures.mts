@@ -40,6 +40,8 @@ export const fixtures = {
     packages: {
       root: "io.qameta.allure",
       className: "PullRequestsWebTest",
+      methodName: "shouldClosePullRequest",
+      pathQuery: "qameta.allure.PullRequestsWebTest.shouldClose",
     },
     widgets: {
       behaviors: "Features by stories",
