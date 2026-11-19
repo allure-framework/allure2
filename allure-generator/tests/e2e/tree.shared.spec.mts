@@ -23,6 +23,11 @@ for (const mode of reportModes) {
       await searchInput.fill("tag:sm");
       await expect(page.locator(".tree__empty")).toHaveText("There are no items");
 
+      await searchInput.fill("allure.PullRequestsWebTest");
+      await expect(
+        page.locator(".node__leaf", { hasText: uiDemo.cases.failedPullRequest }),
+      ).toBeVisible();
+
       await searchInput.fill(uiDemo.cases.failedPullRequest);
       await expect(
         page.locator(".node__leaf", { hasText: uiDemo.cases.failedPullRequest }),
@@ -133,6 +138,19 @@ for (const mode of reportModes) {
       await groupLocator(page, uiDemo.packages.root).locator(":scope > .node__title").click();
       await expect(groupLocator(page, uiDemo.packages.className)).toBeVisible();
       await expect(page.locator(".tree__download")).toHaveCount(0);
+
+      const packagesSearchInput = page.locator(".search__input");
+      await packagesSearchInput.fill(uiDemo.packages.pathQuery);
+      await expect(groupLocator(page, uiDemo.packages.className)).toBeVisible();
+      await expect(
+        page.locator(".node__leaf", { hasText: uiDemo.packages.methodName }),
+      ).toBeVisible();
+
+      await packagesSearchInput.fill(uiDemo.packages.root);
+      await expect(
+        page.locator(".node__leaf", { hasText: uiDemo.packages.methodName }),
+      ).toBeVisible();
+      await packagesSearchInput.fill("");
     });
 
     test("collapsed groups stay collapsed when selecting leaves in other groups", async ({

@@ -149,21 +149,25 @@ const createLeafOrderMap = (children: TreeNode[] = []) => {
   return new Map(sortedLeaves.map((leaf, index) => [leaf, index + 1]));
 };
 
-const normalizeNodes = (children: TreeNode[] = []): TreeNode[] => {
+const normalizeNodes = (children: TreeNode[] = [], parentPath = ""): TreeNode[] => {
   const leafOrders = createLeafOrderMap(children);
 
   return children.map((child) => {
+    const searchPath = [parentPath, child.name].filter(Boolean).join(".");
+
     if (!child.children) {
       return {
         ...child,
+        searchPath,
         order: leafOrders.get(child),
       };
     }
 
-    const normalizedChildren = normalizeNodes(child.children);
+    const normalizedChildren = normalizeNodes(child.children, searchPath);
 
     return {
       ...child,
+      searchPath,
       children: normalizedChildren,
       statistic: calculateStatistic(normalizedChildren),
       time: calculateTime(normalizedChildren),

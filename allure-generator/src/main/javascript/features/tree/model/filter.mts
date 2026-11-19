@@ -40,6 +40,8 @@ const byText = (text?: string): TreeFilter => {
     return (
       !normalizedText ||
       String(child.name).toLowerCase().indexOf(normalizedText) > -1 ||
+      (typeof child.searchPath === "string" &&
+        child.searchPath.toLowerCase().indexOf(normalizedText) > -1) ||
       Boolean(child.children?.some(byText(normalizedText)))
     );
   };
