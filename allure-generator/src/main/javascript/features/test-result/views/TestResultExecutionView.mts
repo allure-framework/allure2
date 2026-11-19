@@ -39,6 +39,18 @@ const createTestResultExecutionView = (options: TestResultExecutionOptions) => {
     onStepClick(event: Event) {
       (event.currentTarget as HTMLElement).parentElement?.classList.toggle("step_expanded");
     },
+    onExpandAllClick(event: Event) {
+      event.preventDefault();
+      el.querySelectorAll(".step__title_hasContent").forEach((stepTitle) => {
+        stepTitle.parentElement?.classList.add("step_expanded");
+      });
+    },
+    onCollapseAllClick(event: Event) {
+      event.preventDefault();
+      el.querySelectorAll(".step__title_hasContent").forEach((stepTitle) => {
+        stepTitle.parentElement?.classList.remove("step_expanded");
+      });
+    },
     onAttachmentClick(event: Event) {
       const currentTarget = event.currentTarget as HTMLElement;
       if (event.target instanceof Element && event.target.closest(".attachment-row__fullscreen")) {
@@ -157,6 +169,8 @@ const createTestResultExecutionView = (options: TestResultExecutionOptions) => {
           "click .attachment-row__fullscreen": "onAttachmnetFullScrennClick",
           "click .attachment-row": "onAttachmentClick",
           "click .parameters-table__cell": "onParameterClick",
+          "click .test-result-execution__expand-all": "onExpandAllClick",
+          "click .test-result-execution__collapse-all": "onCollapseAllClick",
         },
         context: el,
       });
